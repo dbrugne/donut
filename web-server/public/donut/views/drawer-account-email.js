@@ -1,117 +1,114 @@
-'use strict';
-define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'i18next',
-  'client',
-  'models/current-user',
-  '_templates'
-], function ($, _, Backbone, i18next, client, currentUser, templates) {
-  var DrawerAccountEmailView = Backbone.View.extend({
-    template: templates['drawer-account-email.html'],
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var i18next = require('i18next-client');
+var client = require('../client');
+var currentUser = require('../models/current-user');
 
-    events: {
-      'click #email-modal-link': 'onShowForm',
-      'submit .form-mail': 'onSubmit',
-      'click .cancel-email': 'onCancel'
-    },
+var DrawerAccountEmailView = Backbone.View.extend({
+  template: require('../templates/drawer-account-email.html'),
 
-    initialize: function (options) {
-      this.user = options.user;
+  events: {
+    'click #email-modal-link': 'onShowForm',
+    'submit .form-mail': 'onSubmit',
+    'click .cancel-email': 'onCancel'
+  },
 
-      this.render();
+  initialize: function (options) {
+    this.user = options.user;
 
-      this.$emailUserCtn = this.$('.email-user-ctn');
-      this.$link = this.$('#email-modal-link');
-      this.$form = this.$('.form-mail');
-      this.$spinner = this.$('.spinner');
-      this.$spinner.html(templates['spinner.html']);
-      this.$errorLabel = this.$('.error-label');
-      this.$success = this.$('.success');
-      this.$input = this.$('.email-sub');
-      this.$mailUserLabel = this.$('.email-user');
+    this.render();
 
-      this.$form.hide();
-      this.$spinner.hide();
-      this.$success.hide();
+    this.$emailUserCtn = this.$('.email-user-ctn');
+    this.$link = this.$('#email-modal-link');
+    this.$form = this.$('.form-mail');
+    this.$spinner = this.$('.spinner');
+    this.$spinner.html(require('../templates/spinner.html'));
+    this.$errorLabel = this.$('.error-label');
+    this.$success = this.$('.success');
+    this.$input = this.$('.email-sub');
+    this.$mailUserLabel = this.$('.email-user');
 
-      if (this.user.account && this.user.account.email) {
-        this.$link.text(i18next.t('global.change'));
-      } else {
-        this.$link.text(i18next.t('global.add'));
-      }
-    },
+    this.$form.hide();
+    this.$spinner.hide();
+    this.$success.hide();
 
-    render: function () {
-      this.$el.html(this.template({user: this.user}));
-      return this;
-    },
+    if (this.user.account && this.user.account.email) {
+      this.$link.text(i18next.t('global.change'));
+    } else {
+      this.$link.text(i18next.t('global.add'));
+    }
+  },
 
-    onShowForm: function (event) {
-      event.preventDefault();
+  render: function () {
+    this.$el.html(this.template({user: this.user}));
+    return this;
+  },
 
-      this.$form.show();
-      this.$emailUserCtn.hide();
-      this.$success.hide();
-    },
+  onShowForm: function (event) {
+    event.preventDefault();
 
-    onCancel: function (event) {
-      event.preventDefault();
+    this.$form.show();
+    this.$emailUserCtn.hide();
+    this.$success.hide();
+  },
 
-      this.$form.hide();
-      this.$emailUserCtn.show();
-      this.$errorLabel.text('');
-      this.$form.removeClass('has-error');
-      this.$input.val((this.user.account && this.user.account.email) ?
-        this.user.account.email :
-        '');
-    },
+  onCancel: function (event) {
+    event.preventDefault();
 
-    onSubmit: function (event) {
-      event.preventDefault();
+    this.$form.hide();
+    this.$emailUserCtn.show();
+    this.$errorLabel.text('');
+    this.$form.removeClass('has-error');
+    this.$input.val((this.user.account && this.user.account.email) ?
+      this.user.account.email :
+      '');
+  },
 
-      var that = this;
+  onSubmit: function (event) {
+    event.preventDefault();
 
-      if (this.$input.val().length < 1) {
-        this.putError('empty');
-        return;
-      }
+    var that = this;
 
-      this.$errorLabel.text('');
-      this.$spinner.show();
-      this.$form.removeClass('has-error');
-
-      client.accountEmail(this.$input.val(), function (data) {
-        that.$spinner.hide();
-        if (data.err) {
-          return that.putError(data.err);
-        }
-
-        that.$mailUserLabel.text(that.$input.val());
-        that.$form.hide();
-        that.$success.show();
-        that.$link.text(i18next.t('global.change'));
-      });
-    },
-
-    putError: function (error) {
-      this.$form.addClass('has-error');
-
-      if (error === 'wrong-format') {
-        this.$errorLabel.text(i18next.t('account.email.error.format'));
-      } else if (error === 'same-mail') {
-        this.$errorLabel.text(i18next.t('account.email.error.alreadyyours'));
-      } else if (error === 'exist') {
-        this.$errorLabel.text(i18next.t('account.email.error.alreadyexists'));
-      } else if (error === 'empty') {
-        this.$errorLabel.text(i18next.t('account.email.error.empty'));
-      } else {
-        this.$errorLabel.text(i18next.t('global.unknownerror'));
-      }
+    if (this.$input.val().length < 1) {
+      this.putError('empty');
+      return;
     }
 
-  });
+    this.$errorLabel.text('');
+    this.$spinner.show();
+    this.$form.removeClass('has-error');
 
-  return DrawerAccountEmailView;
+    client.accountEmail(this.$input.val(), function (data) {
+      that.$spinner.hide();
+      if (data.err) {
+        return that.putError(data.err);
+      }
+
+      that.$mailUserLabel.text(that.$input.val());
+      that.$form.hide();
+      that.$success.show();
+      that.$link.text(i18next.t('global.change'));
+    });
+  },
+
+  putError: function (error) {
+    this.$form.addClass('has-error');
+
+    if (error === 'wrong-format') {
+      this.$errorLabel.text(i18next.t('account.email.error.format'));
+    } else if (error === 'same-mail') {
+      this.$errorLabel.text(i18next.t('account.email.error.alreadyyours'));
+    } else if (error === 'exist') {
+      this.$errorLabel.text(i18next.t('account.email.error.alreadyexists'));
+    } else if (error === 'empty') {
+      this.$errorLabel.text(i18next.t('account.email.error.empty'));
+    } else {
+      this.$errorLabel.text(i18next.t('global.unknownerror'));
+    }
+  }
+
 });
+
+
+module.exports = DrawerAccountEmailView;

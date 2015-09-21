@@ -1,39 +1,37 @@
-'use strict';
-define([
-  'underscore',
-  'backbone',
-  'jquery',
-  'client'
-], function (_, Backbone, $, client) {
-  var UserModel = Backbone.Model.extend({
-    defaults: function () {
-      return {
-        user_id: '',
-        username: '',
-        avatar: '',
-        status: '',
-        admin: ''
-      };
-    },
+var _ = require('underscore');
+var Backbone = require('backbone');
+var $ = require('jquery');
+var client = require('../client');
 
-    initialize: function (options) {
-      this._initialize();
-    },
+var UserModel = Backbone.Model.extend({
+  defaults: function () {
+    return {
+      user_id: '',
+      username: '',
+      avatar: '',
+      status: '',
+      admin: ''
+    };
+  },
 
-    _initialize: function (options) {
-      this.listenTo(client, 'user:updated', this.onUpdated); // @todo : performance leak, should be handled by rooms and onetoones and currentUser
-    },
+  initialize: function (options) {
+    this._initialize();
+  },
 
-    onUpdated: function (data) {
-      if (data.username != this.get('username'))
-        return;
-      var that = this;
-      _.each(data.data, function (value, key, list) {
-        that.set(key, value);
-      });
-    }
+  _initialize: function (options) {
+    this.listenTo(client, 'user:updated', this.onUpdated); // @todo : performance leak, should be handled by rooms and onetoones and currentUser
+  },
 
-  });
+  onUpdated: function (data) {
+    if (data.username != this.get('username'))
+      return;
+    var that = this;
+    _.each(data.data, function (value, key, list) {
+      that.set(key, value);
+    });
+  }
 
-  return UserModel;
 });
+
+
+module.exports = UserModel;

@@ -1,76 +1,73 @@
-'use strict';
-define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'libs/donut-debug',
-  'client',
-  'models/current-user',
-  '_templates'
-], function ($, _, Backbone, donutDebug, client, currentUser, templates) {
-  var debug = donutDebug('donut:input');
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var donutDebug = require('../libs/donut-debug');
+var client = require('../client');
+var currentUser = require('../models/current-user');
 
-  var InputTypingView = Backbone.View.extend({
-    template: templates['input-typing.html'],
+var debug = donutDebug('donut:input');
 
-    timeToMarkTypingFinished: 4000,
+var InputTypingView = Backbone.View.extend({
+  template: require('../templates/input-typing.html'),
 
-    timeToSendAnotherTypingEvent: 3000,
+  timeToMarkTypingFinished: 4000,
 
-    canSendTypingEvent: true,
+  timeToSendAnotherTypingEvent: 3000,
 
-    initialize: function (options) {
-      this.listenTo(this.model, 'typing', this.onSomeoneTyping);
-      this.listenTo(this.model, 'inputKeyUp', this.onCurrentUserTyping);
+  canSendTypingEvent: true,
 
-      this.usersTyping = {};
-    },
+  initialize: function (options) {
+    this.listenTo(this.model, 'typing', this.onSomeoneTyping);
+    this.listenTo(this.model, 'inputKeyUp', this.onCurrentUserTyping);
 
-    render: function () {
-      if (_.keys(this.usersTyping).length == 0)
-        return this.$el.html('');
+    this.usersTyping = {};
+  },
 
-      var html = this.template({users: this.usersTyping});
-      this.$el.html(html);
-      return this;
-    },
+  render: function () {
+    if (_.keys(this.usersTyping).length == 0)
+      return this.$el.html('');
 
-    onSomeoneTyping: function (data) {
-      if (data.user_id === currentUser.get('user_id'))
-        return;
+    var html = this.template({users: this.usersTyping});
+    this.$el.html(html);
+    return this;
+  },
 
-      var that = this;
-      if (!_.has(this.usersTyping, data.username)) {
-        this.usersTyping[data.username] = setTimeout(function () {
-          that.usersTyping = _.omit(that.usersTyping, data.username);
-          that.render();
-        }, this.timeToMarkTypingFinished);
-        this.render();
-      } else {
-        clearTimeout(this.usersTyping[data.username]);
-        this.usersTyping[data.username] = setTimeout(function () {
-          that.usersTyping = _.omit(that.usersTyping, data.username);
-          that.render();
-        }, this.timeToMarkTypingFinished);
-      }
-    },
+  onSomeoneTyping: function (data) {
+    if (data.user_id === currentUser.get('user_id'))
+      return;
 
-    onCurrentUserTyping: function (data) {
-      if (!this.canSendTypingEvent)
-        return;
-
-      if (this.model.get('type') === 'room')
-        client.roomTyping(this.model.get('id'));
-      else
-        client.userTyping(this.model.get('user_id'));
-
-      this.canSendTypingEvent = false;
-      setTimeout(_.bind(function () {
-        this.canSendTypingEvent = true;
-      }, this), this.timeToSendAnotherTypingEvent);
+    var that = this;
+    if (!_.has(this.usersTyping, data.username)) {
+      this.usersTyping[data.username] = setTimeout(function () {
+        that.usersTyping = _.omit(that.usersTyping, data.username);
+        that.render();
+      }, this.timeToMarkTypingFinished);
+      this.render();
+    } else {
+      clearTimeout(this.usersTyping[data.username]);
+      this.usersTyping[data.username] = setTimeout(function () {
+        that.usersTyping = _.omit(that.usersTyping, data.username);
+        that.render();
+      }, this.timeToMarkTypingFinished);
     }
+  },
 
-  });
+  onCurrentUserTyping: function (data) {
+    if (!this.canSendTypingEvent)
+      return;
 
-  return InputTypingView;
+    if (this.model.get('type') === 'room')
+      client.roomTyping(this.model.get('id'));
+    else
+      client.userTyping(this.model.get('user_id'));
+
+    this.canSendTypingEvent = false;
+    setTimeout(_.bind(function () {
+      this.canSendTypingEvent = true;
+    }, this), this.timeToSendAnotherTypingEvent);
+  }
+
 });
+
+
+module.exports = InputTypingView;

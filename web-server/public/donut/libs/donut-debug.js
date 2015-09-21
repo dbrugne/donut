@@ -1,40 +1,37 @@
-'use strict';
-define([
-  'underscore',
-  'debug'
-], function (_, debug) {
-  window.dd = debug; // @debug
+var _ = require('underscore');
+var debug = require('debug');
 
-  var times = {};
+window.dd = debug; // @debug
 
-  var donutDebug = function (namespace) {
-    var dbg = debug(namespace);
+var times = {};
 
-    if (debug.enabled(namespace)) {
-      dbg.start = function (name) {
-        if (this.isOn === true)
-          times[name] = Date.now();
-      };
-      dbg.end = function (name) {
-        if (this.isOn !== true)
-          return;
+var donutDebug = function (namespace) {
+  var dbg = debug(namespace);
 
-        if (!_.has(times, name))
-          return;
+  if (debug.enabled(namespace)) {
+    dbg.start = function (name) {
+      if (this.isOn === true)
+        times[name] = Date.now();
+    };
+    dbg.end = function (name) {
+      if (this.isOn !== true)
+        return;
 
-        var end = Date.now();
-        var start = times[name];
-        this("[profiling] Duration of '" + name + "': " + (end - start) + 'ms');
-        delete times[name];
-      };
-    } else {
-      dbg.start = function () {};
-      dbg.end = function () {};
-    }
+      if (!_.has(times, name))
+        return;
 
-    return dbg;
-  };
+      var end = Date.now();
+      var start = times[name];
+      this("[profiling] Duration of '" + name + "': " + (end - start) + 'ms');
+      delete times[name];
+    };
+  } else {
+    dbg.start = function () {};
+    dbg.end = function () {};
+  }
 
-  return donutDebug;
+  return dbg;
+};
 
-});
+
+module.exports = donutDebug;

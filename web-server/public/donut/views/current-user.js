@@ -1,34 +1,31 @@
-'use strict';
-define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'common',
-  'models/current-user',
-  '_templates'
-], function ($, _, Backbone, common, currentUser, templates) {
-  var CurrentUserView = Backbone.View.extend({
-    el: $('#block-current-user'),
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var common = require('@dbrugne/donut-common');
+var currentUser = require('../models/current-user');
 
-    template: templates['current-user.html'],
+var CurrentUserView = Backbone.View.extend({
+  el: $('#block-current-user'),
 
-    initialize: function (options) {
-      this.listenTo(this.model, 'change', this.render);
-    },
-    render: function () {
-      if (!currentUser.get('user_id'))
-        return this; // nothing to render if welcome wasn't received
+  template: require('../templates/current-user.html'),
 
-      var data = currentUser.toJSON();
+  initialize: function (options) {
+    this.listenTo(this.model, 'change', this.render);
+  },
+  render: function () {
+    if (!currentUser.get('user_id'))
+      return this; // nothing to render if welcome wasn't received
 
-      data.avatar = common.cloudinarySize(currentUser.get('avatar'), 60);
+    var data = currentUser.toJSON();
 
-      var html = this.template(data);
-      this.$el.html(html);
-      return this;
-    }
+    data.avatar = common.cloudinarySize(currentUser.get('avatar'), 60);
 
-  });
+    var html = this.template(data);
+    this.$el.html(html);
+    return this;
+  }
 
-  return CurrentUserView;
 });
+
+
+module.exports = CurrentUserView;

@@ -1,14 +1,12 @@
-'use strict';
-define([
-  'underscore',
-  'backbone'
-], function (_, Backbone) {
-  var AppModel = Backbone.Model.extend({
-    initialize: function (options) {
-      //
-    }
+var _ = require('underscore');
+var Backbone = require('backbone');
 
-  });
+var AppModel = Backbone.Model.extend({
+  initialize: function (options) {
+    //
+  }
 
-  return new AppModel();
 });
+
+
+module.exports = new AppModel();

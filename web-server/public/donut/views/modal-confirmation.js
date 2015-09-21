@@ -1,98 +1,96 @@
-'use strict';
-define([
-  'jquery',
-  'underscore',
-  'backbone'
-], function ($, _, Backbone) {
-  var ConfirmationModalView = Backbone.View.extend({
-    el: $('#confirmation'),
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
 
-    events: {
-      'click .buttons .confirm': 'onConfirm'
-    },
+var ConfirmationModalView = Backbone.View.extend({
+  el: $('#confirmation'),
 
-    confirmed: false,
+  events: {
+    'click .buttons .confirm': 'onConfirm'
+  },
 
-    confirmCallback: null,
+  confirmed: false,
 
-    cancelCallback: null,
+  confirmCallback: null,
 
-    options: null,
+  cancelCallback: null,
 
-    isRendered: false,
+  options: null,
 
-    initialize: function (options) {},
-    render: function () {
-      this.$inputBlock = this.$('.input');
-      this.$input = this.$inputBlock.find('input[type="text"]');
+  isRendered: false,
 
-      // Configure modal
-      this.$el.modal({
-        keyboard: true,
-        show: false
-      });
+  initialize: function (options) {},
+  render: function () {
+    this.$inputBlock = this.$('.input');
+    this.$input = this.$inputBlock.find('input[type="text"]');
 
-      // on modal shown
-      this.$el.on('shown.bs.modal', _.bind(function (e) {
-        this.$input.focus();
-      }, this));
+    // Configure modal
+    this.$el.modal({
+      keyboard: true,
+      show: false
+    });
 
-      // some callback action need to have modal properly closed before execution (e.g.: focus an element)
-      this.$el.on('hidden.bs.modal', _.bind(function (e) {
-        if (this.confirmed)
-          this.confirmCallback(this.$input.val()); // confirm
-        else if (_.isFunction(this.cancelCallback))
-          this.cancelCallback(); // cancel
+    // on modal shown
+    this.$el.on('shown.bs.modal', _.bind(function (e) {
+      this.$input.focus();
+    }, this));
 
-        this._reset();
-      }, this));
+    // some callback action need to have modal properly closed before execution (e.g.: focus an element)
+    this.$el.on('hidden.bs.modal', _.bind(function (e) {
+      if (this.confirmed)
+        this.confirmCallback(this.$input.val()); // confirm
+      else if (_.isFunction(this.cancelCallback))
+        this.cancelCallback(); // cancel
 
-      this.isRendered = true; // avoid to early rendering on page load (cause bootstrap is not already loaded)
-      return this;
-    },
-    _reset: function () {
+      this._reset();
+    }, this));
+
+    this.isRendered = true; // avoid to early rendering on page load (cause bootstrap is not already loaded)
+    return this;
+  },
+  _reset: function () {
+    this.$inputBlock.show();
+    this.$input.val('');
+    this.confirmCallback = null;
+    this.cancelCallback = null;
+    this.options = null;
+    this.confirmed = false;
+
+    // unbind 'enter'
+    $(document).off('keypress');
+  },
+  open: function (options, confirmCallback, cancelCallback) {
+    if (!this.isRendered)
+      this.render();
+
+    this.options = options || {};
+    this.confirmCallback = confirmCallback;
+    this.cancelCallback = cancelCallback || _.noop;
+
+    // input field
+    if (this.options.input)
       this.$inputBlock.show();
-      this.$input.val('');
-      this.confirmCallback = null;
-      this.cancelCallback = null;
-      this.options = null;
-      this.confirmed = false;
+    else
+      this.$inputBlock.hide();
 
-      // unbind 'enter'
-      $(document).off('keypress');
-    },
-    open: function (options, confirmCallback, cancelCallback) {
-      if (!this.isRendered)
-        this.render();
+    // bind 'enter' only when showing popin
+    var that = this;
+    $(document).keypress(function (e) {
+      if (e.which == 13) {
+        that.onConfirm(e);
+      }
+    });
 
-      this.options = options || {};
-      this.confirmCallback = confirmCallback;
-      this.cancelCallback = cancelCallback || _.noop;
+    this.$el.modal('show');
+  },
+  onConfirm: function (event) {
+    event.preventDefault();
 
-      // input field
-      if (this.options.input)
-        this.$inputBlock.show();
-      else
-        this.$inputBlock.hide();
+    this.confirmed = true;
+    this.$el.modal('hide');
+  }
 
-      // bind 'enter' only when showing popin
-      var that = this;
-      $(document).keypress(function (e) {
-        if (e.which == 13) {
-          that.onConfirm(e);
-        }
-      });
-
-      this.$el.modal('show');
-    },
-    onConfirm: function (event) {
-      event.preventDefault();
-
-      this.confirmed = true;
-      this.$el.modal('hide');
-    }
-
-  });
-
-  return new ConfirmationModalView();
 });
+
+
+module.exports = new ConfirmationModalView();

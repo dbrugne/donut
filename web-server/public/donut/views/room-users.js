@@ -1,66 +1,63 @@
-'use strict';
-define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'i18next',
-  'common',
-  'libs/donut-debug',
-  'models/current-user',
-  '_templates'
-], function ($, _, Backbone, i18next, common, donutDebug, currentUser, templates) {
-  var debug = donutDebug('donut:room-users');
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var i18next = require('i18next-client');
+var common = require('@dbrugne/donut-common');
+var donutDebug = require('../libs/donut-debug');
+var currentUser = require('../models/current-user');
 
-  var RoomUsersView = Backbone.View.extend({
-    template: templates['room-users.html'],
+var debug = donutDebug('donut:room-users');
 
-    listTemplate: templates['room-users-list.html'],
+var RoomUsersView = Backbone.View.extend({
+  template: require('../templates/room-users.html'),
 
-    initialize: function () {
-      this.listenTo(this.collection, 'users-redraw', this.render);
+  listTemplate: require('../templates/room-users-list.html'),
 
-      this.initialRender();
-    },
-    initialRender: function () {
-      var html = this.template({});
-      this.$el.html(html);
-      this.$count = this.$('.count');
-      this.$list = this.$('.list');
-    },
-    render: function () {
-      debug.start('room-users' + this.model.get('name'));
-      // update user count
-      var countHtml = i18next.t('chat.userscount', {count: this.model.get('users_number')});
-      this.$count.html(countHtml);
+  initialize: function () {
+    this.listenTo(this.collection, 'users-redraw', this.render);
 
-      // redraw user list
-      var listJSON = [];
-      var that = this;
-      _.each(this.collection.models, function (o) {
-        var u = o.toJSON();
+    this.initialRender();
+  },
+  initialRender: function () {
+    var html = this.template({});
+    this.$el.html(html);
+    this.$count = this.$('.count');
+    this.$list = this.$('.list');
+  },
+  render: function () {
+    debug.start('room-users' + this.model.get('name'));
+    // update user count
+    var countHtml = i18next.t('chat.userscount', {count: this.model.get('users_number')});
+    this.$count.html(countHtml);
 
-        // avatar
-        u.avatar = common.cloudinarySize(u.avatar, 34);
+    // redraw user list
+    var listJSON = [];
+    var that = this;
+    _.each(this.collection.models, function (o) {
+      var u = o.toJSON();
 
-        listJSON.push(u);
-      });
+      // avatar
+      u.avatar = common.cloudinarySize(u.avatar, 34);
 
-      var html = this.listTemplate({
-        list: listJSON,
-        isOwner: this.model.currentUserIsOwner(),
-        isOp: this.model.currentUserIsOp(),
-        isAdmin: this.model.currentUserIsAdmin(),
-        room_id: this.model.get('id')
-      });
-      this.$list.html(html);
-      debug.end('room-users' + that.model.get('name'));
-      return this;
-    },
-    _remove: function () {
-      this.remove();
-    }
+      listJSON.push(u);
+    });
 
-  });
+    var html = this.listTemplate({
+      list: listJSON,
+      isOwner: this.model.currentUserIsOwner(),
+      isOp: this.model.currentUserIsOp(),
+      isAdmin: this.model.currentUserIsAdmin(),
+      room_id: this.model.get('id')
+    });
+    this.$list.html(html);
+    debug.end('room-users' + that.model.get('name'));
+    return this;
+  },
+  _remove: function () {
+    this.remove();
+  }
 
-  return RoomUsersView;
 });
+
+
+module.exports = RoomUsersView;

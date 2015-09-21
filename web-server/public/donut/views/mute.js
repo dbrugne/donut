@@ -1,48 +1,46 @@
-'use strict';
-define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'models/app',
-  'libs/donut-debug',
-  'client',
-  'models/current-user'
-], function ($, _, Backbone, app, donutDebug, client, currentUser) {
-  var debug = donutDebug('donut:mute');
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var app = require('../models/app');
+var donutDebug = require('../libs/donut-debug');
+var client = require('../client');
+var currentUser = require('../models/current-user');
 
-  var MuteView = Backbone.View.extend({
-    el: $('#mute'),
+var debug = donutDebug('donut:mute');
 
-    events: {
-      'click .toggle': 'onToggle'
-    },
+var MuteView = Backbone.View.extend({
+  el: $('#mute'),
 
-    initialize: function (options) {
-      this.listenTo(client, 'preferences:update', this.render);
+  events: {
+    'click .toggle': 'onToggle'
+  },
 
-      this.$icon = this.$('.icon');
-    },
+  initialize: function (options) {
+    this.listenTo(client, 'preferences:update', this.render);
 
-    render: function () {
-      if (!currentUser.get('preferences')['browser:sounds']) {
-        this.$icon.removeClass('icon-volume-up');
-        this.$icon.addClass('icon-volume-off');
-      } else {
-        this.$icon.removeClass('icon-volume-off');
-        this.$icon.addClass('icon-volume-up');
-      }
-      return this;
-    },
+    this.$icon = this.$('.icon');
+  },
 
-    onToggle: function (event) {
-      event.preventDefault();
-      app.trigger('drawerClose');
-      client.userPreferencesUpdate({
-        'browser:sounds': !currentUser.shouldPlaySound()
-      });
-    },
+  render: function () {
+    if (!currentUser.get('preferences')['browser:sounds']) {
+      this.$icon.removeClass('icon-volume-up');
+      this.$icon.addClass('icon-volume-off');
+    } else {
+      this.$icon.removeClass('icon-volume-off');
+      this.$icon.addClass('icon-volume-up');
+    }
+    return this;
+  },
 
-  });
+  onToggle: function (event) {
+    event.preventDefault();
+    app.trigger('drawerClose');
+    client.userPreferencesUpdate({
+      'browser:sounds': !currentUser.shouldPlaySound()
+    });
+  },
 
-  return MuteView;
 });
+
+
+module.exports = MuteView;

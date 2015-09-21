@@ -1,52 +1,50 @@
-'use strict';
-define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'libs/donut-debug'
-], function ($, _, Backbone, donutDebug) {
-  var debug = donutDebug('donut:input');
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var donutDebug = require('../libs/donut-debug');
 
-  var InputSmileysView = Backbone.View.extend({
-    events: {
-      'click .add-smiley': 'onOpenSmiley',
-      'click .smileys .smilify': 'onPickSmiley'
-    },
+var debug = donutDebug('donut:input');
 
-    initialize: function (options) {
-      this.$editable = this.$('.editable');
-    },
+var InputSmileysView = Backbone.View.extend({
+  events: {
+    'click .add-smiley': 'onOpenSmiley',
+    'click .smileys .smilify': 'onPickSmiley'
+  },
 
-    render: function () {
-      return this;
-    },
+  initialize: function (options) {
+    this.$editable = this.$('.editable');
+  },
 
-    onOpenSmiley: function (event) {
-      event.preventDefault();
+  render: function () {
+    return this;
+  },
 
-      if (!this.$smileyButton) {
-        this.$smileyButton = $(event.currentTarget);
+  onOpenSmiley: function (event) {
+    event.preventDefault();
 
-        this.$smileyButton.popover({
-          animation: false,
-          container: this.$el,
-          content: $.smilifyHtmlList(),
-          html: true,
-          placement: 'top'
-        });
+    if (!this.$smileyButton) {
+      this.$smileyButton = $(event.currentTarget);
 
-        this.$smileyButton.popover('show'); // show manually on first click, then popover has bound a click event on popover toggle action
-      }
-    },
-    onPickSmiley: function (event) {
-      event.preventDefault();
+      this.$smileyButton.popover({
+        animation: false,
+        container: this.$el,
+        content: $.smilifyHtmlList(),
+        html: true,
+        placement: 'top'
+      });
 
-      var symbol = $.smilifyGetSymbolFromCode($(event.currentTarget).data('smilifyCode'));
-      this.$editable.insertAtCaret(symbol);
-      this.$smileyButton.popover('hide');
-    },
+      this.$smileyButton.popover('show'); // show manually on first click, then popover has bound a click event on popover toggle action
+    }
+  },
+  onPickSmiley: function (event) {
+    event.preventDefault();
 
-  });
+    var symbol = $.smilifyGetSymbolFromCode($(event.currentTarget).data('smilifyCode'));
+    this.$editable.insertAtCaret(symbol);
+    this.$smileyButton.popover('hide');
+  },
 
-  return InputSmileysView;
 });
+
+
+module.exports = InputSmileysView;

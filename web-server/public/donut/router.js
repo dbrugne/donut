@@ -1,48 +1,46 @@
-'use strict';
-define([
-  'underscore',
-  'backbone',
-  'models/app',
-  'client'
-], function (_, Backbone, app, client) {
-  var DonutRouter = Backbone.Router.extend({
-    routes: {
-      '': 'root',
-      'room/:name': 'focusRoom',
-      'user/:user': 'focusOneToOne',
-      '*default': 'default'
-    },
+var _ = require('underscore');
+var Backbone = require('backbone');
+var app = require('./models/app');
+var client = require('./client');
 
-    clientOnline: false,
+var DonutRouter = Backbone.Router.extend({
+  routes: {
+    '': 'root',
+    'room/:name': 'focusRoom',
+    'user/:user': 'focusOneToOne',
+    '*default': 'default'
+  },
 
-    initialize: function (options) {
-      var that = this;
-      this.listenTo(app, 'readyToRoute', _.bind(function () {
-        that.clientOnline = true;
-        Backbone.history.start();
-      }, this));
-      this.listenTo(client, 'disconnect', _.bind(function () {
-        that.clientOnline = false;
-        Backbone.history.stop();
-      }, this));
-    },
+  clientOnline: false,
 
-    root: function () {
-      app.trigger('focusHome');
-    },
+  initialize: function (options) {
+    var that = this;
+    this.listenTo(app, 'readyToRoute', _.bind(function () {
+      that.clientOnline = true;
+      Backbone.history.start();
+    }, this));
+    this.listenTo(client, 'disconnect', _.bind(function () {
+      that.clientOnline = false;
+      Backbone.history.stop();
+    }, this));
+  },
 
-    focusRoom: function (name) {
-      app.trigger('focusRoom', '#' + name);
-    },
+  root: function () {
+    app.trigger('focusHome');
+  },
 
-    focusOneToOne: function (username) {
-      app.trigger('focusOneToOne', username);
-    },
+  focusRoom: function (name) {
+    app.trigger('focusRoom', '#' + name);
+  },
 
-    default: function () {
-      Backbone.history.navigate('#', {trigger: true}); // redirect on home
-    }
-  });
+  focusOneToOne: function (username) {
+    app.trigger('focusOneToOne', username);
+  },
 
-  return new DonutRouter();
+  default: function () {
+    Backbone.history.navigate('#', {trigger: true}); // redirect on home
+  }
 });
+
+
+module.exports = new DonutRouter();

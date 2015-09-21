@@ -1,36 +1,33 @@
-'use strict';
-define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'common',
-  '_templates'
-], function ($, _, Backbone, common, templates) {
-  var RoomsView = Backbone.View.extend({
-    template: templates['rooms-cards.html'],
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var common = require('@dbrugne/donut-common');
 
-    initialize: function (options) {},
-    render: function (data) {
-      var rooms = [];
-      _.each(data.rooms.list, function (room) {
-        room.avatar = common.cloudinarySize(room.avatar, 135);
-        room.join = '#room/' + room.name.replace('#', '');
-        rooms.push(room);
-      });
+var RoomsView = Backbone.View.extend({
+  template: require('../templates/rooms-cards.html'),
 
-      var html = this.template({
-        rooms: rooms,
-        title: true,
-        search: data.search,
-        more: false,
-        replace: true
-      });
+  initialize: function (options) {},
+  render: function (data) {
+    var rooms = [];
+    _.each(data.rooms.list, function (room) {
+      room.avatar = common.cloudinarySize(room.avatar, 135);
+      room.join = '#room/' + room.name.replace('#', '');
+      rooms.push(room);
+    });
 
-      this.$el.html(html);
-      return this;
-    }
+    var html = this.template({
+      rooms: rooms,
+      title: true,
+      search: data.search,
+      more: false,
+      replace: true
+    });
 
-  });
+    this.$el.html(html);
+    return this;
+  }
 
-  return RoomsView;
 });
+
+
+module.exports = RoomsView;

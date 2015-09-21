@@ -1,135 +1,132 @@
-'use strict';
-define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'common',
-  'client',
-  'models/current-user',
-  'views/modal-confirmation',
-  'views/drawer-room-users-table',
-  '_templates'
-], function ($, _, Backbone, common, client, currentUser, confirmationView, RoomUsersTableConfirmation, templates) {
-  var DrawerRoomUsersView = Backbone.View.extend({
-    template: templates['drawer-room-users.html'],
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var common = require('@dbrugne/donut-common');
+var client = require('../client');
+var currentUser = require('../models/current-user');
+var confirmationView = require('./modal-confirmation');
+var RoomUsersTableConfirmation = require('./drawer-room-users-table');
 
-    paginationTemplate: templates['pagination.html'],
+var DrawerRoomUsersView = Backbone.View.extend({
+  template: require('../templates/drawer-room-users.html'),
 
-    id: 'room-users',
+  paginationTemplate: require('../templates/pagination.html'),
 
-    page: 1, // Start on index 1
+  id: 'room-users',
 
-    paginate: 15, // Number of users display on a page
+  page: 1, // Start on index 1
 
-    nbPages: 0, // Store total number of pages
+  paginate: 15, // Number of users display on a page
 
-    currentType: 'users',
+  nbPages: 0, // Store total number of pages
 
-    types: ['users', 'op', 'allowed', 'ban', 'devoice'],
+  currentType: 'users',
 
-    events: {
-      'change select': 'onChangeType',
-      'click i.icon-search': 'onSearch',
-      'keyup input[type=text]': 'onSearchEnter',
-      'click .pagination>li>a': 'onChangePage'
-    },
+  types: ['users', 'op', 'allowed', 'ban', 'devoice'],
 
-    initialize: function (options) {
-      this.model = options.model;
+  events: {
+    'change select': 'onChangeType',
+    'click i.icon-search': 'onSearch',
+    'keyup input[type=text]': 'onSearchEnter',
+    'click .pagination>li>a': 'onChangePage'
+  },
 
-      this.listenTo(client, 'room:ban', this.render);
-      this.listenTo(client, 'room:deban', this.render);
-      this.listenTo(client, 'room:voice', this.render);
-      this.listenTo(client, 'room:devoice', this.render);
-      this.listenTo(client, 'room:kick', this.render);
-      this.listenTo(client, 'room:op', this.render);
-      this.listenTo(client, 'room:deop', this.render);
+  initialize: function (options) {
+    this.model = options.model;
 
-      var isOwner = this.model.currentUserIsOwner();
-      var isOp = this.model.currentUserIsOp();
-      var isAdmin = this.model.currentUserIsAdmin();
+    this.listenTo(client, 'room:ban', this.render);
+    this.listenTo(client, 'room:deban', this.render);
+    this.listenTo(client, 'room:voice', this.render);
+    this.listenTo(client, 'room:devoice', this.render);
+    this.listenTo(client, 'room:kick', this.render);
+    this.listenTo(client, 'room:op', this.render);
+    this.listenTo(client, 'room:deop', this.render);
 
-      if (this.model.get('mode') !== 'private' || (!isOwner && !isAdmin && !isOp)) {
-        this.types = _.without(this.types, 'allowed');
-      } if (!isOwner && !isAdmin && !isOp) {
-        this.types = _.without(this.types, 'ban', 'devoice');
-      }
+    var isOwner = this.model.currentUserIsOwner();
+    var isOp = this.model.currentUserIsOp();
+    var isAdmin = this.model.currentUserIsAdmin();
 
-      this.$el.html(this.template({room: this.model.toJSON(), owner: this.model.get('owner').toJSON(), type: this.types}));
-      this.numberUsers = this.$('.number');
-      this.search = this.$('input[type=text]');
-      this.pagination = this.$('.paginate');
-      this.typeSelected = this.$('#type-select');
-
-      this.tableView = new RoomUsersTableConfirmation({
-        el: this.$('.table-users'),
-        model: this.model
-      });
-
-      this.render(null);
-    },
-
-    render: function () {
-      // ask for data
-      var that = this;
-      var searchAttributes = {
-        type: this.currentType,
-        searchString: this.search.val(),
-        selector: {start: (this.page - 1) * this.paginate, length: this.paginate}
-      };
-      client.roomUsers(this.model.get('id'), searchAttributes, function (data) {
-        that.onResponse(data);
-      });
-      return this;
-    },
-    onResponse: function (data) {
-      this.tableView.render(data.users);
-      this.numberUsers.text(data.count);
-      this.pagination.html(this.paginationTemplate({
-        currentPage: this.page,
-        totalNbPages: Math.ceil(data.count / this.paginate),
-        nbPages: 5
-      }));
-
-      this.initializeTooltips();
-    },
-    onChangeType: function (event) {
-      this.page = 1;
-      this.search.val('');
-      this.currentType = this.typeSelected.val();
-      this.render();
-    },
-    onSearch: function (event) {
-      this.page = 1;
-      this.render();
-    },
-    onSearchEnter: function (event) {
-      if (event.keyCode === 13) {
-        this.page = 1;
-        this.render();
-      }
-    },
-    onChangePage: function (event) {
-      event.preventDefault();
-
-      var id = $(event.currentTarget).data('identifier');
-      if (!id) {
-        return;
-      }
-
-      if (id === 'previous') {
-        this.page -= 1;
-      } else if (id === 'next') {
-        this.page += 1;
-      } else {
-        this.page = parseInt(id, 10);
-      }
-      this.render();
-    },
-
-    initializeTooltips: function () {
-      this.$('[data-toggle="tooltip"]').tooltip();
+    if (this.model.get('mode') !== 'private' || (!isOwner && !isAdmin && !isOp)) {
+      this.types = _.without(this.types, 'allowed');
+    } if (!isOwner && !isAdmin && !isOp) {
+      this.types = _.without(this.types, 'ban', 'devoice');
     }
-  });
-  return DrawerRoomUsersView;
+
+    this.$el.html(this.template({room: this.model.toJSON(), owner: this.model.get('owner').toJSON(), type: this.types}));
+    this.numberUsers = this.$('.number');
+    this.search = this.$('input[type=text]');
+    this.pagination = this.$('.paginate');
+    this.typeSelected = this.$('#type-select');
+
+    this.tableView = new RoomUsersTableConfirmation({
+      el: this.$('.table-users'),
+      model: this.model
+    });
+
+    this.render(null);
+  },
+
+  render: function () {
+    // ask for data
+    var that = this;
+    var searchAttributes = {
+      type: this.currentType,
+      searchString: this.search.val(),
+      selector: {start: (this.page - 1) * this.paginate, length: this.paginate}
+    };
+    client.roomUsers(this.model.get('id'), searchAttributes, function (data) {
+      that.onResponse(data);
+    });
+    return this;
+  },
+  onResponse: function (data) {
+    this.tableView.render(data.users);
+    this.numberUsers.text(data.count);
+    this.pagination.html(this.paginationTemplate({
+      currentPage: this.page,
+      totalNbPages: Math.ceil(data.count / this.paginate),
+      nbPages: 5
+    }));
+
+    this.initializeTooltips();
+  },
+  onChangeType: function (event) {
+    this.page = 1;
+    this.search.val('');
+    this.currentType = this.typeSelected.val();
+    this.render();
+  },
+  onSearch: function (event) {
+    this.page = 1;
+    this.render();
+  },
+  onSearchEnter: function (event) {
+    if (event.keyCode === 13) {
+      this.page = 1;
+      this.render();
+    }
+  },
+  onChangePage: function (event) {
+    event.preventDefault();
+
+    var id = $(event.currentTarget).data('identifier');
+    if (!id) {
+      return;
+    }
+
+    if (id === 'previous') {
+      this.page -= 1;
+    } else if (id === 'next') {
+      this.page += 1;
+    } else {
+      this.page = parseInt(id, 10);
+    }
+    this.render();
+  },
+
+  initializeTooltips: function () {
+    this.$('[data-toggle="tooltip"]').tooltip();
+  }
 });
+
+module.exports = DrawerRoomUsersView;
