@@ -43,9 +43,7 @@ define([
       this.remove();
     },
     valid: function (event) {
-      this.$el.removeClass(function (index, css) {
-        return (css.match(/(has-(success|error))+/g) || []).join(' ');
-      });
+      this._cleanupState();
 
       if (this.$input.val() === '') {
         return;
@@ -106,8 +104,12 @@ define([
         this.reset();
         this.trigger('close');
       }, this));
+    },
+    _cleanupState: function () {
+      this.$el.removeClass(function (index, css) {
+        return (css.match(/(has-(success|error))+/g) || []).join(' ');
+      });
     }
-
   });
 
   return DrawerRoomCreateView;

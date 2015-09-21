@@ -59,9 +59,9 @@ define([
       this._hide();
     },
     color: function (color) {
-      color = (this._validHex(color)) ?
-        color :
-        this.defaultColor;
+      color = (this._validHex(color))
+        ? color
+        : this.defaultColor;
 
       app.trigger('changeColor', color, true);
     },
@@ -141,8 +141,12 @@ define([
         return false;
       }
       return (this.shorthandRegex.test(hex) || this.longhandRegex.test(hex));
+    },
+    _cleanupState: function () {
+      this.$el.removeClass(function (index, css) {
+        return (css.match(/(has-(success|error))+/g) || []).join(' ');
+      });
     }
-
   });
 
   return DrawerView;

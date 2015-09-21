@@ -204,7 +204,6 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   }
 }
 
-
 .input-picto { z-index: 2; color: @cl-first; font-size: 22px; top: 0; left: 10px; position: absolute; display: block; width: 34px; height: 34px; line-height: 34px; text-align: center; }
 
 .color-picker { position: relative; color: #555; font-size: 16px;
@@ -374,3 +373,19 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
 
 .flex-start { align-self: flex-start; }
 .flex-end { align-self: flex-end; }
+
+.has-success {
+  .colorize { color:@cl-success; }
+  .colorize-border { border-color:@cl-success; }
+  .colorize-back { background-color:@cl-success; }
+}
+.has-error {
+  .colorize { color:@cl-error; }
+  .colorize-border { border-color:@cl-error; }
+  .colorize-back { background-color:@cl-error; }
+}
+.has-warning {
+  .colorize { color:@cl-warning; }
+  .colorize-border { border-color:@cl-warning; }
+  .colorize-back { background-color:@cl-warning; }
+}
