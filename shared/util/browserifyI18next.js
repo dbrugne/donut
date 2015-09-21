@@ -9,8 +9,7 @@ var wrap = function (template) {
 function compiler (text) {
   var locales = JSON.parse(text);
   locales = _.omit(locales, ['404', 'title', 'meta', 'email']);
-  var source = JSON.stringify(locales);
-  return source;
+  return JSON.stringify(locales);
 }
 
 module.exports = function (file, b) {
