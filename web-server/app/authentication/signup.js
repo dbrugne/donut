@@ -32,7 +32,7 @@ var validateAvailability = function (req, res, next) {
     }
 
     var errorMessage = (err === 'not-available') ? i18next.t('choose-username.usernameexists')
-      : errorMessage = i18next.t('global.unknownerror');
+      : i18next.t('global.unknownerror');
 
     return res.render('signup', {
       meta: {title: i18next.t('title.default')},
