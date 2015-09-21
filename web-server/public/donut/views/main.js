@@ -102,6 +102,9 @@ define([
       this.listenTo(rooms, 'allowed', this.roomAllowed);
       this.listenTo(rooms, 'join', this.roomJoin);
       this.listenTo(rooms, 'deleted', this.roomRoomDeleted);
+      this.listenTo(app, 'focusHome', this.focusHome);
+      this.listenTo(app, 'focusRoom', this.focusRoomByName);
+      this.listenTo(app, 'focusOneToOne', this.focusOneToOneByUsername);
       this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
       this.listenTo(app, 'openUserProfile', this.openUserProfile);
       this.listenTo(app, 'joinRoom', this.focusRoomByName);
@@ -180,7 +183,7 @@ define([
 //      }, this.intervalDuration);
 
       // Run routing only when everything in interface is ready
-      this.trigger('ready');
+      app.trigger('readyToRoute');
       this.connectionView.hide();
       debug.end('welcome');
     },
