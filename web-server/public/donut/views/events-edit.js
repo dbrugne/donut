@@ -12,7 +12,7 @@ define([
   'views/message-edit',
   '_templates'
 ], function ($, _, Backbone, app, keyboard, common, i18next, client, currentUser, MessageEditView, templates) {
-  return Backbone.View.extend({
+  var EventsEdit = Backbone.View.extend({
 
     events: {
       'shown.bs.dropdown .actions': 'onMessageMenuShow',
@@ -189,4 +189,6 @@ define([
       this.messageUnderEdition = null;
     }
   });
+  
+  return EventsEdit;
 });
