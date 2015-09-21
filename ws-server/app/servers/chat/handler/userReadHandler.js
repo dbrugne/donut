@@ -140,9 +140,9 @@ handler.call = function (data, session, next) {
     if (err) {
       logger.error('[user:read] ' + err);
 
-      err = (['unknown'].indexOf(err) !== -1)
-        ? err
-        : 'internal';
+      if (err === 'unknown') {
+        return next(null, {code: 404, err: err});
+      }
       return next(null, {code: 500, err: 'internal'});
     }
 

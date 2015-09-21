@@ -152,11 +152,11 @@ define([
       var website = this.$website.val();
 
       if (website && website.length < 5 || website.length > 255) {
-        return this.$('.errors').html($.t('chat.form.errors.website-size')).show();
+        return this.$('.errors').html(i18next.t('chat.form.errors.website-size')).show();
       }
 
       if (website && !/^[^\s]+\.[^\s]+$/.test(website)) {
-        return this.$('.errors').html($.t('chat.form.errors.website-url')).show();
+        return this.$('.errors').html(i18next.t('chat.form.errors.website-url')).show();
       }
 
       return true;
@@ -165,7 +165,7 @@ define([
     editError: function (dataErrors) {
       var message = '';
       _.each(dataErrors.err, function (error) {
-        message += $.t('chat.form.errors.' + error) + '<br>';
+        message += i18next.t('chat.form.errors.' + error) + '<br>';
       });
       this.$('chat.form.errors').html(message).show();
     }

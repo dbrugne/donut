@@ -118,19 +118,19 @@ define([
         parameters: 'username',
         access: 'room',
         help: '@username',
-        description: 'chat.commands.deban'
+        description: 'chat.commands.unban'
       },
       unmute: {
         parameters: 'username',
         access: 'room',
         help: '@username',
-        description: 'chat.commands.voice'
+        description: 'chat.commands.unmute'
       },
       mute: {
         parameters: 'username',
         access: 'room',
         help: '@username',
-        description: 'chat.commands.devoice'
+        description: 'chat.commands.mute'
       },
       block: {
         parameters: 'username',
@@ -142,7 +142,7 @@ define([
         parameters: 'username',
         access: 'everywhere',
         help: '@username',
-        description: 'chat.commands.deblock'
+        description: 'chat.commands.unblock'
       },
       msg: {
         parameters: 'usernameNameMsg',
@@ -223,12 +223,19 @@ define([
       if (this.model.get('type') !== 'room') {
         return this.errorCommand('topic', 'commandaccess');
       }
-
       if (!parameters && paramString) {
         return this.errorCommand('topic', 'parameters');
       }
 
-      client.roomTopic(this.model.get('id'), parameters[1]);
+      var that = this;
+      client.roomTopic(this.model.get('id'), parameters[1], function (data) {
+        if (data.err && data.code !== 500) {
+          return that.errorCommand('topic', data.err);
+        }
+        if (data.err) {
+          return that.errorCommand('topic', 'parameters');
+        }
+      });
     },
     op: function (paramString, parameters) {
       if (this.model.get('type') !== 'room') {
@@ -240,11 +247,11 @@ define([
 
       var that = this;
       confirmationView.open({}, function () {
-        client.roomOp(that.model.get('id'), null, parameters[1], function (err) {
-          if (err && ['unknow-user-room', 'already-oped', 'no-op'].indexOf(err)) {
-            return that.errorCommand('op', err);
+        client.roomOp(that.model.get('id'), null, parameters[1], function (data) {
+          if (data.err && data.code !== 500) {
+            return that.errorCommand('op', data.err);
           }
-          if (err) {
+          if (data.err) {
             return that.errorCommand('op', 'parameters');
           }
         });
@@ -262,9 +269,12 @@ define([
 
       var that = this;
       confirmationView.open({}, function () {
-        client.roomDeop(that.model.get('id'), null, parameters[1], function (err) {
-          if (err) {
-            return that.errorCommand('op', 'parameters');
+        client.roomDeop(that.model.get('id'), null, parameters[1], function (data) {
+          if (data.err && data.code !== 500) {
+            return that.errorCommand('deop', data.err);
+          }
+          if (data.err) {
+            return that.errorCommand('deop', 'parameters');
           }
         });
         that.model.trigger('inputFocus');
@@ -281,8 +291,15 @@ define([
 
       var that = this;
       confirmationView.open({input: true}, function (reason) {
-        client.roomKick(that.model.get('id'), null, parameters[1], reason);
-        that.model.trigger('inputFocus');
+        client.roomKick(that.model.get('id'), null, parameters[1], reason, function (data) {
+          if (data.err && data.code !== 500) {
+            return that.errorCommand('kick', data.err);
+          }
+          if (data.err) {
+            return that.errorCommand('kick', 'parameters');
+          }
+          that.model.trigger('inputFocus');
+        });
       }, this.inputFocus());
     },
     ban: function (paramString, parameters) {
@@ -296,20 +313,76 @@ define([
 
       var that = this;
       confirmationView.open({input: true}, function (reason) {
-        client.roomBan(that.model.get('id'), null, parameters[1], reason);
-        that.model.trigger('inputFocus');
+        client.roomBan(that.model.get('id'), null, parameters[1], reason, function (data) {
+          if (data.err && data.code !== 500) {
+            return that.errorCommand('ban', data.err);
+          }
+          if (data.err) {
+            return that.errorCommand('ban', 'parameters');
+          }
+          that.model.trigger('inputFocus');
+        });
       }, this.inputFocus());
     },
-    deban: function (paramString, parameters) {
+    unban: function (paramString, parameters) {
       if (this.model.get('type') !== 'room') {
-        return this.errorCommand('deban', 'commandaccess');
+        return this.errorCommand('unban', 'commandaccess');
       }
 
       if (!parameters) {
-        return this.errorCommand('deban', 'parameters');
+        return this.errorCommand('unban', 'parameters');
       }
 
-      client.roomDeban(this.model.get('id'), null, parameters[1]);
+      var that = this;
+      client.roomDeban(this.model.get('id'), null, parameters[1], function (data) {
+        if (data.err && data.code !== 500) {
+          return that.errorCommand('unban', data.err);
+        }
+        if (data.err) {
+          return that.errorCommand('unban', 'parameters');
+        }
+      });
+    },
+    unmute: function (paramString, parameters) {
+      if (this.model.get('type') !== 'room') {
+        return this.errorCommand('unmute', 'commandaccess');
+      }
+
+      if (!parameters) {
+        return this.errorCommand('unmute', 'parameters');
+      }
+
+      var that = this;
+      client.roomVoice(this.model.get('id'), null, parameters[1], function (data) {
+        if (data.err && data.code !== 500) {
+          return that.errorCommand('unmute', data.err);
+        }
+        if (data.err) {
+          return that.errorCommand('unmute', 'parameters');
+        }
+      });
+    },
+    mute: function (paramString, parameters) {
+      if (this.model.get('type') !== 'room') {
+        return this.errorCommand('mute', 'commandaccess');
+      }
+
+      if (!parameters) {
+        return this.errorCommand('mute', 'parameters');
+      }
+
+      var that = this;
+      confirmationView.open({input: true}, function (reason) {
+        client.roomDevoice(that.model.get('id'), null, parameters[1], reason, function (data) {
+          if (data.err && data.code !== 500) {
+            return that.errorCommand('mute', data.err);
+          }
+          if (data.err) {
+            return that.errorCommand('mute', 'parameters');
+          }
+          that.model.trigger('inputFocus');
+        });
+      }, this.inputFocus());
     },
     block: function (paramString, parameters) {
       var username = null;
@@ -334,15 +407,15 @@ define([
         that.model.trigger('inputFocus');
       }, this.inputFocus());
     },
-    deblock: function (paramString, parameters) {
+    unblock: function (paramString, parameters) {
       var username;
       var userId;
       // from a room
       if (this.model.get('type') !== 'onetoone') {
         if (!paramString) {
-          return this.errorCommand('deblock', 'commandaccess');
+          return this.errorCommand('unblock', 'commandaccess');
         } if (!parameters) {
-          return this.errorCommand('deblock', 'parameters');
+          return this.errorCommand('unblock', 'parameters');
         }
 
         username = parameters[0].replace(/^@/, '');
@@ -352,32 +425,6 @@ define([
       }
 
       client.userDeban(userId, username);
-    },
-    voice: function (paramString, parameters) {
-      if (this.model.get('type') !== 'room') {
-        return this.errorCommand('voice', 'commandaccess');
-      }
-
-      if (!parameters) {
-        return this.errorCommand('voice', 'parameters');
-      }
-
-      client.roomVoice(this.model.get('id'), null, parameters[1]);
-    },
-    devoice: function (paramString, parameters) {
-      if (this.model.get('type') !== 'room') {
-        return this.errorCommand('devoice', 'commandaccess');
-      }
-
-      if (!parameters) {
-        return this.errorCommand('devoice', 'parameters');
-      }
-
-      var that = this;
-      confirmationView.open({input: true}, function (reason) {
-        client.roomDevoice(that.model.get('id'), null, parameters[1], reason);
-        that.model.trigger('inputFocus');
-      }, this.inputFocus());
     },
     msg: function (paramString, parameters) {
       var message = (!parameters) ? paramString : parameters[2];
