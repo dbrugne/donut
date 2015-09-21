@@ -25,7 +25,6 @@ router.get('/robots.txt', function (req, res) {
 
   res.header('Content-Type', 'text/plain');
   res.send(robots);
-
 });
 
 router.get('/sitemap.xml', function (req, res) {
@@ -36,19 +35,20 @@ router.get('/sitemap.xml', function (req, res) {
         hostname: conf.url,
         cacheTime: 600000, // 600 sec - cache purge period
         urls: [
-          { url: '/',  changefreq: 'weekly', priority: 0.5 }
+          {url: '/', changefreq: 'weekly', priority: 0.5}
         ]
       });
       return callback(null, sitemap);
     },
 
     function rooms (sitemap, callback) {
-      Room.find({ deleted: { $ne: true } }, 'name', function (err, rooms) {
-        if (err)
+      Room.find({deleted: {$ne: true}}, 'name', function (err, rooms) {
+        if (err) {
           return callback(err);
+        }
 
         _.each(rooms, function (r) {
-          sitemap.add({ url: '/room/' + r.name.toLocaleLowerCase() });
+          sitemap.add({url: '/room/' + r.name.toLocaleLowerCase()});
         });
 
         return callback(null, sitemap);
@@ -56,12 +56,22 @@ router.get('/sitemap.xml', function (req, res) {
     },
 
     function users (sitemap, callback) {
-      User.find({ username: {$exists: true, $ne: ''} }, 'username', function (err, users) {
-        if (err)
+      User.find({
+        username: {
+          $exists: true,
+          $ne: ''
+        }
+      }, 'username', function (err, users) {
+        if (err) {
           return callback(err);
+        }
 
         _.each(users, function (u) {
-          sitemap.add({ url: '/user/' + u.username.toLocaleLowerCase(),  changefreq: 'daily', priority: 0.6 });
+          sitemap.add({
+            url: '/user/' + u.username.toLocaleLowerCase(),
+            changefreq: 'daily',
+            priority: 0.6
+          });
         });
 
         return callback(null, sitemap);
@@ -78,9 +88,7 @@ router.get('/sitemap.xml', function (req, res) {
       res.header('Content-Type', 'application/xml');
       res.send(xml);
     });
-
   });
-
 });
 
 module.exports = router;

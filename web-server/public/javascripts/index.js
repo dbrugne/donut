@@ -29,7 +29,6 @@ require([
   'jquery.socialify',
   'jquery.contactform'
 ], function (translations, $, _, Backbone, common, i18next, SearchView) {
-
   var i18nextOptions = {
     cookieName: 'donut.lng',
     debug: false // @debug
@@ -56,20 +55,23 @@ require([
     this.searchView = new SearchView({el: $('#landing .ctn-results .results .rooms')});
     var limit = 20; // default limit on landing page (1st load)
 
+    var emailPattern = /[\w.+-]+@[\w.-]+\.[a-z]{2,4}/i;
+    var passwordPattern = /([^\s]{6,})$/i;
+
     var searchFunction = function (search, skip, replace) {
       $.ajax('https://donut.local/rest/search?limit=' + limit + '&skip=' + skip + '&q=' + search, {
         success: function (response) {
           that.searchView.render({
             rooms: (
-              response.rooms && response.rooms.list ?
-                response.rooms.list :
-                []
+              response.rooms && response.rooms.list
+                ? response.rooms.list
+                : []
             ),
             title: false,
             search: false,
-            more: ( response.rooms && response.rooms.list && response.rooms.list.length == limit ?
-                true :
-                false
+            more: ( response.rooms && response.rooms.list && response.rooms.list.length == limit
+                ? true
+                : false
             ),
             replace: replace
           });
@@ -131,7 +133,7 @@ require([
           sibling: $username.siblings('.help-block'),
           message: i18next.t('forms.username-required')
         });
-      // Check validity of username
+        // Check validity of username
       } else if (!common.validateUsername($username.val())) {
         errors.push({
           parent: $usernameParent,
@@ -147,8 +149,8 @@ require([
           sibling: $email.siblings('.help-block'),
           message: i18next.t('forms.email-required')
         });
-      // Check validity of email
-      } else if (!common.validateEmail($email.val())) {
+        // Check validity of email
+      } else if (!emailPattern.test($email.val())) {
         errors.push({
           parent: $emailParent,
           sibling: $email.siblings('.help-block'),
@@ -163,8 +165,8 @@ require([
           sibling: $password.siblings('.help-block'),
           message: i18next.t('forms.password-required')
         });
-      // Check validity of password
-      } else if (!common.validatePassword($password.val())) {
+        // Check validity of password
+      } else if (!passwordPattern.test($password.val())) {
         errors.push({
           parent: $passwordParent,
           sibling: $password.siblings('.help-block'),
@@ -179,7 +181,6 @@ require([
           error.sibling.append(error.message);
         });
       }
-
     });
   }
 
@@ -221,5 +222,4 @@ require([
     document.cookie = 'donut.lng' + '=' + language + '; ' + expires;
     window.location.reload();
   });
-
 });

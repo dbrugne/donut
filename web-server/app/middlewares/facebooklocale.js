@@ -7,8 +7,9 @@
  * This middleware add a force_locale query parameter based on fb_locale
  */
 module.exports = function (req, res, next) {
-  if (req.query && req.query['fb_locale'])
+  if (req.query && req.query['fb_locale']) {
     req.query['force_locale'] = req.query['fb_locale'].replace('_', '-');
+  }
 
   return next();
 };

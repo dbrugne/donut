@@ -39,7 +39,6 @@ router.get('/!', function (req, res) {
       ? '/build/bundle.js'
       : '/' + req.locale + '.js'
   });
-
 });
 
 module.exports = router;
