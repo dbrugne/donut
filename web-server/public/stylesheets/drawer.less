@@ -1,0 +1,707 @@
+#drawer {
+  display: none;
+  position: absolute;
+  width: 100%;
+  z-index: 11; // #chat #drawer
+  #room-create, #room-delete {
+    padding-left: 10px;
+    .room {
+      margin-top: 30px;
+    }
+    .field {
+      margin-top: 21px;
+      text-align: center;
+    }
+    .field-password {
+      .input-password {
+        width: 50%;
+        height: 34px;
+        color: #555;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 6px 12px;
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+      }
+      a {
+        margin-left: 5px;
+        font-size: 18px;
+        text-decoration: none;
+      }
+    }
+    .help-block {
+      margin-top: 15px;
+      font-size: 1.1em;
+    }
+    .hash {
+      margin-right: 3px;
+      vertical-align: bottom;
+      .ft-raleway-heavy;
+      font-size: 2.9em;
+    }
+    .input {
+      border-style: solid;
+      border-width: 5px;
+      .border-radius(25px);
+      padding: 7px 12px;
+      max-width: 320px;
+      .ft-raleway;
+      font-size: 1.7em;
+      outline: none; /* avoid Google Chrome blue outline on focused input */
+    }
+    .help {
+      .ft-opensans-light;
+      margin-top: 10px;
+      text-align: left;
+      color: @cl-subtext20;
+      font-style: italic;
+    }
+    &.has-error {
+      .input {
+        border-color: @cl-error;
+      }
+    }
+    &.has-success {
+      .input {
+        border-color: @cl-success;
+      }
+      .hash {
+        color: @cl-success;
+      }
+      .help-block {
+        color: lighten(@cl-text, 25%);
+      }
+    }
+  }
+  #room-profile {
+    .scrollbar;
+    text-align: center;
+    .room {
+      position: relative;
+      .overlay-ctn {
+        width: 90px;
+        height: 90px;
+        margin: 0 auto;
+        .avatar {
+          .border-shadow;
+        }
+        .overlay {
+          top: 0;
+          .border-radius(50%);
+          height: 100px;
+          width: 100px;
+        }
+        .overlay-text {
+          top: 40px;
+          width: 100px;
+        }
+      }
+      // #chat #drawer #room-profile .room .overlay-ctn
+      .name {
+        margin-top: 20px;
+      }
+      .owner {
+        font-size: 1.2em;
+      }
+      .description {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        font-size: 1.2em;
+        padding-left: 10px;
+      }
+      p.left {
+        margin-top: 5px;
+        text-align: left;
+        font-size: 1.2em;
+        padding-left: 10px;
+        text-decoration: none;
+        a:hover {
+          text-decoration: underline;
+        }
+      }
+      .created {
+        margin-top: 5px;
+        text-align: left;
+        font-size: 1.2em;
+        padding-left: 10px;
+      }
+      .join {
+        margin-top: 30px;
+        margin-bottom: 20px;
+        a {
+        }
+      }
+    }
+    // #chat #drawer #room-profile .room
+    .users {
+      margin-top: 5px;
+      text-align: left;
+      .display-flex;
+      .flex-flow(row wrap);
+      padding: 0 5px;
+      hr {
+        clear: both;
+        border-color: transparent;
+      }
+      .title {
+        font-size: 1.2em;
+        padding-left: 10px;
+        margin-bottom: 10px;
+        width: 100%;
+      }
+      .user {
+        display: inline-block;
+        position: relative;
+        margin: 3px 0;
+        .avatar {
+          width: 40px;
+          height: 40px;
+        }
+        .username {
+          .ft-opensans;
+          font-size: 1.1em;
+        }
+        &:hover {
+          .username {
+            color: @cl-subtext30;
+          }
+        }
+        &.op {
+          &::after {
+            content: '\f008';
+            font: normal normal normal 14px/1 'Donut';
+            position: absolute;
+            left: -8px;
+            z-index: 0;
+            top: -10px;
+            border-radius: 50%;
+            padding: 5px;
+            color: @cl-success;
+            font-size: 16px;
+          }
+          img {
+            border: 2px solid @cl-success;
+            .border-radius(5px);
+          }
+        }
+        &.owner {
+          &::after {
+            content: '\f00a';
+            font: normal normal normal 14px/1 'Donut';
+            position: absolute;
+            left: 7px;
+            z-index: 0;
+            top: -15px;
+            border-radius: 50%;
+            padding: 5px;
+            color: @cl-warning;
+            font-size: 16px;
+          }
+          img {
+            border: 2px solid @cl-warning;
+            .border-radius(5px);
+          }
+        }
+      }
+    }
+  }
+  #room-access {
+    .actions {
+      div {
+        display: inherit
+      }
+    }
+  }
+  #user-profile {
+    .user .avatar-ctn {
+      position: relative;
+      cursor: pointer;
+      &.is-banned::before {
+        font-family: Donut;
+        content: '\f002';
+        position: absolute;
+        font-size: 90px;
+        color: rgba(119, 119, 119, 0.75);
+        top: -35px;
+        left: 5px;
+        line-height: 90px;
+        width: 90px;
+      }
+      .overlay {
+        display: none;
+        background-color: black;
+        height: 100px;
+        width: 100%;
+        position: absolute;
+        top: -40px;
+        cursor: pointer;
+        .opacity(0.2);
+        left: 0;
+      }
+      .overlay-text {
+        display: none;
+        color: white;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        text-align: center;
+        cursor: pointer;
+        left: 0;
+        font-size: 16px;
+      }
+      &:hover .overlay, &:hover .overlay-text {
+        display: block;
+      }
+    }
+    .scrollbar;
+    text-align: center;
+    .username {
+      margin-top: 20px;
+    }
+    .bio {
+      margin-top: 20px;
+      font-size: 1.2em;
+      padding-left: 10px;
+    }
+    .location {
+      margin-top: 20px;
+      text-align: left;
+      font-size: 1.2em;
+      padding-left: 10px;
+    }
+    .action {
+      margin-top: 5px;
+      text-align: left;
+      font-size: 1.2em;
+      padding-left: 10px;
+    }
+    .created, .onlined {
+      margin-top: 5px;
+      text-align: left;
+      font-size: 1.2em;
+      padding-left: 10px;
+    }
+    .discuss {
+      margin-top: 30px;
+      margin-bottom: 20px;
+    }
+    .offline {
+      margin-top: 30px;
+      margin-bottom: 20px;
+      a {
+        font-size: 1.3em;
+        background-color: @cl-subtext20;
+      }
+    }
+    .rooms {
+      margin-top: 5px;
+      text-align: left;
+      hr {
+        clear: both;
+        border-color: transparent;
+      }
+      .title {
+        font-size: 1.2em;
+        padding-left: 10px;
+        margin-bottom: 10px;
+        i {
+          color: @cl-subtext30;
+        }
+      }
+      .room {
+        display: inline-block;
+        position: relative;
+        .avatar {
+          width: 40px;
+          height: 40px;
+        }
+        .name {
+          .ft-opensans;
+          font-size: 1.1em;
+        }
+        &:hover {
+          .name {
+            color: @cl-subtext30;
+          }
+        }
+        &.op::before {
+          content: '\f008';
+          font: normal normal normal 14px/1 'Donut';
+          position: absolute;
+          left: -5px;
+          z-index: 0;
+          top: -5px;
+          border-radius: 50%;
+          padding: 5px;
+          color: rgb(59, 236, 186);
+          font-size: 16px;
+        }
+        &.owner::before {
+          content: '\f00a';
+          font: normal normal normal 14px/1 'Donut';
+          position: absolute;
+          left: 7px;
+          z-index: 0;
+          top: -14px;
+          border-radius: 50%;
+          padding: 5px;
+          color: #fbec4d;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+  #room-edit, #user-edit, #room-users, #user-preferences, #room-preferences, #room-create {
+    .scrollbar;
+    font-size: 1.1em;
+    padding: 0 15px;
+    label {
+      color: @cl-subtext40;
+      &.level-2 {
+        font-weight: normal;
+      }
+    }
+    .buttons {
+      text-align: right;
+      margin-top: 24px;
+    }
+    .opts_mode {
+      font-style: italic;
+    }
+    .field-password {
+      a {
+        margin-left: 5px;
+        font-size: 18px;
+        text-decoration: none;
+      }
+    }
+  }
+  #room-edit {
+    .room {
+      margin-bottom: 15px;
+      > p {
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
+  #user-edit {
+    .user {
+      margin-bottom: 15px;
+      .username {
+        vertical-align: middle;
+        margin-right: 3px;
+      }
+    }
+  }
+  #user-account {
+    .scrollbar;
+    .user {
+      margin-bottom: 10px;
+    }
+    .group {
+      margin-top: 30px;
+    }
+    .title {
+      font-size: 1.3em;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .labels {
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+    .values {
+      font-size: 1.1em;
+    }
+    .email-container {
+      margin-bottom: 10px;
+    }
+    .alert-danger, .alert-success {
+      background-color: transparent;
+    }
+    .email-container, .password-container {
+      margin: 10px 0;
+      display: block;
+      .spinner {
+        margin-bottom: 10px;
+      }
+      input {
+        margin-bottom: 10px;
+      }
+    }
+    .facebook {
+      .infos {
+        > img {
+          .pull-left;
+          margin-right: 10px;
+        }
+      }
+    }
+    .btn-facebook {
+      margin-top: 15px;
+      margin-left: 10px;
+      background-color: #4a649d;
+      color: #ffffff;
+      border-radius: 25px;
+      padding: 11px 20px;
+      .ft-opensans-light;
+      font-size: 1.3em;
+      text-decoration: none;
+      display: inline-block;
+      span {
+        margin-left: 7px;
+      }
+      i {
+        font-size: 1.4em;
+        margin-right: 4px;
+        vertical-align: middle;
+      }
+    }
+    .btn-facebook:hover {
+      color: #ffffff;
+      i {
+        color: #ffffff;
+      }
+      span {
+        color: #ffffff;
+      }
+    }
+  }
+  #room-users, #user-preferences {
+    #type-select {
+      width: 100%;
+      border: 1px solid @cl-subtext30;
+      background-color: @cl-subtext15;
+      color: #FFF;
+    }
+    .room {
+      margin-bottom: 2px;
+      > p {
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+    .paginate {
+      text-align: right;
+      .pagination {
+        margin: auto;
+        a {
+          text-decoration: none;
+        }
+        > li > a {
+          padding: 10px 15px;
+        }
+        > li > span {
+          color: #000011;
+          padding: 10px 15px;
+          cursor: default;
+        }
+      }
+    }
+    .user-number {
+      margin-bottom: 15px;
+    }
+    .search {
+      position: relative;
+      font-size: 0.8em;
+      width: 100%;
+      height: 30px;
+      margin-bottom: 15px;
+      input[type=text] {
+        width: 75%;
+        position: absolute;
+        right: 0;
+        .border-radius(50px);
+        padding: 5px 30px 6px 17px;
+        .ft-raleway-medium;
+        color: @cl-subtext50;
+        outline: none;
+        font-size: 1.1rem;
+      }
+      i {
+        position: absolute;
+        top: 9px;
+        right: 19px;
+        color: @cl-subtext50;
+        cursor: pointer;
+      }
+    }
+    .table-users {
+      div {
+        display: inherit;
+      }
+      img {
+        width: 20px;
+        height: 20px;
+      }
+      .actions > div:hover {
+        cursor: pointer;
+      }
+      i {
+        font-size: 18px;
+      }
+    }
+  }
+  #user-preferences, #room-preferences {
+    .user, .room {
+      margin-bottom: 15px;
+      .username, .name {
+        vertical-align: middle;
+        margin-right: 3px;
+      }
+    }
+    a.play-sound-test {
+      color: @cl-subtext30;
+      i {
+        color: inherit;
+      }
+    }
+    .notification {
+      > label {
+        display: block;
+      }
+    }
+  }
+
+  // Try to have generic drawers here
+  // ...
+  label {
+    color: @cl-subtext40;
+  }
+  .scrollbar {
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 10px;
+  }
+  .errors {
+    .alert;
+    .alert-warning;
+    display: none;
+    font-size: 1.1em;
+    margin: 20px 0;
+  }
+  .opacity {
+    width: 100%;
+    height: 100%;
+    .wrap {
+      position: relative;
+      left: -10000px;
+      width: 280px;
+      height: 100%;
+      .content {
+        width: 100%;
+        height: 100%;
+        padding: 45px 10px 10px;
+        background-color: @cl-background;
+        border-right: 1px solid @cl-subtext10;
+        > div {
+          height: 100%;
+        }
+        .spinner {
+          width: 100%;
+          height: 100%;
+          text-align: center;
+          color: @cl-subtext10;
+        }
+      }
+      .close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        .opacity(0.5);
+        width: 15px;
+      }
+      .close:hover, .close:focus {
+        .opacity(1);
+      }
+    }
+  }
+
+  h2 {
+    color: @cl-subtext40;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 2rem;
+  }
+  .search {
+    .display-flex;
+    .flex-flow(row nowrap);
+    position: relative;
+    align-items: baseline;
+    label {
+      margin-right: 5px;
+    }
+    input {
+      font-size: 1.1rem;
+      padding: 0 30px 0 12px;
+      outline: none;
+      &:focus {
+        outline: none;
+      }
+    }
+    i {
+      position: absolute;
+      top: 9px;
+      right: 6px;
+      color: @cl-subtext50;
+      cursor: default;
+    }
+    .dropdown {
+      position: absolute;
+      left: 0;
+      top: 27px;
+      width: 100%;
+      .dropdown-menu {
+        .border-radiuses(0, 4px, 4px, 0);
+        border-top: 0;
+        width: 100%;
+        a {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+  .p-block {
+    margin-top: 20px;
+    font-size: 1.4rem;
+  }
+
+  .title {
+    .room {
+      .display-flex;
+      .flex-flow(row nowrap);
+      align-items: baseline;
+      .name {
+        .ft-raleway-heavy;
+        font-size: 2.5rem;
+        margin-right: 5px;
+        .room-profile::after {
+          font-size: 1.7rem;
+        }
+      }
+    }
+  }
+  a {
+    font-weight: normal;
+    text-decoration: underline;
+    &:hover {
+      text-decoration: none;
+    }
+    &.disabled {
+      text-decoration: none;
+      cursor: not-allowed;
+      color: @cl-subtext20;
+    }
+  }
+  a.dc-back, a.dc-back:hover {
+    text-decoration: none;
+  }
+  .offline a, a.big-button-light, a.colored {
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
