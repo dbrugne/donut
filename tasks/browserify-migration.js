@@ -1,4 +1,3 @@
-var async = require('async');
 var _ = require('underscore');
 var fs = require('fs');
 var path = require('path');
@@ -39,8 +38,9 @@ module.exports = function (grunt) {
     grunt.log.ok('scanning folder ' + relativeFromPath);
 
     _.each(fs.readdirSync(relativeFromPath), function (f) {
-      if (f.substr(0, 1) === '.')
+      if (f.substr(0, 1) === '.') {
         return;
+      }
       if (exclude.indexOf(f) !== -1) {
         grunt.log.ok('ignore ' + relativeFromPath + f);
         return;
@@ -49,18 +49,21 @@ module.exports = function (grunt) {
       var file = relativeFromPath + f;
 
       var s = fs.statSync(file);
-      if (s.isFile())
+      if (s.isFile()) {
         convertFile(file, toPath + base + f);
-      else if (s.isDirectory())
+      } else if (s.isDirectory()) {
         scanDir(file);
-      else
+      } else {
         grunt.log.error('unable to find ' + file + ' type');
+      }
     });
   };
   var convertFile = function (from, to) {
     grunt.log.ok('convert file ' + from + ' to ' + to);
-    var content = fs.readFileSync(from, {encoding: 'UTF-8'});
-    content = content.replace(/\r\n/g, '\n').replace(/\r/g, '\n'); // Windows line returns
+    var content = fs.readFileSync(from, { encoding: 'UTF-8' });
+    content = content.replace(/\r\n/g, '\n').replace(/\r/g, '\n'); // Windows
+                                                                   // line
+                                                                   // returns
     var splitFile = /define\(\[([^\]]+)]\s*,\s*function\s*\(([^\)]+)\)\s*\{((.|\n)*)}\);/gi; // in local context to avoid reuse of RegExp object on each .exec() call
     var parts = splitFile.exec(content);
 
@@ -70,14 +73,14 @@ module.exports = function (grunt) {
     }
 
     // deps list
-    var depsString = parts[1].replace(/\s/g, '').replace(/("|')/g, '');
+    var depsString = parts[ 1 ].replace(/\s/g, '').replace(/("|')/g, '');
     var deps = [];
     _.each(depsString.split(','), function (dep) {
       deps.push(dep);
     });
 
     // names list
-    var namesString = parts[2].replace(/\s/g, '').replace(/("|')/g, '');
+    var namesString = parts[ 2 ].replace(/\s/g, '').replace(/("|')/g, '');
     var names = [];
     _.each(namesString.split(','), function (name) {
       names.push(name);
@@ -86,15 +89,19 @@ module.exports = function (grunt) {
     // merge names and deps
     var requires = {};
     _.each(deps, function (dep, index) {
-      requires[dep] = (names[index]) ? names[index] : false;
+      requires[ dep ] = (names[ index ])
+        ? names[ index ]
+        : false;
     });
 
     // body
-    var body = parts[3].replace(/^  /mg, ''); // ident
+    var body = parts[ 3 ].replace(/^  /mg, ''); // ident
     body = body.replace(/^\s+|\s+$/g, ''); // white space
     var returnString = body.substr(body.lastIndexOf('return'));
     body = body.substr(0, body.lastIndexOf('return'));
-    body += '\n' + returnString.replace('return ', 'module.exports = '); // return => module.exports
+    body += '\n' + returnString.replace('return ', 'module.exports = '); // return
+                                                                         // =>
+                                                                         // module.exports
 
     if (deps.length !== names.length) {
       return grunt.log.error('not the same number of deps and names');
@@ -104,9 +111,7 @@ module.exports = function (grunt) {
     var source = '';
 
     var base = path.dirname(from).replace(fromPath, '').replace(/^\//, '');
-    var isDeep = (fromPath !== path.dirname(from))
-      ? true
-      : false;
+    var isDeep = (fromPath !== path.dirname(from));
 
     _.each(requires, function (name, dep) {
       var depBase = (dep.indexOf('/') !== -1)
@@ -150,12 +155,14 @@ module.exports = function (grunt) {
     var tplCall;
     while ((matches = templatePattern.exec(source)) !== null) {
       tplCall = 'require(\'';
-      tplCall += isDeep ? '..' : '.';
+      tplCall += isDeep
+        ? '..'
+        : '.';
       tplCall += '/templates/';
-      tplCall += matches[1];
+      tplCall += matches[ 1 ];
       tplCall += '\')';
       // console.log(matches[0], '==>', tplCall);
-      source = source.replace(matches[0], tplCall);
+      source = source.replace(matches[ 0 ], tplCall);
     }
 
     // check folder existence
@@ -163,7 +170,7 @@ module.exports = function (grunt) {
       fs.mkdirSync(path.dirname(to));
     }
 
-    fs.writeFileSync(to, source, {flag: 'w+'});
+    fs.writeFileSync(to, source, { flag: 'w+' });
   };
 
   // template (copy)
@@ -174,7 +181,7 @@ module.exports = function (grunt) {
           {
             expand: true,
             cwd: './web-server/public/donut/templates',
-            src: ['*.html', '**/*.html'],
+            src: [ '*.html', '**/*.html' ],
             dest: './web-server/public/web/templates'
           }
         ]
@@ -187,5 +194,4 @@ module.exports = function (grunt) {
     scanDir(fromPath);
     grunt.task.run('copy:templates');
   });
-
-}
+};
