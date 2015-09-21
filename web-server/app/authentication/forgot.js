@@ -6,6 +6,7 @@ var async = require('async');
 var crypto = require('crypto');
 var User = require('../../../shared/models/user');
 var i18next = require('../../../shared/util/i18next');
+var logger = require('../../../shared/util/logger').getLogger('web', __filename);
 
 // @doc: http://sahatyalkabov.com/how-to-implement-password-reset-in-nodejs/
 
@@ -31,7 +32,7 @@ var forgot = function (req, res) {
       });
     },
     function (token, done) {
-      User.findOne({ 'local.email': req.body.email }, function (err, user) {
+      User.findOne({'local.email': req.body.email}, function (err, user) {
         if (err) {
           req.flash('error', i18next.t('global.unknownerror'));
           return res.redirect('/forgot');
@@ -69,8 +70,7 @@ var forgot = function (req, res) {
 };
 
 var reset = function (req, res) {
-  if (!req.body.password || !req.body.confirm
-    || req.body.password !== req.body.confirm) {
+  if (!req.body.password || !req.body.confirm || req.body.password !== req.body.confirm) {
     req.flash('error', i18next.t('account.password.error.confirm'));
     return res.redirect('back');
   }
@@ -79,8 +79,11 @@ var reset = function (req, res) {
     function (done) {
       User.findOne({
         'local.resetToken': req.params.token,
-        'local.resetExpires': { $gt: Date.now() }
+        'local.resetExpires': {$gt: Date.now()}
       }, function (err, user) {
+        if (err) {
+          return done(err);
+        }
         if (!user) {
           req.flash('error', i18next.t('forgot.error.expired'));
           return res.redirect('back');
@@ -91,6 +94,9 @@ var reset = function (req, res) {
         user.local.resetExpires = undefined;
 
         user.save(function (err) {
+          if (err) {
+            return done(err);
+          }
           req.logIn(user, function (err) {
             done(err, user);
           });
@@ -99,14 +105,18 @@ var reset = function (req, res) {
     },
     function (user, done) {
       emailer.passwordChanged(user.local.email, function (err) {
-        if (err)
+        if (err) {
           return done('Unable to sent password changed (forgot) email: ' + err);
+        }
 
         req.flash('success', i18next.t('forgot.success'));
         return done(err);
       });
     }
   ], function (err) {
+    if (err) {
+      logger.debug(err);
+    }
     res.redirect('/');
   });
 };
@@ -125,8 +135,11 @@ router.route('/reset/:token')
   .get(require('csurf')(), function (req, res) {
     User.findOne({
       'local.resetToken': req.params.token,
-      'local.resetExpires': { $gt: Date.now() }
+      'local.resetExpires': {$gt: Date.now()}
     }, function (err, user) {
+      if (err) {
+        logger.debug(err);
+      }
       if (!user) {
         req.flash('error', i18next.t('forgot.error.expired'));
         return res.redirect('/forgot');

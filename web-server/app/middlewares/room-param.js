@@ -2,10 +2,14 @@
 var _ = require('underscore');
 var Room = require('../../../shared/models/room');
 var conf = require('../../../config/index');
+var logger = require('../../../shared/util/logger').getLogger('web', __filename);
 
 module.exports = function (req, res, next, roomname) {
-  if (roomname == undefined || roomname === '') {
+  if (roomname === undefined || roomname === '') {
     res.render('404', {}, function (err, html) {
+      if (err) {
+        logger.debug(err);
+      }
       res.send(404, html);
     });
   }
@@ -119,6 +123,9 @@ module.exports = function (req, res, next, roomname) {
         next();
       } else {
         res.render('404', {}, function (err, html) {
+          if (err) {
+            logger.debug(err);
+          }
           res.status(404).send(html);
         });
       }

@@ -35,8 +35,9 @@ router.get('/!', function (req, res) {
   if (!req.isDebug()) { // not in debug mode, try to find last build
     try {
       var last = require('../../public/build/last'); // /!\ reloaded on server restart only
-      if (last.build)
+      if (last.build) {
         build = '/build/' + last.build;
+      }
     } catch (e) {
       console.log('Error while reading last.json file to determine build to load: ' + e);
     }
@@ -49,7 +50,6 @@ router.get('/!', function (req, res) {
     avoidFa: true,
     build: build
   });
-
 });
 
 module.exports = router;

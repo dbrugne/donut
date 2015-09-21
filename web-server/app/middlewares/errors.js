@@ -1,7 +1,8 @@
 'use strict';
+var logger = require('../../../shared/util/logger').getLogger('web', __filename);
 module.exports = function (code, app) {
   // Error 404
-  if (code == '404') {
+  if (code === '404') {
     return function (req, res, next) {
       if (req.user) {
         res.locals.user = req.user;
@@ -9,6 +10,9 @@ module.exports = function (code, app) {
       res.render('404', {
         meta: {title: '404 (donuts) error'}
       }, function (err, html) {
+        if (err) {
+          logger.debug(err);
+        }
         res.status(404).send(html);
       });
     };
@@ -36,5 +40,4 @@ module.exports = function (code, app) {
       });
     };
   }
-
 };
