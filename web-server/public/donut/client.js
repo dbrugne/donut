@@ -26,6 +26,7 @@ define([
         // donut
         'welcome',
         'room:join',
+        'room:request',
         'room:leave',
         'room:message',
         'room:message:edit',

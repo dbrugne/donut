@@ -21,17 +21,21 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.room_id)
+      if (!data.room_id) {
         return callback('id is mandatory');
+      }
 
-      if (!room)
+      if (!room) {
         return callback('unable to retrieve room: ' + data.room_id);
+      }
 
-      if (!room.isOwner(user.id) && session.settings.admin !== true)
+      if (!room.isOwner(user.id) && session.settings.admin !== true) {
         return callback(user.id + ' is not allowed to delete ' + data.room_id);
+      }
 
-      if (room.permanent === true)
+      if (room.permanent === true) {
         return callback('permanent');
+      }
 
       return callback(null);
     },
@@ -44,16 +48,18 @@ handler.call = function (data, session, next) {
         reason: 'deleted'
       };
       that.app.globalChannelService.pushMessage('connector', 'room:leave', event, room.name, {}, function (err) {
-        if (err)
-          logger.error(err); // not 'return', we delete even if error happen
+        if (err) {
+          logger.error(err);
+        } // not 'return', we delete even if error happen
         return callback(null);
       });
     },
 
     function destroy (callback) {
       that.app.globalChannelService.destroyChannel(room.name, function (err) {
-        if (err)
-          logger.error(err); // not 'return', we continue even if error happen
+        if (err) {
+          logger.error(err);
+        } // not 'return', we continue even if error happen
         return callback(null);
       });
     },
@@ -71,5 +77,4 @@ handler.call = function (data, session, next) {
 
     next(null, {success: true});
   });
-
 };

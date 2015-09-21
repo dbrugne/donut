@@ -1,4 +1,5 @@
-'use strict';(function ($) {
+'use strict';
+(function ($) {
   var exports, cloudinaryLibrary;
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = exports = require('cloudinary');
@@ -27,24 +28,29 @@
     };
 
     var parts;
-    if (identifier.indexOf('#!#') !== -1)
+    if (identifier.indexOf('#!#') !== -1) {
       parts = identifier.split('#!#');
-    else
+    } else {
       parts = [identifier];
+    }
 
     for (var i = 0; i < parts.length; i++) {
-      if (parts[i].indexOf('=') === -1)
+      if (parts[i].indexOf('=') === -1) {
         continue;
+      }
       var pair = parts[i].split('=');
-      if (!data.hasOwnProperty(pair[0]))
+      if (!data.hasOwnProperty(pair[0])) {
         continue;
+      }
       data[pair[0]] = pair[1];
     }
     return data;
   }
 
   function _urlNoDefault (token, width, height) {
-    if (!token) return;
+    if (!token) {
+      return;
+    }
     var opts = {
       width: width || 30,
       height: height || 30,
@@ -52,7 +58,7 @@
     };
 
     var identifier;
-    if (typeof token == 'object') {
+    if (typeof token === 'object') {
       opts.version = token.version;
       identifier = token.id;
     } else {
@@ -72,7 +78,9 @@
   }
 
   function _url (token, defaultIdentifier, width, height, gravity, effect) {
-    if (!token) return;
+    if (!token) {
+      return;
+    }
     var data = parse(token);
 
     var identifier = data.cloudinary;
@@ -99,26 +107,31 @@
       background: 'rgb:' + background.replace('#', '').toLocaleLowerCase()
     };
 
-    if (width != 0)
+    if (width !== 0) {
       options.width = '' + width;
-    if (height != 0)
+    }
+    if (height !== 0) {
       options.height = '' + height;
-    if (effect)
+    }
+    if (effect) {
       options.effect = effect;
+    }
 
     if (!identifier && facebook) {
       return 'https://graph.facebook.com/' + facebook + '/picture?height=' + height + '&width=' + width;
     }
 
     if (!identifier) {
-      if (defaultIdentifier.indexOf('.png') === -1)
+      if (defaultIdentifier.indexOf('.png') === -1) {
         identifier = defaultIdentifier;
-      else
+      } else {
         identifier = defaultIdentifier.substr(0, defaultIdentifier.indexOf('.png'));
+      }
 
       // remove blur (if set) for default images
-      if (options.effect)
+      if (options.effect) {
         delete options.effect;
+      }
     }
 
     return cloudinaryLibrary().url(identifier, options);
@@ -131,13 +144,15 @@
     return _url(identifier, userAvatarDefault, size, size);
   };
   exports.poster = function (identifier) {
-    if (!identifier)
+    if (!identifier) {
       return '';
+    }
     return _url(identifier, posterDefault, 430, 1100, 'center');
   };
   exports.posterBlured = function (identifier) {
-    if (!identifier)
+    if (!identifier) {
       return '';
+    }
 
     return _url(identifier, posterDefault, 430, 1100, 'center', 'blur:800');
   };
@@ -148,7 +163,9 @@
     width = width || 1500;
     height = height || 1000;
     mode = mode || 'limit';
-    if (!identifier) return;
+    if (!identifier) {
+      return;
+    }
     var opts = {
       width: width,
       height: height,
@@ -156,5 +173,4 @@
     };
     return cloudinaryLibrary().url(identifier, opts);
   };
-
-})((typeof jQuery != 'undefined') ? jQuery : false);
+})((typeof jQuery !== 'undefined') ? jQuery : false);

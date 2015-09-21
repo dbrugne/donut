@@ -149,9 +149,7 @@ var retriever = function (app, fn) {
             poster: room._poster(),
             color: room.color,
             description: room.description,
-            users: (room.users) ?
-              room.users.length :
-              0,
+            users: (room.users) ? room.users.length : 0,
             onlines: 0
           };
           if (room.owner) {
@@ -224,7 +222,6 @@ var retriever = function (app, fn) {
       return fn(null, roomsData);
     });
   }
-
 };
 
 module.exports = retriever;

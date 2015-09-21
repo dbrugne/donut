@@ -82,8 +82,9 @@ handler.call = function (data, session, next) {
 
     function unviewed (event, callback) {
       Notifications(that.app).retrieveUserNotificationsUnviewedCount(user.id, function (err, count) {
-        if (err)
+        if (err) {
           return callback(err);
+        }
 
         event.unviewed = count || 0;
         return callback(null, event);
@@ -98,5 +99,4 @@ handler.call = function (data, session, next) {
 
     next(null, event);
   });
-
 };

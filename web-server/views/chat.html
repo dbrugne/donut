@@ -14,16 +14,18 @@
                 <div id="navbar">
                     <a class="navbar-brand-a hidden-xs hidden-sm" href="/!#"><img class="logo" src="/images/logo-bordered-small.png" alt="<%= t('title.chat') %>"> <span class="beta dc-text-contrast">alpha</span></a>
 
-                    <ul class="nav navbar-nav-ul hidden-xs hidden-sm">
-                        <li><a href="/!#" class="dc-text-contrast">Home</a></li>
-                    </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li id="mute">
+                        <li class="icontop">
+                            <a href="/!#" class="toggle dc-text-contrast">
+                                <i class="icon icon-home dc-text-contrast"></i>
+                            </a>
+                        </li>
+                        <li class="icontop" id="mute">
                             <a href="#" class="toggle">
                                 <i class="icon icon-volume-up dc-text-contrast"></i>
                             </a>
                         </li>
-                        <li id="notifications" class="dropdown empty">
+                        <li class="icontop" id="notifications" class="dropdown empty">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 <i class="icon icon-globe dc-text-contrast"></i>
                                 <span class="badge hide-empty dc-border-darker dc-text"></span>
@@ -48,7 +50,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="help">
+                        <li class="icontop help">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 <i class="icon icon-menu dc-text-contrast"></i>
                             </a>

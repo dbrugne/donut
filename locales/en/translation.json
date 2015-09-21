@@ -588,7 +588,8 @@
     },
     "access": {
       "link": "access",
-      "labelsearch": "Add users to the allowed list",
+      "labelsearch": "Allow users",
+      "add": "Add user",
       "labelpending": "Users pending approval",
       "types": {
         "all": "All",
@@ -696,7 +697,7 @@
             "private": "Private",
             "password-change": "Change password",
             "password-field": "Password",
-            "password-keep": "leave blank to keep the same",
+            "password-keep": "Change the password",
             "password-disclaimer": "You can set a password on this donut",
             "password-protection": "Protect by a password"
           }
@@ -943,6 +944,15 @@
         "disclaimer": "You are unmute in <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>... as requested by <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong> Now can write as much as you want. Enjoy !",
         "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
+      }
+    },
+    "roomjoinrequest": {
+      "subject": "An user whant to join #__roomname__",
+      "content": {
+        "title": "__username__ ask for allowance in #__roomname__",
+        "disclaimer": "Looks like your donut have great success!",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
       }
     },
     "roomdevoice": {

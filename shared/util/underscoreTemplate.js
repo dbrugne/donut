@@ -28,14 +28,16 @@ var Renderer = function (options) {
   this.consolidateConfiguration = {};
 
   // activate consolidate file cache
-  if (process.env.NODE_ENV !== 'development')
+  if (process.env.NODE_ENV !== 'development') {
     this.consolidateConfiguration.cache = true;
+  }
 };
 
 Renderer.prototype.resolve = function (directory, template) {
   var ext = path.extname(template);
-  if (ext !== '.' + this.extension)
+  if (ext !== '.' + this.extension) {
     template += '.' + this.extension;
+  }
 
   return path.resolve(directory, template);
 };
@@ -109,15 +111,17 @@ Renderer.prototype.renderView = function (template, variables, content, callback
     },
 
     function renderPartialsTemplates (html, fn) {
-      if (!partials.length)
+      if (!partials.length) {
         return fn(null, html);
+      }
 
       that.renderPartials(partials, html, fn);
     },
 
     function renderLayoutTemplate (html, fn) {
-      if (!layout)
+      if (!layout) {
         return fn(null, html);
+      }
 
       that.renderView(that.resolve(that.layoutDir, layout), _variables, html, fn);
     }
@@ -136,23 +140,23 @@ Renderer.prototype.renderPartials = function (partials, html, callback) {
     // bug viewed only on very fast machine (production)
     var variables = _.clone(partial.variables);
     cons['underscore'](filename, variables, function (err, _html) {
-      if (err)
+      if (err) {
         return fn(err);
+      }
 
       html = html.replace(partial.key, _html);
 
       logger.debug('partial ' + partial.template + ' replaced in key ' + partial.key);
       return fn(null);
     });
-
   }, function (err) {
     if (err) {
-      return callback(err);}
+      return callback(err);
+    }
 
     logger.debug('partials done');
     return callback(null, html);
   });
-
 };
 
 exports.Renderer = Renderer;

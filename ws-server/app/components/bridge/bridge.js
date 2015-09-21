@@ -1,6 +1,6 @@
 'use strict';
 var _ = require('underscore');
-var pomeloAdmin = require('../../../../node_modules/pomelo/node_modules/pomelo-admin/index');
+var pomeloAdmin = require('../../../../node_modules/pomelo-admin/index');
 var AdminClient = pomeloAdmin.adminClient;
 
 var moduleId = 'pomeloBridge';

@@ -26,22 +26,30 @@ function _url (data, width, height) {
     background: 'rgb:' + background.replace('#', '').toLocaleLowerCase()
   };
 
-  options.crop = (data.crop) ? data.crop : 'fill';
+  options.crop = (data.crop)
+    ? data.crop
+    : 'fill';
 
-  if (data.default)
+  if (data.default) {
     options.default_image = data.default;
-  if (width != 0)
+  }
+  if (width !== 0) {
     options.width = '' + width;
-  if (height != 0)
+  }
+  if (height !== 0) {
     options.height = '' + height;
-  if (data.gravity)
+  }
+  if (data.gravity) {
     options.gravity = data.gravity;
-  if (data.effect)
+  }
+  if (data.effect) {
     options.effect = data.effect;
+  }
 
   // Facebook profile image
-  if (!identifier && facebook)
+  if (!identifier && facebook) {
     return 'https://graph.facebook.com/' + facebook + '/picture?height=' + height + '&width=' + width;
+  }
 
   // Default image
   if (!identifier && options.default_image) {
@@ -49,8 +57,9 @@ function _url (data, width, height) {
     delete options.default_image;
 
     // remove blur (if set) for default images
-    if (options.effect)
+    if (options.effect) {
       delete options.effect;
+    }
   }
 
   return cloudinary.url(identifier, options);
@@ -79,8 +88,9 @@ module.exports = {
   },
 
   poster: function (identifier, color, blur) {
-    if (!identifier)
+    if (!identifier) {
       return '';
+    }
 
     return _url({
       default: posterDefault,
@@ -94,8 +104,9 @@ module.exports = {
   },
 
   messageImage: function (path, size) {
-    if (!path)
+    if (!path) {
       return '';
+    }
 
     return _url({
       identifier: path,

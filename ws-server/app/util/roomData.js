@@ -26,20 +26,21 @@ module.exports = function (user, room, fn) {
     };
   }
 
-  var blocked = false;
+  data.blocked = false;
 
   // banned user
   if (room.isBanned(user.id)) {
-    blocked = true;
+    data.blocked = true;
     var doc = room.isInBanned(user.id);
     data.banned_at = doc.banned_at;
+    data.blocked = 'banned';
     if (doc.reason) {
       data.banned_reason = doc.reason;
     }
   }
 
   // user can join
-  if (!blocked) {
+  if (!data.blocked) {
     data.op = room.op;
     data.devoices = _.map(room.devoices, function (element) {
       return element.user.toString();

@@ -23,22 +23,26 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.username && !data.user_id)
+      if (!data.username && !data.user_id) {
         return callback('require username or user_id param');
+      }
 
-      if (!bannedUser)
+      if (!bannedUser) {
         return callback('unable to retrieve bannedUser: ' + data.username);
+      }
 
-      if (!user.isBanned(bannedUser.id))
+      if (!user.isBanned(bannedUser.id)) {
         return callback('this user ' + bannedUser.username + ' is not banned');
+      }
 
       return callback(null);
     },
 
     function persist (callback) {
       var subDocument = _.find(user.bans, function (ban) {
-        if (ban.user.toString() == bannedUser.id)
+        if (ban.user.toString() === bannedUser.id) {
           return true;
+        }
       });
       user.bans.id(subDocument._id).remove();
       user.save(function (err) {
@@ -55,7 +59,10 @@ handler.call = function (data, session, next) {
         username: bannedUser.username,
         avatar: bannedUser._avatar()
       };
-      oneEmitter(that.app, { from: user._id, to: bannedUser._id }, 'user:deban', event, callback);
+      oneEmitter(that.app, {
+        from: user._id,
+        to: bannedUser._id
+      }, 'user:deban', event, callback);
     }
 
   ], function (err) {
@@ -66,5 +73,4 @@ handler.call = function (data, session, next) {
 
     next(null, {});
   });
-
 };

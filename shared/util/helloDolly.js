@@ -42,10 +42,9 @@ var quotesEn = [
 ];
 
 module.exports = function () {
-  var quotes = (i18next.lng() == 'fr')
+  var quotes = (i18next.lng() === 'fr')
     ? quotesFr
     : quotesEn;
 
   return _.sample(quotes);
-
 };

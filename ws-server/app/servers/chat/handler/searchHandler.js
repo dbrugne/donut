@@ -25,18 +25,14 @@ handler.call = function (data, session, next) {
 
   var lightSearch = (data.light && data.light === true);
 
-  var limit = (data.limit) ?
-    data.limit :
-    150;
+  var limit = (data.limit) ? data.limit : 150;
 
-  var skip = (data.skip) ?
-    data.skip :
-    0;
+  var skip = (data.skip) ? data.skip : 0;
 
   search(data.search, searchInUsers, searchInRooms, limit, skip, lightSearch, function (err, results) {
     if (err) {
       logger('[search] ' + err);
-      return next(null, { code: 500, err: 'internal' });
+      return next(null, {code: 500, err: 'internal'});
     }
 
     return next(null, results);

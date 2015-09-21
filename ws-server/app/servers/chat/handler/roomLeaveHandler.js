@@ -39,7 +39,7 @@ handler.call = function (data, session, next) {
     },
 
     function persist (callback) {
-      room.update({ $pull: { users: user.id }}, function (err) {
+      room.update({$pull: {users: user.id}}, function (err) {
         return callback(err);
       });
     },
@@ -47,18 +47,21 @@ handler.call = function (data, session, next) {
     function leaveClients (callback) {
       // search for all the user sessions (any frontends)
       that.app.statusService.getSidsByUid(user.id, function (err, sids) {
-        if (err)
+        if (err) {
           return callback(err);
+        }
 
-        if (!sids || sids.length < 1)
+        if (!sids || sids.length < 1) {
           return callback('no connector sessions for current user (probably a problem somewhere)');
+        }
 
         var parallels = [];
         _.each(sids, function (sid) {
           parallels.push(function (fn) {
             that.app.globalChannelService.leave(room.name, user.id, sid, function (err) {
-              if (err)
+              if (err) {
                 return fn(sid + ': ' + err);
+              }
 
               return fn(null);
             });
@@ -71,7 +74,10 @@ handler.call = function (data, session, next) {
     },
 
     function sendToUserClients (callback) {
-      that.app.globalChannelService.pushMessage('connector', 'room:leave', { name: room.name, room_id: room.id }, 'user:' + user.id, {}, function (err) {
+      that.app.globalChannelService.pushMessage('connector', 'room:leave', {
+        name: room.name,
+        room_id: room.id
+      }, 'user:' + user.id, {}, function (err) {
         return callback(err);
       });
     },
@@ -80,6 +86,7 @@ handler.call = function (data, session, next) {
      * This step happen AFTER user/room persistence and room subscription
      * to avoid noisy notifications
      */
+
     function broadcast (callback) {
       var event = {
         user_id: user.id,
@@ -91,10 +98,10 @@ handler.call = function (data, session, next) {
     }
 
   ], function (err) {
-    if (err)
+    if (err) {
       logger.error('[room:leave] ' + err);
+    }
 
     return next(null);
   });
-
 };

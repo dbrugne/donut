@@ -1,7 +1,6 @@
 'use strict';
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var async = require('async');
-var _ = require('underscore');
 
 var Handler = function (app) {
   this.app = app;
@@ -22,11 +21,13 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.user_id)
+      if (!data.user_id) {
         return callback('user_id is mandatory');
+      }
 
-      if (!withUser)
+      if (!withUser) {
         return callback('unable to retrieve withUser: ' + data.user_id);
+      }
 
       return callback(null);
     },
@@ -42,10 +43,10 @@ handler.call = function (data, session, next) {
     }
 
   ], function (err) {
-    if (err)
+    if (err) {
       logger.error('[user:typing] ' + err);
+    }
 
     next(err);
   });
-
 };

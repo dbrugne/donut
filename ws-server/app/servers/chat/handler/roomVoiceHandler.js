@@ -62,7 +62,7 @@ handler.call = function (data, session, next) {
       }
 
       var subDocument = _.find(room.devoices, function (devoice) {
-        if (devoice.user.toString() == devoicedUser.id) {
+        if (devoice.user.toString() === devoicedUser.id) {
           return true;
         }
       });

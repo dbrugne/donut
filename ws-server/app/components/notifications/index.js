@@ -34,8 +34,9 @@ var Facade = function (app, options) {
  */
 Facade.prototype.uidStatus = function (uid, fn) {
   this.app.statusService.getStatusByUid(uid, function (err, status) {
-    if (err)
+    if (err) {
       logger.error('Error while retrieving user status: ' + err);
+    }
 
     return fn(!!status);
   });
@@ -106,28 +107,39 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
   }
 
   var q = NotificationModel.find(criteria);
-  q.sort({ time: -1 });
+  q.sort({time: -1});
 
-  if (what.number)
+  if (what.number) {
     q.limit(what.number);
+  }
 
-  q.populate({path: 'user', model: 'User', select: 'local username color facebook avatar'});
+  q.populate({
+    path: 'user',
+    model: 'User',
+    select: 'local username color facebook avatar'
+  });
 
   q.exec(function (err, results) {
+    if (err) {
+      return (err);
+    }
     var notifications = [];
     async.eachLimit(results, 1, function (n, fn) {
-      if (!n.data || !n.data.event)
+      if (!n.data || !n.data.event) {
         return fn(null);
+      }
 
       if (n.getEventType() === 'historyone') {
         var q = HistoryOne.findOne({_id: n.data.event.toString()})
           .populate('from', 'username avatar color facebook')
           .populate('to', 'username avatar color facebook');
         q.exec(function (err, event) {
-          if (err)
+          if (err) {
             return fn(err);
-          if (!event)
+          }
+          if (!event) {
             return fn(null);
+          }
 
           n.data.event = event;
           notifications.push(n);
@@ -139,10 +151,12 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
           .populate('by_user', 'username avatar color facebook')
           .populate('room', 'avatar color name')
           .exec(function (err, event) {
-            if (err)
+            if (err) {
               return fn(err);
-            if (!event)
+            }
+            if (!event) {
               return fn(null);
+            }
 
             n.data.event = event;
             notifications.push(n);
@@ -150,8 +164,9 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
           });
       }
     }, function (err) {
-      if (err)
+      if (err) {
         return callback(err);
+      }
 
       callback(err, notifications);
     });
@@ -184,17 +199,22 @@ Facade.prototype.retrieveScheduledNotifications = function (callback) {
   var q = NotificationModel.find({
     done: false,
     viewed: false,
-    time: { $lt: time }, // @todo : add delay before sending email/mobile for each notification type here
+    time: {$lt: time}, // @todo : add delay before sending email/mobile for each notification type here
     $or: [
-      { to_email: true, sent_to_email: false },
-    // { to_mobile: true, sent_to_mobile: false }
+      {to_email: true, sent_to_email: false}
+      // { to_mobile: true, sent_to_mobile: false }
     ]
   });
 
-  q.populate({ path: 'user', model: 'User', select: 'facebook username local avatar color' });
+  q.populate({
+    path: 'user',
+    model: 'User',
+    select: 'facebook username local avatar color'
+  });
   q.exec(function (err, results) {
-    if (err)
+    if (err) {
       callback(err);
+    }
 
     callback(null, results);
   });
@@ -231,10 +251,10 @@ Facade.prototype.avoidNotificationsSending = function (userId, callback) {
     user: userId,
     done: false,
     $or: [
-      { to_email: true },
-      { to_mobile: true }
+      {to_email: true},
+      {to_mobile: true}
     ]
-  }, { $set: { to_email: false, to_mobile: false } }, { multi: true }, callback);
+  }, {$set: {to_email: false, to_mobile: false}}, {multi: true}, callback);
 };
 
 Facade.prototype.markOldNotificationsAsDone = function (callback) {
@@ -242,8 +262,8 @@ Facade.prototype.markOldNotificationsAsDone = function (callback) {
   timeLimit.setMonth(timeLimit.getMonth() - conf.notifications.done);
   NotificationModel.update({
     done: false,
-    time: { $lt: timeLimit}
+    time: {$lt: timeLimit}
   }, {
-    $set: { done: true }
+    $set: {done: true}
   }, {multi: true}).exec(callback);
 };

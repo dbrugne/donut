@@ -29,7 +29,7 @@ Notification.prototype.create = function (user, room, history, done) {
     utils.retrieveHistoryRoom(history),
 
     function checkOwn (userModel, roomModel, historyModel, callback) {
-      if (historyModel.user.id == userModel.id) {
+      if (historyModel.user.id === userModel.id) {
         logger.debug('userMentionType.create no notification due to my own message');
         return callback(true);
       }
@@ -49,13 +49,15 @@ Notification.prototype.create = function (user, room, history, done) {
     },
 
     function avoidRepetitive (userModel, roomModel, historyModel, callback) {
-      if (that.facade.options.force === true)
+      if (that.facade.options.force === true) {
         return callback(null, userModel, roomModel, historyModel);
+      }
 
       // only check the case when a message is edited (room:message:edit)
       NotificationModel.findOne({ 'data.event': historyModel._id }).count(function (err, count) {
-        if (err)
+        if (err) {
           return callback(err);
+        }
         if (count) {
           logger.debug('userMessageType.create no notification creation due to repetitive');
           return callback(true);
@@ -67,8 +69,9 @@ Notification.prototype.create = function (user, room, history, done) {
 
     function checkStatus (userModel, roomModel, historyModel, callback) {
       that.facade.app.statusService.getStatusByUid(userModel.id, function (err, status) {
-        if (err)
+        if (err) {
           return callback(err);
+        }
 
         return callback(null, userModel, roomModel, historyModel, status);
       });
@@ -79,8 +82,14 @@ Notification.prototype.create = function (user, room, history, done) {
         event: historyModel._id
       });
       model.to_browser = true;
-      model.to_email = (!userModel.getEmail() ? false : (status ? false : userModel.preferencesValue('notif:channels:email')));
-      model.to_mobile = (status ? false : userModel.preferencesValue('notif:channels:mobile'));
+      model.to_email = (!userModel.getEmail()
+        ? false
+        : (status
+        ? false
+        : userModel.preferencesValue('notif:channels:email')));
+      model.to_mobile = (status
+        ? false
+        : userModel.preferencesValue('notif:channels:mobile'));
 
       if (that.facade.options.force === true) {
         model.to_email = true;
@@ -88,8 +97,9 @@ Notification.prototype.create = function (user, room, history, done) {
       }
 
       model.save(function (err) {
-        if (err)
+        if (err) {
           return callback(err);
+        }
 
         logger.info('userMentionType.create notification created: ' + that.type + ' for ' + userModel.username);
 
@@ -98,12 +108,12 @@ Notification.prototype.create = function (user, room, history, done) {
     }
 
   ], function (err) {
-    if (err && err !== true)
+    if (err && err !== true) {
       return done(err);
+    }
 
     return done(null);
   });
-
 };
 
 Notification.prototype.sendToBrowser = function (model, user, room, history, done) {
@@ -135,15 +145,17 @@ Notification.prototype.sendToBrowser = function (model, user, room, history, don
 };
 
 Notification.prototype.sendEmail = function (model, done) {
-  if (!model.data || !model.data.event)
+  if (!model.data || !model.data.event) {
     return done('roomPromoteType.sendEmail data.event left');
+  }
 
   async.waterfall([
 
     function retrieveEvents (callback) {
       HistoryRoomModel.retrieveEventWithContext(model.data.event.toString(), model.user.id, 5, 10, true, function (err, events) {
-        if (err)
+        if (err) {
           return callback(err);
+        }
 
         return callback(null, events);
       });
@@ -151,10 +163,11 @@ Notification.prototype.sendEmail = function (model, done) {
 
     function mentions (events, callback) {
       _.each(events, function (event, index, list) {
-        if (!event.data.message)
+        if (!event.data.message) {
           return;
+        }
 
-        list[index].data.message = utils.mentionize(event.data.message, {
+        list[ index ].data.message = utils.mentionize(event.data.message, {
           style: 'color: ' + conf.room.default.color + ';'
         });
       });
@@ -165,9 +178,7 @@ Notification.prototype.sendEmail = function (model, done) {
     function send (events, callback) {
       var messages = [];
       _.each(events, function (event) {
-        var isCurrentMessage = (model.data.event.toString() == event.data.id)
-          ? true
-          : false;
+        var isCurrentMessage = (model.data.event.toString() === event.data.id);
         messages.push({
           current: isCurrentMessage,
           user_avatar: common.cloudinarySize(event.data.avatar, 90),
@@ -178,7 +189,7 @@ Notification.prototype.sendEmail = function (model, done) {
         });
       });
 
-      emailer.userMention(model.user.getEmail(), messages, events[0]['data']['username'], events[0]['data']['name'], callback);
+      emailer.userMention(model.user.getEmail(), messages, events[ 0 ][ 'data' ][ 'username' ], events[ 0 ][ 'data' ][ 'name' ], callback);
     },
 
     function persist (callback) {

@@ -23,26 +23,31 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.email)
+      if (!data.email) {
         return callback('wrong-format');
+      }
 
       email = data.email.toLocaleLowerCase();
 
-      if (!validator.isEmail(email))
+      if (!validator.isEmail(email)) {
         return callback('wrong-format');
+      }
 
-      if (user.local && user.local.email && email === user.local.email.toLocaleLowerCase())
+      if (user.local && user.local.email && email === user.local.email.toLocaleLowerCase()) {
         return callback('same-mail');
+      }
 
       return callback(null);
     },
 
     function exist (callback) {
       User.findOne({'local.email': email}, function (err, user) {
-        if (err)
+        if (err) {
           return callback(err);
-        if (user)
+        }
+        if (user) {
           return callback('exist');
+        }
 
         return callback(null);
       });
@@ -54,15 +59,18 @@ handler.call = function (data, session, next) {
         : '';
       user.local.email = email;
       user.save(function (err) {
-        if (err)
+        if (err) {
           return callback(err);
+        }
 
         emailer.emailChanged(email, function (err) {
-          if (err)
+          if (err) {
             return callback(err);
+          }
 
-          if (oldEmail === '' || oldEmail === email)
+          if (oldEmail === '' || oldEmail === email) {
             return callback(null);
+          }
 
           // inform old email if different from new one
           emailer.emailChanged(oldEmail, callback);
@@ -77,8 +85,8 @@ handler.call = function (data, session, next) {
       err = (['wrong-format', 'same-mail', 'exist'].indexOf(err) !== -1)
         ? err
         : 'internal';
-      return next(null, { code: 500, err: 'internal' });
+      return next(null, {code: 500, err: 'internal'});
     }
-    return next(null, { success: true });
+    return next(null, {success: true});
   });
 };

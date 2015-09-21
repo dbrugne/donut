@@ -15,8 +15,8 @@ module.exports = function () {
 };
 
 /**
- * Detect expected parameters in 'data', search corresponding models and put in 'session'.
- * Search for: data.name, data.username, data.event and session.uid
+ * Detect expected parameters in 'data', search corresponding models and put in
+ * 'session'. Search for: data.name, data.username, data.event and session.uid
  *
  * Route is available in:  data.__route__ = 'chat.roomHistoryHandler.call'
  *
@@ -31,7 +31,7 @@ Filter.prototype.before = function (data, session, next) {
   }
   async.parallel({
     currentUser: function (callback) {
-      var q = UserModel.findOne({_id: session.uid});
+      var q = UserModel.findOne({ _id: session.uid });
 
       if (data.__route__ === 'chat.preferencesReadHandler.call') {
         q.populate('bans.user', 'username avatar color facebook');
@@ -57,7 +57,7 @@ Filter.prototype.before = function (data, session, next) {
       if (!data.room_id && data.name && [
         'chat.roomCreateHandler.call',
         'chat.roomJoinHandler.call',
-        'chat.roomReadHandler.call'].indexOf(data.__route__) === -1) {
+        'chat.roomReadHandler.call' ].indexOf(data.__route__) === -1) {
         return callback(null);
       }
 
@@ -74,7 +74,7 @@ Filter.prototype.before = function (data, session, next) {
         if (!common.validateObjectId(data.room_id)) {
           return callback('invalid room_id parameter: ' + data.room_id);
         }
-        q = RoomModel.findOne({_id: data.room_id});
+        q = RoomModel.findOne({ _id: data.room_id });
       }
 
       if (data.__route__ === 'chat.roomJoinHandler.call') {
@@ -110,7 +110,7 @@ Filter.prototype.before = function (data, session, next) {
         'chat.userDebanHandler.call',
         'chat.userMessageHandler.call',
         'chat.userReadHandler.call',
-        'chat.userJoinHandler.call'].indexOf(data.__route__) === -1) {
+        'chat.userJoinHandler.call' ].indexOf(data.__route__) === -1) {
         return callback(null);
       }
 
@@ -125,7 +125,6 @@ Filter.prototype.before = function (data, session, next) {
         }
         UserModel.findByUid(data.user_id).exec(callback);
       }
-
     },
 
     event: function (callback) {
@@ -137,13 +136,13 @@ Filter.prototype.before = function (data, session, next) {
       }
       switch (data.__route__) {
         case 'chat.userMessageEditHandler.call':
-          HistoryOneModel.findOne({_id: data.event}).exec(callback);
+          HistoryOneModel.findOne({ _id: data.event }).exec(callback);
           break;
 
         case 'chat.roomMessageEditHandler.call':
         case 'chat.roomMessageSpamHandler.call':
         case 'chat.roomMessageUnspamHandler.call':
-          HistoryRoomModel.findOne({_id: data.event}).exec(callback);
+          HistoryRoomModel.findOne({ _id: data.event }).exec(callback);
           break;
 
         default:
@@ -171,7 +170,6 @@ Filter.prototype.before = function (data, session, next) {
     }
     return next();
   });
-
 };
 
 Filter.prototype.after = function (err, msg, session, resp, next) {

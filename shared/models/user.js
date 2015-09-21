@@ -9,9 +9,9 @@ var cloudinary = require('../util/cloudinary');
 var userSchema = mongoose.Schema({
   username: String,
   name: String,
-  admin: { type: Boolean, default: false },
-  deleted: { type: Boolean, default: false },
-  suspended: { type: Boolean, default: false },
+  admin: {type: Boolean, default: false},
+  deleted: {type: Boolean, default: false},
+  suspended: {type: Boolean, default: false},
   bio: String,
   location: String,
   website: mongoose.Schema.Types.Mixed,
@@ -31,8 +31,8 @@ var userSchema = mongoose.Schema({
     name: String
   },
   preferences: mongoose.Schema.Types.Mixed,
-  onetoones: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-  blocked: [{ type: mongoose.Schema.ObjectId, ref: 'Room' }],
+  onetoones: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
+  blocked: [{type: mongoose.Schema.ObjectId, ref: 'Room'}],
   unviewed: [{
     room: {type: mongoose.Schema.ObjectId, ref: 'Room'},
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
@@ -42,12 +42,12 @@ var userSchema = mongoose.Schema({
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
     banned_at: {type: Date, default: Date.now}
   }],
-  positions: { type: String },
-  created_at: { type: Date, default: Date.now },
-  lastlogin_at: { type: Date },
+  positions: {type: String},
+  created_at: {type: Date, default: Date.now},
+  lastlogin_at: {type: Date},
   online: Boolean,
-  lastonline_at: { type: Date },
-  lastoffline_at: { type: Date }
+  lastonline_at: {type: Date},
+  lastoffline_at: {type: Date}
 
 });
 
@@ -63,10 +63,12 @@ userSchema.statics.getNewUser = function () {
   var preferencesConfig = this.preferencesKeys();
   var preferences = {};
   _.each(preferencesConfig, function (value, key) {
-    if (key.indexOf('room:') === 0) // room specific preferences exclusion
+    if (key.indexOf('room:') === 0) { // room specific preferences exclusion
       return;
-    if (value && value.default === true)
+    }
+    if (value && value.default === true) {
       preferences[key] = true;
+    }
   });
   model.preferences = preferences;
 
@@ -89,17 +91,19 @@ userSchema.statics.listByUsername = function (usernames) {
     $or: []
   };
   _.each(usernames, function (u) {
-    criteria['$or'].push({ username: common.regExpBuildExact(u) });
+    criteria['$or'].push({username: common.regExpBuildExact(u)});
   });
   return this.find(criteria, '_id username');
 };
 
 userSchema.methods.getEmail = function () {
-  if (this.local && this.local.email)
+  if (this.local && this.local.email) {
     return this.local.email;
+  }
 
-  if (this.facebook && this.facebook.email)
+  if (this.facebook && this.facebook.email) {
     return this.facebook.email;
+  }
 
   return;
 };
@@ -129,12 +133,13 @@ userSchema.methods.validPassword = function (password) {
  */
 userSchema.methods.isAllowedToLogin = function () {
   var err = null;
-  if (!this.id)
+  if (!this.id) {
     err = 'unknown';
-  else if (this.deleted === true)
+  } else if (this.deleted === true) {
     err = 'deleted';
+  }
 
-  return { allowed: (!err), err: err };
+  return {allowed: (!err), err: err};
 };
 
 /**
@@ -144,28 +149,32 @@ userSchema.methods.isAllowedToLogin = function () {
  */
 userSchema.methods.isAllowedToConnect = function () {
   var connect = this.isAllowedToLogin();
-  if (!connect.allowed)
+  if (!connect.allowed) {
     return connect;
+  }
 
   var err = null;
-  if (this.suspended === true)
+  if (this.suspended === true) {
     err = 'suspended';
-  else if (!this.username)
+  } else if (!this.username) {
     err = 'no-username';
+  }
 
-  return { allowed: (!err), err: err };
+  return {allowed: (!err), err: err};
 };
 
 userSchema.methods.isBanned = function (userId) {
-  if (!this.bans || !this.bans.length)
+  if (!this.bans || !this.bans.length) {
     return false;
+  }
 
   var subDocument = _.find(this.bans, function (ban) { // @warning: this shouldn't have .bans populated
-    if (ban.user.toString() == userId)
+    if (ban.user.toString() === userId) {
       return true;
+    }
   });
 
-  return (typeof subDocument != 'undefined');
+  return (typeof subDocument !== 'undefined');
 };
 
 /**
@@ -174,7 +183,7 @@ userSchema.methods.isBanned = function (userId) {
  * @returns {*}
  */
 userSchema.statics.findByUid = function (uid) {
-  return this.findOne({ _id: uid });
+  return this.findOne({_id: uid});
 };
 
 /**
@@ -198,13 +207,16 @@ userSchema.statics.findRoomUsersHavingPreference = function (room, preferenceNam
 
   var criteria = {
     _id: {
-      $in: _.map(room.users, function (uid) { return uid.toString(); })
+      $in: _.map(room.users, function (uid) {
+        return uid.toString();
+      })
     },
     $and: []
   };
 
-  if (userId !== null)
-    criteria.$and.push({ _id: { '$ne': userId } });
+  if (userId !== null) {
+    criteria.$and.push({_id: {'$ne': userId}});
+  }
 
   var topicCriterion = {};
   topicCriterion[keyTopic] = true;
@@ -212,10 +224,10 @@ userSchema.statics.findRoomUsersHavingPreference = function (room, preferenceNam
 
   var o1 = {};
   var o2 = {};
-  o1[keyNothing] = { '$exists': false };
+  o1[keyNothing] = {'$exists': false};
   o2[keyNothing] = false;
 
-  var nothingCriterion = { $or: [] };
+  var nothingCriterion = {$or: []};
   nothingCriterion.$or.push(o1);
   nothingCriterion.$or.push(o2);
   criteria.$and.push(nothingCriterion);
@@ -238,7 +250,7 @@ userSchema.statics.retrieveUser = function (username) {
   }).populate('room', 'name');
 };
 
-/*********************************************************************************
+/** *******************************************************************************
  *
  * Preferences
  *
@@ -279,13 +291,15 @@ userSchema.statics.preferencesIsKeyAllowed = function (name) {
   var keys = Object.keys(allowed);
 
   // short test (plain keys)
-  if (keys.indexOf(name) !== -1)
+  if (keys.indexOf(name) !== -1) {
     return true;
+  }
 
   // loop test
   var found = _.find(keys, function (key) {
-    if (key.indexOf('room:') !== 0)
-      return false; // plain key
+    if (key.indexOf('room:') !== 0) {
+      return false;
+    } // plain key
 
     var pattern = new RegExp('^' + key.replace('__what__', ''));
     return pattern.test(name);
@@ -302,8 +316,9 @@ userSchema.statics.preferencesIsKeyAllowed = function (name) {
  */
 userSchema.methods.preferencesValue = function (key) {
   // preference is set on current user
-  if (_.has(this.preferences, key))
+  if (_.has(this.preferences, key)) {
     return this.preferences[key];
+  }
 
   // not set on user, determine default value
   var _key;
@@ -324,66 +339,70 @@ userSchema.methods.preferencesValue = function (key) {
   return preferencesConfig[_key]['default'];
 };
 
-/*********************************************************************************
+/** *******************************************************************************
  *
  * Unviewed
  *
  *********************************************************************************/
 
 userSchema.methods.hasUnviewedRoomMessage = function (room) {
-  if (!this.unviewed)
+  if (!this.unviewed) {
     return false;
+  }
 
   var found = _.find(this.unviewed, function (e) {
-    if (e.room && e.room.toString() === room.id)
+    if (e.room && e.room.toString() === room.id) {
       return true;
+    }
   });
 
   return !!found;
 };
 userSchema.methods.hasUnviewedOneMessage = function (user) {
-  if (!this.unviewed)
+  if (!this.unviewed) {
     return false;
+  }
 
   var found = _.find(this.unviewed, function (u) {
-    if (u.user && u.user.toString() === user.id)
+    if (u.user && u.user.toString() === user.id) {
       return true;
+    }
   });
 
   return !!found;
 };
-userSchema.statics.setUnviewedRoomMessage = function (roomId, usersId, userId , event, fn) {
+userSchema.statics.setUnviewedRoomMessage = function (roomId, usersId, userId, event, fn) {
   this.update({
-    _id: { $in: usersId, $nin: [userId] },
-    'unviewed.room': { $nin: [roomId] }
+    _id: {$in: usersId, $nin: [userId]},
+    'unviewed.room': {$nin: [roomId]}
   }, {
-    $addToSet: { unviewed: { room: roomId, event: event }}
-  }, { multi: true }, fn);
+    $addToSet: {unviewed: {room: roomId, event: event}}
+  }, {multi: true}, fn);
 };
 userSchema.statics.setUnviewedOneMessage = function (fromUserId, toUserId, event, fn) {
   this.update({
-    _id: { $in: [toUserId] },
-    'unviewed.user': { $nin: [fromUserId] }
+    _id: {$in: [toUserId]},
+    'unviewed.user': {$nin: [fromUserId]}
   }, {
-    $addToSet: { 'unviewed': {user: fromUserId, event: event}}
+    $addToSet: {'unviewed': {user: fromUserId, event: event}}
   }, fn);
 };
 userSchema.methods.resetUnviewedRoom = function (roomId, fn) {
   this.update({
-    $pull: { unviewed: { room: roomId }}
+    $pull: {unviewed: {room: roomId}}
   }).exec(function (err) {
     fn(err); // there is a bug that cause a timeout when i call directly fn() without warping in a local function (!!!)
   });
 };
 userSchema.methods.resetUnviewedOne = function (userId, fn) {
   this.update({
-    $pull: { unviewed: { user: userId }}
+    $pull: {unviewed: {user: userId}}
   }).exec(function (err) {
     fn(err); // there is a bug that cause a timeout when i call directly fn() without warping in a local function (!!!)
   });
 };
 
-/*********************************************************************************
+/** *******************************************************************************
  *
  * Username availability
  *
@@ -393,10 +412,12 @@ userSchema.statics.usernameAvailability = function (username, callback) {
   this.findOne({
     username: common.regExpBuildExact(username, 'i')
   }, function (err, user) {
-    if (err)
+    if (err) {
       return callback(err);
-    if (user)
+    }
+    if (user) {
       return callback('not-available');
+    }
 
     return callback();
   });
@@ -408,20 +429,22 @@ userSchema.methods.usernameAvailability = function (username, callback) {
         username: common.regExpBuildExact(username, 'i')
       },
       {
-        _id: { $ne: this._id }
+        _id: {$ne: this._id}
       }
     ]
   }, function (err, user) {
-    if (err)
+    if (err) {
       return callback(err);
-    if (user)
+    }
+    if (user) {
       return callback('not-available');
+    }
 
     return callback();
   });
 };
 
-/*********************************************************************************
+/** *******************************************************************************
  *
  * Avatar/poster
  *
@@ -438,18 +461,25 @@ userSchema.methods._poster = function (blur) {
   return cloudinary.poster(this.poster, this.color, blur);
 };
 userSchema.methods.avatarId = function () {
-  if (!this.avatar) return '';
+  if (!this.avatar) {
+    return '';
+  }
   var data = this.avatar.split('/');
-  if (!data[1]) return '';
+  if (!data[1]) {
+    return '';
+  }
   var id = data[1].substr(0, data[1].lastIndexOf('.'));
   return id;
 };
 userSchema.methods.posterId = function () {
-  if (!this.poster)
+  if (!this.poster) {
     return '';
+  }
 
   var data = this.poster.split('/');
-  if (!data[1]) return '';
+  if (!data[1]) {
+    return '';
+  }
   var id = data[1].substr(0, data[1].lastIndexOf('.'));
   return id;
 };

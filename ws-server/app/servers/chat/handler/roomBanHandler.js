@@ -25,9 +25,7 @@ handler.call = function (data, session, next) {
 
   var event = {};
 
-  var reason = (data.reason) ?
-    inputUtil.filter(data.reason, 512) :
-    false;
+  var reason = (data.reason) ? inputUtil.filter(data.reason, 512) : false;
 
   async.waterfall([
 
