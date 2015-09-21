@@ -112,11 +112,12 @@ var MainView = Backbone.View.extend({
     this.muteView = new MuteView();
 
     // @debug
-    //window.current = currentUser;
-    //window.rooms = rooms;
-    //window.onetoones = onetoones;
-    //window.client = client;
-    //window.main = this;
+    // @todo : mount only on debug mode
+    // window.current = currentUser;
+    // window.rooms = rooms;
+    // window.onetoones = onetoones;
+    // window.client = client;
+    // window.main = this;
 
     client.connect();
   },
