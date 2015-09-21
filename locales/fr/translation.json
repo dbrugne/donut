@@ -983,6 +983,15 @@
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
       }
     },
+    "roomrefuse": {
+      "subject": "Un utilisateur a refusé votre demande de rejoindre #__roomname__",
+      "content": {
+        "title": "@__username__ a refusé votre demande de rejoindre #__roomname__",
+        "disclaimer": "Ne vous inquiétez pas vous pouvez toujours refaire une demande plus tard !",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
+      }
+    },
     "roomdevoice": {
       "subject": "Vous êtes muet dans #__roomname__",
       "content": {
