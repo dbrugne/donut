@@ -9,7 +9,7 @@ define([
   'i18next',
   'client'
 ], function ($, _, Backbone, app, keyboard, common, i18next, client) {
-  return Backbone.View.extend({
+  var EventsSpam = Backbone.View.extend({
 
     events: {
       'click .dropdown-menu .spammed': 'onMarkAsSpam',
@@ -102,4 +102,6 @@ define([
       app.trigger('scrollDown');
     }
   });
+  
+  return EventsSpam;
 });
