@@ -10,13 +10,6 @@
         .action-search { width: 50px; border-width: 0 0 0 1px; background-color: transparent; border-color: @cl-subtext20; }
       }
     }
-    .baseline { float: left; margin-left: 30px; min-width: 310px; margin-top: 8px;
-      [data-toggle="talkative"] > * { padding:0;  }
-      .ctn-text {
-        p { .ft-opensans-bold; font-weight: 700; color: @cl-second; font-size: 1.3rem; text-transform: uppercase; margin-bottom: 0px; line-height: normal; }
-        [data-toggle="talkative"] > div.talkative-container > * { padding:0; }
-      }
-    } // #landing .baseline
     .nav .open>a, .nav .open>a:hover, .nav .open>a:focus { background-color: transparent; }
     .nav>li>a { text-decoration:underline;
       &:hover, &:active, &:visited { text-decoration:none;background-color: transparent; }
@@ -131,3 +124,34 @@
   }
 } // #landing
 
+.body-static { padding-top: 10px;
+  a { font-weight: bold; }
+  blockquote { font-size: 1em; }
+
+  div.logo { .row; padding-top: 10px;
+    img { width: 280px; }
+  }
+
+  div.main { .row;
+    div.content {
+      h1 { .ft-raleway-heavy; }
+    }
+  }
+
+  .menu {
+    ul {
+      li {
+        a { font-weight: normal; }
+        &.title { font-weight: bold; list-style: none; margin-left: -20px; }
+      }
+    }
+  }
+
+  p.question { font-weight: bold;
+    .numero { font-size: 1.1em; }
+  }
+
+  .footer { .row; text-align: center; margin-top: 20px; padding-top: 20px; padding-bottom: 20px;
+    border-top: 1px solid @cl-first;
+  }
+}

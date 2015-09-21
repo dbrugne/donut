@@ -37,7 +37,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
-        return callback('this user ' + user.id + " isn't able to deop another user in this room: " + room.name);
+        return callback('no-op');
       }
 
       if (!opedUser) {
@@ -81,6 +81,10 @@ handler.call = function (data, session, next) {
   ], function (err) {
     if (err) {
       logger.error('[room:deop] ' + err);
+
+      if (err === 'no-op') {
+        return next(null, {code: 403, err: err});
+      }
       return next(null, {code: 500, err: 'internal'});
     }
 

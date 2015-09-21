@@ -54,7 +54,7 @@ router.get('/', [require('csurf')()], function (req, res) {
         search: false,
         more: false
       };
-      renderer.render('../public/donut/templates/rooms-cards.html', data, callback);
+      renderer.render('../public/web/templates/rooms-cards.html', data, callback);
     }
 
   ], function (err, html) {

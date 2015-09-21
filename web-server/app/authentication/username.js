@@ -1,7 +1,6 @@
 'use strict';
 var express = require('express');
 var router = express.Router();
-var User = require('../../../shared/models/user');
 var isLoggedIn = require('../middlewares/isloggedin');
 var bouncer = require('../middlewares/bouncer');
 var i18next = require('../../../shared/util/i18next');
@@ -22,10 +21,11 @@ var validateInput = function (req, res, next) {
 var validateAvailability = function (req, res, next) {
   req.user.usernameAvailability(req.body.user.fields.username, function (err) {
     if (err) {
-      if (err === 'not-available')
+      if (err === 'not-available') {
         err = i18next.t('choose-username.usernameexists');
-      else
+      } else {
         err = 'Error while searching existing username: ' + err;
+      }
 
       return res.render('choose_username', {
         meta: {title: i18next.t('title.default')},

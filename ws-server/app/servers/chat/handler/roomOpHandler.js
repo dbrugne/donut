@@ -85,7 +85,16 @@ handler.call = function (data, session, next) {
   ], function (err) {
     if (err) {
       logger.error('[room:op] ' + err);
-      return next(null, {code: 500, err: 'internal'});
+
+      switch (err) {
+        case 'unknow-user-room':
+          return next(null, {code: 404, err: err});
+        case 'already-oped':
+        case 'no-op':
+          return next(null, {code: 403, err: err});
+        default:
+          return next(null, {code: 500, err: 'internal'});
+      }
     }
 
     next(null, {});

@@ -203,10 +203,8 @@ Facade.prototype.retrieveUserNotificationsCount = function (uid, time, callback)
     criteria.time = {};
     criteria.time.$lt = new Date(time);
   }
-  
   NotificationModel.find(criteria).count().exec(callback);
 };
-
 
 Facade.prototype.retrieveScheduledNotifications = function (callback) {
   var time = new Date();

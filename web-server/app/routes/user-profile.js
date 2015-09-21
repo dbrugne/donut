@@ -10,7 +10,7 @@ var conf = require('../../../config/index');
 router.param('user', require('../middlewares/user-param'));
 
 router.get('/user/:user', function (req, res) {
-  if (req.query.redirect && req.query.redirect == 'true') {
+  if (req.query.redirect && req.query.redirect === 'true') {
     bouncer.set(req, '/!#user/' + req.requestedUser.chat);
   }
 
@@ -49,7 +49,6 @@ router.get('/user/:user', function (req, res) {
 router.get('/user/discuss/:user', function (req, res) {
   bouncer.set(req, req.requestedUser.chat);
   return res.redirect('/login');
-
 });
 
 module.exports = router;

@@ -40,7 +40,6 @@ router.get('/room/:room', function (req, res) {
 router.get('/room/join/:room', function (req, res) {
   bouncer.set(req, req.room.chat);
   res.redirect('/login');
-
 });
 
 module.exports = router;

@@ -10,25 +10,30 @@ module.exports = function () {
     if (req.user) {
       res.locals.user = req.user.toObject(); // .toObject() avoid modification on original req.user object (like avatar)
       res.locals.user.avatar = req.user._avatar(80);
-      if (req.user.username)
+      if (req.user.username) {
         res.locals.user.url = req.protocol + '://' + conf.fqdn + '/user/' + ('' + req.user.username).toLocaleLowerCase();
+      }
     } else {
       res.locals.user = false;
     }
 
     // pass flash messages to all views
     res.locals.success = req.flash('success');
-    if (res.locals.success == '')
+    if (res.locals.success === '') {
       res.locals.success = false;
+    }
     res.locals.info = req.flash('info');
-    if (res.locals.info == '')
+    if (res.locals.info === '') {
       res.locals.info = false;
+    }
     res.locals.warning = req.flash('warning');
-    if (res.locals.warning == '')
+    if (res.locals.warning === '') {
       res.locals.warning = false;
+    }
     res.locals.error = req.flash('error');
-    if (res.locals.error == '')
+    if (res.locals.error === '') {
       res.locals.error = false;
+    }
 
     // configuration
     res.locals.cloudinary = conf.cloudinary;
@@ -43,7 +48,9 @@ module.exports = function () {
 
     // language
     res.locals.locale = req.locale;
-    res.locals.locale_iso = (req.locale === 'fr') ? 'fr_FR' : 'en_US';
+    res.locals.locale_iso = (req.locale === 'fr')
+      ? 'fr_FR'
+      : 'en_US';
 
     next();
   };
