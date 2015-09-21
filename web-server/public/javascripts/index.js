@@ -206,7 +206,7 @@ require([
     $('.body-profile').find('.share .twitter').click(function () {
       $.socialify.twitter({
         url: $(this).data('url'),
-        text: $.t('chat.share.description', {name: $(this).data('name')})
+        text: i18next.t('chat.share.description', {name: $(this).data('name')})
       });
     });
     $('.body-profile').find('.share .googleplus').click(function () {

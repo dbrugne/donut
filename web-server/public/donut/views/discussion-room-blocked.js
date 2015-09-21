@@ -102,9 +102,9 @@ define([
       var password = $(event.currentTarget).closest('.password-form').find('.input-password').val();
       client.roomJoin(this.model.get('id'), this.model.get('name'), password, function (response) {
         if (response.err && (response.err === 'wrong-password' || response.err === 'spam-password')) {
-          $(event.currentTarget).closest('.password-form').find('.error').html($.t('chat.password.' + response.err));
+          $(event.currentTarget).closest('.password-form').find('.error').html(i18next.t('chat.password.' + response.err));
         } else if (response.err) {
-          $(event.currentTarget).closest('.password-form').find('.error').html($.t('chat.password.error'));
+          $(event.currentTarget).closest('.password-form').find('.error').html(i18next.t('chat.password.error'));
         }
       });
     },
