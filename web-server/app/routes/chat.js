@@ -27,17 +27,21 @@ router.get('/!', function (req, res) {
 
   // ... otherwise open chat
 
-  bouncer.reset(req); // cleanup bouncer (not before cause other middleware can redirect
+  // cleanup bouncer (not before cause other middleware can redirect
   // browser before, e.g.: choose-username)
+  bouncer.reset(req);
+
+  // client script to use
+  var script = (process.env.NODE_ENV !== 'development')
+    ? '/build/' + req.locale + '.js'
+    : '/' + req.locale + '.js';
 
   return res.render('chat', {
     meta: {title: i18next.t('title.chat')},
     colors: colors.toString(),
     hello: hello().replace('%u', '<strong>@' + req.user.username + '</strong>'),
     avoidFa: true,
-    script: (process.env.NODE_ENV !== 'development')
-      ? '/build/bundle.js'
-      : '/' + req.locale + '.js'
+    script: script
   });
 });
 
