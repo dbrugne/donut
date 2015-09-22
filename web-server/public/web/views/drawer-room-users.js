@@ -1,11 +1,9 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var common = require('@dbrugne/donut-common/browser');
 var client = require('../client');
-var currentUser = require('../models/current-user');
-var confirmationView = require('./modal-confirmation');
 var RoomUsersTableConfirmation = require('./drawer-room-users-table');
+var keyboard = require('../libs/keyboard');
 
 var DrawerRoomUsersView = Backbone.View.extend({
   template: require('../templates/drawer-room-users.html'),
@@ -65,7 +63,6 @@ var DrawerRoomUsersView = Backbone.View.extend({
 
     this.render(null);
   },
-
   render: function () {
     // ask for data
     var that = this;
@@ -90,18 +87,19 @@ var DrawerRoomUsersView = Backbone.View.extend({
 
     this.initializeTooltips();
   },
-  onChangeType: function (event) {
+  onChangeType: function () {
     this.page = 1;
     this.search.val('');
     this.currentType = this.typeSelected.val();
     this.render();
   },
-  onSearch: function (event) {
+  onSearch: function () {
     this.page = 1;
     this.render();
   },
   onSearchEnter: function (event) {
-    if (event.keyCode === 13) {
+    var key = keyboard._getLastKeyCode(event);
+    if (key.key === keyboard.RETURN) {
       this.page = 1;
       this.render();
     }

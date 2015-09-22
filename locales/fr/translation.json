@@ -593,7 +593,6 @@
           }
         },
         "create": {
-          "info": "Attention le nom du donut ne sera plus modifiable !",
           "label": "Créez un donut",
           "help": "Entre 3 et 24 caractères, chiffres, lettres, tirets (-) et underscores (_) uniquement",
           "placeholder": "Nom du donut",

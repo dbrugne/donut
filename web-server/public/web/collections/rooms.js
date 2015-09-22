@@ -234,6 +234,7 @@ var RoomsCollection = Backbone.Collection.extend({
 
     // remove from this.users
     model.users.remove(user);
+    model.set('users_number', model.get('users_number') - 1);
     model.users.trigger('users-redraw');
 
     // trigger event
