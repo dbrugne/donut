@@ -11,7 +11,7 @@ var logger = require('../../../shared/util/logger').getLogger('web', __filename)
 // @doc: http://sahatyalkabov.com/how-to-implement-password-reset-in-nodejs/
 
 var validateInput = function (req, res, next) {
-  req.checkBody(['email'], i18next.t('account.email.format')).isEmail();
+  req.checkBody(['email'], i18next.t('account.email.error.format')).isEmail();
   if (req.validationErrors()) {
     return res.render('account_forgot', {
       meta: {title: i18next.t('title.default')},
