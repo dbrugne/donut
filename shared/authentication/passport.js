@@ -78,21 +78,18 @@ passport.use('local-signup', new LocalStrategy(localStrategyOptions,
           if (user.validPassword(password)) { // user type both password and mail of user so connect him
             return done(null, user);
           } else {
-            return done(null, false, req.flash('error', i18next.t('account.email.error.alreadyexists')));
+            return done('email-alreadyexists');
           }
         }
 
         req.checkBody('username', i18next.t('choose-username.usernameerror')).isUsername();
         if (req.validationErrors()) {
-          return done(null, false, req.flash('error', i18next.t('choose-username.usernameerror')));
+          return done('usernameerror');
         }
 
         User.usernameAvailability(req.body.username, function (err) {
           if (err) {
-            var errorMessage = (err === 'not-available')
-              ? i18next.t('choose-username.usernameexists')
-              : i18next.t('global.unknownerror');
-            return done(null, false, req.flash('error', errorMessage));
+            return done(err);
           }
 
           // create
@@ -115,7 +112,6 @@ passport.use('local-signup', new LocalStrategy(localStrategyOptions,
                 return logger.error('Unable to sent welcome email: ' + err);
               }
             });
-
             return done(null, newUser);
           });
         });

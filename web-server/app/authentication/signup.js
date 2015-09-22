@@ -31,9 +31,38 @@ router.route('/signup')
       token: req.csrfToken()
     });
   })
-  .post([require('csurf')(), validateInput, passport.authenticate('local-signup', {
-    failureRedirect: '/signup',
-    failureFlash: true
-  })], bouncer.redirect);
+  .post([require('csurf')(), validateInput, function (req, res, next) {
+    passport.authenticate('local-signup', function (err, user, info) {
+      if (err) {
+        var errorMessage;
+        switch (err) {
+          case 'email-alreadyexists' :
+            errorMessage = i18next.t('account.email.error.alreadyexists');
+            break;
+          case 'usernameerror':
+            errorMessage = i18next.t('choose-username.usernameerror');
+            break;
+          case 'not-available':
+            errorMessage = i18next.t('choose-username.usernameexists');
+            break;
+          default :
+            errorMessage = i18next.t('global.unknownerror');
+        }
+        return res.render('signup', {
+          meta: {title: i18next.t('title.default')},
+          userFields: {
+            email: req.body.email,
+            username: req.body.username
+          },
+          errors: [{msg: errorMessage}],
+          token: req.csrfToken()
+        });
+      }
+      req.logIn(user, function (err) {
+        if (err) { return next(err); }
+        return res.redirect('/!');
+      });
+    })(req, res, next);
+  }], bouncer.redirect);
 
 module.exports = router;
