@@ -127,7 +127,7 @@ handler.call = function (data, session, next) {
         _id: { $in: ids }
       };
       if (data.attributes.searchString) {
-        var regex = common.contains(data.attributes.searchString, 'i');
+        var regex = common.regexp.contains(data.attributes.searchString, 'i');
         query.username = {$regex: regex};
       }
       return callback(null, query);
