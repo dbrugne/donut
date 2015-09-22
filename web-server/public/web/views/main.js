@@ -37,6 +37,8 @@ var MuteView = require('./mute');
 
 var debug = donutDebug('donut:main');
 
+window.date = require('../libs/date');
+
 var MainView = Backbone.View.extend({
   el: $('#chat'),
 
@@ -699,9 +701,7 @@ var MainView = Backbone.View.extend({
       client.userDeban(userId);
       app.trigger('userDeban');
     }, this));
-
   }
 });
-
 
 module.exports = new MainView();
