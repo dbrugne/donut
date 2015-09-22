@@ -3,13 +3,11 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
 var donutDebug = require('../libs/donut-debug');
-var keyboard = require('../libs/keyboard');
 var common = require('@dbrugne/donut-common/browser');
 var EventModel = require('../models/event');
 var moment = require('moment');
 var i18next = require('i18next-client');
 var client = require('../client');
-var currentUser = require('../models/current-user');
 var EventsViewedView = require('./events-viewed');
 var EventsHistoryView = require('./events-history');
 var EventsSpamView = require('./events-spam');
@@ -18,7 +16,7 @@ var windowView = require('./window');
 
 var debug = donutDebug('donut:events');
 
-var EventsView = Backbone.View.extend({
+module.exports = Backbone.View.extend({
   template: require('../templates/events.html'),
 
   events: {
@@ -76,8 +74,8 @@ var EventsView = Backbone.View.extend({
     if (modelJson.owner) {
       modelJson.owner = modelJson.owner.toJSON();
     }
-    var created_at = (this.model.get('created_at')) 
-      ? moment(this.model.get('created_at')).format('Do MMMM YYYY, h:mm:ss') 
+    var created_at = (this.model.get('created_at'))
+      ? moment(this.model.get('created_at')).format('Do MMMM YYYY, h:mm:ss')
       : '';
     var html = this.template({
       model: modelJson,
@@ -500,6 +498,3 @@ var EventsView = Backbone.View.extend({
     this.eventsHistoryView.requestHistory(scrollTo);
   }
 });
-
-
-module.exports = EventsView;
