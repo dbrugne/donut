@@ -48,8 +48,8 @@ if (process.env.NODE_ENV === 'development') {
   app.use(require('browserify-dev-middleware')({
     src: __dirname + '/public/outside',
     transforms: [
-      require('../shared/util/browserifyJst'),
-      require('../shared/util/browserifyI18next')
+      require('../shared/util/browserify-jst'),
+      require('../shared/util/browserify-i18next')
     ]
   }));
 }
