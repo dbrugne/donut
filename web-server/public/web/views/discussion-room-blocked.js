@@ -10,11 +10,6 @@ var client = require('../client');
 var RoomBlockedView = Backbone.View.extend({
   tagName: 'div',
 
-  /**
-   * @todo : close discussion view in left tab
-   * @todo : reopen on next welcome (how to persist?)
-   */
-
   className: 'discussion',
 
   hasBeenFocused: false,

@@ -680,7 +680,6 @@
         "alreadyyours": "Vous utilisez déjà cette adresse mail",
         "empty": "Le champ est vide"
       },
-      "format": "account.email.format",
       "new": "Nouvel email",
       "confirm": "Confirmer"
     },

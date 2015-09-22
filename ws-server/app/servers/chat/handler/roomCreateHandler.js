@@ -18,7 +18,6 @@ var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
   var user = session.__currentUser__;
-  var passwordPattern = /([^\s]{4,255})$/i;
 
   async.waterfall([
 
@@ -29,12 +28,6 @@ handler.call = function (data, session, next) {
 
       if (!data.mode || !common.validate.mode(data.mode)) {
         return callback('invalid-mode');
-      }
-
-      if (data.mode === 'private') {
-        if (!passwordPattern.test(data.password)) {
-          return callback('invalid-password');
-        }
       }
 
       return callback(null);
