@@ -432,9 +432,6 @@ module.exports = Backbone.View.extend({
     try {
       var template;
       switch (data.type) {
-        case 'disconnected':
-          template = require('../templates/event/disconnected.html');
-          break;
         case 'room:in':
           if (currentUser.get('user_id') === model.get('data').user_id) {
             template = require('../templates/event/hello.html');
@@ -453,9 +450,6 @@ module.exports = Backbone.View.extend({
         case 'room:message':
         case 'user:message':
           template = require('../templates/event/message.html');
-          break;
-        case 'reconnected':
-          template = require('../templates/event/reconnected.html');
           break;
         case 'room:deop':
           template = require('../templates/event/room-deop.html');
