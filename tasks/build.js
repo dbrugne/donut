@@ -13,8 +13,8 @@ module.exports = function (grunt) {
         dest: 'web-server/public/build/en.js',
         options: {
           transform: [
-            require('../shared/util/browserifyJst'),
-            require('../shared/util/browserifyI18next')
+            require('../shared/util/browserify-jst'),
+            require('../shared/util/browserify-i18next')
           ]
         }
       },
@@ -23,8 +23,8 @@ module.exports = function (grunt) {
         dest: 'web-server/public/build/fr.js',
         options: {
           transform: [
-            require('../shared/util/browserifyJst'),
-            require('../shared/util/browserifyI18next')
+            require('../shared/util/browserify-jst'),
+            require('../shared/util/browserify-i18next')
           ]
         }
       }
