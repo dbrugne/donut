@@ -6,7 +6,7 @@ var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
 var roomDataHelper = require('../../../util/roomData');
 var oneDataHelper = require('../../../util/oneData');
-var featuredRooms = require('../../../../../shared/util/featuredRooms');
+var featuredRooms = require('../../../../../shared/util/featured-rooms');
 var Notifications = require('../../../components/notifications');
 
 module.exports = function (app) {

@@ -1,6 +1,6 @@
 'use strict';
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
-var featuredRooms = require('../../../../../shared/util/featuredRooms');
+var featuredRooms = require('../../../../../shared/util/featured-rooms');
 
 module.exports = function (data) {
   logger.trace('[schedule:featuredRooms] starting');
