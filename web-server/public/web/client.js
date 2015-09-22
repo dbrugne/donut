@@ -73,6 +73,8 @@ var client = _.extend({
     return _.bind(function (response) {
       if (response.err) {
         debug('io:in:' + key + ' error: ', response);
+      } else {
+        debug('io:in:' + key + ': ', response);
       }
       if (_.isFunction(callback)) {
         return callback(response);
@@ -112,12 +114,8 @@ var client = _.extend({
   search: function (search, rooms, users, limit, skip, light, callback) {
     var data = {
       search: search, // string to search for
-      limit: (limit)
-        ? limit
-        : 100,
-      skip: (skip)  // if the serach should skip n first items
-        ? skip
-        : 0,
+      limit: limit || 100,
+      skip: skip || 0,
       light: (light), // if the search should return a light version of results or not
       rooms: (rooms), // if we should search for rooms
       users: (users) // if we should search for users
