@@ -30,7 +30,8 @@ var RoomAccessView = Backbone.View.extend({
     'click i.icon-search': 'onSearch',
     'click .dropdown-menu>li': 'onAllowUser',
     'change [type="checkbox"]': 'onChoosePassword',
-    'click .random-password': 'onRandomPassword'
+    'click .random-password': 'onRandomPassword',
+    'click .change-mode': 'onChangeMode'
   },
 
   initialize: function (options) {
@@ -166,6 +167,11 @@ var RoomAccessView = Backbone.View.extend({
     }
     this.$password.val(common.misc.randomString());
     this.$password.focus();
+  },
+  onChangeMode: function (event) {
+    event.preventDefault();
+    ConfirmationView.open({}, _.bind(function () {
+    }, this));
   },
   reset: function () {
     this.$errors.html('').hide();
