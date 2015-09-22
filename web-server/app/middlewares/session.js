@@ -3,7 +3,7 @@ var conf = require('../../../config/index');
 var session = require('express-session');
 
 var RedisStore = require('connect-redis')(session);
-var client = require('../io/redis');
+var client = require('../../../shared/io/redis');
 var store = new RedisStore({
   client: client,
   ttl: conf.sessions.ttl * 2 // 2 week (x2 cookie maxAge)
