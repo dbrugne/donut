@@ -40,21 +40,7 @@
             </div>
         </div>
         <div class="blank flex-child"></div>
-        <div class="realtime">
-            <% if (model.type === 'room') { %>
-            <div class="hello block hidden-xs">
-                <div class="event">
-                    <div class="text"><i class="icon icon-hello"></i> <%= t('chat.welcome.room', {name: model.name}) %></div>
-                </div>
-            </div>
-            <% } else if (model.type === 'onetoone') { %>
-            <div class="hello block hidden-xs">
-                <div class="event">
-                    <div class="text"><i class="icon icon-hello"></i> <%= t('chat.welcome.onetoone', {username: model.username}) %></div>
-                </div>
-            </div>
-            <% }; %>
-        </div>
+        <div class="realtime"></div>
     </div>
 </div>
 <div class="go-to-top">
