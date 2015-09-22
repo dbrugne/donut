@@ -1,10 +1,8 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
-var currentUser = require('../models/current-user');
 
 var debug = donutDebug('donut:room-users');
 
@@ -21,8 +19,8 @@ var RoomUsersView = Backbone.View.extend({
   initialRender: function () {
     var html = this.template({});
     this.$el.html(html);
-    this.$count = this.$('.count');
-    this.$list = this.$('.list');
+    this.$count = this.$el.find('.count');
+    this.$list = this.$el.find('.list');
   },
   render: function () {
     debug.start('room-users' + this.model.get('name'));
@@ -58,6 +56,5 @@ var RoomUsersView = Backbone.View.extend({
   }
 
 });
-
 
 module.exports = RoomUsersView;

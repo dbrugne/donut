@@ -16,7 +16,7 @@ var RoomAccessView = Backbone.View.extend({
 
   dropdownTemplate: require('../templates/drawer-room-access-dropdown.html'),
 
-  passwordPattern: /([^\s]{4,255})$/i,
+  passwordPattern: /(.{4,255})$/i,
 
   id: 'room-access',
 

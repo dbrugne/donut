@@ -45,6 +45,13 @@ if (process.env.NODE_ENV === 'development') {
       require('../shared/util/browserify-i18next')
     ]
   }));
+  app.use(require('browserify-dev-middleware')({
+    src: __dirname + '/public/outside',
+    transforms: [
+      require('../shared/util/browserify-jst'),
+      require('../shared/util/browserify-i18next')
+    ]
+  }));
 }
 
 app.use(bodyParser.urlencoded({ extended: true }));
