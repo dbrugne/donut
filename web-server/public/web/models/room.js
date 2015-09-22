@@ -93,6 +93,7 @@ var RoomModel = Backbone.Model.extend({
     data.status = 'online'; // only an online user can join a room
 
     this.addUser(data, true);
+    this.set('users_number', this.get('users_number') + 1);
     this.users.trigger('users-redraw');
 
     var model = new EventModel({
@@ -109,6 +110,7 @@ var RoomModel = Backbone.Model.extend({
       return;
     }
     this.users.remove(user);
+    this.set('users_number', this.get('users_number') - 1);
     this.users.trigger('users-redraw');
 
     var model = new EventModel({
@@ -288,7 +290,10 @@ var RoomModel = Backbone.Model.extend({
   },
   fetchUsers: function (callback) {
     var that = this;
-    client.roomUsers(this.get('id'), {type: 'users', status: 'online'}, function (data) {
+    client.roomUsers(this.get('id'), {
+      type: 'users',
+      status: 'online'
+    }, function (data) {
       that.users.reset();
 
       _.each(data.users, function (element, key, list) {
@@ -296,7 +301,9 @@ var RoomModel = Backbone.Model.extend({
                                       // each model .add()
       });
 
-      var maxOfflineUsersToDisplay = (15 - data.count > 0) ? 15 - data.count : 2;
+      var maxOfflineUsersToDisplay = (15 - data.count > 0)
+        ? 15 - data.count
+        : 2;
       var searchAttributes = {
         type: 'users',
         status: 'offline',
@@ -339,6 +346,5 @@ var RoomModel = Backbone.Model.extend({
   }
 
 });
-
 
 module.exports = RoomModel;
