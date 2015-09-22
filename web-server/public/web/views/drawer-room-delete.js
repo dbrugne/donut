@@ -13,7 +13,7 @@ var DrawerRoomDeleteView = Backbone.View.extend({
   id: 'room-delete',
 
   events: {
-    'keyup .input': 'onKeyup',
+    'keyup input[name=input-delete]': 'onKeyup',
     'click .submit': 'onSubmit'
   },
 
@@ -34,6 +34,13 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     // on room:delete callback
     this.listenTo(client, 'room:delete', this.onDelete);
   },
+  setError: function (error) {
+    this.$errors.html(error).show();
+  },
+  reset: function () {
+    this.$errors.html('').hide();
+    this.$el.removeClass('has-error').removeClass('has-success').val('');
+  },
   render: function () {
     // render spinner only
     this.$el.html(require('../templates/spinner.html'));
@@ -48,12 +55,14 @@ var DrawerRoomDeleteView = Backbone.View.extend({
 
     var html = this.template({room: room});
     this.$el.html(html);
-    this.$input = this.$('.input');
+    this.$input = this.$el.find('input[name=input-delete]');
+    this.$errors = this.$el.find('.errors');
   },
   onSubmit: function (event) {
     event.preventDefault();
+    this.reset();
     if (!this._valid()) {
-      return;
+      return this.setError(i18next.t('chat.form.errors.invalid-name'));
     }
 
     client.roomDelete(this.roomId);
@@ -63,14 +72,14 @@ var DrawerRoomDeleteView = Backbone.View.extend({
       return;
     }
 
-    this.$('.errors').hide();
+    this.$el.find('.errors').hide();
 
     if (!data.success) {
       var message = '';
       _.each(data.errors, function (error) {
         message += error + '<br>';
       });
-      this.$('.errors').html(message).show();
+      this.$el.find('.errors').html(message).show();
       return;
     }
 

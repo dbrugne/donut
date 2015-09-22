@@ -1,5 +1,5 @@
-<div class="room">
-    <span class="name">
+<div class="form-group">
+    <span class="title">
         <%= room.name %>
         <% if (room.mode === 'private') { %>
             <span class="room-profile private" data-toggle="tooltip" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
@@ -34,7 +34,7 @@
     </div>
 
     <% if (room.isAdmin) { %>
-        <div class="form-group">
+        <div class="form-group admin">
             <label><%= t('chat.form.room-form.edit.visibility.label') %></label>
             <div class="radio">
                 <label>
@@ -49,7 +49,7 @@
                 </label>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group admin">
             <label for="roomPriority"><%= t('chat.form.room-form.edit.priority.label') %></label>
             <input type="number" name="priority" class="form-control" id="roomPriority" placeholder="<%= t('chat.form.room-form.edit.priority.placeholder') %>" value="<%= room.priority %>">
             <p class="help-block"><%= t('chat.form.room-form.edit.priority.help') %></p>

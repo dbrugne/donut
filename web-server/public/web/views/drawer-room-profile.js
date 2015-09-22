@@ -58,7 +58,7 @@ var DrawerRoomProfileView = Backbone.View.extend({
 
     var html = this.template({room: room});
     this.$el.html(html);
-    this.$('.created span').momentify('date');
+    this.$el.find('.created span').momentify('date');
 
     if (room.color) {
       this.trigger('color', room.color);
@@ -125,6 +125,5 @@ var DrawerRoomProfileView = Backbone.View.extend({
   }
 
 });
-
 
 module.exports = DrawerRoomProfileView;
