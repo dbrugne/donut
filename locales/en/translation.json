@@ -594,7 +594,6 @@
           }
         },
         "create": {
-          "info": "Attention, the donut name will not be editable later.",
           "label": "Create a donut",
           "help": "Between 3 and 24 characters, only letters, numbers,  dashes (-) and underscore (_)",
           "placeholder": "Donut name",
