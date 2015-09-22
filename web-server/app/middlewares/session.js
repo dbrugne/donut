@@ -1,10 +1,16 @@
 'use strict';
 var conf = require('../../../config/index');
 var session = require('express-session');
-var redisStore = require('../../../shared/authentication/redisStore');
+
+var RedisStore = require('connect-redis')(session);
+var client = require('../../../shared/io/redis');
+var store = new RedisStore({
+  client: client,
+  ttl: conf.sessions.ttl * 2 // 2 week (x2 cookie maxAge)
+});
 
 module.exports = session({
-  store: redisStore,
+  store: store,
   secret: conf.sessions.secret,
   key: conf.sessions.key,
   resave: true,

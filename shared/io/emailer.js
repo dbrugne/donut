@@ -2,7 +2,7 @@
 var logger = require('../util/logger').getLogger('emailer', __filename);
 var _ = require('underscore');
 var nodemailer = require('nodemailer');
-var underscoreTemplate = require('../util/underscoreTemplate');
+var underscoreTemplate = require('../util/underscore-template');
 var i18next = require('../util/i18next');
 var conf = require('../../config/index');
 var mailgunTransport = require('nodemailer-mailgun-transport');
