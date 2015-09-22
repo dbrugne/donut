@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 var client = require('../client');
 var currentUser = require('../models/current-user');
 
@@ -50,7 +50,7 @@ var DrawerRoomProfileView = Backbone.View.extend({
 
     room.isAdmin = currentUser.isAdmin();
 
-    room.avatar = common.cloudinarySize(room.avatar, 90);
+    room.avatar = common.cloudinary.prepare(room.avatar, 90);
 
     room.url = '/room/' + room.name.replace('#', '').toLocaleLowerCase();
 
@@ -96,7 +96,7 @@ var DrawerRoomProfileView = Backbone.View.extend({
         user.isOp = true;
       }
 
-      user.avatar = common.cloudinarySize(user.avatar, 34);
+      user.avatar = common.cloudinary.prepare(user.avatar, 34);
 
       list.push(user);
     }

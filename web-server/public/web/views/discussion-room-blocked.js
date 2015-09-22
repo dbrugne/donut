@@ -3,7 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var moment = require('moment');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 var app = require('../models/app');
 var client = require('../client');
 
@@ -47,7 +47,7 @@ var RoomBlockedView = Backbone.View.extend({
     }
 
     // avatar
-    data.avatar = common.cloudinarySize(data.avatar, 100);
+    data.avatar = common.cloudinary.prepare(data.avatar, 100);
 
     // id
     data.room_id = this.model.get('id');

@@ -3,7 +3,7 @@ var logger = require('../../../../../shared/util/logger').getLogger('donut', __f
 var async = require('async');
 var _ = require('underscore');
 var Notifications = require('../../../components/notifications');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/server');
 
 var Handler = function (app) {
   this.app = app;
@@ -39,9 +39,9 @@ handler.call = function (data, session, next) {
         }
 
         // filter array to preserve only valid
-        _.each(data.ids, function (elt) {
-          if (common.objectIdPattern.test(elt)) {
-            notifications.push(elt);
+        _.each(data.ids, function (element) {
+          if (common.validate.objectId(element)) {
+            notifications.push(element);
           }
         });
 

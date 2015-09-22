@@ -43,6 +43,7 @@
     "jsonwebtoken": "5.x",
     "keen-js": "^3.2.4",
     "less-middleware": "2.x",
+    "linkifyjs": "^2.0.0-beta.4",
     "loggly": "^1.0.8",
     "moment": "^2.10.3",
     "mongoose": "4.x",

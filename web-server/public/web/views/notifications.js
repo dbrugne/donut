@@ -3,7 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var app = require('../models/app');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 var client = require('../client');
 var rooms = require('../collections/rooms');
 var onetoones = require('../collections/onetoones');
@@ -185,9 +185,9 @@ var NotificationsView = Backbone.View.extend({
     var dateObject = moment(notification.time);
 
     if (notification.data.room) {
-      notification.avatar = common.cloudinarySize(notification.data.room.avatar, 90);
+      notification.avatar = common.cloudinary.prepare(notification.data.room.avatar, 90);
     } else if (notification.data.by_user) {
-      notification.avatar = common.cloudinarySize(notification.data.by_user.avatar, 90);
+      notification.avatar = common.cloudinary.prepare(notification.data.by_user.avatar, 90);
     }
 
     return template({

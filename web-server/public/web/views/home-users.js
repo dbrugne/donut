@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 
 var UsersView = Backbone.View.extend({
   template: require('../templates/home-users.html'),
@@ -10,7 +10,7 @@ var UsersView = Backbone.View.extend({
   render: function (data) {
     var users = [];
     _.each(data.users.list, function (user) {
-      user.avatar = common.cloudinarySize(user.avatar, 30);
+      user.avatar = common.cloudinary.prepare(user.avatar, 30);
       users.push(user);
     });
 

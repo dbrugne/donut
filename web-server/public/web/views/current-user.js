@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 var currentUser = require('../models/current-user');
 
 var CurrentUserView = Backbone.View.extend({
@@ -18,7 +18,7 @@ var CurrentUserView = Backbone.View.extend({
 
     var data = currentUser.toJSON();
 
-    data.avatar = common.cloudinarySize(currentUser.get('avatar'), 60);
+    data.avatar = common.cloudinary.prepare(currentUser.get('avatar'), 60);
 
     var html = this.template(data);
     this.$el.html(html);

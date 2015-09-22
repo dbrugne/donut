@@ -3,7 +3,8 @@ var async = require('async');
 var _ = require('underscore');
 var RoomModel = require('../../../shared/models/room');
 var UserModel = require('../../../shared/models/user');
-var common = require('@dbrugne/donut-common');
+var linkify = require('linkifyjs');
+var parser = require('@dbrugne/donut-common/server').markup.parser(linkify);
 
 /**
  * Check for maximal length, sanitize line breaks
@@ -49,7 +50,7 @@ module.exports.mentions = function (string, callback) {
     return callback(null, string, {});
   }
 
-  common.markupString(string, function (markups, fn) {
+  parser(string, function (markups, fn) {
     if (!markups.rooms.length && !markups.users.length) {
       return fn(null, markups);
     }

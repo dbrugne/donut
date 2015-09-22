@@ -3,7 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var donutDebug = require('../libs/donut-debug');
 var keyboard = require('../libs/keyboard');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 var client = require('../client');
 var currentUser = require('../models/current-user');
 
@@ -33,7 +33,7 @@ var MessageEditView = Backbone.View.extend({
     this.$el.removeClass('has-hover');
 
     this.originalMessage = (this.$text.html() !== undefined) ? this.$text.html() : '';
-    this.originalMessage = common.markupToText(this.originalMessage);
+    this.originalMessage = common.markup.toText(this.originalMessage);
     this.originalMessage = this.htmlSmileyToText(this.originalMessage);
 
     this.$messageForm = this.$('.message-form');

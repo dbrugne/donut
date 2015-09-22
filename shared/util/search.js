@@ -3,7 +3,7 @@ var _ = require('underscore');
 var User = require('../models/user');
 var Room = require('../models/room');
 var diacritics = require('diacritics').remove;
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/server');
 
 /**
  * Search in database rooms and/or users.
@@ -33,7 +33,7 @@ module.exports = function (search, searchInUsers, searchInRooms, limit, skip, li
   search = search.replace(/([@#])/g, '');
   search = diacritics(search);
 
-  var _regexp = common.regExpBuildContains(search);
+  var _regexp = common.regexp.contains(search);
 
   async.parallel([
 

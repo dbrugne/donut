@@ -3,7 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var app = require('../models/app');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 var client = require('../client');
 var currentUser = require('../models/current-user');
 var rooms = require('../collections/rooms');
@@ -217,7 +217,7 @@ var WindowView = Backbone.View.extend({
     }
 
     // test if i mentioned (only for rooms)
-    var isMention = (event.getGenericType() !== 'message' && model.get('type') === 'room' && common.isUserMentionned(currentUser.get('user_id'), event.get('data').message));
+    var isMention = (event.getGenericType() !== 'message' && model.get('type') === 'room' && common.markup.isUserMentionned(currentUser.get('user_id'), event.get('data').message));
 
     // test if current discussion is focused
     var isFocused = (this.focused && model.get('focused'));

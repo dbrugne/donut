@@ -5,7 +5,7 @@ var async = require('async');
 var router = express.Router();
 var i18next = require('../../../shared/util/i18next');
 var conf = require('../../../config/index');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/server');
 var featuredRooms = require('../../../shared/util/featuredRooms');
 
 var underscoreTemplate = require('../../../shared/util/underscoreTemplate');
@@ -36,7 +36,7 @@ router.get('/', [require('csurf')()], function (req, res) {
 
     function renderTemplate (featured, callback) {
       _.each(featured, function (element, index, list) {
-        list[index].avatar = common.cloudinarySize(element.avatar, 135);
+        list[index].avatar = common.cloudinary.prepare(element.avatar, 135);
         var identifier = element.name.replace('#', '');
         list[index].url = req.protocol + '://' + conf.fqdn + '/room/' + identifier;
         list[index].join = (req.user)

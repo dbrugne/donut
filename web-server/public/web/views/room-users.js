@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
 var currentUser = require('../models/current-user');
 
@@ -37,7 +37,7 @@ var RoomUsersView = Backbone.View.extend({
       var u = o.toJSON();
 
       // avatar
-      u.avatar = common.cloudinarySize(u.avatar, 34);
+      u.avatar = common.cloudinary.prepare(u.avatar, 34);
 
       listJSON.push(u);
     });

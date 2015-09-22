@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 var app = require('../models/app');
 var client = require('../client');
 var EventsView = require('./events');
@@ -71,7 +71,7 @@ var RoomView = Backbone.View.extend({
     data.isAdmin = this.model.currentUserIsAdmin();
 
     // avatar
-    data.avatar = common.cloudinarySize(data.avatar, 100);
+    data.avatar = common.cloudinary.prepare(data.avatar, 100);
 
     // poster
     data.poster = data.poster || '';
@@ -253,7 +253,7 @@ var RoomView = Backbone.View.extend({
     this.changeColor();
   },
   onAvatar: function (model, value) {
-    var url = common.cloudinarySize(value, 100);
+    var url = common.cloudinary.prepare(value, 100);
     this.$('.header img.avatar').attr('src', url);
   },
   onPoster: function (model, url, options) {
@@ -278,7 +278,7 @@ var RoomView = Backbone.View.extend({
     $.socialify.facebook({
       url: this.model.getUrl(),
       name: i18next.t('chat.share.title', {name: this.model.get('name')}),
-      picture: common.cloudinarySize(this.model.get('avatar'), 350),
+      picture: common.cloudinary.prepare(this.model.get('avatar'), 350),
       description: i18next.t('chat.share.description', {name: this.model.get('name')})
     });
   },

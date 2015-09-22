@@ -4,7 +4,7 @@ var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
 var i18next = require('i18next-client');
 var moment = require('moment');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 var app = require('../models/app');
 var client = require('../client');
 var ConfirmationView = require('./modal-confirmation');
@@ -98,7 +98,7 @@ var RoomAccessView = Backbone.View.extend({
     var that = this;
     client.search(this.$search.val(), false, true, 15, 0, false, function (data) {
       _.each(data.users.list, function (element, index, list) {
-        list[index].avatarUrl = common.cloudinarySize(element.avatar, 20);
+        list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 20);
       });
 
       that.$dropdownMenu.html(that.dropdownTemplate({users: data.users.list}));
@@ -151,7 +151,7 @@ var RoomAccessView = Backbone.View.extend({
       this.$password.removeAttr('disabled').removeClass('disabled');
       this.$randomPassword.removeClass('disabled');
       if (this.$password.val() === '') {
-        this.$password.val(common.randomString());
+        this.$password.val(common.misc.randomString());
       }
     } else {
       this.$password.attr('disabled', true).addClass('disabled');
@@ -164,7 +164,7 @@ var RoomAccessView = Backbone.View.extend({
     if (this.$randomPassword.hasClass('disabled') === true) {
       return;
     }
-    this.$password.val(common.randomString());
+    this.$password.val(common.misc.randomString());
     this.$password.focus();
   },
   reset: function () {

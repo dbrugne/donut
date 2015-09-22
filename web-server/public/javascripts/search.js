@@ -18,7 +18,7 @@ define([
     render: function (data) {
       var rooms = [];
       _.each(data.rooms, function (room) {
-        room.avatar = common.cloudinarySize(room.avatar, 135);
+        room.avatar = common.cloudinary.prepare(room.avatar, 135);
         rooms.push(room);
       });
 

@@ -3,7 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
 var keyboard = require('../libs/keyboard');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 var i18next = require('i18next-client');
 var client = require('../client');
 var currentUser = require('../models/current-user');
@@ -162,7 +162,7 @@ var EventsEdit = Backbone.View.extend({
     if ($event.find('.text').html() === undefined) {
       $('<div class="text"></div>').insertAfter(this.$('#' + data.event).find('.message-edit'));
     }
-    var msg = common.markupToHtml(data.message, {
+    var msg = common.markup.toHtml(data.message, {
       template: require('../templates/markup.html'),
       style: 'color: ' + this.model.get('color')
     });

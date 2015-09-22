@@ -3,7 +3,7 @@ var logger = require('../../../../../shared/util/logger').getLogger('donut', __f
 var User = require('../../../../../shared/models/user');
 var async = require('async');
 var _ = require('underscore');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/server');
 
 var Handler = function (app) {
   this.app = app;
@@ -127,7 +127,7 @@ handler.call = function (data, session, next) {
         _id: { $in: ids }
       };
       if (data.attributes.searchString) {
-        var regex = common.regExpBuildContains(data.attributes.searchString, 'i');
+        var regex = common.contains(data.attributes.searchString, 'i');
         query.username = {$regex: regex};
       }
       return callback(null, query);

@@ -126,7 +126,7 @@ require([
       $emailParent.find('.help-block').html('');
       $passwordParent.find('.help-block').html('');
 
-      // Check presense of email
+      // Check presence of email
       if ($email.val() === '') {
         errors.push({
           parent: $emailParent,
@@ -142,7 +142,7 @@ require([
         });
       }
 
-      // Check presense of password
+      // Check presence of password
       if ($password.val() === '') {
         errors.push({
           parent: $passwordParent,
@@ -174,7 +174,7 @@ require([
       $.socialify.facebook({
         url: $(this).data('url'),
         name: i18next.t('chat.share.title', {name: $(this).data('name')}),
-        picture: common.cloudinarySize($(this).data('avatar'), 350),
+        picture: common.cloudinary.prepare($(this).data('avatar'), 350),
         description: i18next.t('chat.share.description', {name: $(this).data('name')})
       });
     });

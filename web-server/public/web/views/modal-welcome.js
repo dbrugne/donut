@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
 var client = require('../client');
 
@@ -32,7 +32,7 @@ var WelcomeModalView = Backbone.View.extend({
 
     var rooms = [];
     _.each(welcome.featured, function (room) {
-      room.avatar = common.cloudinarySize(room.avatar, 135);
+      room.avatar = common.cloudinary.prepare(room.avatar, 135);
       rooms.push(room);
     });
 
