@@ -443,7 +443,8 @@
       "loading": "Loading more...",
       "top": "go to top",
       "bottom": "go to bottom",
-      "currently": "You are at the very first start of Donut <span class=\"name dc-text open-room-profile\" data-room-id=\"__roomid__\">__roomname__</span>, created by <span class=\"owner dc-text open-user-profile\" data-user-id=\"__ownerid__\">@__owner__</span> on <span class=\"date\">__creation-date__</span>",
+      "currently": "This is it... You are at the very start of the conversation on <span class=\"name dc-text open-room-profile\" data-room-id=\"__roomid__\">__roomname__</span>, donut created by <span class=\"owner dc-text open-user-profile\" data-user-id=\"__ownerid__\">@__owner__</span> on <span class=\"date\">__created_at__</span> at <span class=\"date\">__created_time__</span>",
+      "hasPassword": "Your donut is private. Configure the access to your donut so that other users can join",
       "onestart": "You are at the very first start of your private discussion with <span class=\"name dc-text\">@__username__</span>. Everything said here will stay here :)",
       "edit": "Edit profile",
       "users": "Manage users",
@@ -487,10 +488,18 @@
       "description": "Join me on DONUT.me, the new chat platform. I discuss on __name__."
     },
     "welcome": {
-      "room": [
-        "Welcome in <strong>__name__</strong>. Only users that have joined this donut (listed on right) can see the conversation. Even if they are currently offline.",
-        "Post a message to start the conversation."
-      ],
+      "private": {
+        "room": [
+          "Welcome to <strong>__name__</strong>. The conversation is private so only users authorized by <strong>@__owner__</strong> can join. Once users have joined the can participate and access history.",
+          "Post a message to engage in the discussion."
+        ]
+      },
+      "public": {
+        "room": [
+          "Welcome to <strong>__name__</strong>. The conversation is public so anyone can join, participate and access history. Share the link with your friends! ",
+          "Post a message to engage in the discussion."
+        ]
+      },
       "onetoone": [
         "If <strong>__username__</strong> isn't online he will get your messages on his next connexion",
         "Post a message to start the conversation."
@@ -588,8 +597,8 @@
         },
         "mode": {
           "disclaimer": {
-            "public": "By selecting this option, your donut will be public. Any user can enter and see what happens there.",
-            "private": "By selecting this option, your donut will be private. Only users specifically authorized by the owner or Op can enter.",
+            "public": "Any user can join, participate and access history. Moderation tools available.",
+            "private": "Only users you authorize can join, participate and access history. Moderation tools available.",
             "password": "You also have the possibility to put a password on that donut. Users with the password can enter without having to be asked first."
           }
         },
