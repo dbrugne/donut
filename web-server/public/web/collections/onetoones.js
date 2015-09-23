@@ -3,7 +3,6 @@ var Backbone = require('backbone');
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 var OneToOneModel = require('../models/onetoone');
-var EventModel = require('../models/event');
 
 var OnetoonesCollection = Backbone.Collection.extend({
   iwhere: function (key, val) { // insensitive case search
