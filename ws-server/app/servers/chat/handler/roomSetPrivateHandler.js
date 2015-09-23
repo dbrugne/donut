@@ -42,19 +42,19 @@ handler.call = function (data, session, next) {
 
     function persist (callback) {
       room.mode = 'private';
-      room.allowed = room.users;
+      room.allowed = room.getIdsByType('users');
       room.save(function (err) {
         return callback(err);
       });
     },
 
     function broadcast (callback) {
-      var typingEvent = {
+      var privateEvent = {
         room_id: room.id,
         user_id: currentUser.id,
         username: currentUser.username
       };
-      that.app.globalChannelService.pushMessage('connector', 'room:set:private', typingEvent, room.name, {}, callback);
+      that.app.globalChannelService.pushMessage('connector', 'room:set:private', privateEvent, room.name, {}, callback);
     }
 
   ], function (err) {
