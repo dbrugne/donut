@@ -1,4 +1,3 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
@@ -14,7 +13,6 @@ var DrawerRoomProfileView = Backbone.View.extend({
   events: {},
 
   initialize: function (options) {
-    this.roomName = options.name;
     this.roomId = options.room_id;
 
     // show spinner as temp content
