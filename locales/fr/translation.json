@@ -465,15 +465,15 @@
         "owner": "Créateur",
         "users": "Utilisateurs",
         "op": "Modérateurs",
-        "allowed": "Utilisateurs autorisé",
+        "allowed": "Utilisateurs autorisés",
         "ban": "Bannis",
         "devoice": "Muets"
       }
     },
     "access": {
       "link": "Accès",
-      "labelsearch": "Autoriser des utilisateurs",
-      "add": "Ajouter un utilisateur",
+      "labelsearch": "Inviter des utilisateurs",
+      "add": "Inviter un utilisateur",
       "labelpending": "Utilisateurs en attente d'autorisation",
       "types": {
         "all": "Tous",
@@ -545,10 +545,10 @@
       "banned_reason": "Pour la raison suivante : ",
       "kicked": "Vous avez été expulsé de ce donut",
       "kicked_button": "Rejoindre",
-      "disclaimer-private": "Ce donut est privé, seul les utilisateurs explicitement autorisés par le propriétaire peuvent y accéder. Pour ajouter de nouveaux utilisateurs, merci de les rechercher dans la liste ci-dessous.",
-      "disclaimer-public": "Ce donut est public. N'importe quel utilisateur pourra y accéder.",
-      "disclaimer-password": "Vous avez également choisi de mettre un mot de passe. Les utilisateurs avec le mot de passe pourront y entrer sans avoir besoin d'être invités au préalable.",
-      "disclaimer-changing": "Vous avez la possibilité de faire passer ce donut en mode privé (avec éventuellement un mot de passe). Attention, une fois fait, cela ne sera plus modifiable. Ce donut ne sera donc plus ouvert au public, les invitations se feront uniquement par le propriétaire ou par mot de passe.",
+      "disclaimer-private": "Ce donut est privé. Seuls les utilisateurs que vous autorisez pourront rejoindre, participer et accéder à l'historique.",
+      "disclaimer-public": "Ce donut est public. Tout utilisateur pourra le rejoindre, participer et accéder à l'historique.",
+      "disclaimer-password": "Vous pouvez également mettre un mot de passe. Les utilisateurs ayant le mot de passe pourront rejoindre le donut sans avoir besoin d'être invités au préalable.",
+      "disclaimer-changing": "Vous pouvez passer ce donut en mode privé. Alors, seuls les utilisateurs que vous autoriserez pourront rejoindre, participer et accéder à l'historique. L'accès se fera par invitation et/ou par mot de passe. <strong>Attention, cette action est irréversible.</strong>",
       "close": "Fermer ce donut"
     },
     "form": {
