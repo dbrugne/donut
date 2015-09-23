@@ -64,6 +64,44 @@
       }
     }
   },
+  "date": {
+    "days": {
+      "0": "dimanche",
+      "1": "lundi",
+      "2": "mardi",
+      "3": "mercredi",
+      "4": "jeudi",
+      "5": "vendredi",
+      "6": "samedi"
+    },
+    "months": {
+      "0": "janvier",
+      "1": "fevrier",
+      "2": "mars",
+      "3": "avril",
+      "4": "mai",
+      "5": "juin",
+      "6": "juillet",
+      "7": "aout",
+      "8": "septembre",
+      "9": "octobre",
+      "10": "novembre",
+      "11": "decembre"
+    },
+    "relativetime": {
+      "s": "quelques secondes",
+      "m": "une minute",
+      "mm": "__minutes__ minutes",
+      "h": "une heure",
+      "hh": "__hours__ heures",
+      "d": "un jour",
+      "dd": "__days__ jours",
+      "M": "un mois",
+      "MM": "__months__ mois",
+      "y": "un an",
+      "yy": "__years__ ans"
+    }
+  },
   "baseline": "vous avez des choses à (vous) dire !",
   "actions": {
     "login": "connexion",
@@ -1016,23 +1054,6 @@
         }
       },
       "banned-users": "Utilisateurs que vous avez bloqué"
-    }
-  },
-  "moment": {
-    "relativeTime": {
-      "future": "%s",
-      "past": "%s",
-      "s": "à l'instant",
-      "m": "1mn",
-      "mm": "%dmin",
-      "h": "1h",
-      "hh": "%dh",
-      "d": "hier",
-      "dd": "%d jours",
-      "M": "un mois",
-      "MM": "%d mois",
-      "y": "un an",
-      "yy": "%d ans"
     }
   }
 }

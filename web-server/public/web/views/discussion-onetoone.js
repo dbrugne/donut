@@ -8,6 +8,7 @@ var client = require('../libs/client');
 var EventsView = require('./events');
 var InputView = require('./input');
 var confirmationView = require('./modal-confirmation');
+var date = require('../libs/date');
 
 var OneToOnePanelView = Backbone.View.extend({
   tagName: 'div',
@@ -89,7 +90,7 @@ var OneToOnePanelView = Backbone.View.extend({
       this.hasBeenFocused = true;
 
       // refocus an offline one after few times
-      this.$('.ago span').momentify('fromnow');
+      date.from('fromnow', this.$('.ago span'));
     } else {
       this.$el.hide();
     }
@@ -140,7 +141,7 @@ var OneToOnePanelView = Backbone.View.extend({
 
       var $ago = this.$('.ago span');
       $ago.attr('data-time', this.model.get('onlined'));
-      $ago.momentify('fromnow');
+      date.from('fromnow', $ago);
       this.$('.ago').show();
     }
   },

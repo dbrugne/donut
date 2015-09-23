@@ -8,7 +8,7 @@ var client = require('../libs/client');
 var rooms = require('../collections/rooms');
 var onetoones = require('../collections/onetoones');
 var currentUser = require('../models/current-user');
-var moment = require('moment');
+var date = require('../libs/date');
 
 var NotificationsView = Backbone.View.extend({
   el: $('#notifications'),
@@ -182,7 +182,6 @@ var NotificationsView = Backbone.View.extend({
       default:
         return '';
     }
-    var dateObject = moment(notification.time);
 
     if (notification.data.room) {
       notification.avatar = common.cloudinary.prepare(notification.data.room.avatar, 90);
@@ -192,8 +191,8 @@ var NotificationsView = Backbone.View.extend({
 
     return template({
       data: notification,
-      from_now: dateObject.format('Do MMMM, HH:mm'),
-      from_now_short: dateObject.format('D/MM, HH:mm')
+      from_now: date.dayMonthTime(notification.time),
+      from_now_short: date.shortDayMonthTime(notification.time)
     });
   },
   // User clicks on the notification icon in the header
