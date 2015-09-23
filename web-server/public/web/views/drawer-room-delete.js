@@ -4,7 +4,7 @@ var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
 var i18next = require('i18next-client');
 var app = require('../models/app');
-var client = require('../client');
+var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 
 var DrawerRoomDeleteView = Backbone.View.extend({

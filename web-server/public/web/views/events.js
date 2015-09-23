@@ -4,10 +4,11 @@ var Backbone = require('backbone');
 var app = require('../models/app');
 var donutDebug = require('../libs/donut-debug');
 var common = require('@dbrugne/donut-common/browser');
+var currentUser = require('../models/current-user');
 var EventModel = require('../models/event');
 var moment = require('moment');
 var i18next = require('i18next-client');
-var client = require('../client');
+var client = require('../libs/client');
 var EventsViewedView = require('./events-viewed');
 var EventsHistoryView = require('./events-history');
 var EventsSpamView = require('./events-spam');
@@ -431,9 +432,12 @@ module.exports = Backbone.View.extend({
     try {
       var template;
       switch (data.type) {
-        case 'disconnected':
-          template = require('../templates/event/disconnected.html');
-          break;
+        case 'room:in':
+          if (currentUser.get('user_id') === model.get('data').user_id) {
+            template = require('../templates/event/hello.html');
+            data.name = this.model.get('name');
+            break;
+          }
         case 'user:online':
         case 'user:offline':
         case 'room:in':
@@ -446,9 +450,6 @@ module.exports = Backbone.View.extend({
         case 'room:message':
         case 'user:message':
           template = require('../templates/event/message.html');
-          break;
-        case 'reconnected':
-          template = require('../templates/event/reconnected.html');
           break;
         case 'room:deop':
           template = require('../templates/event/room-deop.html');
@@ -488,8 +489,7 @@ module.exports = Backbone.View.extend({
       }
       return template(data);
     } catch (e) {
-      debug('Render exception, see below');
-      debug(e);
+      console.error('Render exception, see below', e);
       return false;
     }
   },

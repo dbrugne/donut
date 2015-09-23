@@ -5,7 +5,7 @@ var keyboard = require('../libs/keyboard');
 var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../models/app');
-var client = require('../client');
+var client = require('../libs/client');
 var ConfirmationView = require('./modal-confirmation');
 var TableView = require('./drawer-room-access-table');
 

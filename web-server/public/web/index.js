@@ -25,6 +25,6 @@ window.notify.config({
 });
 
 // run
-require('./router');
+require('./libs/router');
 var mainView = require('./views/main');
 mainView.run();

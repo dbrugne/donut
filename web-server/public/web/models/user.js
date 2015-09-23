@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var $ = require('jquery');
-var client = require('../client');
+var client = require('../libs/client');
 
 var UserModel = Backbone.Model.extend({
   defaults: function () {
