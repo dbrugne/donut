@@ -3,7 +3,6 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
 var donutDebug = require('../libs/donut-debug');
-var common = require('@dbrugne/donut-common/browser');
 var currentUser = require('../models/current-user');
 var EventModel = require('../models/event');
 var date = require('../libs/date');
@@ -14,6 +13,7 @@ var EventsHistoryView = require('./events-history');
 var EventsSpamView = require('./events-spam');
 var EventsEditView = require('./events-edit');
 var windowView = require('./window');
+var events = require('../libs/events');
 
 var debug = donutDebug('donut:events');
 
@@ -268,87 +268,6 @@ module.exports = Backbone.View.extend({
 
     debug.end('discussion-events-fresh-' + this.model.getIdentifier());
   },
-  _prepareEvent: function (model) {
-    var data = model.toJSON();
-    data.data = _.clone(model.get('data'));
-
-    // spammed & edited
-    if (model.getGenericType() === 'message') {
-      data.spammed = (model.get('spammed') === true);
-      data.edited = (model.get('edited') === true);
-    }
-
-    // avatar
-    var size = (model.getGenericType() !== 'inout')
-      ? 30
-      : 20;
-    if (model.get('data').avatar) {
-      data.data.avatar = common.cloudinary.prepare(model.get('data').avatar, size);
-    }
-    if (model.get('data').by_avatar) {
-      data.data.by_avatar = common.cloudinary.prepare(model.get('data').by_avatar, size);
-    }
-
-    var message = data.data.message;
-    if (message) {
-      // prepare
-      message = common.markup.toHtml(message, {
-        template: require('../templates/markup.html'),
-        style: 'color: ' + this.model.get('color')
-      });
-
-      message = $.smilify(message);
-
-      data.data.message = message;
-    }
-
-    var topic = data.data.topic;
-    if (topic) {
-      // prepare
-      topic = common.markup.toHtml(topic, {
-        template: require('../templates/markup.html'),
-        style: 'color: ' + this.model.get('color')
-      });
-
-      topic = $.smilify(topic);
-
-      data.data.topic = topic;
-    }
-
-    // images
-    if (data.data.images) {
-      var images = [];
-      _.each(data.data.images, function (i) {
-        images.push({
-          url: common.cloudinary.prepare(i, 1500, 'limit'),
-          thumbnail: common.cloudinary.prepare(i, 50, 'fill')
-        });
-      });
-
-      if (images && images.length > 0) {
-        data.data.images = images;
-      }
-    }
-
-    // date
-    var dateObject = new Date(model.get('time'));
-    var diff = (Date.now() - dateObject.getTime().valueOf()) / 1000;
-    if (diff <= 86400) {
-      data.data.dateshort = date.shortTime(model.get('time'));
-    } else if (diff <= 604800) {
-      data.data.dateshort = (isNaN(dateObject)) ? '' : i18next.t('date.days.' + dateObject.getDay());
-    } else if (2592000) {
-      data.data.dateshort = date.shortDayMonth(model.get('time'));
-    } else {
-      data.data.dateshort = date.shortMonthYear(model.get('time'));
-    }
-    data.data.datefull = date.longDateTime(model.get('time'));
-
-    // rendering attributes
-    data.unviewed = !!model.get('unviewed');
-
-    return data;
-  },
   _newBlock: function (newModel, previousElement) {
     var newBlock = false;
     if (!previousElement || previousElement.length < 1) {
@@ -424,7 +343,7 @@ module.exports = Backbone.View.extend({
     debug.end('discussion-events-batch-' + this.model.getIdentifier());
   },
   _renderEvent: function (model, withBlock) {
-    var data = this._prepareEvent(model);
+    var data = events.prepare(model, this.model);
     data.withBlock = withBlock || false;
     try {
       var template;
