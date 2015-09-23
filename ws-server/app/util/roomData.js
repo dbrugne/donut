@@ -14,6 +14,7 @@ module.exports = function (user, room, fn) {
     mode: room.mode,
     hasPassword: !!room.password,
     owner: {},
+    blocked: false,
     avatar: room._avatar(),
     color: room.color,
     users_number: room.numberOfUsers(),
@@ -25,8 +26,6 @@ module.exports = function (user, room, fn) {
       username: room.owner.username
     };
   }
-
-  data.blocked = false;
 
   // banned user
   if (room.isBanned(user.id)) {

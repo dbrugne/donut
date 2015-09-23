@@ -131,9 +131,16 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
     function populateBlocked (user, callback) {
       var parallels = [];
       _.each(user.blocked, function (room) {
-        parallels.push(function (fn) {
-          roomDataHelper(user, room, function (err, r) {
-            fn(err, r);
+        User.findByUid(room.owner).exec(function (err, user) {
+          if (err) {
+            return callback(err);
+          }
+
+          room.owner = user;
+          parallels.push(function (fn) {
+            roomDataHelper(user, room, function (err, r) {
+              fn(err, r);
+            });
           });
         });
       });
