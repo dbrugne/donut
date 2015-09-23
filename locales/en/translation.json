@@ -113,7 +113,7 @@
     },
     "switchlanguage": "Language",
     "unknownerror": "Unknown error, please retry later",
-    "private-donut": "private Donut"
+    "private-donut": "private Donut: only authorized users can join, participate and access history"
   },
   "login": {
     "withfacebook": "with Facebook",
@@ -445,7 +445,7 @@
       "bottom": "go to bottom",
       "currently": "This is it... You are at the very start of the conversation on <span class=\"name dc-text open-room-profile\" data-room-id=\"__roomid__\">__roomname__</span>, donut created by <span class=\"owner dc-text open-user-profile\" data-user-id=\"__ownerid__\">@__owner__</span> on <span class=\"date\">__created_at__</span> at <span class=\"date\">__created_time__</span>",
       "hasPassword": "Your donut is private. Configure the access to your donut so that other users can join",
-      "onestart": "You are at the very first start of your private discussion with <span class=\"name dc-text\">@__username__</span>. Everything said here will stay here :)",
+      "onestart": "This conversation is private. Only you and your interlocutor can see it.",
       "edit": "Edit profile",
       "users": "Manage users",
       "access": "Manage access"
