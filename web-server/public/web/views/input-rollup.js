@@ -12,7 +12,7 @@ var InputRollupView = Backbone.View.extend({
 
   events: {
     'mouseover .rollup-container li': 'onRollupHover',
-    'click .rollup-container li': 'onRollupClose'
+    'click .rollup-container li': 'onRollupClick'
   },
 
   initialize: function (options) {
@@ -129,7 +129,7 @@ var InputRollupView = Backbone.View.extend({
     }
 
     // no space typed after command
-    return !this.$editable.val().split(' ').length > 1;
+    return !(this.$editable.val().split(' ').length > 1);
   },
 
   _rollupNavigate: function (key) {
@@ -248,7 +248,16 @@ var InputRollupView = Backbone.View.extend({
     var currentLi = this.$rollup.find('li.active');
     currentLi.removeClass('active');
     li.addClass('active');
+  },
+  onRollupClick: function (event) {
+    var li = $(event.currentTarget);
+    if (li.hasClass('empty')) { // Avoid highlighting empty results on hover
+      return;
+    }
+
     this._computeNewValue(li.find('.value').html() + ' ');
+    this._closeRollup();
+    this.moveCursorToEnd();
   },
   onRollupClose: function () {
     this._closeRollup();
