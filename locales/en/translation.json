@@ -16,7 +16,7 @@
     "help": "Help",
     "faq": "FAQ",
     "contact": "Contact",
-    "cgu": "TOU",
+    "cgu": "EUTC",
     "legals": "Legals",
     "signup-self": "Sign up",
     "login-self": "Log in",
@@ -75,7 +75,7 @@
     "search": "search a donut",
     "create": "create a donut",
     "signup": "sign up",
-    "orsignup": "os sign up",
+    "orsignup": "or sign up",
     "forgot": "forgotten password",
     "join": "join",
     "discuss": "chat",
@@ -138,7 +138,7 @@
     }
   },
   "signup": {
-    "disclaimer": "By creating an account, I accept <strong><a href=\"/eutc\" target=\"_blank\">TOU</a></strong>"
+    "disclaimer": "By creating an account, I accept <strong><a href=\"/eutc\" target=\"_blank\">EUTC</a></strong>"
   },
   "choose-username": {
     "title": "It's time to choose a username!",
