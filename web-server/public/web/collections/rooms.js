@@ -45,6 +45,7 @@ var RoomsCollection = Backbone.Collection.extend({
     this.listenTo(client, 'room:leave', this.onLeave);
     this.listenTo(client, 'room:leave:block', this.onLeaveBlock);
     this.listenTo(client, 'room:viewed', this.onViewed);
+    this.listenTo(client, 'room:set:private', this.onSetPrivate);
     this.listenTo(client, 'room:message:spam', this.onMessageSpam);
     this.listenTo(client, 'room:message:unspam', this.onMessageUnspam);
     this.listenTo(client, 'room:message:edit', this.onMessageEdited);
@@ -320,6 +321,14 @@ var RoomsCollection = Backbone.Collection.extend({
     }
 
     model.onViewed(data);
+  },
+  onSetPrivate: function (data) {
+    var model;
+    if (!data || !data.room_id || !(model = this.get(data.room_id))) {
+      return;
+    }
+
+    model.trigger('setPrivate', data);
   },
   onMessageSpam: function (data) {
     var model;

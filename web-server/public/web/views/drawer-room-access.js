@@ -177,8 +177,18 @@ var RoomAccessView = Backbone.View.extend({
   },
   onChangeMode: function (event) {
     event.preventDefault();
-    ConfirmationView.open({}, _.bind(function () {
-    }, this));
+    var that = this;
+    ConfirmationView.open({}, function () {
+      client.roomSetPrivate(that.model.id, function (response) {
+        if (!response.err) {
+          client.roomRead(that.model.id, null, function (data) {
+            if (!data.err) {
+              that.initialRender(data);
+            }
+          });
+        }
+      });
+    });
   },
   reset: function () {
     this.$errors.html('').hide();

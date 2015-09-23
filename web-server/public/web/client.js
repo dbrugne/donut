@@ -44,6 +44,7 @@ var client = _.extend({
       'room:viewed',
       'room:message:spam',
       'room:message:unspam',
+      'room:set:private',
       'room:typing',
       'user:join',
       'user:leave',
@@ -458,6 +459,15 @@ var client = _.extend({
       'chat.roomDisallowHandler.call',
       data,
       this.applyRequestCallback('room:disallow', callback)
+    );
+  },
+  roomSetPrivate: function (roomId, callback) {
+    var data = {room_id: roomId};
+    debug('io:out:room:set:private', data);
+    pomelo.request(
+      'chat.roomSetPrivateHandler.call',
+      data,
+      this.applyRequestCallback('room:set:private', callback)
     );
   },
 

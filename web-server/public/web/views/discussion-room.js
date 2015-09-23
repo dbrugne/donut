@@ -39,6 +39,7 @@ var RoomView = Backbone.View.extend({
     this.listenTo(this.model, 'change:poster', this.onPoster);
     this.listenTo(this.model, 'change:posterblured', this.onPosterBlured);
     this.listenTo(this.model, 'change:color', this.onColor);
+    this.listenTo(this.model, 'setPrivate', this.onPrivate);
 
     this.render();
 
@@ -59,6 +60,11 @@ var RoomView = Backbone.View.extend({
       model: this.model,
       collection: this.model.users
     });
+
+    this.$privateTooltip = this.$('.private');
+    if (this.model.get('mode') === 'public') {
+      this.$privateTooltip.hide();
+    }
   },
   render: function () {
     var data = this.model.toJSON();
@@ -269,6 +275,10 @@ var RoomView = Backbone.View.extend({
   },
   onPosterBlured: function (model, url) {
     this.$('div.blur').css('background-image', 'url(' + url + ')');
+  },
+  onPrivate: function (data) {
+    this.model.set('mode', 'private');
+    this.$privateTooltip.show();
   },
 
   /**
