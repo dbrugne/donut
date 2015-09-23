@@ -1055,22 +1055,5 @@
       },
       "banned-users": "Utilisateurs que vous avez bloqué"
     }
-  },
-  "moment": {
-    "relativeTime": {
-      "future": "%s",
-      "past": "%s",
-      "s": "à l'instant",
-      "m": "1mn",
-      "mm": "%dmin",
-      "h": "1h",
-      "hh": "%dh",
-      "d": "hier",
-      "dd": "%d jours",
-      "M": "un mois",
-      "MM": "%d mois",
-      "y": "un an",
-      "yy": "%d ans"
-    }
   }
 }
