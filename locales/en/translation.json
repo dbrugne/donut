@@ -461,14 +461,14 @@
     "deletemessage": "The donut __name__ has been deleted",
     "users": {
       "link": "users",
-      "search": "search for username in this room",
+      "search": "search a username in this donut",
       "type": {
         "owner": "Owner",
         "users": "Users",
         "op": "Moderators",
         "allowed": "Authorized users",
         "ban": "Banned",
-        "devoice": "Devoiced"
+        "devoice": "Mute"
       }
     },
     "access": {

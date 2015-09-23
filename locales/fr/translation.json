@@ -460,7 +460,7 @@
     "deletemessage": "Le donut __name__ vient d'être supprimé",
     "users": {
       "link": "utilisateurs",
-      "search": "rechercher des utilisateurs dans cette room",
+      "search": "rechercher des utilisateurs dans ce donut",
       "type": {
         "owner": "Créateur",
         "users": "Utilisateurs",
