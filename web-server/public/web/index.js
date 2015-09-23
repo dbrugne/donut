@@ -1,7 +1,6 @@
 // jQuery
 var $ = require('jquery');
 global.jQuery = $; // expose jQuery globally, needed for some beside plugins
-require('../vendor/html5-desktop-notifications/desktop-notify');
 require('../vendor/html.sortable/dist/html.sortable.min');
 require('../javascripts/plugins/jquery.insertatcaret');
 require('../javascripts/plugins/jquery.maxlength');
