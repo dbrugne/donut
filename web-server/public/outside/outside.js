@@ -12,13 +12,6 @@ var common = require('@dbrugne/donut-common/browser');
 
 var SearchView = require('./search');
 
-var i18next = require('i18next-client');
-var locales = require('../../../locales/fr/translation.json');
-i18next.init({
-  cookieName: 'donut.lng',
-  resStore: locales
-});
-
 // Contact form
 $('[data-toggle="contactform"]').contactform({});
 

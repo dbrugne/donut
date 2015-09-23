@@ -52,6 +52,11 @@ module.exports = function () {
       ? 'fr_FR'
       : 'en_US';
 
+    // outside page scripts
+    res.locals.script = (process.env.NODE_ENV !== 'development')
+      ? '/build/outside-' + req.locale + '.js'
+      : '/outside-' + req.locale + '.js';
+
     next();
   };
 };
