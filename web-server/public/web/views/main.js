@@ -37,7 +37,7 @@ var MuteView = require('./mute');
 var debug = donutDebug('donut:main');
 
 var MainView = Backbone.View.extend({
-  el: $('#chat'),
+  el: $('body'),
 
   $home: $('#home'),
 
