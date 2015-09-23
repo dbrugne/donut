@@ -198,10 +198,15 @@ var NotificationsView = Backbone.View.extend({
   },
   // User clicks on the notification icon in the header
   onShow: function (event) {
+    this.scrollTop();
     if (this.$menu.find('.message').length) {
       this.markHasRead = setTimeout(_.bind(function () {
         this.clearNotifications();
       }, this), this.timeToMarkAsRead);
+    }
+
+    if (this.$menu.find('.message').length >= 10) {
+      return;
     }
 
     client.notificationRead(null, this.lastNotifDisplayedTime(), 10, _.bind(function (data) {
@@ -210,7 +215,7 @@ var NotificationsView = Backbone.View.extend({
       for (var k in data.notifications) {
         html += this.createNotificationFromTemplate(data.notifications[k]);
       }
-      this.$menu.html(html);
+      this.$menu.html(this.$menu.html() + html);
       this.toggleReadMore();
     }, this));
 
@@ -352,6 +357,5 @@ var NotificationsView = Backbone.View.extend({
     this.toggleReadMore();
   }
 });
-
 
 module.exports = NotificationsView;
