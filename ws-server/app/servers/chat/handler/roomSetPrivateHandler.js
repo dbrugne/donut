@@ -1,6 +1,7 @@
 'use strict';
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var async = require('async');
+var _ = require('underscore');
 
 var Handler = function (app) {
   this.app = app;
@@ -42,7 +43,7 @@ handler.call = function (data, session, next) {
 
     function persist (callback) {
       room.mode = 'private';
-      room.allowed = room.getIdsByType('users');
+      room.allowed = _.without(room.getIdsByType('users'), room.owner.toString());
       room.save(function (err) {
         return callback(err);
       });
