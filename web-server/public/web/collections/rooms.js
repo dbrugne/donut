@@ -183,6 +183,7 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
+    model.users.trigger('users-redraw');
     model.onUserOnline(data);
   },
   onUserOffline: function (data) {
