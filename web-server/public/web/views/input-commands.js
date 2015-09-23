@@ -173,6 +173,12 @@ var InputCommandsView = Backbone.View.extend({
       help: 'max/min max',
       description: 'chat.commands.random'
     },
+    whisper: {
+      parameters: 'usernameMsg',
+      access: 'room',
+      help: '@username message',
+      description: 'chat.commands.whisper'
+    },
     help: {
       parameters: 'helpCommand',
       access: 'everywhere',
@@ -190,6 +196,7 @@ var InputCommandsView = Backbone.View.extend({
     username: /^@([-a-z0-9_^\.]+)/i,
     usernameName: /^([@#][-a-z0-9_^\.]+)/i,
     usernameNameMsg: /^([@#][-a-z0-9_^\.]+)\s+(.+)/i,
+    usernameMsg: /^(@[-a-z0-9_^\.]+)\s+(.+)/i,
     twoNumber: /(-?[0-9]+)(\s+(-?[0-9]+))?/
   },
 
@@ -521,6 +528,13 @@ var InputCommandsView = Backbone.View.extend({
     } else {
       client.userMessage(this.model.get('id'), null, message, null, 'random');
     }
+  },
+  whisper: function (paramString, parameters) {
+    if (!parameters) {
+      return this.errorCommand('whisper', 'parameters');
+    }
+
+    client.roomWhisper(this.model.get('id'), parameters[1], parameters[2]);
   },
   help: function (paramString, parameters, error) {
     if (!parameters && paramString) {

@@ -45,6 +45,7 @@ var client = _.extend({
       'room:message:spam',
       'room:message:unspam',
       'room:typing',
+      'room:whisper',
       'user:join',
       'user:leave',
       'user:message',
@@ -195,6 +196,20 @@ var client = _.extend({
       'chat.roomMessageEditHandler.call',
       data,
       this.applyRequestCallback('room:message:edit', callback)
+    );
+  },
+  roomWhisper: function (roomId, username, message, callback) {
+    var data = {
+      room_id: roomId,
+      message: message,
+      to_username: username,
+      special: 'whisper'
+    };
+    debug('io:out:room:message', data);
+    pomelo.request(
+      'chat.roomMessageHandler.call',
+      data,
+      this.applyRequestCallback('room:message', callback)
     );
   },
   roomTopic: function (roomId, topic, callback) {
