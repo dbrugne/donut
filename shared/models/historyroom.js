@@ -12,6 +12,7 @@ var historySchema = mongoose.Schema({
   time: { type: Date, default: Date.now },
   user: { type: mongoose.Schema.ObjectId, ref: 'User' },
   by_user: { type: mongoose.Schema.ObjectId, ref: 'User' },
+  to_user: { type: mongoose.Schema.ObjectId, ref: 'User' },
   data: mongoose.Schema.Types.Mixed,
   viewed: [ { type: mongoose.Schema.ObjectId, ref: 'User' } ],
   spammed: { type: Boolean },
@@ -31,7 +32,8 @@ var dryFields = [
   'avatar',
   'by_user_id',
   'by_username',
-  'by_avatar'
+  'by_avatar',
+  'to_user_id'
 ];
 
 /**
@@ -51,10 +53,12 @@ historySchema.statics.record = function () {
     model.event = event;
     model.room = room._id;
     model.time = data.time;
-
     model.user = data.user_id;
     if (data.by_user_id) {
       model.by_user = data.by_user_id;
+    }
+    if (data.to_user_id) {
+      model.to_user = data.to_user_id;
     }
 
     // dry data
@@ -86,7 +90,6 @@ historySchema.methods.toClientJSON = function (userViewed) {
   data.name = this.room.name;
   data.room_name = this.room.name;
   data.room_id = this.room.id;
-  data.room_avatar = this.room._avatar();
   data.time = this.time;
   if (this.user) {
     data.user_id = this.user.id;
@@ -138,7 +141,11 @@ historySchema.statics.retrieve = function () {
   return function (roomId, userId, what, fn) {
     what = what || {};
     var criteria = {
-      room: roomId
+      room: roomId,
+      $or: [
+        {to_user: {$exists: false}},
+        {to_user: userId}
+      ]
     };
 
     // Since (timestamp, from present to past direction)

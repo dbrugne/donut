@@ -21,6 +21,7 @@ var handler = Handler.prototype;
 handler.call = function (data, session, next) {
   var user = session.__currentUser__;
   var room = session.__room__;
+  var toUser = session.__user__;
 
   var that = this;
 
@@ -43,8 +44,17 @@ handler.call = function (data, session, next) {
         return callback('user is devoiced, he can\'t send message in room');
       }
 
-      if (data.special && ['me', 'random'].indexOf(data.special) === -1) {
+      if (data.special && ['me', 'random', 'whisper'].indexOf(data.special) === -1) {
         return callback('not allowed special type: ' + data.special);
+      }
+
+      if (data.special === 'whisper') {
+        if (!data.username) {
+          return callback('username is mandatory for whisper');
+        }
+        if (!toUser) {
+          return callback('unable to find user to whisper: ' + data.username);
+        }
       }
 
       return callback(null);
@@ -68,6 +78,8 @@ handler.call = function (data, session, next) {
     },
 
     function broadcast (message, images, mentions, callback) {
+      // @todo whisper: historize and send message to both user socket
+
       var event = {
         user_id: user.id,
         username: user.username,
@@ -81,6 +93,9 @@ handler.call = function (data, session, next) {
       }
       if (data.special) {
         event.special = data.special;
+        if (data.special === 'whisper') {
+          event.to_user_id = toUser.id;
+        }
       }
 
       roomEmitter(that.app, user, room, 'room:message', event, function (err, sentEvent) {
@@ -92,7 +107,11 @@ handler.call = function (data, session, next) {
       });
     },
 
+    // @todo whisper: add a new whisper notification step and avoid other notifications
+
     function mentionNotification (sentEvent, mentions, callback) {
+      // @todo whisper: avoid this notifications
+
       if (!mentions || !mentions.length) {
         return callback(null, sentEvent);
       }
@@ -109,6 +128,9 @@ handler.call = function (data, session, next) {
     },
 
     function messageNotification (sentEvent, callback) {
+      // @todo whisper: avoid this notifications
+
+
       // @todo : change pattern for this event (particularly frequent) and tag historyRoomModel as "to_be_consumed" and
       //         implement a consumer to treat notifications asynchronously
       Notifications(that.app).getType('roommessage').create(room, sentEvent.id, function (err) {
