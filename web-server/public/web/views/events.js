@@ -251,7 +251,7 @@ module.exports = Backbone.View.extend({
     );
     var previousElement = this.$realtime.find('.block:last').first();
     var newBlock = this._newBlock(model, previousElement);
-    var html = this._renderEvent(model);
+    var html = eventsEngine.render(model, this.model);
     if (!newBlock) {
       // @bug : element is the .event in this case not the .block
       $(html).appendTo(previousElement.find('.items'));
@@ -330,7 +330,7 @@ module.exports = Backbone.View.extend({
       }
 
       // render and insert
-      var h = this._renderEvent(model);
+      var h = eventsEngine.render(model, this.model);
       if (!newBlock) {
         // not define previousElement, remain the same .block
         $(h).prependTo(previousElement.find('.items'));
@@ -343,75 +343,6 @@ module.exports = Backbone.View.extend({
 
     $html.find('>.block').prependTo(this.$realtime);
     debug.end('discussion-events-batch-' + this.model.getIdentifier());
-  },
-  _renderEvent: function (model) {
-    var data = eventsEngine.prepare(model, this.model);
-    try {
-      var template;
-      switch (data.type) {
-        case 'room:in':
-          if (model.getGenericType() === 'hello') {
-            template = require('../templates/event/hello.html');
-            data.name = this.model.get('name');
-            data.mode = this.model.get('mode');
-            data.username = this.model.get('owner').get('username');
-          } else {
-            template = require('../templates/event/in-out-on-off.html');
-          }
-          break;
-        case 'user:online':
-        case 'user:offline':
-        case 'room:out':
-          template = require('../templates/event/in-out-on-off.html');
-          break;
-        case 'ping':
-          template = require('../templates/event/ping.html');
-          break;
-        case 'room:message':
-        case 'user:message':
-          template = require('../templates/event/message.html');
-          break;
-        case 'room:deop':
-          template = require('../templates/event/room-deop.html');
-          break;
-        case 'room:kick':
-          template = require('../templates/event/room-kick.html');
-          break;
-        case 'room:ban':
-          template = require('../templates/event/room-ban.html');
-          break;
-        case 'room:deban':
-          template = require('../templates/event/room-deban.html');
-          break;
-        case 'room:voice':
-          template = require('../templates/event/room-voice.html');
-          break;
-        case 'room:devoice':
-          template = require('../templates/event/room-devoice.html');
-          break;
-        case 'room:op':
-          template = require('../templates/event/room-op.html');
-          break;
-        case 'room:topic':
-          template = require('../templates/event/room-topic.html');
-          break;
-        case 'user:ban':
-          template = require('../templates/event/user-ban.html');
-          break;
-        case 'user:deban':
-          template = require('../templates/event/user-deban.html');
-          break;
-        case 'command:help':
-          template = require('../templates/event/help.html');
-          break;
-        default:
-          return;
-      }
-      return template(data);
-    } catch (e) {
-      console.error('Render exception, see below', e);
-      return false;
-    }
   },
 
   requestHistory: function (scrollTo) {

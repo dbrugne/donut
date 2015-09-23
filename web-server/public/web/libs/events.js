@@ -93,3 +93,73 @@ exports.block = function (event, html) {
   data.data.avatar = common.cloudinary.prepare(data.data.avatar, 30);
   return template(data);
 };
+
+exports.render = function (event, discussion) {
+  var data = this.prepare(event, discussion);
+  try {
+    var template;
+    switch (data.type) {
+      case 'room:in':
+        if (event.getGenericType() === 'hello') {
+          template = require('../templates/event/hello.html');
+          data.name = discussion.get('name');
+          data.mode = discussion.get('mode');
+          data.username = discussion.get('owner').get('username');
+        } else {
+          template = require('../templates/event/in-out-on-off.html');
+        }
+        break;
+      case 'user:online':
+      case 'user:offline':
+      case 'room:out':
+        template = require('../templates/event/in-out-on-off.html');
+        break;
+      case 'ping':
+        template = require('../templates/event/ping.html');
+        break;
+      case 'room:message':
+      case 'user:message':
+        template = require('../templates/event/message.html');
+        break;
+      case 'room:deop':
+        template = require('../templates/event/room-deop.html');
+        break;
+      case 'room:kick':
+        template = require('../templates/event/room-kick.html');
+        break;
+      case 'room:ban':
+        template = require('../templates/event/room-ban.html');
+        break;
+      case 'room:deban':
+        template = require('../templates/event/room-deban.html');
+        break;
+      case 'room:voice':
+        template = require('../templates/event/room-voice.html');
+        break;
+      case 'room:devoice':
+        template = require('../templates/event/room-devoice.html');
+        break;
+      case 'room:op':
+        template = require('../templates/event/room-op.html');
+        break;
+      case 'room:topic':
+        template = require('../templates/event/room-topic.html');
+        break;
+      case 'user:ban':
+        template = require('../templates/event/user-ban.html');
+        break;
+      case 'user:deban':
+        template = require('../templates/event/user-deban.html');
+        break;
+      case 'command:help':
+        template = require('../templates/event/help.html');
+        break;
+      default:
+        return;
+    }
+    return template(data);
+  } catch (e) {
+    console.error('Render exception, see below', e);
+    return false;
+  }
+};
