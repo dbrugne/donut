@@ -240,7 +240,7 @@
       "account": "mon compte",
       "edit": "mon profil",
       "notifications": "notifications",
-      "close": "Quitter la discussion",
+      "close": "quitter la discussion",
       "preferences": "préférences & notifications",
       "bannedusers": "utilisateurs bloqués",
       "update": "Editer",
@@ -471,7 +471,7 @@
       }
     },
     "access": {
-      "link": "Accès",
+      "link": "accès",
       "labelsearch": "Inviter des utilisateurs",
       "add": "Inviter un utilisateur",
       "labelpending": "Utilisateurs en attente d'autorisation",
