@@ -6,6 +6,7 @@ var app = require('../models/app');
 var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');
+var desktop = require('../libs/desktop');
 
 var DrawerUserPreferencesView = Backbone.View.extend({
   template: require('../templates/drawer-user-preferences.html'),
@@ -46,7 +47,8 @@ var DrawerUserPreferencesView = Backbone.View.extend({
       username: currentUser.get('username'),
       color: color,
       preferences: data.preferences,
-      bannedUsers: data.bannedUsers
+      bannedUsers: data.bannedUsers,
+      desktop: desktop.permissionLevel()
     });
     this.$el.html(html);
 
