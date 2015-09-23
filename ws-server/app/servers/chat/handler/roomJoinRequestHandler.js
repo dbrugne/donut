@@ -52,7 +52,7 @@ handler.call = function (data, session, next) {
         by_user_id: user.id,
         by_username: user.username,
         by_avatar: user._avatar(),
-        user_id: room.owner.id,
+        user_id: room.owner._id,
         username: room.owner.username,
         avatar: room.owner._avatar()
       };
@@ -70,7 +70,7 @@ handler.call = function (data, session, next) {
     },
 
     function notification (event, callback) {
-      Notifications(that.app).getType('roomjoinrequest').create(room.owner, room, event.id, function (err) {
+      Notifications(that.app).getType('roomjoinrequest').create(room.owner.id, room, event.id, function (err) {
         return callback(err, event);
       });
     }
