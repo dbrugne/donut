@@ -579,7 +579,7 @@ var MainView = Backbone.View.extend({
   focusRoomByName: function (name) {
     var model = rooms.iwhere('name', name);
     if (typeof model !== 'undefined') {
-      model.set('unviewed', false);
+      model.resetNew();
       return this.focus(model);
     }
 
