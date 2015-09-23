@@ -1,8 +1,8 @@
 <% var previous; %>
 <% _.each(list, function(user) { %>
     <% if (previous && previous != user.status) { %>
-    <li class="li-title">
-        <div class="title dc-text-contrast"><%= t('chat.usersoffline') %></div>
+    <li class="li-title mt20">
+        <div class="item dc-text-contrast"><%= t('chat.usersoffline') %></div>
     </li>
     <% } %>
     <li>

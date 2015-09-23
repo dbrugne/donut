@@ -459,7 +459,7 @@
     "reason": "(motif : \"__reason__\")",
     "deletemessage": "Le donut __name__ vient d'être supprimé",
     "users": {
-      "link": "utilisateurs",
+      "link": "liste des utilisateurs",
       "search": "rechercher des utilisateurs dans ce donut",
       "type": {
         "owner": "Créateur",

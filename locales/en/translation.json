@@ -459,7 +459,7 @@
     "reason": "(reason: \"__reason__\")",
     "deletemessage": "The donut __name__ has been deleted",
     "users": {
-      "link": "users",
+      "link": "users list",
       "search": "search a username in this donut",
       "type": {
         "owner": "Owner",
