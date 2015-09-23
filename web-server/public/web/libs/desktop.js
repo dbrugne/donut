@@ -114,6 +114,9 @@ function getWrapper (notification) {
 }
 
 function requestPermission (callback) {
+  if (permissionLevel() !== PERMISSION_DEFAULT) {
+    return;
+  }
   if (!isSupported) {
     return;
   }
@@ -191,7 +194,6 @@ module.exports = {
   PERMISSION_DEFAULT: PERMISSION_DEFAULT,
   PERMISSION_GRANTED: PERMISSION_GRANTED,
   PERMISSION_DENIED: PERMISSION_DENIED,
-  isSupported: isSupported,
   createNotification: createNotification,
   permissionLevel: permissionLevel,
   requestPermission: requestPermission
