@@ -133,14 +133,12 @@ passport.use('local-login', new LocalStrategy(localStrategyOptions,
 
       // if no user is found, return the message
       if (!user) {
-        req.flash('email', email);
-        return done(null, false, req.flash('error', i18next.t('account.error.invalid')));
+        return done('invalid');
       }
 
       // if the user is found but the password is wrong
       if (!user.validPassword(password)) {
-        req.flash('email', email);
-        return done(null, false, req.flash('error', i18next.t('account.error.invalid')));
+        return done('invalid');
       }
 
       // all is well, return successful user

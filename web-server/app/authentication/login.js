@@ -28,10 +28,30 @@ router.route('/login')
       token: req.csrfToken()
     });
   })
-  .post([require('csurf')(), validateInput, passport.authenticate('local-login', {
-    failureRedirect: '/login',
-    failureFlash: true
-  })], bouncer.redirect);
+  .post([require('csurf')(), validateInput, function (req, res, next) {
+    passport.authenticate('local-login', function (err, user, info) {
+      if (err) {
+        var errorMessage;
+        switch (err) {
+          case 'invalid' :
+            errorMessage = i18next.t('account.error.invalid');
+            break;
+          default :
+            errorMessage = i18next.t('global.unknownerror');
+        }
+        return res.render('login', {
+          meta: {title: i18next.t('title.default')},
+          userFields: {email: req.body.email},
+          errors: [{msg: errorMessage}],
+          token: req.csrfToken()
+        });
+      }
+      req.logIn(user, function (err) {
+        if (err) { return next(err); }
+        return res.redirect('/!');
+      });
+    })(req, res, next);
+  }], bouncer.redirect);
 
 router.get('/login/facebook', passport.authenticate('facebook', {
   scope: 'email'
