@@ -27,30 +27,20 @@ exports.prepare = function (event, discussion) {
     data.data.by_avatar = common.cloudinary.prepare(event.get('data').by_avatar, size);
   }
 
-  var message = data.data.message;
-  if (message) {
-    // prepare
-    message = common.markup.toHtml(message, {
+  if (data.data.message || data.data.topic) {
+    var subject = data.data.message || data.data.topic;
+    subject = common.markup.toHtml(subject, {
       template: require('../templates/markup.html'),
       style: 'color: ' + discussion.get('color')
     });
 
-    message = $.smilify(message);
+    subject = $.smilify(subject);
 
-    data.data.message = message;
-  }
-
-  var topic = data.data.topic;
-  if (topic) {
-    // prepare
-    topic = common.markup.toHtml(topic, {
-      template: require('../templates/markup.html'),
-      style: 'color: ' + discussion.get('color')
-    });
-
-    topic = $.smilify(topic);
-
-    data.data.topic = topic;
+    if (data.data.message) {
+      data.data.message = subject;
+    } else {
+      data.data.topic = subject;
+    }
   }
 
   // images
