@@ -3,6 +3,6 @@
   "version": "1.0",
   "dependencies": {
     "html.sortable": "latest",
-    "html5-desktop-notifications": "latest",
+    "html5-desktop-notifications": "latest"
   }
 }
