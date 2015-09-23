@@ -1174,7 +1174,6 @@
             }
             > hr { position: absolute; left: 14px; right: 14px; top: @header-height; }
             .list { width: 215px; overflow-y: auto; height: 100%; margin-top: (@header-height + 10px); margin-bottom: 0; margin-left: 0; padding: 0 0 10px 0; background-repeat: no-repeat; background-position: left top; position: relative; .scrollbar-white; // #chat #center .discussion .side .blur .users .list
-              .title { margin-top: 15px; padding-left: 10px; }
               .li-title .item { width: (@size-user-item + 10px); padding:10px; }
               .item { position: relative; width: @size-user-item; padding-top: 10px; padding-left: 10px; font-size: 0.9em; font-weight: bold; white-space: nowrap; display: block;
                 .avatar { position: relative; display: inline-block; width: 34px; height: 34px; background-position: center center; background-size: 34px 34px; vertical-align: middle; }
@@ -1226,6 +1225,7 @@
           }
         }
         &.poster-full .dc-text-contrast { color:#fff; }
+        &.poster-full .dc-back-darker { background-color: transparent; }
       } // #chat #center .discussion .side
     }
   } // #chat #center

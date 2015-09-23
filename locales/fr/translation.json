@@ -278,7 +278,7 @@
       "account": "mon compte",
       "edit": "mon profil",
       "notifications": "notifications",
-      "close": "Quitter la discussion",
+      "close": "quitter la discussion",
       "preferences": "préférences & notifications",
       "bannedusers": "utilisateurs bloqués",
       "update": "Editer",
@@ -497,7 +497,7 @@
     "reason": "(motif : \"__reason__\")",
     "deletemessage": "Le donut __name__ vient d'être supprimé",
     "users": {
-      "link": "utilisateurs",
+      "link": "liste des utilisateurs",
       "search": "rechercher des utilisateurs dans ce donut",
       "type": {
         "owner": "Créateur",
@@ -509,7 +509,7 @@
       }
     },
     "access": {
-      "link": "Accès",
+      "link": "accès",
       "labelsearch": "Inviter des utilisateurs",
       "add": "Inviter un utilisateur",
       "labelpending": "Utilisateurs en attente d'autorisation",
