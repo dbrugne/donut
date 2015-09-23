@@ -1,5 +1,3 @@
-var _ = require('underscore');
-
 var keyboard = {
   BACKSPACE: 8,
   TAB: 9,
@@ -25,6 +23,5 @@ keyboard._getLastKeyCode = function (event) {
     isMeta: !!e.metaKey
   };
 };
-
 
 module.exports = keyboard;
