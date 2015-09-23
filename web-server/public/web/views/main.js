@@ -36,8 +36,6 @@ var MuteView = require('./mute');
 
 var debug = donutDebug('donut:main');
 
-window.date = require('../libs/date');
-
 var MainView = Backbone.View.extend({
   el: $('body'),
 

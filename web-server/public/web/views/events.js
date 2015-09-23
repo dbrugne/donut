@@ -6,7 +6,7 @@ var donutDebug = require('../libs/donut-debug');
 var common = require('@dbrugne/donut-common/browser');
 var currentUser = require('../models/current-user');
 var EventModel = require('../models/event');
-var moment = require('moment');
+var date = require('../libs/date');
 var i18next = require('i18next-client');
 var client = require('../libs/client');
 var EventsViewedView = require('./events-viewed');
@@ -76,10 +76,10 @@ module.exports = Backbone.View.extend({
       modelJson.owner = modelJson.owner.toJSON();
     }
     var created_at = (this.model.get('created_at'))
-      ? moment(this.model.get('created_at')).format('Do MMMM YYYY')
+      ? date.dateTime(this.model.get('created_at'))
       : '';
     var created_time = (this.model.get('created_at'))
-      ? moment(this.model.get('created_at')).format('h:mm:ss')
+      ? date.shortTimeSeconds(this.model.get('created_at'))
       : '';
     var html = this.template({
       model: modelJson,
@@ -331,20 +331,18 @@ module.exports = Backbone.View.extend({
     }
 
     // date
-    var dateObject = moment(model.get('time'));
-    var diff = (Date.now() - dateObject.valueOf()) / 1000;
-    var format;
+    var dateObject = new Date(model.get('time'));
+    var diff = (Date.now() - dateObject.getTime().valueOf()) / 1000;
     if (diff <= 86400) {
-      format = 'HH:mm'; // 24h
+      data.data.dateshort = date.shortTime(model.get('time'));
     } else if (diff <= 604800) {
-      format = 'dddd'; // 7 days
+      data.data.dateshort = (isNaN(dateObject)) ? '' : i18next.t('date.days.' + dateObject.getDay());
     } else if (2592000) {
-      format = 'DD/MM'; // 1 month
+      data.data.dateshort = date.shortDayMonth(model.get('time'));
     } else {
-      format = 'MM/YYYY'; // more than 1 year
+      data.data.dateshort = date.shortMonthYear(model.get('time'));
     }
-    data.data.dateshort = dateObject.format(format);
-    data.data.datefull = dateObject.format('dddd Do MMMM YYYY à HH:mm:ss');
+    data.data.datefull = date.longDateTime(model.get('time'));
 
     // rendering attributes
     data.unviewed = !!model.get('unviewed');
@@ -384,25 +382,20 @@ module.exports = Backbone.View.extend({
     var $html = $('<div/>');
     var previousModel;
     var previousElement;
-    var now = moment();
-    now.second(0).minute(0).hour(0);
     _.each(events, _.bind(function (event) {
       var model = new EventModel(event);
       var newBlock = this._newBlock(model, previousElement);
 
       // inter-date block
       if (previousModel) {
-        var newTime = moment(model.get('time'));
-        var previousTime = moment(previousModel.get('time'));
-        if (!newTime.isSame(previousTime, 'day')) {
-          previousTime.second(0).minute(0).hour(0);
-          var dateFull = (moment().diff(previousTime, 'days') === 0
+        if (!date.isSameDay(model.get('time'), previousModel.get('time'))) {
+          var dateFull = (date.diffInDays(previousModel.get('time')) === 0
               ? i18next.t('chat.message.today')
-              : (moment().diff(previousTime, 'days') === 1
+              : (date.diffInDays(previousModel.get('time')) === 1
                 ? i18next.t('chat.message.yesterday')
-                : (moment().diff(previousTime, 'days') === 2
+                : (date.diffInDays(previousModel.get('time')) === 2
                   ? i18next.t('chat.message.the-day-before')
-                  : moment(previousModel.get('time')).format('dddd Do MMMM YYYY')
+                  : date.longDate(previousModel.get('time'))
               )
             )
           );

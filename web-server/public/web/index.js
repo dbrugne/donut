@@ -5,7 +5,6 @@ require('../vendor/html.sortable/dist/html.sortable.min');
 require('../javascripts/plugins/jquery.insertatcaret');
 require('../javascripts/plugins/jquery.maxlength');
 require('../javascripts/plugins/jquery.smilify');
-require('../javascripts/plugins/jquery.momentify');
 require('../javascripts/plugins/jquery.socialify');
 require('../javascripts/plugins/jquery.contactform');
 require('bootstrap/js/transition');

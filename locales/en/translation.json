@@ -87,6 +87,19 @@
       "9": "October",
       "10": "November",
       "11": "December"
+    },
+    "relativetime": {
+      "s": "a few seconds",
+      "m": "a minute",
+      "mm": "__minutes__ minutes",
+      "h": "a hour",
+      "hh": "__hours__ hours",
+      "d": "a day",
+      "dd": "__days__ days",
+      "M": "a month",
+      "MM": "__months__ month",
+      "y": "a year",
+      "yy": "__years__ years"
     }
   },
   "baseline": "Chat about your interests!",
