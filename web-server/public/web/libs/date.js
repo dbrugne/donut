@@ -1,5 +1,4 @@
 var i18next = require('i18next-client');
-var $ = require('jquery');
 
 module.exports = {
   longDate: function (date) { // dddd Do MMMM YYYY
@@ -107,19 +106,17 @@ module.exports = {
   },
   from: function (format, $element) {
     format = format || 'fromnow';
-
-    var element = $($element);
-    if (!element) return;
-    var time = element.attr('data-time');
+    if (!$element) return;
+    var time = $element.attr('data-time');
     if (!time) return;
 
     if (format === 'fromnow') {
-      element.text(this.fromnow(time));
+      $element.text(this.fromnow(time));
       return;
     } else if (format === 'date') {
-      element.text(this.longDate(time));
+      $element.text(this.longDate(time));
     }
-    element.attr('title', this.longDateTime(time));
+    $element.attr('title', this.longDateTime(time));
   },
   fromnow: function (date) {
     var myDate = new Date(date);
