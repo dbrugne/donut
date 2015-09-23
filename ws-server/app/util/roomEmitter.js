@@ -28,6 +28,7 @@ module.exports = function (app, user, room, eventName, eventData, callback) {
   eventData.name = room.name;
   eventData.room_name = room.name;
   eventData.room_id = room.id;
+  eventData.room_mode = room.mode;
 
   recorder(room, eventName, eventData, function (err, model) {
     if (err) {

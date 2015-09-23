@@ -545,10 +545,11 @@
       "banned_reason": "For following reason: ",
       "kicked": "You were kicked from this donut",
       "kicked_button": "Join",
-      "disclaimer-private": "This donut is private. Only users you authorize can join, participate and access history Authorize users.",
-      "disclaimer-public": "This donut is public. Any user can join, participate and access history.",
-      "disclaimer-password": "You can also set a password. Users with the password can join without prior invitation.",
-      "disclaimer-changing": "You can switch this donut to private mode. Then, only users you authorize will be able to join, participate and access history. Access will be based on invitation and/or password. <strong>Caution, this action cannot be undone.</strong>",
+      "changemode": "Change mode",
+      "disclaimer-private": "This donut is private, Only users specifically authorized by the owner can access it. To add new users, thanks to search in the list below.",
+      "disclaimer-public": "This donut is public. Any user can access it.",
+      "disclaimer-password": "You have also chosen to put a password. Users with the password can enter without having to be asked first.",
+      "disclaimer-changing": "You have the ability to get that donut off the record. Remember, once made, this will not be editable. All users currently in room will be allowed. This donut will no longer be opened to the public, invitations will be made only by the owner or password.",
       "close-room": "Close this donut"
     },
     "form": {
