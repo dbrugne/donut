@@ -17,14 +17,11 @@ exports.prepare = function (event, discussion) {
   }
 
   // avatar
-  var size = (event.getGenericType() !== 'inout')
-    ? 30
-    : 20;
   if (event.get('data').avatar) {
-    data.data.avatar = common.cloudinary.prepare(event.get('data').avatar, size);
+    data.data.avatar = common.cloudinary.prepare(event.get('data').avatar, 30);
   }
   if (event.get('data').by_avatar) {
-    data.data.by_avatar = common.cloudinary.prepare(event.get('data').by_avatar, size);
+    data.data.by_avatar = common.cloudinary.prepare(event.get('data').by_avatar, 30);
   }
 
   if (data.data.message || data.data.topic) {
@@ -78,4 +75,21 @@ exports.prepare = function (event, discussion) {
   data.unviewed = !!event.get('unviewed');
 
   return data;
+};
+
+exports.block = function (event, html) {
+  var template;
+  if (event.getGenericType() === 'message') {
+    template = require('../templates/event/block-message.html');
+  } else if (event.getGenericType() === 'inout') {
+    template = require('../templates/event/block-status.html');
+  } else {
+    return html;
+  }
+  var data = {
+    items: html,
+    data: event.get('data')
+  };
+  data.data.avatar = common.cloudinary.prepare(data.data.avatar, 30);
+  return template(data);
 };

@@ -1,0 +1,9 @@
+<div class="block message <%= (data.is_admin ? 'admin' : '') %>" data-user-id="<%= data.user_id %>">
+    <div class="avatar open-user-profile" style="background-image: url(<%= data.avatar %>)"></div>
+    <% if (data.is_admin) { %>
+    <div class="username">@<%= data.username %></div>
+    <% } else { %>
+    <div class="username open-user-profile" data-user-id="<%= data.user_id %>">@<%= data.username %></div>
+    <% } %>
+    <div class="items"><%= items %></div>
+</div>

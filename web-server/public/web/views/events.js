@@ -1,6 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
+var common = require('@dbrugne/donut-common/browser');
 var app = require('../models/app');
 var donutDebug = require('../libs/donut-debug');
 var currentUser = require('../models/current-user');
@@ -13,7 +14,7 @@ var EventsHistoryView = require('./events-history');
 var EventsSpamView = require('./events-spam');
 var EventsEditView = require('./events-edit');
 var windowView = require('./window');
-var events = require('../libs/events');
+var eventsEngine = require('../libs/events');
 
 var debug = donutDebug('donut:events');
 
@@ -252,11 +253,12 @@ module.exports = Backbone.View.extend({
     );
     var previousElement = this.$realtime.find('.block:last').first();
     var newBlock = this._newBlock(model, previousElement);
-    var html = this._renderEvent(model, newBlock);
+    var html = this._renderEvent(model);
     if (!newBlock) {
       // @bug : element is the .event in this case not the .block
       $(html).appendTo(previousElement.find('.items'));
     } else {
+      html = eventsEngine.block(model, html);
       $(html).appendTo(this.$realtime);
     }
 
@@ -274,6 +276,7 @@ module.exports = Backbone.View.extend({
       newBlock = true;
     } else {
       switch (newModel.getGenericType()) {
+        case 'hello':
         case 'standard':
           newBlock = true;
           break;
@@ -329,11 +332,12 @@ module.exports = Backbone.View.extend({
       }
 
       // render and insert
-      var h = this._renderEvent(model, newBlock);
+      var h = this._renderEvent(model);
       if (!newBlock) {
         // not define previousElement, remain the same .block
         $(h).prependTo(previousElement.find('.items'));
       } else {
+        h = eventsEngine.block(model, h);
         previousElement = $(h).prependTo($html);
       }
       previousModel = model;
@@ -342,14 +346,13 @@ module.exports = Backbone.View.extend({
     $html.find('>.block').prependTo(this.$realtime);
     debug.end('discussion-events-batch-' + this.model.getIdentifier());
   },
-  _renderEvent: function (model, withBlock) {
-    var data = events.prepare(model, this.model);
-    data.withBlock = withBlock || false;
+  _renderEvent: function (model) {
+    var data = eventsEngine.prepare(model, this.model);
     try {
       var template;
       switch (data.type) {
         case 'room:in':
-          if (currentUser.get('user_id') === model.get('data').user_id) {
+          if (model.getGenericType() === 'hello') {
             template = require('../templates/event/hello.html');
             data.name = this.model.get('name');
             data.mode = this.model.get('mode');
