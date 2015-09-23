@@ -43,6 +43,10 @@ handler.call = function (data, session, next) {
         return callback('User ' + currentUser.username + ' is not owner');
       }
 
+      if (room.isOwner(user)) {
+        return callback('User ' + user.username + ' is owner');
+      }
+
       if (!room.isAllowed(user.id)) {
         return callback('user isn\'t allowed in room ' + room.name);
       }

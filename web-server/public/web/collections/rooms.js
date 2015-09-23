@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
-var client = require('../client');
+var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 var RoomModel = require('../models/room');
 var UserModel = require('../models/user');
@@ -45,6 +45,7 @@ var RoomsCollection = Backbone.Collection.extend({
     this.listenTo(client, 'room:leave', this.onLeave);
     this.listenTo(client, 'room:leave:block', this.onLeaveBlock);
     this.listenTo(client, 'room:viewed', this.onViewed);
+    this.listenTo(client, 'room:set:private', this.onSetPrivate);
     this.listenTo(client, 'room:message:spam', this.onMessageSpam);
     this.listenTo(client, 'room:message:unspam', this.onMessageUnspam);
     this.listenTo(client, 'room:message:edit', this.onMessageEdited);
@@ -234,6 +235,7 @@ var RoomsCollection = Backbone.Collection.extend({
 
     // remove from this.users
     model.users.remove(user);
+    model.set('users_number', model.get('users_number') - 1);
     model.users.trigger('users-redraw');
 
     // trigger event
@@ -319,6 +321,14 @@ var RoomsCollection = Backbone.Collection.extend({
     }
 
     model.onViewed(data);
+  },
+  onSetPrivate: function (data) {
+    var model;
+    if (!data || !data.room_id || !(model = this.get(data.room_id))) {
+      return;
+    }
+
+    model.trigger('setPrivate', data);
   },
   onMessageSpam: function (data) {
     var model;

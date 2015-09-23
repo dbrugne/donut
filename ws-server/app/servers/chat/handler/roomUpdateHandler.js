@@ -20,7 +20,7 @@ var handler = Handler.prototype;
 handler.call = function (data, session, next) {
   var user = session.__currentUser__;
   var room = session.__room__;
-  var passwordPattern = /([^\s]{4,255})$/i;
+  var passwordPattern = /(.{4,255})$/i;
 
   var that = this;
 

@@ -1,9 +1,8 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../client');
+var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 
 var DrawerRoomProfileView = Backbone.View.extend({
@@ -14,7 +13,6 @@ var DrawerRoomProfileView = Backbone.View.extend({
   events: {},
 
   initialize: function (options) {
-    this.roomName = options.name;
     this.roomId = options.room_id;
 
     // show spinner as temp content
@@ -121,10 +119,11 @@ var DrawerRoomProfileView = Backbone.View.extend({
   },
 
   initializeTooltips: function () {
-    this.$('[data-toggle="tooltip"]').tooltip();
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
   }
 
 });
-
 
 module.exports = DrawerRoomProfileView;

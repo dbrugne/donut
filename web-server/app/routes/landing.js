@@ -6,9 +6,9 @@ var router = express.Router();
 var i18next = require('../../../shared/util/i18next');
 var conf = require('../../../config/index');
 var common = require('@dbrugne/donut-common/server');
-var featuredRooms = require('../../../shared/util/featuredRooms');
+var featuredRooms = require('../../../shared/util/featured-rooms');
 
-var underscoreTemplate = require('../../../shared/util/underscoreTemplate');
+var underscoreTemplate = require('../../../shared/util/underscore-template');
 var renderer = underscoreTemplate.standard({
   defaultVariables: {
     t: i18next.t

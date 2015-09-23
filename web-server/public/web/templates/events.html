@@ -13,13 +13,18 @@
                             <span class="open-room-profile" data-room-id="<%= model.id %>"><%= model.name %></span>
                         </div>
                         <div class="info">
-                            <%= t('chat.history.currently', {
+                            <p><%= t('chat.history.currently', {
                                 'roomname': model.name,
                                 'roomid': model.id,
                                 'owner': model.owner.username,
                                 'ownerid': model.owner.id,
-                                'creation-date': created_at
+                                created_at: created_at,
+                                created_time: created_time,
                             }) %>
+                            </p>
+                            <% if(isOwner) { %>
+                                <p><%= t('chat.history.hasPassword') %></p>
+                            <% } %>
                         </div>
                         <% if(isOwner) { %>
                             <div class="actions flex-parent">
@@ -33,28 +38,14 @@
                     <div class="user">
                         <div class="title">@<%= model.username %></div>
                         <div class="info">
-                            <%= t('chat.history.onestart', { 'username': model.username }) %>
+                            <%= t('chat.history.onestart') %>
                         </div>
                     </div>
                 <% }; %>
             </div>
         </div>
         <div class="blank flex-child"></div>
-        <div class="realtime">
-            <% if (model.type === 'room') { %>
-            <div class="hello block hidden-xs">
-                <div class="event">
-                    <div class="text"><i class="icon icon-hello"></i> <%= t('chat.welcome.room', {name: model.name}) %></div>
-                </div>
-            </div>
-            <% } else if (model.type === 'onetoone') { %>
-            <div class="hello block hidden-xs">
-                <div class="event">
-                    <div class="text"><i class="icon icon-hello"></i> <%= t('chat.welcome.onetoone', {username: model.username}) %></div>
-                </div>
-            </div>
-            <% }; %>
-        </div>
+        <div class="realtime"></div>
     </div>
 </div>
 <div class="go-to-top">

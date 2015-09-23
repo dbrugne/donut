@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
-var client = require('../client');
+var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 
 var DrawerAccountPasswordView = Backbone.View.extend({
@@ -49,7 +49,7 @@ var DrawerAccountPasswordView = Backbone.View.extend({
   onShowForm: function (event) {
     event.preventDefault();
 
-    if (this.user.account.has_password !== true) {
+    if (!this.user.account.has_password) {
       this.$inputCurrentPassword.hide();
       this.$labelCurrentPassword.hide();
     }

@@ -570,12 +570,18 @@
       } // #chat #center #home .right
     } // #chat #center #home
     .discussion { background-color: @cl-background; height: 100%;
-      @header-height: 35px; @size-user-item: 195px;
+      @header-height: 35px; @size-user-item: 205px;
       .content { height: 100%; position: relative; padding-left: 35px; .display-flex; .flex-flow(column nowrap);
         &.blocked { align-items: center; justify-content: center;
           .header .info { padding:0; }
         }
         .cover { text-align: center; }
+        .user {
+          .show-if-banned { display:none; }
+          &.is-banned .show-if-banned { display:initial; }
+          &.is-banned .show-if-unbanned { display:none; }
+          &.is-banned .avatar::after { font-family: Donut; content: '\f002'; position: absolute; font-size: 90px; color: rgba(119, 119, 119, 0.75); top: 0; line-height: 90px; left:6px; }
+        }
         .header { padding-top: 18px; padding-right: 10px;
           .info { padding-left: 110px;
             .share { display: inline-block;
@@ -616,10 +622,6 @@
             } // #chat #center .discussion .content .header.room .topic
           } // #chat #center .discussion .content .header.room
           &.user { min-height: 135px; position: relative;
-            .show-if-banned { display:none; }
-            &.is-banned .show-if-banned { display:initial; }
-            &.is-banned .show-if-unbanned { display:none; }
-            &.is-banned .avatar::before { font-family: Donut; content: '\f002'; position: absolute; font-size: 90px; color: rgba(119, 119, 119, 0.75); top: 0; line-height: 90px; left:6px; }
             .avatar { position: absolute; width: 100px; height: 100px;
               img { width:100%; }
             }
@@ -637,6 +639,7 @@
               i { font-size: 0.9em; }
               .ago { display: none; font-size: 0.9em; font-style: italic; }
             } // #chat #center .discussion .content .header.user .status-block
+            .hello-block { font-size: 1.2em; margin-left: 110px; font-style: italic; }
           } // #chat #center .discussion .content .header.user
         } // #chat #center .discussion .content .header
         .events { border-top: 1px solid @cl-subtext10; overflow-y: scroll; overflow-x: hidden; .flex(1); .scrollbar-grey;
@@ -1163,15 +1166,16 @@
       .side { float: right; width: @size-right; height: 100%; background-repeat: no-repeat; background-position: left top; margin: 0; padding: 0;
         .blur { width: @size-right-mid; position: relative; height: 100%; color: @cl-background; font-size: 1.1em; .scrollbar-grey;
           hr { margin-left: 0; margin-right: 0; }
-          .users { position: relative; background-color: rgba(0, 0, 0, 0.2); padding: 10px 0 30px 0; height: 100%;
+          .users { position: relative; background-color: rgba(0, 0, 0, 0.2); padding: 10px 0 30px 0; height: 100%; // #chat #center .discussion .side .blur .users
             .header { position: absolute;     white-space: nowrap; top: 14px; left: 16px; right: 10px;
               .count { .pull-left; }
               .between { font-size: 1.2em; line-height: 1; padding-left: 10px; padding-right: 10px; }
               .actions { .pull-right; }
             }
             > hr { position: absolute; left: 14px; right: 14px; top: @header-height; }
-            .list { width: 208px; overflow-y: auto; height: 100%; margin-top: (@header-height + 10px); margin-bottom: 0; margin-left: 5px; padding: 0 0 10px 0; background-repeat: no-repeat; background-position: left top; position: relative; .scrollbar-white;
+            .list { width: 215px; overflow-y: auto; height: 100%; margin-top: (@header-height + 10px); margin-bottom: 0; margin-left: 0; padding: 0 0 10px 0; background-repeat: no-repeat; background-position: left top; position: relative; .scrollbar-white; // #chat #center .discussion .side .blur .users .list
               .title { margin-top: 15px; padding-left: 10px; }
+              .li-title .item { width: (@size-user-item + 10px); padding:10px; }
               .item { position: relative; width: @size-user-item; padding-top: 10px; padding-left: 10px; font-size: 0.9em; font-weight: bold; white-space: nowrap; display: block;
                 .avatar { position: relative; display: inline-block; width: 34px; height: 34px; background-position: center center; background-size: 34px 34px; vertical-align: middle; }
                 .username { position: relative; font-size: 12px; margin-left: 9px; padding-right: 12px; overflow: hidden; display: inline-block; vertical-align: middle; max-width: 110px; white-space: nowrap;
@@ -1212,7 +1216,7 @@
                 }
               }
             }
-          } // #chat #center .discussion .side .blur .users
+          }
         } // #chat #center .discussion .side .blur
         &.oneside { width:@size-right-mid; }
         &.poster-empty { width:40px;

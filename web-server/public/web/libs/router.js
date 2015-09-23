@@ -1,6 +1,6 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
-var app = require('./models/app');
+var app = require('./../models/app');
 var client = require('./client');
 
 var DonutRouter = Backbone.Router.extend({
@@ -41,6 +41,5 @@ var DonutRouter = Backbone.Router.extend({
     Backbone.history.navigate('#', {trigger: true}); // redirect on home
   }
 });
-
 
 module.exports = new DonutRouter();

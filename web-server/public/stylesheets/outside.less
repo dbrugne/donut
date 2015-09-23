@@ -39,7 +39,7 @@
     .form-group {
       .form-control { padding: 4px 14px 4px 48px; }
       img { color: @cl-first; font-size: 22px; left: 10px; position: absolute; display: block; line-height: 34px; text-align: center; z-index: 2; width: 15px; height: 15px; top: 9px; }
-      &.has-error .help-block { position: absolute; right: 320px; background-color: #FFF; padding: 5px 10px; top: -5px; width: auto; white-space: nowrap;; text-align: right; border: 1px solid @cl-subtext30;
+      &.has-error .help-block { position: absolute; right: 235px; background-color: #FFF; padding: 5px 10px; top: -5px; width: auto; white-space: nowrap;; text-align: right; border: 1px solid @cl-subtext30;
         &::before { content: ''; width: 0; height: 0; border-style: solid; border-width: 8px 0 8px 8px; border-color: transparent transparent transparent @cl-subtext30; position: absolute; top: 7px; right: -9px; display: block; padding: 0; }
         &::after { content: ''; width: 0; height: 0; border-style: solid; border-width: 8px 0 8px 8px; border-color: transparent transparent transparent #FFF; position: absolute; top: 7px; right: -8px; display: block; padding: 0; }
       }
@@ -47,8 +47,8 @@
     a.btn-facebook { align-self: center; text-decoration: none; color:#FFF; display: inline-block; font-size:1.3rem; }
   }
   .method-facebook-or { border-bottom: 1px solid @cl-subtext10; margin-bottom: 20px; padding: 20px 0 0 0;
-    .outer { width:100px;
-      .inner { background-color: #FFF; width:100px; top: 10px; }
+    .outer { width:150px;
+      .inner { background-color: #FFF; width:150px; top: 10px; white-space: nowrap; }
     }
   }
 }
@@ -60,7 +60,7 @@
   #carousel-landing {
     .carousel-inner { position: absolute; overflow: hidden; width: 100%; z-index: 10; left: 0; border-bottom: 5px solid @blockColor;
       .disclaimer { position: absolute; top: 50px; color: #FFF; font-size: 3rem;  }
-      .img { height: @carousel-height; max-width: 100%; background-size: cover; background-repeat: no-repeat; .opacity(0.8); }
+      .img { height: @carousel-height; max-width: 100%; background-size: cover; background-repeat: no-repeat; }
       .item-1 .disclaimer { z-index: 10;
         h1 { color: @cl-background; font-size: 6rem; text-shadow: 4px 4px 6px rgba(0,0,0,0.65);; padding-bottom: 0; letter-spacing: -1px; .ft-raleway-heavy; font-weight: bold; .css-typing; position:relative; }
         p { display: block; text-shadow: 4px 4px 6px rgba(0,0,0,0.65); font-weight: bold; line-height: 3.5rem; margin-bottom: 0; letter-spacing: 0; opacity: .95; color: #fff; font-size: 24px; margin-top: 130px;

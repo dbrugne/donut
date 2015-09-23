@@ -4,7 +4,7 @@ var router = express.Router();
 var i18next = require('../../../shared/util/i18next');
 var bouncer = require('../middlewares/bouncer');
 var colors = require('../../../config/colors');
-var hello = require('../../../shared/util/helloDolly');
+var hello = require('../../../shared/util/hello-dolly');
 
 router.get('/!', function (req, res) {
   // Is user authenticated

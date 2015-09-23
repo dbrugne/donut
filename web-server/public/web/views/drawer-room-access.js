@@ -3,10 +3,9 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
 var i18next = require('i18next-client');
-var moment = require('moment');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../models/app');
-var client = require('../client');
+var client = require('../libs/client');
 var ConfirmationView = require('./modal-confirmation');
 var TableView = require('./drawer-room-access-table');
 
@@ -16,7 +15,7 @@ var RoomAccessView = Backbone.View.extend({
 
   dropdownTemplate: require('../templates/drawer-room-access-dropdown.html'),
 
-  passwordPattern: /([^\s]{4,255})$/i,
+  passwordPattern: /(.{4,255})$/i,
 
   id: 'room-access',
 
@@ -30,18 +29,18 @@ var RoomAccessView = Backbone.View.extend({
     'click i.icon-search': 'onSearch',
     'click .dropdown-menu>li': 'onAllowUser',
     'change [type="checkbox"]': 'onChoosePassword',
-    'click .random-password': 'onRandomPassword'
+    'click .random-password': 'onRandomPassword',
+    'click .change-mode': 'onChangeMode'
   },
 
   initialize: function (options) {
     this.render();
 
-    var that = this;
-    client.roomRead(options.model.get('id'), null, function (data) {
+    client.roomRead(options.model.get('id'), null, _.bind(function (data) {
       if (!data.err) {
-        that.initialRender(data);
+        this.initialRender(data);
       }
-    });
+    }, this));
   },
   render: function () {
     // render spinner only
@@ -50,8 +49,10 @@ var RoomAccessView = Backbone.View.extend({
   },
   initialRender: function (room) {
     this.model = room;
+
     this.listenTo(app, 'redraw-tables', this.renderTables);
     this.listenTo(client, 'room:request', this.renderPendingTable);
+
     var data = {
       owner_id: this.model.owner.user_id,
       owner_name: this.model.owner.username,
@@ -72,15 +73,18 @@ var RoomAccessView = Backbone.View.extend({
     this.$password = this.$('.input-password');
     this.$randomPassword = this.$('.random-password');
 
-    this.tablePending = new TableView({
-      el: this.$('.allow-pending'),
-      model: this.model
-    });
-    this.tableAllowed = new TableView({
-      el: this.$('.allowed'),
-      model: this.model
-    });
-    this.renderTables();
+    // Only render tables if the donut is private
+    if (this.model.mode === 'private') {
+      this.tablePending = new TableView({
+        el: this.$('.allow-pending'),
+        model: this.model
+      });
+      this.tableAllowed = new TableView({
+        el: this.$('.allowed'),
+        model: this.model
+      });
+      this.renderTables();
+    }
 
     this.initializeTooltips();
   },
@@ -105,8 +109,12 @@ var RoomAccessView = Backbone.View.extend({
     });
   },
   _remove: function () {
-    this.tablePending.remove();
-    this.tableAllowed.remove();
+    if (this.tablePending) {
+      this.tablePending.remove();
+    }
+    if (this.tableAllowed) {
+      this.tableAllowed.remove();
+    }
     this.remove();
   },
   onSearch: function (event) {
@@ -167,6 +175,21 @@ var RoomAccessView = Backbone.View.extend({
     this.$password.val(common.misc.randomString());
     this.$password.focus();
   },
+  onChangeMode: function (event) {
+    event.preventDefault();
+    var that = this;
+    ConfirmationView.open({}, function () {
+      client.roomSetPrivate(that.model.id, function (response) {
+        if (!response.err) {
+          client.roomRead(that.model.id, null, function (data) {
+            if (!data.err) {
+              that.initialRender(data);
+            }
+          });
+        }
+      });
+    });
+  },
   reset: function () {
     this.$errors.html('').hide();
     this.$el.removeClass('has-error').removeClass('has-success').val('');
@@ -182,7 +205,7 @@ var RoomAccessView = Backbone.View.extend({
       return this.setError(i18next.t('chat.form.errors.invalid-password'));
     }
 
-    client.roomUpdate(this.model.id, { password: this.getPassword() }, _.bind(function (data) {
+    client.roomUpdate(this.model.id, {password: this.getPassword()}, _.bind(function (data) {
       if (data.err) {
         return this.editError(data);
       }
@@ -208,10 +231,11 @@ var RoomAccessView = Backbone.View.extend({
   },
 
   initializeTooltips: function () {
-    this.$('[data-toggle="tooltip"]').tooltip();
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
   }
 
 });
-
 
 module.exports = RoomAccessView;

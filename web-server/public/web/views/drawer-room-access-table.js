@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../client');
+var client = require('../libs/client');
 var app = require('../models/app');
 var currentUser = require('../models/current-user');
 var confirmationView = require('./modal-confirmation');
@@ -81,7 +81,9 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
   },
 
   initializeTooltips: function () {
-    $('[data-toggle="tooltip"]').tooltip();
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
   }
 });
 

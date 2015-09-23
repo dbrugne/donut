@@ -75,31 +75,45 @@ passport.use('local-signup', new LocalStrategy(localStrategyOptions,
         }
 
         if (user) {
-          return done(null, false, req.flash('error', i18next.t('account.email.error.alreadyexists')));
+          if (user.validPassword(password)) { // user type both password and mail of user so connect him
+            return done(null, user);
+          } else {
+            return done('email-alreadyexists');
+          }
         }
 
-        // create
-        var newUser = User.getNewUser();
-        newUser.local.email = email;
-        newUser.local.password = newUser.generateHash(password);
-        newUser.username = req.body.username;
-        newUser.lastlogin_at = Date.now();
-        newUser.save(function (err) {
+        req.checkBody('username', i18next.t('choose-username.usernameerror')).isUsername();
+        if (req.validationErrors()) {
+          return done('usernameerror');
+        }
+
+        User.usernameAvailability(req.body.username, function (err) {
           if (err) {
-            throw err;
+            return done(err);
           }
 
-          // tracking
-          keenIoTracking(newUser, 'email');
-
-          // email will be send on next tick but done() is called immediatly
-          emailer.welcome(newUser.local.email, function (err) {
+          // create
+          var newUser = User.getNewUser();
+          newUser.local.email = email;
+          newUser.local.password = newUser.generateHash(password);
+          newUser.username = req.body.username;
+          newUser.lastlogin_at = Date.now();
+          newUser.save(function (err) {
             if (err) {
-              return logger.error('Unable to sent welcome email: ' + err);
+              throw err;
             }
-          });
 
-          return done(null, newUser);
+            // tracking
+            keenIoTracking(newUser, 'email');
+
+            // email will be send on next tick but done() is called immediatly
+            emailer.welcome(newUser.local.email, function (err) {
+              if (err) {
+                return logger.error('Unable to sent welcome email: ' + err);
+              }
+            });
+            return done(null, newUser);
+          });
         });
       });
     });
@@ -119,14 +133,12 @@ passport.use('local-login', new LocalStrategy(localStrategyOptions,
 
       // if no user is found, return the message
       if (!user) {
-        req.flash('email', email);
-        return done(null, false, req.flash('error', i18next.t('account.error.invalid')));
+        return done('invalid');
       }
 
       // if the user is found but the password is wrong
       if (!user.validPassword(password)) {
-        req.flash('email', email);
-        return done(null, false, req.flash('error', i18next.t('account.error.invalid')));
+        return done('invalid');
       }
 
       // all is well, return successful user

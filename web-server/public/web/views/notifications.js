@@ -4,7 +4,7 @@ var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var app = require('../models/app');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../client');
+var client = require('../libs/client');
 var rooms = require('../collections/rooms');
 var onetoones = require('../collections/onetoones');
 var currentUser = require('../models/current-user');
@@ -198,10 +198,15 @@ var NotificationsView = Backbone.View.extend({
   },
   // User clicks on the notification icon in the header
   onShow: function (event) {
+    this.scrollTop();
     if (this.$menu.find('.message').length) {
       this.markHasRead = setTimeout(_.bind(function () {
         this.clearNotifications();
       }, this), this.timeToMarkAsRead);
+    }
+
+    if (this.$menu.find('.message').length >= 10) {
+      return;
     }
 
     client.notificationRead(null, this.lastNotifDisplayedTime(), 10, _.bind(function (data) {
@@ -210,7 +215,7 @@ var NotificationsView = Backbone.View.extend({
       for (var k in data.notifications) {
         html += this.createNotificationFromTemplate(data.notifications[k]);
       }
-      this.$menu.html(html);
+      this.$menu.html(this.$menu.html() + html);
       this.toggleReadMore();
     }, this));
 
@@ -352,6 +357,5 @@ var NotificationsView = Backbone.View.extend({
     this.toggleReadMore();
   }
 });
-
 
 module.exports = NotificationsView;

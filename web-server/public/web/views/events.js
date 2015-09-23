@@ -3,13 +3,12 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
 var donutDebug = require('../libs/donut-debug');
-var keyboard = require('../libs/keyboard');
 var common = require('@dbrugne/donut-common/browser');
+var currentUser = require('../models/current-user');
 var EventModel = require('../models/event');
 var moment = require('moment');
 var i18next = require('i18next-client');
-var client = require('../client');
-var currentUser = require('../models/current-user');
+var client = require('../libs/client');
 var EventsViewedView = require('./events-viewed');
 var EventsHistoryView = require('./events-history');
 var EventsSpamView = require('./events-spam');
@@ -18,7 +17,7 @@ var windowView = require('./window');
 
 var debug = donutDebug('donut:events');
 
-var EventsView = Backbone.View.extend({
+module.exports = Backbone.View.extend({
   template: require('../templates/events.html'),
 
   events: {
@@ -76,12 +75,16 @@ var EventsView = Backbone.View.extend({
     if (modelJson.owner) {
       modelJson.owner = modelJson.owner.toJSON();
     }
-    var created_at = (this.model.get('created_at')) 
-      ? moment(this.model.get('created_at')).format('Do MMMM YYYY, h:mm:ss') 
+    var created_at = (this.model.get('created_at'))
+      ? moment(this.model.get('created_at')).format('Do MMMM YYYY')
+      : '';
+    var created_time = (this.model.get('created_at'))
+      ? moment(this.model.get('created_at')).format('h:mm:ss')
       : '';
     var html = this.template({
       model: modelJson,
       created_at: created_at,
+      created_time: created_time,
       isOwner: (this.model.get('type') === 'room' && this.model.currentUserIsOwner()),
       time: Date.now()
     });
@@ -433,12 +436,18 @@ var EventsView = Backbone.View.extend({
     try {
       var template;
       switch (data.type) {
-        case 'disconnected':
-          template = require('../templates/event/disconnected.html');
+        case 'room:in':
+          if (currentUser.get('user_id') === model.get('data').user_id) {
+            template = require('../templates/event/hello.html');
+            data.name = this.model.get('name');
+            data.mode = this.model.get('mode');
+            data.username = this.model.get('owner').get('username');
+          } else {
+            template = require('../templates/event/in-out-on-off.html');
+          }
           break;
         case 'user:online':
         case 'user:offline':
-        case 'room:in':
         case 'room:out':
           template = require('../templates/event/in-out-on-off.html');
           break;
@@ -448,9 +457,6 @@ var EventsView = Backbone.View.extend({
         case 'room:message':
         case 'user:message':
           template = require('../templates/event/message.html');
-          break;
-        case 'reconnected':
-          template = require('../templates/event/reconnected.html');
           break;
         case 'room:deop':
           template = require('../templates/event/room-deop.html');
@@ -490,8 +496,7 @@ var EventsView = Backbone.View.extend({
       }
       return template(data);
     } catch (e) {
-      debug('Render exception, see below');
-      debug(e);
+      console.error('Render exception, see below', e);
       return false;
     }
   },
@@ -500,6 +505,3 @@ var EventsView = Backbone.View.extend({
     this.eventsHistoryView.requestHistory(scrollTo);
   }
 });
-
-
-module.exports = EventsView;

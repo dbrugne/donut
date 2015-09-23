@@ -6,7 +6,7 @@ grunt admin-notify-message \
   && git pull \
   && npm install \
   && bower install \
-  && grunt build \
+  && grunt build --uglify=true \
   && pm2 restart web \
   && pm2 restart ws \
   && sleep 10 \

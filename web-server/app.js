@@ -10,7 +10,7 @@ var errors = require('./app/middlewares/errors');
 var path = require('path');
 var favicon = require('serve-favicon');
 var httpLogger = require('morgan');
-var underscoreTemplate = require('../shared/util/underscoreTemplate');
+var underscoreTemplate = require('../shared/util/underscore-template');
 var less = require('less-middleware');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -41,8 +41,15 @@ if (process.env.NODE_ENV === 'development') {
   app.use(require('browserify-dev-middleware')({
     src: __dirname + '/public/web',
     transforms: [
-      require('../shared/util/browserifyJst'),
-      require('../shared/util/browserifyI18next')
+      require('../shared/util/browserify-jst'),
+      require('../shared/util/browserify-i18next')
+    ]
+  }));
+  app.use(require('browserify-dev-middleware')({
+    src: __dirname + '/public/outside',
+    transforms: [
+      require('../shared/util/browserify-jst'),
+      require('../shared/util/browserify-i18next')
     ]
   }));
 }

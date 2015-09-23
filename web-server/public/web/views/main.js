@@ -4,9 +4,8 @@ var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var donutDebug = require('../libs/donut-debug');
 var app = require('../models/app');
-var client = require('../client');
+var client = require('../libs/client');
 var currentUser = require('../models/current-user');
-var EventModel = require('../models/event');
 var rooms = require('../collections/rooms');
 var onetoones = require('../collections/onetoones');
 var windowView = require('./window');
@@ -40,7 +39,7 @@ var debug = donutDebug('donut:main');
 window.date = require('../libs/date');
 
 var MainView = Backbone.View.extend({
-  el: $('#chat'),
+  el: $('body'),
 
   $home: $('#home'),
 
@@ -84,7 +83,6 @@ var MainView = Backbone.View.extend({
 
     this.listenTo(client, 'welcome', this.onWelcome);
     this.listenTo(client, 'disconnect', this.onDisconnect);
-    this.listenTo(client, 'reconnect', this.onReconnect);
     this.listenTo(rooms, 'add', this.addView);
     this.listenTo(rooms, 'remove', this.onRemoveDiscussion);
     this.listenTo(onetoones, 'add', this.addView);
@@ -130,8 +128,6 @@ var MainView = Backbone.View.extend({
    * @param data
    */
   onWelcome: function (data) {
-    var that = this;
-
     // Current user data (should be done before onetoone logic)
     currentUser.set(data.user, {silent: true});
     currentUser.setPreferences(data.preferences, {silent: true});
@@ -173,11 +169,6 @@ var MainView = Backbone.View.extend({
     }
     this.firstConnection = false;
 
-//      // set intervaller (set on 'connection')
-//      this.interval = setTimeout(function () {
-//        that.updateViews();
-//      }, this.intervalDuration);
-
     // Run routing only when everything in interface is ready
     app.trigger('readyToRoute');
     this.connectionView.hide();
@@ -187,22 +178,12 @@ var MainView = Backbone.View.extend({
     // disable interval
     clearInterval(this.interval);
 
-    // add disconnected event in each discussion
-    var e = new EventModel({
-      type: 'disconnected'
-    });
+    // force data re-fetching on next focus
     _.each(this.views, function (view) {
-      view.eventsView.addFreshEvent(e); // @todo : move to app.trigger()
-      view.hasBeenFocused = false; // will force re-fetch data on next focus
-    });
-  },
-  onReconnect: function () {
-    // add reconnected event in each discussion
-    var e = new EventModel({
-      type: 'reconnected'
-    });
-    _.each(this.views, function (view) {
-      view.eventsView.addFreshEvent(e); // @todo : move to app.trigger()
+      view.hasBeenFocused = false;
+      // @todo : to cover completely this case we should:
+      //   - on short disconnection: request history for bottom of the discussion from last known event
+      //   - on long disconnection: cleanup history and request normal history
     });
   },
 
@@ -600,7 +581,7 @@ var MainView = Backbone.View.extend({
   focusRoomByName: function (name) {
     var model = rooms.iwhere('name', name);
     if (typeof model !== 'undefined') {
-      model.set('unviewed', false);
+      model.resetNew();
       return this.focus(model);
     }
 

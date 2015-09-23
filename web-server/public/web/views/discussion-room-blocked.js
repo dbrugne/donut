@@ -5,15 +5,10 @@ var i18next = require('i18next-client');
 var moment = require('moment');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../models/app');
-var client = require('../client');
+var client = require('../libs/client');
 
 var RoomBlockedView = Backbone.View.extend({
   tagName: 'div',
-
-  /**
-   * @todo : close discussion view in left tab
-   * @todo : reopen on next welcome (how to persist?)
-   */
 
   className: 'discussion',
 
@@ -118,10 +113,10 @@ var RoomBlockedView = Backbone.View.extend({
     client.roomLeaveBlock(this.model.get('id'));
   },
   initializeTooltips: function () {
-    this.$('[data-toggle="tooltip"]').tooltip();
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
   }
-
 });
-
 
 module.exports = RoomBlockedView;

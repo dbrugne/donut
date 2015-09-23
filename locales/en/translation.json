@@ -16,7 +16,7 @@
     "help": "Help",
     "faq": "FAQ",
     "contact": "Contact",
-    "cgu": "TOU",
+    "cgu": "EUTC",
     "legals": "Legals",
     "signup-self": "Sign up",
     "login-self": "Log in",
@@ -100,7 +100,6 @@
     "search": "search a donut",
     "create": "create a donut",
     "signup": "sign up",
-    "orsignup": "os sign up",
     "forgot": "forgotten password",
     "join": "join",
     "discuss": "chat",
@@ -138,7 +137,7 @@
     },
     "switchlanguage": "Language",
     "unknownerror": "Unknown error, please retry later",
-    "private-donut": "private Donut"
+    "private-donut": "private Donut: only authorized users can join, participate and access history"
   },
   "login": {
     "withfacebook": "with Facebook",
@@ -163,7 +162,7 @@
     }
   },
   "signup": {
-    "disclaimer": "By creating an account, I accept <strong><a href=\"/eutc\" target=\"_blank\">TOU</a></strong>"
+    "disclaimer": "By creating an account, I accept <strong><a href=\"/eutc\" target=\"_blank\">EUTC</a></strong>"
   },
   "choose-username": {
     "title": "It's time to choose a username!",
@@ -259,13 +258,13 @@
     "loading": "Loading",
     "actions": {
       "search": "Search",
-      "searchuser": "Search an user",
+      "searchuser": "Search for a user",
       "create": "create",
       "adonut": "a donut",
       "account": "my account",
       "edit": "my profile",
       "notifications": "notifications",
-      "close": "Close the discussion",
+      "close": "Quit the discussion",
       "preferences": "settings and notifications",
       "bannedusers": "locked users",
       "update": "Edit",
@@ -468,8 +467,9 @@
       "loading": "Loading more...",
       "top": "go to top",
       "bottom": "go to bottom",
-      "currently": "You are at the very first start of Donut <span class=\"name dc-text open-room-profile\" data-room-id=\"__roomid__\">__roomname__</span>, created by <span class=\"owner dc-text open-user-profile\" data-user-id=\"__ownerid__\">@__owner__</span> on <span class=\"date\">__creation-date__</span>",
-      "onestart": "You are at the very first start of your private discussion with <span class=\"name dc-text\">@__username__</span>. Everything said here will stay here :)",
+      "currently": "This is it... You are at the very start of the conversation on <span class=\"name dc-text open-room-profile\" data-room-id=\"__roomid__\">__roomname__</span>, donut created by <span class=\"owner dc-text open-user-profile\" data-user-id=\"__ownerid__\">@__owner__</span> on <span class=\"date\">__created_at__</span> at <span class=\"date\">__created_time__</span>",
+      "hasPassword": "Your donut is private. Configure the access to your donut so that other users can join",
+      "onestart": "This conversation is private. Only you and your interlocutor can see it.",
       "edit": "Edit profile",
       "users": "Manage users",
       "access": "Manage access"
@@ -485,21 +485,21 @@
     "deletemessage": "The donut __name__ has been deleted",
     "users": {
       "link": "users",
-      "search": "search for username in this room",
+      "search": "search a username in this donut",
       "type": {
         "owner": "Owner",
         "users": "Users",
         "op": "Moderators",
-        "allowed": "Allowed",
+        "allowed": "Authorized users",
         "ban": "Banned",
-        "devoice": "Devoiced"
+        "devoice": "Mute"
       }
     },
     "access": {
       "link": "access",
-      "labelsearch": "Allow users",
+      "labelsearch": "Invite a user",
       "add": "Add user",
-      "labelpending": "Users pending approval",
+      "labelpending": "Users waiting for authorization",
       "types": {
         "all": "All",
         "allowed": "Allowed",
@@ -512,10 +512,18 @@
       "description": "Join me on DONUT.me, the new chat platform. I discuss on __name__."
     },
     "welcome": {
-      "room": [
-        "Welcome in <strong>__name__</strong>. Only users that have joined this donut (listed on right) can see the conversation. Even if they are currently offline.",
-        "Post a message to start the conversation."
-      ],
+      "private": {
+        "room": [
+          "Welcome to <strong>__name__</strong>. The conversation is private so only users authorized by <strong>@__owner__</strong> can join. Once users have joined the can participate and access history.",
+          "Post a message to engage in the discussion."
+        ]
+      },
+      "public": {
+        "room": [
+          "Welcome to <strong>__name__</strong>. The conversation is public so anyone can join, participate and access history. Share the link with your friends! ",
+          "Post a message to engage in the discussion."
+        ]
+      },
       "onetoone": [
         "If <strong>__username__</strong> isn't online he will get your messages on his next connexion",
         "Post a message to start the conversation."
@@ -562,10 +570,11 @@
       "banned_reason": "For following reason: ",
       "kicked": "You were kicked from this donut",
       "kicked_button": "Join",
+      "changemode": "Change mode",
       "disclaimer-private": "This donut is private, Only users specifically authorized by the owner can access it. To add new users, thanks to search in the list below.",
       "disclaimer-public": "This donut is public. Any user can access it.",
       "disclaimer-password": "You have also chosen to put a password. Users with the password can enter without having to be asked first.",
-      "disclaimer-changing": "You have the ability to get that donut off the record (possibly with a password). Remember, once made, this will not be editable. This donut will no longer be opened to the public, invitations will be made only by the owner or password.",
+      "disclaimer-changing": "You have the ability to get that donut off the record. Remember, once made, this will not be editable. All users currently in room will be allowed. This donut will no longer be opened to the public, invitations will be made only by the owner or password.",
       "close-room": "Close this donut"
     },
     "form": {
@@ -613,13 +622,12 @@
         },
         "mode": {
           "disclaimer": {
-            "public": "By selecting this option, your donut will be public. Any user can enter and see what happens there.",
-            "private": "By selecting this option, your donut will be private. Only users specifically authorized by the owner or Op can enter.",
+            "public": "Any user can join, participate and access history. Moderation tools available.",
+            "private": "Only users you authorize can join, participate and access history. Moderation tools available.",
             "password": "You also have the possibility to put a password on that donut. Users with the password can enter without having to be asked first."
           }
         },
         "create": {
-          "info": "Attention, the donut name will not be editable later.",
           "label": "Create a donut",
           "help": "Between 3 and 24 characters, only letters, numbers,  dashes (-) and underscore (_)",
           "placeholder": "Donut name",
@@ -706,7 +714,6 @@
         "alreadyyours": "You already use this e-mail",
         "empty": "The champ is empty"
       },
-      "format": "Invalid format",
       "new": "New E-mail",
       "confirm": "Confirm"
     },
@@ -994,8 +1001,8 @@
         "help": "",
         "desktop": "Desktop",
         "desktop-default": "Your browser will prompt for approval : approve !",
-        "desktop-refused" : "You have chosen to <strong>refuse</strong> notifications on your desktop. To modify this choice, you must modify the settings of your browser.",
-        "desktop-validated" : "You have chosen to <strong>accept</strong> notifications on your desktop. To modify this choice, you must modify the settings of your browser.",
+        "desktop-denied" : "You have chosen to <strong>refuse</strong> notifications on your desktop. To modify this choice, you must modify the settings of your browser.",
+        "desktop-granted" : "You have chosen to <strong>accept</strong> notifications on your desktop. To modify this choice, you must modify the settings of your browser.",
         "desktop-test": "try",
         "desktop-notify-test": "test notification",
         "email": "Email (only if you are offline)",
