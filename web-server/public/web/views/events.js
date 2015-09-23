@@ -76,11 +76,15 @@ module.exports = Backbone.View.extend({
       modelJson.owner = modelJson.owner.toJSON();
     }
     var created_at = (this.model.get('created_at'))
-      ? moment(this.model.get('created_at')).format('Do MMMM YYYY, h:mm:ss')
+      ? moment(this.model.get('created_at')).format('Do MMMM YYYY')
+      : '';
+    var created_time = (this.model.get('created_at'))
+      ? moment(this.model.get('created_at')).format('h:mm:ss')
       : '';
     var html = this.template({
       model: modelJson,
       created_at: created_at,
+      created_time: created_time,
       isOwner: (this.model.get('type') === 'room' && this.model.currentUserIsOwner()),
       time: Date.now()
     });
@@ -436,11 +440,14 @@ module.exports = Backbone.View.extend({
           if (currentUser.get('user_id') === model.get('data').user_id) {
             template = require('../templates/event/hello.html');
             data.name = this.model.get('name');
-            break;
+            data.mode = this.model.get('mode');
+            data.username = this.model.get('owner').get('username');
+          } else {
+            template = require('../templates/event/in-out-on-off.html');
           }
+          break;
         case 'user:online':
         case 'user:offline':
-        case 'room:in':
         case 'room:out':
           template = require('../templates/event/in-out-on-off.html');
           break;

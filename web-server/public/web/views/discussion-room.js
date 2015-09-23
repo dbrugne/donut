@@ -305,10 +305,10 @@ var RoomView = Backbone.View.extend({
   },
 
   initializeTooltips: function () {
-    this.$('[data-toggle="tooltip"]').tooltip();
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
   }
-
 });
-
 
 module.exports = RoomView;

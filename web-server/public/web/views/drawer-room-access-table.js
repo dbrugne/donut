@@ -81,7 +81,9 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
   },
 
   initializeTooltips: function () {
-    $('[data-toggle="tooltip"]').tooltip();
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
   }
 });
 

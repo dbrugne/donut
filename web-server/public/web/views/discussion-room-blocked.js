@@ -113,10 +113,10 @@ var RoomBlockedView = Backbone.View.extend({
     client.roomLeaveBlock(this.model.get('id'));
   },
   initializeTooltips: function () {
-    this.$('[data-toggle="tooltip"]').tooltip();
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
   }
-
 });
-
 
 module.exports = RoomBlockedView;

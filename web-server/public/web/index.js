@@ -18,12 +18,6 @@ require('bootstrap/js/popover');
 // contact form
 $('[data-toggle="contactform"]').contactform({});
 
-// notify
-window.notify.config({
-  pageVisibility: true, // always display, even if application is in background
-  autoClose: 3000
-});
-
 // run
 require('./libs/router');
 var mainView = require('./views/main');

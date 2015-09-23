@@ -60,7 +60,7 @@ var DrawerUserPreferencesView = Backbone.View.extend({
   },
   onTestDesktopNotify: function (event) {
     event.preventDefault();
-    app.trigger('desktopNotificationForce', i18next.t('preferences.notif.channels.desktop-notify-test'), '');
+    app.trigger('desktopNotification', i18next.t('preferences.notif.channels.desktop-notify-test'), '', true);
   },
   onChangeValue: function (event) {
     var $target = $(event.currentTarget);
