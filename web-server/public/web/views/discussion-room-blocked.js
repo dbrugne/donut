@@ -5,7 +5,7 @@ var i18next = require('i18next-client');
 var moment = require('moment');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../models/app');
-var client = require('../client');
+var client = require('../libs/client');
 
 var RoomBlockedView = Backbone.View.extend({
   tagName: 'div',

@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var client = require('../client');
+var client = require('../libs/client');
 var RoomUsersTableConfirmation = require('./drawer-room-users-table');
 var keyboard = require('../libs/keyboard');
 

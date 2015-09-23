@@ -2,7 +2,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../client');
+var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 
 var DrawerRoomProfileView = Backbone.View.extend({

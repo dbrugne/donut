@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
-var donutDebug = require('./libs/donut-debug');
-var pomelo = require('./libs/pomelo');
+var donutDebug = require('./donut-debug');
+var pomelo = require('./pomelo');
 
 var debug = donutDebug('donut:client');
 

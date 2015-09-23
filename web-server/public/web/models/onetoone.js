@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('./app');
-var client = require('../client');
+var client = require('../libs/client');
 var currentUser = require('./current-user');
 var EventModel = require('./event');
 

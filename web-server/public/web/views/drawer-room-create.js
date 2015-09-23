@@ -4,7 +4,7 @@ var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
 var app = require('../models/app');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../client');
+var client = require('../libs/client');
 var i18next = require('i18next-client');
 
 var DrawerRoomCreateView = Backbone.View.extend({
