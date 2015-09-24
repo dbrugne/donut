@@ -1,6 +1,6 @@
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
+var keyboard = require('../libs/keyboard');
 var i18next = require('i18next-client');
 var date = require('../libs/date');
 var common = require('@dbrugne/donut-common/browser');
@@ -19,6 +19,7 @@ var RoomBlockedView = Backbone.View.extend({
   events: {
     'click .ask-for-allowance': 'onRequestAllowance',
     'click .valid-password': 'onValidPassword',
+    'keyup .input-password': 'onValidPassword',
     'click .close-room': 'onCloseRoom',
     'click .rejoin': 'onRejoin'
   },
@@ -91,6 +92,11 @@ var RoomBlockedView = Backbone.View.extend({
     });
   },
   onValidPassword: function (event) {
+    var key = keyboard._getLastKeyCode(event);
+    if (event.type !== 'click' && key.key !== keyboard.RETURN) {
+      return;
+    }
+
     var password = $(event.currentTarget).closest('.password-form').find('.input-password').val();
     client.roomJoin(this.model.get('id'), this.model.get('name'), password, function (response) {
       if (response.err && (response.err === 'wrong-password' || response.err === 'spam-password')) {
