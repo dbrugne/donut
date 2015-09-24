@@ -38,6 +38,9 @@ handler.call = function (data, session, next) {
         return callback('Room is already private');
       }
 
+      if (room.permanent === true) {
+        return callback('This room : ' + room.name + 'is permanent can\'t set private');
+      }
       return callback(null);
     },
 
