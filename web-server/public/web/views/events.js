@@ -259,13 +259,6 @@ module.exports = Backbone.View.extend({
     return newBlock;
   },
   addFreshEvent: function (model) {
-    // browser notification
-    if (model.getGenericType() === 'message' || model.get('type') === 'room:topic') {
-      app.trigger('unviewedMessage', model, this.model);
-    } else if (this.model.get('type') === 'room' && model.getGenericType() === 'inout') {
-      app.trigger('unviewedInOut', model, this.model);
-    }
-
     // render a 'fresh' event in realtime and scrolldown
     debug.start('discussion-events-fresh-' + this.model.getIdentifier());
     // scrollDown only if already on bottom before DOM insertion
