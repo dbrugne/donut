@@ -506,7 +506,8 @@
         "allowed": "Utilisateurs autorisés",
         "ban": "Bannis",
         "devoice": "Muets"
-      }
+      },
+      "usernotexist": "Cette utilisateur n'existe pas."
     },
     "access": {
       "link": "accès",

@@ -426,10 +426,15 @@ var InputCommandsView = Backbone.View.extend({
   },
   msg: function (paramString, parameters) {
     var message = (!parameters) ? paramString : parameters[2];
-    if (!message) {
+
+    if (message && /^@/.test(message)) {
+      message = message.replace(/\s+/, '');
+      app.trigger('joinOnetoone', message.replace(/^@/, ''));
       return;
     }
-
+    if (!message) {
+      return this.errorCommand('msg', 'parameters');
+    }
     var model;
     if (!parameters) {
       model = this.model;
@@ -439,7 +444,7 @@ var InputCommandsView = Backbone.View.extend({
       client.userMessage(null, parameters[1].replace(/^@/, ''), message);
       return;
     } else {
-      return;
+      return this.errorCommand('msg', 'parameters');
     }
 
     if (!model) {

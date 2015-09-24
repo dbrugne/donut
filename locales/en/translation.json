@@ -506,7 +506,8 @@
         "allowed": "Authorized users",
         "ban": "Banned",
         "devoice": "Mute"
-      }
+      },
+      "usernotexist": "User not found"
     },
     "access": {
       "link": "access",

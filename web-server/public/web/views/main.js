@@ -95,6 +95,7 @@ var MainView = Backbone.View.extend({
     this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
     this.listenTo(app, 'openUserProfile', this.openUserProfile);
     this.listenTo(app, 'joinRoom', this.focusRoomByName);
+    this.listenTo(app, 'joinOnetoone', this.focusOneToOneByUsername);
     this.listenTo(app, 'changeColor', this.onChangeColor);
     this.listenTo(app, 'persistPositions', this.persistPositions);
   },
