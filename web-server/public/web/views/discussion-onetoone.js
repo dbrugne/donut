@@ -1,13 +1,9 @@
-var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../models/app');
-var client = require('../libs/client');
 var EventsView = require('./events');
 var InputView = require('./input');
-var confirmationView = require('./modal-confirmation');
 var date = require('../libs/date');
 
 var OneToOnePanelView = Backbone.View.extend({
@@ -153,6 +149,4 @@ var OneToOnePanelView = Backbone.View.extend({
     }
   }
 });
-
-
 module.exports = OneToOnePanelView;
