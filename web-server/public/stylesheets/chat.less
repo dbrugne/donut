@@ -815,12 +815,13 @@
                     &::before {
                       content: "\f028";
                       font-family: Donut;
-                      font-size: 9px;
-                      color: #10A4FE;
+                      font-size: 6px;
+                      color: #10a4fe;
                       position: absolute;
-                      top: 4px;
-                      left: -2px;
+                      top: 7px;
+                      left: 37px;
                       line-height: 1;
+                      font-style: normal;
                     }
                   }
                   .event {
@@ -1029,6 +1030,23 @@
                     .params-cmd { color: #8699a4; }
                     .desc-cmd { font-style: italic; }
                   }
+                }
+                .block.command-error {
+                  padding: 5px;
+                  .error-command {font-weight: bold; color: #000;}
+                  .error {font-style: italic; color: #8699a4;}
+                }
+                .block.ping {
+                  font-style: italic;
+                  color: @cl-subtext30;
+                }
+                .block.me {
+                  font-style: italic;
+                  color: @cl-subtext30;
+                }
+                .block.random {
+                  font-style: italic;
+                  color: @cl-subtext30;
                 }
               } // #chat #center .discussion .content .events .scrollable .scrollable-content .realtime
             } // // #chat #center .discussion .content .events .scrollable .scrollable-content
@@ -1280,25 +1298,4 @@
   .status.error { color: #d9534f; }
 
   @import './drawer';
-}
-
-#chat #center .discussion .content .events .scrollable .scrollable-content .realtime .block.ping {
-  font-style: italic;
-  color: @cl-subtext30;
-}
-
-#chat #center .discussion .content .events .scrollable .scrollable-content .realtime .block.command-error {
-  padding: 5px;
-  .error-command {font-weight: bold; color: #000;}
-  .error {font-style: italic; color: #8699a4;}
-}
-
-#chat #center .discussion .content .events .scrollable .scrollable-content .realtime .event.me {
-  font-style: italic;
-  color: @cl-subtext30;
-}
-
-#chat #center .discussion .content .events .scrollable .scrollable-content .realtime .event.random {
-  font-style: italic;
-  color: @cl-subtext30;
 }
