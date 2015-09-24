@@ -2,7 +2,9 @@
 <div class="content" id="onetoone">
     <div class="visible-xs visible-sm">
         <div class="mini-header user <% if (banned === true) { %> is-banned <% } %>">
-            <img class="avatar open-user-profile dc-border-lighter" data-user-id="<%= user_id %>" src="<%= avatar %>" alt="<%= username %> avatar">
+            <div class="avatar relative open-user-profile" data-user-id="<%= user_id %>">
+                <img class="dc-border-lighter" src="<%= avatar %>" alt="<%= username %> avatar">
+            </div>
             <span class="name open-user-profile dc-text-contrast" data-user-id="<%= user_id %>"><%= username %></span>
             <div class="info mt5"><%= dropdown %></div>
         </div>
@@ -27,7 +29,7 @@
             <i class="icon icon-circle status contrast"></i>
             <em></em>
             <span class="ago">(<%= t('profile.user.onlined', {time: '<span data-time="'+onlined+'"></span>'}) %>)</span>
-            <span class="show-if-banned">
+            <span class="show-if-banned hidden-xs hidden-sm">
                 <span class="banned-status">
                     &nbsp;-&nbsp;<%= t('chat.actions.banned') %>&nbsp;
                     <span class="action-user-deban" data-user-id="<%= user_id %>" style="cursor: pointer; text-decoration: underline;">
@@ -36,7 +38,7 @@
                 </span>
             </span>
         </div>
-        <div class="hello-block">
+        <div class="hello-block hidden-xs hidden-sm">
             <%= t('chat.welcome.onetoone', {username: username}) %>
         </div>
     </div>
