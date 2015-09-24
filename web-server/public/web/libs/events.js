@@ -1,24 +1,110 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var common = require('@dbrugne/donut-common/browser');
-var i18next = require('i18next-client');
 var date = require('./date');
 
-var exports = module.exports = {};
-
-exports.renderAndInsert = function (event, previous, container) {
-
+var templates = {
+  'hello': require('../templates/event/block-hello.html'),
+  'user:online': require('../templates/event/status.html'),
+  'user:offline': require('../templates/event/status.html'),
+  'room:out': require('../templates/event/status.html'),
+  'room:in': require('../templates/event/status.html'),
+  'ping': require('../templates/event/ping.html'),
+  'room:message': require('../templates/event/message.html'),
+  'user:message': require('../templates/event/message.html'),
+  'room:deop': require('../templates/event/room-deop.html'),
+  'room:kick': require('../templates/event/room-kick.html'),
+  'room:ban': require('../templates/event/room-ban.html'),
+  'room:deban': require('../templates/event/room-deban.html'),
+  'room:voice': require('../templates/event/room-voice.html'),
+  'room:devoice': require('../templates/event/room-devoice.html'),
+  'room:op': require('../templates/event/room-op.html'),
+  'room:topic': require('../templates/event/room-topic.html'),
+  'user:ban': require('../templates/event/user-ban.html'),
+  'user:deban': require('../templates/event/user-deban.html'),
+  'command:help': require('../templates/event/help.html')
 };
 
-exports.prepare = function (event, discussion) {
+var exports = module.exports = function (options) {
+  this.discussion = options.model;
+  this.$el = options.$el;
+  this.topEvent = '';
+  this.bottomEvent = '';
+};
+
+exports.prototype.render = function (event, direction) {
+  var previous = (direction === 'top')
+    ? this.topEvent
+    : this.bottomEvent;
+
+  var html = '';
+
+  // new date block
+  if (!previous || !date.isSameDay(event.get('time'), previous.get('time'))) {
+    html += require('../templates/event/block-date.html')({
+      time: event.get('time'),
+      date: date.block(event.get('time'))
+    });
+  }
+
+  // new message block
+  if (this.block(event, previous)) {
+    html += require('../templates/event/block-user.html')({
+      user_id: event.get('data').user_id,
+      username: event.get('data').username,
+      avatar: common.cloudinary.prepare(event.get('data').avatar, 30)
+    });
+  }
+
+  // render event
+  html += this._render(event.get('type'), this._data(event));
+
+  // previous
+  if (direction === 'top') {
+    this.topEvent = event;
+  } else {
+    this.bottomEvent = event;
+  }
+
+  return html;
+};
+
+exports.prototype.block = function (event, previous) {
+  var messagesTypes = [ 'room:message', 'user:message' ];
+  if (messagesTypes.indexOf(event.get('type')) === -1) {
+    return false;
+  }
+  if (!previous) {
+    console.log('previous');
+    return true;
+  }
+  if (messagesTypes.indexOf(previous.get('type')) === -1) {
+    console.log('notmess2');
+    return true;
+  }
+  if (!date.isSameDay(event.get('time'), previous.get('time'))) {
+    console.log('date');
+    return true;
+  }
+  if (event.get('data').user_id !== previous.get('data').user_id) {
+    console.log('notuse');
+    return true;
+  }
+  return false;
+};
+
+exports.prototype._data = function (event) {
   var data = event.toJSON();
   data.data = _.clone(event.get('data'));
 
+  // room
+  data.name = this.discussion.get('name');
+  data.mode = this.discussion.get('mode');
+  data.owner = this.discussion.get('owner').get('username');
+
   // spammed & edited
-  if (event.getGenericType() === 'message') {
-    data.spammed = (event.get('spammed') === true);
-    data.edited = (event.get('edited') === true);
-  }
+  data.spammed = (event.get('spammed') === true);
+  data.edited = (event.get('edited') === true);
 
   // avatar
   if (event.get('data').avatar) {
@@ -32,7 +118,7 @@ exports.prepare = function (event, discussion) {
     var subject = data.data.message || data.data.topic;
     subject = common.markup.toHtml(subject, {
       template: require('../templates/markup.html'),
-      style: 'color: ' + discussion.get('color')
+      style: 'color: ' + this.discussion.get('color')
     });
 
     subject = $.smilify(subject);
@@ -61,18 +147,7 @@ exports.prepare = function (event, discussion) {
 
   // date
   var time = event.get('time');
-  // @todo sp : bundle following logic in a libs/date.eventDate function
-  var dateObject = new Date(time);
-  var diff = (Date.now() - dateObject.getTime().valueOf()) / 1000;
-  if (diff <= 86400) {
-    data.data.dateshort = date.shortTime(time);
-  } else if (diff <= 604800) {
-    data.data.dateshort = (isNaN(dateObject)) ? '' : i18next.t('date.days.' + dateObject.getDay());
-  } else if (2592000) {
-    data.data.dateshort = date.shortDayMonth(time);
-  } else {
-    data.data.dateshort = date.shortMonthYear(time);
-  }
+  data.data.dateshort = date.shortTime(time);
   data.data.datefull = date.longDateTime(time);
 
   // rendering attributes
@@ -80,93 +155,12 @@ exports.prepare = function (event, discussion) {
 
   return data;
 };
-
-exports.block = function (event, html) {
-  var template;
-  if (event.getGenericType() === 'message') {
-    template = require('../templates/event/block-message.html');
-  } else if (event.getGenericType() === 'inout') {
-    template = require('../templates/event/block-status.html');
-  } else {
-    return html;
-  }
-  var data = {
-    items: html,
-    data: event.get('data')
-  };
-  data.data.avatar = common.cloudinary.prepare(data.data.avatar, 30);
-  return template(data);
-};
-
-exports.render = function (event, discussion) {
-  var data = this.prepare(event, discussion);
+exports.prototype._render = function (type, data) {
   try {
-    var template;
-    switch (data.type) {
-      case 'room:in':
-        if (event.getGenericType() === 'hello') {
-          template = require('../templates/event/hello.html');
-          data.name = discussion.get('name');
-          data.mode = discussion.get('mode');
-          data.username = discussion.get('owner').get('username');
-        } else {
-          template = require('../templates/event/in-out-on-off.html');
-        }
-        break;
-      case 'user:online':
-      case 'user:offline':
-      case 'room:out':
-        template = require('../templates/event/in-out-on-off.html');
-        break;
-      case 'ping':
-        template = require('../templates/event/ping.html');
-        break;
-      case 'room:message':
-      case 'user:message':
-        template = require('../templates/event/message.html');
-        break;
-      case 'room:deop':
-        template = require('../templates/event/room-deop.html');
-        break;
-      case 'room:kick':
-        template = require('../templates/event/room-kick.html');
-        break;
-      case 'room:ban':
-        template = require('../templates/event/room-ban.html');
-        break;
-      case 'room:deban':
-        template = require('../templates/event/room-deban.html');
-        break;
-      case 'room:voice':
-        template = require('../templates/event/room-voice.html');
-        break;
-      case 'room:devoice':
-        template = require('../templates/event/room-devoice.html');
-        break;
-      case 'room:op':
-        template = require('../templates/event/room-op.html');
-        break;
-      case 'room:topic':
-        template = require('../templates/event/room-topic.html');
-        break;
-      case 'user:ban':
-        template = require('../templates/event/user-ban.html');
-        break;
-      case 'user:deban':
-        template = require('../templates/event/user-deban.html');
-        break;
-      case 'command:help':
-        template = require('../templates/event/help.html');
-        break;
-      default:
-        return;
-    }
-    return template(data);
+    return templates[type](data);
   } catch (e) {
-    console.error('Render exception, see below', e);
+    console.error('render exception, see below', e);
     return false;
   }
 };
 
-// @todo : migrate date block here
-// @todo : implement a global addEvent(event, previous, container)

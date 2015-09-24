@@ -1,5 +1,6 @@
-<div class="event has-hover <%= data.special %> <% if (spammed) { %>spammed<% } %> <% if (edited) { %>edited<% } %>  <% if (unviewed) { print('unviewed'); } %>"
+<div class="block message has-hover <%= data.special %> <% if (spammed) { %>spammed<% } %> <% if (edited) { %>edited<% } %>  <% if (unviewed) { print('unviewed'); } %>"
      id="<%= data.id %>"
+     data-user-id="<%= data.user_id %>"
      data-time="<%= data.time %>"
      data-special="<%= data.special %>"
      data-spammed="<%= (spammed === true ? 'true' : '')%>"

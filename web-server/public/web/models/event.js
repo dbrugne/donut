@@ -2,10 +2,9 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var currentUser = require('./current-user');
 
-var EventModel = Backbone.Model.extend({
+module.exports = Backbone.Model.extend({
   default: function () {
     return {
-      // id
       type: '',
       data: {}
     };
@@ -19,6 +18,11 @@ var EventModel = Backbone.Model.extend({
     var data = this.get('data');
     if (!data) {
       data = {};
+    }
+
+    if (this.get('type') === 'room:in' &&
+      currentUser.get('user_id') === this.get('data').user_id) {
+      this.set('type', 'hello');
     }
 
     var id = (data.id)
@@ -66,6 +70,3 @@ var EventModel = Backbone.Model.extend({
   }
 
 });
-
-
-module.exports = EventModel;

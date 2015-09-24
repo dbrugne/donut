@@ -45,7 +45,9 @@ module.exports = {
     if (isNaN(myDate)) {
       return;
     }
-    return myDate.getHours() + ':' + myDate.getMinutes();
+    var h = myDate.getHours();
+    var m = myDate.getMinutes();
+    return ((h < 10) ? '0' : '') + h + ':' + ((m < 10) ? '0' : '') + m;
   },
   shortTimeSeconds: function (date) { // HH:mm::ss
     var myDate = new Date(date);
@@ -162,5 +164,17 @@ module.exports = {
     }
     var diffYears = Math.floor(diff / (1000 * 60 * 60 * 24 * 30 * 12));
     return i18next.t('date.relativetime.yy', {years: diffYears});
+  },
+  block: function (date) {
+    var days = this.diffInDays(date);
+    if (days === 0) {
+      return i18next.t('chat.message.today');
+    } else if (days === 1) {
+      return i18next.t('chat.message.yesterday');
+    } else if (days === 2) {
+      return i18next.t('chat.message.the-day-before');
+    } else {
+      return this.longDate(date);
+    }
   }
 };
