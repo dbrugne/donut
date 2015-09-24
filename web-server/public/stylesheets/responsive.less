@@ -141,7 +141,10 @@
               .topic-current { padding: 5px 10px; width: 100%;
                 &::before {content:"";}
               }
-              .topic-form { width:100%;
+              .topic-form {
+                .input-group {
+                  .input-group-btn { width: auto; }
+                }
                 .input-group .btn, .input-group .topic-input{ height: 28px; padding: 5px 10px; line-height: 16px; }
               }
               #room-users-modal .modal-body .list li .item .username { max-width: 107px; }
