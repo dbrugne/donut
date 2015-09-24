@@ -234,6 +234,30 @@ module.exports = Backbone.View.extend({
     var model = new EventModel(data);
     this.addFreshEvent(model);
   },
+  _newBlock: function (newModel, previousElement) {
+    var newBlock = false;
+    if (!previousElement || previousElement.length < 1) {
+      newBlock = true;
+    } else {
+      switch (newModel.getGenericType()) {
+        case 'hello':
+        case 'standard':
+          newBlock = true;
+          break;
+        case 'inout':
+          if (!previousElement.hasClass('inout')) {
+            newBlock = true;
+          }
+          break;
+        case 'message':
+          if (!previousElement.hasClass('message') || previousElement.data('userId') !== newModel.get('data').user_id) {
+            newBlock = true;
+          }
+          break;
+      }
+    }
+    return newBlock;
+  },
   addFreshEvent: function (model) {
     // browser notification
     if (model.getGenericType() === 'message' || model.get('type') === 'room:topic') {
@@ -267,30 +291,6 @@ module.exports = Backbone.View.extend({
     }
 
     debug.end('discussion-events-fresh-' + this.model.getIdentifier());
-  },
-  _newBlock: function (newModel, previousElement) {
-    var newBlock = false;
-    if (!previousElement || previousElement.length < 1) {
-      newBlock = true;
-    } else {
-      switch (newModel.getGenericType()) {
-        case 'hello':
-        case 'standard':
-          newBlock = true;
-          break;
-        case 'inout':
-          if (!previousElement.hasClass('inout')) {
-            newBlock = true;
-          }
-          break;
-        case 'message':
-          if (!previousElement.hasClass('message') || previousElement.data('userId') !== newModel.get('data').user_id) {
-            newBlock = true;
-          }
-          break;
-      }
-    }
-    return newBlock;
   },
   addBatchEvents: function (events) {
     if (events.length === 0) {

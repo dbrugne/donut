@@ -6,6 +6,10 @@ var date = require('./date');
 
 var exports = module.exports = {};
 
+exports.renderAndInsert = function (event, previous, container) {
+
+};
+
 exports.prepare = function (event, discussion) {
   var data = event.toJSON();
   data.data = _.clone(event.get('data'));
@@ -163,3 +167,6 @@ exports.render = function (event, discussion) {
     return false;
   }
 };
+
+// @todo : migrate date block here
+// @todo : implement a global addEvent(event, previous, container)
