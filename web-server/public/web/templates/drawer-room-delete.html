@@ -1,18 +1,18 @@
 <div class="title"><%= t('chat.form.room-form.edit.room.delete.title') %> <%= room.name %></div>
 
-<div class="errors form-group"></div>
+<div class="errors block"></div>
 
-<div class="form-group">
+<div class="block">
     <p class="help-block"><%= t('chat.form.room-form.edit.room.delete.info', {name: room.name.replace('#', '')}) %></p>
 </div>
 
-<div class="form-group">
+<div class="block">
     <div class="field flex-parent jc-center">
         <span class="hash dc-text colorize">#</span>
         <input type="text" name="input-delete" class="big-input dc-border flex-child colorize-border" placeholder="<%= t('chat.form.room-form.edit.room.delete.placeholder') %>" maxlength="24" />
     </div>
 </div>
-<div class="field buttons mt15 flex-parent center jc-center form-group">
+<div class="field buttons mt15 flex-parent center jc-center block">
     <button class="submit dc-back dc-back-hover dc-text-contrast button button-big" type="button"><%= t('global.delete') %></button>
     <span class="ml10 mr10"><%= t('global.or') %></span>
     <a class="cancel-lnk open-room-edit" data-room-id="<%= room.id %>"><%= t('global.cancel') %></a>

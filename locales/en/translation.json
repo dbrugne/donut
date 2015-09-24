@@ -503,6 +503,8 @@
     "reason": "(reason: \"__reason__\")",
     "deletemessage": "The donut __name__ has been deleted",
     "users": {
+      "username": "Username",
+      "type": "Type",
       "link": "users list",
       "search": "search a username in this donut",
       "type": {

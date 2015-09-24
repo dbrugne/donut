@@ -5,7 +5,9 @@
     <% } %>
     <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text colored" data-user-id="<%= owner_id %>">@<%= owner_name %></a></span>
 </div>
+
 <div class="errors block"></div>
+
 <% if(mode === 'public') { %>
     <div class="mode mt20 mb20 fs14">
         <p><%= t('chat.blocked.disclaimer-public') %></p>
