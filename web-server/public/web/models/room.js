@@ -272,6 +272,10 @@ var RoomModel = Backbone.Model.extend({
   },
   onUserOnline: function (data) {
     this._onStatus('online', data);
+
+    data.status = 'online';
+    this.addUser(data, true);
+    this.users.trigger('users-redraw');
   },
   onUserOffline: function (data) {
     this._onStatus('offline', data);
