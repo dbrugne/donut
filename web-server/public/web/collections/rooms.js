@@ -211,7 +211,7 @@ var RoomsCollection = Backbone.Collection.extend({
     // if i'm the "targeted user" destroy the model/view
     if (currentUser.get('user_id') === data.user_id) {
       var isFocused = model.get('focused');
-      var blocked = (what === 'ban') ? 'banned' : true;
+      var blocked = (what === 'ban') ? 'banned' : (what === 'kick') ? 'kicked' : true;
       var modelTmp = model.attributes;
       if (what === 'ban' && data.banned_at) {
         modelTmp.banned_at = data.banned_at;
