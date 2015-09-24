@@ -377,7 +377,10 @@
       "sure": "Vous confirmez que vous voulez faire cela ?",
       "placeholder": "Expliquez pourquoi, visible dans le donut (optionnel)",
       "cancel": "Non, j'annule",
-      "confirm": "Oui, je confirme"
+      "confirm": "Oui, je confirme",
+      "message": {
+        "modechange": "Attention cette opération est irréversible! Tous les utilisateurs dans ce donut seront ajouté à la liste des utilisateurs autorisés. Ce donut ne sera plus ouvert au public."
+      }
     },
     "commands": {
       "join": "Rejoindre le donut",
@@ -591,7 +594,7 @@
       "disclaimer-private": "Ce donut est privé, seul les utilisateurs explicitement autorisés par le propriétaire peuvent y accéder. Pour ajouter de nouveaux utilisateurs, merci de les rechercher dans la liste ci-dessous.",
       "disclaimer-public": "Ce donut est public. N'importe quel utilisateur pourra y accéder.",
       "disclaimer-password": "Vous avez également choisi de mettre un mot de passe. Les utilisateurs avec le mot de passe pourront y entrer sans avoir besoin d'être invités au préalable.",
-      "disclaimer-changing": "Vous avez la possibilité de faire passer ce donut en mode privé. Attention, une fois fait, cela ne sera plus modifiable. Les utilisateurs actuellement dans ce donut seront ajouté à la liste des utilisateurs autorisé. Ce donut ne sera donc plus ouvert au public, les invitations se feront uniquement par le propriétaire ou par mot de passe.",
+      "disclaimer-changing": "Vous pouvez passer ce donut en mode privé. Alors, seuls les utilisateurs que vous autoriserez pourront rejoindre, participer et accéder à l'historique. L'accès se fera par invitation et/ou par mot de passe. Attention, cette action est irréversible.",
       "close": "Fermer ce donut"
     },
     "form": {
