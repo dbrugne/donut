@@ -7,7 +7,7 @@
         <div class="checkbox">
             <label>
                 <input type="checkbox" class="savable disable-others" name="room:notif:nothing:__what__" value="room:notif:nothing:__what__"
-                <% if (preferences['room:notif:nothing:'+name]) { print('checked'); } %> >
+                <% if (preferences['room:notif:nothing:'+roomId]) { print('checked'); } %> >
                 <%= t('preferences.notif.nothing.label') %>
             </label>
             <p class="help-block"><%= t('preferences.notif.nothing.help') %></p>
@@ -27,7 +27,7 @@
         <div class="notification">
             <div class="checkbox">
                 <label>
-                    <input class="savable disableable" type="checkbox" value="<%= key %>" <% if (preferences[key.replace('__what__', name)]) { print('checked'); } %> <% if (preferences['room:notif:nothing:'+name]) { print('disabled'); } %>> <%= t('preferences.notif.events.'+key.replace('room:notif:', '').replace(':__what__', '').replace(':', '.')+'.label') %>
+                    <input class="savable disableable" type="checkbox" value="<%= key %>" <% if (preferences[key.replace('__what__', roomId)]) { print('checked'); } %> <% if (preferences['room:notif:nothing:'+roomId]) { print('disabled'); } %>> <%= t('preferences.notif.events.'+key.replace('room:notif:', '').replace(':__what__', '').replace(':', '.')+'.label') %>
                 </label>
             </div>
             <p class="help-block"><%= t('preferences.notif.events.'+key.replace('room:notif:', '').replace(':__what__', '').replace(':', '.')+'.help') %></p>
