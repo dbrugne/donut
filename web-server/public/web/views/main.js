@@ -4,7 +4,7 @@ var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var donutDebug = require('../libs/donut-debug');
 var app = require('../models/app');
-var client = require('../client');
+var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 var rooms = require('../collections/rooms');
 var onetoones = require('../collections/onetoones');
@@ -95,6 +95,7 @@ var MainView = Backbone.View.extend({
     this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
     this.listenTo(app, 'openUserProfile', this.openUserProfile);
     this.listenTo(app, 'joinRoom', this.focusRoomByName);
+    this.listenTo(app, 'joinOnetoone', this.focusOneToOneByUsername);
     this.listenTo(app, 'changeColor', this.onChangeColor);
     this.listenTo(app, 'persistPositions', this.persistPositions);
   },
@@ -317,6 +318,7 @@ var MainView = Backbone.View.extend({
     var name = $(event.currentTarget).data('name') || '';
     var view = new DrawerRoomCreateView({name: name});
     this.drawerView.setSize('450px').setView(view).open();
+    view.focusField();
   },
   openUserAccount: function (event) {
     event.preventDefault();
@@ -579,7 +581,7 @@ var MainView = Backbone.View.extend({
   focusRoomByName: function (name) {
     var model = rooms.iwhere('name', name);
     if (typeof model !== 'undefined') {
-      model.set('unviewed', false);
+      model.resetNew();
       return this.focus(model);
     }
 

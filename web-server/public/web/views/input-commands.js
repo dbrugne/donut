@@ -3,7 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var app = require('../models/app');
-var client = require('../client');
+var client = require('../libs/client');
 var rooms = require('../collections/rooms');
 var confirmationView = require('./modal-confirmation');
 var EventModel = require('../models/event');
@@ -426,10 +426,15 @@ var InputCommandsView = Backbone.View.extend({
   },
   msg: function (paramString, parameters) {
     var message = (!parameters) ? paramString : parameters[2];
-    if (!message) {
+
+    if (message && /^@/.test(message)) {
+      message = message.replace(/\s+/, '');
+      app.trigger('joinOnetoone', message.replace(/^@/, ''));
       return;
     }
-
+    if (!message) {
+      return this.errorCommand('msg', 'parameters');
+    }
     var model;
     if (!parameters) {
       model = this.model;
@@ -439,7 +444,7 @@ var InputCommandsView = Backbone.View.extend({
       client.userMessage(null, parameters[1].replace(/^@/, ''), message);
       return;
     } else {
-      return;
+      return this.errorCommand('msg', 'parameters');
     }
 
     if (!model) {
@@ -504,16 +509,26 @@ var InputCommandsView = Backbone.View.extend({
     });
   },
   random: function (paramString, parameters) {
-    var max = 100;
-    var min = 1;
-    if (parameters && parameters[1] && !parameters[2] && parameters[1] === parseInt(parameters[1], 10)) {
-      max = parseInt(parameters[1], 10);
-    } else if (parameters && parameters[1] === parseInt(parameters[1], 10) && parameters[2] === parseInt(parameters[2], 10)) {
-      min = parseInt(parameters[1], 10);
-      max = parseInt(parameters[2], 10);
-    } else if (paramString) {
+    // in case of '/random letters'
+    if (paramString && !parameters) { // @todo yfuks add when user do '/rand 20 letters'
       return this.errorCommand('random', 'parameters');
     }
+
+    // default value
+    var max = 100;
+    var min = 1;
+
+    // random X
+    if (parameters && parameters[1] && !parameters[2]) {
+      max = parseInt(parameters[1], 10);
+    }
+
+    // random X Y
+    if (parameters && parameters[2]) {
+      min = parseInt(parameters[1], 10);
+      max = parseInt(parameters[2], 10);
+    }
+
     var result = Math.floor(Math.random() * (max - min + 1) + min);
     var message = i18next.t('chat.notifications.random', {result: result, min: min, max: max});
     if (this.model.get('type') === 'room') {

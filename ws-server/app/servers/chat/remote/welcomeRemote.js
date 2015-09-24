@@ -129,25 +129,32 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
     },
 
     function populateBlocked (user, callback) {
-      var parallels = [];
-      _.each(user.blocked, function (room) {
-        parallels.push(function (fn) {
+      var roomsBlocked = [];
+
+      async.forEach(user.blocked, function (room, fn) {
+        User.populate(room, {'path': 'owner'}, function (err, owner) {
+          if (err) {
+            return callback(err);
+          }
+
           roomDataHelper(user, room, function (err, r) {
-            fn(err, r);
+            if (err) {
+              fn(err);
+            }
+            roomsBlocked.push(r);
+            fn(null);
           });
         });
-      });
-
-      if (!parallels.length) {
-        return callback(null, user);
-      }
-
-      async.parallel(parallels, function (err, results) {
+      }, function (err) {
         if (err) {
-          return callback('Error while populating rooms: ' + err);
+          return callback(err);
         }
 
-        welcomeEvent.blocked = results;
+        if (!roomsBlocked.length) {
+          return callback(null, user);
+        }
+
+        welcomeEvent.blocked = roomsBlocked;
         return callback(null, user);
       });
     },

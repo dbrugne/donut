@@ -3,8 +3,9 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../client');
+var client = require('../libs/client');
 var currentUser = require('../models/current-user');
+var date = require('../libs/date');
 
 var DrawerUserProfileView = Backbone.View.extend({
   template: require('../templates/drawer-user-profile.html'),
@@ -56,8 +57,8 @@ var DrawerUserProfileView = Backbone.View.extend({
 
     var html = this.template({user: user});
     this.$el.html(html);
-    this.$('.created span').momentify('date');
-    this.$('.onlined span').momentify('fromnow');
+    date.from('date', this.$('.created span'));
+    date.from('fromnow', this.$('.onlined span'));
 
     if (user.color) {
       this.trigger('color', user.color);

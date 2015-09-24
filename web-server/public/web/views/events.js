@@ -3,17 +3,16 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
 var donutDebug = require('../libs/donut-debug');
-var common = require('@dbrugne/donut-common/browser');
-var currentUser = require('../models/current-user');
 var EventModel = require('../models/event');
-var moment = require('moment');
+var date = require('../libs/date');
 var i18next = require('i18next-client');
-var client = require('../client');
+var client = require('../libs/client');
 var EventsViewedView = require('./events-viewed');
 var EventsHistoryView = require('./events-history');
 var EventsSpamView = require('./events-spam');
 var EventsEditView = require('./events-edit');
 var windowView = require('./window');
+var eventsEngine = require('../libs/events');
 
 var debug = donutDebug('donut:events');
 
@@ -76,11 +75,15 @@ module.exports = Backbone.View.extend({
       modelJson.owner = modelJson.owner.toJSON();
     }
     var created_at = (this.model.get('created_at'))
-      ? moment(this.model.get('created_at')).format('Do MMMM YYYY, h:mm:ss')
+      ? date.dateTime(this.model.get('created_at'))
+      : '';
+    var created_time = (this.model.get('created_at'))
+      ? date.shortTimeSeconds(this.model.get('created_at'))
       : '';
     var html = this.template({
       model: modelJson,
       created_at: created_at,
+      created_time: created_time,
       isOwner: (this.model.get('type') === 'room' && this.model.currentUserIsOwner()),
       time: Date.now()
     });
@@ -248,11 +251,12 @@ module.exports = Backbone.View.extend({
     );
     var previousElement = this.$realtime.find('.block:last').first();
     var newBlock = this._newBlock(model, previousElement);
-    var html = this._renderEvent(model, newBlock);
+    var html = eventsEngine.render(model, this.model);
     if (!newBlock) {
       // @bug : element is the .event in this case not the .block
       $(html).appendTo(previousElement.find('.items'));
     } else {
+      html = eventsEngine.block(model, html);
       $(html).appendTo(this.$realtime);
     }
 
@@ -264,95 +268,13 @@ module.exports = Backbone.View.extend({
 
     debug.end('discussion-events-fresh-' + this.model.getIdentifier());
   },
-  _prepareEvent: function (model) {
-    var data = model.toJSON();
-    data.data = _.clone(model.get('data'));
-
-    // spammed & edited
-    if (model.getGenericType() === 'message') {
-      data.spammed = (model.get('spammed') === true);
-      data.edited = (model.get('edited') === true);
-    }
-
-    // avatar
-    var size = (model.getGenericType() !== 'inout')
-      ? 30
-      : 20;
-    if (model.get('data').avatar) {
-      data.data.avatar = common.cloudinary.prepare(model.get('data').avatar, size);
-    }
-    if (model.get('data').by_avatar) {
-      data.data.by_avatar = common.cloudinary.prepare(model.get('data').by_avatar, size);
-    }
-
-    var message = data.data.message;
-    if (message) {
-      // prepare
-      message = common.markup.toHtml(message, {
-        template: require('../templates/markup.html'),
-        style: 'color: ' + this.model.get('color')
-      });
-
-      message = $.smilify(message);
-
-      data.data.message = message;
-    }
-
-    var topic = data.data.topic;
-    if (topic) {
-      // prepare
-      topic = common.markup.toHtml(topic, {
-        template: require('../templates/markup.html'),
-        style: 'color: ' + this.model.get('color')
-      });
-
-      topic = $.smilify(topic);
-
-      data.data.topic = topic;
-    }
-
-    // images
-    if (data.data.images) {
-      var images = [];
-      _.each(data.data.images, function (i) {
-        images.push({
-          url: common.cloudinary.prepare(i, 1500, 'limit'),
-          thumbnail: common.cloudinary.prepare(i, 50, 'fill')
-        });
-      });
-
-      if (images && images.length > 0) {
-        data.data.images = images;
-      }
-    }
-
-    // date
-    var dateObject = moment(model.get('time'));
-    var diff = (Date.now() - dateObject.valueOf()) / 1000;
-    var format;
-    if (diff <= 86400) {
-      format = 'HH:mm'; // 24h
-    } else if (diff <= 604800) {
-      format = 'dddd'; // 7 days
-    } else if (2592000) {
-      format = 'DD/MM'; // 1 month
-    } else {
-      format = 'MM/YYYY'; // more than 1 year
-    }
-    data.data.dateshort = dateObject.format(format);
-    data.data.datefull = dateObject.format('dddd Do MMMM YYYY à HH:mm:ss');
-
-    // rendering attributes
-    data.unviewed = !!model.get('unviewed');
-
-    return data;
-  },
   _newBlock: function (newModel, previousElement) {
     var newBlock = false;
     if (!previousElement || previousElement.length < 1) {
       newBlock = true;
     } else {
       switch (newModel.getGenericType()) {
+        case 'hello':
         case 'standard':
           newBlock = true;
           break;
@@ -376,29 +298,23 @@ module.exports = Backbone.View.extend({
     }
 
     // render a batch of events (sorted in 'desc' order)
-    debug.start('discussion-events-batch-' + this.model.getIdentifier());
     var $html = $('<div/>');
     var previousModel;
     var previousElement;
-    var now = moment();
-    now.second(0).minute(0).hour(0);
     _.each(events, _.bind(function (event) {
       var model = new EventModel(event);
       var newBlock = this._newBlock(model, previousElement);
 
       // inter-date block
       if (previousModel) {
-        var newTime = moment(model.get('time'));
-        var previousTime = moment(previousModel.get('time'));
-        if (!newTime.isSame(previousTime, 'day')) {
-          previousTime.second(0).minute(0).hour(0);
-          var dateFull = (moment().diff(previousTime, 'days') === 0
+        if (!date.isSameDay(model.get('time'), previousModel.get('time'))) {
+          var dateFull = (date.diffInDays(previousModel.get('time')) === 0
               ? i18next.t('chat.message.today')
-              : (moment().diff(previousTime, 'days') === 1
+              : (date.diffInDays(previousModel.get('time')) === 1
                 ? i18next.t('chat.message.yesterday')
-                : (moment().diff(previousTime, 'days') === 2
+                : (date.diffInDays(previousModel.get('time')) === 2
                   ? i18next.t('chat.message.the-day-before')
-                  : moment(previousModel.get('time')).format('dddd Do MMMM YYYY')
+                  : date.longDate(previousModel.get('time'))
               )
             )
           );
@@ -413,85 +329,18 @@ module.exports = Backbone.View.extend({
       }
 
       // render and insert
-      var h = this._renderEvent(model, newBlock);
+      var h = eventsEngine.render(model, this.model);
       if (!newBlock) {
         // not define previousElement, remain the same .block
         $(h).prependTo(previousElement.find('.items'));
       } else {
+        h = eventsEngine.block(model, h);
         previousElement = $(h).prependTo($html);
       }
       previousModel = model;
     }, this));
 
     $html.find('>.block').prependTo(this.$realtime);
-    debug.end('discussion-events-batch-' + this.model.getIdentifier());
-  },
-  _renderEvent: function (model, withBlock) {
-    var data = this._prepareEvent(model);
-    data.withBlock = withBlock || false;
-    try {
-      var template;
-      switch (data.type) {
-        case 'room:in':
-          if (currentUser.get('user_id') === model.get('data').user_id) {
-            template = require('../templates/event/hello.html');
-            data.name = this.model.get('name');
-            break;
-          }
-        case 'user:online':
-        case 'user:offline':
-        case 'room:in':
-        case 'room:out':
-          template = require('../templates/event/in-out-on-off.html');
-          break;
-        case 'ping':
-          template = require('../templates/event/ping.html');
-          break;
-        case 'room:message':
-        case 'user:message':
-          template = require('../templates/event/message.html');
-          break;
-        case 'room:deop':
-          template = require('../templates/event/room-deop.html');
-          break;
-        case 'room:kick':
-          template = require('../templates/event/room-kick.html');
-          break;
-        case 'room:ban':
-          template = require('../templates/event/room-ban.html');
-          break;
-        case 'room:deban':
-          template = require('../templates/event/room-deban.html');
-          break;
-        case 'room:voice':
-          template = require('../templates/event/room-voice.html');
-          break;
-        case 'room:devoice':
-          template = require('../templates/event/room-devoice.html');
-          break;
-        case 'room:op':
-          template = require('../templates/event/room-op.html');
-          break;
-        case 'room:topic':
-          template = require('../templates/event/room-topic.html');
-          break;
-        case 'user:ban':
-          template = require('../templates/event/user-ban.html');
-          break;
-        case 'user:deban':
-          template = require('../templates/event/user-deban.html');
-          break;
-        case 'command:help':
-          template = require('../templates/event/help.html');
-          break;
-        default:
-          return;
-      }
-      return template(data);
-    } catch (e) {
-      console.error('Render exception, see below', e);
-      return false;
-    }
   },
 
   requestHistory: function (scrollTo) {

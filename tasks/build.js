@@ -6,26 +6,38 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
   // browserify
+  var transforms = [
+    require('../shared/util/browserify-jst'),
+    require('../shared/util/browserify-i18next')
+  ];
   grunt.extendConfig({
     browserify: {
       en: {
         src: ['web-server/public/web/en.js'],
         dest: 'web-server/public/build/en.js',
         options: {
-          transform: [
-            require('../shared/util/browserify-jst'),
-            require('../shared/util/browserify-i18next')
-          ]
+          transform: transforms
         }
       },
       fr: {
         src: ['web-server/public/web/fr.js'],
         dest: 'web-server/public/build/fr.js',
         options: {
-          transform: [
-            require('../shared/util/browserify-jst'),
-            require('../shared/util/browserify-i18next')
-          ]
+          transform: transforms
+        }
+      },
+      outsideEn: {
+        src: ['web-server/public/outside/outside-en.js'],
+        dest: 'web-server/public/build/outside-en.js',
+        options: {
+          transform: transforms
+        }
+      },
+      outsideFr: {
+        src: ['web-server/public/outside/outside-fr.js'],
+        dest: 'web-server/public/build/outside-fr.js',
+        options: {
+          transform: transforms
         }
       }
     }
@@ -40,7 +52,9 @@ module.exports = function (grunt) {
         },
         files: {
           'web-server/public/build/en.js': ['web-server/public/build/en.js'],
-          'web-server/public/build/fr.js': ['web-server/public/build/fr.js']
+          'web-server/public/build/fr.js': ['web-server/public/build/fr.js'],
+          'web-server/public/build/outside-en.js': ['web-server/public/build/outside-en.js'],
+          'web-server/public/build/outside-fr.js': ['web-server/public/build/outside-fr.js']
         }
       }
     }
@@ -88,8 +102,10 @@ module.exports = function (grunt) {
   grunt.registerTask('build', 'Build Web client', [
     'chrono-start',
     'browserify:en',
-    'chrono-interval',
     'browserify:fr',
+    'chrono-interval',
+    'browserify:outsideEn',
+    'browserify:outsideFr',
     'chrono-interval',
     'bundle:uglify',
     'chrono-end'

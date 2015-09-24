@@ -44,10 +44,10 @@ module.exports = function (app, user, users, fn) {
 
         if (statuses[ u.id ] === true) {
           one.status = 'online';
-          one.onlined = user.lastonline_at;
+          one.onlined = u.lastonline_at;
         } else {
           one.status = 'offline';
-          one.onlined = user.lastoffline_at;
+          one.onlined = u.lastoffline_at;
         }
         data.push(one);
       });

@@ -4,11 +4,11 @@ var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var app = require('../models/app');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../client');
+var client = require('../libs/client');
 var rooms = require('../collections/rooms');
 var onetoones = require('../collections/onetoones');
 var currentUser = require('../models/current-user');
-var moment = require('moment');
+var date = require('../libs/date');
 
 var NotificationsView = Backbone.View.extend({
   el: $('#notifications'),
@@ -104,6 +104,9 @@ var NotificationsView = Backbone.View.extend({
       }, this.timeToMarkAsRead);
     }
 
+    // if more than 10 notifications in notification center
+    this.isThereMoreNotifications = true;
+
     this.toggleReadMore();
     this.scrollTop();
     this._createDesktopNotify(data);
@@ -182,7 +185,6 @@ var NotificationsView = Backbone.View.extend({
       default:
         return '';
     }
-    var dateObject = moment(notification.time);
 
     if (notification.data.room) {
       notification.avatar = common.cloudinary.prepare(notification.data.room.avatar, 90);
@@ -192,16 +194,21 @@ var NotificationsView = Backbone.View.extend({
 
     return template({
       data: notification,
-      from_now: dateObject.format('Do MMMM, HH:mm'),
-      from_now_short: dateObject.format('D/MM, HH:mm')
+      from_now: date.dayMonthTime(notification.time),
+      from_now_short: date.shortDayMonthTime(notification.time)
     });
   },
   // User clicks on the notification icon in the header
   onShow: function (event) {
-    if (this.$menu.find('.message').length) {
+    this.scrollTop();
+    if (this.countNotificationsInDropdown()) {
       this.markHasRead = setTimeout(_.bind(function () {
         this.clearNotifications();
       }, this), this.timeToMarkAsRead);
+    }
+
+    if (this.countNotificationsInDropdown() >= 10) {
+      return;
     }
 
     client.notificationRead(null, this.lastNotifDisplayedTime(), 10, _.bind(function (data) {
@@ -210,7 +217,7 @@ var NotificationsView = Backbone.View.extend({
       for (var k in data.notifications) {
         html += this.createNotificationFromTemplate(data.notifications[k]);
       }
-      this.$menu.html(html);
+      this.$menu.html(this.$menu.html() + html);
       this.toggleReadMore();
     }, this));
 
@@ -298,7 +305,7 @@ var NotificationsView = Backbone.View.extend({
 
   toggleReadMore: function () {
     // Only display if at least 10 messages displayed, and more messages to display on server
-    if (this.$menu.find('.message').length < 10) {
+    if (this.countNotificationsInDropdown() < 10) {
       return this.$actions.addClass('hidden');
     }
 
@@ -350,8 +357,10 @@ var NotificationsView = Backbone.View.extend({
     }, this.timeToMarkAsRead);
 
     this.toggleReadMore();
+  },
+  countNotificationsInDropdown: function () {
+    return this.$menu.find('.message').length;
   }
 });
-
 
 module.exports = NotificationsView;

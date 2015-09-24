@@ -4,16 +4,7 @@
     <%- partial('header') %>
 
     <div class="wrapper">
-        <div class="content">
         <%= content() %>
-        </div>
-        <div class="above text-center">
-            <% if (user) { %>
-            <%= t('global.footer.before') %> <a href="/logout"><%= t('actions.tologout') %></a> <%= t('global.or') %> <a href="/!"><%= t('actions.home') %></a><%= t('global.footer.after') %>
-            <% } else { %>
-            <%= t('global.footer.before') %> <a href="/login"><%= t('actions.tologin') %></a> <%= t('global.or') %> <a href="/signup"><%= t('actions.signup') %></a><%= t('global.footer.after') %>
-            <% } %>
-        </div>
     </div><!-- /.wrapper -->
     <%- partial('contact') %>
     <%- partial('foot') %>

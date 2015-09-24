@@ -2,8 +2,9 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../client');
+var client = require('../libs/client');
 var currentUser = require('../models/current-user');
+var date = require('../libs/date');
 
 var DrawerRoomProfileView = Backbone.View.extend({
   template: require('../templates/drawer-room-profile.html'),
@@ -56,7 +57,7 @@ var DrawerRoomProfileView = Backbone.View.extend({
 
     var html = this.template({room: room});
     this.$el.html(html);
-    this.$el.find('.created span').momentify('date');
+    date.from('date', this.$('.created span'));
 
     if (room.color) {
       this.trigger('color', room.color);
@@ -119,7 +120,9 @@ var DrawerRoomProfileView = Backbone.View.extend({
   },
 
   initializeTooltips: function () {
-    this.$('[data-toggle="tooltip"]').tooltip();
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
   }
 
 });

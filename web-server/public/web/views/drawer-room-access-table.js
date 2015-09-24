@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../client');
+var client = require('../libs/client');
 var app = require('../models/app');
 var currentUser = require('../models/current-user');
 var confirmationView = require('./modal-confirmation');
@@ -54,7 +54,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
     var userId = $(event.currentTarget).data('userId');
 
     if (userId) {
-      client.roomAllow(this.model.id, userId, true, _.bind(function (data) {
+      client.roomAllow(this.model.id, userId, _.bind(function (data) {
         app.trigger('redraw-tables');
       }, this));
     }
@@ -81,7 +81,9 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
   },
 
   initializeTooltips: function () {
-    $('[data-toggle="tooltip"]').tooltip();
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
   }
 });
 

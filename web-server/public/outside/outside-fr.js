@@ -6,4 +6,4 @@ i18next.init({
   resStore: locales
 });
 
-require('./index');
+require('./outside');

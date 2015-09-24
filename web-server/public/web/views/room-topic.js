@@ -3,7 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../client');
+var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 
 var RoomTopicView = Backbone.View.extend({

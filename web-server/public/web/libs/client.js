@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
-var donutDebug = require('./libs/donut-debug');
-var pomelo = require('./libs/pomelo');
+var donutDebug = require('./donut-debug');
+var pomelo = require('./pomelo');
 
 var debug = donutDebug('donut:client');
 
@@ -44,6 +44,7 @@ var client = _.extend({
       'room:viewed',
       'room:message:spam',
       'room:message:unspam',
+      'room:set:private',
       'room:typing',
       'user:join',
       'user:leave',
@@ -433,8 +434,8 @@ var client = _.extend({
       this.applyRequestCallback('room:join:request', callback)
     );
   },
-  roomAllow: function (roomId, userId, notification, callback) {
-    var data = {room_id: roomId, user_id: userId, notification: notification};
+  roomAllow: function (roomId, userId, callback) {
+    var data = {room_id: roomId, user_id: userId};
     debug('io:out:room:allow', data);
     pomelo.request(
       'chat.roomAllowHandler.call',
@@ -458,6 +459,15 @@ var client = _.extend({
       'chat.roomDisallowHandler.call',
       data,
       this.applyRequestCallback('room:disallow', callback)
+    );
+  },
+  roomSetPrivate: function (roomId, callback) {
+    var data = {room_id: roomId};
+    debug('io:out:room:set:private', data);
+    pomelo.request(
+      'chat.roomSetPrivateHandler.call',
+      data,
+      this.applyRequestCallback('room:set:private', callback)
     );
   },
 

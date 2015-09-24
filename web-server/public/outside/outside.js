@@ -12,13 +12,6 @@ var common = require('@dbrugne/donut-common/browser');
 
 var SearchView = require('./search');
 
-var i18next = require('i18next-client');
-var locales = require('../../../locales/fr/translation.json');
-i18next.init({
-  cookieName: 'donut.lng',
-  resStore: locales
-});
-
 // Contact form
 $('[data-toggle="contactform"]').contactform({});
 
@@ -82,9 +75,6 @@ if ($landing.length) {
     var errors = [];
 
     // Cleanup classes on form submission
-    $usernameParent.removeClass(function (index, css) {
-      return (css.match(/(has-(success|error))+/g) || []).join(' ');
-    });
     $emailParent.removeClass(function (index, css) {
       return (css.match(/(has-(success|error))+/g) || []).join(' ');
     });
@@ -96,22 +86,6 @@ if ($landing.length) {
     $usernameParent.find('.help-block').html('');
     $emailParent.find('.help-block').html('');
     $passwordParent.find('.help-block').html('');
-
-    // Check presence of username
-    if ($username.val() === '') {
-      errors.push({
-        parent: $usernameParent,
-        sibling: $username.siblings('.help-block'),
-        message: i18next.t('forms.username-required')
-      });
-      // Check validity of username
-    } else if (!common.validateUsername($username.val())) {
-      errors.push({
-        parent: $usernameParent,
-        sibling: $username.siblings('.help-block'),
-        message: i18next.t('forms.username-error')
-      });
-    }
 
     // Check presence of email
     if ($email.val() === '') {
@@ -178,7 +152,9 @@ if ($bodyProfile.length) {
     });
   });
 
-  $bodyProfile.find('[data-toggle="tooltip"]').tooltip();
+  $bodyProfile.find('[data-toggle="tooltip"]').tooltip({
+    container: 'body'
+  });
 }
 
 // Language switcher

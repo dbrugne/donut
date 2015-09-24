@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('./app');
-var client = require('../client');
+var client = require('../libs/client');
 var currentUser = require('./current-user');
 var UserModel = require('./user');
 var EventModel = require('./event');
@@ -272,6 +272,10 @@ var RoomModel = Backbone.Model.extend({
   },
   onUserOnline: function (data) {
     this._onStatus('online', data);
+
+    data.status = 'online';
+    this.addUser(data, true);
+    this.users.trigger('users-redraw');
   },
   onUserOffline: function (data) {
     this._onStatus('offline', data);

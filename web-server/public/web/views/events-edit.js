@@ -5,7 +5,7 @@ var app = require('../models/app');
 var keyboard = require('../libs/keyboard');
 var common = require('@dbrugne/donut-common/browser');
 var i18next = require('i18next-client');
-var client = require('../client');
+var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 var MessageEditView = require('./message-edit');
 

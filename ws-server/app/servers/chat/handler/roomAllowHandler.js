@@ -72,10 +72,6 @@ handler.call = function (data, session, next) {
     },
 
     function broadcastToUser (eventData, callback) {
-      if (!data.notification && !wasPending) {
-        return callback(null, eventData);
-      }
-
       that.app.globalChannelService.pushMessage('connector', 'room:allow', event, 'user:' + user.id, {}, function (reponse) {
         callback(null, eventData);
       });
@@ -84,11 +80,12 @@ handler.call = function (data, session, next) {
     function persist (eventData, callback) {
       Room.update(
         {_id: { $in: [room.id] }},
-        {$addToSet: {allowed: user.id, users: user.id}}, function (err) {
+        {$addToSet: {allowed: user.id}}, function (err) {
           if (wasPending) {
             Room.update(
               {_id: { $in: [room.id] }},
-              {$pull: {allowed_pending: user.id}}, function (err) {
+              {$pull: {allowed_pending: user.id},
+              $addToSet: {users: user.id}}, function (err) {
                 return callback(err, eventData);
               }
             );
@@ -106,7 +103,7 @@ handler.call = function (data, session, next) {
     },
 
     function notification (event, callback) {
-      if (!data.notification && !wasPending) {
+      if (!wasPending) {
         return callback(null, event);
       }
 

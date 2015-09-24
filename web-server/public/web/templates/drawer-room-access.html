@@ -14,6 +14,9 @@
     <div class="mode mt20 mb20 fs14">
         <p><%= t('chat.blocked.disclaimer-public') %></p>
         <p><%= t('chat.blocked.disclaimer-changing') %></p>
+        <div class="form-group pull-right mt10">
+            <input class="big-button-light change-mode" type="submit" value="<%= t('chat.blocked.changemode')%>" />
+        </div>
     </div>
 <% } else { %>
     <div class="p-block">
@@ -43,20 +46,20 @@
         <div class="ctn"></div>
     </div>
 
-    <h2>Password</h2>
+    <h2><%= t('chat.blocked.password_placeholder') %></h2>
 
     <div class="field-password radio">
         <p><%= t('chat.form.room-form.mode.disclaimer.password') %></p>
         <div class="password-block form-inline mt10 flex-parent baseline space-between">
-            <input type="checkbox" id="input-password-checkbox" name="input-password-checkbox" <% if (has_password) { %> checked <% } %> />
+            <input type="checkbox" id="input-password-checkbox" name="input-password-checkbox" <% if (password) { %> checked <% } %> />
             <input type="text"
-                   class="input-password form-control ml10 mr10 flex-child <% if (!has_password) { %> disabled <% } %>"
-                   placeholder="<%= (has_password ? t('chat.form.room-form.common.mode.password-keep') : t('chat.form.room-form.common.mode.password-field') ) %>"
+                   class="input-password form-control ml10 mr10 flex-child <% if (!password) { %> disabled <% } %>"
+                   placeholder="<%= (password ? t('chat.form.room-form.common.mode.password-keep') : t('chat.form.room-form.common.mode.password-field') ) %>"
                    maxlength="255"
-                   value=""
-                   <% if (!has_password) { %> disabled <% } %>
+                   value="<%= password %>"
+                   <% if (!password) { %> disabled <% } %>
                 />
-            <a href="#" class="icon icon-refresh random-password dc-text <% if (!has_password) { %> disabled <% } %>"></a>
+            <a href="#" class="icon icon-refresh random-password dc-text <% if (!password) { %> disabled <% } %>"></a>
         </div>
     </div>
 

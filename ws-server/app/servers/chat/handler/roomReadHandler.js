@@ -112,7 +112,7 @@ handler.call = function (data, session, next) {
         description: room.description,
         created: room.created_at,
         mode: room.mode,
-        has_password: !!room.password
+        password: room.password
       };
 
       if (session.settings.admin === true) {

@@ -49,12 +49,20 @@
     </div>
 </div><!-- /.side -->
 <div class="content">
-    <div class="mini-header room visible-xs visible-sm">
-        <a href="/room/<%= roomName %>"><img class="avatar" data-room-name="<%= room.name %>" src="<%= room.avatar %>" alt="<%= room.name %> avatar"></a>
-        <a href="/room/<%= roomName %>" class="name dc-text-contrast"><%= room.name %></a>
-        <% if (mode === 'private') { %>
-            <span class="room-profile private dc-text-contrast" data-toggle="tooltip" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
-        <% } %>
+    <div class="visible-xs visible-sm">
+        <div class="mini-header room">
+            <a href="/room/<%= roomName %>">
+                <div class="avatar">
+                    <img src="<%= room.avatar %>" alt="<%= room.name %> avatar">
+                </div>
+            </a>
+            <span class="name dc-text-contrast">
+                <a href="/room/<%= roomName %>" class="dc-text-contrast"><%= room.name %></a>
+                <% if (mode === 'private') { %>
+                    <span class="room-profile private dc-text-contrast" data-toggle="tooltip" data-placement="right" title="<%= t('global.private-donut') %>"> </span>
+                <% } %>
+            </span>
+        </div>
     </div>
     <div class="header room">
         <div class="overlay-ctn">

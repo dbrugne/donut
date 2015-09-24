@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
-var client = require('../client');
+var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 
 var DrawerUserRoomPreferencesView = Backbone.View.extend({

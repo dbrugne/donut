@@ -1,5 +1,6 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
+var currentUser = require('./current-user');
 
 var EventModel = Backbone.Model.extend({
   default: function () {
@@ -46,6 +47,10 @@ var EventModel = Backbone.Model.extend({
   },
 
   getGenericType: function () {
+    if (currentUser.get('user_id') === this.get('data').user_id &&
+      this.get('type') === 'room:in') {
+      return 'hello';
+    }
     if (['room:message', 'user:message'].indexOf(this.get('type')) !== -1) {
       return 'message';
     } else if ([

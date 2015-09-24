@@ -2,12 +2,8 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../client');
-var donutDebug = require('../libs/donut-debug');
+var client = require('../libs/client');
 var keyboard = require('../libs/keyboard');
-var currentUser = require('../models/current-user');
-
-var debug = donutDebug('donut:input');
 
 var InputRollupView = Backbone.View.extend({
   template: require('../templates/rollup.html'),
@@ -16,7 +12,7 @@ var InputRollupView = Backbone.View.extend({
 
   events: {
     'mouseover .rollup-container li': 'onRollupHover',
-    'click .rollup-container li': 'onRollupClose'
+    'click .rollup-container li': 'onRollupClick'
   },
 
   initialize: function (options) {
@@ -44,12 +40,12 @@ var InputRollupView = Backbone.View.extend({
 
     if (!this.isClosed()) {
       // Avoid setting cursor at end or start of tab input when pressing up or down (used to navigate)
-      if (data.key === keyboard.DOWN || data.key === keyboard.UP || data.key == keyboard.TAB) {
+      if (data.key === keyboard.DOWN || data.key === keyboard.UP || data.key === keyboard.TAB) {
         this.cursorPosition = this.$editable.getCursorPosition();
-        this._rollupNavigate(data.key, event.target);
+        this._rollupNavigate(data.key);
         event.preventDefault(); // avoid triggering keyUp
         return;
-      } else if ( data.key == keyboard.LEFT || data.key == keyboard.RIGHT || data.isCtrl || data.isAlt || data.isMeta) {
+      } else if (data.key === keyboard.LEFT || data.key === keyboard.RIGHT || data.isCtrl || data.isAlt || data.isMeta) {
         this.cursorPosition = this.$editable.getCursorPosition();
         if (!this.isClosed()) {
           return this._closeRollup();
@@ -61,7 +57,7 @@ var InputRollupView = Backbone.View.extend({
   },
 
   onKeyUp: function (event) {
-    if (event.type != 'keyup') {
+    if (event.type !== 'keyup') {
       return;
     }
 
@@ -70,30 +66,32 @@ var InputRollupView = Backbone.View.extend({
 
     if (this.isClosed()) {
       // If different from @, #, /, close rollup & do nothing more
-      if (!this._isRollupCallValid(message))
+      if (!this._isRollupCallValid(message)) {
         return this._closeRollup();
+      }
 
       return this._displayRollup();
-
     } else {
       // Cleaned the input
       // On key up, if input is empty or push Esc, close rollup
-      if (message.length == 0 || data.key == keyboard.ESC)
+      if (message.length === 0 || data.key === keyboard.ESC) {
         return this._closeRollup();
+      }
 
       // On Return && not Shift && something to select
-      if (data.key == keyboard.RETURN && !data.isShift && message.length != 0) {
+      if (data.key === keyboard.RETURN && !data.isShift && message.length !== 0) {
         this._closeRollup(event.target);
         this.moveCursorToEnd();
       }
 
       // releasing UP / DOWN / TAB / LEFT / RIGHT : Do Nothing
-      if (data.key == keyboard.UP || data.key == keyboard.DOWN || data.key == keyboard.LEFT || data.key == keyboard.RIGHT || data.key == keyboard.TAB || data.isCtrl || data.isAlt || data.isMeta) {
+      if (data.key === keyboard.UP || data.key === keyboard.DOWN || data.key === keyboard.LEFT || data.key === keyboard.RIGHT || data.key === keyboard.TAB || data.isCtrl || data.isAlt || data.isMeta) {
         return;
       }
 
-      if (!this._isRollupCallValid(message))
+      if (!this._isRollupCallValid(message)) {
         return this._closeRollup();
+      }
 
       return this._displayRollup();
     }
@@ -107,65 +105,70 @@ var InputRollupView = Backbone.View.extend({
     var pos = this._getCursorPosition(); // Get current cursor position in textarea
 
     // If space of nothing found after getCursorPosition, we continue, else return null
-    if (this.$editable.val().length > pos && this.$editable.val().substr(pos, 1) !== ' ')
+    if (this.$editable.val().length > pos && this.$editable.val().substr(pos, 1) !== ' ') {
       return '';
+    }
 
     var message = this.$editable.val().substr(0, pos); // Only keep text from start to current cursor position
     return _.last(message.split(' ')); // only keep the last typed command / mention
   },
 
-  _isRollupCallValid: function (val) {
+  _isRollupCallValid: function () {
     var message = this._parseInput();
-    if (message.length == 0)
+    if (message.length === 0) {
       return false;
+    }
 
-    return !(_.indexOf(['#', '@', '/'], message.substr(0, 1)) == -1);
+    return !(_.indexOf(['#', '@', '/'], message.substr(0, 1)) === -1);
   },
 
   _isCommandCallable: function () {
     // First caracter is a /
-    if (this.$editable.val().trim().substr(0, 1) !== '/')
+    if (this.$editable.val().trim().substr(0, 1) !== '/') {
       return false;
+    }
 
     // no space typed after command
-    if (this.$editable.val().split(' ').length > 1)
-      return false;
-
-    return true;
+    return !(this.$editable.val().split(' ').length > 1);
   },
 
-  _rollupNavigate: function (key, target) {
+  _rollupNavigate: function (key) {
     var currentLi = this.$rollup.find('li.active');
     var li = '';
-    if (key == keyboard.UP) {
+    if (key === keyboard.UP) {
       li = currentLi.prev();
-      if (li.length == 0)
+      if (li.length === 0) {
         li = currentLi.parent().find('li').last();
-    }
-    else if (key == keyboard.DOWN || key == keyboard.TAB) {
+      }
+    } else if (key === keyboard.DOWN || key === keyboard.TAB) {
       li = currentLi.next();
-      if (li.length == 0)
+      if (li.length === 0) {
         li = currentLi.parent().find('li').first();
+      }
     }
 
-    if (li.length != 0) {
+    if (li.length !== 0) {
       currentLi.removeClass('active');
       li.addClass('active');
       this._computeNewValue(li.find('.value').html() + ' ');
     }
   },
   _getCursorPosition: function () {
-    return this.cursorPosition === null ? this.$editable.getCursorPosition() : this.cursorPosition;
+    return this.cursorPosition === null
+      ? this.$editable.getCursorPosition()
+      : this.cursorPosition;
   },
   _getCommandList: function () {
     var input = this._parseInput();
     var selectedCommands = [];
 
-    if (input.length === 1) // First call
-      selectedCommands = this.commands; else { // next calls
+    if (input.length === 1) { // First call
+      selectedCommands = this.commands;
+    } else { // next calls
       _.each(this.commands, function (command) {
-        if (command.name.indexOf(input.substr(1, input.length)) == 0)
+        if (command.name.indexOf(input.substr(1, input.length)) === 0) {
           selectedCommands.push(command);
+        }
       });
     }
 
@@ -181,8 +184,9 @@ var InputRollupView = Backbone.View.extend({
       return;
     }
 
-    if (input.length < 2)
+    if (input.length < 2) {
       return this._closeRollup();
+    }
 
     var prefix = input.substr(0, 1);
     var search = input.substr(1);
@@ -225,8 +229,9 @@ var InputRollupView = Backbone.View.extend({
   },
   _closeRollup: function (target) {
     if (target) {
-      if (this.$rollup.find('li.active .value').length == 0)
+      if (this.$rollup.find('li.active .value').length === 0) {
         return;
+      }
 
       this._computeNewValue(this.$rollup.find('li.active .value').html() + ' ');
     }
@@ -236,13 +241,23 @@ var InputRollupView = Backbone.View.extend({
 
   onRollupHover: function (event) {
     var li = $(event.currentTarget);
-    if (li.hasClass('empty')) // Avoid highlighting empty results on hover
+    if (li.hasClass('empty')) { // Avoid highlighting empty results on hover
       return;
+    }
 
     var currentLi = this.$rollup.find('li.active');
     currentLi.removeClass('active');
     li.addClass('active');
+  },
+  onRollupClick: function (event) {
+    var li = $(event.currentTarget);
+    if (li.hasClass('empty')) { // Avoid highlighting empty results on hover
+      return;
+    }
+
     this._computeNewValue(li.find('.value').html() + ' ');
+    this._closeRollup();
+    this.moveCursorToEnd();
   },
   onRollupClose: function () {
     this._closeRollup();
@@ -253,6 +268,5 @@ var InputRollupView = Backbone.View.extend({
   }
 
 });
-
 
 module.exports = InputRollupView;
