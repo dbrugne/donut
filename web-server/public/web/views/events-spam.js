@@ -1,42 +1,29 @@
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
-var keyboard = require('../libs/keyboard');
-var common = require('@dbrugne/donut-common/browser');
 var i18next = require('i18next-client');
 var client = require('../libs/client');
 
-var EventsSpam = Backbone.View.extend({
+module.exports = Backbone.View.extend({
 
   events: {
     'click .dropdown-menu .spammed': 'onMarkAsSpam',
     'click .dropdown-menu .unspam': 'onUnmarkAsSpam',
     'click .view-spammed-message': 'onViewSpammedMessage',
-    'click .remask-spammed-message': 'onRemaskSpammedMessage',
-    'click .dropdown-menu .edited': 'onEditMessage',
-    'dblclick .event': 'onEditMessage',
-    'keydown .form-message-edit': 'onPrevOrNextFormEdit'
+    'click .remask-spammed-message': 'onRemaskSpammedMessage'
   },
 
   initialize: function () {
     this.listenTo(this.model, 'messageSpam', this.onMarkedAsSpam);
     this.listenTo(this.model, 'messageUnspam', this.onMarkedAsUnspam);
-    this.listenTo(this.model, 'messageEdit', this.onMessageEdited);
-    this.listenTo(this.model, 'editMessageClose', this.onEditMessageClose);
-    this.listenTo(this.model, 'editPreviousInput', this.pushUpFromInput);
     this.render();
   },
   render: function () {
-    this.$scrollable = this.$el;
-    this.$scrollableContent = this.$scrollable.find('.scrollable-content');
-    this.$realtime = this.$scrollableContent.find('.realtime');
-
     return this;
   },
   onMarkAsSpam: function (event) {
     event.preventDefault();
-    var parent = $(event.currentTarget).closest('.event');
+    var parent = $(event.currentTarget).closest('.block.message');
     var roomId = this.model.get('id');
     var messageId = parent.attr('id');
 
@@ -44,7 +31,7 @@ var EventsSpam = Backbone.View.extend({
   },
   onUnmarkAsSpam: function (event) {
     event.preventDefault();
-    var parent = $(event.currentTarget).closest('.event');
+    var parent = $(event.currentTarget).closest('.block.message');
     var roomId = this.model.get('id');
     var messageId = parent.attr('id');
     parent.removeClass('viewed');
@@ -75,7 +62,7 @@ var EventsSpam = Backbone.View.extend({
   },
   onViewSpammedMessage: function (event) {
     event.preventDefault();
-    var parent = $(event.currentTarget).closest('.event');
+    var parent = $(event.currentTarget).closest('.block.message');
     var textSpammed = $(event.currentTarget).closest('.text-spammed');
     var ctn = parent.children('.ctn');
     parent.removeClass('spammed').addClass('viewed');
@@ -87,7 +74,7 @@ var EventsSpam = Backbone.View.extend({
   },
   onRemaskSpammedMessage: function (event) {
     event.preventDefault();
-    var parent = $(event.currentTarget).closest('.event');
+    var parent = $(event.currentTarget).closest('.block.message');
     var ctn = parent.children('.ctn');
     parent.addClass('spammed').removeClass('viewed');
     parent
@@ -100,6 +87,3 @@ var EventsSpam = Backbone.View.extend({
     app.trigger('scrollDown');
   }
 });
-
-
-module.exports = EventsSpam;
