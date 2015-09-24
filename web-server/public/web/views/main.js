@@ -318,6 +318,7 @@ var MainView = Backbone.View.extend({
     var name = $(event.currentTarget).data('name') || '';
     var view = new DrawerRoomCreateView({name: name});
     this.drawerView.setSize('450px').setView(view).open();
+    view.focusField();
   },
   openUserAccount: function (event) {
     event.preventDefault();

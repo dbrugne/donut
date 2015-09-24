@@ -23,10 +23,14 @@ var DrawerRoomCreateView = Backbone.View.extend({
   render: function (name) {
     var html = this.template({name: name.replace('#', '')});
     this.$el.html(html);
-    this.$input = this.$('.input');
-    this.$errors = this.$('.errors');
-    this.$submit = this.$('.submit');
+    this.$input = this.$el.find('.input');
+    this.$errors = this.$el.find('.errors');
+    this.$submit = this.$el.find('.submit');
+
     return this;
+  },
+  focusField: function () {
+    this.$input.focus();
   },
   reset: function () {
     this.$errors.html('').hide();
@@ -65,7 +69,7 @@ var DrawerRoomCreateView = Backbone.View.extend({
     return common.validate.name(name) && common.validate.mode(mode);
   },
   _getMode: function () {
-    return this.$('input[name="mode"]:checked').val();
+    return this.$el.find('input[name="mode"]:checked').val();
   },
   isValidMode: function () {
     return (common.validate.mode(this._getMode()));
