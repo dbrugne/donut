@@ -504,6 +504,7 @@
     "deletemessage": "The donut __name__ has been deleted",
     "users": {
       "link": "users list",
+      "label": "See all users",
       "search": "search a username in this donut",
       "type": {
         "owner": "Owner",

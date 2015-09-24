@@ -504,6 +504,7 @@
     "deletemessage": "Le donut __name__ vient d'être supprimé",
     "users": {
       "link": "liste des utilisateurs",
+      "label": "Voir tous les utilisateurs",
       "search": "rechercher des utilisateurs dans ce donut",
       "type": {
         "owner": "Créateur",
