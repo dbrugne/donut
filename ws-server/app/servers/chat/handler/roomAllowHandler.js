@@ -72,10 +72,6 @@ handler.call = function (data, session, next) {
     },
 
     function broadcastToUser (eventData, callback) {
-      if (!wasPending) {
-        return callback(null, eventData);
-      }
-
       that.app.globalChannelService.pushMessage('connector', 'room:allow', event, 'user:' + user.id, {}, function (reponse) {
         callback(null, eventData);
       });
