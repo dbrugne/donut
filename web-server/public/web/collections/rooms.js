@@ -1,4 +1,3 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
@@ -67,18 +66,18 @@ var RoomsCollection = Backbone.Collection.extend({
     }
   },
   addModel: function (room, blocked) {
-    // server confirm that we was joined to the room and give us some data on
-    // room
-
     // prepare model data
-    var owner = (room.owner.user_id) ?
-      new UserModel({
+    var owner;
+    if (room.owner.user_id) {
+      owner = new UserModel({
         id: room.owner.user_id,
         user_id: room.owner.user_id,
         username: room.owner.username,
         avatar: room.owner.avatar
-      }) :
-      new UserModel();
+      });
+    } else {
+      owner = new UserModel();
+    }
 
     var roomData = {
       name: room.name,
@@ -362,8 +361,6 @@ var RoomsCollection = Backbone.Collection.extend({
 
     model.trigger('typing', data);
   }
-
 });
-
 
 module.exports = new RoomsCollection();
