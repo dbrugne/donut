@@ -377,7 +377,10 @@
       "sure": "Vous confirmez que vous voulez faire cela ?",
       "placeholder": "Expliquez pourquoi, visible dans le donut (optionnel)",
       "cancel": "Non, j'annule",
-      "confirm": "Oui, je confirme"
+      "confirm": "Oui, je confirme",
+      "message": {
+        "modechange": "Attention cette opération est irréversible! Tous les utilisateurs dans ce donut seront ajouté à la liste des utilisateurs autorisés. Ce donut ne sera plus ouvert au public."
+      }
     },
     "commands": {
       "join": "Rejoindre le donut",
@@ -450,7 +453,7 @@
         "roomallowed": "Vous êtes autorisé à rejoindre <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "roomallowrefuse": "Votre demande de rejoinde <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a></br> n'a pas été acceptée",
         "roomjoin": "<span class=\"name open-user-profile\" data-user-id=\"__userid__\">@__username__</span> rejoint <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
-        "roomjoinrequest": "<span class=\"name open-user-profile\" data-user-id=\"__userid__\">@__username__</span> souhaite rejoindre <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
+        "roomjoinrequest": "<a class=\"open-room-access\" data-room-id=\"__room_id__\"><span class=\"name\">@__username__</span> souhaite rejoindre <span class=\"name\">#__roomname__</span></a>",
         "roomtopic": "Nouveau sujet dans <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "roommessage": "Nouveaux messages dans <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "usermention": "Vous êtes mentionné dans <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
@@ -469,6 +472,9 @@
         "roomjoin": "@__username__ rejoint __roomname__",
         "roomtopic": "Nouveau sujet dans __roomname__: __topic__",
         "usermention": "Mention de @__username__ dans __roomname__: __message__",
+        "roomjoinrequest": "@__username__ souhaite rejoindre __roomname__",
+        "roomallowed": "Vous êtes autorisé à rejoindre __roomname__",
+        "roomrefuse": "Vous n'êtes pas autorisé à rejoindre __roomname__",
         "by": "par"
       }
     },
@@ -588,7 +594,7 @@
       "disclaimer-private": "Ce donut est privé, seul les utilisateurs explicitement autorisés par le propriétaire peuvent y accéder. Pour ajouter de nouveaux utilisateurs, merci de les rechercher dans la liste ci-dessous.",
       "disclaimer-public": "Ce donut est public. N'importe quel utilisateur pourra y accéder.",
       "disclaimer-password": "Vous avez également choisi de mettre un mot de passe. Les utilisateurs avec le mot de passe pourront y entrer sans avoir besoin d'être invités au préalable.",
-      "disclaimer-changing": "Vous avez la possibilité de faire passer ce donut en mode privé. Attention, une fois fait, cela ne sera plus modifiable. Les utilisateurs actuellement dans ce donut seront ajouté à la liste des utilisateurs autorisé. Ce donut ne sera donc plus ouvert au public, les invitations se feront uniquement par le propriétaire ou par mot de passe.",
+      "disclaimer-changing": "Vous pouvez passer ce donut en mode privé. Alors, seuls les utilisateurs que vous autoriserez pourront rejoindre, participer et accéder à l'historique. L'accès se fera par invitation et/ou par mot de passe. Attention, cette action est irréversible.",
       "close": "Fermer ce donut"
     },
     "form": {
