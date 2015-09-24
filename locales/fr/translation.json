@@ -518,7 +518,7 @@
       "usernotexist": "Cette utilisateur n'existe pas."
     },
     "access": {
-      "link": "accès",
+      "link": "Accès",
       "labelsearch": "Inviter des utilisateurs",
       "add": "Inviter un utilisateur",
       "labelpending": "Utilisateurs en attente d'autorisation",

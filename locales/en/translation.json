@@ -518,7 +518,7 @@
       "usernotexist": "User not found"
     },
     "access": {
-      "link": "access",
+      "link": "Access",
       "labelsearch": "Invite a user",
       "add": "Add user",
       "labelpending": "Users waiting for authorization",
