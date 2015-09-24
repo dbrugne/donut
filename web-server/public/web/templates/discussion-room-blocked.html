@@ -13,7 +13,7 @@
                 <% if (owner && owner.username) { %>
                 <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= owner.id %>">@<%= owner.username %></a></span>
                 <% } %>
-                <% if (mode === 'private' && blocked !== 'banned') { %>
+                <% if (mode === 'private' && blocked !== 'banned' && blocked !== 'kicked') { %>
                     <% if (hasPassword) { %>
                     <div class="password-form mt5 fs15">
                         <%= t('chat.blocked.password') %>
@@ -21,12 +21,15 @@
                         <div class="form-inline mt15">
                             <input class="input-password form-control " type="text" placeholder="<%= t('chat.blocked.password_placeholder') %>">
                             <button class="valid-password big-button-light"><%= t('chat.blocked.password_button') %></button>
+                            <button class="ask-for-allowance big-button-light"><%= t('chat.blocked.allowed_button') %></button>
                         </div>
                     </div>
                     <span class="error"></span>
                     <% } else { %>
-                    <div class="mt5 mb5 fs15">
+                    <div class="mt15 mb5 fs15">
                         <%= t('chat.blocked.allowed') %>
+                    </div>
+                    <div class="mb20">
                         <button class="ask-for-allowance big-button-light"><%= t('chat.blocked.allowed_button') %></button>
                     </div>
                     <% } %>

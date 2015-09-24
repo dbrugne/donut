@@ -104,6 +104,9 @@ var NotificationsView = Backbone.View.extend({
       }, this.timeToMarkAsRead);
     }
 
+    // if more than 10 notifications in notification center
+    this.isThereMoreNotifications = true;
+
     this.toggleReadMore();
     this.scrollTop();
     this._createDesktopNotify(data);
@@ -198,13 +201,13 @@ var NotificationsView = Backbone.View.extend({
   // User clicks on the notification icon in the header
   onShow: function (event) {
     this.scrollTop();
-    if (this.$menu.find('.message').length) {
+    if (this.countNotificationsInDropdown()) {
       this.markHasRead = setTimeout(_.bind(function () {
         this.clearNotifications();
       }, this), this.timeToMarkAsRead);
     }
 
-    if (this.$menu.find('.message').length >= 10) {
+    if (this.countNotificationsInDropdown() >= 10) {
       return;
     }
 
@@ -302,7 +305,7 @@ var NotificationsView = Backbone.View.extend({
 
   toggleReadMore: function () {
     // Only display if at least 10 messages displayed, and more messages to display on server
-    if (this.$menu.find('.message').length < 10) {
+    if (this.countNotificationsInDropdown() < 10) {
       return this.$actions.addClass('hidden');
     }
 
@@ -354,6 +357,9 @@ var NotificationsView = Backbone.View.extend({
     }, this.timeToMarkAsRead);
 
     this.toggleReadMore();
+  },
+  countNotificationsInDropdown: function () {
+    return this.$menu.find('.message').length;
   }
 });
 

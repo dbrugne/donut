@@ -24,6 +24,8 @@ handler.call = function (data, session, next) {
 
   var event = {};
 
+  var wasInRoom = false;
+
   async.waterfall([
 
     function check (callback) {
@@ -55,6 +57,8 @@ handler.call = function (data, session, next) {
     },
 
     function broadcast (callback) {
+      wasInRoom = room.isIn(user.id);
+
       event = {
         by_user_id: currentUser.id,
         by_username: currentUser.username,
@@ -119,6 +123,10 @@ handler.call = function (data, session, next) {
     },
 
     function persistOnUser (eventData, callback) {
+      if (!wasInRoom) {
+        return callback(null, eventData);
+      }
+
       user.update({
         $addToSet: {blocked: room.id}
       }, function (err) {

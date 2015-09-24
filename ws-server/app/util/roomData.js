@@ -27,6 +27,11 @@ module.exports = function (user, room, fn) {
     };
   }
 
+  // kicked user
+  if (room.mode === 'private' && room.isAllowed(user.id) && !room.isIn(user.id)) {
+    data.blocked = 'kicked';
+  }
+
   // banned user
   if (room.isBanned(user.id)) {
     data.blocked = true;

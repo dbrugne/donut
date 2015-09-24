@@ -152,7 +152,9 @@ if ($bodyProfile.length) {
     });
   });
 
-  $bodyProfile.find('[data-toggle="tooltip"]').tooltip();
+  $bodyProfile.find('[data-toggle="tooltip"]').tooltip({
+    container: 'body'
+  });
 }
 
 // Language switcher

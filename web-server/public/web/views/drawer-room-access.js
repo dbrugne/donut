@@ -59,7 +59,7 @@ var RoomAccessView = Backbone.View.extend({
       room_id: this.model.id,
       room_name: this.model.name,
       mode: this.model.mode,
-      has_password: this.model.has_password
+      password: this.model.password
     };
 
     var html = this.template(data);
@@ -143,7 +143,7 @@ var RoomAccessView = Backbone.View.extend({
 
     if (userId) {
       ConfirmationView.open({}, _.bind(function () {
-        client.roomAllow(this.model.id, userId, false, _.bind(function () {
+        client.roomAllow(this.model.id, userId, _.bind(function () {
           this.renderTables();
         }, this));
       }, this));
@@ -158,8 +158,10 @@ var RoomAccessView = Backbone.View.extend({
     if (this.$toggleCheckbox.is(':checked')) {
       this.$password.removeAttr('disabled').removeClass('disabled');
       this.$randomPassword.removeClass('disabled');
-      if (this.$password.val() === '') {
+      if (this.$password.val() === '' && this.model.password === undefined) {
         this.$password.val(common.misc.randomString());
+      } else {
+        this.$password.val(this.model.password);
       }
     } else {
       this.$password.attr('disabled', true).addClass('disabled');
@@ -178,7 +180,7 @@ var RoomAccessView = Backbone.View.extend({
   onChangeMode: function (event) {
     event.preventDefault();
     var that = this;
-    ConfirmationView.open({}, function () {
+    ConfirmationView.open({message: 'mode-change'}, function () {
       client.roomSetPrivate(that.model.id, function (response) {
         if (!response.err) {
           client.roomRead(that.model.id, null, function (data) {
@@ -213,7 +215,7 @@ var RoomAccessView = Backbone.View.extend({
     }, this));
   },
   isValidPassword: function () {
-    return (!this.$toggleCheckbox.is(':checked') || (this.$toggleCheckbox.is(':checked') && this.model.has_password && this.getPassword() === '') || (this.$toggleCheckbox.is(':checked') && this.passwordPattern.test(this.getPassword())));
+    return (!this.$toggleCheckbox.is(':checked') || (this.$toggleCheckbox.is(':checked') && this.model.password && this.getPassword() === '') || (this.$toggleCheckbox.is(':checked') && this.passwordPattern.test(this.getPassword())));
   },
   getPassword: function () {
     if (this.$toggleCheckbox.is(':checked')) {

@@ -1,6 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
+var app = require('../models/app');
 
 module.exports = Backbone.View.extend({
   initialize: function (options) {
@@ -162,5 +163,6 @@ module.exports = Backbone.View.extend({
       return '#' + id;
     });
     this.$scrollableContent.find(selector.join(',')).removeClass('unviewed');
+    app.trigger('changeTitle', this.model);
   }
 });

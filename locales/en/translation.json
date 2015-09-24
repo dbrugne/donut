@@ -376,7 +376,10 @@
       "sure": "Do you confirm this action?",
       "placeholder": "Explain why, visible in this donut (optional)",
       "cancel": "No, cancel",
-      "confirm": "Yes, confirm"
+      "confirm": "Yes, confirm",
+      "message": {
+        "modechange": "Warning this operation is not reversible! All current users in this donut will be allowed."
+      }
     },
     "commands": {
       "join": "join a donut",
@@ -450,7 +453,7 @@
         "roomallowed": "You are now authorized to join <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "roomallowrefuse": "Your request to join <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a></br> has been refused",
         "roomjoin": "<span class=\"name open-user-profile\" data-user-id=\"__userid__\">@__username__</span> joined <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
-        "roomjoinrequest": "<span class=\"name open-user-profile\" data-user-id=\"__userid__\">@__username__</span> whant to join <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
+        "roomjoinrequest": "<a class=\"open-room-access\" data-room-id=\"__room_id__\"><span class=\"name\">@__username__</span> wants to join <span class=\"name\">#__roomname__</span></a>",
         "roomtopic": "New topic in <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "roommessage": "New message in <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
         "usermention": "You were mentionned in <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
@@ -466,9 +469,12 @@
         "roomdevoice": "You were muted in __roomname__",
         "usermessage": "@__username__: __message__",
         "roommessage": "__roomname__: __message__",
-        "roomjoin": "@__username__ joined __roomname__",
+        "roomjoin": "@__username__ joins __roomname__",
         "roomtopic": "New topic in __roomname__: __topic__",
         "usermention": "Mention by @__username__ in __roomname__: __message__",
+        "roomjoinrequest": "@__username__ requests access to __roomname__",
+        "roomallowed": "You are authorized in __roomname__",
+        "roomrefuse": "You are not authorized in __roomname__",
         "by": "by"
       }
     },
@@ -498,6 +504,7 @@
     "deletemessage": "The donut __name__ has been deleted",
     "users": {
       "link": "users list",
+      "label": "See all users",
       "search": "search a username in this donut",
       "type": {
         "owner": "Owner",
@@ -511,8 +518,8 @@
     },
     "access": {
       "link": "access",
-      "labelsearch": "Invite a user",
-      "add": "Add user",
+      "labelsearch": "Allow users",
+      "add": "Allow a user",
       "labelpending": "Users waiting for authorization",
       "types": {
         "all": "All",
@@ -528,7 +535,7 @@
     "welcome": {
       "private": {
         "room": [
-          "Welcome to <strong>__name__</strong>. The conversation is private so only users authorized by <strong>@__owner__</strong> can join. Once users have joined the can participate and access history.",
+          "Welcome to <strong>__name__</strong>. The conversation is private so only users authorized by <strong>@__owner__</strong> can join. Once users have joined they can participate and access history.",
           "Post a message to engage in the discussion."
         ]
       },
@@ -539,7 +546,7 @@
         ]
       },
       "onetoone": [
-        "If <strong>__username__</strong> isn't online he will get your messages on his next connexion",
+        "If <strong>__username__</strong> isn't online he will get your messages on his next connection",
         "Post a message to start the conversation."
       ]
     },
@@ -575,8 +582,8 @@
       "typing_plural": "are typing"
     },
     "blocked": {
-      "allowed": "This donut is private, only allowed user can access.",
-      "allowed_button": "Ask for access",
+      "allowed": "This donut is private, only authorized users can join.",
+      "allowed_button": "Request access",
       "password": "This donut is password protected.",
       "password_placeholder": "Password",
       "password_button": "Join",
@@ -588,7 +595,7 @@
       "disclaimer-private": "This donut is private, Only users specifically authorized by the owner can access it. To add new users, thanks to search in the list below.",
       "disclaimer-public": "This donut is public. Any user can access it.",
       "disclaimer-password": "You have also chosen to put a password. Users with the password can enter without having to be asked first.",
-      "disclaimer-changing": "You have the ability to get that donut off the record. Remember, once made, this will not be editable. All users currently in room will be allowed. This donut will no longer be opened to the public, invitations will be made only by the owner or password.",
+      "disclaimer-changing": "You can switch this donut to private mode. Then, only users you authorize will be able to join, participate and access history. Access will be based on invitation and/or password. Caution, this action cannot be undone.",
       "close-room": "Close this donut"
     },
     "form": {
@@ -643,7 +650,7 @@
         },
         "create": {
           "label": "Create a donut",
-          "help": "Between 3 and 24 characters, only letters, numbers,  dashes (-) and underscore (_)",
+          "help": "Between 3 and 24 characters, only letters, numbers,  dashes (-) and underscores (_)",
           "placeholder": "Donut name",
           "submit": "Create"
         },

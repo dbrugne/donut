@@ -99,6 +99,7 @@ var MainView = Backbone.View.extend({
     this.listenTo(app, 'joinOnetoone', this.focusOneToOneByUsername);
     this.listenTo(app, 'changeColor', this.onChangeColor);
     this.listenTo(app, 'persistPositions', this.persistPositions);
+    this.listenTo(app, 'changeTitle', this.onChangeTitle);
   },
   run: function () {
     // generate and attach subviews
@@ -322,6 +323,7 @@ var MainView = Backbone.View.extend({
     var name = $(event.currentTarget).data('name') || '';
     var view = new DrawerRoomCreateView({name: name});
     this.drawerView.setSize('450px').setView(view).open();
+    view.focusField();
   },
   openUserAccount: function (event) {
     event.preventDefault();
@@ -685,6 +687,16 @@ var MainView = Backbone.View.extend({
       client.userDeban(userId);
       app.trigger('userDeban');
     }, this));
+  },
+
+  onChangeTitle: function (model) {
+    var title;
+    if (model.get('type') === 'room') {
+      title = model.get('name');
+    } else {
+      title = model.get('username');
+    }
+    windowView.setTitle(title);
   }
 });
 
