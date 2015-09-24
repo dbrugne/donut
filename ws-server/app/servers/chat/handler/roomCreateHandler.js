@@ -51,7 +51,7 @@ handler.call = function (data, session, next) {
         room.priority = 0;
         room.mode = data.mode;
         if (data.mode === 'private' && data.password !== null) {
-          room.password = user.generateHash(data.password);
+          room.password = data.password; //user.generateHash(data.password);
         }
 
         room.save(function (err) {
