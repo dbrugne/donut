@@ -518,8 +518,8 @@
     },
     "access": {
       "link": "accès",
-      "labelsearch": "Inviter des utilisateurs",
-      "add": "Inviter un utilisateur",
+      "labelsearch": "Autoriser des utilisateurs",
+      "add": "Autoriser un utilisateur",
       "labelpending": "Utilisateurs en attente d'autorisation",
       "types": {
         "all": "Tous",

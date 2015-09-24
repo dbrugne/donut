@@ -518,8 +518,8 @@
     },
     "access": {
       "link": "access",
-      "labelsearch": "Invite a user",
-      "add": "Add user",
+      "labelsearch": "Allow users",
+      "add": "Allow a user",
       "labelpending": "Users waiting for authorization",
       "types": {
         "all": "All",
