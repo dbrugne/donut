@@ -1,9 +1,8 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var client = require('../libs/client');
 
-var ViewedView = Backbone.View.extend({
+module.exports = Backbone.View.extend({
   initialize: function (options) {
     this.listenTo(this.model, 'viewed', this.onViewed);
     this.render();
@@ -165,6 +164,3 @@ var ViewedView = Backbone.View.extend({
     this.$scrollableContent.find(selector.join(',')).removeClass('unviewed');
   }
 });
-
-
-module.exports = ViewedView;
