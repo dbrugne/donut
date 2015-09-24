@@ -260,7 +260,6 @@ module.exports = Backbone.View.extend({
   },
   addFreshEvent: function (model) {
     // render a 'fresh' event in realtime and scrolldown
-    debug.start('discussion-events-fresh-' + this.model.getIdentifier());
     // scrollDown only if already on bottom before DOM insertion
     var needToScrollDown = (
       (this.model.get('focused') === true && this.isScrollOnBottom()) ||
@@ -282,8 +281,6 @@ module.exports = Backbone.View.extend({
     } else {
       this.$goToBottom.show().addClass('unread');
     }
-
-    debug.end('discussion-events-fresh-' + this.model.getIdentifier());
   },
   addBatchEvents: function (events) {
     if (events.length === 0) {
