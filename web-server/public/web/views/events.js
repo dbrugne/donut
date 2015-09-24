@@ -298,7 +298,6 @@ module.exports = Backbone.View.extend({
     }
 
     // render a batch of events (sorted in 'desc' order)
-    debug.start('discussion-events-batch-' + this.model.getIdentifier());
     var $html = $('<div/>');
     var previousModel;
     var previousElement;
@@ -342,7 +341,6 @@ module.exports = Backbone.View.extend({
     }, this));
 
     $html.find('>.block').prependTo(this.$realtime);
-    debug.end('discussion-events-batch-' + this.model.getIdentifier());
   },
 
   requestHistory: function (scrollTo) {
