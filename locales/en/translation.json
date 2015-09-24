@@ -534,7 +534,7 @@
     "welcome": {
       "private": {
         "room": [
-          "Welcome to <strong>__name__</strong>. The conversation is private so only users authorized by <strong>@__owner__</strong> can join. Once users have joined the can participate and access history.",
+          "Welcome to <strong>__name__</strong>. The conversation is private so only users authorized by <strong>@__owner__</strong> can join. Once users have joined they can participate and access history.",
           "Post a message to engage in the discussion."
         ]
       },
@@ -545,7 +545,7 @@
         ]
       },
       "onetoone": [
-        "If <strong>__username__</strong> isn't online he will get your messages on his next connexion",
+        "If <strong>__username__</strong> isn't online he will get your messages on his next connection",
         "Post a message to start the conversation."
       ]
     },
@@ -581,8 +581,8 @@
       "typing_plural": "are typing"
     },
     "blocked": {
-      "allowed": "This donut is private, only allowed user can access.",
-      "allowed_button": "Ask for access",
+      "allowed": "This donut is private, only authorized users can join.",
+      "allowed_button": "Request access",
       "password": "This donut is password protected.",
       "password_placeholder": "Password",
       "password_button": "Join",
@@ -649,7 +649,7 @@
         },
         "create": {
           "label": "Create a donut",
-          "help": "Between 3 and 24 characters, only letters, numbers,  dashes (-) and underscore (_)",
+          "help": "Between 3 and 24 characters, only letters, numbers,  dashes (-) and underscores (_)",
           "placeholder": "Donut name",
           "submit": "Create"
         },
