@@ -1184,17 +1184,8 @@
                     &.offline { color: @cl-error; }
                   }
                 }
-                .dropdown { position: relative; display:block;
-                  button { color: @cl-background; position: absolute; left: 165px; top: -28px; border: none; background-color: transparent; }
-                  .dropdown-menu { color: @cl-subtext50;
-                    p { display: inline; margin: 0;
-                    }
-                    >li>a { color: inherit; padding-left: 8px; cursor: pointer;
-                      &.deop { padding-left: 5px;
-                        .icon-stack { font-size: 11px; }
-                      }
-                    }
-                  }
+                .dropdown {
+                  button { position: absolute; left: 165px; top: -28px;  }
                 }
                 &.offline {
                   .username { .opacity(0.4); }

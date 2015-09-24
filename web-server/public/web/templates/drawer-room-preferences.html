@@ -1,5 +1,11 @@
-<div class="title">
-    <%= t('preferences.title') %> <span class="dc-text">(<%= name %>)</span>
+<h2><%= t('preferences.title') %></h2>
+
+<div class="title block">
+    <%= room.name %>
+    <% if (room.mode === 'private') { %>
+        <span class="room-profile private" data-toggle="tooltip" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
+    <% } %>
+    <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text colored" data-user-id="<%= owner.user_id %>">@<%= owner.username %></a></span>
 </div>
 
 <div class="errors block"></div>
@@ -9,7 +15,7 @@
         <div class="form-group">
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" class="savable disable-others" name="room:notif:nothing:__what__" value="room:notif:nothing:__what__" <% if (preferences['room:notif:nothing:'+roomId]) { print('checked'); } %> >
+                    <input type="checkbox" class="savable disable-others" name="room:notif:nothing:__what__" value="room:notif:nothing:__what__" <% if (preferences['room:notif:nothing:'+room.id]) { print('checked'); } %> >
                     <%= t('preferences.notif.nothing.label') %>
                 </label>
                 <p class="help-block"><%= t('preferences.notif.nothing.help') %></p>
@@ -31,7 +37,7 @@
             <div class="notification">
                 <div class="checkbox">
                     <label>
-                        <input class="savable disableable" type="checkbox" value="<%= key %>" <% if (preferences[key.replace('__what__', roomId)]) { print('checked'); } %> <% if (preferences['room:notif:nothing:'+roomId]) { print('disabled'); } %>> <%= t('preferences.notif.events.'+key.replace('room:notif:', '').replace(':__what__', '').replace(':', '.')+'.label') %>
+                        <input class="savable disableable" type="checkbox" value="<%= key %>" <% if (preferences[key.replace('__what__', room.id)]) { print('checked'); } %> <% if (preferences['room:notif:nothing:'+room.id]) { print('disabled'); } %>> <%= t('preferences.notif.events.'+key.replace('room:notif:', '').replace(':__what__', '').replace(':', '.')+'.label') %>
                     </label>
                 </div>
                 <p class="help-block"><%= t('preferences.notif.events.'+key.replace('room:notif:', '').replace(':__what__', '').replace(':', '.')+'.help') %></p>

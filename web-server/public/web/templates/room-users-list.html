@@ -13,7 +13,7 @@
                 <span class="username open-user-profile dc-text-contrast" data-user-id="<%= user.user_id %>" title="<%= t('global.'+user.status) %>">@<%= user.username %> <i class="icon icon-dot-circle-o <%= user.status %>" title="online"></i></span>
 
                 <% if (isAdmin === true || (!user.is_owner && (isOp === true || isOwner === true))) { %>
-                <span class="dropdown">
+                <span class="dropdown user-list">
                     <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                         <i class="icon icon-chevron-down dc-text-contrast"></i>
                     </button>

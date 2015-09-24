@@ -504,7 +504,7 @@
     "deletemessage": "Le donut __name__ vient d'être supprimé",
     "users": {
       "username": "Nom d'utilisateur",
-      "type": "Type",
+      "usertype": "Type",
       "link": "liste des utilisateurs",
       "search": "rechercher des utilisateurs dans ce donut",
       "type": {

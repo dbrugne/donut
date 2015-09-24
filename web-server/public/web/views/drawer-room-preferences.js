@@ -3,7 +3,6 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var client = require('../libs/client');
-var currentUser = require('../models/current-user');
 
 var DrawerUserRoomPreferencesView = Backbone.View.extend({
   template: require('../templates/drawer-room-preferences.html'),
@@ -29,19 +28,16 @@ var DrawerUserRoomPreferencesView = Backbone.View.extend({
     return this;
   },
   onResponse: function (data) {
-    var color = this.model.get('color');
-
     var html = this.template({
-      username: currentUser.get('username'),
-      name: this.model.get('name'),
-      roomId: this.model.get('id'),
-      color: color,
+      room: this.model.toJSON(),
+      owner: this.model.get('owner').toJSON(),
       preferences: data.preferences
     });
 
     this.$errors = this.$el.find('.errors');
-
     this.$el.html(html);
+    
+    this.initializeTooltips();
   },
   onNothing: function (event) {
     var $target = $(event.currentTarget);
@@ -71,6 +67,12 @@ var DrawerUserRoomPreferencesView = Backbone.View.extend({
         this.$errors.html(i18next.t('global.unknownerror')).show();
       }
     }, this));
+  },
+
+  initializeTooltips: function () {
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
   }
 
 });
