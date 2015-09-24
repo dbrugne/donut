@@ -466,9 +466,12 @@
         "roomdevoice": "You were muted in __roomname__",
         "usermessage": "@__username__: __message__",
         "roommessage": "__roomname__: __message__",
-        "roomjoin": "@__username__ joined __roomname__",
+        "roomjoin": "@__username__ joins __roomname__",
         "roomtopic": "New topic in __roomname__: __topic__",
         "usermention": "Mention by @__username__ in __roomname__: __message__",
+        "roomjoinrequest": "@__username__ requests access to __roomname__",
+        "roomallowed": "You are authorized in __roomname__",
+        "roomrefuse": "You are not authorized in __roomname__",
         "by": "by"
       }
     },

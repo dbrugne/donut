@@ -469,6 +469,9 @@
         "roomjoin": "@__username__ rejoint __roomname__",
         "roomtopic": "Nouveau sujet dans __roomname__: __topic__",
         "usermention": "Mention de @__username__ dans __roomname__: __message__",
+        "roomjoinrequest": "@__username__ souhaite rejoindre __roomname__",
+        "roomallowed": "Vous êtes autorisé à rejoindre __roomname__",
+        "roomrefuse": "Vous n'êtes pas autorisé à rejoindre __roomname__",
         "by": "par"
       }
     },
