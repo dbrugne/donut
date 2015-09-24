@@ -5,18 +5,18 @@
   z-index: 11;
   font-size: 1.4rem; // #chat #drawer
 
-  .opacity {
+  .opacity { // #chat #drawer .opacity
     width: 100%;
     height: 100%;
-    .wrap {
+    .wrap { // #chat #drawer .opacity .wrap
       position: relative;
       left: -10000px;
       width: 280px;
       height: 100%;
-      .content {
+      .content { // #chat #drawer .opacity .wrap .content
         width: 100%;
         height: 100%;
-        padding: 70px 15px 20px;
+        padding: 45px 15px 20px;
         background-color: @cl-background;
         border-right: 1px solid @cl-subtext10;
         > div {
@@ -25,6 +25,13 @@
           overflow-x: hidden;
           padding-right: 10px;
           height: 100%;
+          .title {
+            .ft-raleway-heavy;
+            font-size: 2.4rem;
+          }
+          .owner { font-size: 1.6rem;
+            a { font-size: 1.6rem; }
+          }
         }
         .spinner {
           width: 100%;
@@ -46,12 +53,7 @@
     }
   }
 
-  .title {
-    .ft-raleway-heavy;
-    font-size: 2.4rem;
-  }
-
-  .p-block {
+  .block {
     margin-top: 20px;
     font-size: 1.4rem;
   }
@@ -70,6 +72,7 @@
     }
   }
   .radio label { .display-flex; align-items: center;padding-left: 21px; }
+  .radio input { margin-top:2px; }
 
   .hash {
     margin-right: 3px;
@@ -87,12 +90,6 @@
     font-size: 2.0rem;
     outline: none;
   }
-  //
-  //.scrollbar {
-  //  overflow-y: auto;
-  //  overflow-x: hidden;
-  //  padding-right: 10px;
-  //}
 
   .errors {
     .alert;
@@ -103,18 +100,22 @@
   }
 
   p.left {
+    .display-flex;
+    align-items: baseline;
     margin-top: 5px;
     text-align: left;
-    padding-left: 10px;
     text-decoration: none;
+    font-size:1.4rem;
+    i { margin-right:5px; }
+    a, i { font-size:1.4rem; }
     a:hover {
       text-decoration: underline;
     }
   }
 
   .help-block {
-    margin-top: 15px;
     font-size: 1.3rem;
+    margin:0;
   }
 
   .help {
@@ -211,6 +212,69 @@
     .overlay-text {
       top: 40px;
       width: 100px;
+    }
+  }
+
+  .user-list {
+    text-align: left;
+    .display-flex;
+    .flex-flow(row wrap);
+    padding: 0 5px;
+    label {
+      font-size: 1.6rem;
+      width: 100%;
+    }
+    .user {
+      display: inline-block;
+      position: relative;
+      margin: 3px 3px 3px 0;
+      .avatar {
+        width: 40px;
+        height: 40px;
+      }
+      .username {
+        .ft-opensans;
+        font-size: 1.3rem;
+      }
+      &:hover {
+        .username {
+          color: @cl-subtext30;
+        }
+      }
+      &.op {
+        &::after {
+          .icon-op;
+          position: absolute;
+          left: -8px;
+          z-index: 0;
+          top: -10px;
+          border-radius: 50%;
+          padding: 5px;
+          color: @cl-success;
+          font-size: 16px;
+        }
+        img {
+          border: 2px solid @cl-success;
+          .border-radius(5px);
+        }
+      }
+      &.owner {
+        &::after {
+          .icon-owner;
+          position: absolute;
+          left: 7px;
+          z-index: 0;
+          top: -15px;
+          border-radius: 50%;
+          padding: 5px;
+          color: @cl-warning;
+          font-size: 16px;
+        }
+        img {
+          border: 2px solid @cl-warning;
+          .border-radius(5px);
+        }
+      }
     }
   }
 

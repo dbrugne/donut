@@ -1,46 +1,51 @@
 <div class="overlay-ctn">
-    <img class="avatar" src="<%= room.avatar %>" alt="<%= room.name %> avatar">
+    <img class="avatar img-circle" src="<%= room.avatar %>" alt="<%= room.name %> avatar">
     <% if (room.isOwner || room.isAdmin) { %>
     <span class="overlay open-room-edit" data-room-id="<%= room.id %>"></span>
     <span class="overlay-text open-room-edit" data-room-id="<%= room.id %>"><%= t('profile.user.edit') %></span>
     <% } %>
 </div>
 
-<div class="title text-center">
+<div class="title text-center mt20">
     <%= room.name %>
     <% if (room.mode === 'private') { %>
         <span class="room-profile private" data-toggle="tooltip" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
     <% } %>
 </div>
 
-<div class="room">
-    <p class="owner text-center"><%= t('global.by') %> <a class="colored open-user-profile dc-text" data-user-id="<%= room.owner.user_id %>">@<%= room.owner.username %></a></p>
-    <% if (room.description) { %><p class="description mt20 mb20 left"><%= room.description %></p><% }; %>
-    <% if (room.website && room.website.href) { %><p class="website left"><i class="icon icon-link dc-text"></i> <a class="colored dc-text" href="<%= room.website.href %>" target="_blank" title="<%= room.website.title %>"><%= room.website.title %></a></p><% }; %>
-    <% if (room.created) { %><p class="created left"><i class="icon icon-clock-o dc-text left"></i> <%= t('profile.room.createdat') %> <span data-time="<%= room.created %>"></span></p><% }; %>
-    <p class="permalink left"><i class="icon icon-link dc-text"></i> <a class="colored dc-text" href="<%= room.url %>" target="_blank"><%= t('profile.room.permalink') %></a></p>
-    <% if (room.isOwner || room.isAdmin) { %><p class="edit left"><i class="icon icon-pencil dc-text"></i> <a class="colored open-room-edit dc-text" data-room-id="<%= room.id %>"> <%= t('profile.room.editlink') %></a><p><% }; %>
-    <% if (room.isOwner || room.isOp ||room.isAdmin) { %><p class="left"><i class="icon icon-users dc-text left"></i> <a class="colored open-room-users dc-text" data-room-id="<%= room.id %>"><%= t('profile.room.editusers') %></a></p><% }; %>
-    <% if (room.isOwner || room.isAdmin ) { %><p class="left dc-text"><i class="icon icon-public"></i> <a role="menuitem" tabindex="-1" class="colored open-room-access dc-text" data-room-id="<%= room.room_id %>"><%= t('chat.access.link') %></a></p><% }; %>
+<div class="owner text-center">
+    <%= t('global.by') %> <a class="colored open-user-profile dc-text" data-user-id="<%= room.owner.user_id %>">@<%= room.owner.username %></a>
 </div>
 
-<div class="room">
-    <p class="join text-center mt30 mb20">
-        <a href="#room/<%= room.name.replace('#', '') %>" class="dc-back dc-text-contrast">
-            <%= t('actions.join') %>
-            <% if (room.users && room.users.length > 0) { %><%= room.users.length %><% } %>
-            <i class="icon icon-user-custom"></i>
-        </a>
-    </p>
+<div class="room block">
+    <% if (room.description) { %><p class="description mt20 mb20 left"><%= room.description %></p><% }; %>
+    <% if (room.website && room.website.href) { %><p class="website left"><i class="icon icon-fw icon-link dc-text"></i> <a class="colored dc-text" href="<%= room.website.href %>" target="_blank" title="<%= room.website.title %>"><%= room.website.title %></a></p><% }; %>
+    <% if (room.created) { %><p class="created left"><i class="icon icon-fw icon-clock-o dc-text left"></i> <%= t('profile.room.createdat') %> <span data-time="<%= room.created %>"></span></p><% }; %>
+    <p class="permalink left"><i class="icon icon-fw icon-link dc-text"></i> <a class="colored dc-text" href="<%= room.url %>" target="_blank"><%= t('profile.room.permalink') %></a></p>
+    <% if (room.isOwner || room.isAdmin) { %><p class="edit left"><i class="icon icon-fw icon-pencil dc-text"></i> <a class="colored open-room-edit dc-text" data-room-id="<%= room.id %>"> <%= t('profile.room.editlink') %></a><p><% }; %>
+    <% if (room.isOwner || room.isOp ||room.isAdmin) { %><p class="left"><i class="icon icon-fw icon-users dc-text left"></i> <a class="colored open-room-users dc-text" data-room-id="<%= room.id %>"><%= t('profile.room.editusers') %></a></p><% }; %>
+    <% if (room.isOwner || room.isAdmin ) { %><p class="left dc-text"><i class="icon icon-fw icon-public"></i> <a role="menuitem" tabindex="-1" class="colored open-room-access dc-text" data-room-id="<%= room.room_id %>"><%= t('chat.access.link') %></a></p><% }; %>
 </div>
+
+<div class="block flex-parent jc-center center">
+    <a href="#room/<%= room.name.replace('#', '') %>" class="dc-back dc-back-hover dc-text-contrast button button-big fs20">
+        <%= t('actions.join') %>
+        <% if (room.users && room.users.length > 0) { %><%= room.users.length %><% } %>
+        <i class="icon icon-fw icon-user-custom cl-warning"></i>
+    </a>
+</div>
+
 <% if (room.users_list.length > 0) { %>
-<div class="users mt10 mb20">
-    <label class="mt20 mb10"><%= t('profile.room.ownerops') %></label>
-    <% _.each(room.users_list, function(user) { %>
-    <div class="user open-user-profile <% if (user.isOwner) { %>owner<% }; %> <% if (user.isOp) { %>op<% }; %>" data-user-id="<%= user.user_id %>">
-        <img class="avatar" src="<%= user.avatar %>" />
-        <span class="username">@<%= user.username %></span>
+    <div class="block">
+        <h2><%= t('profile.room.ownerops') %></h2>
     </div>
-    <% }); %>
-</div>
+
+    <div class="user-list block">
+        <% _.each(room.users_list, function(user) { %>
+        <div class="user open-user-profile <% if (user.isOwner) { %>owner<% }; %> <% if (user.isOp) { %>op<% }; %>" data-user-id="<%= user.user_id %>">
+            <img class="avatar" src="<%= user.avatar %>" />
+            <span class="username">@<%= user.username %></span>
+        </div>
+        <% }); %>
+    </div>
 <% } %>

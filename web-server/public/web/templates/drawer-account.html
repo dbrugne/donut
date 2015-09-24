@@ -1,13 +1,12 @@
-<div class="user">
-    <span class="username">@<%= user.username %></span>
-</div>
-<div class="group">
+<div class="title">@<%= user.username %></div>
+
+<div class="block">
     <div class="title"><%= t('account.emailandpassword.label') %></div>
     <div class="email-container"></div>
     <div class="password-container"></div>
 </div>
 
-<div class="group">
+<div class="block">
     <div class="title"><%= t('account.facebook.label') %></div>
     <% if (user.account.facebook && user.account.facebook.token) { %>
     <p class="values"><%= t('account.facebook.help') %></p>

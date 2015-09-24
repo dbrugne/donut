@@ -1,19 +1,19 @@
-<span class="title"><%= t('chat.form.room-form.create.label') %></span>
+<div class="title"><%= t('chat.form.room-form.create.label') %></div>
 
-<div class="errors form-group"></div>
+<div class="errors block"></div>
 
-<div class="form-group">
+<div class="block">
     <div class="field flex-parent jc-center">
         <span class="hash dc-text colorize">#</span>
         <input type="text" name="input-create" class="big-input dc-border flex-child colorize-border" placeholder="<%= t('chat.form.room-form.create.placeholder') %>" maxlength="24" value="<%= name %>" />
     </div>
 </div>
 
-<div class="p-block">
+<div class="block">
     <p class="help-block"><%= t('chat.form.room-form.create.help') %></p>
 </div>
 
-<div class="form-group">
+<div class="block">
     <label><%= t('chat.form.room-form.common.join-mode-label') %></label>
     <div class="radio">
         <label>
@@ -31,6 +31,6 @@
     </div>
 </div>
 
-<div class="field mt15 flex-parent jc-center center">
+<div class="block flex-parent jc-center center">
     <button class="submit dc-back dc-back-hover dc-text-contrast button button-big" type="button"><%= t('chat.form.room-form.create.submit') %></button>
 </div>
