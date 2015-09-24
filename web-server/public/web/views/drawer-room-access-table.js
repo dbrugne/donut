@@ -54,7 +54,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
     var userId = $(event.currentTarget).data('userId');
 
     if (userId) {
-      client.roomAllow(this.model.id, userId, true, _.bind(function (data) {
+      client.roomAllow(this.model.id, userId, _.bind(function (data) {
         app.trigger('redraw-tables');
       }, this));
     }

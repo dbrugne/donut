@@ -434,8 +434,8 @@ var client = _.extend({
       this.applyRequestCallback('room:join:request', callback)
     );
   },
-  roomAllow: function (roomId, userId, notification, callback) {
-    var data = {room_id: roomId, user_id: userId, notification: notification};
+  roomAllow: function (roomId, userId, callback) {
+    var data = {room_id: roomId, user_id: userId};
     debug('io:out:room:allow', data);
     pomelo.request(
       'chat.roomAllowHandler.call',

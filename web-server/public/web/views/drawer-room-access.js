@@ -143,7 +143,7 @@ var RoomAccessView = Backbone.View.extend({
 
     if (userId) {
       ConfirmationView.open({}, _.bind(function () {
-        client.roomAllow(this.model.id, userId, false, _.bind(function () {
+        client.roomAllow(this.model.id, userId, _.bind(function () {
           this.renderTables();
         }, this));
       }, this));
