@@ -488,7 +488,7 @@
       "bottom": "aller tout en bas",
       "currently": "C'est ici que tout commence... Vous êtes au tout début de la conversation <span class=\"name dc-text open-room-profile\" data-room-id=\"__roomid__\">__roomname__</span>, donut créé par <span class=\"owner dc-text open-user-profile\" data-user-id=\"__ownerid__\">@__owner__</span> le <span class=\"date\">__created_at__</span> à <span class=\"date\">__created_time__</span>",
       "hasPassword": "Votre donut est privé. Paramétrez les modalités d'accès en cliquant sur \"Gérer les accès\"",
-      "onestart": "Cette conversation est privée. Seul vous et votre interlocuteur pouvez y avoir accès.",
+      "onestart": "Cette conversation est privée. Seuls vous et votre interlocuteur pouvez y avoir accès.",
       "edit": "Editer le profil",
       "users": "Gérer les utilisateurs",
       "access": "Gérer les accès"
@@ -536,7 +536,7 @@
     "welcome": {
       "private": {
         "room": [
-          "Bienvenue dans <strong>__name__</strong>. La conversation est privée. Seuls les utilisateurs autorisés par <strong>@__owner__</strong> pourront rejoindre ce donut. Les utilisateurs qui ont rejoint le donut peuvent y participer et accéder à son historique. Postez un message pour amorcer la conversation.",
+          "Bienvenue dans <strong>__name__</strong>. La conversation est privée. Seuls les utilisateurs autorisés par <strong>@__owner__</strong> pourront rejoindre ce donut. Les utilisateurs qui ont rejoint le donut peuvent y participer et accéder à son historique.",
           "Postez un message pour amorcer la conversation."
         ]
       },
@@ -547,7 +547,7 @@
         ]
       },
       "onetoone": [
-        "Si <strong>__username__</strong> n'est pas en ligne les nouveaux messages lui seront remis à sa prochaine connection",
+        "Si <strong>__username__</strong> n'est pas en ligne les nouveaux messages lui seront remis à sa prochaine connexion",
         "Postez un message pour amorcer la conversation."
       ]
     },
@@ -583,7 +583,7 @@
       "typing_plural": "sont en train de taper"
     },
     "blocked": {
-      "allowed": "Ce donut est privé, seul les utilisateurs autorisés par le propriétaire peuvent y accéder.",
+      "allowed": "Ce donut est privé, seuls les utilisateurs autorisés peuvent le rejoindre.",
       "allowed_button": "Demander l'accès",
       "password": "Ce donut est protégé par un mot de passe.",
       "password_placeholder": "Mot de passe",
@@ -651,7 +651,7 @@
         },
         "create": {
           "label": "Créez un donut",
-          "help": "Entre 3 et 24 caractères, chiffres, lettres, tirets (-) et underscores (_) uniquement",
+          "help": "Entre 3 et 24 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement",
           "placeholder": "Nom du donut",
           "submit": "Créer le donut"
         },
