@@ -199,27 +199,6 @@ Notification.prototype.sendEmail = function (model, done) {
               : null)
           };
           break;
-        case 'roomjoinrequest':
-          method = emailer.roomJoinRequest;
-          data = {
-            username: history.by_user.username,
-            roomname: history.room.name
-          };
-          break;
-        case 'roomallowed':
-          method = emailer.roomAllow;
-          data = {
-            username: history.by_user.username,
-            roomname: history.room.name
-          };
-          break;
-        case 'roomrefuse':
-          method = emailer.roomRefuse;
-          data = {
-            username: history.by_user.username,
-            roomname: history.room.name
-          };
-          break;
         default:
           return callback('roomPromoteType.sendEmail unknown notification type: ' + model.type);
       }

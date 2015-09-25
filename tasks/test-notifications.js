@@ -188,6 +188,40 @@ module.exports = function (grunt) {
         }, callback);
       },
 
+      function roomRequestTypes (callback) {
+        async.each([
+          { notification: 'roomallowed' },
+          { notification: 'roomrefuse' },
+          { notification: 'roomjoinrequest' }
+        ], function (item, fn) {
+          var event = {
+            name: room.name,
+            id: room.id,
+            user_id: userTo.id,
+            username: userTo.username,
+            avatar: userTo._avatar(),
+            by_user_id: userFrom.id,
+            by_username: userFrom.username,
+            by_avatar: userFrom._avatar(),
+            time: new Date()
+          };
+          var data = {
+            type: item.notification,
+            user: userTo.id,
+            room: room.id,
+            history: event
+          };
+          bridge.notify('chat', 'createNotificationTask.createNotification', data, function (err) {
+            if (err) {
+              return fn(err);
+            }
+
+            grunt.log.ok(item.notification + 'Type done');
+            return fn(null);
+          });
+        }, callback);
+      },
+
       function roomTopicType (callback) {
         var event = {
           name: room.name,

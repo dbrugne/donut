@@ -248,10 +248,8 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    if (currentUser.get('user_id') === data.user_id) {
-      client.roomJoin(data.room_id, null, null, function (data) {
-      });
-    }
+    client.roomJoin(data.room_id, null, null, function (data) {
+    });
   },
   onDeban: function (data) {
     var model;
