@@ -32,8 +32,7 @@ module.exports = Backbone.View.extend({
 
     // since
     var first = this.$realtime
-      .find('.block:first').first()
-      .find('.event').first();
+      .find('.block').first();
     var since = (!first || first.length < 1)
       ? null
       : first.data('time');
