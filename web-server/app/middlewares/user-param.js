@@ -60,7 +60,7 @@ module.exports = function (req, res, next, username) {
           {op: {$in: [user._id]}},
           {users: {$in: [user._id]}}
         ]
-      }, 'name owner op avatar color description')
+      }, 'name owner op avatar color description mode')
         .populate('owner', 'username');
       q.exec(function (err, rooms) {
         if (err) {
@@ -83,6 +83,7 @@ module.exports = function (req, res, next, username) {
           room.url = (room.name)
             ? req.protocol + '://' + conf.fqdn + '/room/' + room.name.replace('#', '').toLocaleLowerCase()
             : '';
+          room.mode = dbroom.mode;
 
           list.push(room);
         });

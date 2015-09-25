@@ -68,5 +68,4 @@ var WelcomeModalView = Backbone.View.extend({
 
 });
 
-
 module.exports = WelcomeModalView;

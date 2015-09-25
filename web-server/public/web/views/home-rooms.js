@@ -1,4 +1,3 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
@@ -28,6 +27,5 @@ var RoomsView = Backbone.View.extend({
   }
 
 });
-
 
 module.exports = RoomsView;

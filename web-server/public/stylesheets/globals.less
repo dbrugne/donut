@@ -160,8 +160,8 @@
 }
 
 .room-profile { min-height:2rem; min-width:2rem;
-  &::after { content:'\f03c'; font-size: 1.2rem; margin: auto; padding-left: 3px; font-family: 'Donut'; }
-  &.public::after { content:'\f042'; }
+  &.private::after { .icon-lock; font-size: 1.2rem; margin: auto; padding-left: 3px; }
+  //&.public::after { .icon-public; }
 }
 
 .modal-backdrop { &.in { opacity: 0.5; } } // fix less .opacity() bug, web-server/public/vendor/bootstrap/less/modals.less:72
