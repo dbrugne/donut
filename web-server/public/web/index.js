@@ -2,11 +2,11 @@
 var $ = require('jquery');
 global.jQuery = $; // expose jQuery globally, needed for some beside plugins
 require('../vendor/html.sortable/dist/html.sortable.min');
-require('../javascripts/plugins/jquery.insertatcaret');
-require('../javascripts/plugins/jquery.maxlength');
-require('../javascripts/plugins/jquery.smilify');
-require('../javascripts/plugins/jquery.socialify');
-require('../javascripts/plugins/jquery.contactform');
+require('../javascripts/jquery.insertatcaret');
+require('../javascripts/jquery.maxlength');
+require('../javascripts/jquery.smilify');
+require('../javascripts/jquery.socialify');
+require('../javascripts/jquery.contactform');
 require('bootstrap/js/transition');
 require('bootstrap/js/dropdown');
 require('bootstrap/js/modal');

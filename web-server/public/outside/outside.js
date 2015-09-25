@@ -6,8 +6,8 @@ require('bootstrap/js/dropdown');
 require('bootstrap/js/modal');
 require('bootstrap/js/tooltip');
 require('bootstrap/js/popover');
-require('../javascripts/plugins/jquery.socialify');
-require('../javascripts/plugins/jquery.contactform');
+require('../javascripts/jquery.socialify');
+require('../javascripts/jquery.contactform');
 var common = require('@dbrugne/donut-common/browser');
 
 var SearchView = require('./search');

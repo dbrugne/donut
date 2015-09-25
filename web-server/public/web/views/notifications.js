@@ -111,7 +111,7 @@ var NotificationsView = Backbone.View.extend({
   _createDesktopNotify: function (data) {
     var message = i18next.t('chat.notifications.messages.' + data.type, {
       name: (data.data.room)
-        ? data.data.room.name
+        ? data.data.room.name.replace('#', '')
         : '',
       username: (data.data.by_user)
         ? data.data.by_user.username
@@ -131,7 +131,7 @@ var NotificationsView = Backbone.View.extend({
       n.title = n.data.by_user.username;
     }
 
-    n.name = (n.data.room) ? n.data.room.name.replace('#', '') : ''
+    n.name = (n.data.room) ? n.data.room.name.replace('#', '') : '';
     n.username = (n.data.by_user) ? n.data.by_user.username : n.data.user.username;
 
     n.message = i18next.t('chat.notifications.messages.' + n.type, {
