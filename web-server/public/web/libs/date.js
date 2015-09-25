@@ -167,11 +167,11 @@ window.d = module.exports = {
   block: function (date) {
     var days = this.diffInDays(date);
     if (days <= 0) {
-      return i18next.t('chat.message.today');
+      return i18next.t('date.today');
     } else if (days === 1) {
-      return i18next.t('chat.message.yesterday');
+      return i18next.t('date.yesterday');
     } else if (days === 2) {
-      return i18next.t('chat.message.the-day-before');
+      return i18next.t('date.the-day-before');
     } else {
       return this.longDate(date);
     }

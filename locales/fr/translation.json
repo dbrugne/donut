@@ -100,7 +100,10 @@
       "MM": "__months__ mois",
       "y": "un an",
       "yy": "__years__ ans"
-    }
+    },
+    "today" : "Aujourd'hui",
+    "yesterday" : "Hier",
+    "the-day-before" : "Avant hier"
   },
   "baseline": "vous avez des choses à (vous) dire !",
   "actions": {
@@ -574,10 +577,7 @@
           "unmark-spam": "Ce message n'est pas indésirable"
         },
         "edit": "Editer mon message"
-      },
-      "today" : "Aujourd'hui",
-      "yesterday" : "Hier",
-      "the-day-before" : "Avant hier"
+      }
     },
     "input": {
       "typing": "est en train de taper",

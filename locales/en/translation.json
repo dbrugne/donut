@@ -100,7 +100,10 @@
       "MM": "__months__ month",
       "y": "a year",
       "yy": "__years__ years"
-    }
+    },
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "the-day-before": "The day before"
   },
   "baseline": "Chat about your interests!",
   "actions": {
@@ -574,10 +577,7 @@
           "unmark-spam": "Unmark as spam"
         },
         "edit": "Edit my message"
-      },
-      "today": "Today",
-      "yesterday": "Yesterday",
-      "the-day-before": "The day before"
+      }
     },
     "input": {
       "typing": "is typing",
