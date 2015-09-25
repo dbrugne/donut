@@ -1,9 +1,10 @@
-<div class="event has-hover <%= data.special %> <% if (spammed) { %>spammed<% } %> <% if (edited) { %>edited<% } %>  <% if (unviewed) { print('unviewed'); } %>"
+<div class="block message has-hover <%= data.special %> <% if (spammed) { %>spammed<% } %> <% if (edited) { %>edited<% } %>  <% if (unviewed) { print('unviewed'); } %>"
      id="<%= data.id %>"
+     data-user-id="<%= data.user_id %>"
      data-time="<%= data.time %>"
-     data-special="<%= data.special %>"
-     data-spammed="<%= (spammed === true ? 'true' : '')%>"
-     data-edited="<%= (edited === true ? 'true' : '')%>">
+     <% if (data.special) { print('data-special="' + data.special + '"') }; %>
+    <% if (data.spammed) { print('data-spammed="true"') }; %>
+    <% if (data.edited) { print('data-edited="true"') }; %>>
     <div class="ctn">
         <div class="message-edit"><!-- message-edit view --></div>
         <% if (data.message) { %>

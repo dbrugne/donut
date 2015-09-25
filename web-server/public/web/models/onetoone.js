@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('./app');
 var client = require('../libs/client');
@@ -42,6 +41,7 @@ var OneToOneModel = Backbone.Model.extend({
       model.set('unviewed', true);
     }
 
+    app.trigger('unviewedMessage', model, this);
     this.trigger('freshEvent', model);
   },
   onUserOnline: function (data) {
@@ -131,6 +131,5 @@ var OneToOneModel = Backbone.Model.extend({
     return !(this.get('i_am_banned') === true);
   }
 });
-
 
 module.exports = OneToOneModel;

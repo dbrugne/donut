@@ -80,6 +80,7 @@ var MainView = Backbone.View.extend({
     this.defaultColor = window.room_default_color;
 
     this.listenTo(client, 'welcome', this.onWelcome);
+    this.listenTo(client, 'admin:message', this.onAdminMessage);
     this.listenTo(client, 'disconnect', this.onDisconnect);
     this.listenTo(rooms, 'add', this.addView);
     this.listenTo(rooms, 'remove', this.onRemoveDiscussion);
@@ -173,6 +174,9 @@ var MainView = Backbone.View.extend({
     app.trigger('readyToRoute');
     this.connectionView.hide();
     debug.end('welcome');
+  },
+  onAdminMessage: function (data) {
+    app.trigger('alert', 'info', data.message);
   },
   onDisconnect: function () {
     // disable interval
