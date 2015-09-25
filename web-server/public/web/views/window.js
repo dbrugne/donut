@@ -255,11 +255,11 @@ var WindowView = Backbone.View.extend({
           }
 
           var message = data.message || '';
-          var title = i18next.t('chat.notifications.desktop.usermessage', {
+          var title = i18next.t('chat.notifications.messages.usermessage', {
             username: data.from_username,
             message: message
           });
-          this.desktopNotify(title, '');
+          this.desktopNotify(title.replace(/<\/*span>/g, ''), '');
           this.desktopNotificationsLimiters[key] = Date.now();
         }
       }

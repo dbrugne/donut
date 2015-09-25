@@ -5,9 +5,6 @@ var i18next = require('i18next-client');
 var app = require('../models/app');
 var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
-var rooms = require('../collections/rooms');
-var onetoones = require('../collections/onetoones');
-var currentUser = require('../models/current-user');
 var date = require('../libs/date');
 
 var NotificationsView = Backbone.View.extend({
@@ -94,7 +91,7 @@ var NotificationsView = Backbone.View.extend({
     }, 1500); // Remove class after animation to trigger animation later if needed
 
     // Insert new notification in dropdown
-    this.$menu.html(this.createNotificationFromTemplate(data) + this.$menu.html());
+    this.$menu.html(this.renderNotification(data) + this.$menu.html());
 
     // Dropdown is opened
     if (this.el.classList.contains('open')) {
@@ -112,90 +109,41 @@ var NotificationsView = Backbone.View.extend({
     this._createDesktopNotify(data);
   },
   _createDesktopNotify: function (data) {
-    var desktopTitle = i18next.t('chat.notifications.desktop.' + data.type, {
-      'roomname': (data.data.room && data.data.room.name
+    var message = i18next.t('chat.notifications.messages.' + data.type, {
+      name: (data.data.room)
         ? data.data.room.name
-        : ''),
-      'username': (
-        data.data.by_user && data.data.by_user.username
-          ? data.data.by_user.username
-          : (data.data.user && data.data.user.username
-          ? data.data.user.username
-          : '')
-      ),
-      'topic': (data.data.topic
-        ? data.data.topic
-        : ''),
-      'message': (data.data.message
-        ? data.data.message
-        : '')
+        : '',
+      username: (data.data.by_user)
+        ? data.data.by_user.username
+        : data.data.user.username,
+      message: data.data.message
     });
 
-    app.trigger('desktopNotification', desktopTitle, '');
+    message = message.replace(/<\/*span>/g, '');
+    app.trigger('desktopNotification', message, '');
   },
-  createNotificationFromTemplate: function (notification) {
-    var template;
-
-    switch (notification.type) {
-      case 'usermessage':
-        template = require('../templates/notification/user-message.html');
-        break;
-      case 'roomop':
-        template = require('../templates/notification/room-op.html');
-        break;
-      case 'roomdeop':
-        template = require('../templates/notification/room-deop.html');
-        break;
-      case 'roomkick':
-        template = require('../templates/notification/room-kick.html');
-        break;
-      case 'roomban':
-        template = require('../templates/notification/room-ban.html');
-        break;
-      case 'roomdeban':
-        template = require('../templates/notification/room-deban.html');
-        break;
-      case 'roomvoice':
-        template = require('../templates/notification/room-voice.html');
-        break;
-      case 'roomdevoice':
-        template = require('../templates/notification/room-devoice.html');
-        break;
-      case 'roomtopic':
-        template = require('../templates/notification/room-topic.html');
-        break;
-      case 'roomjoin':
-        template = require('../templates/notification/room-join.html');
-        break;
-      case 'roomjoinrequest':
-        template = require('../templates/notification/room-join-request.html');
-        break;
-      case 'roomallowed':
-        template = require('../templates/notification/room-allowed.html');
-        break;
-      case 'roomrefuse':
-        template = require('../templates/notification/room-allow-refuse.html');
-        break;
-      case 'roommessage':
-        template = require('../templates/notification/room-message.html');
-        break;
-      case 'usermention':
-        template = require('../templates/notification/user-mention.html');
-        break;
-      default:
-        return '';
+  renderNotification: function (n) {
+    if (n.data.room) {
+      n.avatar = common.cloudinary.prepare(n.data.room.avatar, 90);
+      n.title = n.data.room.name;
+    } else if (n.data.by_user) {
+      n.avatar = common.cloudinary.prepare(n.data.by_user.avatar, 90);
+      n.title = n.data.by_user.username;
     }
 
-    if (notification.data.room) {
-      notification.avatar = common.cloudinary.prepare(notification.data.room.avatar, 90);
-    } else if (notification.data.by_user) {
-      notification.avatar = common.cloudinary.prepare(notification.data.by_user.avatar, 90);
-    }
+    n.name = (n.data.room) ? n.data.room.name.replace('#', '') : ''
+    n.username = (n.data.by_user) ? n.data.by_user.username : n.data.user.username;
 
-    return template({
-      data: notification,
-      from_now: date.dayMonthTime(notification.time),
-      from_now_short: date.shortDayMonthTime(notification.time)
+    n.message = i18next.t('chat.notifications.messages.' + n.type, {
+      name: n.name,
+      username: n.username,
+      message: n.data.message
+    });
+
+    return require('../templates/notification.html')({
+      data: n,
+      from_now: date.dayMonthTime(n.time),
+      from_now_short: date.shortDayMonthTime(n.time)
     });
   },
   // User clicks on the notification icon in the header
@@ -215,7 +163,7 @@ var NotificationsView = Backbone.View.extend({
       this.isThereMoreNotifications = data.more;
       var html = '';
       for (var k in data.notifications) {
-        html += this.createNotificationFromTemplate(data.notifications[k]);
+        html += this.renderNotification(data.notifications[k]);
       }
       this.$menu.html(this.$menu.html() + html);
       this.toggleReadMore();
@@ -279,7 +227,7 @@ var NotificationsView = Backbone.View.extend({
       var previousContent = this.$menu.html();
       var html = '';
       for (var k in data.notifications) {
-        html += this.createNotificationFromTemplate(data.notifications[k]);
+        html += this.renderNotification(data.notifications[k]);
       }
 
       this.$menu.html(previousContent + html);
