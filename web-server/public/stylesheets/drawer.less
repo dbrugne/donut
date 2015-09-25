@@ -16,16 +16,28 @@
       .content { // #chat #drawer .opacity .wrap .content
         width: 100%;
         height: 100%;
-        padding: 45px 15px 20px;
+        padding: 0;
         background-color: @cl-background;
-        border-right: 1px solid @cl-subtext10;
+        .border-radiuses(3px, 0, 0, 0);
         > div {
           .scrollbar-grey-thin;
           overflow-y: auto;
           overflow-x: hidden;
-          padding-right: 10px;
           height: 100%;
           .title {
+            background-color: @cl-subtext5;
+            color: @cl-title;
+            padding: 15px 10px 15px 20px;
+            font-size: 2rem;
+            font-weight: 600;
+            border-bottom: 1px solid @cl-subtext10;
+            border-top-right-radius: 13px;
+            text-shadow: 1px 1px 1px @cl-subtext15;
+          }
+          .ctn-drawer {
+            padding: 20px 15px 0;
+          }
+          .roomname {
             .ft-raleway-heavy;
             font-size: 2.4rem;
           }
@@ -42,12 +54,14 @@
       }
       .close {
         position: absolute;
-        top: 20px;
-        right: 20px;
-        .opacity(0.5);
-        width: 15px;
+        top: 17px;
+        right: 18px;
+        font-size: 2.2rem;
+        color: @cl-subtext50;
+        .opacity(1);
       }
       .close:hover, .close:focus {
+        color: @cl-subtext20;
         .opacity(1);
       }
     }
@@ -55,7 +69,6 @@
 
   .block {
     margin-top: 20px;
-    font-size: 1.4rem;
     &.inline {
       .display-flex;
       .flex-flow(row nowrap);
@@ -140,8 +153,8 @@
     color: @cl-subtext40;
     max-width: 100%;
     font-weight: bold;
-    font-size: 2rem;
-    margin:0;
+    font-size: 1.8rem;
+    padding: 10px 0 0 0;
   }
 
   .search {
@@ -175,11 +188,11 @@
       }
     }
   }
-
   a {
     font-size: 1.2rem;
     font-weight: normal;
     text-decoration: underline;
+    &.btn { text-decoration:none; }
     &:hover {
       text-decoration: none;
     }
@@ -198,7 +211,6 @@
       text-decoration: underline;
     }
   }
-
   .overlay-ctn {
     width: 90px;
     height: 90px;
@@ -208,7 +220,6 @@
     }
     .overlay {
       top: 0;
-      .border-radius(50%);
       height: 100px;
       width: 100px;
     }
@@ -217,70 +228,43 @@
       width: 100px;
     }
   }
-
   .user-list {
-    text-align: left;
-    .display-flex;
-    .flex-flow(row wrap);
-    padding: 0 5px;
-    label {
-      font-size: 1.6rem;
-      width: 100%;
+    .item { border:2px solid transparent;
+      .avatar { background-size:contain; }
     }
-    .user {
-      display: inline-block;
-      position: relative;
-      margin: 3px 3px 3px 0;
+    .item.op { border: 2px solid @cl-success; .border-radius(5px); height:34px;
+      &::after {
+        .icon-op;
+        position: absolute;
+        left: -5px;
+        z-index: 0;
+        top: -7px;
+        border-radius: 50%;
+        color: @cl-success;
+        font-size: 16px;
+        background-color: #FFF;
+      }
       .avatar {
-        width: 40px;
-        height: 40px;
+        .border-radius(3px);
       }
-      .username {
-        .ft-opensans;
-        font-size: 1.3rem;
+    }
+    .item.owner { border: 2px solid @cl-warning; .border-radius(5px); height:34px;
+      &::after {
+        .icon-owner;
+        position: absolute;
+        left: 3px;
+        z-index: 0;
+        top: -18px;
+        border-radius: 50%;
+        padding: 5px;
+        color: @cl-warning;
+        font-size: 16px;
       }
-      &:hover {
-        .username {
-          color: @cl-subtext30;
-        }
-      }
-      &.op {
-        &::after {
-          .icon-op;
-          position: absolute;
-          left: -8px;
-          z-index: 0;
-          top: -10px;
-          border-radius: 50%;
-          padding: 5px;
-          color: @cl-success;
-          font-size: 16px;
-        }
-        img {
-          border: 2px solid @cl-success;
-          .border-radius(5px);
-        }
-      }
-      &.owner {
-        &::after {
-          .icon-owner;
-          position: absolute;
-          left: 7px;
-          z-index: 0;
-          top: -15px;
-          border-radius: 50%;
-          padding: 5px;
-          color: @cl-warning;
-          font-size: 16px;
-        }
-        img {
-          border: 2px solid @cl-warning;
-          .border-radius(5px);
-        }
+      .avatar {
+        .border-radius(3px);
       }
     }
   }
-
   .table-users {
     div {
       display: inherit;
@@ -307,417 +291,26 @@
       right: 27px;
     }
   }
-
-  //#room-profile {
-  //  .room {
-  //    .overlay-ctn {
-  //      width: 90px;
-  //      height: 90px;
-  //      margin: 0 auto;
-  //      .avatar {
-  //        .border-shadow;
-  //      }
-  //      .overlay {
-  //        top: 0;
-  //        .border-radius(50%);
-  //        height: 100px;
-  //        width: 100px;
-  //      }
-  //      .overlay-text {
-  //        top: 40px;
-  //        width: 100px;
-  //      }
-  //    }
-  //  }
-  //  .users {
-  //    text-align: left;
-  //    .display-flex;
-  //    .flex-flow(row wrap);
-  //    padding: 0 5px;
-  //    label {
-  //      font-size: 1.6rem;
-  //      width: 100%;
-  //    }
-  //    .user {
-  //      display: inline-block;
-  //      position: relative;
-  //      margin: 3px 3px 3px 0;
-  //      .avatar {
-  //        width: 40px;
-  //        height: 40px;
-  //      }
-  //      .username {
-  //        .ft-opensans;
-  //        font-size: 1.3rem;
-  //      }
-  //      &:hover {
-  //        .username {
-  //          color: @cl-subtext30;
-  //        }
-  //      }
-  //      &.op {
-  //        &::after {
-  //          .icon-op;
-  //          position: absolute;
-  //          left: -8px;
-  //          z-index: 0;
-  //          top: -10px;
-  //          border-radius: 50%;
-  //          padding: 5px;
-  //          color: @cl-success;
-  //          font-size: 16px;
-  //        }
-  //        img {
-  //          border: 2px solid @cl-success;
-  //          .border-radius(5px);
-  //        }
-  //      }
-  //      &.owner {
-  //        &::after {
-  //          .icon-owner;
-  //          position: absolute;
-  //          left: 7px;
-  //          z-index: 0;
-  //          top: -15px;
-  //          border-radius: 50%;
-  //          padding: 5px;
-  //          color: @cl-warning;
-  //          font-size: 16px;
-  //        }
-  //        img {
-  //          border: 2px solid @cl-warning;
-  //          .border-radius(5px);
-  //        }
-  //      }
-  //    }
-  //  }
-  //}
   #room-access .actions div { display: inherit }
-  //#user-edit, #room-users, #user-preferences, #room-preferences {
-  //  padding: 0 15px;
-  //  label {
-  //    color: @cl-subtext40;
-  //    &.level-2 {
-  //      font-weight: normal;
-  //    }
-  //  }
-  //  .buttons {
-  //    text-align: right;
-  //    margin-top: 24px;
-  //  }
-  //  .opts_mode {
-  //    font-style: italic;
-  //  }
-  //  .field-password {
-  //    a {
-  //      margin-left: 5px;
-  //      font-size: 18px;
-  //      text-decoration: none;
-  //    }
-  //  }
-  //}
-  //
-  //#user-profile {
-  //  .user .avatar-ctn {
-  //    position: relative;
-  //    cursor: pointer;
-  //    &.is-banned::before {
-  //      font-family: Donut;
-  //      content: '\f002';
-  //      position: absolute;
-  //      font-size: 90px;
-  //      color: rgba(119, 119, 119, 0.75);
-  //      top: -35px;
-  //      left: 5px;
-  //      line-height: 90px;
-  //      width: 90px;
-  //    }
-  //    .overlay {
-  //      display: none;
-  //      background-color: black;
-  //      height: 100px;
-  //      width: 100%;
-  //      position: absolute;
-  //      top: -40px;
-  //      cursor: pointer;
-  //      .opacity(0.2);
-  //      left: 0;
-  //    }
-  //    .overlay-text {
-  //      display: none;
-  //      color: white;
-  //      position: absolute;
-  //      top: 0;
-  //      width: 100%;
-  //      text-align: center;
-  //      cursor: pointer;
-  //      left: 0;
-  //      font-size: 16px;
-  //    }
-  //    &:hover .overlay, &:hover .overlay-text {
-  //      display: block;
-  //    }
-  //  }
-  //  .scrollbar;
-  //  text-align: center;
-  //  .username {
-  //    margin-top: 20px;
-  //  }
-  //  .bio {
-  //    margin-top: 20px;
-  //    font-size: 1.2em;
-  //    padding-left: 10px;
-  //  }
-  //  .location {
-  //    margin-top: 20px;
-  //    text-align: left;
-  //    font-size: 1.2em;
-  //    padding-left: 10px;
-  //  }
-  //  .action {
-  //    margin-top: 5px;
-  //    text-align: left;
-  //    font-size: 1.2em;
-  //    padding-left: 10px;
-  //  }
-  //  .created, .onlined {
-  //    margin-top: 5px;
-  //    text-align: left;
-  //    font-size: 1.2em;
-  //    padding-left: 10px;
-  //  }
-  //  .discuss {
-  //    margin-top: 30px;
-  //    margin-bottom: 20px;
-  //  }
-  //  .offline {
-  //    margin-top: 30px;
-  //    margin-bottom: 20px;
-  //    a {
-  //      font-size: 1.3em;
-  //      background-color: @cl-subtext20;
-  //    }
-  //  }
-  //  .rooms {
-  //    margin-top: 5px;
-  //    text-align: left;
-  //    hr {
-  //      clear: both;
-  //      border-color: transparent;
-  //    }
-  //    .title {
-  //      font-size: 1.2em;
-  //      padding-left: 10px;
-  //      margin-bottom: 10px;
-  //      i {
-  //        color: @cl-subtext30;
-  //      }
-  //    }
-  //    .room {
-  //      display: inline-block;
-  //      position: relative;
-  //      .avatar {
-  //        width: 40px;
-  //        height: 40px;
-  //      }
-  //      .name {
-  //        .ft-opensans;
-  //        font-size: 1.1em;
-  //      }
-  //      &:hover {
-  //        .name {
-  //          color: @cl-subtext30;
-  //        }
-  //      }
-  //      &.op::before {
-  //        content: '\f008';
-  //        font: normal normal normal 14px/1 'Donut';
-  //        position: absolute;
-  //        left: -5px;
-  //        z-index: 0;
-  //        top: -5px;
-  //        border-radius: 50%;
-  //        padding: 5px;
-  //        color: rgb(59, 236, 186);
-  //        font-size: 16px;
-  //      }
-  //      &.owner::before {
-  //        content: '\f00a';
-  //        font: normal normal normal 14px/1 'Donut';
-  //        position: absolute;
-  //        left: 7px;
-  //        z-index: 0;
-  //        top: -14px;
-  //        border-radius: 50%;
-  //        padding: 5px;
-  //        color: #fbec4d;
-  //        font-size: 16px;
-  //      }
-  //    }
-  //  }
-  //}
-  //#user-edit {
-  //  .user {
-  //    margin-bottom: 15px;
-  //    .username {
-  //      vertical-align: middle;
-  //      margin-right: 3px;
-  //    }
-  //  }
-  //}
-  //#user-account {
-  //  .scrollbar;
-  //  .user {
-  //    margin-bottom: 10px;
-  //  }
-  //  .group {
-  //    margin-top: 30px;
-  //  }
-  //  .title {
-  //    font-size: 1.3em;
-  //    font-weight: bold;
-  //    margin-bottom: 20px;
-  //  }
-  //  .labels {
-  //    font-weight: bold;
-  //    font-size: 1.1em;
-  //  }
-  //  .values {
-  //    font-size: 1.1em;
-  //  }
-  //  .email-container {
-  //    margin-bottom: 10px;
-  //  }
-  //  .alert-danger, .alert-success {
-  //    background-color: transparent;
-  //  }
-  //  .email-container, .password-container {
-  //    margin: 10px 0;
-  //    display: block;
-  //    .spinner {
-  //      margin-bottom: 10px;
-  //    }
-  //    input {
-  //      margin-bottom: 10px;
-  //    }
-  //  }
-  //  .facebook {
-  //    .infos {
-  //      > img {
-  //        .pull-left;
-  //        margin-right: 10px;
-  //      }
-  //    }
-  //  }
-  //  .btn-facebook {
-  //    margin-top: 15px;
-  //    margin-left: 10px;
-  //    background-color: #4a649d;
-  //    color: #ffffff;
-  //    border-radius: 25px;
-  //    padding: 11px 20px;
-  //    .ft-opensans-light;
-  //    font-size: 1.3em;
-  //    text-decoration: none;
-  //    display: inline-block;
-  //    span {
-  //      margin-left: 7px;
-  //    }
-  //    i {
-  //      font-size: 1.4em;
-  //      margin-right: 4px;
-  //      vertical-align: middle;
-  //    }
-  //  }
-  //  .btn-facebook:hover {
-  //    color: #ffffff;
-  //    i {
-  //      color: #ffffff;
-  //    }
-  //    span {
-  //      color: #ffffff;
-  //    }
-  //  }
-  //}
-  //#room-users, #user-preferences {  //  #type-select {
-  //    width: 100%;
-  //    border: 1px solid @cl-subtext30;
-  //    background-color: @cl-subtext15;
-  //    color: #FFF;
-  //  }
-  //  .room {
-  //    margin-bottom: 2px;
-  //    > p {
-  //      display: inline-block;
-  //      vertical-align: middle;
-  //    }
-  //  }
-  //  .paginate {
-  //    text-align: right;
-  //    .pagination {
-  //      margin: auto;
-  //      a {
-  //        text-decoration: none;
-  //      }
-  //      > li > a {
-  //        padding: 10px 15px;
-  //      }
-  //      > li > span {
-  //        color: #000011;
-  //        padding: 10px 15px;
-  //        cursor: default;
-  //      }
-  //    }
-  //  }
-  //  .user-number {
-  //    margin-bottom: 15px;
-  //  }
-  //  .search {
-  //    position: relative;
-  //    font-size: 0.8em;
-  //    width: 100%;
-  //    height: 30px;
-  //    margin-bottom: 15px;
-  //    input[type=text] {
-  //      width: 75%;
-  //      position: absolute;
-  //      right: 0;
-  //      .border-radius(50px);
-  //      padding: 5px 30px 6px 17px;
-  //      .ft-raleway-medium;
-  //      color: @cl-subtext50;
-  //      outline: none;
-  //      font-size: 1.1rem;
-  //    }
-  //    i {
-  //      position: absolute;
-  //      top: 9px;
-  //      right: 19px;
-  //      color: @cl-subtext50;
-  //      cursor: pointer;
-  //    }
-  //  }
-
-  //}
-  //#user-preferences, #room-preferences {
-  //  .user, .room {
-  //    margin-bottom: 15px;
-  //    .username, .name {
-  //      vertical-align: middle;
-  //      margin-right: 3px;
-  //    }
-  //  }
-  //  a.play-sound-test {
-  //    color: @cl-subtext30;
-  //    i {
-  //      color: inherit;
-  //    }
-  //  }
-  //  .notification {
-  //    > label {
-  //      display: block;
-  //    }
-  //  }
-  //}
-
+  #user-profile {
+    .user .avatar-ctn {
+      position: relative;
+      cursor: pointer;
+      &.is-banned::before {
+        .icon-ban;
+        position: absolute;
+        font-size: 90px;
+        color: rgba(119, 119, 119, 0.75);
+        top: -35px;
+        left: 5px;
+        line-height: 90px;
+        width: 90px;
+      }
+    }
+    .offline {
+      a {
+        background-color: @cl-subtext20;
+      }
+    }
+  }
 }

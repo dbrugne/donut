@@ -63,6 +63,8 @@ var DrawerUserProfileView = Backbone.View.extend({
     if (user.color) {
       this.trigger('color', user.color);
     }
+
+    this.initializeTooltips();
   },
   /**
    * Construct the user room list for profile displaying
@@ -121,7 +123,6 @@ var DrawerUserProfileView = Backbone.View.extend({
       });
     }
   },
-
   onUserBanChange: function () {
     this.render();
     client.userRead(this.user_id, null, _.bind(function (data) {
@@ -129,6 +130,17 @@ var DrawerUserProfileView = Backbone.View.extend({
         this.onResponse(data);
       }
     }, this));
+  },
+  initializeTooltips: function () {
+    this.$el.find('[data-toggle="tooltip"][data-type="rooms"]').tooltip({
+      html: true,
+      animation: false,
+      container: 'body',
+      template: '<div class="tooltip tooltip-home-users" role="tooltip"><div class="tooltip-inner right"></div></div>',
+      title: function () {
+        return '<div class="username" style="' + this.dataset.bgcolor + '">' + this.dataset.username + '</div>';
+      }
+    });
   }
 
 });

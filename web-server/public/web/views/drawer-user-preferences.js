@@ -54,6 +54,7 @@ var DrawerUserPreferencesView = Backbone.View.extend({
 
     // Contact form
     this.$('[data-toggle="contactform"]').contactform({});
+    this.initializeTooltips();
   },
   onPlaySound: function (event) {
     event.preventDefault();
@@ -91,6 +92,11 @@ var DrawerUserPreferencesView = Backbone.View.extend({
     var that = this;
     client.userPreferencesRead(null, function (data) {
       that.onResponse(data);
+    });
+  },
+  initializeTooltips: function () {
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
     });
   }
 });

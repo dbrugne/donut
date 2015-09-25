@@ -1,67 +1,66 @@
 <div class="title">
+    <%= t('profile.room.editlink') %>
     <%= room.name %>
-    <% if (room.mode === 'private') { %>
-        <span class="room-profile private" data-toggle="tooltip" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
-    <% } %>
-    <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text colored" data-user-id="<%= room.owner.user_id %>">@<%= room.owner.username %></a></span>
 </div>
 
-<div class="errors block"></div>
+<div class="ctn-drawer">
+    <div class="errors block mb20"></div>
 
-<form class="room-form block" role="form">
-    <div class="form-group">
-        <label for="roomDescription"><%= t('chat.form.room-form.edit.description.label') %></label>
-        <textarea name="description" class="form-control" id="roomDescription" placeholder="<%= t('chat.form.room-form.edit.description.placeholder') %>" maxlength="200"><%= room.description %></textarea>
-        <p class="help-block"><%= t('chat.form.room-form.edit.description.help') %> <span class="counter"></span></p>
-    </div>
-    <div class="block">
-        <label for="roomWebsite"><%= t('chat.form.common.edit.website.label') %></label>
-        <input name="website" type="text" class="form-control" id="roomWebsite" placeholder="<%= t('chat.form.common.edit.website.placeholder') %>" value="<% if (room.website) { %><%= room.website.title %><% } %>">
-        <p class="help-block"><%= t('chat.form.common.edit.website.help') %></p>
-    </div>
-    <div class="block">
-        <label><%= t('chat.form.common.edit.avatar.label') %></label>
-        <div class="room-avatar"></div>
-    </div>
-    <div class="block">
-        <label><%= t('chat.form.common.edit.poster.label') %></label>
-        <div class="room-poster"></div>
-        <p class="help-block"><%= t('chat.form.common.edit.poster.help') %></p>
-    </div>
-    <div class="block">
-        <label><%= t('chat.form.common.edit.color.label') %></label>
-        <div class="room-color"></div>
-    </div>
+    <form class="room-form" role="form">
+        <div class="form-group">
+            <label for="roomDescription"><%= t('chat.form.room-form.edit.description.label') %></label>
+            <textarea name="description" class="form-control" id="roomDescription" placeholder="<%= t('chat.form.room-form.edit.description.placeholder') %>" maxlength="200"><%= room.description %></textarea>
+            <p class="help-block"><%= t('chat.form.room-form.edit.description.help') %> <span class="counter"></span></p>
+        </div>
+        <div class="block">
+            <label for="roomWebsite"><%= t('chat.form.common.edit.website.label') %></label>
+            <input name="website" type="text" class="form-control" id="roomWebsite" placeholder="<%= t('chat.form.common.edit.website.placeholder') %>" value="<% if (room.website) { %><%= room.website.title %><% } %>">
+            <p class="help-block"><%= t('chat.form.common.edit.website.help') %></p>
+        </div>
+        <div class="block">
+            <label><%= t('chat.form.common.edit.avatar.label') %></label>
+            <div class="room-avatar"></div>
+        </div>
+        <div class="block">
+            <label><%= t('chat.form.common.edit.poster.label') %></label>
+            <div class="room-poster"></div>
+            <p class="help-block"><%= t('chat.form.common.edit.poster.help') %></p>
+        </div>
+        <div class="block">
+            <label><%= t('chat.form.common.edit.color.label') %></label>
+            <div class="room-color"></div>
+        </div>
 
-    <% if (room.isAdmin) { %>
-        <div class="block admin">
-            <label><%= t('chat.form.room-form.edit.visibility.label') %></label>
-            <div class="radio">
-                <label>
-                    <input type="radio" name="visibility" id="roomVisibilityTrue" value="true" <%= (room.visibility === true) ? 'checked' : '' %>>
-                    <%= t('chat.form.room-form.edit.visibility.true') %>
-                </label>
+        <% if (room.isAdmin) { %>
+            <div class="block admin">
+                <label><%= t('chat.form.room-form.edit.visibility.label') %></label>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="visibility" id="roomVisibilityTrue" value="true" <%= (room.visibility === true) ? 'checked' : '' %>>
+                        <%= t('chat.form.room-form.edit.visibility.true') %>
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="visibility" id="roomVisibilityFalse" value="false" <%= (room.visibility !== true) ? 'checked' : '' %>>
+                        <%= t('chat.form.room-form.edit.visibility.false') %>
+                    </label>
+                </div>
             </div>
-            <div class="radio">
-                <label>
-                    <input type="radio" name="visibility" id="roomVisibilityFalse" value="false" <%= (room.visibility !== true) ? 'checked' : '' %>>
-                    <%= t('chat.form.room-form.edit.visibility.false') %>
-                </label>
+            <div class="block admin">
+                <label for="roomPriority"><%= t('chat.form.room-form.edit.priority.label') %></label>
+                <input type="number" name="priority" class="form-control" id="roomPriority" placeholder="<%= t('chat.form.room-form.edit.priority.placeholder') %>" value="<%= room.priority %>">
+                <p class="help-block"><%= t('chat.form.room-form.edit.priority.help') %></p>
             </div>
+        <% } %>
+        <div class="block buttons flex-parent jc-end">
+            <a class="btn btn-default cancel mr10"><%= t('global.cancel') %></a>
+            <input class="btn btn-success" type="submit" value="<%= t('global.save') %>">
         </div>
-        <div class="block admin">
-            <label for="roomPriority"><%= t('chat.form.room-form.edit.priority.label') %></label>
-            <input type="number" name="priority" class="form-control" id="roomPriority" placeholder="<%= t('chat.form.room-form.edit.priority.placeholder') %>" value="<%= room.priority %>">
-            <p class="help-block"><%= t('chat.form.room-form.edit.priority.help') %></p>
-        </div>
-    <% } %>
-    <div class="block buttons flex-parent jc-end">
-        <a class="big-button-light cancel mr10"><%= t('global.cancel') %></a>
-        <input class="big-button-light" type="submit" value="<%= t('global.save') %>">
+    </form>
+    <div class="footer block">
+        <p class="delete">
+            <i class="icon icon-trash"></i> <%= t('chat.form.room-form.edit.room.delete.link', {id: room.id}) %>
+        </p>
     </div>
-</form>
-<div class="footer block">
-    <p class="delete">
-        <i class="icon icon-trash"></i> <%= t('chat.form.room-form.edit.room.delete.link', {id: room.id}) %>
-    </p>
 </div>

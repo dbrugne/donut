@@ -1,67 +1,61 @@
 <div class="title">
+    <%= t('chat.history.access') %>
     <%= room_name %>
-    <% if (mode === 'private') { %>
-        <span class="room-profile private" data-toggle="tooltip" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
-    <% } %>
-    <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text colored" data-user-id="<%= owner_id %>">@<%= owner_name %></a></span>
 </div>
 
-<div class="errors block"></div>
+<div class="ctn-drawer">
+    <div class="errors block"></div>
 
-<% if(mode === 'public') { %>
-    <div class="mode mt20 mb20 fs14">
-        <p><%= t('chat.blocked.disclaimer-public') %></p>
-        <p><%= t('chat.blocked.disclaimer-changing') %></p>
-        <div class="form-group pull-right mt10">
-            <input class="big-button-light change-mode" type="submit" value="<%= t('chat.blocked.changemode')%>" />
-        </div>
-    </div>
-<% } else { %>
-    <div class="block">
-        <p><%= t('chat.blocked.disclaimer-private') %></p>
-    </div>
-
-    <div class="allow-pending mt20">
-        <label><%= t('chat.access.labelpending') %></label>
-        <div class="ctn"></div>
-    </div>
-
-    <h2><%= t('chat.access.labelsearch') %></h2>
-
-    <div class="search mt10">
-        <label for="input-search"><%= t('chat.access.add') %></label>
-        <div class="flex-child flex-parent relative">
-            <input type="text" id="input-search" placeholder="<%= t('chat.actions.searchuser') %>" class="form-control flex-child" />
-            <i class="icon icon-search"></i>
-            <div class="dropdown">
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1"></ul>
+    <% if(mode === 'public') { %>
+        <div class="mode block">
+            <p><%= t('chat.blocked.disclaimer-public') %></p>
+            <p><%= t('chat.blocked.disclaimer-changing') %></p>
+            <div class="form-group pull-right mt10">
+                <input class="btn btn-success change-mode" type="submit" value="<%= t('chat.blocked.changemode')%>" />
             </div>
         </div>
-    </div>
-
-    <div class="allowed mt20">
-        <label><%= t('chat.users.type.allowed') %></label>
-        <div class="ctn"></div>
-    </div>
-
-    <h2><%= t('chat.blocked.password_placeholder') %></h2>
-
-    <div class="field-password radio">
-        <p><%= t('chat.form.room-form.mode.disclaimer.password') %></p>
-        <div class="password-block form-inline mt10 flex-parent baseline space-between">
-            <input type="checkbox" id="input-password-checkbox" name="input-password-checkbox" <% if (password) { %> checked <% } %> />
-            <input type="text"
-                   class="input-password form-control ml10 mr10 flex-child <% if (!password) { %> disabled <% } %>"
-                   placeholder="<%= (password ? t('chat.form.room-form.common.mode.password-keep') : t('chat.form.room-form.common.mode.password-field') ) %>"
-                   maxlength="255"
-                   value="<%= password %>"
-                   <% if (!password) { %> disabled <% } %>
-                />
-            <a href="#" class="icon icon-refresh random-password dc-text <% if (!password) { %> disabled <% } %>"></a>
+    <% } else { %>
+        <div class="block">
+            <p><%= t('chat.blocked.disclaimer-private') %></p>
         </div>
-    </div>
 
-    <div class="form-group pull-right mt10">
-        <input class="big-button-light save-access" type="submit" value="<%= t('global.save')%>" />
-    </div>
-<% } %>
+        <div class="allow-pending block">
+            <label><%= t('chat.access.labelpending') %></label>
+            <div class="ctn"></div>
+        </div>
+
+        <div class="allowed mt20">
+            <label><%= t('chat.users.type.allowed') %></label>
+            <div class="ctn"></div>
+        </div>
+
+        <div class="search block">
+            <div class="flex-child flex-parent relative">
+                <input type="text" id="input-search" placeholder="<%= t('chat.actions.searchuser') %>" class="form-control flex-child" />
+                <i class="icon icon-search"></i>
+                <div class="dropdown">
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1"></ul>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="block"><%= t('chat.blocked.password_placeholder') %></h2>
+
+        <div class="field-password radio block">
+            <p><%= t('chat.form.room-form.mode.disclaimer.password') %></p>
+            <div class="password-block form-inline mt10 flex-parent baseline space-between">
+                <input type="checkbox" id="input-password-checkbox" name="input-password-checkbox" <% if (password) { %> checked <% } %> />
+                <input type="text"
+                       class="input-password form-control ml10 mr10 flex-child <% if (!password) { %> disabled <% } %>"
+                       placeholder="<%= (password ? t('chat.form.room-form.common.mode.password-keep') : t('chat.form.room-form.common.mode.password-field') ) %>"
+                       maxlength="255"
+                       value="<%= password %>"
+                       <% if (!password) { %> disabled <% } %>
+                    />
+                <a href="#" class="mr10 icon icon-refresh random-password dc-text <% if (!password) { %> disabled <% } %>"></a>
+                <input class="btn btn-success save-access" type="submit" value="<%= t('global.save')%>" />
+            </div>
+        </div>
+
+    <% } %>
+</div>

@@ -1,7 +1,14 @@
 .body-chat { height: 100%; overflow-y: hidden; .ft-opensans; }
 .tooltip-home-users { padding: 0 !important; margin-left: 0 !important; margin-top: -2px;
-  .tooltip-inner {     background-color: transparent; padding: 0; border: 0; max-width: initial; border-radius: 0;
-    .username {     max-width: 200px; padding: 3px 8px; color: #fff; border-top-left-radius: 4px; border-bottom-left-radius: 4px; line-height: 24px; font-size: 12px; text-align: center; }
+  .tooltip-inner { background-color: transparent; padding: 0; border: 0; max-width: initial; border-radius: 0;
+    .username { max-width: 200px; padding: 3px 8px; color: #fff; line-height: 24px; font-size: 12px; text-align: center; }
+    &.left .username {
+      .border-radiuses(0,0,4px,4px);
+    }
+    &.right .username {
+      margin-top: -1px;
+      .border-radiuses(4px,4px,0,0);
+    }
   }
 }
 #welcome {
@@ -185,6 +192,8 @@
   }
   &::after { .clearfix; }
 }
+
+.drawer-open #chat #left { box-shadow: rgba(0, 0, 0, 0.6) 0 1px 10px 0; }
 #chat {
   .container-fluid;
   height: 100%;
@@ -387,7 +396,7 @@
           .username { font-size: 14px; overflow: hidden; text-overflow: ellipsis; .ft-opensans-bold; left: 65px; width: 130px; position: absolute; top: 0; cursor: pointer; }
           &:hover .overlay, &:hover .overlay-text { display: block; }
         }
-        .sub-menu { display: inline-block; width: 110px; padding: 0; margin: 0;
+        .sub-menu { display: inline-block; width: 110px; padding: 0; margin: 0; list-style: none;
           .connection { top: 32px; position: absolute; left: 83px;
             i { margin-right: 5px; }
           }
@@ -469,8 +478,46 @@
   }
 
   #center { height: 100%; z-index: 5; margin-left: @size-left; font-size: 12px; background-color: @cl-subtext0; background-image: url('@{img-path}/logo-onecolor-gr.svg'); background-repeat: no-repeat; background-position: center center; background-size: 60%;
+    .user-list { height: 100%;
+      .list {
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: 100%;
+        .scrollbar-white;
+        .item {
+          .pull-left;
+          position: relative;
+          margin-top: 10px;
+          margin-right: 10px;
+          .avatar {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+          }
+          .username {
+            display: none;
+            position: absolute;
+            top: 0;
+            right: -20px;
+            height: 30px;
+            line-height: 30px;
+            margin-right: 50px;
+            padding-left: 10px;
+            padding-right: 8px;
+            background-color: @cl-subtext10;
+            text-align: left;
+            .ft-opensans-bold;
+            color: #ffffff;
+            z-index: 99999;
+            white-space: nowrap;
+          }
+          &:hover .username {
+            display: block;
+          }
+        }
+      }
+    }
     #home { height: 100%; display: none; background-color: @cl-background;
-
       .title {
         .ft-raleway-medium;
         color: @cl-subtext30;
@@ -534,13 +581,8 @@
           .list { overflow-y: auto; overflow-x: hidden; height: 100%; .scrollbar-white;
             .item { .pull-left; position: relative; margin-top: 10px; margin-right: 10px;
               .avatar { display: inline-block; width: 30px; height: 30px; }
-              .username { display: none; position: absolute; top: 0; right: -20px; height: 30px; line-height: 30px; margin-right: 50px; padding-left: 10px; padding-right: 8px; background-color: @cl-subtext10; -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; border-top-left-radius: 4px; -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; border-bottom-left-radius: 4px; text-align: left; .ft-opensans-bold; color: #ffffff; z-index: 99999; white-space: nowrap;
-              }
-              &:hover {
-                .username {
-                  display: block;
-                }
-              }
+              .username { display: none; position: absolute; top: 0; right: -20px; height: 30px; line-height: 30px; margin-right: 50px; padding-left: 10px; padding-right: 8px; background-color: @cl-subtext10; -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; border-top-left-radius: 4px; -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; border-bottom-left-radius: 4px; text-align: left; .ft-opensans-bold; color: #ffffff; z-index: 99999; white-space: nowrap; }
+              &:hover .username { display: block; }
             }
           } // #chat #center #home .right .users .list
           .list.search {

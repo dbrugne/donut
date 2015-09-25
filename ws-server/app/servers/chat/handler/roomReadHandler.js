@@ -39,7 +39,8 @@ handler.call = function (data, session, next) {
         owner = {
           user_id: room.owner._id,
           username: room.owner.username,
-          avatar: room.owner._avatar()
+          avatar: room.owner._avatar(),
+          color: room.owner.color
         };
       }
 
@@ -50,7 +51,8 @@ handler.call = function (data, session, next) {
           ops.push({
             user_id: op.id,
             username: op.username,
-            avatar: op._avatar()
+            avatar: op._avatar(),
+            color: op.color
           });
         });
       }
@@ -64,7 +66,8 @@ handler.call = function (data, session, next) {
             username: ban.user.username,
             avatar: ban.user._avatar(),
             banned_at: ban.banned_at,
-            reason: ban.reason
+            reason: ban.reason,
+            color: ban.color
           });
         });
       }
@@ -78,7 +81,8 @@ handler.call = function (data, session, next) {
             username: devoice.user.username,
             avatar: devoice.user._avatar(),
             devoiced_at: devoice.devoiced_at,
-            reason: devoice.reason
+            reason: devoice.reason,
+            color: devoice.color
           });
         });
       }
@@ -90,7 +94,8 @@ handler.call = function (data, session, next) {
           users.push({
             user_id: u.id,
             username: u.username,
-            avatar: u._avatar()
+            avatar: u._avatar(),
+            color: u.color
           });
         });
       }

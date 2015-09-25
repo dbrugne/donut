@@ -1,40 +1,47 @@
-<div class="title">@<%= user.username %></div>
-
-<div class="block">
-    <div class="title"><%= t('account.emailandpassword.label') %></div>
-    <div class="email-container"></div>
-    <div class="password-container"></div>
+<div class="title">
+    <%= t('chat.actions.account') %>
+    @<%= user.username %>
 </div>
 
-<div class="block">
-    <div class="title"><%= t('account.facebook.label') %></div>
-    <% if (user.account.facebook && user.account.facebook.token) { %>
-    <p class="values"><%= t('account.facebook.help') %></p>
-    <div class="facebook">
-        <div class="infos">
-            <img class="avatar" src="https://graph.facebook.com/<%= user.account.facebook.id %>/picture"/>
-            <p>
-                <span class="labels"><%= t('account.facebook.name') %></span>
-                <span class="values"><%= user.account.facebook.name %></span>
-            </p>
-            <p>
-                <span class="labels"><%= t('account.facebook.email') %></span>
-                <span class="values"><%= user.account.facebook.email %></span>
-            </p>
-        </div>
-        <% if (user.account.email) { %>
-        <p class="unlink">
-            <a href="/unlink/facebook" target="_blank" class="unlink"><%= t('account.facebook.unlink') %></a>
-        </p>
+<div class="ctn-drawer">
+    <div class="block">
+        <h2><%= t('account.emailandpassword.label') %></h2>
+        <div class="email-container"></div>
+        <div class="password-container"></div>
+    </div>
+
+    <div class="block">
+        <h2><%= t('account.facebook.label') %></h2>
+        <% if (user.account.facebook && user.account.facebook.token) { %>
+            <p class="values"><%= t('account.facebook.help') %></p>
+            <div class="facebook">
+                <div class="infos">
+                    <img class="avatar" src="https://graph.facebook.com/<%= user.account.facebook.id %>/picture"/>
+                    <p>
+                        <span class="labels"><%= t('account.facebook.name') %></span>
+                        <span class="values"><%= user.account.facebook.name %></span>
+                    </p>
+                    <p>
+                        <span class="labels"><%= t('account.facebook.email') %></span>
+                        <span class="values"><%= user.account.facebook.email %></span>
+                    </p>
+                </div>
+                <% if (user.account.email) { %>
+                    <p class="unlink">
+                        <a href="/unlink/facebook" target="_blank" class="unlink"><%= t('account.facebook.unlink') %></a>
+                    </p>
+                <% } %>
+            </div>
+        <% } else { %>
+            <p class="values"><%= t('account.facebook.linkhelp') %></p>
+            <div class="flex-parent jc-center center">
+                <a href="/connect/facebook" target="_blank" class="btn-facebook colored"><i class="icon icon-facebook"></i> | <%= t('account.facebook.connectwith') %> <strong><%= t('account.facebook.label') %></strong></a>
+            </div>
         <% } %>
     </div>
-    <% } else { %>
-    <p class="values"><%= t('account.facebook.linkhelp') %></p>
-    <a href="/connect/facebook" target="_blank" class="btn-facebook"><i class="icon icon-facebook"></i> | <%= t('account.facebook.connectwith') %> <strong><%= t('account.facebook.label') %></strong></a>
-    <% } %>
-</div>
 
-<div class="group">
-    <div class="title"><%= t('account.profile.label') %></div>
-    <p class="values"><%= t('account.profile.help') %> <a class="open-user-edit"><%= t('account.profile.link') %></a>.</p>
+    <div class="group block">
+        <h2><%= t('account.profile.label') %></h2>
+        <p class="values"><%= t('account.profile.help') %> <a class="open-user-edit"><%= t('account.profile.link') %></a>.</p>
+    </div>
 </div>

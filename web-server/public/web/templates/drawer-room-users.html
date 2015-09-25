@@ -1,45 +1,41 @@
-<h2><%= t('chat.users.link') %></h2>
-
-<div class="title block">
+<div class="title">
+    <%= t('chat.users.link') %>
     <%= room.name %>
-    <% if (room.mode === 'private') { %>
-        <span class="room-profile private" data-toggle="tooltip" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
-    <% } %>
-    <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text colored" data-user-id="<%= owner.id %>">@<%= owner.username %></a></span>
 </div>
 
+<div class="ctn-drawer">
+    <div class="errors block"></div>
 
-<div class="errors block"></div>
-
-<div class="search block inline">
-    <label for="input-search"><%= t('chat.users.username') %></label>
-    <div class="blank flex-child"></div>
-    <div>
-        <input type="text" id="input-search" placeholder="<%= t('chat.users.search') %>" class="form-control flex-child" />
-        <i class="icon icon-search"></i>
-        <div class="dropdown">
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1"></ul>
+    <div class="search block inline">
+        <label for="input-search"><%= t('chat.users.username') %></label>
+        <div class="blank flex-child"></div>
+        <div>
+            <input type="text" id="input-search" placeholder="<%= t('chat.users.search') %>" class="form-control flex-child" />
+            <i class="icon icon-search"></i>
+            <div class="dropdown">
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1"></ul>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="block inline mt5">
-    <label for="type-select"><%= t('chat.users.usertype') %></label>
-    <div class="blank flex-child"></div>
-    <div>
-        <select name="type" id="type-select" class="form-control">
-            <% _.each(type, function(type) { %>
-            <option value="<%= type %>"><%= t('chat.users.type.' + type) %></option>
-            <% }); %>
-        </select>
+    <div class="block inline mt5">
+        <label for="type-select"><%= t('chat.users.usertype') %></label>
+        <div class="blank flex-child"></div>
+        <div>
+            <select name="type" id="type-select" class="form-control">
+                <% _.each(type, function(type) { %>
+                <option value="<%= type %>"><%= t('chat.users.type.' + type) %></option>
+                <% }); %>
+            </select>
+        </div>
     </div>
+
+    <div class="user-number block">
+        <span><strong class="number"></strong></span>
+        <span class="user-label"><%= t('chat.users.link') %></span>
+    </div>
+
+    <div class="table-users block"></div>
+
+    <div class="paginate flex-parent block"></div>
 </div>
-
-<div class="user-number block">
-    <span><strong class="number"></strong></span>
-    <span class="user-label"><%= t('chat.users.link') %></span>
-</div>
-
-<div class="table-users block"></div>
-
-<div class="paginate flex-parent block"></div>
