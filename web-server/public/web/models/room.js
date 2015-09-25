@@ -100,6 +100,7 @@ var RoomModel = Backbone.Model.extend({
       type: 'room:in',
       data: data
     });
+    app.trigger('unviewedInOut', model, this);
     this.trigger('freshEvent', model);
   },
   onOut: function (data) {
@@ -117,6 +118,7 @@ var RoomModel = Backbone.Model.extend({
       type: 'room:out',
       data: data
     });
+    app.trigger('unviewedInOut', model, this);
     this.trigger('freshEvent', model);
   },
   onTopic: function (data) {
@@ -130,6 +132,7 @@ var RoomModel = Backbone.Model.extend({
       model.set('unviewed', true);
     }
 
+    app.trigger('unviewedMessage', model, this);
     this.trigger('freshEvent', model);
   },
   onMessage: function (data) {
@@ -142,6 +145,7 @@ var RoomModel = Backbone.Model.extend({
       model.set('unviewed', true);
     }
 
+    app.trigger('unviewedMessage', model, this);
     this.trigger('freshEvent', model);
   },
   onOp: function (data) {
@@ -329,11 +333,9 @@ var RoomModel = Backbone.Model.extend({
       });
     });
   },
-
   sendMessage: function (message, images) {
     client.roomMessage(this.get('id'), message, images);
   },
-
   resetNew: function () {
     if (this.isThereNew()) { // avoid redraw if nothing to change
       this.set('unviewed', false);

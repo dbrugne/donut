@@ -1,18 +1,14 @@
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
 var keyboard = require('../libs/keyboard');
 var common = require('@dbrugne/donut-common/browser');
 var i18next = require('i18next-client');
-var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 var MessageEditView = require('./message-edit');
 
-var EventsEdit = Backbone.View.extend({
-
+module.exports = Backbone.View.extend({
   events: {
-    'shown.bs.dropdown .actions': 'onMessageMenuShow',
     'click .dropdown-menu .edited': 'onEditMessage',
     'dblclick .event': 'onEditMessage',
     'keydown .form-message-edit': 'onPrevOrNextFormEdit'
@@ -25,48 +21,13 @@ var EventsEdit = Backbone.View.extend({
     this.render();
   },
   render: function () {
-    this.$scrollable = this.$el;
-    this.$scrollableContent = this.$scrollable.find('.scrollable-content');
-    this.$realtime = this.$scrollableContent.find('.realtime');
-
+    this.$realtime = this.$('.realtime');
     return this;
-  },
-  onMessageMenuShow: function (event) {
-    var ownerUserId = '';
-    var $event = $(event.currentTarget).closest('.event');
-    if (this.model.get('owner')) {
-      ownerUserId = this.model.get('owner').get('user_id');
-    }
-    var userId = $event.closest('[data-user-id]').data('userId');
-    var isMessageOwner = (ownerUserId === userId);
-
-    var isEditable = this.isEditableMessage($event);
-
-    if (this.model.get('type') === 'room') {
-      var isOp = this.model.currentUserIsOp();
-      var isOwner = this.model.currentUserIsOwner();
-      var isAdmin = this.model.currentUserIsAdmin();
-    }
-
-    if (((!isOwner && !isAdmin && !isOp) || (isOp && isMessageOwner)) && (!isEditable)) {
-      $(event.currentTarget).find('.dropdown-menu').dropdown('toggle');
-      return;
-    }
-    var html = require('../templates/events-dropdown.html')({
-      data: {
-        isOp: isOp,
-        isOwner: isOwner,
-        isAdmin: isAdmin,
-        isMessageOwner: isMessageOwner,
-        isEditable: isEditable
-      }
-    });
-    $(event.currentTarget).find('.dropdown-menu').html(html);
   },
   onEditMessage: function (event) {
     event.preventDefault();
 
-    var $event = $(event.currentTarget).closest('.event');
+    var $event = $(event.currentTarget).closest('.block.message');
 
     if (!this.isEditableMessage($event)) {
       return;
@@ -78,7 +39,7 @@ var EventsEdit = Backbone.View.extend({
     if (special && special !== 'me') {
       return false;
     }
-    var userId = $event.closest('[data-user-id]').data('userId');
+    var userId = $event.data('userId');
     if (currentUser.get('user_id') !== userId) {
       return false;
     }
@@ -131,16 +92,16 @@ var EventsEdit = Backbone.View.extend({
     app.trigger('scrollDown');
   },
   pushUpFromInput: function () {
-    var _lastBlock = this.$realtime.find('.block.message').last();
+    var _lastBlock = this.$realtime.find('.block.message[data-user-id="' + currentUser.get('user_id') + '"]').last();
+    // @todo dbr: can no longer edit message excecpt the last one
     while (_lastBlock.data('userId') !== currentUser.get('user_id')) {
       if (!_lastBlock.prev().length) {
         return;
       }
       _lastBlock = _lastBlock.prev();
     }
-    var $event = _lastBlock.find('.event').last();
-    if (this.isEditableMessage($event)) {
-      this.editMessage($event);
+    if (this.isEditableMessage(_lastBlock)) {
+      this.editMessage(_lastBlock);
     }
 
     app.trigger('scrollDown');
@@ -191,6 +152,3 @@ var EventsEdit = Backbone.View.extend({
     return this.messageUnderEdition;
   }
 });
-
-
-module.exports = EventsEdit;

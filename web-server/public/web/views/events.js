@@ -2,26 +2,22 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
-var donutDebug = require('../libs/donut-debug');
 var EventModel = require('../models/event');
 var date = require('../libs/date');
-var i18next = require('i18next-client');
-var client = require('../libs/client');
 var EventsViewedView = require('./events-viewed');
 var EventsHistoryView = require('./events-history');
 var EventsSpamView = require('./events-spam');
 var EventsEditView = require('./events-edit');
 var windowView = require('./window');
-var eventsEngine = require('../libs/events');
-
-var debug = donutDebug('donut:events');
+var EventsEngine = require('../libs/events');
 
 module.exports = Backbone.View.extend({
   template: require('../templates/events.html'),
 
   events: {
     'click .go-to-top a': 'scrollTop',
-    'click .go-to-bottom a': 'scrollDown'
+    'click .go-to-bottom a': 'scrollDown',
+    'shown.bs.dropdown .actions': 'onMessageMenuShow'
   },
 
   scrollTopTimeout: null,
@@ -37,25 +33,25 @@ module.exports = Backbone.View.extend({
     this.listenTo(this.model, 'windowRefocused', this.onScroll);
     this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
     this.listenTo(this.model, 'messageSent', this.scrollDown);
-    this.listenTo(client, 'admin:message', this.onAdminMessage);
 
     this.render();
 
+    this.engine = new EventsEngine({
+      model: this.model,
+      el: this.$realtime
+    });
     this.eventsViewedView = new EventsViewedView({
       el: this.$scrollable,
       model: this.model
     });
-
     this.eventsHistoryView = new EventsHistoryView({
       el: this.$el,
       model: this.model
     });
-
     this.eventsSpamView = new EventsSpamView({
       el: this.$el,
       model: this.model
     });
-
     this.eventsEditView = new EventsEditView({
       el: this.$el,
       model: this.model
@@ -225,125 +221,59 @@ module.exports = Backbone.View.extend({
    * Events rendering
    *
    *****************************************************************************************************************/
-  onAdminMessage: function (data) {
-    data = {data: data};
-    data.data.avatar = '//res.cloudinary.com/roomly/image/upload/v1409643461/rciev5ubaituvx5bclnz.png'; // @todo : add avatar URL in configuration
-    data.data.username = 'DONUT';
-    data.data.is_admin = true;
-    data.type = 'room:message';
-    var model = new EventModel(data);
-    this.addFreshEvent(model);
-  },
   addFreshEvent: function (model) {
-    // browser notification
-    if (model.getGenericType() === 'message' || model.get('type') === 'room:topic') {
-      app.trigger('unviewedMessage', model, this.model);
-    } else if (this.model.get('type') === 'room' && model.getGenericType() === 'inout') {
-      app.trigger('unviewedInOut', model, this.model);
-    }
-
-    // render a 'fresh' event in realtime and scrolldown
-    debug.start('discussion-events-fresh-' + this.model.getIdentifier());
     // scrollDown only if already on bottom before DOM insertion
     var needToScrollDown = (
       (this.model.get('focused') === true && this.isScrollOnBottom()) ||
       (this.model.get('focused') === false && this.scrollWasOnBottom)
     );
-    var previousElement = this.$realtime.find('.block:last').first();
-    var newBlock = this._newBlock(model, previousElement);
-    var html = eventsEngine.render(model, this.model);
-    if (!newBlock) {
-      // @bug : element is the .event in this case not the .block
-      $(html).appendTo(previousElement.find('.items'));
-    } else {
-      html = eventsEngine.block(model, html);
-      $(html).appendTo(this.$realtime);
-    }
 
+    // render and insert
+    this.engine.insertBottom(model);
+
+    // scrollDown
     if (needToScrollDown && !this.eventsEditView.getMessageUnderEdition()) {
       this.scrollDown();
     } else {
       this.$goToBottom.show().addClass('unread');
     }
-
-    debug.end('discussion-events-fresh-' + this.model.getIdentifier());
-  },
-  _newBlock: function (newModel, previousElement) {
-    var newBlock = false;
-    if (!previousElement || previousElement.length < 1) {
-      newBlock = true;
-    } else {
-      switch (newModel.getGenericType()) {
-        case 'hello':
-        case 'standard':
-          newBlock = true;
-          break;
-        case 'inout':
-          if (!previousElement.hasClass('inout')) {
-            newBlock = true;
-          }
-          break;
-        case 'message':
-          if (!previousElement.hasClass('message') || previousElement.data('userId') !== newModel.get('data').user_id) {
-            newBlock = true;
-          }
-          break;
-      }
-    }
-    return newBlock;
   },
   addBatchEvents: function (events) {
-    if (events.length === 0) {
-      return;
-    }
-
-    // render a batch of events (sorted in 'desc' order)
-    var $html = $('<div/>');
-    var previousModel;
-    var previousElement;
-    _.each(events, _.bind(function (event) {
-      var model = new EventModel(event);
-      var newBlock = this._newBlock(model, previousElement);
-
-      // inter-date block
-      if (previousModel) {
-        if (!date.isSameDay(model.get('time'), previousModel.get('time'))) {
-          var dateFull = (date.diffInDays(previousModel.get('time')) === 0
-              ? i18next.t('chat.message.today')
-              : (date.diffInDays(previousModel.get('time')) === 1
-                ? i18next.t('chat.message.yesterday')
-                : (date.diffInDays(previousModel.get('time')) === 2
-                  ? i18next.t('chat.message.the-day-before')
-                  : date.longDate(previousModel.get('time'))
-              )
-            )
-          );
-
-          var dateHtml = require('../templates/event/date.html')({
-            time: previousModel.get('time'),
-            datefull: dateFull
-          });
-          previousElement = $(dateHtml).prependTo($html);
-          newBlock = true;
-        }
-      }
-
-      // render and insert
-      var h = eventsEngine.render(model, this.model);
-      if (!newBlock) {
-        // not define previousElement, remain the same .block
-        $(h).prependTo(previousElement.find('.items'));
-      } else {
-        h = eventsEngine.block(model, h);
-        previousElement = $(h).prependTo($html);
-      }
-      previousModel = model;
-    }, this));
-
-    $html.find('>.block').prependTo(this.$realtime);
+    this.engine.insertTop(events);
   },
-
   requestHistory: function (scrollTo) {
     this.eventsHistoryView.requestHistory(scrollTo);
+  },
+  onMessageMenuShow: function (event) {
+    var ownerUserId = '';
+    if (this.model.get('owner')) {
+      ownerUserId = this.model.get('owner').get('user_id');
+    }
+    var $event = $(event.currentTarget).closest('.block.message');
+    var userId = $event.closest('[data-user-id]').data('userId');
+    var isMessageOwner = (ownerUserId === userId);
+
+    var isEditable = this.eventsEditView.isEditableMessage($event);
+
+    if (this.model.get('type') === 'room') {
+      var isOp = this.model.currentUserIsOp();
+      var isOwner = this.model.currentUserIsOwner();
+      var isAdmin = this.model.currentUserIsAdmin();
+    }
+
+    if (((!isOwner && !isAdmin && !isOp) || (isOp && isMessageOwner)) && (!isEditable)) {
+      $(event.currentTarget).find('.dropdown-menu').dropdown('toggle');
+      return;
+    }
+    var html = require('../templates/events-dropdown.html')({
+      data: {
+        isOp: isOp,
+        isOwner: isOwner,
+        isAdmin: isAdmin,
+        isMessageOwner: isMessageOwner,
+        isEditable: isEditable
+      }
+    });
+    $(event.currentTarget).find('.dropdown-menu').html(html);
   }
 });

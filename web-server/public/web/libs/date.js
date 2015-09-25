@@ -1,6 +1,8 @@
 var i18next = require('i18next-client');
 
-module.exports = {
+var ONE_DAY = 60 * 60 * 24; // in seconds
+
+window.d = module.exports = {
   longDate: function (date) { // dddd Do MMMM YYYY
     var myDate = new Date(date);
     if (isNaN(myDate)) {
@@ -45,7 +47,9 @@ module.exports = {
     if (isNaN(myDate)) {
       return;
     }
-    return myDate.getHours() + ':' + myDate.getMinutes();
+    var h = myDate.getHours();
+    var m = myDate.getMinutes();
+    return ((h < 10) ? '0' : '') + h + ':' + ((m < 10) ? '0' : '') + m;
   },
   shortTimeSeconds: function (date) { // HH:mm::ss
     var myDate = new Date(date);
@@ -77,21 +81,18 @@ module.exports = {
     }
     return this.shortDayMonth(date) + ', ' + this.shortTime(date);
   },
-  shortMonthYear: function (date) { // MM/YYYY
+  diffInDays: function (date) {
     var myDate = new Date(date);
     if (isNaN(myDate)) {
       return;
     }
-    var monthDate = (myDate.getMonth() + 1);
-    return ((monthDate < 10) ? ('0' + monthDate) : monthDate) + '/' + myDate.getFullYear();
-  },
-  diffInDays: function (date) {
-    var myDate = new Date(date);
-    if (isNaN(myDate)) {
-      return '';
-    }
+    myDate.setHours(0, 0, 0);
     var currentDate = new Date();
-    return Math.floor((currentDate.getTime() - myDate.getTime()) / (1000 * 60 * 60 * 24));
+    currentDate.setHours(0, 0, 0);
+    var myTimestamp = Math.floor(myDate.getTime() / 1000);
+    var currentTimestamp = Math.floor(currentDate.getTime() / 1000);
+    var diff = currentTimestamp - myTimestamp;
+    return Math.floor(diff / ONE_DAY);
   },
   isSameDay: function (newDate, previousDate) {
     var sameNewDate = new Date(newDate);
@@ -162,5 +163,17 @@ module.exports = {
     }
     var diffYears = Math.floor(diff / (1000 * 60 * 60 * 24 * 30 * 12));
     return i18next.t('date.relativetime.yy', {years: diffYears});
+  },
+  block: function (date) {
+    var days = this.diffInDays(date);
+    if (days <= 0) {
+      return i18next.t('chat.message.today');
+    } else if (days === 1) {
+      return i18next.t('chat.message.yesterday');
+    } else if (days === 2) {
+      return i18next.t('chat.message.the-day-before');
+    } else {
+      return this.longDate(date);
+    }
   }
 };
