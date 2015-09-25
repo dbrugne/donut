@@ -8,13 +8,13 @@
 <div class="content">
     <div class="visible-xs visible-sm">
         <div class="mini-header user">
-            <img class="avatar" src="<%= _user.avatar %>" alt="<%= _user.username %> avatar">
+            <img class="avatar border-shadow" src="<%= _user.avatar %>" alt="<%= _user.username %> avatar">
             <span class="username dc-text-contrast" >@<%= _user.username %></span>
         </div>
     </div>
     <div class="header user">
         <div class="overlay-ctn">
-            <img class="avatar" src="<%= _user.avatar %>" alt="<%= _user.username %> avatar">
+            <img class="avatar border-shadow" src="<%= _user.avatar %>" alt="<%= _user.username %> avatar">
             <p class="discuss"><a class="dc-back dc-text-contrast" href="<% if (!user) { %><%= _user.discuss %><% } else { %><%= _user.chat %><% } %>" ><%= t('actions.discuss') %></a></p>
         </div>
         <div class="info">

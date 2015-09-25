@@ -331,6 +331,7 @@ var MainView = Backbone.View.extend({
     this.drawerView.setSize('380px').setView(view).open();
   },
   onOpenUserProfile: function (event) {
+    this.$el.find('.tooltip').tooltip('hide');
     event.preventDefault();
 
     var userId = $(event.currentTarget).data('userId');
@@ -345,6 +346,7 @@ var MainView = Backbone.View.extend({
     this.drawerView.setSize('380px').setView(view).open();
   },
   onOpenRoomProfile: function (event) {
+    this.$el.find('.tooltip').tooltip('hide');
     event.preventDefault();
 
     var roomId = $(event.currentTarget).data('roomId');
