@@ -2,7 +2,6 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
-var EventModel = require('../models/event');
 var date = require('../libs/date');
 var EventsViewedView = require('./events-viewed');
 var EventsHistoryView = require('./events-history');
