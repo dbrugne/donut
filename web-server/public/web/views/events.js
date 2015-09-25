@@ -35,7 +35,8 @@ module.exports = Backbone.View.extend({
     this.listenTo(this.model, 'messageSent', this.scrollDown);
 
     this.engine = new EventsEngine({
-      model: this.model
+      model: this.model,
+      el: this.$el
     });
 
     this.render();
@@ -244,7 +245,7 @@ module.exports = Backbone.View.extend({
       return;
     }
 
-    // render a batch of events (sorted in 'desc' order)
+    // render a batch of events //(sorted in 'desc' order)//
     var $html = $('<div/>');
     _.each(events, _.bind(function (event) {
       var model = new EventModel(event);

@@ -27,12 +27,19 @@ var templates = {
 
 var exports = module.exports = function (options) {
   this.discussion = options.model;
-  this.$el = options.$el;
+  this.$el = options.el; // at this time it's empty
   this.topEvent = '';
   this.bottomEvent = '';
 };
 
 exports.prototype.render = function (event, direction) {
+  /**
+   * Split logic to have a cleanup render/prepare event HTML
+   * Then a method to call to render AND insert in this.$el
+   * Fix previous storage for both top and bottom direction
+   * @todo
+   */
+
   var previous = (direction === 'top')
     ? this.topEvent
     : this.bottomEvent;
@@ -59,11 +66,15 @@ exports.prototype.render = function (event, direction) {
   // render event
   html += this._render(event.get('type'), this._data(event));
 
-  // previous
-  if (direction === 'top') {
-    this.topEvent = event;
+  // previous saving
+  if (!this.topEvent && !this.bottomEvent) {
+    this.topEvent = this.bottomEvent = event; // first inserted element
   } else {
-    this.bottomEvent = event;
+    if (direction === 'top') {
+      this.topEvent = event;
+    } else {
+      this.bottomEvent = event;
+    }
   }
 
   return html;
@@ -157,9 +168,13 @@ exports.prototype._data = function (event) {
 };
 exports.prototype._render = function (type, data) {
   try {
-    return templates[type](data);
+    var template = templates[type];
+    if (!template) {
+      return console.warn('render was unable to find template: ' + type);
+    }
+    return template(data);
   } catch (e) {
-    console.error('render exception, see below', e);
+    console.error('render exception, see below: ' + type, e);
     return false;
   }
 };
