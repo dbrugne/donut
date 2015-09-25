@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var client = require('../libs/client');
+var app = require('../models/app');
 
 var ViewedView = Backbone.View.extend({
   initialize: function (options) {
@@ -163,8 +163,7 @@ var ViewedView = Backbone.View.extend({
       return '#' + id;
     });
     this.$scrollableContent.find(selector.join(',')).removeClass('unviewed');
+    app.trigger('changeTitle', this.model);
   }
 });
-
-
 module.exports = ViewedView;

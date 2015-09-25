@@ -506,6 +506,7 @@
       "username": "Nom d'utilisateur",
       "usertype": "Type",
       "link": "liste des utilisateurs",
+      "label": "Voir tous les utilisateurs",
       "search": "rechercher des utilisateurs dans ce donut",
       "type": {
         "owner": "Créateur",
@@ -519,8 +520,8 @@
     },
     "access": {
       "link": "Accès",
-      "labelsearch": "Inviter des utilisateurs",
-      "add": "Inviter un utilisateur",
+      "labelsearch": "Autoriser des utilisateurs",
+      "add": "Autoriser un utilisateur",
       "labelpending": "Utilisateurs en attente d'autorisation",
       "types": {
         "all": "Tous",

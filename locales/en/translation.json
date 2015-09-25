@@ -506,6 +506,7 @@
       "username": "Username",
       "usertype": "Type",
       "link": "users list",
+      "label": "See all users",
       "search": "search a username in this donut",
       "type": {
         "owner": "Owner",
@@ -519,8 +520,8 @@
     },
     "access": {
       "link": "Access",
-      "labelsearch": "Invite a user",
-      "add": "Add user",
+      "labelsearch": "Allow users",
+      "add": "Allow a user",
       "labelpending": "Users waiting for authorization",
       "types": {
         "all": "All",
