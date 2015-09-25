@@ -2,6 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var common = require('@dbrugne/donut-common/browser');
 var date = require('./date');
+var EventModel = require('../models/event');
 
 var templates = {
   'hello': require('../templates/event/block-hello.html'),
@@ -28,21 +29,13 @@ var templates = {
 var exports = module.exports = function (options) {
   this.discussion = options.model;
   this.$el = options.el; // at this time it's empty
+  this.empty = true;
   this.topEvent = '';
   this.bottomEvent = '';
 };
 
-exports.prototype.render = function (event, direction) {
-  /**
-   * Split logic to have a cleanup render/prepare event HTML
-   * Then a method to call to render AND insert in this.$el
-   * Fix previous storage for both top and bottom direction
-   * @todo
-   */
-
-  var previous = (direction === 'top')
-    ? this.topEvent
-    : this.bottomEvent;
+exports.prototype.insertBottom = function (event, direction) {
+  var previous = this.bottomEvent;
 
   var html = '';
 
@@ -64,7 +57,7 @@ exports.prototype.render = function (event, direction) {
   }
 
   // render event
-  html += this._render(event.get('type'), this._data(event));
+  html += this._renderEvent(event.get('type'), this._data(event));
 
   // previous saving
   if (!this.topEvent && !this.bottomEvent) {
@@ -77,7 +70,62 @@ exports.prototype.render = function (event, direction) {
     }
   }
 
-  return html;
+  this.empty = false;
+  this.$el.append(html);
+};
+
+exports.prototype.insertTop = function (events) {
+  if (events.length === 0) {
+    return;
+  }
+
+  var html = '';
+  var previous;
+  _.each(events, _.bind(function (event) {
+    event = new EventModel(event);
+
+    // try to render event (before)
+    var _html = this._renderEvent(event.get('type'), this._data(event));
+    if (!_html) {
+      return;
+    }
+
+    // new message block
+    if (this.block(event, previous)) {
+      _html = require('../templates/event/block-user.html')({
+        user_id: event.get('data').user_id,
+        username: event.get('data').username,
+        avatar: common.cloudinary.prepare(event.get('data').avatar, 30)
+      }) + _html;
+    }
+
+    // new date block
+    if (!previous || !date.isSameDay(event.get('time'), previous.get('time'))) {
+      _html = require('../templates/event/block-date.html')({
+        time: event.get('time'),
+        date: date.block(event.get('time'))
+      }) + _html;
+    }
+
+    html += _html;
+    if (!previous) {
+      // first event in events will be the new this.topEvent for next batch
+      this.topEvent = event;
+    }
+    previous = event;
+    if (this.empty) {
+      // empty DOM, bottom element will be the last of this loop
+      this.bottomEvent = event;
+    }
+  }, this));
+
+  if (!this.empty) {
+    // remove systematically first date block in $el
+    this.$el.find('.block.date:first').remove();
+  }
+
+  this.empty = false;
+  this.$el.prepend(html);
 };
 
 exports.prototype.block = function (event, previous) {
@@ -86,19 +134,15 @@ exports.prototype.block = function (event, previous) {
     return false;
   }
   if (!previous) {
-    console.log('previous');
     return true;
   }
   if (messagesTypes.indexOf(previous.get('type')) === -1) {
-    console.log('notmess2');
     return true;
   }
   if (!date.isSameDay(event.get('time'), previous.get('time'))) {
-    console.log('date');
     return true;
   }
   if (event.get('data').user_id !== previous.get('data').user_id) {
-    console.log('notuse');
     return true;
   }
   return false;
@@ -109,9 +153,11 @@ exports.prototype._data = function (event) {
   data.data = _.clone(event.get('data'));
 
   // room
-  data.name = this.discussion.get('name');
-  data.mode = this.discussion.get('mode');
-  data.owner = this.discussion.get('owner').get('username');
+  if (this.discussion.get('type') === 'room') {
+    data.name = this.discussion.get('name');
+    data.mode = this.discussion.get('mode');
+    data.owner = this.discussion.get('owner').get('username');
+  }
 
   // spammed & edited
   data.spammed = (event.get('spammed') === true);
@@ -166,16 +212,17 @@ exports.prototype._data = function (event) {
 
   return data;
 };
-exports.prototype._render = function (type, data) {
+
+exports.prototype._renderEvent = function (type, data) {
   try {
     var template = templates[type];
     if (!template) {
-      return console.warn('render was unable to find template: ' + type);
+      console.warn('render was unable to find template: ' + type);
+      return ''; // avoid 'undefined'
     }
     return template(data);
   } catch (e) {
     console.error('render exception, see below: ' + type, e);
-    return false;
+    return ''; // avoid 'undefined'
   }
 };
-

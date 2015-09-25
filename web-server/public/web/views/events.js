@@ -34,13 +34,12 @@ module.exports = Backbone.View.extend({
     this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
     this.listenTo(this.model, 'messageSent', this.scrollDown);
 
-    this.engine = new EventsEngine({
-      model: this.model,
-      el: this.$el
-    });
-
     this.render();
 
+    this.engine = new EventsEngine({
+      model: this.model,
+      el: this.$realtime
+    });
     this.eventsViewedView = new EventsViewedView({
       el: this.$scrollable,
       model: this.model
@@ -230,8 +229,7 @@ module.exports = Backbone.View.extend({
     );
 
     // render and insert
-    var html = this.engine.render(model, 'bottom');
-    this.$realtime.append(html);
+    this.engine.insertBottom(model);
 
     // scrollDown
     if (needToScrollDown && !this.eventsEditView.getMessageUnderEdition()) {
@@ -241,19 +239,7 @@ module.exports = Backbone.View.extend({
     }
   },
   addBatchEvents: function (events) {
-    if (events.length === 0) {
-      return;
-    }
-
-    // render a batch of events //(sorted in 'desc' order)//
-    var $html = $('<div/>');
-    _.each(events, _.bind(function (event) {
-      var model = new EventModel(event);
-      var _html = this.engine.render(model, 'top');
-      $html.append(_html);
-    }, this));
-
-    $html.find('>*').prependTo(this.$realtime);
+    this.engine.insertTop(events);
   },
   requestHistory: function (scrollTo) {
     this.eventsHistoryView.requestHistory(scrollTo);
