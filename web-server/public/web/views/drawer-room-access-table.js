@@ -78,6 +78,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
         app.trigger('redraw-tables');
       }, this));
     }
+    this.$el.find('[data-toggle="tooltip"]').tooltip('hide');
   },
 
   initializeTooltips: function () {
