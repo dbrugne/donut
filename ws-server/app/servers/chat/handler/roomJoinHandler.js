@@ -85,6 +85,12 @@ handler.join = function (user, room, next) {
       });
     },
 
+    function removeAllowedPending (eventData, callback) {
+      room.update({$pull: {allowed_pending: user._id}}, function (err) {
+        return callback(err, eventData);
+      });
+    },
+
     function joinClients (eventData, callback) {
       // search for all the user sessions (any frontends)
       that.app.statusService.getSidsByUid(user.id, function (err, sids) {
