@@ -372,7 +372,7 @@
       }
     },
     "password": {
-      "spam-password": "Vous devez patienter",
+      "spam-password": "Vous avez fait trop d'essais! Patienter ou faite une demande d'accès",
       "wrong-password": "Mauvais mot de passe",
       "error": "Une erreur est survenue"
     },

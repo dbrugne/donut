@@ -99,6 +99,7 @@ var MainView = Backbone.View.extend({
     this.listenTo(app, 'joinOnetoone', this.focusOneToOneByUsername);
     this.listenTo(app, 'changeColor', this.onChangeColor);
     this.listenTo(app, 'persistPositions', this.persistPositions);
+    this.listenTo(app, 'changeTitle', this.onChangeTitle);
   },
   run: function () {
     // generate and attach subviews
@@ -688,6 +689,16 @@ var MainView = Backbone.View.extend({
       client.userDeban(userId);
       app.trigger('userDeban');
     }, this));
+  },
+
+  onChangeTitle: function (model) {
+    var title;
+    if (model.get('type') === 'room') {
+      title = model.get('name');
+    } else {
+      title = model.get('username');
+    }
+    windowView.setTitle(title);
   }
 });
 

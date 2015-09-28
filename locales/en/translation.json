@@ -372,7 +372,7 @@
     },
     "password": {
       "wrong-password": "Wrong password",
-      "spam-password": "please wait",
+      "spam-password": "You have made ​​too many tests ! Wait or made ​​a request for access",
       "error": "An error has occurred"
     },
     "confirmation": {
