@@ -1,6 +1,5 @@
 var logger = require('../util/logger').getLogger('models', __filename);
 var _ = require('underscore');
-var bcrypt = require('bcrypt-nodejs');
 var mongoose = require('../io/mongoose');
 var common = require('@dbrugne/donut-common/server');
 var cloudinary = require('../util/cloudinary');
@@ -29,6 +28,7 @@ var roomSchema = mongoose.Schema({
   }],
   mode: {type: String, default: 'public'},
   password: String,
+  password_indication: String,
   password_tries: [{
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
     count: Number,
@@ -140,7 +140,7 @@ roomSchema.methods.isInBanned = function (userId) {
     return;
   }
 
-  var subDocument = _.find(this.bans, function (ban) {
+  return _.find(this.bans, function (ban) {
     if (ban.user._id) {
       // populated
       return (ban.user.id === userId);
@@ -148,8 +148,6 @@ roomSchema.methods.isInBanned = function (userId) {
       return (ban.user.toString() === userId);
     }
   });
-
-  return subDocument;
 };
 
 roomSchema.methods.isBanned = function (userId) {
@@ -191,7 +189,6 @@ roomSchema.methods.isIn = function (userId) {
 
 roomSchema.methods.validPassword = function (password) {
   return password === this.password;
-  //return bcrypt.compareSync(password, this.password);
 };
 
 roomSchema.methods.isInPasswordTries = function (userId) {
@@ -199,14 +196,13 @@ roomSchema.methods.isInPasswordTries = function (userId) {
     return;
   }
 
-  var subDocument = _.find(this.password_tries, function (doc) {
+  return _.find(this.password_tries, function (doc) {
     if (doc.user._id) {
       return (doc.user.id === userId);
     } else {
       return (doc.user.toString() === userId);
     }
   });
-  return subDocument;
 };
 
 roomSchema.methods.isPasswordTries = function (userId) {
