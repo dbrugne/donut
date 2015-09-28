@@ -56,6 +56,7 @@ var RoomBlockedView = Backbone.View.extend({
     // render
     var html = this.template(data);
     this.$el.html(html);
+    this.$error = this.$('.error');
     this.$el.hide();
 
     this.initializeTooltips();
@@ -73,6 +74,7 @@ var RoomBlockedView = Backbone.View.extend({
   onFocusChange: function () {
     if (this.model.get('focused')) {
       this.$el.show();
+      this.$error.hide();
       this.hasBeenFocused = true;
     } else {
       this.$el.hide();
@@ -92,6 +94,7 @@ var RoomBlockedView = Backbone.View.extend({
     });
   },
   onValidPassword: function (event) {
+    var that = this;
     var key = keyboard._getLastKeyCode(event);
     if (event.type !== 'click' && key.key !== keyboard.RETURN) {
       return;
@@ -99,10 +102,15 @@ var RoomBlockedView = Backbone.View.extend({
 
     var password = $(event.currentTarget).closest('.password-form').find('.input-password').val();
     client.roomJoin(this.model.get('id'), this.model.get('name'), password, function (response) {
-      if (response.err && (response.err === 'wrong-password' || response.err === 'spam-password')) {
-        $(event.currentTarget).closest('.password-form').find('.error').html(i18next.t('chat.password.' + response.err));
+      if (!response.err) {
+        return;
+      }
+
+      that.$error.show();
+      if (response.err === 'wrong-password' || response.err === 'spam-password') {
+        that.$error.text(i18next.t('chat.password.' + response.err));
       } else if (response.err) {
-        $(event.currentTarget).closest('.password-form').find('.error').html(i18next.t('chat.password.error'));
+        that.$error.text(i18next.t('chat.password.error'));
       }
     });
   },
