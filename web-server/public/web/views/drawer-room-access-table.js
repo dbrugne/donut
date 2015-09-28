@@ -15,18 +15,17 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
   },
 
   initialize: function (options) {
-    this.model = options.model;
-
+    this.roomId = options.room_id;
     this.listenTo(app, 'removeTooltips', this.onRemoveTooltips);
   },
 
   render: function (type) {
     if (type === 'pending') {
-      client.roomUsers(this.model.id, {type: 'allowedPending'}, _.bind(function (data) {
+      client.roomUsers(this.roomId, {type: 'allowedPending'}, _.bind(function (data) {
         this.onResponse(data.users);
       }, this));
     } else if (type === 'allowed') {
-      client.roomUsers(this.model.id, {type: 'allowed'}, _.bind(function (data) {
+      client.roomUsers(this.roomId, {type: 'allowed'}, _.bind(function (data) {
         this.onResponse(data.users);
       }, this));
     }
@@ -35,7 +34,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
   },
 
   onResponse: function (users) {
-    if (users.length === 0) {
+    if (!users.length) {
       this.$el.hide();
       return;
     }
@@ -54,7 +53,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
     var userId = $(event.currentTarget).data('userId');
 
     if (userId) {
-      client.roomAllow(this.model.id, userId, _.bind(function (data) {
+      client.roomAllow(this.roomId, userId, _.bind(function (data) {
         app.trigger('redraw-tables');
       }, this));
     }
@@ -64,7 +63,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
     var userId = $(event.currentTarget).data('userId');
 
     if (userId) {
-      client.roomRefuse(this.model.id, userId, _.bind(function (data) {
+      client.roomRefuse(this.roomId, userId, _.bind(function (data) {
         app.trigger('redraw-tables');
       }, this));
     }
@@ -74,7 +73,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
     var userId = $(event.currentTarget).data('userId');
 
     if (userId) {
-      client.roomDisallow(this.model.id, userId, _.bind(function (data) {
+      client.roomDisallow(this.roomId, userId, _.bind(function (data) {
         app.trigger('redraw-tables');
       }, this));
     }
