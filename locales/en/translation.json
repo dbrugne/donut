@@ -518,13 +518,13 @@
     "welcome": {
       "private": {
         "room": [
-          "Welcome to <strong>__name__</strong>. The conversation is private so only users authorized by <strong>@__owner__</strong> can join. Once users have joined they can participate and access history.",
+          "Welcome to <a class=\"open-room-profile\" data-room-id=\"__room_id__\"><strong>__name__</strong></a>. The conversation is private so only users authorized by <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a> can join. Once users have joined they can participate and access history.",
           "Post a message to engage in the discussion."
         ]
       },
       "public": {
         "room": [
-          "Welcome to <strong>__name__</strong>. The conversation is public so anyone can join, participate and access history. Share the link with your friends! ",
+          "Welcome to <a class=\"open-room-profile\" data-room-id=\"__room_id__\"><strong>__name__</strong></a>. The conversation is public so anyone can join, participate and access history. Share the link with your friends! ",
           "Post a message to engage in the discussion."
         ]
       },

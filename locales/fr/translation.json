@@ -519,13 +519,13 @@
     "welcome": {
       "private": {
         "room": [
-          "Bienvenue dans <strong>__name__</strong>. La conversation est privée. Seuls les utilisateurs autorisés par <strong>@__owner__</strong> pourront rejoindre ce donut. Les utilisateurs qui ont rejoint le donut peuvent y participer et accéder à son historique.",
+          "Bienvenue dans <a class=\"open-room-profile\" data-room-id=\"__room_id__\"><strong>__name__</strong></a>. La conversation est privée. Seuls les utilisateurs autorisés par <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a> pourront rejoindre ce donut. Les utilisateurs qui ont rejoint le donut peuvent y participer et accéder à son historique.",
           "Postez un message pour amorcer la conversation."
         ]
       },
       "public": {
         "room": [
-          "Bienvenue dans <strong>__name__</strong>. La conversation est publique donc accessible à tous de même que l'historique. Vous pouvez partager le lien avec vos amis.",
+          "Bienvenue dans <a class=\"open-room-profile\" data-room-id=\"__room_id__\"><strong>__name__</strong></a>. La conversation est publique donc accessible à tous de même que l'historique. Vous pouvez partager le lien avec vos amis.",
           "Postez un message pour amorcer la conversation."
         ]
       },

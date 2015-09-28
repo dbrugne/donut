@@ -160,6 +160,7 @@ exports.prototype._data = function (event) {
     data.name = this.discussion.get('name');
     data.mode = this.discussion.get('mode');
     data.owner = this.discussion.get('owner').get('username');
+    data.owner_id = this.discussion.get('owner').get('user_id');
   }
 
   // spammed & edited
