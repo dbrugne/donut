@@ -238,7 +238,6 @@ var InputRollupView = Backbone.View.extend({
 
     this.$rollup.html('');
   },
-
   onRollupHover: function (event) {
     var li = $(event.currentTarget);
     if (li.hasClass('empty')) { // Avoid highlighting empty results on hover
@@ -260,8 +259,10 @@ var InputRollupView = Backbone.View.extend({
     this.moveCursorToEnd();
   },
   onRollupClose: function () {
-    this._closeRollup();
-    this.moveCursorToEnd();
+    if (!this.isClosed()) {
+      this._closeRollup();
+      this.moveCursorToEnd();
+    }
   },
   moveCursorToEnd: function () {
     this.$editable.setCursorPosition(this.$editable.val().length, this.$editable.val().length);
