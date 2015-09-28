@@ -251,7 +251,7 @@ roomSchema.methods.isUserBlocked = function (userId, password) {
   if (this.isAllowed(userId)) {
     return false;
   }
-  if (this.password && password) {
+  if (this.password && (password || password === '')) {
     // remove expired subdocs on model synchronously and in database asynchronously
     this.cleanupPasswordTries();
     var tries = this.isInPasswordTries(userId);

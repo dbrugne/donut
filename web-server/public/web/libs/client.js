@@ -154,7 +154,7 @@ var client = _.extend({
       return;
     }
 
-    if (password) {
+    if (password || password === '') {
       data.password = password;
     }
 
