@@ -109,6 +109,9 @@ var NotificationsView = Backbone.View.extend({
     this._createDesktopNotify(data);
   },
   _createDesktopNotify: function (data) {
+    var msg = (data.data.message)
+      ? common.markup.toText(data.data.message)
+      : '';
     var message = i18next.t('chat.notifications.messages.' + data.type, {
       name: (data.data.room)
         ? data.data.room.name.replace('#', '')
@@ -116,29 +119,47 @@ var NotificationsView = Backbone.View.extend({
       username: (data.data.by_user)
         ? data.data.by_user.username
         : data.data.user.username,
-      message: data.data.message
+      message: msg
     });
 
     message = message.replace(/<\/*span>/g, '');
     app.trigger('desktopNotification', message, '');
   },
   renderNotification: function (n) {
+    n.css = '';
+    n.href = '';
+    n.name = '';
+    n.html = '';
     if (n.data.room) {
       n.avatar = common.cloudinary.prepare(n.data.room.avatar, 90);
       n.title = n.data.room.name;
+      n.name = n.data.room.name.replace('#', '');
+      n.href = '#room/' + n.name;
     } else if (n.data.by_user) {
       n.avatar = common.cloudinary.prepare(n.data.by_user.avatar, 90);
       n.title = n.data.by_user.username;
     }
 
-    n.name = (n.data.room) ? n.data.room.name.replace('#', '') : '';
     n.username = (n.data.by_user) ? n.data.by_user.username : n.data.user.username;
-
+    var message = (n.data.message)
+      ? common.markup.toText(n.data.message)
+      : '';
     n.message = i18next.t('chat.notifications.messages.' + n.type, {
       name: n.name,
       username: n.username,
-      message: n.data.message
+      message: message
     });
+
+    if (n.type === 'roomjoinrequest') {
+      n.href = '';
+      n.css += 'open-room-access';
+      n.html += 'data-room-id="' + n.data.room._id + '"';
+      n.username = null;
+    }
+
+    if (n.viewed === false) {
+      n.css += ' unread';
+    }
 
     return require('../templates/notification.html')({
       data: n,
@@ -162,9 +183,9 @@ var NotificationsView = Backbone.View.extend({
     client.notificationRead(null, this.lastNotifDisplayedTime(), 10, _.bind(function (data) {
       this.isThereMoreNotifications = data.more;
       var html = '';
-      for (var k in data.notifications) {
-        html += this.renderNotification(data.notifications[k]);
-      }
+      _.each(data.notifications, _.bind(function (element) {
+        html += this.renderNotification(element);
+      }, this));
       this.$menu.html(this.$menu.html() + html);
       this.toggleReadMore();
     }, this));
@@ -226,9 +247,9 @@ var NotificationsView = Backbone.View.extend({
       this.isThereMoreNotifications = data.more;
       var previousContent = this.$menu.html();
       var html = '';
-      for (var k in data.notifications) {
-        html += this.renderNotification(data.notifications[k]);
-      }
+      _.each(data.notifications, _.bind(function (element) {
+        html += this.renderNotification(element);
+      }, this));
 
       this.$menu.html(previousContent + html);
       this.$readMore.removeClass('hidden');
@@ -280,7 +301,6 @@ var NotificationsView = Backbone.View.extend({
   onTagAsDone: function (event) {
     event.preventDefault();
     var message = $(event.currentTarget).parents('.message');
-    // Ask server to set notification as done, and wait for response to set them likewise
     client.notificationDone(message.data('notification-id'), true);
     return false;
   },

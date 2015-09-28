@@ -1,4 +1,8 @@
-<div class="message <% if (data.viewed == false) { %>unread<% } %>" data-notification-id="<%= data.id %>" data-time="<%= data.time %>">
+<a class="message <%= data.css %>"
+   data-notification-id="<%= data.id %>"
+   data-time="<%= data.time %>"
+    <% if (data.href) { print('href="' + data.href + '"'); } %>
+    <%= data.html %> >
     <img src="<%= data.avatar %>" alt="<%= data.title %>" />
     <div class="message-subject"><%= data.message %></div>
     <span class="icon icon-times action-tag-as-done"></span>
@@ -14,4 +18,4 @@
             <span class="moment visible-xs visible-sm" data-time="<%= data.time %>" title="<%= data.time %>"><%= from_now_short %></span>
         </div>
     </div>
-</div>
+</a>

@@ -273,11 +273,14 @@
             .messages-list {
               font-size: 13px;
               .message {
+                display: block;
+                cursor: pointer;
                 padding: 10px 12px;
                 position: relative;
                 border-bottom-color: #F1F1F1;
                 border-style: solid;
                 border-width: 0 0 1px 0;
+                text-decoration: none;
                 &.unread {
                   background-color: #e9eaed;
                   background: rgba(237, 239, 245, .98);
@@ -317,6 +320,9 @@
                     display: inline;
                     float: right;
                   }
+                }
+                &:hover {
+                  background-color: @cl-subtext5;
                 }
               }
             }
