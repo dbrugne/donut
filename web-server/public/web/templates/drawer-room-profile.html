@@ -36,25 +36,25 @@
     <div class="block flex-parent jc-center center">
         <a href="#room/<%= room.name.replace('#', '') %>" class="dc-back dc-back-hover dc-text-contrast button button-big fs20">
             <%= t('actions.join') %>
-            <% if (room.users && room.users.length > 0) { %><%= room.users.length %><% } %>
+            <% if (room.users && room.users.length > 0) { print(room.users.length); } %>
             <i class="icon icon-fw icon-user-custom cl-warning"></i>
         </a>
     </div>
 
-    <% if (room.users_list.length > 0) { %>
+    <% if (room.users.length > 0) { %>
         <div class="block">
             <h2><%= t('profile.room.ownerops') %></h2>
         </div>
 
         <div class="user-list block">
             <div class="list">
-                <% _.each(room.users_list, function(user) { %>
+                <% _.each(room.users, function(user) { %>
                 <% var bgColor = txtColor = ''; %>
                 <% if (user.color) {
                     bgColor = "background-color: "+user.color;
                     txtColor = "color: "+user.color;
                 }; %>
-                <div class="item open-user-profile <% if (user.isOwner) { %>owner<% }; %> <% if (user.isOp) { %>op<% }; %>" data-bgcolor="<%= bgColor %>" data-type="room-users" data-txtcolor="<%= txtColor %>" data-user-id="<%= user.user_id %>" data-username="<%= user.username %>" data-toggle="tooltip" data-placement="right">
+                <div class="item open-user-profile <% if (user.is_owner) { %>owner<% }; %> <% if (user.is_op) { %>op<% }; %>" data-bgcolor="<%= bgColor %>" data-type="room-users" data-txtcolor="<%= txtColor %>" data-user-id="<%= user.user_id %>" data-username="<%= user.username %>" data-toggle="tooltip" data-placement="right">
                     <div class="avatar" style="background-image:url(<%= user.avatar %>)"></div>
                 </div>
                 <% }); %>
