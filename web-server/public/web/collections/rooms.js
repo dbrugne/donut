@@ -235,10 +235,22 @@ var RoomsCollection = Backbone.Collection.extend({
     // remove from this.users
     model.users.remove(user);
     model.set('users_number', model.get('users_number') - 1);
+
+    // remove from this.op
     var ops = _.reject(model.get('op'), function (opUserId) {
       return (opUserId === data.user_id);
     });
     model.set('op', ops);
+
+    // remove from this.devoices
+    var devoices = model.get('devoices');
+    if (devoices.length) {
+      model.set('devoices', _.reject(devoices, function (element) {
+        return (element === data.user_id);
+      }));
+    }
+
+    model.users.sort();
     model.users.trigger('users-redraw');
 
     // trigger event
