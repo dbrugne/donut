@@ -420,7 +420,7 @@
       "message": "La platforme DONUT a répondu en __ms__ ms"
     },
     "notifications": {
-      "roomtopic": " a défini un nouveau sujet: ",
+      "topic": " a défini un nouveau sujet: ",
       "topicempty": "vide",
       "roomkick": " a été expulsé à la demande de ",
       "roomban": " a été banni à la demande de ",
