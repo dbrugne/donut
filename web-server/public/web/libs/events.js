@@ -6,24 +6,24 @@ var EventModel = require('../models/event');
 
 var templates = {
   'hello': require('../templates/event/block-hello.html'),
+  'command:help': require('../templates/event/help.html'),
+  'ping': require('../templates/event/ping.html'),
   'user:online': require('../templates/event/status.html'),
   'user:offline': require('../templates/event/status.html'),
   'room:out': require('../templates/event/status.html'),
   'room:in': require('../templates/event/status.html'),
-  'ping': require('../templates/event/ping.html'),
   'room:message': require('../templates/event/message.html'),
   'user:message': require('../templates/event/message.html'),
-  'room:deop': require('../templates/event/room-deop.html'),
-  'room:kick': require('../templates/event/room-kick.html'),
-  'room:ban': require('../templates/event/room-ban.html'),
-  'room:deban': require('../templates/event/room-deban.html'),
-  'room:voice': require('../templates/event/room-voice.html'),
-  'room:devoice': require('../templates/event/room-devoice.html'),
-  'room:op': require('../templates/event/room-op.html'),
   'room:topic': require('../templates/event/room-topic.html'),
-  'user:ban': require('../templates/event/user-ban.html'),
-  'user:deban': require('../templates/event/user-deban.html'),
-  'command:help': require('../templates/event/help.html')
+  'room:deop': require('../templates/event/promote.html'),
+  'room:kick': require('../templates/event/promote.html'),
+  'room:ban': require('../templates/event/promote.html'),
+  'room:deban': require('../templates/event/promote.html'),
+  'room:voice': require('../templates/event/promote.html'),
+  'room:devoice': require('../templates/event/promote.html'),
+  'room:op': require('../templates/event/promote.html'),
+  'user:ban': require('../templates/event/promote.html'),
+  'user:deban': require('../templates/event/promote.html')
 };
 
 var exports = module.exports = function (options) {
@@ -151,6 +151,9 @@ exports.prototype.block = function (event, previous) {
 exports.prototype._data = function (event) {
   var data = event.toJSON();
   data.data = _.clone(event.get('data'));
+
+  data.stype = data.type.replace('room:', '').replace('user:', '');
+  data.type = data.type.replace(':', '');
 
   // room
   if (this.discussion.get('type') === 'room') {

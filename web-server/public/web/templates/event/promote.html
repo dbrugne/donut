@@ -1,10 +1,32 @@
-<div class="block devoice">
+<%
+var _icon = 'icon-';
+switch (stype) {
+  case 'ban':
+  case 'deban':
+    _icon += 'ban';
+    break;
+  case 'op':
+  case 'deop':
+    _icon += 'op';
+    break;
+  case 'devoice':
+    _icon += 'microphone-slash';
+    break;
+  case 'voice':
+    _icon += 'microphone';
+    break;
+  case 'kick':
+    _icon += 'kick';
+    break;
+};
+%>
+<div class="block promote <%= stype %>">
     <div class="event" id="<%= data.id %>" data-time="<%= data.time %>">
         <div class="text">
-            <i class="icon icon-microphone-slash"></i>
+            <i class="icon <%= _icon %>"></i>
             <div class="avatar open-user-profile" data-user-id="<%= data.user_id %>" style="background-image: url(<%= data.avatar %>)"></div>
-            <span class="username open-user-profile" data-user-id="<%= data.user_id %>" >@<%= data.username %></span>
-            <span class="message"><%= t('chat.notifications.devoice') %></span>
+            <span class="username open-user-profile"  data-user-id="<%= data.user_id %>">@<%= data.username %></span>
+            <span class="message"><%= t('chat.notifications.' + type) %></span>
             <div class="avatar open-user-profile" data-user-id="<%= data.by_user_id %>" style="background-image: url(<%= data.by_avatar %>)"></div>
             <span class="username open-user-profile" data-user-id="<%= data.by_user_id %>">@<%= data.by_username %></span>
             <% if (data.reason && data.reason !== '') { %>

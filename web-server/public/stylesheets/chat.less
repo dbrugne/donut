@@ -143,55 +143,6 @@
     }
   }
 }
-#room-users-modal .modal-body .list { padding: 0; list-style: none;
-  > li { float:left; width: 50%;
-    &.loader { float:none; width:100%; }
-    &.li-title { clear: both; width: 100%;
-      .title { margin-top: 15px; padding-left: 10px; }
-    }
-    .item { position: relative; width: 100%; padding: 0; margin: 5px; font-size: 0.9em; font-weight: bold; white-space: nowrap; display: block;
-      .avatar { position: relative; display: inline-block; width: 34px; height: 34px; background-position: center center; background-size: 34px 34px; vertical-align: middle; }
-      .username { position: relative; font-size: 12px; margin-left: 9px; padding-right: 12px; overflow: hidden; display: inline-block; vertical-align: middle; max-width: 110px; white-space: nowrap;
-        .icon-dot-circle-o {
-          &.online { color: @cl-success; }
-          &.offline { color: @cl-error; }
-        }
-      }
-      .dropdown { float: none; top: 0; margin: 0; position: relative; display: inline-block; vertical-align: middle;
-        .dropdown-toggle { border: 0; background-color: transparent; }
-        .dropdown-menu {
-          > li {
-            > a { color: inherit; padding-left: 8px; cursor: pointer; padding-right: 8px;
-              p { display:inline; }
-              &.deop { padding-left: 5px;
-                .icon-stack { font-size: 11px; }
-              }
-            }
-          }
-        }
-      }
-      &.offline {
-        .username { .opacity(0.4); }
-        .avatar { .opacity(0.4); width: 30px; height: 30px; background-size: 30px 30px; }
-      }
-      &.op {
-        .avatar { .border-radius(5px); border: 2px solid @cl-success !important; }
-        .avatar::before { z-index: 5; position: absolute; content: " "; top: -10px; left: -7px; width: 12px; height: 16px; background-image: url("@{img-path}/op.png"); background-size: 12px 16px;
-        }
-      }
-      &.devoice {
-        .avatar { .border-radius(5px); border: 2px solid @cl-error !important;
-          &::after { content: '\f037'; display: inline-block; font: normal normal normal 14px/1 'Donut'; text-rendering: auto; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; transform: translate(0, 0); right: -9px; bottom: -10px; position: absolute; color: @cl-error; font-size: 19px; border-radius: 50%; }
-        }
-      }
-      &.owner {
-        .avatar { .border-radius(5px); border: 2px solid #fbec4d !important; }
-        .avatar::before { z-index: 5; position: absolute; content: url("@{img-path}/owner.png") !important; top: -15px !important; left: 7px !important; }
-      }
-    }
-  }
-  &::after { .clearfix; }
-}
 
 .drawer-open #chat #left { box-shadow: rgba(0, 0, 0, 0.6) 0 1px 10px 0; }
 #chat {
@@ -776,9 +727,21 @@
                 }
               }
               .realtime {
-                a.linkified { position: relative; text-decoration: underline; }
                 a.mention { font-weight: bold; }
                 .block { line-height: 19px; position: relative; margin: 0; border-top: 1px solid @cl-subtext0; font-size: 1.1em;
+                  &.unviewed {
+                    &::before {
+                      content: "\f028";
+                      font-family: Donut;
+                      font-size: 6px;
+                      color: #10a4fe;
+                      position: absolute;
+                      top: 7px;
+                      left: 37px;
+                      line-height: 1;
+                      font-style: normal;
+                    }
+                  }
                   &.date + .block { border-top: transparent; }
                   &.date { margin-top: 16px; margin-bottom: 10px; clear: both; border-top: 0;
                     height: 1px;
@@ -794,83 +757,13 @@
                       line-height: normal;
                     }
                   }
-                  &.disconnected {
+                  &.promote {
                     i {
-                      font-size: 1.8em;
-                      color: @cl-error;
-                      vertical-align: middle;
-                    }
-                  }
-                  &.reconnected {
-                    i {
-                      font-size: 1.8em;
-                      color: @cl-success;
-                      vertical-align: middle;
-                    }
-                  }
-                  &.op {
-                    i {
-                      font-size: 1.5em;
-                      color: @cl-success;
+                      font-size: 1.2em;
+                      color: @cl-text;
                       vertical-align: middle;
                       line-height: normal;
-                    }
-                  }
-                  &.deop {
-                    i {
-                      font-size: 1.5em;
-                      color: @cl-subtext30;
-                      vertical-align: middle;
-                      line-height: normal;
-                    }
-                  }
-                  &.kick {
-                    i {
-                      font-size: 1.5em;
-                      color: @cl-error;
-                      vertical-align: middle;
-                      line-height: normal;
-                    }
-                  }
-                  &.ban {
-                    i {
-                      font-size: 1.4em;
-                      color: @cl-error;
-                      vertical-align: middle;
-                    }
-                  }
-                  &.deban {
-                    i {
-                      font-size: 1.4em;
-                      color: @cl-subtext30;
-                      vertical-align: middle;
-                    }
-                  }
-                  &.voice {
-                    i {
-                      font-size: 1.4em;
-                      color: @cl-success;
-                      vertical-align: middle;
-                    }
-                  }
-                  &.devoice {
-                    i {
-                      font-size: 1.4em;
-                      color: @cl-error;
-                      vertical-align: middle;
-                    }
-                  }
-                  &.unviewed {
-                    &::before {
-                      content: "\f028";
-                      font-family: Donut;
-                      font-size: 6px;
-                      color: #10a4fe;
-                      position: absolute;
-                      top: 7px;
-                      left: 37px;
-                      line-height: 1;
-                      font-style: normal;
+                      margin-right: 5px;
                     }
                   }
                   .event {
@@ -1029,8 +922,6 @@
                   }
                 }
                 .block.hello,
-                .block.disconnected,
-                .block.reconnected,
                 .block.topic,
                 .block.kick,
                 .block.ban,
@@ -1085,15 +976,7 @@
                   .error-command {font-weight: bold; color: #000;}
                   .error {font-style: italic; color: #8699a4;}
                 }
-                .block.ping {
-                  font-style: italic;
-                  color: @cl-subtext30;
-                }
-                .block.me {
-                  font-style: italic;
-                  color: @cl-subtext30;
-                }
-                .block.random {
+                .block.ping, .block.me, .block.random {
                   font-style: italic;
                   color: @cl-subtext30;
                 }

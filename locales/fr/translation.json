@@ -420,26 +420,19 @@
       "message": "La platforme DONUT a répondu en __ms__ ms"
     },
     "notifications": {
-      "onetoone": {
-        "ban": " est bloqué à la demande de",
-        "deban": " n'est plus bloqué à la demande de"
-      },
-      "hello": "Vous entrez dans",
-      "disconnected": "Vous avez été deconnecté du serveur, veuillez patienter",
-      "reconnected": "Vous êtes reconnecté",
-      "topic": " a défini un nouveau sujet: ",
+      "roomtopic": " a défini un nouveau sujet: ",
       "topicempty": "vide",
-      "kick": " a été expulsé à la demande de ",
-      "ban": " a été banni à la demande de ",
-      "deban": "n'est plus banni à la demande de",
-      "op": " est maintenant modérateur à la demande de ",
-      "deop": " n'est plus modérateur à la demande de ",
-      "voice": " a retrouvé la parole à la demande de ",
-      "devoice": " est muet à la demande de ",
-      "in": " est entré à",
-      "out": " est sorti à",
-      "online": " est en ligne,",
-      "offline": " n'est plus en ligne,",
+      "roomkick": " a été expulsé à la demande de ",
+      "roomban": " a été banni à la demande de ",
+      "roomdeban": "n'est plus banni à la demande de",
+      "roomop": " est maintenant modérateur à la demande de ",
+      "roomdeop": " n'est plus modérateur à la demande de ",
+      "roomvoice": " a retrouvé la parole à la demande de ",
+      "roomdevoice": " est muet à la demande de ",
+      "in": "est entré à",
+      "out": "est sorti à",
+      "online": "est en ligne,",
+      "offline": "n'est plus en ligne,",
       "read-more": "Voir plus",
       "count" : "<strong class=\"nb\"></strong><strong> Nouvelle(s)</strong> Notification(s)",
       "tag-as-read" : "Marquer comme lue(s)",
@@ -461,7 +454,9 @@
         "roommessage": "Nouveaux messages dans <span>#__name__</span>",
         "usermention": "Vous êtes mentionné dans <span>#__name__</span>",
         "usermessage": "<span>@__username__</span>: __message__"
-      }
+      },
+      "userban": " est bloqué à la demande de",
+      "userdeban": " n'est plus bloqué à la demande de"
     },
     "unread": {
       "title": "(nouveau)"
@@ -480,7 +475,7 @@
     },
     "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions (<a href='/signup'>créer un compte</a> ou <a href='/login'>se connecter</a>)",
     "closeapp": "Etes-vous sur de vouloir quitter ?",
-    "closemessage": "Etes-vous sur de vouloir quitter, l’historique de vos conversations sera perdu ?",
+    "closemessage": "Etes-vous sur de vouloir fermer l'onglet ?",
     "kickmessage": "Vous venez d'être expulsé de __name__",
     "banmessage": "Vous venez d'être banni de __name__",
     "disallowmessage": "Vous ne faites plus partie de la liste des gens autorisés dans __name__",

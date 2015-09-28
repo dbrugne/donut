@@ -419,27 +419,19 @@
       "message": "DONUT platform responds in __ms__ ms"
     },
     "notifications": {
-      "onetoone": {
-        "ban": " was blocked by",
-        "deban": " is no longer blocked as requested by"
-      },
-      "hello": "You enter",
-      "disconnected": "You have been disconnected from the server, please wait",
-      "reconnected": "You have been reconnected",
-      "offline": "This user is currently offline, the message cannot be sent.",
       "topic": " defined a new topic: ",
       "topicempty": "empty",
-      "kick": "  was kicked out by ",
-      "ban": " was banned by",
-      "deban": " is no longer banned as requested by",
-      "op": "  is now a moderator as requested by",
-      "deop": "  is no longer a moderator as requested by",
-      "voice": " is no longer mute as requested by ",
-      "devoice": " is now mute as requested by ",
-      "in": " entered at ",
-      "out": " left at ",
-      "online": " is online,",
-      "offline": " is offline,",
+      "roomkick": "  was kicked out by ",
+      "roomban": " was banned by",
+      "roomdeban": " is no longer banned as requested by",
+      "roomop": "  is now a moderator as requested by",
+      "roomdeop": "  is no longer a moderator as requested by",
+      "roomvoice": " is no longer mute as requested by ",
+      "roomdevoice": " is now mute as requested by ",
+      "in": "entered at",
+      "out": "left at",
+      "online": "is online,",
+      "offline": "is offline,",
       "read-more": "Read more",
       "count" : "<strong class=\"nb\"></strong><strong> New</strong> Notification(s)",
       "tag-as-read" : "Tag as read",
@@ -461,7 +453,9 @@
         "roommessage": "New message in <span>#__name__</span>",
         "usermention": "You were mentionned in <span>#__name__</span>",
         "usermessage": "<span>@__username__</span>: __message__"
-      }
+      },
+      "userban": " was blocked by",
+      "userdeban": " is no longer blocked as requested by"
     },
     "unread": {
       "title": "(new)"
@@ -480,7 +474,7 @@
     },
     "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
     "closeapp": "Are you sure you want to leave ?",
-    "closemessage": "Are you sure you want to leave? Your conversation log will be lost.",
+    "closemessage": "Are you sure you want to leave?",
     "kickmessage": "You have been kicked out of __name__",
     "banmessage": "You have been banned from __name__",
     "disallowmessage": "You are not allowed anymore in __name__",
