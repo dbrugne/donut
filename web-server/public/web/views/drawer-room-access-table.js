@@ -4,8 +4,6 @@ var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
 var app = require('../models/app');
-var currentUser = require('../models/current-user');
-var confirmationView = require('./modal-confirmation');
 
 var DrawerRoomUsersTableView = Backbone.View.extend({
   template: require('../templates/drawer-room-access-table.html'),
@@ -18,6 +16,8 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
   initialize: function (options) {
     this.model = options.model;
+
+    this.listenTo(app, 'removeTooltips', this.onRemoveTooltips);
   },
 
   render: function (type) {
@@ -85,6 +85,10 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
     this.$el.find('[data-toggle="tooltip"]').tooltip({
       container: 'body'
     });
+  },
+
+  onRemoveTooltips: function () {
+    this.$el.find('[data-toggle="tooltip"]').tooltip('hide');
   }
 });
 

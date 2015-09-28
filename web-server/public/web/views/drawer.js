@@ -88,6 +88,7 @@ var DrawerView = Backbone.View.extend({
     // escape key
     $(document).on('keydown', $.proxy(function (e) {
       if (e.which === 27) {
+        app.trigger('removeTooltips');
         this.close();
       }
     }, this));
