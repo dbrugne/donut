@@ -116,7 +116,7 @@ handler.call = function (data, session, next) {
     function persistOnRoom (eventData, callback) {
       Room.update(
         {_id: { $in: [room.id] }},
-        {$pull: {allowed: user.id, users: user.id}}, function (err) {
+        {$pull: {allowed: user.id, users: user.id, op: user.id, devoices: {user: user.id}}}, function (err) {
           return callback(err, eventData);
         }
       );
