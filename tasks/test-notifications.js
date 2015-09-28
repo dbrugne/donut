@@ -98,6 +98,7 @@ module.exports = function (grunt) {
           });
         });
       },
+
       function retrieveRoom (callback) {
         RoomModel.findByName(roomName).exec(function (err, r) {
           if (err) {
