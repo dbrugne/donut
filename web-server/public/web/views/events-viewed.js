@@ -163,6 +163,5 @@ module.exports = Backbone.View.extend({
       return '#' + id;
     });
     this.$scrollableContent.find(selector.join(',')).removeClass('unviewed');
-    app.trigger('changeTitle', this.model);
   }
 });

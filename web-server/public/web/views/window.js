@@ -120,6 +120,7 @@ var WindowView = Backbone.View.extend({
     var model = this._getFocusedModel();
     if (model) {
       model.trigger('windowRefocused'); // mark visible as read for focused discussion when window recover its focus
+      model.resetNew();
     }
 
     // reset limiters
