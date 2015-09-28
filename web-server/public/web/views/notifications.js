@@ -123,6 +123,7 @@ var NotificationsView = Backbone.View.extend({
     });
 
     message = message.replace(/<\/*span>/g, '');
+    message = message.replace(/<\/*br>/g, '');
     app.trigger('desktopNotification', message, '');
   },
   renderNotification: function (n) {
@@ -153,7 +154,10 @@ var NotificationsView = Backbone.View.extend({
     if (n.type === 'roomjoinrequest') {
       n.href = '';
       n.css += 'open-room-access';
-      n.html += 'data-room-id="' + n.data.room._id + '"';
+      var roomId = (n.data.room._id)
+        ? n.data.room._id
+        : n.data.room.id;
+      n.html += 'data-room-id="' + roomId + '"';
       n.username = null;
     }
 
