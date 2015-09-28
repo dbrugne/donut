@@ -582,7 +582,7 @@
       "disclaimer-public": "This donut is public. Any user can access it.",
       "disclaimer-password": "You have also chosen to put a password. Users with the password can enter without having to be asked first.",
       "disclaimer-changing": "You can switch this donut to private mode. Then, only users you authorize will be able to join, participate and access history. Access will be based on invitation and/or password. Caution, this action cannot be undone.",
-      "close-room": "Close this donut"
+      "close": "Close this donut"
     },
     "form": {
       "common": {
