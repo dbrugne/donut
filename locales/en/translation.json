@@ -490,6 +490,8 @@
     "users": {
       "username": "Username",
       "usertype": "Type",
+      "users": "User",
+      "users_plural": "Users",
       "link": "users list",
       "label": "See all users",
       "search": "search a username in this donut",

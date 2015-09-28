@@ -490,6 +490,8 @@
     "users": {
       "username": "Nom d'utilisateur",
       "usertype": "Type",
+      "users": "Utilisateur",
+      "users_plural": "Utilisateurs",
       "link": "liste des utilisateurs",
       "label": "Voir tous les utilisateurs",
       "search": "rechercher des utilisateurs dans ce donut",

@@ -4,6 +4,7 @@ var Backbone = require('backbone');
 var client = require('../libs/client');
 var RoomUsersTableConfirmation = require('./drawer-room-users-table');
 var keyboard = require('../libs/keyboard');
+var i18next = require('i18next-client');
 
 var DrawerRoomUsersView = Backbone.View.extend({
   template: require('../templates/drawer-room-users.html'),
@@ -55,6 +56,7 @@ var DrawerRoomUsersView = Backbone.View.extend({
     this.search = this.$('input[type=text]');
     this.pagination = this.$('.paginate');
     this.typeSelected = this.$('#type-select');
+    this.$usersLabel = this.$('.user-label');
 
     this.tableView = new RoomUsersTableConfirmation({
       el: this.$('.table-users'),
@@ -79,6 +81,7 @@ var DrawerRoomUsersView = Backbone.View.extend({
   onResponse: function (data) {
     this.tableView.render(data.users);
     this.numberUsers.text(data.count);
+    this.$usersLabel.text(i18next.t('chat.users.users', {count: data.count}));
     this.pagination.html(this.paginationTemplate({
       currentPage: this.page,
       totalNbPages: Math.ceil(data.count / this.paginate),
