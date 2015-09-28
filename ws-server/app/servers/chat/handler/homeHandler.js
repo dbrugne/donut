@@ -54,6 +54,7 @@ handler.call = function (data, session, next) {
 
           var _data = {
             name: room.name,
+            mode: room.mode,
             room_id: room.id,
             topic: room.topic,
             description: room.description,

@@ -190,7 +190,8 @@ roomSchema.methods.isIn = function (userId) {
 };
 
 roomSchema.methods.validPassword = function (password) {
-  return bcrypt.compareSync(password, this.password);
+  return password === this.password;
+  //return bcrypt.compareSync(password, this.password);
 };
 
 roomSchema.methods.isInPasswordTries = function (userId) {
@@ -250,7 +251,7 @@ roomSchema.methods.isUserBlocked = function (userId, password) {
   if (this.isAllowed(userId)) {
     return false;
   }
-  if (this.password && password) {
+  if (this.password && (password || password === '')) {
     // remove expired subdocs on model synchronously and in database asynchronously
     this.cleanupPasswordTries();
     var tries = this.isInPasswordTries(userId);

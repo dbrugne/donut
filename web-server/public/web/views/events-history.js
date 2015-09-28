@@ -1,12 +1,9 @@
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
 
-var HistoryView = Backbone.View.extend({
-
+module.exports = Backbone.View.extend({
   historyLoading: false,
-
   historyNoMore: false,
 
   initialize: function (options) {
@@ -35,14 +32,14 @@ var HistoryView = Backbone.View.extend({
 
     // since
     var first = this.$realtime
-      .find('.block:first').first()
-      .find('.event').first();
+      .find('.block').first();
     var since = (!first || first.length < 1)
       ? null
       : first.data('time');
 
     var that = this;
     this.model.history(since, function (data) {
+      data.history.reverse();
       that.trigger('addBatchEvents', {
         history: data.history,
         more: data.more
@@ -87,6 +84,3 @@ var HistoryView = Backbone.View.extend({
   }
 
 });
-
-
-module.exports = HistoryView;

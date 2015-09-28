@@ -91,7 +91,8 @@ handler.call = function (data, session, next) {
           var _room = {
             name: room.name,
             id: room.id,
-            avatar: room._avatar()
+            avatar: room._avatar(),
+            color: room.color
           };
 
           if (room.owner.toString() === readUser.id) {

@@ -31,7 +31,7 @@ var UsersView = Backbone.View.extend({
       html: true,
       animation: false,
       container: 'body',
-      template: '<div class="tooltip tooltip-home-users" role="tooltip"><div class="tooltip-inner"></div></div>',
+      template: '<div class="tooltip tooltip-home-users" role="tooltip"><div class="tooltip-inner left"></div></div>',
       title: function () {
         return '<div class="username" style="' + this.dataset.bgcolor + '">@' + this.dataset.username + '</div>';
       }

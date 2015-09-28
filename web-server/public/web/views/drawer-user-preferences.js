@@ -4,9 +4,9 @@ var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var app = require('../models/app');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../client');
+var client = require('../libs/client');
 var currentUser = require('../models/current-user');
-var confirmationView = require('./modal-confirmation');
+var desktop = require('../libs/desktop');
 
 var DrawerUserPreferencesView = Backbone.View.extend({
   template: require('../templates/drawer-user-preferences.html'),
@@ -47,12 +47,14 @@ var DrawerUserPreferencesView = Backbone.View.extend({
       username: currentUser.get('username'),
       color: color,
       preferences: data.preferences,
-      bannedUsers: data.bannedUsers
+      bannedUsers: data.bannedUsers,
+      desktop: desktop.permissionLevel()
     });
     this.$el.html(html);
 
     // Contact form
     this.$('[data-toggle="contactform"]').contactform({});
+    this.initializeTooltips();
   },
   onPlaySound: function (event) {
     event.preventDefault();
@@ -60,7 +62,7 @@ var DrawerUserPreferencesView = Backbone.View.extend({
   },
   onTestDesktopNotify: function (event) {
     event.preventDefault();
-    app.trigger('desktopNotificationForce', i18next.t('preferences.notif.channels.desktop-notify-test'), '');
+    app.trigger('desktopNotification', i18next.t('preferences.notif.channels.desktop-notify-test'), '', true);
   },
   onChangeValue: function (event) {
     var $target = $(event.currentTarget);
@@ -68,8 +70,8 @@ var DrawerUserPreferencesView = Backbone.View.extend({
     var value = $target.is(':checked');
 
     // Radio button particular handling
-    if ($target.attr('type') == 'radio') {
-      value = (key.substr(key.lastIndexOf(':') + 1) == 'true');
+    if ($target.attr('type') === 'radio') {
+      value = (key.substr(key.lastIndexOf(':') + 1) === 'true');
       key = key.substr(0, key.lastIndexOf(':'));
     }
 
@@ -81,7 +83,6 @@ var DrawerUserPreferencesView = Backbone.View.extend({
       that.$('.errors').hide();
       if (data.err) {
         that.$('.errors').html(i18next.t('global.unknownerror')).show();
-        return;
       }
     });
   },
@@ -92,9 +93,12 @@ var DrawerUserPreferencesView = Backbone.View.extend({
     client.userPreferencesRead(null, function (data) {
       that.onResponse(data);
     });
+  },
+  initializeTooltips: function () {
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
   }
-
 });
-
 
 module.exports = DrawerUserPreferencesView;

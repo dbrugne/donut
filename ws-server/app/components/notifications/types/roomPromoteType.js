@@ -62,7 +62,7 @@ Notification.prototype.create = function (user, room, history, done) {
     },
 
     function save (userModel, roomModel, historyModel, status, callback) {
-      var model = NotificationModel.getNewModel(that.type, userModel, { event: historyModel._id });
+      var model = NotificationModel.getNewModel(that.type, userModel._id, { event: historyModel._id });
       model.to_browser = true;
       model.to_email = (!userModel.getEmail()
         ? false
@@ -197,27 +197,6 @@ Notification.prototype.sendEmail = function (model, done) {
             reason: (history.data && history.data.reason
               ? history.data.reason
               : null)
-          };
-          break;
-        case 'roomjoinrequest':
-          method = emailer.roomJoinRequest;
-          data = {
-            username: history.by_user.username,
-            roomname: history.room.name
-          };
-          break;
-        case 'roomallowed':
-          method = emailer.roomAllow;
-          data = {
-            username: history.by_user.username,
-            roomname: history.room.name
-          };
-          break;
-        case 'roomrefuse':
-          method = emailer.roomRefuse;
-          data = {
-            username: history.by_user.username,
-            roomname: history.room.name
           };
           break;
         default:

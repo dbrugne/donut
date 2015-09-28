@@ -91,10 +91,6 @@ app.use(require('./app/routes/static'));
 app.use(require('./app/routes/create'));
 app.use(require('./app/routes/rest'));
 
-// admin routes
-app.use(require('./app/dashboard/index'));
-app.use(require('./app/dashboard/rest'));
-
 app.use(errors('404'));
 app.use(errors('500', app));
 

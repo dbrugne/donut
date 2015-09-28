@@ -2,10 +2,8 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../client');
+var client = require('../libs/client');
 var app = require('../models/app');
-var currentUser = require('../models/current-user');
-var confirmationView = require('./modal-confirmation');
 
 var DrawerRoomUsersTableView = Backbone.View.extend({
   template: require('../templates/drawer-room-access-table.html'),
@@ -18,6 +16,8 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
   initialize: function (options) {
     this.model = options.model;
+
+    this.listenTo(app, 'removeTooltips', this.onRemoveTooltips);
   },
 
   render: function (type) {
@@ -54,7 +54,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
     var userId = $(event.currentTarget).data('userId');
 
     if (userId) {
-      client.roomAllow(this.model.id, userId, true, _.bind(function (data) {
+      client.roomAllow(this.model.id, userId, _.bind(function (data) {
         app.trigger('redraw-tables');
       }, this));
     }
@@ -78,10 +78,17 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
         app.trigger('redraw-tables');
       }, this));
     }
+    this.$el.find('[data-toggle="tooltip"]').tooltip('hide');
   },
 
   initializeTooltips: function () {
-    $('[data-toggle="tooltip"]').tooltip();
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
+  },
+
+  onRemoveTooltips: function () {
+    this.$el.find('[data-toggle="tooltip"]').tooltip('hide');
   }
 });
 

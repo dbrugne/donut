@@ -6,9 +6,4 @@ i18next.init({
   resStore: locales
 });
 
-// moment
-var moment = require('moment');
-require('moment/locale/fr');
-moment.locale(i18next.lng(), locales['fr']['translation']['moment']);
-
 require('./index');

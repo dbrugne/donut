@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('./app');
-var client = require('../client');
+var client = require('../libs/client');
 var currentUser = require('./current-user');
 var UserModel = require('./user');
 var EventModel = require('./event');
@@ -93,12 +93,14 @@ var RoomModel = Backbone.Model.extend({
     data.status = 'online'; // only an online user can join a room
 
     this.addUser(data, true);
+    this.set('users_number', this.get('users_number') + 1);
     this.users.trigger('users-redraw');
 
     var model = new EventModel({
       type: 'room:in',
       data: data
     });
+    app.trigger('unviewedInOut', model, this);
     this.trigger('freshEvent', model);
   },
   onOut: function (data) {
@@ -109,12 +111,14 @@ var RoomModel = Backbone.Model.extend({
       return;
     }
     this.users.remove(user);
+    this.set('users_number', this.get('users_number') - 1);
     this.users.trigger('users-redraw');
 
     var model = new EventModel({
       type: 'room:out',
       data: data
     });
+    app.trigger('unviewedInOut', model, this);
     this.trigger('freshEvent', model);
   },
   onTopic: function (data) {
@@ -128,6 +132,7 @@ var RoomModel = Backbone.Model.extend({
       model.set('unviewed', true);
     }
 
+    app.trigger('unviewedMessage', model, this);
     this.trigger('freshEvent', model);
   },
   onMessage: function (data) {
@@ -140,6 +145,7 @@ var RoomModel = Backbone.Model.extend({
       model.set('unviewed', true);
     }
 
+    app.trigger('unviewedMessage', model, this);
     this.trigger('freshEvent', model);
   },
   onOp: function (data) {
@@ -270,6 +276,10 @@ var RoomModel = Backbone.Model.extend({
   },
   onUserOnline: function (data) {
     this._onStatus('online', data);
+
+    data.status = 'online';
+    this.addUser(data, true);
+    this.users.trigger('users-redraw');
   },
   onUserOffline: function (data) {
     this._onStatus('offline', data);
@@ -288,7 +298,10 @@ var RoomModel = Backbone.Model.extend({
   },
   fetchUsers: function (callback) {
     var that = this;
-    client.roomUsers(this.get('id'), {type: 'users', status: 'online'}, function (data) {
+    client.roomUsers(this.get('id'), {
+      type: 'users',
+      status: 'online'
+    }, function (data) {
       that.users.reset();
 
       _.each(data.users, function (element, key, list) {
@@ -296,7 +309,9 @@ var RoomModel = Backbone.Model.extend({
                                       // each model .add()
       });
 
-      var maxOfflineUsersToDisplay = (15 - data.count > 0) ? 15 - data.count : 2;
+      var maxOfflineUsersToDisplay = (15 - data.count > 0)
+        ? 15 - data.count
+        : 2;
       var searchAttributes = {
         type: 'users',
         status: 'offline',
@@ -318,11 +333,9 @@ var RoomModel = Backbone.Model.extend({
       });
     });
   },
-
   sendMessage: function (message, images) {
     client.roomMessage(this.get('id'), message, images);
   },
-
   resetNew: function () {
     if (this.isThereNew()) { // avoid redraw if nothing to change
       this.set('unviewed', false);
@@ -339,6 +352,5 @@ var RoomModel = Backbone.Model.extend({
   }
 
 });
-
 
 module.exports = RoomModel;

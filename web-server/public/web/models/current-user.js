@@ -1,6 +1,6 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
-var client = require('../client');
+var client = require('../libs/client');
 var UserModel = require('./user');
 
 var CurrentUserModel = UserModel.extend({

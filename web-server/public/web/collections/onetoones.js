@@ -1,9 +1,10 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
-var client = require('../client');
+var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 var OneToOneModel = require('../models/onetoone');
-var EventModel = require('../models/event');
+var i18next = require('i18next-client');
+var app = require('../models/app');
 
 var OnetoonesCollection = Backbone.Collection.extend({
   iwhere: function (key, val) { // insensitive case search
@@ -11,8 +12,9 @@ var OnetoonesCollection = Backbone.Collection.extend({
       return item.get(key).toLocaleLowerCase() === val.toLocaleLowerCase();
     });
 
-    if (matches.length < 1)
+    if (matches.length < 1) {
       return undefined;
+    }
 
     return matches[0];
   },
@@ -32,7 +34,13 @@ var OnetoonesCollection = Backbone.Collection.extend({
   },
   join: function (username) {
     // we ask to server to open this one to one
-    client.userJoin(username);
+    client.userJoin(username, function (response) {
+      if (response.code === 404) {
+        return app.trigger('alert', 'error', i18next.t('chat.users.usernotexist'));
+      } else if (response.code === 500) {
+        return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+      }
+    });
   },
   onJoin: function (data) {
     // server ask to client to open this one to one in IHM
@@ -57,9 +65,7 @@ var OnetoonesCollection = Backbone.Collection.extend({
     };
 
     // update model
-    var isNew = (this.get(user.user_id) === undefined)
-      ? true
-      : false;
+    var isNew = (this.get(user.user_id) === undefined);
     var model;
     if (!isNew) {
       // already exist in IHM (maybe reconnecting)
@@ -105,9 +111,9 @@ var OnetoonesCollection = Backbone.Collection.extend({
 
       key = this._key(event.from_user_id, event.to_user_id);
     } else if (event.by_user_id) {
-      key = (event.user_id === currentUser.get('user_id')) ?
-        this._key(event.by_user_id, currentUser.get('user_id')) :
-        this._key(event.user_id, currentUser.get('user_id'));
+      key = (event.user_id === currentUser.get('user_id'))
+        ? this._key(event.by_user_id, currentUser.get('user_id'))
+        : this._key(event.user_id, currentUser.get('user_id'));
     } else {
       key = this._key(event.user_id, currentUser.get('user_id'));
     }
@@ -155,22 +161,25 @@ var OnetoonesCollection = Backbone.Collection.extend({
   },
   onUpdated: function (data) {
     var model = this.getModelFromEvent(data, false);
-    if (!model)
+    if (!model) {
       return;
+    }
 
     model.onUpdated(data);
   },
   onUserOnline: function (data) {
     var model = this.getModelFromEvent(data, false);
-    if (!model)
+    if (!model) {
       return;
+    }
 
     model.onUserOnline(data);
   },
   onUserOffline: function (data) {
     var model = this.getModelFromEvent(data, false);
-    if (!model)
+    if (!model) {
       return;
+    }
 
     model.onUserOffline(data);
   },
@@ -192,8 +201,9 @@ var OnetoonesCollection = Backbone.Collection.extend({
   },
   onDeban: function (data) {
     var model = this.getModelFromEvent(data, false);
-    if (!model)
+    if (!model) {
       return;
+    }
 
     model.onDeban(data);
   },
@@ -207,13 +217,12 @@ var OnetoonesCollection = Backbone.Collection.extend({
   },
   onTyping: function (data) {
     var model = this.getModelFromEvent(data, false);
-    if (!model)
+    if (!model) {
       return;
+    }
 
     model.trigger('typing', data);
   }
 
 });
-
-
 module.exports = new OnetoonesCollection();

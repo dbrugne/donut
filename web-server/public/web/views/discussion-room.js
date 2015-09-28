@@ -4,13 +4,14 @@ var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../models/app');
-var client = require('../client');
+var client = require('../libs/client');
 var EventsView = require('./events');
 var InputView = require('./input');
 var currentUser = require('../models/current-user');
 var confirmationView = require('./modal-confirmation');
 var TopicView = require('./room-topic');
 var UsersView = require('./room-users');
+var date = require('../libs/date');
 
 var RoomView = Backbone.View.extend({
   tagName: 'div',
@@ -39,6 +40,7 @@ var RoomView = Backbone.View.extend({
     this.listenTo(this.model, 'change:poster', this.onPoster);
     this.listenTo(this.model, 'change:posterblured', this.onPosterBlured);
     this.listenTo(this.model, 'change:color', this.onColor);
+    this.listenTo(this.model, 'setPrivate', this.onPrivate);
 
     this.render();
 
@@ -59,6 +61,11 @@ var RoomView = Backbone.View.extend({
       model: this.model,
       collection: this.model.users
     });
+
+    this.$privateTooltip = this.$('.private');
+    if (this.model.get('mode') === 'public') {
+      this.$privateTooltip.hide();
+    }
   },
   render: function () {
     var data = this.model.toJSON();
@@ -130,7 +137,7 @@ var RoomView = Backbone.View.extend({
       this.hasBeenFocused = true;
 
       // refocus an offline one after few times
-      this.$('.ago span').momentify('fromnow');
+      date.from('fromnow', this.$('.ago span'));
     } else {
       this.$el.hide();
     }
@@ -270,6 +277,10 @@ var RoomView = Backbone.View.extend({
   onPosterBlured: function (model, url) {
     this.$('div.blur').css('background-image', 'url(' + url + ')');
   },
+  onPrivate: function (data) {
+    this.model.set('mode', 'private');
+    this.$privateTooltip.show();
+  },
 
   /**
    * Social sharing
@@ -295,10 +306,10 @@ var RoomView = Backbone.View.extend({
   },
 
   initializeTooltips: function () {
-    this.$('[data-toggle="tooltip"]').tooltip();
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
   }
-
 });
-
 
 module.exports = RoomView;

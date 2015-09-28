@@ -150,7 +150,8 @@ var retriever = function (app, fn) {
             color: room.color,
             description: room.description,
             users: (room.users) ? room.users.length : 0,
-            onlines: 0
+            onlines: 0,
+            mode: room.mode
           };
           if (room.owner) {
             data.owner = {

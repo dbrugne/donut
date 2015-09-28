@@ -4,7 +4,7 @@ var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
 var app = require('../models/app');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../client');
+var client = require('../libs/client');
 var i18next = require('i18next-client');
 
 var DrawerRoomCreateView = Backbone.View.extend({
@@ -13,7 +13,7 @@ var DrawerRoomCreateView = Backbone.View.extend({
   id: 'room-create',
 
   events: {
-    'keyup .input': 'valid',
+    'keyup input[name=input-create]': 'valid',
     'click .submit': 'submit'
   },
 
@@ -23,10 +23,13 @@ var DrawerRoomCreateView = Backbone.View.extend({
   render: function (name) {
     var html = this.template({name: name.replace('#', '')});
     this.$el.html(html);
-    this.$input = this.$('.input');
-    this.$errors = this.$('.errors');
-    this.$submit = this.$('.submit');
+    this.$input = this.$el.find('input[name=input-create]');
+    this.$errors = this.$el.find('.errors');
+    this.$submit = this.$el.find('.submit');
     return this;
+  },
+  focusField: function () {
+    this.$input.focus();
   },
   reset: function () {
     this.$errors.html('').hide();
@@ -65,7 +68,7 @@ var DrawerRoomCreateView = Backbone.View.extend({
     return common.validate.name(name) && common.validate.mode(mode);
   },
   _getMode: function () {
-    return this.$('input[name="mode"]:checked').val();
+    return this.$el.find('input[name="mode"]:checked').val();
   },
   isValidMode: function () {
     return (common.validate.mode(this._getMode()));

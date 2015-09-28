@@ -6,9 +6,4 @@ i18next.init({
   resStore: locales
 });
 
-// moment
-var moment = require('moment');
-// require('moment/locale/en'); // en language is implicitly loaded by moment
-moment.locale(i18next.lng(), locales['en']['translation']['moment']);
-
 require('./index');

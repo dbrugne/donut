@@ -1,11 +1,10 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var common = require('@dbrugne/donut-common/browser');
-var client = require('../client');
-var currentUser = require('../models/current-user');
-var confirmationView = require('./modal-confirmation');
+var client = require('../libs/client');
 var RoomUsersTableConfirmation = require('./drawer-room-users-table');
+var keyboard = require('../libs/keyboard');
+var i18next = require('i18next-client');
 
 var DrawerRoomUsersView = Backbone.View.extend({
   template: require('../templates/drawer-room-users.html'),
@@ -57,6 +56,7 @@ var DrawerRoomUsersView = Backbone.View.extend({
     this.search = this.$('input[type=text]');
     this.pagination = this.$('.paginate');
     this.typeSelected = this.$('#type-select');
+    this.$usersLabel = this.$('.user-label');
 
     this.tableView = new RoomUsersTableConfirmation({
       el: this.$('.table-users'),
@@ -65,7 +65,6 @@ var DrawerRoomUsersView = Backbone.View.extend({
 
     this.render(null);
   },
-
   render: function () {
     // ask for data
     var that = this;
@@ -82,6 +81,7 @@ var DrawerRoomUsersView = Backbone.View.extend({
   onResponse: function (data) {
     this.tableView.render(data.users);
     this.numberUsers.text(data.count);
+    this.$usersLabel.text(i18next.t('chat.users.users', {count: data.count}));
     this.pagination.html(this.paginationTemplate({
       currentPage: this.page,
       totalNbPages: Math.ceil(data.count / this.paginate),
@@ -90,18 +90,19 @@ var DrawerRoomUsersView = Backbone.View.extend({
 
     this.initializeTooltips();
   },
-  onChangeType: function (event) {
+  onChangeType: function () {
     this.page = 1;
     this.search.val('');
     this.currentType = this.typeSelected.val();
     this.render();
   },
-  onSearch: function (event) {
+  onSearch: function () {
     this.page = 1;
     this.render();
   },
   onSearchEnter: function (event) {
-    if (event.keyCode === 13) {
+    var key = keyboard._getLastKeyCode(event);
+    if (key.key === keyboard.RETURN) {
       this.page = 1;
       this.render();
     }
@@ -125,7 +126,9 @@ var DrawerRoomUsersView = Backbone.View.extend({
   },
 
   initializeTooltips: function () {
-    this.$('[data-toggle="tooltip"]').tooltip();
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
   }
 });
 

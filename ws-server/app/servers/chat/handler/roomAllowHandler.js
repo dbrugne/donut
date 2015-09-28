@@ -56,26 +56,22 @@ handler.call = function (data, session, next) {
       return callback(null);
     },
 
-    function broadcast (callback) {
+    function createEvent (callback) {
       wasPending = room.isAllowedPending(user.id);
 
       event = {
-        by_user_id: currentUser.id,
+        by_user_id: currentUser._id,
         by_username: currentUser.username,
         by_avatar: currentUser._avatar(),
-        user_id: user.id,
+        user_id: user._id,
         username: user.username,
-        avatar: user._avatar()
+        avatar: user._avatar(),
+        room_id: room.id
       };
-
-      roomEmitter(that.app, user, room, 'room:allow', event, callback);
+      callback(null, event);
     },
 
     function broadcastToUser (eventData, callback) {
-      if (!data.notification && !wasPending) {
-        return callback(null, eventData);
-      }
-
       that.app.globalChannelService.pushMessage('connector', 'room:allow', event, 'user:' + user.id, {}, function (reponse) {
         callback(null, eventData);
       });
@@ -84,11 +80,12 @@ handler.call = function (data, session, next) {
     function persist (eventData, callback) {
       Room.update(
         {_id: { $in: [room.id] }},
-        {$addToSet: {allowed: user.id, users: user.id}}, function (err) {
+        {$addToSet: {allowed: user.id}}, function (err) {
           if (wasPending) {
             Room.update(
               {_id: { $in: [room.id] }},
-              {$pull: {allowed_pending: user.id}}, function (err) {
+              {$pull: {allowed_pending: user.id},
+              $addToSet: {users: user.id}}, function (err) {
                 return callback(err, eventData);
               }
             );
@@ -106,11 +103,11 @@ handler.call = function (data, session, next) {
     },
 
     function notification (event, callback) {
-      if (!data.notification && !wasPending) {
+      if (!wasPending) {
         return callback(null, event);
       }
 
-      Notifications(that.app).getType('roomallowed').create(user.id, room, event.id, function (err) {
+      Notifications(that.app).getType('roomallowed').create(user.id, room, event, function (err) {
         return callback(err, event);
       });
     }
@@ -175,8 +172,7 @@ handler.refuse = function (data, session, next) {
         username: user.username,
         avatar: user._avatar()
       };
-
-      roomEmitter(that.app, user, room, 'room:refuse', event, callback);
+      callback(null, event);
     },
 
     function persist (eventData, callback) {
@@ -189,8 +185,8 @@ handler.refuse = function (data, session, next) {
     },
 
     function notification (event, callback) {
-      Notifications(that.app).getType('roomrefuse').create(user.id, room, event.id, function (err) {
-        return callback(err, event);
+      Notifications(that.app).getType('roomrefuse').create(user.id, room, event, function (err) {
+        return callback(err);
       });
     }
 

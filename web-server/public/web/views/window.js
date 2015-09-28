@@ -4,10 +4,11 @@ var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var app = require('../models/app');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../client');
+var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 var rooms = require('../collections/rooms');
 var onetoones = require('../collections/onetoones');
+var desktop = require('../libs/desktop');
 
 var WindowView = Backbone.View.extend({
   focused: true,
@@ -28,7 +29,6 @@ var WindowView = Backbone.View.extend({
 
   initialize: function (options) {
     this.listenTo(app, 'desktopNotification', this.desktopNotify);
-    this.listenTo(app, 'desktopNotificationForce', this._desktopNotify);
     this.listenTo(app, 'playSound', this.play);
     this.listenTo(app, 'playSoundForce', this._play);
     this.listenTo(app, 'unviewedInOut', this.triggerInout);
@@ -72,8 +72,7 @@ var WindowView = Backbone.View.extend({
     var title = '';
 
     // determine if something 'new'
-    var thereIsNew = false;
-    thereIsNew = rooms.some(function (d) { // first looks in rooms
+    var thereIsNew = rooms.some(function (d) { // first looks in rooms
       return d.isThereNew();
     });
     if (!thereIsNew) {
@@ -121,6 +120,7 @@ var WindowView = Backbone.View.extend({
     var model = this._getFocusedModel();
     if (model) {
       model.trigger('windowRefocused'); // mark visible as read for focused discussion when window recover its focus
+      model.resetNew();
     }
 
     // reset limiters
@@ -256,11 +256,11 @@ var WindowView = Backbone.View.extend({
           }
 
           var message = data.message || '';
-          var title = i18next.t('chat.notifications.desktop.usermessage', {
+          var title = i18next.t('chat.notifications.messages.usermessage', {
             username: data.from_username,
             message: message
           });
-          this.desktopNotify(title, '');
+          this.desktopNotify(title.replace(/<\/*span>/g, ''), '');
           this.desktopNotificationsLimiters[key] = Date.now();
         }
       }
@@ -289,71 +289,38 @@ var WindowView = Backbone.View.extend({
     }
     beep.play();
   },
-  desktopNotify: function (title, body) {
-    if (!currentUser.shouldDisplayDesktopNotif()) {
+  desktopNotify: function (title, body, force) {
+    if (!force && !currentUser.shouldDisplayDesktopNotif()) {
       return;
     }
 
-    this._desktopNotify(title, body);
-  },
-  _desktopNotify: function (title, body) {
     // Not already accepted or denied notification permission, prompt popup
-    if (window.notify.permissionLevel() === window.notify.PERMISSION_DEFAULT) {
-      return this._desktopNotifyRequestPermission(window.notify.permissionLevel(), window.notify.PERMISSION_GRANTED, this._desktopNotifyCreateNotification());
+    if (desktop.permissionLevel() === desktop.PERMISSION_DEFAULT) {
+      desktop.requestPermission(_.bind(function () {
+        desktop.createNotification(title, {
+          body: body,
+          icon: {
+            'x16': 'images/donut_16x16.ico',
+            'x32': 'images/donut_32x32.ico'
+          }
+        });
+      }, this));
+      return;
     }
 
     // User denied it
-    if (window.notify.permissionLevel() === window.notify.PERMISSION_DENIED) {
+    if (desktop.permissionLevel() === desktop.PERMISSION_DENIED) {
       return;
     }
 
-    this._desktopNotifyCreateNotification(title, body);
-  },
-  _desktopNotifyCreateNotification: function (title, body) {
-    window.notify.createNotification(title, {
+    desktop.createNotification(title, {
       body: body,
       icon: {
         'x16': 'images/donut_16x16.ico',
         'x32': 'images/donut_32x32.ico'
       }
     });
-  },
-  _desktopNotifyRequestPermission: function (permissionLevel, permissionsGranted) {
-    var statusClass = {};
-    statusClass[window.notify.PERMISSION_DEFAULT] = 'alert';
-    statusClass[window.notify.PERMISSION_GRANTED] = 'alert alert-success';
-    statusClass[window.notify.PERMISSION_DENIED] = 'alert alert-error';
-
-    var win = window;
-    var isIE = false;
-
-    try {
-      isIE = (win.external && win.external.msIsSiteMode() !== undefined);
-    } catch (e) {}
-
-    var messages = {
-      notPinned: 'Pin current page in the taskbar in order to receive notifications',
-      notSupported: "<strong>Desktop Notifications not supported!</strong> Check supported browsers table and project's GitHub page."
-    };
-
-    messages[window.notify.PERMISSION_DEFAULT] = '<strong>Warning!</strong> Click to allow displaying desktop notifications.';
-    messages[window.notify.PERMISSION_GRANTED] = '<strong>Success!</strong>';
-    messages[window.notify.PERMISSION_DENIED] = '<strong>Denied!</strong>';
-
-    var isSupported = window.notify.isSupported;
-    var status = isSupported ? statusClass[permissionLevel] : statusClass[window.notify.PERMISSION_DENIED];
-    var message = isSupported ? (isIE ? messages.notPinned : messages[permissionLevel]) : messages.notSupported;
-
-    if (permissionLevel === window.notify.PERMISSION_DEFAULT) {
-      window.notify.requestPermission(function () {
-        permissionLevel = window.notify.permissionLevel();
-        permissionsGranted = (permissionLevel === window.notify.PERMISSION_GRANTED);
-        status = isSupported ? statusClass[permissionLevel] : statusClass[window.notify.PERMISSION_DENIED];
-        message = isSupported ? (isIE ? messages.notPinned : messages[permissionLevel]) : messages.notSupported;
-      });
-    }
   }
 });
-
 
 module.exports = new WindowView();

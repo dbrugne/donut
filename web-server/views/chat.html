@@ -102,7 +102,6 @@
                     <div class="opacity dc-back-opacity">
                         <div class="wrap">
                             <div class="content"></div>
-                            <img src="/images/svg/close.svg" class="close" alt="close">
                         </div>
                     </div>
                 </div>
@@ -125,7 +124,7 @@
                             <input class="avoid" type="checkbox"> <%= t('welcome.donotshowagain') %>
                         </label>
                     </span>
-                    <a href="#room/donut" class="nothing" data-dismiss="modal"><%= t('welcome.nothing') %></a>
+                    <a href="#room/donut" class="nothing"><%= t('welcome.nothing') %></a>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -152,6 +151,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
+                    <div class="message"></div>
                     <div class="question"><%= t('chat.confirmation.sure') %></div>
                     <div class="input">
                         <input type="text" class="form-control" placeholder="<%= t('chat.confirmation.placeholder') %>">
@@ -164,26 +164,6 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-    <div id="room-users-modal" class="modal fade" role="dialog" aria-labelledby="userModal" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><%= t('chat.topic.users') %></h4>
-                </div>
-                <div class="modal-body">
-                    <ul class="list">
-                        <li class="loader">
-                            <div style="margin: 0 auto; display: block; width: 24px; ">
-                                <i class="icon icon-spinner icon-spin center-block" style=" font-size: 20px; "></i>
-                            </div>
-                        </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /#room-users-modal -->
     <%- partial('contact') %>
     <div class="responsive">
         <div class="device-xs visible-xs visible-xs-block"></div>

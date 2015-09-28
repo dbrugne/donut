@@ -1,9 +1,9 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var client = require('../client');
+var app = require('../models/app');
 
-var ViewedView = Backbone.View.extend({
+module.exports = Backbone.View.extend({
   initialize: function (options) {
     this.listenTo(this.model, 'viewed', this.onViewed);
     this.render();
@@ -25,7 +25,7 @@ var ViewedView = Backbone.View.extend({
     var topLimit = this.$scrollable.offset().top;
     var bottomLimit = topLimit + this.$scrollable.height();
 
-    var $items = this.$scrollableContent.find('.block.message .event.unviewed, .block.topic .event.unviewed');
+    var $items = this.$scrollableContent.find('.block.message.unviewed, .block.topic.unviewed');
     if (!$items.length) {
       return;
     }
@@ -165,6 +165,3 @@ var ViewedView = Backbone.View.extend({
     this.$scrollableContent.find(selector.join(',')).removeClass('unviewed');
   }
 });
-
-
-module.exports = ViewedView;

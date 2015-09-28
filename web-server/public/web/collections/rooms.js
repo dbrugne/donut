@@ -1,8 +1,7 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
-var client = require('../client');
+var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 var RoomModel = require('../models/room');
 var UserModel = require('../models/user');
@@ -45,6 +44,7 @@ var RoomsCollection = Backbone.Collection.extend({
     this.listenTo(client, 'room:leave', this.onLeave);
     this.listenTo(client, 'room:leave:block', this.onLeaveBlock);
     this.listenTo(client, 'room:viewed', this.onViewed);
+    this.listenTo(client, 'room:set:private', this.onSetPrivate);
     this.listenTo(client, 'room:message:spam', this.onMessageSpam);
     this.listenTo(client, 'room:message:unspam', this.onMessageUnspam);
     this.listenTo(client, 'room:message:edit', this.onMessageEdited);
@@ -66,18 +66,18 @@ var RoomsCollection = Backbone.Collection.extend({
     }
   },
   addModel: function (room, blocked) {
-    // server confirm that we was joined to the room and give us some data on
-    // room
-
     // prepare model data
-    var owner = (room.owner.user_id) ?
-      new UserModel({
+    var owner;
+    if (room.owner.user_id) {
+      owner = new UserModel({
         id: room.owner.user_id,
         user_id: room.owner.user_id,
         username: room.owner.username,
         avatar: room.owner.avatar
-      }) :
-      new UserModel();
+      });
+    } else {
+      owner = new UserModel();
+    }
 
     var roomData = {
       name: room.name,
@@ -210,7 +210,7 @@ var RoomsCollection = Backbone.Collection.extend({
     // if i'm the "targeted user" destroy the model/view
     if (currentUser.get('user_id') === data.user_id) {
       var isFocused = model.get('focused');
-      var blocked = (what === 'ban') ? 'banned' : true;
+      var blocked = (what === 'ban') ? 'banned' : (what === 'kick') ? 'kicked' : true;
       var modelTmp = model.attributes;
       if (what === 'ban' && data.banned_at) {
         modelTmp.banned_at = data.banned_at;
@@ -234,6 +234,23 @@ var RoomsCollection = Backbone.Collection.extend({
 
     // remove from this.users
     model.users.remove(user);
+    model.set('users_number', model.get('users_number') - 1);
+
+    // remove from this.op
+    var ops = _.reject(model.get('op'), function (opUserId) {
+      return (opUserId === data.user_id);
+    });
+    model.set('op', ops);
+
+    // remove from this.devoices
+    var devoices = model.get('devoices');
+    if (devoices.length) {
+      model.set('devoices', _.reject(devoices, function (element) {
+        return (element === data.user_id);
+      }));
+    }
+
+    model.users.sort();
     model.users.trigger('users-redraw');
 
     // trigger event
@@ -247,10 +264,8 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    if (currentUser.get('user_id') === data.user_id) {
-      client.roomJoin(data.room_id, null, null, function (data) {
-      });
-    }
+    client.roomJoin(data.room_id, null, null, function (data) {
+    });
   },
   onDeban: function (data) {
     var model;
@@ -320,6 +335,14 @@ var RoomsCollection = Backbone.Collection.extend({
 
     model.onViewed(data);
   },
+  onSetPrivate: function (data) {
+    var model;
+    if (!data || !data.room_id || !(model = this.get(data.room_id))) {
+      return;
+    }
+
+    model.trigger('setPrivate', data);
+  },
   onMessageSpam: function (data) {
     var model;
     if (!data || !data.room_id || !(model = this.get(data.room_id))) {
@@ -352,8 +375,6 @@ var RoomsCollection = Backbone.Collection.extend({
 
     model.trigger('typing', data);
   }
-
 });
-
 
 module.exports = new RoomsCollection();

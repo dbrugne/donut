@@ -3,7 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
-var client = require('../client');
+var client = require('../libs/client');
 
 var debug = donutDebug('donut:modal-welcome');
 
@@ -33,6 +33,7 @@ var WelcomeModalView = Backbone.View.extend({
     var rooms = [];
     _.each(welcome.featured, function (room) {
       room.avatar = common.cloudinary.prepare(room.avatar, 135);
+      room.join = '/!#room/' + room.name.replace('#', '');
       rooms.push(room);
     });
 
@@ -66,6 +67,5 @@ var WelcomeModalView = Backbone.View.extend({
   }
 
 });
-
 
 module.exports = WelcomeModalView;

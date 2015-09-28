@@ -1,8 +1,8 @@
 <% var previous; %>
 <% _.each(list, function(user) { %>
     <% if (previous && previous != user.status) { %>
-    <li class="li-title">
-        <div class="title dc-text-contrast"><%= t('chat.usersoffline') %></div>
+    <li class="li-title mt20">
+        <div class="item dc-text-contrast"><%= t('chat.usersoffline') %></div>
     </li>
     <% } %>
     <li>
@@ -13,7 +13,7 @@
                 <span class="username open-user-profile dc-text-contrast" data-user-id="<%= user.user_id %>" title="<%= t('global.'+user.status) %>">@<%= user.username %> <i class="icon icon-dot-circle-o <%= user.status %>" title="online"></i></span>
 
                 <% if (isAdmin === true || (!user.is_owner && (isOp === true || isOwner === true))) { %>
-                <span class="dropdown">
+                <span class="dropdown user-list">
                     <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                         <i class="icon icon-chevron-down dc-text-contrast"></i>
                     </button>
@@ -72,10 +72,10 @@
         </div>
     </li>
 <% }); %>
-<li class="li-title" style="text-align: center">
-    <div class="item">
+<li class="li-title text-center mt20">
+    <div class="item dc-back-darker">
         <a class="open-room-users title dc-text-contrast" data-room-id="<%= room_id %>">
-            <i class="icon icon-users dc-text-contrast"></i><%= t('chat.users.link') %>
+            <%= t('chat.users.label') %>
         </a>
     </div>
 </li>

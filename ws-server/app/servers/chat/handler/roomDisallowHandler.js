@@ -24,6 +24,8 @@ handler.call = function (data, session, next) {
 
   var event = {};
 
+  var wasInRoom = false;
+
   async.waterfall([
 
     function check (callback) {
@@ -43,6 +45,10 @@ handler.call = function (data, session, next) {
         return callback('User ' + currentUser.username + ' is not owner');
       }
 
+      if (room.isOwner(user)) {
+        return callback('User ' + user.username + ' is owner');
+      }
+
       if (!room.isAllowed(user.id)) {
         return callback('user isn\'t allowed in room ' + room.name);
       }
@@ -51,6 +57,8 @@ handler.call = function (data, session, next) {
     },
 
     function broadcast (callback) {
+      wasInRoom = room.isIn(user.id);
+
       event = {
         by_user_id: currentUser.id,
         by_username: currentUser.username,
@@ -108,13 +116,17 @@ handler.call = function (data, session, next) {
     function persistOnRoom (eventData, callback) {
       Room.update(
         {_id: { $in: [room.id] }},
-        {$pull: {allowed: user.id, users: user.id}}, function (err) {
+        {$pull: {allowed: user.id, users: user.id, op: user.id, devoices: {user: user.id}}}, function (err) {
           return callback(err, eventData);
         }
       );
     },
 
     function persistOnUser (eventData, callback) {
+      if (!wasInRoom) {
+        return callback(null, eventData);
+      }
+
       user.update({
         $addToSet: {blocked: room.id}
       }, function (err) {

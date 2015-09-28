@@ -1,6 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
+var i18next = require('i18next-client');
 
 var ConfirmationModalView = Backbone.View.extend({
   el: $('#confirmation'),
@@ -23,6 +24,7 @@ var ConfirmationModalView = Backbone.View.extend({
   render: function () {
     this.$inputBlock = this.$('.input');
     this.$input = this.$inputBlock.find('input[type="text"]');
+    this.$message = this.$('.message');
 
     // Configure modal
     this.$el.modal({
@@ -51,6 +53,7 @@ var ConfirmationModalView = Backbone.View.extend({
   _reset: function () {
     this.$inputBlock.show();
     this.$input.val('');
+    this.$message.text('');
     this.confirmCallback = null;
     this.cancelCallback = null;
     this.options = null;
@@ -73,6 +76,12 @@ var ConfirmationModalView = Backbone.View.extend({
     else
       this.$inputBlock.hide();
 
+    // set message
+    if (this.options.message) {
+      if (this.options.message === 'mode-change') {
+        this.$message.text(i18next.t('chat.confirmation.message.modechange'));
+      }
+    }
     // bind 'enter' only when showing popin
     var that = this;
     $(document).keypress(function (e) {

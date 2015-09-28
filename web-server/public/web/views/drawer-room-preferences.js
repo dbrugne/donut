@@ -2,8 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
-var client = require('../client');
-var currentUser = require('../models/current-user');
+var client = require('../libs/client');
 
 var DrawerUserRoomPreferencesView = Backbone.View.extend({
   template: require('../templates/drawer-room-preferences.html'),
@@ -15,15 +14,13 @@ var DrawerUserRoomPreferencesView = Backbone.View.extend({
     'change .disable-others': 'onNothing'
   },
 
-  initialize: function (options) {
+  initialize: function () {
     // show spinner as temp content
     this.render();
 
-    // ask for data
-    var that = this;
-    client.userPreferencesRead(this.model.get('id'), function (data) {
-      that.onResponse(data);
-    });
+    client.userPreferencesRead(this.model.get('id'), _.bind(function (data) {
+      this.onResponse(data);
+    }, this));
   },
   render: function () {
     // render spinner only
@@ -31,24 +28,21 @@ var DrawerUserRoomPreferencesView = Backbone.View.extend({
     return this;
   },
   onResponse: function (data) {
-    var color = this.model.get('color');
-    // // colorize drawer .opacity
-    // if (color)
-    //  this.trigger('color', color);
-
     var html = this.template({
-      username: currentUser.get('username'),
-      name: this.model.get('name'),
-      color: color,
+      room: this.model.toJSON(),
+      owner: this.model.get('owner').toJSON(),
       preferences: data.preferences
     });
+
+    this.$errors = this.$el.find('.errors');
     this.$el.html(html);
-    return;
+    
+    this.initializeTooltips();
   },
   onNothing: function (event) {
     var $target = $(event.currentTarget);
     var value = $target.is(':checked');
-    this.$('.disableable').prop('disabled', value);
+    this.$el.find('.disableable').prop('disabled', value);
   },
   onChangeValue: function (event) {
     var $target = $(event.currentTarget);
@@ -62,21 +56,25 @@ var DrawerUserRoomPreferencesView = Backbone.View.extend({
     }
 
     // room name (if applicable)
-    key = key.replace('__what__', this.model.get('name'));
+    key = key.replace('__what__', this.model.get('id'));
 
     var update = {};
     update[key] = value;
 
-    var that = this;
-    client.userPreferencesUpdate(update, function (data) {
-      that.$('.errors').hide();
+    client.userPreferencesUpdate(update, _.bind(function (data) {
+      this.$errors.hide();
       if (data.err) {
-        that.$('.errors').html(i18next.t('global.unknownerror')).show();
+        this.$errors.html(i18next.t('global.unknownerror')).show();
       }
+    }, this));
+  },
+
+  initializeTooltips: function () {
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
     });
   }
 
 });
-
 
 module.exports = DrawerUserRoomPreferencesView;

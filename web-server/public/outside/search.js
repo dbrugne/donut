@@ -11,8 +11,20 @@ var SearchView = Backbone.View.extend({
 
   render: function (data) {
     var rooms = [];
+    var protocol = window.location.protocol;
+    var fqdn = window.location.host;
+
     _.each(data.rooms, function (room) {
       room.avatar = common.cloudinary.prepare(room.avatar, 135);
+
+      var identifier = room.name.replace('#', '');
+      room.url = protocol + '//' + fqdn + '/room/' + identifier;
+      room.join = protocol + '//' + fqdn + '/!#room/' + identifier;
+      if (room.owner) {
+        room.owner.url = protocol + '//' + fqdn + '/user/' +
+          ('' + room.owner.username).toLocaleLowerCase();
+      }
+
       rooms.push(room);
     });
 

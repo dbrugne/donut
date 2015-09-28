@@ -27,7 +27,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!withUser) {
-        return callback('unable to retrieve withUser: ' + data.username);
+        return callback('notexists');
       }
 
       return callback(null);
@@ -51,6 +51,10 @@ handler.call = function (data, session, next) {
   ], function (err) {
     if (err) {
       logger.error('[user:join] ' + err);
+
+      if (err === 'notexists') {
+        return next(null, { code: 404, err: err });
+      }
       return next(null, { code: 500, err: 'internal' });
     }
 

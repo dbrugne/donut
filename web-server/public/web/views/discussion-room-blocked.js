@@ -1,11 +1,11 @@
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
+var keyboard = require('../libs/keyboard');
 var i18next = require('i18next-client');
-var moment = require('moment');
+var date = require('../libs/date');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../models/app');
-var client = require('../client');
+var client = require('../libs/client');
 
 var RoomBlockedView = Backbone.View.extend({
   tagName: 'div',
@@ -19,6 +19,7 @@ var RoomBlockedView = Backbone.View.extend({
   events: {
     'click .ask-for-allowance': 'onRequestAllowance',
     'click .valid-password': 'onValidPassword',
+    'keyup .input-password': 'onValidPassword',
     'click .close-room': 'onCloseRoom',
     'click .rejoin': 'onRejoin'
   },
@@ -36,7 +37,7 @@ var RoomBlockedView = Backbone.View.extend({
 
     // banned_at
     if (data.banned_at) {
-      data.banned_at = moment(data.banned_at).format('dddd Do MMMM YYYY');
+      data.banned_at = date.longDate(data.banned_at);
     } else if (data.blocked === 'banned') {
       data.banned_at = 'unable to retrieve';
     }
@@ -55,6 +56,7 @@ var RoomBlockedView = Backbone.View.extend({
     // render
     var html = this.template(data);
     this.$el.html(html);
+    this.$error = this.$('.error');
     this.$el.hide();
 
     this.initializeTooltips();
@@ -72,6 +74,7 @@ var RoomBlockedView = Backbone.View.extend({
   onFocusChange: function () {
     if (this.model.get('focused')) {
       this.$el.show();
+      this.$error.hide();
       this.hasBeenFocused = true;
     } else {
       this.$el.hide();
@@ -91,12 +94,23 @@ var RoomBlockedView = Backbone.View.extend({
     });
   },
   onValidPassword: function (event) {
+    var that = this;
+    var key = keyboard._getLastKeyCode(event);
+    if (event.type !== 'click' && key.key !== keyboard.RETURN) {
+      return;
+    }
+
     var password = $(event.currentTarget).closest('.password-form').find('.input-password').val();
     client.roomJoin(this.model.get('id'), this.model.get('name'), password, function (response) {
-      if (response.err && (response.err === 'wrong-password' || response.err === 'spam-password')) {
-        $(event.currentTarget).closest('.password-form').find('.error').html(i18next.t('chat.password.' + response.err));
+      if (!response.err) {
+        return;
+      }
+
+      that.$error.show();
+      if (response.err === 'wrong-password' || response.err === 'spam-password') {
+        that.$error.text(i18next.t('chat.password.' + response.err));
       } else if (response.err) {
-        $(event.currentTarget).closest('.password-form').find('.error').html(i18next.t('chat.password.error'));
+        that.$error.text(i18next.t('chat.password.error'));
       }
     });
   },
@@ -113,10 +127,10 @@ var RoomBlockedView = Backbone.View.extend({
     client.roomLeaveBlock(this.model.get('id'));
   },
   initializeTooltips: function () {
-    this.$('[data-toggle="tooltip"]').tooltip();
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
   }
-
 });
-
 
 module.exports = RoomBlockedView;

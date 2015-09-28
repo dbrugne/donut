@@ -50,7 +50,7 @@ module.exports = function (search, searchInUsers, searchInRooms, limit, skip, li
       var q;
       if (!lightSearch) {
         q = Room
-          .find(criteria, 'name owner description topic avatar color users lastjoin_at')
+          .find(criteria, 'name owner description topic avatar color users lastjoin_at mode')
           .sort({'lastjoin_at': -1})
           .skip(skip)
           .limit(limit)
@@ -61,7 +61,7 @@ module.exports = function (search, searchInUsers, searchInRooms, limit, skip, li
         ;
       } else {
         q = Room
-          .find(criteria, 'name avatar color lastjoin_at')
+          .find(criteria, 'name avatar color lastjoin_at mode')
           .sort({'lastjoin_at': -1})
           .skip(skip)
           .limit(limit)
@@ -89,6 +89,7 @@ module.exports = function (search, searchInUsers, searchInRooms, limit, skip, li
             room_id: room.id,
             avatar: room._avatar(),
             color: room.color,
+            mode: room.mode,
             lastjoin_at: new Date(room.lastjoin_at).getTime()
           };
 

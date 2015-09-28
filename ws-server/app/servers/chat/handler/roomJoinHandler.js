@@ -73,6 +73,7 @@ handler.join = function (user, room, next) {
     function persist (eventData, callback) {
       room.lastjoin_at = Date.now();
       room.users.addToSet(user._id);
+      room.allowed.addToSet(user._id);
       room.save(function (err) {
         return callback(err, eventData);
       });
@@ -80,6 +81,12 @@ handler.join = function (user, room, next) {
 
     function removeBlocked (eventData, callback) {
       user.update({$pull: {blocked: room._id}}, function (err) {
+        return callback(err, eventData);
+      });
+    },
+
+    function removeAllowedPending (eventData, callback) {
+      room.update({$pull: {allowed_pending: user._id}}, function (err) {
         return callback(err, eventData);
       });
     },

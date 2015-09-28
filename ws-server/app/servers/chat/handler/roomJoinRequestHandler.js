@@ -3,7 +3,6 @@ var logger = require('../../../../../shared/util/logger').getLogger('donut', __f
 var async = require('async');
 var Room = require('../../../../../shared/models/room');
 var Notifications = require('../../../components/notifications');
-var roomEmitter = require('../../../util/roomEmitter');
 
 var Handler = function (app) {
   this.app = app;
@@ -47,17 +46,16 @@ handler.call = function (data, session, next) {
       return callback(null);
     },
 
-    function broadcast (callback) {
+    function createEvent (callback) {
       var event = {
-        by_user_id: user.id,
+        by_user_id: user._id,
         by_username: user.username,
         by_avatar: user._avatar(),
-        user_id: room.owner.id,
+        user_id: room.owner._id,
         username: room.owner.username,
         avatar: room.owner._avatar()
       };
-
-      roomEmitter(that.app, user, room, 'room:request', event, callback);
+      callback(null, event);
     },
 
     function persist (eventData, callback) {
@@ -70,7 +68,7 @@ handler.call = function (data, session, next) {
     },
 
     function notification (event, callback) {
-      Notifications(that.app).getType('roomjoinrequest').create(room.owner, room, event.id, function (err) {
+      Notifications(that.app).getType('roomjoinrequest').create(room.owner.id, room, event, function (err) {
         return callback(err, event);
       });
     }

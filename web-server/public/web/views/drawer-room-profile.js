@@ -1,10 +1,10 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../client');
+var client = require('../libs/client');
 var currentUser = require('../models/current-user');
+var date = require('../libs/date');
 
 var DrawerRoomProfileView = Backbone.View.extend({
   template: require('../templates/drawer-room-profile.html'),
@@ -14,7 +14,6 @@ var DrawerRoomProfileView = Backbone.View.extend({
   events: {},
 
   initialize: function (options) {
-    this.roomName = options.name;
     this.roomId = options.room_id;
 
     // show spinner as temp content
@@ -58,7 +57,7 @@ var DrawerRoomProfileView = Backbone.View.extend({
 
     var html = this.template({room: room});
     this.$el.html(html);
-    this.$('.created span').momentify('date');
+    date.from('date', this.$('.created span'));
 
     if (room.color) {
       this.trigger('color', room.color);
@@ -119,12 +118,21 @@ var DrawerRoomProfileView = Backbone.View.extend({
 
     room.users_list = list;
   },
-
   initializeTooltips: function () {
-    this.$('[data-toggle="tooltip"]').tooltip();
+    this.$el.find('[data-toggle="tooltip"][data-type="mode"]').tooltip({
+      container: 'body'
+    });
+    this.$el.find('[data-toggle="tooltip"][data-type="room-users"]').tooltip({
+      html: true,
+      animation: false,
+      container: 'body',
+      template: '<div class="tooltip tooltip-home-users" role="tooltip"><div class="tooltip-inner right"></div></div>',
+      title: function () {
+        return '<div class="username" style="' + this.dataset.bgcolor + '">@' + this.dataset.username + '</div>';
+      }
+    });
   }
 
 });
-
 
 module.exports = DrawerRoomProfileView;

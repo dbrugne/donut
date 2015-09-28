@@ -1,5 +1,5 @@
-<span class="labels"><%= t('account.email.label') %></span>
 <div class="email-user-ctn">
+    <span class="labels"><%= t('account.email.label') %></span>
     <span class="values email-user"><%= user.account.email %></span>
     <a href="#" id="email-modal-link"></a>
 </div>
@@ -15,11 +15,10 @@
 <form class="form-mail">
     <div class="form-group mt15">
         <span class="spinner"></span>
-        <label for="email-sub"><%= t('account.email.new') %></label>
         <input id="email-sub" class="email-sub form-control" type="email" placeholder="<%= t('account.email.new') %>" value="<%= user.account.email %>">
-        <div class="pull-right">
-            <input type="submit" class="big-button-light submit-email" value="<%= t('global.save') %>">
-            <input type="button" class="big-button-light cancel-email" value="<%= t('global.cancel') %>">
+        <div class="pull-right mt10">
+            <input type="button" class="btn btn-default cancel-email mr5" value="<%= t('global.cancel') %>">
+            <input type="submit" class="btn btn-success submit-email" value="<%= t('global.save') %>">
         </div>
         <div class="clearfix"></div>
     </div>

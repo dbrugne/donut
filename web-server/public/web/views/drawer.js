@@ -19,7 +19,6 @@ var DrawerView = Backbone.View.extend({
   },
 
   initialize: function (options) {
-    this.$opacity = this.$('.opacity').first();
     this.$wrap = this.$('.wrap').first();
     this.$content = this.$('.content').first();
 
@@ -50,11 +49,14 @@ var DrawerView = Backbone.View.extend({
   },
   open: function () {
     this._show();
+
+    $('body').addClass('drawer-open');
     this.trigger('shown');
     return this;
   },
   close: function () {
     this._hide();
+    $('body').removeClass('drawer-open');
   },
   color: function (color) {
     color = (this._validHex(color))
@@ -71,7 +73,7 @@ var DrawerView = Backbone.View.extend({
   },
   _height: function () {
     var newHeight = $('#center').innerHeight();
-    this.$content.height(newHeight - (40));
+    this.$content.height(newHeight);
   },
   _show: function () {
     this._height();
@@ -86,6 +88,7 @@ var DrawerView = Backbone.View.extend({
     // escape key
     $(document).on('keydown', $.proxy(function (e) {
       if (e.which === 27) {
+        app.trigger('removeTooltips');
         this.close();
       }
     }, this));

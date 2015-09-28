@@ -4,9 +4,8 @@ var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var donutDebug = require('../libs/donut-debug');
 var app = require('../models/app');
-var client = require('../client');
+var client = require('../libs/client');
 var currentUser = require('../models/current-user');
-var EventModel = require('../models/event');
 var rooms = require('../collections/rooms');
 var onetoones = require('../collections/onetoones');
 var windowView = require('./window');
@@ -38,7 +37,7 @@ var MuteView = require('./mute');
 var debug = donutDebug('donut:main');
 
 var MainView = Backbone.View.extend({
-  el: $('#chat'),
+  el: $('body'),
 
   $home: $('#home'),
 
@@ -81,8 +80,8 @@ var MainView = Backbone.View.extend({
     this.defaultColor = window.room_default_color;
 
     this.listenTo(client, 'welcome', this.onWelcome);
+    this.listenTo(client, 'admin:message', this.onAdminMessage);
     this.listenTo(client, 'disconnect', this.onDisconnect);
-    this.listenTo(client, 'reconnect', this.onReconnect);
     this.listenTo(rooms, 'add', this.addView);
     this.listenTo(rooms, 'remove', this.onRemoveDiscussion);
     this.listenTo(onetoones, 'add', this.addView);
@@ -97,6 +96,7 @@ var MainView = Backbone.View.extend({
     this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
     this.listenTo(app, 'openUserProfile', this.openUserProfile);
     this.listenTo(app, 'joinRoom', this.focusRoomByName);
+    this.listenTo(app, 'joinOnetoone', this.focusOneToOneByUsername);
     this.listenTo(app, 'changeColor', this.onChangeColor);
     this.listenTo(app, 'persistPositions', this.persistPositions);
   },
@@ -128,8 +128,6 @@ var MainView = Backbone.View.extend({
    * @param data
    */
   onWelcome: function (data) {
-    var that = this;
-
     // Current user data (should be done before onetoone logic)
     currentUser.set(data.user, {silent: true});
     currentUser.setPreferences(data.preferences, {silent: true});
@@ -171,36 +169,24 @@ var MainView = Backbone.View.extend({
     }
     this.firstConnection = false;
 
-//      // set intervaller (set on 'connection')
-//      this.interval = setTimeout(function () {
-//        that.updateViews();
-//      }, this.intervalDuration);
-
     // Run routing only when everything in interface is ready
     app.trigger('readyToRoute');
     this.connectionView.hide();
     debug.end('welcome');
   },
+  onAdminMessage: function (data) {
+    app.trigger('alert', 'info', data.message);
+  },
   onDisconnect: function () {
     // disable interval
     clearInterval(this.interval);
 
-    // add disconnected event in each discussion
-    var e = new EventModel({
-      type: 'disconnected'
-    });
+    // force data re-fetching on next focus
     _.each(this.views, function (view) {
-      view.eventsView.addFreshEvent(e); // @todo : move to app.trigger()
-      view.hasBeenFocused = false; // will force re-fetch data on next focus
-    });
-  },
-  onReconnect: function () {
-    // add reconnected event in each discussion
-    var e = new EventModel({
-      type: 'reconnected'
-    });
-    _.each(this.views, function (view) {
-      view.eventsView.addFreshEvent(e); // @todo : move to app.trigger()
+      view.hasBeenFocused = false;
+      // @todo : to cover completely this case we should:
+      //   - on short disconnection: request history for bottom of the discussion from last known event
+      //   - on long disconnection: cleanup history and request normal history
     });
   },
 
@@ -336,6 +322,7 @@ var MainView = Backbone.View.extend({
     var name = $(event.currentTarget).data('name') || '';
     var view = new DrawerRoomCreateView({name: name});
     this.drawerView.setSize('450px').setView(view).open();
+    view.focusField();
   },
   openUserAccount: function (event) {
     event.preventDefault();
@@ -343,6 +330,7 @@ var MainView = Backbone.View.extend({
     this.drawerView.setSize('380px').setView(view).open();
   },
   onOpenUserProfile: function (event) {
+    this.$el.find('.tooltip').tooltip('hide');
     event.preventDefault();
 
     var userId = $(event.currentTarget).data('userId');
@@ -357,6 +345,7 @@ var MainView = Backbone.View.extend({
     this.drawerView.setSize('380px').setView(view).open();
   },
   onOpenRoomProfile: function (event) {
+    this.$el.find('.tooltip').tooltip('hide');
     event.preventDefault();
 
     var roomId = $(event.currentTarget).data('roomId');
@@ -598,7 +587,7 @@ var MainView = Backbone.View.extend({
   focusRoomByName: function (name) {
     var model = rooms.iwhere('name', name);
     if (typeof model !== 'undefined') {
-      model.set('unviewed', false);
+      model.resetNew();
       return this.focus(model);
     }
 
@@ -699,9 +688,7 @@ var MainView = Backbone.View.extend({
       client.userDeban(userId);
       app.trigger('userDeban');
     }, this));
-
   }
 });
-
 
 module.exports = new MainView();

@@ -81,7 +81,7 @@ Notification.prototype.create = function (user, history, done) {
     },
 
     function save (userModel, historyModel, status, callback) {
-      var model = NotificationModel.getNewModel(that.type, userModel, {
+      var model = NotificationModel.getNewModel(that.type, userModel._id, {
         event: historyModel._id,
         from: historyModel.from // for repetitive
       });

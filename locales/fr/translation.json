@@ -64,6 +64,47 @@
       }
     }
   },
+  "date": {
+    "days": {
+      "0": "dimanche",
+      "1": "lundi",
+      "2": "mardi",
+      "3": "mercredi",
+      "4": "jeudi",
+      "5": "vendredi",
+      "6": "samedi"
+    },
+    "months": {
+      "0": "janvier",
+      "1": "fevrier",
+      "2": "mars",
+      "3": "avril",
+      "4": "mai",
+      "5": "juin",
+      "6": "juillet",
+      "7": "aout",
+      "8": "septembre",
+      "9": "octobre",
+      "10": "novembre",
+      "11": "decembre"
+    },
+    "relativetime": {
+      "s": "quelques secondes",
+      "m": "une minute",
+      "mm": "__minutes__ minutes",
+      "h": "une heure",
+      "hh": "__hours__ heures",
+      "d": "un jour",
+      "dd": "__days__ jours",
+      "M": "un mois",
+      "MM": "__months__ mois",
+      "y": "un an",
+      "yy": "__years__ ans"
+    },
+    "today" : "Aujourd'hui",
+    "yesterday" : "Hier",
+    "the-day-before" : "Avant hier"
+  },
   "baseline": "vous avez des choses à (vous) dire !",
   "actions": {
     "login": "connexion",
@@ -113,7 +154,7 @@
     },
     "switchlanguage": "Langue",
     "unknownerror": "Erreur inconnue, veuillez réessayer",
-    "private-donut": "Donut privé"
+    "private-donut": "Donut privé: seuls les utilisateurs autorisés pourront rejoindre, participer et accéder à l'historique."
   },
   "login": {
     "withfacebook": "avec Facebook",
@@ -240,7 +281,7 @@
       "account": "mon compte",
       "edit": "mon profil",
       "notifications": "notifications",
-      "close": "Fermer la discussion",
+      "close": "quitter la discussion",
       "preferences": "préférences & notifications",
       "bannedusers": "utilisateurs bloqués",
       "update": "Editer",
@@ -339,7 +380,10 @@
       "sure": "Vous confirmez que vous voulez faire cela ?",
       "placeholder": "Expliquez pourquoi, visible dans le donut (optionnel)",
       "cancel": "Non, j'annule",
-      "confirm": "Oui, je confirme"
+      "confirm": "Oui, je confirme",
+      "message": {
+        "modechange": "Attention cette opération est irréversible! Tous les utilisateurs dans ce donut seront ajouté à la liste des utilisateurs autorisés. Ce donut ne sera plus ouvert au public."
+      }
     },
     "commands": {
       "join": "Rejoindre le donut",
@@ -376,63 +420,43 @@
       "message": "La platforme DONUT a répondu en __ms__ ms"
     },
     "notifications": {
-      "onetoone": {
-        "ban": " est bloqué à la demande de",
-        "deban": " n'est plus bloqué à la demande de"
-      },
-      "hello": "Vous entrez dans",
-      "disconnected": "Vous avez été deconnecté du serveur, veuillez patienter",
-      "reconnected": "Vous êtes reconnecté",
-      "topic": " a défini un nouveau sujet: ",
+      "roomtopic": " a défini un nouveau sujet: ",
       "topicempty": "vide",
-      "kick": " a été expulsé à la demande de ",
-      "ban": " a été banni à la demande de ",
-      "deban": "n'est plus banni à la demande de",
-      "op": " est maintenant modérateur à la demande de ",
-      "deop": " n'est plus modérateur à la demande de ",
-      "voice": " a retrouvé la parole à la demande de ",
-      "devoice": " est muet à la demande de ",
-      "in": " est entré à",
-      "out": " est sorti à",
-      "online": " est en ligne,",
-      "offline": " n'est plus en ligne,",
+      "roomkick": " a été expulsé à la demande de ",
+      "roomban": " a été banni à la demande de ",
+      "roomdeban": "n'est plus banni à la demande de",
+      "roomop": " est maintenant modérateur à la demande de ",
+      "roomdeop": " n'est plus modérateur à la demande de ",
+      "roomvoice": " a retrouvé la parole à la demande de ",
+      "roomdevoice": " est muet à la demande de ",
+      "in": "est entré à",
+      "out": "est sorti à",
+      "online": "est en ligne,",
+      "offline": "n'est plus en ligne,",
       "read-more": "Voir plus",
       "count" : "<strong class=\"nb\"></strong><strong> Nouvelle(s)</strong> Notification(s)",
       "tag-as-read" : "Marquer comme lue(s)",
       "empty": "Vous n'avez pas de nouvelles notifications",
       "random": "Obtient au hasard __result__ (entre __min__ et __max__)",
-      "dropdown": {
-        "op": "Vous êtes maintenant modérateur de <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
-        "deop": "Vous n'êtes plus modérateur de <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
-        "kick": "Vous êtes expulsé de <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
-        "ban": "Vous êtes banni de <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
-        "deban": "Vous n'êtes plus banni de <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
-        "voice": "Vous n'êtes plus muet dans <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
-        "devoice": "Vous êtes muet dans <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
-        "roomallowed": "Vous êtes autorisé à rejoindre <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
-        "roomallowrefuse": "Votre demande de rejoinde <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a></br> n'a pas été acceptée",
-        "roomjoin": "<span class=\"name open-user-profile\" data-user-id=\"__userid__\">@__username__</span> rejoint <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
-        "roomjoinrequest": "<span class=\"name open-user-profile\" data-user-id=\"__userid__\">@__username__</span> souhaite rejoindre <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
-        "roomtopic": "Nouveau sujet dans <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
-        "roommessage": "Nouveaux messages dans <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
-        "usermention": "Vous êtes mentionné dans <a href=\"#room/__roomname__\"><span class=\"name\">#__roomname__</span></a>",
-        "usermessage": "<span class=\"name open-user-profile\" data-user-id=\"__user_id__\">@__username__</span>: <a href=\"#user/__username__\">__message__</a>"
+      "messages": {
+        "roomop": "Vous êtes maintenant modérateur de <span>#__name__</span>",
+        "roomdeop": "Vous n'êtes plus modérateur de <span>#__name__</span>",
+        "roomkick": "Vous êtes expulsé de <span>#__name__</span>",
+        "roomban": "Vous êtes banni de <span>#__name__</span>",
+        "roomdeban": "Vous n'êtes plus banni de <span>#__name__</span>",
+        "roomvoice": "Vous n'êtes plus muet dans <span>#__name__</span>",
+        "roomdevoice": "Vous êtes muet dans <span>#__name__</span>",
+        "roomallowed": "Vous êtes autorisé à rejoindre <span>#__name__</span>",
+        "roomrefuse": "Votre demande de rejoinde <span>#__name__</span></br> n'a pas été acceptée",
+        "roomjoin": "<span>@__username__</span> rejoint <span>#__name__</span>",
+        "roomjoinrequest": "<span>@__username__</span> souhaite rejoindre <span>#__name__</span>",
+        "roomtopic": "Nouveau sujet dans <span>#__name__</span>",
+        "roommessage": "Nouveaux messages dans <span>#__name__</span>",
+        "usermention": "Vous êtes mentionné dans <span>#__name__</span>",
+        "usermessage": "<span>@__username__</span>: __message__"
       },
-      "desktop": {
-        "roomop": "Vous êtes modérateur de __roomname__",
-        "roomdeop": "Vous n'êtes plus modérateur de __roomname__",
-        "roomkick": "Vous êtes expulsé de __roomname__",
-        "roomban": "Vous êtes banni de __roomname__",
-        "roomdeban": "Vous n'êtes plus banni de __roomname__",
-        "roomvoice": "On vous a rendu la parole dans __roomname__",
-        "roomdevoice": "Vous avez été rendu muet dans __roomname__",
-        "usermessage": "@__username__: __message__",
-        "roommessage": "__roomname__: __message__",
-        "roomjoin": "@__username__ rejoint __roomname__",
-        "roomtopic": "Nouveau sujet dans __roomname__: __topic__",
-        "usermention": "Mention de @__username__ dans __roomname__: __message__",
-        "by": "par"
-      }
+      "userban": " est bloqué à la demande de",
+      "userdeban": " n'est plus bloqué à la demande de"
     },
     "unread": {
       "title": "(nouveau)"
@@ -442,15 +466,16 @@
       "loading": "Chargement de l'historique ...",
       "top": "aller tout en haut",
       "bottom": "aller tout en bas",
-      "currently": "Vous êtes au tout début du Donut <span class=\"name dc-text open-room-profile\" data-room-id=\"__roomid__\">__roomname__</span>, créé par <span class=\"owner dc-text open-user-profile\" data-user-id=\"__ownerid__\">@__owner__</span> le <span class=\"date\">__creation-date__</span>",
-      "onestart": "Vous êtes au tout début de votre discussion privée avec <span class=\"name dc-text\">@__username__</span>. Tout ce qui est dit ici restera entre vous deux :)",
+      "currently": "C'est ici que tout commence... Vous êtes au tout début de la conversation <span class=\"name dc-text open-room-profile\" data-room-id=\"__roomid__\">__roomname__</span>, donut créé par <span class=\"owner dc-text open-user-profile\" data-user-id=\"__ownerid__\">@__owner__</span> le <span class=\"date\">__created_at__</span> à <span class=\"date\">__created_time__</span>",
+      "hasPassword": "Votre donut est privé. Paramétrez les modalités d'accès en cliquant sur \"Gérer les accès\"",
+      "onestart": "Cette conversation est privée. Seuls vous et votre interlocuteur pouvez y avoir accès.",
       "edit": "Editer le profil",
       "users": "Gérer les utilisateurs",
       "access": "Gérer les accès"
     },
     "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions (<a href='/signup'>créer un compte</a> ou <a href='/login'>se connecter</a>)",
     "closeapp": "Etes-vous sur de vouloir quitter ?",
-    "closemessage": "Etes-vous sur de vouloir quitter, l’historique de vos conversations sera perdu ?",
+    "closemessage": "Etes-vous sur de vouloir fermer l'onglet ?",
     "kickmessage": "Vous venez d'être expulsé de __name__",
     "banmessage": "Vous venez d'être banni de __name__",
     "disallowmessage": "Vous ne faites plus partie de la liste des gens autorisés dans __name__",
@@ -458,21 +483,27 @@
     "reason": "(motif : \"__reason__\")",
     "deletemessage": "Le donut __name__ vient d'être supprimé",
     "users": {
-      "link": "utilisateurs",
-      "search": "rechercher des utilisateurs dans cette room",
+      "username": "Nom d'utilisateur",
+      "usertype": "Type",
+      "users": "Utilisateur",
+      "users_plural": "Utilisateurs",
+      "link": "liste des utilisateurs",
+      "label": "Voir tous les utilisateurs",
+      "search": "rechercher des utilisateurs dans ce donut",
       "type": {
         "owner": "Créateur",
         "users": "Utilisateurs",
         "op": "Modérateurs",
-        "allowed": "Utilisateurs autorisé",
+        "allowed": "Utilisateurs autorisés",
         "ban": "Bannis",
         "devoice": "Muets"
-      }
+      },
+      "usernotexist": "Cette utilisateur n'existe pas."
     },
     "access": {
       "link": "Accès",
       "labelsearch": "Autoriser des utilisateurs",
-      "add": "Ajouter un utilisateur",
+      "add": "Autoriser un utilisateur",
       "labelpending": "Utilisateurs en attente d'autorisation",
       "types": {
         "all": "Tous",
@@ -486,12 +517,20 @@
       "description": "Venez me rejoindre sur DONUT.me le nouveau site de chat. J'y discute sur __name__."
     },
     "welcome": {
-      "room": [
-        "Bienvenue dans <strong>__name__</strong>. Seuls les utilisateurs qui ont rejoint ce donut (listés à droite) peuvent voir la conversation. Et ce même s'ils sont hors ligne pour le moment.",
-        "Postez un message pour amorcer la conversation."
-      ],
+      "private": {
+        "room": [
+          "Bienvenue dans <a class=\"open-room-profile\" data-room-id=\"__room_id__\"><strong>__name__</strong></a>. La conversation est privée. Seuls les utilisateurs autorisés par <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a> pourront rejoindre ce donut. Les utilisateurs qui ont rejoint le donut peuvent y participer et accéder à son historique.",
+          "Postez un message pour amorcer la conversation."
+        ]
+      },
+      "public": {
+        "room": [
+          "Bienvenue dans <a class=\"open-room-profile\" data-room-id=\"__room_id__\"><strong>__name__</strong></a>. La conversation est publique donc accessible à tous de même que l'historique. Vous pouvez partager le lien avec vos amis.",
+          "Postez un message pour amorcer la conversation."
+        ]
+      },
       "onetoone": [
-        "Si <strong>__username__</strong> n'est pas en ligne les nouveaux messages lui seront remis à sa prochaine connection",
+        "Si <strong>__username__</strong> n'est pas en ligne les nouveaux messages lui seront remis à sa prochaine connexion",
         "Postez un message pour amorcer la conversation."
       ]
     },
@@ -517,17 +556,14 @@
           "unmark-spam": "Ce message n'est pas indésirable"
         },
         "edit": "Editer mon message"
-      },
-      "today" : "Aujourd'hui",
-      "yesterday" : "Hier",
-      "the-day-before" : "Avant hier"
+      }
     },
     "input": {
       "typing": "est en train de taper",
       "typing_plural": "sont en train de taper"
     },
     "blocked": {
-      "allowed": "Ce donut est privé, seul les utilisateurs autorisés par le propriétaire peuvent y accéder.",
+      "allowed": "Ce donut est privé, seuls les utilisateurs autorisés peuvent le rejoindre.",
       "allowed_button": "Demander l'accès",
       "password": "Ce donut est protégé par un mot de passe.",
       "password_placeholder": "Mot de passe",
@@ -536,10 +572,11 @@
       "banned_reason": "Pour la raison suivante : ",
       "kicked": "Vous avez été expulsé de ce donut",
       "kicked_button": "Rejoindre",
+      "changemode": "Changer le mode",
       "disclaimer-private": "Ce donut est privé, seul les utilisateurs explicitement autorisés par le propriétaire peuvent y accéder. Pour ajouter de nouveaux utilisateurs, merci de les rechercher dans la liste ci-dessous.",
       "disclaimer-public": "Ce donut est public. N'importe quel utilisateur pourra y accéder.",
       "disclaimer-password": "Vous avez également choisi de mettre un mot de passe. Les utilisateurs avec le mot de passe pourront y entrer sans avoir besoin d'être invités au préalable.",
-      "disclaimer-changing": "Vous avez la possibilité de faire passer ce donut en mode privé (avec éventuellement un mot de passe). Attention, une fois fait, cela ne sera plus modifiable. Ce donut ne sera donc plus ouvert au public, les invitations se feront uniquement par le propriétaire ou par mot de passe.",
+      "disclaimer-changing": "Vous pouvez passer ce donut en mode privé. Alors, seuls les utilisateurs que vous autoriserez pourront rejoindre, participer et accéder à l'historique. L'accès se fera par invitation et/ou par mot de passe. Attention, cette action est irréversible.",
       "close": "Fermer ce donut"
     },
     "form": {
@@ -587,15 +624,14 @@
         },
         "mode": {
           "disclaimer": {
-            "public": "En sélectionnant cette option, votre donut sera public. N'importe quel utilisateur pourra y entrer et voir ce qu'il s'y passe.",
-            "private": "En sélectionnant cette option, votre donut sera privé. Seuls les utilisateurs explicitement autorisés par le Propriétaire ou les Op pourront y entrer.",
+            "public": "Tout utilisateur pourra rejoindre, participer et accéder à l'historique. Vous disposez d'outils de modération.",
+            "private": "Seuls les utilisateurs que vous autorisez pourront rejoindre, participer et accéder à l'historique. Vous disposez d'outils de modération.",
             "password": "Vous avez également la possibilité de mettre un mot de passe sur ce donut. Les utilisateurs avec le mot de passe pourront y entrer sans avoir besoin d'être invités au préalable."
           }
         },
         "create": {
-          "info": "Attention le nom du donut ne sera plus modifiable !",
           "label": "Créez un donut",
-          "help": "Entre 3 et 24 caractères, chiffres, lettres, tirets (-) et underscores (_) uniquement",
+          "help": "Entre 3 et 24 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement",
           "placeholder": "Nom du donut",
           "submit": "Créer le donut"
         },
@@ -967,8 +1003,8 @@
         "help": "",
         "desktop": "Bureau",
         "desktop-default": "Votre navigateur va vous demander d’autoriser DONUT à vous envoyer des notifications. Il faut accepter !",
-        "desktop-refused": "Vous avez choisi de <strong>refuser</strong> les notifications sur le bureau. Pour modifier ce choix, vous devez modifier les préférences de votre navigateur.",
-        "desktop-validated": "Vous avez choisi d'<strong>accepter</strong> les notifications sur le bureau. Pour modifier ce choix, vous devez modifier les préférences de votre navigateur.",
+        "desktop-denied": "Vous avez choisi de <strong>refuser</strong> les notifications sur le bureau. Pour modifier ce choix, vous devez modifier les préférences de votre navigateur.",
+        "desktop-granted": "Vous avez choisi d'<strong>accepter</strong> les notifications sur le bureau. Pour modifier ce choix, vous devez modifier les préférences de votre navigateur.",
         "desktop-test": "tester",
         "desktop-notify-test": "Notification de test",
         "email": "Email (si vous êtes hors-ligne)",
@@ -1007,23 +1043,6 @@
         }
       },
       "banned-users": "Utilisateurs que vous avez bloqué"
-    }
-  },
-  "moment": {
-    "relativeTime": {
-      "future": "%s",
-      "past": "%s",
-      "s": "à l'instant",
-      "m": "1mn",
-      "mm": "%dmin",
-      "h": "1h",
-      "hh": "%dh",
-      "d": "hier",
-      "dd": "%d jours",
-      "M": "un mois",
-      "MM": "%d mois",
-      "y": "un an",
-      "yy": "%d ans"
     }
   }
 }

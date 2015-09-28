@@ -3,8 +3,9 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../client');
+var client = require('../libs/client');
 var currentUser = require('../models/current-user');
+var date = require('../libs/date');
 
 var DrawerUserProfileView = Backbone.View.extend({
   template: require('../templates/drawer-user-profile.html'),
@@ -56,12 +57,14 @@ var DrawerUserProfileView = Backbone.View.extend({
 
     var html = this.template({user: user});
     this.$el.html(html);
-    this.$('.created span').momentify('date');
-    this.$('.onlined span').momentify('fromnow');
+    date.from('date', this.$('.created span'));
+    date.from('fromnow', this.$('.onlined span'));
 
     if (user.color) {
       this.trigger('color', user.color);
     }
+
+    this.initializeTooltips();
   },
   /**
    * Construct the user room list for profile displaying
@@ -120,7 +123,6 @@ var DrawerUserProfileView = Backbone.View.extend({
       });
     }
   },
-
   onUserBanChange: function () {
     this.render();
     client.userRead(this.user_id, null, _.bind(function (data) {
@@ -128,6 +130,17 @@ var DrawerUserProfileView = Backbone.View.extend({
         this.onResponse(data);
       }
     }, this));
+  },
+  initializeTooltips: function () {
+    this.$el.find('[data-toggle="tooltip"][data-type="rooms"]').tooltip({
+      html: true,
+      animation: false,
+      container: 'body',
+      template: '<div class="tooltip tooltip-home-users" role="tooltip"><div class="tooltip-inner right"></div></div>',
+      title: function () {
+        return '<div class="username" style="' + this.dataset.bgcolor + '">' + this.dataset.username + '</div>';
+      }
+    });
   }
 
 });

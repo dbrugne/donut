@@ -116,7 +116,7 @@ module.exports = function (req, res, next, roomname) {
             usersList.push(user);
           });
           room.users = usersList;
-          room.usersCount = usersList.length;
+          room.usersCount = usersList.length + room.op.length + 1;
         }
 
         req.room = room;

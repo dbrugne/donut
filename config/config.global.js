@@ -81,7 +81,7 @@ module.exports = {
         creation: 5 * 60 // 5mn
       },
       roommessage: {
-        creation: 5 * 60 // 5mn
+        creation: 60 * 60 // 60mn
       },
       roomjoin: {
         creation: 5 * 60 // 5mn

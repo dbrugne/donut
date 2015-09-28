@@ -1,36 +1,42 @@
-<div class="room form-group">
-    <span class="name"><%= t('chat.form.room-form.create.label') %></span>
-</div>
-<div class="errors form-group"></div>
-<div class="room form-group">
-    <p class="help-block"><%= t('chat.form.room-form.create.info') %></p>
-</div>
-<div class="form-group">
-    <div class="field flex-parent jc-center">
-        <span class="hash dc-text colorize">#</span>
-        <input type="text" class="input dc-border flex-child colorize-border" placeholder="<%= t('chat.form.room-form.create.placeholder') %>" maxlength="24" value="<%= name %>" />
-    </div>
-    <p class="help-block"><%= t('chat.form.room-form.create.help') %></p>
+<div class="relative">     <span class="close icon icon-times"></span> </div>
+
+<div class="title">
+    <%= t('chat.form.room-form.create.label') %>
 </div>
 
-<div class="form-group">
-    <label><%= t('chat.form.room-form.common.join-mode-label') %></label>
-    <div class="radio">
-        <label>
-            <input type="radio" class="savable public" name="mode" value="public" checked>
-            <%= t('chat.form.room-form.common.mode.public') %> (<%= t('global.default') %>)
-            <br/><%= t('chat.form.room-form.mode.disclaimer.public') %>
-        </label>
-    </div>
-    <div class="radio">
-        <label>
-            <input type="radio" class="savable private" name="mode" value="private">
-            <%= t('chat.form.room-form.common.mode.private') %>
-            <br/><%= t('chat.form.room-form.mode.disclaimer.private') %>
-        </label>
-    </div>
-</div>
+<div class="ctn-drawer">
+    <div class="errors block"></div>
 
-<div class="field mt15 flex-parent jc-center center">
-    <button class="submit dc-back dc-back-hover dc-text-contrast button button-big" type="button"><%= t('chat.form.room-form.create.submit') %></button>
+    <div class="block">
+        <div class="field flex-parent jc-center">
+            <span class="hash dc-text colorize">#</span>
+            <input type="text" name="input-create" class="big-input dc-border flex-child colorize-border" placeholder="<%= t('chat.form.room-form.create.placeholder') %>" maxlength="24" value="<%= name %>" />
+        </div>
+    </div>
+
+    <div class="block">
+        <p class="help-block"><%= t('chat.form.room-form.create.help') %></p>
+    </div>
+
+    <div class="block">
+        <label><%= t('chat.form.room-form.common.join-mode-label') %></label>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable public" name="mode" value="public" checked>
+                <%= t('chat.form.room-form.common.mode.public') %> (<%= t('global.default') %>)
+                <br/><%= t('chat.form.room-form.mode.disclaimer.public') %>
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" class="savable private" name="mode" value="private">
+                <%= t('chat.form.room-form.common.mode.private') %>
+                <br/><%= t('chat.form.room-form.mode.disclaimer.private') %>
+            </label>
+        </div>
+    </div>
+
+    <div class="block flex-parent jc-center center">
+        <button class="submit btn btn-success" type="button"><%= t('chat.form.room-form.create.submit') %></button>
+    </div>
 </div>

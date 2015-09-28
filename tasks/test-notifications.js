@@ -98,6 +98,7 @@ module.exports = function (grunt) {
           });
         });
       },
+
       function retrieveRoom (callback) {
         RoomModel.findByName(roomName).exec(function (err, r) {
           if (err) {
@@ -184,6 +185,40 @@ module.exports = function (grunt) {
               grunt.log.ok(item.notification + 'Type done');
               return fn(null);
             });
+          });
+        }, callback);
+      },
+
+      function roomRequestTypes (callback) {
+        async.each([
+          { notification: 'roomallowed' },
+          { notification: 'roomrefuse' },
+          { notification: 'roomjoinrequest' }
+        ], function (item, fn) {
+          var event = {
+            name: room.name,
+            id: room.id,
+            user_id: userTo.id,
+            username: userTo.username,
+            avatar: userTo._avatar(),
+            by_user_id: userFrom.id,
+            by_username: userFrom.username,
+            by_avatar: userFrom._avatar(),
+            time: new Date()
+          };
+          var data = {
+            type: item.notification,
+            user: userTo.id,
+            room: room.id,
+            history: event
+          };
+          bridge.notify('chat', 'createNotificationTask.createNotification', data, function (err) {
+            if (err) {
+              return fn(err);
+            }
+
+            grunt.log.ok(item.notification + 'Type done');
+            return fn(null);
           });
         }, callback);
       },
@@ -287,7 +322,7 @@ module.exports = function (grunt) {
           user_id: userFrom.id,
           username: userFrom.username,
           avatar: userFrom._avatar(),
-          message: message + ' [@:' + userTo.id + ':' + userTo.username + '] suite du message',
+          message: message + ' [@¦' + userTo.id + '¦' + userTo.username + '] suite du message',
           time: new Date()
         };
         HistoryRoomModel.record()(room, 'room:message', event, function (err, history) {

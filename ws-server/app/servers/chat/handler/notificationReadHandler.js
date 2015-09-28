@@ -60,14 +60,29 @@ handler.call = function (data, session, next) {
           d.data.user.avatar = notification.data.event.user._avatar();
         }
 
+        if (notification.data.user) {
+          d.data.user = notification.data.user;
+          d.data.user.avatar = notification.data.user._avatar();
+        }
+
         if (notification.data.event.by_user) {
           d.data.by_user = notification.data.event.by_user;
           d.data.by_user.avatar = notification.data.event.by_user._avatar();
         }
 
+        if (notification.data.by_user) {
+          d.data.by_user = notification.data.by_user;
+          d.data.by_user.avatar = notification.data.by_user._avatar();
+        }
+
         if (notification.data.event.room) {
           d.data.room = notification.data.event.room;
           d.data.room.avatar = notification.data.event.room._avatar();
+        }
+
+        if (notification.data.room) {
+          d.data.room = notification.data.room;
+          d.data.room.avatar = notification.data.room._avatar();
         }
 
         if (notification.data.event && notification.data.event.data && notification.data.event.data.message) {

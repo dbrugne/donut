@@ -10,6 +10,7 @@ var async = require('async');
 // notifications logic
 var userMessage = require('./types/userMessageType');
 var roomPromote = require('./types/roomPromoteType');
+var roomRequest = require('./types/roomRequestType');
 var roomTopic = require('./types/roomTopicType');
 var roomMessage = require('./types/roomMessageType');
 var roomJoin = require('./types/roomJoinType');
@@ -61,9 +62,6 @@ Facade.prototype.getType = function (type) {
     case 'roomdeban':
     case 'roomvoice':
     case 'roomdevoice':
-    case 'roomjoinrequest':
-    case 'roomallowed':
-    case 'roomrefuse':
       typeConstructor = roomPromote;
       break;
 
@@ -81,6 +79,12 @@ Facade.prototype.getType = function (type) {
 
     case 'usermention':
       typeConstructor = userMention;
+      break;
+
+    case 'roomjoinrequest':
+    case 'roomallowed':
+    case 'roomrefuse':
+      typeConstructor = roomRequest;
       break;
 
     default:
@@ -129,7 +133,33 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
         return fn(null);
       }
 
-      if (n.getEventType() === 'historyone') {
+      if (n.type === 'roomrefuse' || n.type === 'roomallowed' || n.type === 'roomjoinrequest') {
+        NotificationModel.findOne({_id: n._id})
+          .populate({
+            path: 'data.user',
+            model: 'User',
+            select: 'facebook username local avatar color'})
+          .populate({
+            path: 'data.by_user',
+            model: 'User',
+            select: 'facebook username local avatar color'})
+          .populate({
+            path: 'data.room',
+            model: 'Room',
+            select: 'avatar color name'})
+          .exec(function (err, notification) {
+            if (err) {
+              return fn(err);
+            }
+            if (!notification) {
+              return fn(null);
+            }
+
+            n = notification;
+            notifications.push(n);
+            return fn(null);
+          });
+      } else if (n.getEventType() === 'historyone') {
         var q = HistoryOne.findOne({_id: n.data.event.toString()})
           .populate('from', 'username avatar color facebook')
           .populate('to', 'username avatar color facebook');
@@ -222,6 +252,21 @@ Facade.prototype.retrieveScheduledNotifications = function (callback) {
     path: 'user',
     model: 'User',
     select: 'facebook username local avatar color'
+  });
+  q.populate({
+    path: 'data.user',
+    model: 'User',
+    select: 'facebook username local avatar color'
+  });
+  q.populate({
+    path: 'data.by_user',
+    model: 'User',
+    select: 'facebook username local avatar color'
+  });
+  q.populate({
+    path: 'data.room',
+    model: 'Room',
+    select: 'avatar color name'
   });
   q.exec(function (err, results) {
     if (err) {
