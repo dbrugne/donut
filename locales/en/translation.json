@@ -500,7 +500,7 @@
       "usernotexist": "User not found"
     },
     "access": {
-      "link": "Access",
+      "link": "access",
       "labelsearch": "Allow users",
       "add": "Allow a user",
       "labelpending": "Users waiting for authorization",
