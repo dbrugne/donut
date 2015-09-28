@@ -89,6 +89,7 @@ module.exports = function (search, searchInUsers, searchInRooms, limit, skip, li
             room_id: room.id,
             avatar: room._avatar(),
             color: room.color,
+            mode: room.mode,
             lastjoin_at: new Date(room.lastjoin_at).getTime()
           };
 
