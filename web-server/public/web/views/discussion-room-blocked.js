@@ -43,7 +43,7 @@ var RoomBlockedView = Backbone.View.extend({
     }
 
     // avatar
-    data.avatar = common.cloudinary.prepare(data.avatar, 100);
+    data.avatar = common.cloudinary.prepare(data.avatar, 150);
 
     // id
     data.room_id = this.model.get('id');

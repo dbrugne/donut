@@ -3,52 +3,53 @@
         <div class="header room">
             <div class="margin-top: auto">
                 <div class="error alert alert-danger"></div>
-                <img class="avatar border-shadow open-room-profile" data-room-id="<%= room_id %>" src="<%= avatar %>" alt="<%= name %> avatar">
+                <img class="avatar border-shadow open-room-profile mb20" data-room-id="<%= room_id %>" src="<%= avatar %>" alt="<%= name %> avatar">
                 <div>
                     <span class="name open-room-profile" data-room-id="<%= room_id %>"><%= name %></span>
                     <% if (mode === 'private') { %>
                         <span class="room-profile private" data-toggle="tooltip" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
                     <% } %>
                 </div>
+
                 <% if (owner && owner.username) { %>
                 <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= owner.id %>">@<%= owner.username %></a></span>
                 <% } %>
+
                 <% if (mode === 'private' && blocked !== 'banned' && blocked !== 'kicked') { %>
                     <% if (hasPassword) { %>
-                    <div class="password-form mt5 fs15">
-                        <%= t('chat.blocked.password') %>
-                        <br/>
-                        <div class="form-inline mt15">
-                            <input class="input-password form-control " type="text" placeholder="<%= t('chat.blocked.password_placeholder') %>">
-                            <button class="valid-password big-button-light"><%= t('chat.blocked.password_button') %></button>
-                            <button class="ask-for-allowance big-button-light"><%= t('chat.blocked.allowed_button') %></button>
+                        <div class="password-form mt5 fs15">
+                            <%= t('chat.blocked.allowed') %>
+                            <%= t('chat.blocked.ask-for-access') %>
+                            <br/>
+                            <%= t('chat.blocked.password') %>
+                            <div class="form-inline mt15">
+                                <input class="input-password form-control " type="text" placeholder="<%= t('chat.blocked.password_placeholder') %>">
+                                <button class="valid-password btn btn-success"><%= t('chat.blocked.password_button') %></button>
+                            </div>
                         </div>
-                    </div>
                     <% } else { %>
-                    <div class="mt15 mb5 fs15">
-                        <%= t('chat.blocked.allowed') %>
-                    </div>
-                    <div class="mb20">
-                        <button class="ask-for-allowance big-button-light"><%= t('chat.blocked.allowed_button') %></button>
-                    </div>
+                        <div class="mt15 mb5 fs15">
+                            <%= t('chat.blocked.allowed') %>
+                            <%= t('chat.blocked.ask-for-access') %>
+                        </div>
                     <% } %>
                 <% } else if (blocked === 'banned') { %>
-                <div class="mt15 fs15">
-                    <% if (typeof banned_at !== 'undefined') { print(t('chat.blocked.banned', { at: banned_at })); } %>
-                    <% if (typeof banned_reason !== 'undefined') { %>
-                    <p class="reason">
-                        <span class="title"><%= t('chat.blocked.banned_reason') %></span>
-                        <span class="reason"><i class="icon icon-quote"></i><%= banned_reason %></span>
-                    </p>
-                    <% } %>
-                </div>
+                    <div class="mt15 fs15">
+                        <% if (typeof banned_at !== 'undefined') { print(t('chat.blocked.banned', { at: banned_at })); } %>
+                        <% if (typeof banned_reason !== 'undefined') { %>
+                        <p class="reason">
+                            <span class="title"><%= t('chat.blocked.banned_reason') %></span>
+                            <span class="reason"><i class="icon icon-quote"></i><%= banned_reason %></span>
+                        </p>
+                        <% } %>
+                    </div>
                 <% } else { %>
-                <div class="mt15 fs15">
-                    <%= t('chat.blocked.kicked') %>
-                    <button class="rejoin big-button-light"><%= t('chat.blocked.password_button') %></button>
-                </div>
+                    <div class="mt15 fs15">
+                        <%= t('chat.blocked.kicked') %>
+                        <%= t('chat.blocked.rejoin-donut') %>
+                    </div>
                 <% } %>
-                <a href="#" class="close-room"><%= t('chat.blocked.close') %></a>
+                <a href="#" class="close-room"><strong><%= t('chat.blocked.close') %></strong></a>
             </div>
         </div>
     </div>

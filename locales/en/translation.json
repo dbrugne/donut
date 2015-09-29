@@ -124,6 +124,7 @@
     "muted": "sound off"
   },
   "global": {
+    "locked": "Locked",
     "admin": "(admin only)",
     "default": "default",
     "or": "or",
@@ -563,8 +564,9 @@
     },
     "blocked": {
       "allowed": "This donut is private, only authorized users can join.",
+      "ask-for-access": "To ask for access, <a href=\"#\" class=\"ask-for-allowance\"><strong>click here</strong></a>.",
       "allowed_button": "Request access",
-      "password": "This donut is password protected.",
+      "password": "This donut also has a password. If you know it, please fill it below",
       "password_placeholder": "Password",
       "password_button": "Join",
       "banned": "You were banned from this donut on __at__",

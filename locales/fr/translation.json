@@ -125,6 +125,7 @@
     "muted": "son désactivé"
   },
   "global": {
+    "locked": "Verrouillé",
     "admin": "(administrateur)",
     "default": "défaut",
     "or": "ou",
@@ -564,13 +565,15 @@
     },
     "blocked": {
       "allowed": "Ce donut est privé, seuls les utilisateurs autorisés peuvent le rejoindre.",
+      "ask-for-access": "Pour en demander l'accès, <a href=\"#\" class=\"ask-for-allowance\"><strong>cliquer ici</strong></a>.",
+      "rejoin-donut": "<a class=\"rejoin curp\"><strong>cliquer ici</strong></a> pour le rejoindre à nouveau.",
       "allowed_button": "Demander l'accès",
-      "password": "Ce donut est protégé par un mot de passe.",
+      "password": "Ce donut dispose également  d'un mot de passe. Si vous le connaissez, saisissez le ci-dessous :",
       "password_placeholder": "Mot de passe",
       "password_button": "Rejoindre",
       "banned": "Vous avez été banni de ce donut le __at__",
       "banned_reason": "Pour la raison suivante : ",
-      "kicked": "Vous avez été expulsé de ce donut",
+      "kicked": "Vous avez été expulsé de ce donut.",
       "kicked_button": "Rejoindre",
       "changemode": "Changer le mode",
       "disclaimer-private": "Ce donut est privé, seul les utilisateurs explicitement autorisés par le propriétaire peuvent y accéder. Pour ajouter de nouveaux utilisateurs, merci de les rechercher dans la liste ci-dessous.",
