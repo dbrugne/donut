@@ -330,7 +330,7 @@
       }
     },
     "disallow": {
-      "infobox": "Disallow"
+      "infobox": "Remove"
     },
     "op": {
       "is": "This user is the moderator of this donut.",
@@ -570,13 +570,14 @@
     "blocked": {
       "allowed": "This donut is private. Only users you authorize can join, participate and access history Authorize users.",
       "ask-for-access": "To request access, <a href=\"#\" class=\"ask-for-allowance\"><strong>click here</strong></a>.",
+      "rejoin-donut": "<a class=\"rejoin curp\"><strong>Click here</strong></a> to get back in.",
       "allowed_button": "Request access",
       "password": "Or you can join directly if you know the password:",
       "password_placeholder": "Password",
       "password_button": "Join",
       "banned": "You were banned from this donut on __at__",
-      "banned_reason": "For following reason: ",
-      "kicked": "You were kicked from this donut",
+      "banned_reason": "for the following reason: ",
+      "kicked": "You have been kicked out from this donut.",
       "kicked_button": "Join",
       "changemode": "Switch to private mode",
       "disclaimer-private": "This donut is private, Only users specifically authorized by the owner can access it. To add new users, thanks to search in the list below.",
