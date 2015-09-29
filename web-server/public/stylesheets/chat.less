@@ -297,15 +297,6 @@
           }
         }
       } // #color .container #notifications
-      .icontop .toggle, .icontop .dropdown-toggle {
-        .icon {
-          .opacity(0.5);
-          &:hover { .opacity(1); }
-        }
-        &[aria-expanded="true"] {
-          .icon { .opacity(1); }
-        }
-      }
       .navbar-nav { float:left; margin: 0;
         &.navbar-right { float:right; margin: 0; position: absolute; top: 0; right: 0;
           > li > a { background-color:transparent; }
@@ -316,7 +307,7 @@
             box-shadow: 0 6px 12px rgba(0,0,0,0.175); }
         }
         & > li { float: left;
-          & > a { padding-top: 9px; padding-bottom: 8px;
+          & > a, & > div.ctn { padding: 9px 15px 10px;
             &:active, &:visited, &:focus { background-color: transparent; }
             .icon { font-size: 20px; } // #chat #color .container .navbar-nav>li>a .icon
           } // #chat #color .container .navbar-nav>li>a
