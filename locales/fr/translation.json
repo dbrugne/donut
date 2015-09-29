@@ -383,7 +383,10 @@
       "cancel": "Non, j'annule",
       "confirm": "Oui, je confirme",
       "message": {
-        "modechange": "Attention cette opération est irréversible! Tous les utilisateurs dans ce donut seront ajouté à la liste des utilisateurs autorisés. Ce donut ne sera plus ouvert au public."
+        "modechange": "Attention cette opération est irréversible! Tous les utilisateurs dans ce donut seront ajouté à la liste des utilisateurs autorisés. Ce donut ne sera plus ouvert au public.",
+        "refuseuser": "Vous allez refuser l'accès à @__username__",
+        "acceptuser": "Vous allez autoriser l'accès à @__username__",
+        "disallowuser": "Vous allez supprimer l'accès à @__username__"
       }
     },
     "commands": {

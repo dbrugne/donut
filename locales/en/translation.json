@@ -382,7 +382,10 @@
       "cancel": "No, cancel",
       "confirm": "Yes, confirm",
       "message": {
-        "modechange": "Warning this operation is not reversible! All current users in this donut will be allowed."
+        "modechange": "Warning this operation is not reversible! All current users in this donut will be allowed.",
+        "refuseuser": "You are about to refuse @__username__",
+        "acceptuser": "You are about to authorize @__username__",
+        "disallowuser": "You are about to disallow @__username__"
       }
     },
     "commands": {

@@ -52,9 +52,10 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
   onAllowUser: function (event) {
     var userId = $(event.currentTarget).data('userId');
+    var userName = $(event.currentTarget).data('username');
 
-    if (userId) {
-      confirmationView.open({}, _.bind(function () {
+    if (userId && userName) {
+      confirmationView.open({message: 'accept-user', username: userName}, _.bind(function () {
         client.roomAllow(this.roomId, userId, _.bind(function (data) {
           app.trigger('redraw-tables');
         }, this));
@@ -64,9 +65,10 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
   onRefuseUser: function (event) {
     var userId = $(event.currentTarget).data('userId');
+    var userName = $(event.currentTarget).data('username');
 
-    if (userId) {
-      confirmationView.open({}, _.bind(function () {
+    if (userId && userName) {
+      confirmationView.open({message: 'refuse-user', username: userName}, _.bind(function () {
         client.roomRefuse(this.roomId, userId, _.bind(function (data) {
           app.trigger('redraw-tables');
         }, this));
@@ -76,9 +78,10 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
   onDisallow: function (event) {
     var userId = $(event.currentTarget).data('userId');
+    var userName = $(event.currentTarget).data('username');
 
-    if (userId) {
-      confirmationView.open({}, _.bind(function () {
+    if (userId && userName) {
+      confirmationView.open({message: 'disallow-user', username: userName}, _.bind(function () {
         client.roomDisallow(this.roomId, userId, _.bind(function (data) {
           app.trigger('redraw-tables');
         }, this));

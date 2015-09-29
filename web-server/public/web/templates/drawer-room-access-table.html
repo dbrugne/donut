@@ -8,14 +8,14 @@
             </td>
             <td class="actions" style="text-align: right; width: 1px;">
                 <% if (u.isPending) { %>
-                    <div class="accept-allow" data-toggle="confirmation" data-action="accept-allow-user" title="<%= t('global.accept') %>" data-user-id="<%= u.user_id %>">
+                    <div class="accept-allow" data-toggle="confirmation" data-action="accept-allow-user" title="<%= t('global.accept') %>" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>">
                         <i class="icon icon-fw icon-check curp" data-toggle="tooltip" data-placement="top" title="<%= t('chat.allow.infobox.accept') %>"></i>
                     </div>
-                    <div class="refuse-allow" data-toggle="confirmation" data-action="refuse-allow-user" title="<%= t('global.refuse') %>" data-user-id="<%= u.user_id %>">
+                    <div class="refuse-allow" data-toggle="confirmation" data-action="refuse-allow-user" title="<%= t('global.refuse') %>" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>">
                         <i class="icon icon-fw icon-times curp" data-toggle="tooltip" data-placement="top" title="<%= t('chat.allow.infobox.refuse') %>"></i>
                     </div>
                     <% } else { %>
-                    <div class="disallow" data-toggle="confirmation" data-action="disallow-user" data-user-id="<%= u.user_id %>">
+                    <div class="disallow" data-toggle="confirmation" data-action="disallow-user" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>">
                         <i class="icon icon-fw icon-times curp" data-toggle="tooltip" data-placement="top" title="<%= t('chat.disallow.infobox') %>"></i>
                     </div>
                 <% } %>
