@@ -73,7 +73,8 @@ var MainView = Backbone.View.extend({
     'click .open-room-users': 'openRoomUsers',
     'click .open-room-delete': 'openRoomDelete',
     'click .close-discussion': 'onCloseDiscussion',
-    'click .open-room-access': 'openRoomAccess'
+    'click .open-room-access': 'openRoomAccess',
+    'click .switch[data-language]': 'switchLanguage'
   },
 
   initialize: function () {
@@ -694,6 +695,20 @@ var MainView = Backbone.View.extend({
       title = model.get('username');
     }
     windowView.setTitle(title);
+  },
+
+  switchLanguage: function (event) {
+    event.preventDefault();
+    var language = $(event.currentTarget).data('language');
+    if (!language) {
+      return;
+    }
+
+    var d = new Date();
+    d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
+    var expires = 'expires=' + d.toUTCString();
+    document.cookie = 'donut.lng' + '=' + language + '; ' + expires;
+    window.location.reload();
   }
 });
 
