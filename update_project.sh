@@ -4,7 +4,7 @@ grunt admin-notify-message \
   && pm2 stop web \
   && pm2 stop ws \
   && git pull \
-  && npm install \
+  && npm install --production \
   && bower install \
   && grunt build-web \
   && pm2 restart web \
