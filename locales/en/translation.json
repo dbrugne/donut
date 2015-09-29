@@ -385,7 +385,8 @@
         "modechange": "WARNING this action is irreversible.",
         "refuseuser": "You are about to refuse @__username__",
         "acceptuser": "You are about to authorize @__username__",
-        "disallowuser": "You are about to disallow @__username__"
+        "disallowuser": "You are about to disallow @__username__",
+        "invite": "You are about to authorize @__username__. A notification will be sent to invite @__username__ to join #__name__."
       }
     },
     "commands": {
@@ -456,7 +457,8 @@
         "roomtopic": "New topic in <span>#__name__</span>",
         "roommessage": "New message in <span>#__name__</span>",
         "usermention": "You were mentionned in <span>#__name__</span>",
-        "usermessage": "<span>@__username__</span>: __message__"
+        "usermessage": "<span>@__username__</span>: __message__",
+        "roominvite": "<span>@__username__</span> invites you to join <span>#__name__</span>"
       },
       "userban": " was blocked by",
       "userdeban": " is no longer blocked as requested by"
@@ -891,6 +893,15 @@
       "content": {
         "title": "@__username__ refuse your request to join #__roomname__",
         "disclaimer": "Don't worry you can make another request to join this donut later !",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
+      }
+    },
+    "roominvite": {
+      "subject": "An user invites you to join #__roomname__",
+      "content": {
+        "title": "@__username__ invites you to join #__roomname__",
+        "disclaimer": "You can join his room right now!",
         "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
       }

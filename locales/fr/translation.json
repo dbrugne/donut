@@ -386,7 +386,8 @@
         "modechange": " ATTENTION cette action est irréversible.",
         "refuseuser": "Vous allez refuser l'accès à @__username__",
         "acceptuser": "Vous allez autoriser l'accès à @__username__",
-        "disallowuser": "Vous allez supprimer l'accès à @__username__"
+        "disallowuser": "Vous allez supprimer l'accès à @__username__",
+        "invite": "Vous allez autoriser l'accès à @__username__. Une notification va lui être adressée pour l'inviter à rejoindre #__name__."
       }
     },
     "commands": {
@@ -457,7 +458,8 @@
         "roomtopic": "Nouveau sujet dans <span>#__name__</span>",
         "roommessage": "Nouveaux messages dans <span>#__name__</span>",
         "usermention": "Vous êtes mentionné dans <span>#__name__</span>",
-        "usermessage": "<span>@__username__</span>: __message__"
+        "usermessage": "<span>@__username__</span>: __message__",
+        "roominvite": "<span>@__username__</span> vous invite à rejoindre <span>#__name__</span>"
       },
       "userban": " est bloqué à la demande de",
       "userdeban": " n'est plus bloqué à la demande de"
@@ -893,6 +895,15 @@
       "content": {
         "title": "@__username__ a refusé votre demande de rejoindre #__roomname__",
         "disclaimer": "Ne vous inquiétez pas vous pouvez toujours refaire une demande plus tard !",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
+      }
+    },
+    "roominvite": {
+      "subject": "Un utilisateur vous invite à rejoindre #__roomname__",
+      "content": {
+        "title": "@__username__ vous invite à rejoindre #__roomname__",
+        "disclaimer": "Vous pouvez rejoindre sa room sans plus tarder!",
         "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
       }

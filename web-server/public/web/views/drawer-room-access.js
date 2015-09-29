@@ -56,6 +56,7 @@ var RoomAccessView = Backbone.View.extend({
     this.listenTo(client, 'room:request', this.renderPendingTable);
 
     this.currentPassword = data.password;
+    this.room_name = data.name;
 
     var html = this.template({
       owner_id: data.owner.user_id,
@@ -142,9 +143,10 @@ var RoomAccessView = Backbone.View.extend({
     event.preventDefault();
 
     var userId = $(event.currentTarget).data('userId');
+    var userName = $(event.currentTarget).data('username');
 
-    if (userId) {
-      ConfirmationView.open({}, _.bind(function () {
+    if (userId && userName) {
+      ConfirmationView.open({message: 'invite', username: userName, room_name: this.room_name}, _.bind(function () {
         client.roomAllow(this.roomId, userId, _.bind(function () {
           this.renderTables();
         }, this));

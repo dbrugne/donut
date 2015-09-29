@@ -1,5 +1,5 @@
 <% _.each(users, function (u) { %>
-    <li data-user-id="<%= u.user_id %>"><a href="#"><img src="<%= u.avatarUrl %>" class="mr5"><%= u.username %></a></li>
+    <li data-user-id="<%= u.user_id %>" data-username="<%= u.username %>"><a href="#"><img src="<%= u.avatarUrl %>" class="mr5"><%= u.username %></a></li>
 <% });%>
 <% if (!users.length) { %>
 <li><a href="#"><%= t('chat.search.nouser') %></a></li>
