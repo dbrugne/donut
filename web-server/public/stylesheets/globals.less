@@ -421,3 +421,10 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
     &:hover { color: @cl-subtext40; }
   }
 }
+
+.icon.hover { .opacity(0.5);
+  &:hover { .opacity(1);
+}
+[aria-expanded="true"] .icon {
+  .icon { .opacity(1); }
+}}

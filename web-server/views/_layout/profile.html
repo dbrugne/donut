@@ -8,23 +8,63 @@
             <div id="navbar">
                 <a class="navbar-brand-a hidden-xs hidden-sm" href="/"><img class="logo" src="/images/logo-bordered-small.png" alt="<%= t('title.chat') %>"> <span class="beta dc-text-contrast">alpha</span></a>
                 <ul class="nav navbar-nav navbar-right">
-                    <li id="languages" class="hidden-sm hidden-xs dc-text-contrast">
-                        <span><%= t('global.switchlanguage') %></span>
-                        <a data-language="fr" class="switch dc-text-contrast">fr</a> -
-                        <a data-language="en" class="switch dc-text-contrast">en</a>
-                    </li>
-                    <li class="help">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            <i class="icon icon-menu dc-text-contrast"></i>
+                    <li class="icontop">
+                        <a href="/" class="toggle dc-text-contrast">
+                            <i class="icon icon-home dc-text-contrast hover"></i>
                         </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li class="arrow-up"></li>
-                            <li><a href="/!#room/help"><%= t('chat.help') %></a></li>
-                            <li><a href="/faq" target="_blank"><%= t('page.faq.title') %></a></li>
-                            <li><a data-toggle="contactform"><%= t('page.contact.title') %></a></li>
-                            <li><a href="/eutc" target="_blank"><%= t('page.eutc.title') %></a></li>
-                            <li><a href="/legals" target="_blank"><%=t('landing.legals')%></a></li>
-                        </ul>
+                    </li>
+
+                    <li class="icontop">
+                        <a href="/" class="toggle">
+                            <i class="go-to-search icon icon-search dc-text-contrast hover"></i>
+                        </a>
+                    </li>
+
+                    <li class="icontop">
+                        <a href="/create" class="toggle">
+                            <i class="open-create-room icon icon-plus dc-text-contrast hover"></i>
+                        </a>
+                    </li>
+
+                    <li class="icontop help">
+                        <span id="block-current-user">
+
+                            <% if (typeof user !== 'undefined' && typeof user.avatar !== 'undefined') { %>
+                                <img class="mr5 dc-border-darker" src="<%= user.avatar %>" alt="@<%- user.username %> avatar">
+                                <span class="mr5 dc-text-contrast">@<%- user.username %></span>
+                            <span class="connection mr5">
+                                <i class="icon icon-circle status online" title="<%= t('global.online') %>"></i>
+                            </span>
+                            <% } else { %>
+                                <img class="mr5 dc-border-darker" src="<%= userDefaultAvatar %>" alt="@<%- user.username %> avatar">
+                                <span class="mr5 dc-text-contrast">@<%= t('global.nobody') %></span>
+                            <% } %>
+
+                            <a href="#" class="dropdown-toggle toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                <i class="icon icon-menu dc-text-contrast"></i>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li class="arrow-up"></li>
+
+                                <% if (typeof user !== 'undefined' && typeof user.avatar !== 'undefined') { %>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/logout"><i class="icon icon-fw icon-power-off"></i> <%= t('actions.logout') %></a></li>
+                                <% } else { %>
+                                    <li role="presentation"><a href="/login"><%= t('landing.login-self') %></a></li>
+                                    <li role="presentation"><a href="/signup"><%= t('landing.signup-self') %></a></li>
+                                <% } %>
+
+                                <li role="separator" class="divider"></li>
+                                <li class="colored"><a href="/!#room/help"><%= t('chat.help') %></a></li>
+                                <li class="colored"><a href="/faq" target="_blank"><%= t('page.faq.title') %></a></li>
+                                <li class="colored"><a data-toggle="contactform"><%= t('page.contact.title') %></a></li>
+                                <li class="colored"><a href="/eutc" target="_blank"><%= t('page.eutc.title') %></a></li>
+                                <li class="colored"><a href="/legals" target="_blank"><%=t('landing.legals')%></a></li>
+                                <li role="separator" class="divider"></li>
+                                <li class="dropdown-header"><%= t('global.switchlanguage') %></li>
+                                <li class="colored"><a href="" data-language="fr" class="switch">Français</a></li>
+                                <li class="colored"><a href="" data-language="en" class="switch">English</a></li>
+                            </ul>
+                        </span>
                     </li>
                 </ul>
             </div><!--/.nav-collapse -->
@@ -33,70 +73,6 @@
     <div class="row">
         <div id="left">
             <ul class="page-sidebar-menu">
-                <li id="block-current-user">
-                    <% if (typeof user !== 'undefined' && typeof user.avatar !== 'undefined') { %>
-                        <span class="avatar hidden-sm hidden-xs" data-username="<%= user.username %>">
-                            <img src="<%= user.avatar %>" alt="<%= user.username %> avatar">
-                            <span class="title hidden-sm hidden-xs">
-                                <a href="/user/<%= user.username %>" class="username">
-                                    @<%= user.username %>
-                                </a>
-                            </span>
-                            <span class="selected"></span>
-                            <span class="arrow"></span>
-                        </span>
-
-                        <ul class="sub-menu hidden-sm hidden-xs">
-                            <li>
-                                <div class="dropdown dropdown-user-actions">
-                                    <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" id="settingsDropdown">
-                                        <i class="icon icon-chevron-down"></i>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu" aria-labelledby="settingsDropdown">
-                                        <li role="presentation"><i class="icon icon-power-off"></i>&nbsp;<a role="menuitem" tabindex="-1" href="/logout"><%= t('actions.logout') %></a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
-
-                        <!--Only for responsive-->
-                        <a href="#" class="avatar dropdown-toggle visible-xs visible-sm" data-toggle="dropdown" aria-expanded="false" role="button">
-                            <img src="<%= user.avatar %>" alt="@<%= user.username %> avatar">
-                        </a>
-                        <ul class="sub-menu dropdown-menu visible-xs visible-sm">
-                            <li>
-                                <span class="title">
-                                    <span class="username">
-                                        @<%= user.username %>
-                                    </span>
-                                </span>
-                            </li>
-                            <li>
-                                <div class="dropdown dropdown-user-actions">
-                                    <ul class="dropdown-menu" role="menu" aria-labelledby="settingsDropdown">
-                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/logout"><i class="icon icon-power-off"></i> <%= t('actions.logout') %></a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
-
-                    <% } else { %>
-                        <span class="avatar default">
-                            <img src="<%= userDefaultAvatar %>" alt="default avatar">
-                        </span>
-                        <span class="title hidden-sm hidden-xs ml70">
-                            <strong><span class="username"><a href="/login">Se connecter</a></span></strong>
-                            <strong><span class="username"><a href="/signup">S'inscrire</a></span></strong>
-                        </span>
-                    <% } %>
-                    <hr class="visible-xs visible-sm">
-                </li><!-- /#block-current-user -->
-
-                <li id="block-actions">
-                    <hr>
-                        <a href="/"><%= t('chat.actions.search') %></a> <%= t('global.or') %> <a href="/create" class="open-create-room"><%= t('chat.actions.create') %></a> <%= t('chat.actions.adonut') %>
-                    <hr>
-                </li>
 
                 <li id="block-discussions" style="padding: 15px; text-align: left;">
                     <div class="list  hidden-sm hidden-xs">

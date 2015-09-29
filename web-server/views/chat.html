@@ -17,17 +17,12 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li class="icontop">
                             <a href="/!#" class="toggle dc-text-contrast">
-                                <i class="icon icon-home dc-text-contrast"></i>
-                            </a>
-                        </li>
-                        <li class="icontop" id="mute">
-                            <a href="#" class="toggle">
-                                <i class="icon icon-volume-up dc-text-contrast"></i>
+                                <i class="icon icon-home dc-text-contrast hover"></i>
                             </a>
                         </li>
                         <li id="notifications" class="icontop dropdown empty">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                <i class="icon icon-globe dc-text-contrast"></i>
+                            <a href="#" class="dropdown-toggle toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                <i class="icon icon-globe dc-text-contrast hover"></i>
                                 <span class="badge hide-empty dc-border-darker dc-text"></span>
                             </a>
                             <div class="dropdown-menu p0" role="menu">
@@ -50,18 +45,42 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="icontop help">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                <i class="icon icon-menu dc-text-contrast"></i>
+                        <li class="icontop">
+                            <div class="toggle">
+                                <i class="go-to-search icon icon-search dc-text-contrast hover"></i>
+                            </div>
+                        </li>
+                        <li class="icontop">
+                            <div class="toggle">
+                                <i class="open-create-room icon icon-plus dc-text-contrast hover"></i>
+                            </div>
+                        </li>
+                        <li class="icontop" id="mute">
+                            <a href="#" class="toggle">
+                                <i class="icon icon-volume-up dc-text-contrast hover"></i>
                             </a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li class="arrow-up"></li>
-                                <li><a href="/!#room/help"><%= t('chat.help') %></a></li>
-                                <li><a href="/faq" target="_blank"><%= t('page.faq.title') %></a></li>
-                                <li><a data-toggle="contactform"><%= t('page.contact.title') %></a></li>
-                                <li><a href="/eutc" target="_blank"><%= t('page.eutc.title') %></a></li>
-                                <li><a href="/legals" target="_blank"><%=t('landing.legals')%></a></li>
-                            </ul>
+                        </li>
+                        <li class="icontop help">
+                            <span id="block-current-user">
+                                <img class="mr5 dc-border-darker" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
+                                <span class="mr5 dc-text-contrast">@<%- user.username %></span>
+                                <span class="connection mr5"> <i class="icon icon-circle status"></i></span>
+                                <a href="#" class="dropdown-toggle toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    <i class="icon icon-menu dc-text-contrast hover"></i>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li class="arrow-up"></li>
+                                    <li><a href="/!#room/help"><%= t('chat.help') %></a></li>
+                                    <li><a href="/faq" target="_blank"><%= t('page.faq.title') %></a></li>
+                                    <li><a data-toggle="contactform"><%= t('page.contact.title') %></a></li>
+                                    <li><a href="/eutc" target="_blank"><%= t('page.eutc.title') %></a></li>
+                                    <li><a href="/legals" target="_blank"><%=t('landing.legals')%></a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li class="dropdown-header"><%= t('global.switchlanguage') %></li>
+                                    <li class="colored"><a href="" data-language="fr" class="switch">Français</a></li>
+                                    <li class="colored"><a href="" data-language="en" class="switch">English</a></li>
+                                </ul>
+                            </span>
                         </li>
                     </ul>
                 </div><!--/.nav-collapse -->
@@ -69,33 +88,13 @@
         </nav>
         <div class="row">
             <div id="left">
-
                 <ul class="page-sidebar-menu">
-
-                    <li id="block-current-user">
-                        <a href="#" class="avatar dropdown-toggle visible-xs visible-sm" data-toggle="dropdown" aria-expanded="false" role="button">
-                            <img src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
-                        </a>
-                    </li><!-- /#block-current-user -->
-                    <li class="visible-xs visible-sm">
-                        <a href="/!#"><i class="icon icon-home icon-fw"></i></a>
-                        <a class="go-to-search"><i class="icon icon-search icon-fw"></i></a>
-                        <a class="open-create-room"><i class="icon icon-plus icon-fw"></i></a>
-                    </li>
-
-                    <li id="block-actions">
-                        <hr>
-                        <a class="go-to-search"><%= t('chat.actions.search') %></a> <%= t('global.or') %> <a class="open-create-room"><%= t('chat.actions.create') %></a> <%= t('chat.actions.adonut') %>
-                        <hr>
-                    </li>
-
                     <li id="block-discussions">
                         <ul class="list">
                             <!--discussions content-->
                         </ul>
                     </li>
                 </ul>
-
             </div><!-- /#left -->
             <div id="center">
                 <div id="drawer">
