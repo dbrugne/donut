@@ -133,6 +133,8 @@
       &::before { content:''; border-style: solid; border-width: 10px 0 10px 10px; border-color: transparent transparent transparent #FFF; position: absolute; top: -10px; right: 2px; }
     }
   }
+  button > i { color:@cl-subtext20; }
+  &:hover button >  i { color:@cl-subtext50; }
   &.user-list {
     button { color: @cl-background; border: none; background-color: transparent; }
     .dropdown-menu {
@@ -380,6 +382,7 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   &.column { .flex-flow(column nowrap); }
   &.center { align-items: center; }
   &.baseline { align-items: baseline; }
+  &.flex-end { align-items: flex-end; }
   &.space-betxeen { justify-content: space-between; }
   &.jc-center { justify-content: center; }
   &.jc-end { justify-content: flex-end; }
@@ -410,3 +413,18 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   .colorize-border { border-color:@cl-warning; }
   .colorize-back { background-color:@cl-warning; }
 }
+
+.pagination {
+  &.centered { .display-flex; margin: auto; }
+  >.active>a, >.active>a:hover { color: @cl-clouds; background-color: @cl-subtext20; border-color: @cl-subtext20; }
+  >li>a, >li>span { color: @cl-subtext30;
+    &:hover { color: @cl-subtext40; }
+  }
+}
+
+.icon.hover { .opacity(0.5);
+  &:hover { .opacity(1);
+}
+[aria-expanded="true"] .icon {
+  .icon { .opacity(1); }
+}}

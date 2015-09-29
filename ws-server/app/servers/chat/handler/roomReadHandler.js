@@ -14,6 +14,7 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
+  var user = session.__currentUser__;
   var room = session.__room__;
 
   var read = {};
@@ -33,70 +34,51 @@ handler.call = function (data, session, next) {
     },
 
     function prepare (callback) {
+      var users = [];
+      var alreadyIn = [];
+
       // owner
       var owner = {};
       if (room.owner) {
         owner = {
-          user_id: room.owner._id,
+          user_id: room.owner.id,
           username: room.owner.username,
           avatar: room.owner._avatar(),
-          color: room.owner.color
+          color: room.owner.color,
+          is_owner: true
         };
+        users.push(owner);
       }
 
       // op
-      var ops = [];
       if (room.op && room.op.length > 0) {
         _.each(room.op, function (op) {
-          ops.push({
+          var el = {
             user_id: op.id,
             username: op.username,
             avatar: op._avatar(),
-            color: op.color
-          });
-        });
-      }
-
-      // ban
-      var bans = [];
-      if (room.bans && room.bans.length > 0) {
-        _.each(room.bans, function (ban) {
-          bans.push({
-            user_id: ban.user.id,
-            username: ban.user.username,
-            avatar: ban.user._avatar(),
-            banned_at: ban.banned_at,
-            reason: ban.reason,
-            color: ban.color
-          });
-        });
-      }
-
-      // devoices
-      var devoices = [];
-      if (room.devoices && room.devoices.length) {
-        _.each(room.devoices, function (devoice) {
-          devoices.push({
-            user_id: devoice.user.id,
-            username: devoice.user.username,
-            avatar: devoice.user._avatar(),
-            devoiced_at: devoice.devoiced_at,
-            reason: devoice.reason,
-            color: devoice.color
-          });
+            color: op.color,
+            is_op: true
+          };
+          users.push(el);
+          alreadyIn.push(el.user_id);
         });
       }
 
       // users
-      var users = [];
       if (room.users && room.users.length > 0) {
         _.each(room.users, function (u) {
-          users.push({
+          if (u.id === owner.user_id || alreadyIn.indexOf(u.id) !== -1) {
+            return;
+          }
+          var el = {
             user_id: u.id,
             username: u.username,
             avatar: u._avatar(),
             color: u.color
-          });
+          };
+          users.push(el);
+          alreadyIn.push(el.user_id);
         });
       }
 
@@ -105,9 +87,6 @@ handler.call = function (data, session, next) {
         id: room.id,
         room_id: room.id,
         owner: owner,
-        op: ops,
-        bans: bans,
-        devoices: devoices,
         users: users,
         avatar: room._avatar(),
         poster: room._poster(),
@@ -116,14 +95,16 @@ handler.call = function (data, session, next) {
         topic: room.topic,
         description: room.description,
         created: room.created_at,
-        mode: room.mode,
-        password: room.password
+        mode: room.mode
       };
+
+      if (room.isOwner(user.id) || session.settings.admin === true) {
+        read.password = room.password;
+      }
 
       if (session.settings.admin === true) {
         read.visibility = room.visibility || false;
         read.priority = room.priority || 0;
-        // @todo : pass current password to admin only
       }
 
       return callback(null);

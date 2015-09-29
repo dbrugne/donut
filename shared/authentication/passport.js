@@ -54,8 +54,14 @@ passport.use('local-signup', new LocalStrategy(localStrategyOptions,
       // Facebook)
       if (req.user) {
         var user = req.user;
-        user.local.email = email;
-        user.local.password = user.generateHash(password);
+
+        // if user is already authenticated AND have email/password set we DON'T
+        // override previous credentials
+        if (!user.local.email) {
+          user.local.email = email;
+          user.local.password = user.generateHash(password);
+        }
+
         user.lastlogin_at = Date.now();
         user.save(function (err) {
           if (err) {

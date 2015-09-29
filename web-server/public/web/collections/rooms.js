@@ -214,6 +214,9 @@ var RoomsCollection = Backbone.Collection.extend({
       var modelTmp = model.attributes;
       if (what === 'ban' && data.banned_at) {
         modelTmp.banned_at = data.banned_at;
+        if (data.banned_reason) {
+          modelTmp.banned_reason = data.banned_reason;
+        }
       }
       this.remove(model);
       this.addModel(modelTmp, blocked);

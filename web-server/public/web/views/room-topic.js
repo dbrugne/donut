@@ -1,10 +1,7 @@
-var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
-var currentUser = require('../models/current-user');
 
 var RoomTopicView = Backbone.View.extend({
   template: require('../templates/room-topic.html'),
@@ -15,7 +12,7 @@ var RoomTopicView = Backbone.View.extend({
     'click .cancel': 'hideForm',
     'click .submit': 'sendNewTopic',
     'keypress .topic-input': function (event) {
-      if (event.which == 13) {
+      if (event.which === 13) {
         this.sendNewTopic(event);
       }
     }
@@ -64,8 +61,9 @@ var RoomTopicView = Backbone.View.extend({
     this.render();
   },
   showForm: function () {
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin())
+    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
       return false;
+    }
 
     var topic = common.markup.toText(this.model.get('topic'));
     this.$('.topic-current').hide();
@@ -77,19 +75,22 @@ var RoomTopicView = Backbone.View.extend({
     this.$('.topic-current').css('display', 'inline-block');
   },
   sendNewTopic: function (event) {
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) return false;
+    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
+      return false;
+    }
 
     var newTopic = this.$('.topic-input').val();
 
     // only if different
-    if (newTopic == this.model.get('topic')) {
+    if (newTopic === this.model.get('topic')) {
       this.hideForm();
       return;
     }
 
     // only if not too long
-    if (newTopic.length <= 512)
+    if (newTopic.length <= 512) {
       client.roomTopic(this.model.get('id'), newTopic);
+    }
 
     // reset form state
     this.$('.topic-input').val('');
@@ -100,6 +101,5 @@ var RoomTopicView = Backbone.View.extend({
   }
 
 });
-
 
 module.exports = RoomTopicView;

@@ -2,25 +2,25 @@
     <% _.each(users, function(u, index) { %>
     <tr>
         <td class="username">
-            <img src="<%= u.avatarUrl %>" class="mr5">
-            <a href="#" class="colored open-user-profile" data-user-id="<%= u.user_id %>">@<%= u.username %></a>
-        </td>
-        <td style="border-left: solid 2px; border-right: solid 2px; width: 1px;">
-            <% if(u.isOwner) { %>
-            <div><i class="icon icon-fw icon-owner cl-warning" data-toggle="tooltip" data-placement="top" title="<%= t('chat.users.type.owner') %>"></i></div>
-            <% } if (u.isOp) { %>
-            <div><i class="icon icon-fw icon-op op" data-toggle="tooltip" data-placement="top" title="<%= t('chat.users.type.op') %>"></i></div>
-            <% } if(u.isBanned) { %>
-            <div><i class="icon icon-fw icon-ban" data-toggle="tooltip" data-placement="top" title="<%= t('chat.users.type.ban') %>"></i></div>
-            <% } if(u.isDevoiced) { %>
-            <div><i class="icon icon-fw icon-microphone-slash" data-toggle="tooltip" data-placement="top" title="<%= t('chat.users.type.devoice') %>"></i></div>
-            <% } %>
+            <div class="flex-parent flex-end">
+                <img src="<%= u.avatarUrl %>" class="mr5">
+                <a href="#" class="colored open-user-profile" data-user-id="<%= u.user_id %>">@<%= u.username %></a>
+                <% if(u.isOwner) { %>
+                <i class="icon icon-fw icon-owner cl-warning" data-toggle="tooltip" data-placement="top" title="<%= t('chat.users.type.owner') %>"></i>
+                <% } if (u.isOp) { %>
+                <i class="icon icon-fw icon-op op" data-toggle="tooltip" data-placement="top" title="<%= t('chat.users.type.op') %>"></i>
+                <% } if(u.isBanned) { %>
+                <i class="icon icon-fw icon-ban" data-toggle="tooltip" data-placement="top" title="<%= t('chat.users.type.ban') %>"></i>
+                <% } if(u.isDevoiced) { %>
+                <i class="icon icon-fw icon-microphone-slash" data-toggle="tooltip" data-placement="top" title="<%= t('chat.users.type.devoice') %>"></i>
+                <% } %>
+            </div>
         </td>
         <td class="actions" style="text-align: right; width: 1px;">
             <% if(op && !u.isOwner) { %>
                 <span class="dropdown user-list">
                     <button class="dropdown-toggle flex-parent" data-toggle="dropdown" aria-expanded="true">
-                        <i class="icon icon-chevron-down dc-text-contrast"></i>
+                        <i class="icon icon-chevron-down"></i>
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li class="arrow-right"></li>

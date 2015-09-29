@@ -143,6 +143,13 @@ Notification.prototype.sendEmail = function (model, done) {
             roomname: room.name
           };
           break;
+        case 'roominvite':
+          method = emailer.roomInvite;
+          data = {
+            username: model.data.by_user.username,
+            roomname: room.name
+          };
+          break;
         default:
           return callback('roomResquestType.sendEmail unknown notification type: ' + model.type);
       }

@@ -124,6 +124,7 @@
     "muted": "sound off"
   },
   "global": {
+    "nobody": "Nobody",
     "admin": "(admin only)",
     "default": "default",
     "or": "or",
@@ -153,7 +154,7 @@
     },
     "switchlanguage": "Language",
     "unknownerror": "Unknown error, please retry later",
-    "private-donut": "private Donut: only authorized users can join, participate and access history"
+    "private-donut": "Private donut: only authorized users can join, participate and access history"
   },
   "login": {
     "withfacebook": "with Facebook",
@@ -205,7 +206,7 @@
   },
   "home": {
     "cover": {
-      "knowmore": "More"
+      "knowmore": "Know more"
     },
     "description": {
       "title1": "tasty",
@@ -224,7 +225,7 @@
   },
   "profile": {
     "room": {
-      "ownerops": "The bosses",
+      "ownerops": "The regulars",
       "now": "Currently",
       "nouser": "No user in this donut",
       "disclaimer": {
@@ -274,7 +275,7 @@
     "loading": "Loading",
     "actions": {
       "search": "Search",
-      "searchuser": "Search for a user",
+      "searchuser": "Invite a user",
       "create": "create",
       "adonut": "a donut",
       "account": "my account",
@@ -329,7 +330,7 @@
       }
     },
     "disallow": {
-      "infobox": "Disallow"
+      "infobox": "Remove"
     },
     "op": {
       "is": "This user is the moderator of this donut.",
@@ -364,15 +365,15 @@
       "infobox": "View the user profile"
     },
     "allowed": {
-      "success": "Access request have been successfully sent",
+      "success": "A request has been sent successfully",
       "error" : {
-        "notallowed": "An access request is allready pending",
+        "notallowed": "An access request is already pending",
         "banned": "You have been ban from this donut"
       }
     },
     "password": {
       "wrong-password": "Wrong password",
-      "spam-password": "please wait",
+      "spam-password": "You have made ​​too many tests ! Wait or made ​​a request for access",
       "error": "An error has occurred"
     },
     "confirmation": {
@@ -381,7 +382,11 @@
       "cancel": "No, cancel",
       "confirm": "Yes, confirm",
       "message": {
-        "modechange": "Warning this operation is not reversible! All current users in this donut will be allowed."
+        "modechange": "WARNING this action is irreversible.",
+        "refuseuser": "You are about to refuse @__username__",
+        "acceptuser": "You are about to authorize @__username__",
+        "disallowuser": "You are about to disallow @__username__",
+        "invite": "You are about to authorize @__username__. A notification will be sent to invite @__username__ to join #__name__."
       }
     },
     "commands": {
@@ -452,7 +457,8 @@
         "roomtopic": "New topic in <span>#__name__</span>",
         "roommessage": "New message in <span>#__name__</span>",
         "usermention": "You were mentionned in <span>#__name__</span>",
-        "usermessage": "<span>@__username__</span>: __message__"
+        "usermessage": "<span>@__username__</span>: __message__",
+        "roominvite": "<span>@__username__</span> invites you to join <span>#__name__</span>"
       },
       "userban": " was blocked by",
       "userdeban": " is no longer blocked as requested by"
@@ -465,12 +471,12 @@
       "loading": "Loading more...",
       "top": "go to top",
       "bottom": "go to bottom",
-      "currently": "This is it... You are at the very start of the conversation on <span class=\"name dc-text open-room-profile\" data-room-id=\"__roomid__\">__roomname__</span>, donut created by <span class=\"owner dc-text open-user-profile\" data-user-id=\"__ownerid__\">@__owner__</span> on <span class=\"date\">__created_at__</span> at <span class=\"date\">__created_time__</span>",
+      "currently": "This is it... You are at the very start of the conversation on <span class=\"name dc-text open-room-profile\" data-room-id=\"__roomid__\">__roomname__</span>, donut created by <span class=\"owner dc-text open-user-profile\" data-user-id=\"__ownerid__\">@__owner__</span> on <span class=\"date\">__created_at__</span>",
       "hasPassword": "Your donut is private. Configure the access to your donut so that other users can join",
       "onestart": "This conversation is private. Only you and your interlocutor can see it.",
       "edit": "Edit profile",
       "users": "Manage users",
-      "access": "Manage access"
+      "access": "Manage access,"
     },
     "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
     "closeapp": "Are you sure you want to leave ?",
@@ -486,7 +492,7 @@
       "usertype": "Type",
       "users": "User",
       "users_plural": "Users",
-      "link": "users list",
+      "link": "User list,",
       "label": "See all users",
       "search": "search a username in this donut",
       "type": {
@@ -500,10 +506,10 @@
       "usernotexist": "User not found"
     },
     "access": {
-      "link": "Access",
+      "link": "access",
       "labelsearch": "Allow users",
       "add": "Allow a user",
-      "labelpending": "Users waiting for authorization",
+      "labelpending": "Pending users",
       "types": {
         "all": "All",
         "allowed": "Allowed",
@@ -562,20 +568,22 @@
       "typing_plural": "are typing"
     },
     "blocked": {
-      "allowed": "This donut is private, only authorized users can join.",
+      "allowed": "This donut is private. Only users you authorize can join, participate and access history Authorize users.",
+      "ask-for-access": "To request access, <a href=\"#\" class=\"ask-for-allowance\"><strong>click here</strong></a>.",
+      "rejoin-donut": "<a class=\"rejoin curp\"><strong>Click here</strong></a> to get back in.",
       "allowed_button": "Request access",
-      "password": "This donut is password protected.",
+      "password": "Or you can join directly if you know the password:",
       "password_placeholder": "Password",
       "password_button": "Join",
       "banned": "You were banned from this donut on __at__",
-      "banned_reason": "For following reason: ",
-      "kicked": "You were kicked from this donut",
+      "banned_reason": "for the following reason: ",
+      "kicked": "You have been kicked out from this donut.",
       "kicked_button": "Join",
-      "changemode": "Change mode",
+      "changemode": "Switch to private mode",
       "disclaimer-private": "This donut is private, Only users specifically authorized by the owner can access it. To add new users, thanks to search in the list below.",
       "disclaimer-public": "This donut is public. Any user can access it.",
       "disclaimer-password": "You have also chosen to put a password. Users with the password can enter without having to be asked first.",
-      "disclaimer-changing": "You can switch this donut to private mode. Then, only users you authorize will be able to join, participate and access history. Access will be based on invitation and/or password. Caution, this action cannot be undone.",
+      "disclaimer-changing": "You can switch this donut to private mode. Then, only users you authorize will be able to join, participate and access history. Access will be based on invitation and/or password. The current members of this public donut will remain members once this donut switched to private. Caution, this action cannot be undone.",
       "close": "Close this donut"
     },
     "form": {
@@ -625,7 +633,7 @@
           "disclaimer": {
             "public": "Any user can join, participate and access history. Moderation tools available.",
             "private": "Only users you authorize can join, participate and access history. Moderation tools available.",
-            "password": "You also have the possibility to put a password on that donut. Users with the password can enter without having to be asked first."
+            "password": "You can also set a password. Users with the password can join without prior invitation."
           }
         },
         "create": {
@@ -886,6 +894,15 @@
       "content": {
         "title": "@__username__ refuse your request to join #__roomname__",
         "disclaimer": "Don't worry you can make another request to join this donut later !",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
+      }
+    },
+    "roominvite": {
+      "subject": "An user invites you to join #__roomname__",
+      "content": {
+        "title": "@__username__ invites you to join #__roomname__",
+        "disclaimer": "You can join his room right now!",
         "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
       }

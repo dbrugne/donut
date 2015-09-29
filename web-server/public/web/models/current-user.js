@@ -1,5 +1,4 @@
 var _ = require('underscore');
-var Backbone = require('backbone');
 var client = require('../libs/client');
 var UserModel = require('./user');
 
@@ -8,15 +7,33 @@ var CurrentUserModel = UserModel.extend({
     this.listenTo(client, 'preferences:update', this.setPreference);
 
     var that = this;
-    this.listenTo(client, 'connecting', function () { that.set('status', 'connecting'); });
-    this.listenTo(client, 'connect', function () { that.set('status', 'online'); });
-    this.listenTo(client, 'disconnect', function () { that.set('status', 'offline'); });
-    this.listenTo(client, 'reconnect', function () { that.set('status', 'online'); });
-    this.listenTo(client, 'reconnect_attempt', function () { that.set('status', 'connecting'); });
-    this.listenTo(client, 'reconnecting', function () { that.set('status', 'connecting'); });
-    this.listenTo(client, 'reconnect_error', function () { that.set('status', 'connecting'); });
-    this.listenTo(client, 'reconnect_failed', function () { that.set('status', 'error'); });
-    this.listenTo(client, 'error', function () { that.set('status', 'error'); });
+    this.listenTo(client, 'connecting', function () {
+      that.set('status', 'connecting');
+    });
+    this.listenTo(client, 'connect', function () {
+      that.set('status', 'online');
+    });
+    this.listenTo(client, 'disconnect', function () {
+      that.set('status', 'offline');
+    });
+    this.listenTo(client, 'reconnect', function () {
+      that.set('status', 'online');
+    });
+    this.listenTo(client, 'reconnect_attempt', function () {
+      that.set('status', 'connecting');
+    });
+    this.listenTo(client, 'reconnecting', function () {
+      that.set('status', 'connecting');
+    });
+    this.listenTo(client, 'reconnect_error', function () {
+      that.set('status', 'connecting');
+    });
+    this.listenTo(client, 'reconnect_failed', function () {
+      that.set('status', 'error');
+    });
+    this.listenTo(client, 'error', function () {
+      that.set('status', 'error');
+    });
 
     this._initialize(options);
   },
@@ -25,26 +42,29 @@ var CurrentUserModel = UserModel.extend({
     options = options || {};
 
     var keys = Object.keys(data);
-    if (!keys || !keys.length)
+    if (!keys || !keys.length) {
       return;
+    }
 
-    var key = keys[0];
-    if (!key)
+    var key = keys[ 0 ];
+    if (!key) {
       return;
+    }
 
     var preferences = this.get('preferences') || {};
-    preferences[key] = data[key];
+    preferences[ key ] = data[ key ];
     this.set('preferences', preferences, options);
   },
   setPreferences: function (preferences, options) {
     options = options || {};
 
-    if (!preferences)
+    if (!preferences) {
       return;
+    }
 
     var newPreferences = {}; // reset all previous keys
     _.each(preferences, function (value, key, list) {
-      newPreferences[key] = value;
+      newPreferences[ key ] = value;
     });
 
     this.set('preferences', newPreferences, options);
@@ -54,41 +74,30 @@ var CurrentUserModel = UserModel.extend({
     var preferences = this.get('preferences');
 
     // if no preference set OR browser:exitpopin equal to true, we show
-    if (!preferences || typeof preferences['browser:exitpopin'] == 'undefined' || preferences['browser:exitpopin'] === true)
-      return true;
-
-    return false;
+    return (!preferences || typeof preferences[ 'browser:exitpopin' ] === 'undefined' || preferences[ 'browser:exitpopin' ] === true);
   },
   shouldDisplayWelcome: function () {
     var preferences = this.get('preferences');
 
     // if no preference set OR browser:welcome equal to true, we show
-    if (!preferences || typeof preferences['browser:welcome'] == 'undefined' || preferences['browser:welcome'] === true)
-      return true;
-
-    return false;
+    return (!preferences || typeof preferences[ 'browser:welcome' ] === 'undefined' || preferences[ 'browser:welcome' ] === true);
   },
   shouldPlaySound: function () {
     var preferences = this.get('preferences');
 
     // if no preference set OR browser:sound equal to true, we play
-    if (!preferences || typeof preferences['browser:sounds'] == 'undefined' || preferences['browser:sounds'] === true)
-      return true;
-
-    return false;
+    return (!preferences || typeof preferences[ 'browser:sounds' ] === 'undefined' || preferences[ 'browser:sounds' ] === true);
   },
 
   shouldDisplayDesktopNotif: function () {
     var preferences = this.get('preferences');
 
     // if no preference set OR browser:sound equal to true, we play
-    if (!preferences || typeof preferences['notif:channels:desktop'] == 'undefined')
+    if (!preferences || typeof preferences[ 'notif:channels:desktop' ] === 'undefined') {
       return false;
+    }
 
-    if (preferences['notif:channels:desktop'] === true)
-      return true;
-    else
-      return false;
+    return (preferences[ 'notif:channels:desktop' ] === true);
   },
 
   _setCookie: function (name, value, exdays) {
@@ -102,28 +111,29 @@ var CurrentUserModel = UserModel.extend({
     var cname = name + '=';
     var ca = document.cookie.split(';');
     for (var i = 0; i < ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) == ' ') c = c.substring(1);
+      var c = ca[ i ];
+      while (c.charAt(0) === ' ') c = c.substring(1);
       var value;
-      if (c.indexOf(cname) != -1)
+      if (c.indexOf(cname) !== -1) {
         value = c.substring(cname.length, c.length);
-      if (typeof value != 'undefined') {
-        if (value == 'true') // boolean compliance
+      }
+      if (typeof value !== 'undefined') {
+        // boolean compliance
+        if (value === 'true') {
           return true;
-        else if (value == 'false')
+        } else if (value === 'false') {
           return false;
-        else
+        } else {
           return value;
+        }
       }
     }
     return '';
   },
 
   isAdmin: function () {
-    return (this.get('admin') === true) ? true : false;
+    return (this.get('admin') === true);
   }
-
 });
-
 
 module.exports = new CurrentUserModel();

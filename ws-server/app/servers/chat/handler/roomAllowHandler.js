@@ -104,12 +104,14 @@ handler.call = function (data, session, next) {
 
     function notification (event, callback) {
       if (!wasPending) {
-        return callback(null, event);
+        Notifications(that.app).getType('roominvite').create(user.id, room, event, function (err) {
+          return callback(err, event);
+        });
+      } else {
+        Notifications(that.app).getType('roomallowed').create(user.id, room, event, function (err) {
+          return callback(err, event);
+        });
       }
-
-      Notifications(that.app).getType('roomallowed').create(user.id, room, event, function (err) {
-        return callback(err, event);
-      });
     }
 
   ], function (err) {

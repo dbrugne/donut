@@ -41,47 +41,13 @@
     }
   }
   #chat {
+    .date-ctn { padding: 0 90px 10px 0; font-size: 1.35rem; }
     #color .container { padding: 0;
       #navbar .navbar-right { margin:0; float: right; text-align: right;
         > li { display: inline-block; } // #chat #color .container #navbar .navbar-right>li
       } // #chat #color .container #navbar .navbar-right
     } // #chat #color .container
     #left { width: 45px;
-      .page-sidebar-menu {
-        #block-current-user { padding: 0; min-height: initial;
-          .avatar { padding: 5px; width: 45px; height: 45px; float: none; clear: both;
-            img { width: 35px; height: 35px; }
-          }
-          .content { float: left; margin-left: 0; width: 30px; padding-top: 5px; clear: both;
-            .connection { padding-left:9px; }
-            .dropdown { position: relative; top: 0; left: 0; right: initial; padding-left: 4px;
-              button { padding: 0; }
-            }
-          }
-          .title { padding:0; display: none; }
-          .sub-menu { display:none;     border: 0; }
-          &.open { background: #f5f5f5;
-            & > a { background: #f5f5f5; }
-            .sub-menu { width: 210px; border:0;
-              .title {     display: block; position: absolute; left: 8px; top: -43px; width: 195px; text-overflow: ellipsis; overflow: hidden; }
-              .connection { top: -27px; left: 9px; display: inline !important;
-                i { margin-right:3px; font-size:12px; }
-                .user-status { display: inline !important; font-size:12px; }
-              }
-              .dropdown-user-actions { position: relative; right: initial; top: 0;
-                .dropdown-toggle { display:none; }
-                .dropdown-menu { display: block; margin: 0; padding: 0; background-color: #E2E2E2; border: 0; width: 210px; box-shadow: 0 6px 12px rgba(0,0,0,0.175); .border-radius(0);
-                  & > li { padding: 0;
-                    > a { padding: 5px 10px; }
-                      .divider { padding-top: 10px; background-color: transparent; border-top: 1px solid #e5e5e5; margin-top: 10px;
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
       #block-actions { display: none; }
       #block-discussions { overflow: visible; display: block;
         .list { margin-left:0;
@@ -108,7 +74,7 @@
         .right { display:none; }
       } // #chat #center #home .left
       .discussion {
-        .content { padding-left: 15px; margin-right: 0; position: initial;
+        .content { margin-right: 0; position: initial;
           .mini-header { position: absolute; z-index: 1030; left: 5px; .display-flex; .flex-flow(row nowrap); justify-content: center; align-items: center; height: 40px; top: 0;
             .avatar { border: 2px solid rgba(167,167,167,0.2); width: 34px; height: 34px; z-index: 1031; cursor: pointer;margin: auto 5px auto 0;
               img { width:100%; }
@@ -272,7 +238,7 @@
         }
       }
     }
-    .row { .display-flex; .flex-flow(row nowrap);
+    .row {
       #center { .display-flex; .flex(1); .flex-flow(column nowrap); margin: 0;
         #drawer { .display-flex; .flex(1); .flex-flow(column nowrap); position: relative;
           .opacity .wrap { width: auto !important;

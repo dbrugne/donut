@@ -73,7 +73,8 @@ var MainView = Backbone.View.extend({
     'click .open-room-users': 'openRoomUsers',
     'click .open-room-delete': 'openRoomDelete',
     'click .close-discussion': 'onCloseDiscussion',
-    'click .open-room-access': 'openRoomAccess'
+    'click .open-room-access': 'openRoomAccess',
+    'click .switch[data-language]': 'switchLanguage'
   },
 
   initialize: function () {
@@ -99,6 +100,7 @@ var MainView = Backbone.View.extend({
     this.listenTo(app, 'joinOnetoone', this.focusOneToOneByUsername);
     this.listenTo(app, 'changeColor', this.onChangeColor);
     this.listenTo(app, 'persistPositions', this.persistPositions);
+    this.listenTo(app, 'changeTitle', this.onChangeTitle);
   },
   run: function () {
     // generate and attach subviews
@@ -393,12 +395,7 @@ var MainView = Backbone.View.extend({
       return;
     }
 
-    var model = rooms.get(roomId);
-    if (!model) {
-      return;
-    }
-
-    var view = new DrawerRoomAccessView({model: model});
+    var view = new DrawerRoomAccessView({room_id: roomId});
     this.drawerView.setSize('450px').setView(view).open();
   },
   openRoomPreferences: function (event) {
@@ -688,6 +685,30 @@ var MainView = Backbone.View.extend({
       client.userDeban(userId);
       app.trigger('userDeban');
     }, this));
+  },
+
+  onChangeTitle: function (model) {
+    var title;
+    if (model.get('type') === 'room') {
+      title = model.get('name');
+    } else {
+      title = model.get('username');
+    }
+    windowView.setTitle(title);
+  },
+
+  switchLanguage: function (event) {
+    event.preventDefault();
+    var language = $(event.currentTarget).data('language');
+    if (!language) {
+      return;
+    }
+
+    var d = new Date();
+    d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
+    var expires = 'expires=' + d.toUTCString();
+    document.cookie = 'donut.lng' + '=' + language + '; ' + expires;
+    window.location.reload();
   }
 });
 

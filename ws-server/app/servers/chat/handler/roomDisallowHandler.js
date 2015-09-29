@@ -65,10 +65,11 @@ handler.call = function (data, session, next) {
         by_avatar: currentUser._avatar(),
         user_id: user.id,
         username: user.username,
-        avatar: user._avatar()
+        avatar: user._avatar(),
+        reason: 'Disallow'
       };
 
-      roomEmitter(that.app, user, room, 'room:disallow', event, callback);
+      roomEmitter(that.app, user, room, 'room:kick', event, callback);
     },
 
     function broadcastToUser (eventData, callback) {
