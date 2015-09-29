@@ -1,11 +1,9 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var donutDebug = require('../libs/donut-debug');
 var keyboard = require('../libs/keyboard');
 var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
-var currentUser = require('../models/current-user');
 
 var MessageEditView = Backbone.View.extend({
   template: require('../templates/message-edit.html'),

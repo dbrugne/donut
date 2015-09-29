@@ -207,10 +207,7 @@ module.exports = Backbone.View.extend({
     return contentHeight - viewportHeight;
   },
   isScrollOnBottom: function () {
-    var scrollMargin = 10;
-    if (this.eventsEditView.getMessageUnderEdition()) {
-      scrollMargin = this.eventsEditView.getMessageUnderEdition().$el.height();
-    }
+    var scrollMargin = this.eventsEditView.getEditionHeight() || 10;
 
     // add a 10px margin
     var bottom = this._scrollBottomPosition() - scrollMargin;
@@ -243,7 +240,7 @@ module.exports = Backbone.View.extend({
     this.engine.insertBottom(model);
 
     // scrollDown
-    if (needToScrollDown && !this.eventsEditView.getMessageUnderEdition()) {
+    if (needToScrollDown && !this.eventsEditView.messageUnderEdition) {
       this.scrollDown();
     } else {
       this.$goToBottom.show().addClass('unread');

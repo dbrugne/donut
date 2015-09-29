@@ -10,14 +10,14 @@ var MessageEditView = require('./message-edit');
 module.exports = Backbone.View.extend({
   events: {
     'click .dropdown-menu .edited': 'onEditMessage',
-    'dblclick .event': 'onEditMessage',
-    'keydown .form-message-edit': 'onPrevOrNextFormEdit'
+    'dblclick .block.message': 'onEditMessage',
+    'keydown .form-message-edit': 'editNext'
   },
 
   initialize: function () {
     this.listenTo(this.model, 'messageEdit', this.onMessageEdited);
-    this.listenTo(this.model, 'editMessageClose', this.onEditMessageClose);
-    this.listenTo(this.model, 'editPreviousInput', this.pushUpFromInput);
+    this.listenTo(this.model, 'editMessageClose', this.onClose);
+    this.listenTo(this.model, 'editPreviousInput', this.editNext);
     this.render();
   },
   render: function () {
@@ -50,39 +50,35 @@ module.exports = Backbone.View.extend({
 
     return !$event.hasClass('spammed');
   },
-  onPrevOrNextFormEdit: function (event) {
-    var direction;
+  editNext: function (event) {
     var key = keyboard._getLastKeyCode(event);
-    if (key.key === keyboard.UP) {
-      direction = 'prev';
-    } else if (key.key === keyboard.DOWN) {
-      direction = 'next';
-    } else {
+    if (key.key !== keyboard.UP && key.key !== keyboard.DOWN) {
       return app.trigger('scrollDown');
     }
 
-    var $currentEventMessage = $(event.currentTarget).closest('.event');
-    var $currentBlockMessage = $(event.currentTarget).closest('.message');
+    var $listMessageCurrentUser = this.$realtime.find('.block.message[data-user-id="' + currentUser.get('user_id') + '"]');
+    if (!$listMessageCurrentUser.length) {
+      return;
+    }
 
-    var userId = $currentBlockMessage.data('userId');
-
-    // get sibling .event
-    var $candidate = $currentEventMessage[direction]();
-    var $candidateBlock = $currentBlockMessage[direction]();
-
-    // no sibling .event, try with sibling .block
-    if (!$candidate.length && $candidateBlock.length) {
-      var _lastBlock = $candidateBlock;
-      while ((_lastBlock.data('userId') !== userId)) {
-        if (!_lastBlock[direction]().length) {
-          return;
-        }
-        _lastBlock = _lastBlock[direction]();
+    var $candidate;
+    if (!this.messageUnderEdition) {
+      $candidate = $listMessageCurrentUser.last();
+    } else {
+      var that = this;
+      if (key.key === keyboard.DOWN) {
+        $listMessageCurrentUser = $($listMessageCurrentUser.get().reverse());
       }
+      $listMessageCurrentUser.each(function () {
+        if (that.messageUnderEdition.$el.attr('id') === $(this).attr('id')) {
+          return false;
+        }
+        $candidate = $(this);
+      });
+    }
 
-      $candidate = (direction === 'prev')
-        ? _lastBlock.find('.event').last()
-        : _lastBlock.find('.event').first();
+    if (!$candidate) {
+      return;
     }
 
     if (this.isEditableMessage($candidate)) {
@@ -91,24 +87,9 @@ module.exports = Backbone.View.extend({
 
     app.trigger('scrollDown');
   },
-  pushUpFromInput: function () {
-    var _lastBlock = this.$realtime.find('.block.message[data-user-id="' + currentUser.get('user_id') + '"]').last();
-    // @todo dbr: can no longer edit message excecpt the last one
-    while (_lastBlock.data('userId') !== currentUser.get('user_id')) {
-      if (!_lastBlock.prev().length) {
-        return;
-      }
-      _lastBlock = _lastBlock.prev();
-    }
-    if (this.isEditableMessage(_lastBlock)) {
-      this.editMessage(_lastBlock);
-    }
-
-    app.trigger('scrollDown');
-  },
   editMessage: function ($event) {
     if (this.messageUnderEdition) {
-      this.onEditMessageClose();
+      this.onClose();
     }
     this.messageUnderEdition = new MessageEditView({
       el: $event,
@@ -141,14 +122,18 @@ module.exports = Backbone.View.extend({
     }
     this.remove();
   },
-  onEditMessageClose: function () {
+  onClose: function () {
     if (!this.messageUnderEdition) {
       return;
     }
     this.messageUnderEdition.remove();
     this.messageUnderEdition = null;
   },
-  getMessageUnderEdition: function () {
-    return this.messageUnderEdition;
+  getEditionHeight: function () {
+    if (!this.messageUnderEdition) {
+      return;
+    }
+
+    return this.messageUnderEdition.$el.height();
   }
 });
