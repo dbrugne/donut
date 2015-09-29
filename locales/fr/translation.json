@@ -22,7 +22,7 @@
     "login-self": "Se connecter",
     "carousel": {
       "heading": "chatroom network ",
-      "slogan": "Discuter autour de vos centres d'intérêt.<br>Entrez en relation avec des gens de votre univers.<br>Créez et animez votre propre communauté."
+      "slogan": "Discutez autour de vos centres d'intérêt.<br>Entrez en relation avec des gens de votre univers.<br>Créez et animez votre propre communauté."
     }
   },
   "forms": {
@@ -155,7 +155,7 @@
     },
     "switchlanguage": "Langue",
     "unknownerror": "Erreur inconnue, veuillez réessayer",
-    "private-donut": "Donut privé: seuls les utilisateurs autorisés pourront rejoindre, participer et accéder à l'historique."
+    "private-donut": "Donut privé: seuls les utilisateurs autorisés peuvent rejoindre, participer et accéder à l'historique."
   },
   "login": {
     "withfacebook": "avec Facebook",
@@ -276,7 +276,7 @@
     "loading": "Chargement ",
     "actions": {
       "search": "Chercher",
-      "searchuser": "Rechercher un utilisateur",
+      "searchuser": "Inviter un utilisateur",
       "create": "créer",
       "adonut": "un donut",
       "account": "mon compte",
@@ -366,9 +366,9 @@
       "infobox": "Voir le profil de cet utilisateur"
     },
     "allowed": {
-      "success": "La demande d'accès à bien été envoyé",
+      "success": "La demande d'accès a bien été envoyée",
       "error" : {
-        "notallowed": "Une demande d'accès a déjà été envoyé",
+        "notallowed": "Une demande d'accès a déjà été envoyée",
         "banned": "Vous êtes banni de ce donut"
       }
     },
@@ -383,7 +383,7 @@
       "cancel": "Non, j'annule",
       "confirm": "Oui, je confirme",
       "message": {
-        "modechange": "Attention cette opération est irréversible! Tous les utilisateurs dans ce donut seront ajouté à la liste des utilisateurs autorisés. Ce donut ne sera plus ouvert au public.",
+        "modechange": " ATTENTION cette action est irréversible.",
         "refuseuser": "Vous allez refuser l'accès à @__username__",
         "acceptuser": "Vous allez autoriser l'accès à @__username__",
         "disallowuser": "Vous allez supprimer l'accès à @__username__"
@@ -451,7 +451,7 @@
         "roomvoice": "Vous n'êtes plus muet dans <span>#__name__</span>",
         "roomdevoice": "Vous êtes muet dans <span>#__name__</span>",
         "roomallowed": "Vous êtes autorisé à rejoindre <span>#__name__</span>",
-        "roomrefuse": "Votre demande de rejoinde <span>#__name__</span></br> n'a pas été acceptée",
+        "roomrefuse": "Demande d'accès à <span>#__name__</span></br> refusée",
         "roomjoin": "<span>@__username__</span> rejoint <span>#__name__</span>",
         "roomjoinrequest": "<span>@__username__</span> souhaite rejoindre <span>#__name__</span>",
         "roomtopic": "Nouveau sujet dans <span>#__name__</span>",
@@ -470,7 +470,7 @@
       "loading": "Chargement de l'historique ...",
       "top": "aller tout en haut",
       "bottom": "aller tout en bas",
-      "currently": "C'est ici que tout commence... Vous êtes au tout début de la conversation <span class=\"name dc-text open-room-profile\" data-room-id=\"__roomid__\">__roomname__</span>, donut créé par <span class=\"owner dc-text open-user-profile\" data-user-id=\"__ownerid__\">@__owner__</span> le <span class=\"date\">__created_at__</span> à <span class=\"date\">__created_time__</span>",
+      "currently": "C'est ici que tout commence... Vous êtes au tout début de la conversation <span class=\"name dc-text open-room-profile\" data-room-id=\"__roomid__\">__roomname__</span>, donut créé par <span class=\"owner dc-text open-user-profile\" data-user-id=\"__ownerid__\">@__owner__</span> le <span class=\"date\">__created_at__</span>",
       "hasPassword": "Votre donut est privé. Paramétrez les modalités d'accès en cliquant sur \"Gérer les accès\"",
       "onestart": "Cette conversation est privée. Seuls vous et votre interlocuteur pouvez y avoir accès.",
       "edit": "Editer le profil",
@@ -491,7 +491,7 @@
       "usertype": "Type",
       "users": "Utilisateur",
       "users_plural": "Utilisateurs",
-      "link": "liste des utilisateurs",
+      "link": "Liste des utilisateurs",
       "label": "Voir tous les utilisateurs",
       "search": "rechercher des utilisateurs dans ce donut",
       "type": {
@@ -567,22 +567,22 @@
       "typing_plural": "sont en train de taper"
     },
     "blocked": {
-      "allowed": "Ce donut est privé, seuls les utilisateurs autorisés peuvent le rejoindre.",
-      "ask-for-access": "Pour en demander l'accès, <a href=\"#\" class=\"ask-for-allowance\"><strong>cliquer ici</strong></a>.",
+      "allowed": "Ce donut est privé. Seuls les utilisateurs que vous autorisez pourront rejoindre, participer et accéder à l'historique.",
+      "ask-for-access": "Pour demander un accès, <a href=\"#\" class=\"ask-for-allowance\"><strong>cliquer ici</strong></a>.",
       "rejoin-donut": "<a class=\"rejoin curp\"><strong>cliquer ici</strong></a> pour le rejoindre à nouveau.",
       "allowed_button": "Demander l'accès",
-      "password": "Ce donut dispose également  d'un mot de passe. Si vous le connaissez, saisissez le ci-dessous :",
+      "password": "Ou vous pouvez le rejoindre directement si vous connaissez le mot de passe :",
       "password_placeholder": "Mot de passe",
       "password_button": "Rejoindre",
       "banned": "Vous avez été banni de ce donut le __at__",
       "banned_reason": "Pour la raison suivante : ",
       "kicked": "Vous avez été expulsé de ce donut.",
       "kicked_button": "Rejoindre",
-      "changemode": "Changer le mode",
+      "changemode": "Passer en mode privé",
       "disclaimer-private": "Ce donut est privé, seul les utilisateurs explicitement autorisés par le propriétaire peuvent y accéder. Pour ajouter de nouveaux utilisateurs, merci de les rechercher dans la liste ci-dessous.",
       "disclaimer-public": "Ce donut est public. N'importe quel utilisateur pourra y accéder.",
       "disclaimer-password": "Vous avez également choisi de mettre un mot de passe. Les utilisateurs avec le mot de passe pourront y entrer sans avoir besoin d'être invités au préalable.",
-      "disclaimer-changing": "Vous pouvez passer ce donut en mode privé. Alors, seuls les utilisateurs que vous autoriserez pourront rejoindre, participer et accéder à l'historique. L'accès se fera par invitation et/ou par mot de passe. Attention, cette action est irréversible.",
+      "disclaimer-changing": "Vous pouvez passer ce donut en mode privé. Alors, seuls les utilisateurs que vous autoriserez pourront rejoindre, participer et accéder à l'historique. L'accès se fera par invitation et/ou par mot de passe. Les membres actuels de donut public resteront autorisés dans ce donut une fois qu'il sera devenu privé. Attention, cette action est irréversible.",
       "close": "Fermer ce donut"
     },
     "form": {
@@ -609,7 +609,7 @@
             "done": "Téléchargement terminé, attendez pour le traitement de l'image",
             "help": {
               "format": "Fichier image (.jpeg, .jpg, .png or .gif).",
-              "size": "Sera automatiquement redimenssionné au format __resized_width__x__resized_height__px."
+              "size": "Sera automatiquement redimensionné au format __resized_width__x__resized_height__px."
             }
           },
           "left": "<strong>%left</strong> restant"
@@ -630,9 +630,9 @@
         },
         "mode": {
           "disclaimer": {
-            "public": "Tout utilisateur pourra rejoindre, participer et accéder à l'historique. Vous disposez d'outils de modération.",
+            "public": "Tout utilisateur peut rejoindre, participer et accéder à l'historique. Vous disposez d'outils de modération.",
             "private": "Seuls les utilisateurs que vous autorisez pourront rejoindre, participer et accéder à l'historique. Vous disposez d'outils de modération.",
-            "password": "Vous avez également la possibilité de mettre un mot de passe sur ce donut. Les utilisateurs avec le mot de passe pourront y entrer sans avoir besoin d'être invités au préalable."
+            "password": "Vous pouvez également mettre un mot de passe. Les utilisateurs ayant le mot de passe pourront rejoindre le donut sans avoir besoin d'être invités au préalable."
           }
         },
         "create": {
