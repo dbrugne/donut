@@ -66,7 +66,7 @@ handler.call = function (data, session, next) {
         user: bannedUser._id,
         banned_at: new Date()
       };
-      if (reason !== false) {
+      if (reason) {
         ban.reason = reason;
       }
 
@@ -97,7 +97,7 @@ handler.call = function (data, session, next) {
         banned_at: banEvent.banned_at
       };
 
-      if (reason !== false) {
+      if (reason) {
         event.banned_reason = reason;
       }
 

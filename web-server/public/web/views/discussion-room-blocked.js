@@ -38,8 +38,6 @@ var RoomBlockedView = Backbone.View.extend({
     // banned_at
     if (data.banned_at) {
       data.banned_at = date.longDate(data.banned_at);
-    } else if (data.blocked === 'banned') {
-      data.banned_at = 'unable to retrieve';
     }
 
     // avatar
