@@ -38,12 +38,10 @@ var RoomBlockedView = Backbone.View.extend({
     // banned_at
     if (data.banned_at) {
       data.banned_at = date.longDate(data.banned_at);
-    } else if (data.blocked === 'banned') {
-      data.banned_at = 'unable to retrieve';
     }
 
     // avatar
-    data.avatar = common.cloudinary.prepare(data.avatar, 100);
+    data.avatar = common.cloudinary.prepare(data.avatar, 150);
 
     // id
     data.room_id = this.model.get('id');
@@ -80,7 +78,9 @@ var RoomBlockedView = Backbone.View.extend({
       this.$el.hide();
     }
   },
-  onRequestAllowance: function () {
+  onRequestAllowance: function (event) {
+    event.preventDefault();
+
     client.roomJoinRequest(this.model.get('id'), function (response) {
       if (response.err) {
         if (response.err === 'banned' || response.err === 'notallowed') {

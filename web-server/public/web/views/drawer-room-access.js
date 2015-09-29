@@ -34,35 +34,37 @@ var RoomAccessView = Backbone.View.extend({
   },
 
   initialize: function (options) {
+    this.roomId = options.room_id;
     this.render();
 
-    client.roomRead(options.model.get('id'), null, _.bind(function (data) {
-      if (!data.err) {
-        this.initialRender(data);
-      }
-    }, this));
+    this.reload();
   },
   render: function () {
     // render spinner only
     this.$el.html(require('../templates/spinner.html'));
     return this;
   },
-  initialRender: function (room) {
-    this.model = room;
-
+  reload: function () {
+    client.roomRead(this.roomId, null, _.bind(function (data) {
+      if (!data.err) {
+        this.onResponse(data);
+      }
+    }, this));
+  },
+  onResponse: function (data) {
     this.listenTo(app, 'redraw-tables', this.renderTables);
     this.listenTo(client, 'room:request', this.renderPendingTable);
 
-    var data = {
-      owner_id: this.model.owner.user_id,
-      owner_name: this.model.owner.username,
-      room_id: this.model.id,
-      room_name: this.model.name,
-      mode: this.model.mode,
-      password: this.model.password
-    };
+    this.currentPassword = data.password;
 
-    var html = this.template(data);
+    var html = this.template({
+      owner_id: data.owner.user_id,
+      owner_name: data.owner.username,
+      room_id: data.id,
+      room_name: data.name,
+      mode: data.mode,
+      password: data.password
+    });
     this.$el.html(html);
 
     this.$errors = this.$('.errors');
@@ -74,14 +76,14 @@ var RoomAccessView = Backbone.View.extend({
     this.$randomPassword = this.$('.random-password');
 
     // Only render tables if the donut is private
-    if (this.model.mode === 'private') {
+    if (data.mode === 'private') {
       this.tablePending = new TableView({
         el: this.$('.allow-pending'),
-        model: this.model
+        room_id: this.roomId
       });
       this.tableAllowed = new TableView({
         el: this.$('.allowed'),
-        model: this.model
+        room_id: this.roomId
       });
       this.renderTables();
     }
@@ -143,7 +145,7 @@ var RoomAccessView = Backbone.View.extend({
 
     if (userId) {
       ConfirmationView.open({}, _.bind(function () {
-        client.roomAllow(this.model.id, userId, _.bind(function () {
+        client.roomAllow(this.roomId, userId, _.bind(function () {
           this.renderTables();
         }, this));
       }, this));
@@ -158,10 +160,10 @@ var RoomAccessView = Backbone.View.extend({
     if (this.$toggleCheckbox.is(':checked')) {
       this.$password.removeAttr('disabled').removeClass('disabled');
       this.$randomPassword.removeClass('disabled');
-      if (this.$password.val() === '' && this.model.password === undefined) {
+      if (this.$password.val() === '' && !this.currentPassword) {
         this.$password.val(common.misc.randomString());
       } else {
-        this.$password.val(this.model.password);
+        this.$password.val(this.currentPassword);
       }
     } else {
       this.$password.attr('disabled', true).addClass('disabled');
@@ -181,13 +183,9 @@ var RoomAccessView = Backbone.View.extend({
     event.preventDefault();
     var that = this;
     ConfirmationView.open({message: 'mode-change'}, function () {
-      client.roomSetPrivate(that.model.id, function (response) {
+      client.roomSetPrivate(that.roomId, function (response) {
         if (!response.err) {
-          client.roomRead(that.model.id, null, function (data) {
-            if (!data.err) {
-              that.initialRender(data);
-            }
-          });
+          that.reload();
         }
       });
     });
@@ -207,7 +205,7 @@ var RoomAccessView = Backbone.View.extend({
       return this.setError(i18next.t('chat.form.errors.invalid-password'));
     }
 
-    client.roomUpdate(this.model.id, {password: this.getPassword()}, _.bind(function (data) {
+    client.roomUpdate(this.roomId, {password: this.getPassword()}, _.bind(function (data) {
       if (data.err) {
         return this.editError(data);
       }
@@ -215,7 +213,7 @@ var RoomAccessView = Backbone.View.extend({
     }, this));
   },
   isValidPassword: function () {
-    return (!this.$toggleCheckbox.is(':checked') || (this.$toggleCheckbox.is(':checked') && this.model.password && this.getPassword() === '') || (this.$toggleCheckbox.is(':checked') && this.passwordPattern.test(this.getPassword())));
+    return (!this.$toggleCheckbox.is(':checked') || (this.$toggleCheckbox.is(':checked') && this.currentPassword && this.getPassword() === '') || (this.$toggleCheckbox.is(':checked') && this.passwordPattern.test(this.getPassword())));
   },
   getPassword: function () {
     if (this.$toggleCheckbox.is(':checked')) {

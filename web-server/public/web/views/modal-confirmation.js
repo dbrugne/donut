@@ -80,6 +80,12 @@ var ConfirmationModalView = Backbone.View.extend({
     if (this.options.message) {
       if (this.options.message === 'mode-change') {
         this.$message.text(i18next.t('chat.confirmation.message.modechange'));
+      } else if (this.options.message === 'refuse-user') {
+        this.$message.text(i18next.t('chat.confirmation.message.refuseuser', {username: this.options.username}));
+      } else if (this.options.message === 'accept-user') {
+        this.$message.text(i18next.t('chat.confirmation.message.acceptuser', {username: this.options.username}));
+      } else if (this.options.message === 'disallow-user') {
+        this.$message.text(i18next.t('chat.confirmation.message.disallowuser', {username: this.options.username}));
       }
     }
     // bind 'enter' only when showing popin

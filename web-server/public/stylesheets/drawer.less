@@ -69,11 +69,12 @@
 
   .block {
     margin-top: 20px;
+    border:0;
     &.inline {
       .display-flex;
       .flex-flow(row nowrap);
       position: relative;
-      align-items: baseline;
+      align-items: center;
       label {
         margin-right: 5px;
       }
@@ -268,9 +269,6 @@
     }
   }
   .table-users {
-    div {
-      display: inherit;
-    }
     img {
       width: 20px;
       height: 20px;
@@ -280,12 +278,11 @@
     }
     i {
       font-size: 18px;
+      height:20px;
     }
     .dropdown { padding:0;
       a, a:hover { text-decoration:none; }
-      button { padding: 0;
-        i { color: @cl-text; }
-      }
+      button { padding: 0; }
     }
     .open>.dropdown-menu {
       left: initial;

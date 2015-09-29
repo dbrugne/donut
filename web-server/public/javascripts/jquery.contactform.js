@@ -180,11 +180,7 @@
       }
 
       // Make sure domain contains only valid characters and at least one period
-      if (!/^[-a-zA-Z0-9\.]*$/.test(domain) || domain.indexOf('.') === -1) {
-        return false;
-      }
-
-      return true;
+      return !(!/^[-a-zA-Z0-9\.]*$/.test(domain) || domain.indexOf('.') === -1);
     }
 
   };
@@ -218,7 +214,5 @@
         modal.show();
       });
     });
-
   };
-
 })(window.jQuery);

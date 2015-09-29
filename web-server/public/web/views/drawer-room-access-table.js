@@ -4,6 +4,7 @@ var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
 var app = require('../models/app');
+var confirmationView = require('./modal-confirmation');
 
 var DrawerRoomUsersTableView = Backbone.View.extend({
   template: require('../templates/drawer-room-access-table.html'),
@@ -15,18 +16,17 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
   },
 
   initialize: function (options) {
-    this.model = options.model;
-
+    this.roomId = options.room_id;
     this.listenTo(app, 'removeTooltips', this.onRemoveTooltips);
   },
 
   render: function (type) {
     if (type === 'pending') {
-      client.roomUsers(this.model.id, {type: 'allowedPending'}, _.bind(function (data) {
+      client.roomUsers(this.roomId, {type: 'allowedPending'}, _.bind(function (data) {
         this.onResponse(data.users);
       }, this));
     } else if (type === 'allowed') {
-      client.roomUsers(this.model.id, {type: 'allowed'}, _.bind(function (data) {
+      client.roomUsers(this.roomId, {type: 'allowed'}, _.bind(function (data) {
         this.onResponse(data.users);
       }, this));
     }
@@ -35,7 +35,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
   },
 
   onResponse: function (users) {
-    if (users.length === 0) {
+    if (!users.length) {
       this.$el.hide();
       return;
     }
@@ -52,30 +52,39 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
   onAllowUser: function (event) {
     var userId = $(event.currentTarget).data('userId');
+    var userName = $(event.currentTarget).data('username');
 
-    if (userId) {
-      client.roomAllow(this.model.id, userId, _.bind(function (data) {
-        app.trigger('redraw-tables');
+    if (userId && userName) {
+      confirmationView.open({message: 'accept-user', username: userName}, _.bind(function () {
+        client.roomAllow(this.roomId, userId, _.bind(function (data) {
+          app.trigger('redraw-tables');
+        }, this));
       }, this));
     }
   },
 
   onRefuseUser: function (event) {
     var userId = $(event.currentTarget).data('userId');
+    var userName = $(event.currentTarget).data('username');
 
-    if (userId) {
-      client.roomRefuse(this.model.id, userId, _.bind(function (data) {
-        app.trigger('redraw-tables');
+    if (userId && userName) {
+      confirmationView.open({message: 'refuse-user', username: userName}, _.bind(function () {
+        client.roomRefuse(this.roomId, userId, _.bind(function (data) {
+          app.trigger('redraw-tables');
+        }, this));
       }, this));
     }
   },
 
   onDisallow: function (event) {
     var userId = $(event.currentTarget).data('userId');
+    var userName = $(event.currentTarget).data('username');
 
-    if (userId) {
-      client.roomDisallow(this.model.id, userId, _.bind(function (data) {
-        app.trigger('redraw-tables');
+    if (userId && userName) {
+      confirmationView.open({message: 'disallow-user', username: userName}, _.bind(function () {
+        client.roomDisallow(this.roomId, userId, _.bind(function (data) {
+          app.trigger('redraw-tables');
+        }, this));
       }, this));
     }
     this.$el.find('[data-toggle="tooltip"]').tooltip('hide');
