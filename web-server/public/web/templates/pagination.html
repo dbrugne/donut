@@ -1,0 +1,37 @@
+<ul class="pagination centered"> <!-- currentPage, totalNbPages, nbPages -->
+    <% if (currentPage != 1) { %>
+    <li>
+        <a href="#" aria-label="Previous" data-identifier="previous">
+            <span aria-hidden="true">&laquo;</span>
+        </a>
+    </li>
+    <% } %>
+    <% if (currentPage > 3) { %>
+    <li>
+            <span aria-hidden="true">...</span>
+    </li>
+    <% } %>
+    <% for (var i = 1, j = 1; i <= totalNbPages && j <= nbPages && totalNbPages > 1; i++) { %>
+        <% if (i === currentPage) { %>
+            <li class="active"><a href="#" data-identifier="<%= i %>"><%= i %></a></li>
+            <% j++; %>
+        <% } else if (currentPage <= 3 ||
+        (i >= currentPage - 2 && i <= currentPage + 2 && currentPage > 3 && currentPage < totalNbPages - 2) ||
+        (currentPage >= totalNbPages - 2 && i >= totalNbPages - 4 )) { %>
+            <li><a href="#" data-identifier="<%= i %>"><%= i %></a></li>
+            <% j++; %>
+        <% } %>
+    <% } %>
+    <% if (currentPage < totalNbPages - 2) { %>
+    <li>
+            <span aria-hidden="true">...</span>
+    </li>
+    <% } %>
+    <% if (currentPage != totalNbPages && totalNbPages > 1) { %>
+    <li>
+        <a href="#" aria-label="Next" data-identifier="next">
+            <span aria-hidden="true">&raquo;</span>
+        </a>
+    </li>
+    <% } %>
+</ul>

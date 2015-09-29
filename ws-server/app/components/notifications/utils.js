@@ -1,20 +1,21 @@
-var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
+'use strict';
+var logger = require('../../../../shared/util/logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var UserModel = require('../../../../shared/models/user');
 var RoomModel = require('../../../../shared/models/room');
 var HistoryOneModel = require('../../../../shared/models/historyone');
 var HistoryRoomModel = require('../../../../shared/models/historyroom');
 var conf = require('../../../../config/index');
-var common = require('@dbrugne/donut-common');
+var common = require('@dbrugne/donut-common/server');
 
 module.exports = {
-
   retrieveUser: function (user) {
     return function () {
       var args = _.toArray(arguments);
       var callback = args.pop();
-      if (!_.isFunction(callback))
+      if (!_.isFunction(callback)) {
         return logger.error('retrieveUser parameters error, missing callback');
+      }
 
       if (_.isObject(user)) {
         args.unshift(null);
@@ -34,8 +35,9 @@ module.exports = {
     return function () {
       var args = _.toArray(arguments);
       var callback = args.pop();
-      if (!_.isFunction(callback))
+      if (!_.isFunction(callback)) {
         return logger.error('retrieveRoom parameters error, missing callback');
+      }
 
       if (_.isObject(room)) {
         args.unshift(null);
@@ -54,8 +56,9 @@ module.exports = {
   _retrieveHistory: function (type, history, previousArguments) {
     var args = _.toArray(previousArguments);
     var callback = args.pop();
-    if (!_.isFunction(callback))
+    if (!_.isFunction(callback)) {
       return logger.error('_retrieveHistory parameters error, missing callback');
+    }
 
     if (_.isObject(history)) {
       args.unshift(null);
@@ -64,17 +67,18 @@ module.exports = {
     }
 
     var q;
-    if (type == 'historyroom')
+    if (type === 'historyroom') {
       q = HistoryRoomModel.findById(history)
         .populate('user')
         .populate('by_user')
         .populate('room');
-    else if (type == 'historyone')
+    } else if (type === 'historyone') {
       q = HistoryOneModel.findById(history)
         .populate('to')
         .populate('from');
-    else
-      return callback.apply(undefined, ['Unable to determine history event type to retrieve: ' + type]);
+    } else {
+      return callback('Unable to determine history event type to retrieve: ' + type);
+    }
 
     q.exec(function (err, model) {
       args.unshift(err);
@@ -97,11 +101,11 @@ module.exports = {
     };
   },
 
-  mentionTemplate: _.template('<strong><% if (markup.type === \'room\') { %><a href="'+conf.url+'/room/<%= markup.title.replace(\'#\', \'\') %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'user\') { %><a href="'+conf.url+'/user/<%= markup.title.replace(\'@\', \'\') %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'url\') { %><a href="<%= markup.href %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'email\') { %><a href="mailto:<%= markup.href %>" style="<%= options.style %>"><%= markup.title %></a><% } %></strong>'),
+  mentionTemplate: _.template('<strong><% if (markup.type === \'room\') { %><a href="' + conf.url + '/room/<%= markup.title.replace(\'#\', \'\') %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'user\') { %><a href="' + conf.url + '/user/<%= markup.title.replace(\'@\', \'\') %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'url\') { %><a href="<%= markup.href %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'email\') { %><a href="mailto:<%= markup.href %>" style="<%= options.style %>"><%= markup.title %></a><% } %></strong>'),
 
-  mentionize: function(string, options) {
+  mentionize: function (string, options) {
     options.template = this.mentionTemplate;
-    return common.markupToHtml(string, options);
+    return common.markup.toHtml(string, options);
   }
 
 };

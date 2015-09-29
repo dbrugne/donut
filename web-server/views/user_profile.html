@@ -1,18 +1,20 @@
 <% layout('profile') %>
 
-<div class="side dc-back" style="<% if (typeof poster !== 'undefined') { %>background-image: url(<%= poster %>);<% }; %>">
+<div class="side oneside dc-back <% if (!poster) { %>poster-empty<% } %>" style="<% if (typeof poster !== 'undefined') { %>background-image: url(<%= poster %>);<% }; %>">
     <div class="blur dc-back-darker " style="<% if (typeof poster !== 'undefined') { %>background-image: url(<%= poster %>);<% }; %>">
 
     </div>
 </div><!-- /.side -->
 <div class="content">
-    <div class="mini-header user visible-xs visible-sm">
-        <img class="avatar" src="<%= _user.avatar %>" alt="<%= _user.username %> avatar">
-        <span class="username dc-text-contrast" >@<%= _user.username %></span>
+    <div class="visible-xs visible-sm">
+        <div class="mini-header user">
+            <img class="avatar border-shadow" src="<%= _user.avatar %>" alt="<%= _user.username %> avatar">
+            <span class="username dc-text-contrast" >@<%= _user.username %></span>
+        </div>
     </div>
     <div class="header user">
         <div class="overlay-ctn">
-            <img class="avatar" src="<%= _user.avatar %>" alt="<%= _user.username %> avatar">
+            <img class="avatar border-shadow" src="<%= _user.avatar %>" alt="<%= _user.username %> avatar">
             <p class="discuss"><a class="dc-back dc-text-contrast" href="<% if (!user) { %><%= _user.discuss %><% } else { %><%= _user.chat %><% } %>" ><%= t('actions.discuss') %></a></p>
         </div>
         <div class="info">
@@ -50,8 +52,10 @@
 
             <% if (_user.hasRooms) { %>
             <p class="title"><%= t('profile.user.hisrooms') %></p>
-            <div class="rooms cards">
-                <% _.each(_user.roomsList, function(room) { print(partial('room', {room: room})); }); %>
+            <div class="ctn-results">
+                <div class="rooms cards">
+                    <% _.each(rooms, function(room) { print(partial('room', {room: room})); }); %>
+                </div>
             </div>
             <% } %>
         </div>

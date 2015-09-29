@@ -1,9 +1,10 @@
-var logger = require('../../pomelo-logger').getLogger('donut', __filename);
+'use strict';
+var logger = require('../../../shared/util/logger').getLogger('donut', __filename);
 var conf = require('../../../config/index');
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
 var socketio = require('socket.io');
-var socketioPomeloSocket = require('./sioPomeloSocket');
+var SocketioPomeloSocket = require('./sioPomeloSocket');
 var socketioRedis = require('socket.io-redis');
 var socketioJwt = require('socketio-jwt');
 var User = require('../../../shared/models/user');
@@ -17,7 +18,7 @@ var curId = 1;
  * Connector that manager low level connection and protocol bewteen server and client.
  * Develper can provide their own connector to switch the low level prototol, such as tcp or probuf.
  */
-var Connector = function(port, host, opts) {
+var Connector = function (port, host, opts) {
   if (!(this instanceof Connector)) {
     return new Connector(port, host, opts);
   }
@@ -35,7 +36,7 @@ module.exports = Connector;
 /**
  * Start connector to listen the specified port
  */
-Connector.prototype.start = function(cb) {
+Connector.prototype.start = function (cb) {
   var that = this;
 
   // create socket.io server
@@ -47,59 +48,55 @@ Connector.prototype.start = function(cb) {
   // Authentication
   // step 1 - on connection run socketioJwt logic (it will wait 15s for an 'authenticate' event with token from client)
   this.sio.sockets.on('connection', socketioJwt.authorize({
-        secret: conf.oauth.secret,
-        timeout: 15000,
-        additional: function(decoded, onSuccess, onError) {
-          User.findByUid(decoded.id).exec(function(err, user) {
-            if (err) {
-              logger.error(err);
-              return onError('Error while retrieving authenticating user', 'internal_error');
-            }
-
-            // is user exists
-            if (!user) {
-              logger.error('Unable to find authenticating user account: '+decoded.id);
-              return onError('Unable to find authenticating user account: '+decoded.id, 'unknown_user');
-            }
-
-            // is user account valid
-            var allowed = user.isAllowedToConnect();
-            if (!allowed.allowed) {
-              logger.error(allowed.err);
-              return onError(allowed.err, 'invalid_user');
-            }
-
-            // finally user is valid
-            return onSuccess();
-          });
+    secret: conf.oauth.secret,
+    timeout: 15000,
+    additional: function (decoded, onSuccess, onError) {
+      User.findByUid(decoded.id).exec(function (err, user) {
+        if (err) {
+          logger.error(err);
+          return onError('Error while retrieving authenticating user', 'internal_error');
         }
-      }));
+
+        // is user exists
+        if (!user) {
+          logger.error('Unable to find authenticating user account: ' + decoded.id);
+          return onError('Unable to find authenticating user account: ' + decoded.id, 'unknown_user');
+        }
+
+        // is user account valid
+        var allowed = user.isAllowedToConnect();
+        if (!allowed.allowed) {
+          logger.error(allowed.err);
+          return onError(allowed.err, 'invalid_user');
+        }
+
+        // finally user is valid
+        return onSuccess();
+      });
+    }
+  }));
 
   // step 2 - once token is validated the socket is considered authenticated
-  this.sio.sockets.on('authenticated', function(socket) {
+  this.sio.sockets.on('authenticated', function (socket) {
     // log who is authenticated
-    var log = {
-      type: 'ws:authenticated',
-      result: 'success',
-      username: socket.decoded_token.username,
-      'remote_ip': (socket.handshake.headers['x-forwarded-for']) ? socket.handshake.headers['x-forwarded-for'] : socket.conn.remoteAddress
-    };
-    logger.info(JSON.stringify(log));
+    var ip = (socket.handshake.headers['x-forwarded-for'])
+      ? socket.handshake.headers['x-forwarded-for']
+      : socket.conn.remoteAddress;
+    logger.info('ws:authenticated', socket.decoded_token.username, ip);
 
     // add test event
-    socket.on('ping', function(data) {
+    socket.on('ping', function (data) {
       socket.emit('pong', {});
     });
 
     // wrap the socket
-    var pomeloSocket = new socketioPomeloSocket(curId++, socket);
+    var pomeloSocket = new SocketioPomeloSocket(curId++, socket);
     that.emit('connection', pomeloSocket);
 
-    pomeloSocket.on('closing', function(reason) {
+    pomeloSocket.on('closing', function (reason) {
       logger.debug('socket.io socket closing: ', socket.id);
       pomeloSocket.send({route: 'onKick', reason: reason});
     });
-
   });
 
   process.nextTick(cb);
@@ -108,13 +105,13 @@ Connector.prototype.start = function(cb) {
 /**
  * Stop connector
  */
-Connector.prototype.stop = function(force, cb) {
+Connector.prototype.stop = function (force, cb) {
   this.sio.server.close();
   process.nextTick(cb);
 };
 
-Connector.encode = Connector.prototype.encode = function(reqId, route, msg) {
-  if(reqId) {
+Connector.encode = Connector.prototype.encode = function (reqId, route, msg) {
+  if (reqId) {
     return composeResponse(reqId, route, msg);
   } else {
     return composePush(route, msg);
@@ -133,7 +130,7 @@ Connector.encode = Connector.prototype.encode = function(reqId, route, msg) {
  * @param  {String} data socket.io package from client
  * @return {Object}      message object
  */
-Connector.decode = Connector.prototype.decode = function(msg) {
+Connector.decode = Connector.prototype.decode = function (msg) {
   var index = 0;
 
   var id = parseIntField(msg, index, PKG_ID_BYTES);
@@ -151,21 +148,21 @@ Connector.decode = Connector.prototype.decode = function(msg) {
   };
 };
 
-var composeResponse = function(msgId, route, msgBody) {
+var composeResponse = function (msgId, route, msgBody) {
   return {
     id: msgId,
     body: msgBody
   };
 };
 
-var composePush = function(route, msgBody) {
+var composePush = function (route, msgBody) {
   return JSON.stringify({route: route, body: msgBody});
 };
 
-var parseIntField = function(str, offset, len) {
+var parseIntField = function (str, offset, len) {
   var res = 0;
-  for(var i=0; i<len; i++) {
-    if(i > 0) {
+  for (var i = 0; i < len; i++) {
+    if (i > 0) {
       res <<= 8;
     }
     res |= str.charCodeAt(offset + i) & 0xff;

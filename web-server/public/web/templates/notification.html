@@ -1,0 +1,21 @@
+<a class="message <%= data.css %>"
+   data-notification-id="<%= data.id %>"
+   data-time="<%= data.time %>"
+    <% if (data.href) { print('href="' + data.href + '"'); } %>
+    <%= data.html %> >
+    <img src="<%= data.avatar %>" alt="<%= data.title %>" />
+    <div class="message-subject"><%= data.message %></div>
+    <span class="icon icon-times action-tag-as-done"></span>
+    <div class="message-description unviewed">
+        <span class="hidden-xs hidden-sm">
+            <% if (data.username) { %>
+                <%= t('global.by') %>
+                <span class="username">@<%= data.username %></span>
+            <% } %>&nbsp;
+        </span>
+        <div class="date">
+            <span class="moment hidden-xs hidden-sm" data-time="<%= data.time %>" title="<%= data.time %>"><%= from_now %></span>
+            <span class="moment visible-xs visible-sm" data-time="<%= data.time %>" title="<%= data.time %>"><%= from_now_short %></span>
+        </div>
+    </div>
+</a>

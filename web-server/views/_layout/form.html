@@ -1,28 +1,12 @@
 <%- partial('head') %>
 <body class="body-pages">
-    <nav id="color" class="navbar navbar-default navbar-fixed-top">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/!#"><img class="logo" src="/images/logo-onecolor.svg" alt="<%= t('title.chat') %>"> <span class="beta">alpha</span></a>
-        </div>
-    </nav>
+
+    <%- partial('header') %>
+
     <div class="wrapper">
-        <div class="upon">
-            <% if (success) { %><div class="alert alert-success"><%= success %></div><% } %>
-            <% if (info) { %><div class="alert alert-info"><%= info %></div><% } %>
-            <% if (warning) { %><div class="alert alert-warning"><%= warning %></div><% } %>
-            <% if (error) { %><div class="alert alert-danger"><%= error %></div><% } %>
-        </div>
-        <div class="content">
         <%= content() %>
-        </div>
-        <div class="above text-center">
-            <% if (user) { %>
-            <%= t('global.footer.before') %> <a href="/logout"><%= t('actions.tologout') %></a> <%= t('global.or') %> <a href="/!"><%= t('actions.home') %></a><%= t('global.footer.after') %>
-            <% } else { %>
-            <%= t('global.footer.before') %> <a href="/login"><%= t('actions.tologin') %></a> <%= t('global.or') %> <a href="/signup"><%= t('actions.signup') %></a><%= t('global.footer.after') %>
-            <% } %>
-        </div>
     </div><!-- /.wrapper -->
+    <%- partial('contact') %>
     <%- partial('foot') %>
 </body>
 </html>

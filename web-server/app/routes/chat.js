@@ -1,21 +1,21 @@
+'use strict';
 var express = require('express');
 var router = express.Router();
 var i18next = require('../../../shared/util/i18next');
 var bouncer = require('../middlewares/bouncer');
 var colors = require('../../../config/colors');
-var hello = require('../../../shared/util/helloDolly');
+var hello = require('../../../shared/util/hello-dolly');
 
-router.get('/!', function(req, res) {
-
+router.get('/!', function (req, res) {
   // Is user authenticated
   if (!req.isAuthenticated()) {
     // set Flash message (display on profile page or landing page depending
     // requested URL hash)
-    req.flash('warning', i18next.t("chat.shouldauthenticated"));
+    req.flash('warning', i18next.t('chat.shouldauthenticated'));
 
     // render an HTML DOM that redirect browser on corresponding profile page
     return res.render('chat_track_anchor', {
-      meta: {title: i18next.t("title.chat")},
+      meta: {title: i18next.t('title.chat')},
       colors: colors.toString()
     });
   }
@@ -27,29 +27,22 @@ router.get('/!', function(req, res) {
 
   // ... otherwise open chat
 
-  bouncer.reset(req); // cleanup bouncer (not before cause other middleware can redirect
-                      // browser before, e.g.: choose-username)
+  // cleanup bouncer (not before cause other middleware can redirect
+  // browser before, e.g.: choose-username)
+  bouncer.reset(req);
 
-  // donut build to load
-  var build = '/donut/index.js'; // default to source
-  if (!req.isDebug()) { // not in debug mode, try to find last build
-    try {
-      var last = require('../../public/build/last'); // /!\ reloaded on server restart only
-      if (last.build)
-        build = '/build/'+last.build;
-    } catch (e) {
-      console.log('Error while reading last.json file to determine build to load: '+e);
-    }
-  }
+  // client script to use
+  var script = (process.env.NODE_ENV !== 'development')
+    ? '/build/' + req.locale + '.js'
+    : '/' + req.locale + '.js';
 
   return res.render('chat', {
-    meta: {title: i18next.t("title.chat")},
+    meta: {title: i18next.t('title.chat')},
     colors: colors.toString(),
-    hello: hello().replace('%u', '<strong>@'+req.user.username+'</strong>'),
+    hello: hello().replace('%u', '<strong>@' + req.user.username + '</strong>'),
     avoidFa: true,
-    build: build
+    script: script
   });
-
 });
 
 module.exports = router;

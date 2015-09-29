@@ -1,4 +1,5 @@
-var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+'use strict';
+var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
 var Notifications = require('../../../components/notifications');
@@ -14,24 +15,23 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
-
   var user = session.__currentUser__;
 
   var that = this;
 
   async.waterfall([
 
-    function retrieve(callback) {
+    function retrieve (callback) {
       Notifications(that.app).retrieveUserNotifications(user.id, data, callback);
     },
 
-    function retrieveMore(notifications, callback) {
-      Notifications(that.app).retrieveUserNotificationsUnviewedCount(user.id, function(err, count){
+    function retrieveMore (notifications, callback) {
+      Notifications(that.app).retrieveUserNotificationsCount(user.id, data.time, function (err, count) {
         callback(err, notifications, (count > notifications.length));
       });
     },
 
-    function prepare(notifications, more, callback) {
+    function prepare (notifications, more, callback) {
       var event = {
         notifications: [],
         more: more
@@ -60,14 +60,29 @@ handler.call = function (data, session, next) {
           d.data.user.avatar = notification.data.event.user._avatar();
         }
 
+        if (notification.data.user) {
+          d.data.user = notification.data.user;
+          d.data.user.avatar = notification.data.user._avatar();
+        }
+
         if (notification.data.event.by_user) {
           d.data.by_user = notification.data.event.by_user;
           d.data.by_user.avatar = notification.data.event.by_user._avatar();
         }
 
+        if (notification.data.by_user) {
+          d.data.by_user = notification.data.by_user;
+          d.data.by_user.avatar = notification.data.by_user._avatar();
+        }
+
         if (notification.data.event.room) {
           d.data.room = notification.data.event.room;
           d.data.room.avatar = notification.data.event.room._avatar();
+        }
+
+        if (notification.data.room) {
+          d.data.room = notification.data.room;
+          d.data.room.avatar = notification.data.room._avatar();
         }
 
         if (notification.data.event && notification.data.event.data && notification.data.event.data.message) {
@@ -78,25 +93,14 @@ handler.call = function (data, session, next) {
       });
 
       return callback(null, event);
-    },
-
-    function unviewed(event, callback) {
-      Notifications(that.app).retrieveUserNotificationsUnviewedCount(user.id, function (err, count) {
-        if (err)
-          return callback(err);
-
-        event.unviewed = count || 0;
-        return callback(null, event);
-      });
     }
 
   ], function (err, event) {
     if (err) {
       logger.error('[notification:read] ' + err);
-      return next(null, {code: 500, err: err});
+      return next(null, {code: 500, err: 'internal'});
     }
 
     next(null, event);
   });
-
 };

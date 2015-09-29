@@ -1,0 +1,9 @@
+{
+  "extends": ["semistandard", "standard-react"],
+  "globals": {
+    "describe": true,
+    "it": true,
+    "PROCESS.env.PORT": true,
+    "define": true
+  }
+}

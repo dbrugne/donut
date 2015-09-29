@@ -1,0 +1,33 @@
+<div class="dropdown">
+    <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+        <i class="icon icon-chevron-down hidden-xs hidden-sm"></i>
+        <i class="icon icon-chevron-down visible-xs visible-sm dc-text-contrast"></i>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="<%= data.url %>" target="_blank" title="<%= data.username %> <%= t('global.permalink') %>">
+                <i class="icon icon-link"></i> <%= t('global.permalink') %>
+            </a>
+        </li>
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" class="open-user-profile" data-user-id="<%= data.user_id %>">
+                <i class="icon icon-eye"></i> <%= t('global.viewprofile') %>
+            </a>
+        </li>
+        <li role="presentation" class="divider"></li>
+        <li role="presentation" class="ban-menu">
+            <a role="menuitem" tabindex="-1" data-toggle="confirmation" style="cursor: pointer;" class="show-if-banned action-user-deban" data-user-id="<%= data.user_id %>">
+                <i class="icon icon-ban"></i> <%= t('chat.actions.deban') %>
+            </a>
+            <a role="menuitem" tabindex="-1" data-toggle="confirmation" style="cursor: pointer;" class="show-if-unbanned action-user-ban" data-user-id="<%= data.user_id %>">
+                <i class="icon icon-ban"></i> <%= t('chat.actions.ban') %>
+            </a>
+        </li>
+        <li role="presentation" class="divider"></li>
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" class="close-discussion" data-identifier="<%= data.user_id %>" data-type="user">
+                <i class="icon icon-times"></i> <%= t('chat.actions.close') %>
+            </a>
+        </li>
+    </ul>
+</div>

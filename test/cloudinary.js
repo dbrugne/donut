@@ -1,4 +1,4 @@
-var _ = require('underscore');
+'use strict';
 var chai = require('chai');
 chai.should();
 
@@ -7,7 +7,6 @@ var UserModel = require('../shared/models/user');
 var RoomModel = require('../shared/models/room');
 
 describe('shared/util/cloudinary', function () {
-
   describe('.roomAvatar()', function () {
     it('is function', function () {
       cloudinary.roomAvatar.should.be.a('function');
@@ -65,7 +64,7 @@ describe('shared/util/cloudinary', function () {
     });
   });
 
-  describe('.messageImage()', function() {
+  describe('.messageImage()', function () {
     it('is function', function () {
       cloudinary.messageImage.should.be.a('function');
     });
@@ -79,11 +78,9 @@ describe('shared/util/cloudinary', function () {
       cloudinary.messageImage('v1440415743/discussion/eolog13xgtatjhfqixbr.png', 120).should.equal('https://res.cloudinary.com/roomly/image/upload/b_rgb:ffffff,c___crop__,f_jpg,g_center,h_120,w_120/v1440415743/discussion/eolog13xgtatjhfqixbr.png');
     });
   });
-
 });
 
 describe('shared/models/room', function () {
-
   var model = new RoomModel({
     name: '#roomTest',
     color: '#123456',
@@ -105,11 +102,9 @@ describe('shared/models/room', function () {
     model.poster = null;
     model._poster().should.equal('');
   });
-
 });
 
 describe('shared/models/user', function () {
-
   var model = new UserModel({
     username: 'damien',
     color: '#123456',
@@ -136,5 +131,4 @@ describe('shared/models/user', function () {
     model.poster = null;
     model._poster().should.equal('');
   });
-
 });

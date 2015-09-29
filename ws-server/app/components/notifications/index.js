@@ -1,4 +1,5 @@
-var logger = require('../../../pomelo-logger').getLogger('donut', __filename);
+'use strict';
+var logger = require('../../../../shared/util/logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var NotificationModel = require('../../../../shared/models/notification');
 var HistoryOne = require('../../../../shared/models/historyone');
@@ -9,6 +10,7 @@ var async = require('async');
 // notifications logic
 var userMessage = require('./types/userMessageType');
 var roomPromote = require('./types/roomPromoteType');
+var roomRequest = require('./types/roomRequestType');
 var roomTopic = require('./types/roomTopicType');
 var roomMessage = require('./types/roomMessageType');
 var roomJoin = require('./types/roomJoinType');
@@ -33,8 +35,9 @@ var Facade = function (app, options) {
  */
 Facade.prototype.uidStatus = function (uid, fn) {
   this.app.statusService.getStatusByUid(uid, function (err, status) {
-    if (err)
+    if (err) {
       logger.error('Error while retrieving user status: ' + err);
+    }
 
     return fn(!!status);
   });
@@ -48,7 +51,6 @@ Facade.prototype.uidStatus = function (uid, fn) {
 Facade.prototype.getType = function (type) {
   var typeConstructor;
   switch (type) {
-
     case 'usermessage':
       typeConstructor = userMessage;
       break;
@@ -79,6 +81,13 @@ Facade.prototype.getType = function (type) {
       typeConstructor = userMention;
       break;
 
+    case 'roomjoinrequest':
+    case 'roomallowed':
+    case 'roomrefuse':
+    case 'roominvite':
+      typeConstructor = roomRequest;
+      break;
+
     default:
       logger.warn('Unknown notification type: ' + type);
       return null;
@@ -103,28 +112,65 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
   }
 
   var q = NotificationModel.find(criteria);
-  q.sort({ time: -1 });
+  q.sort({time: -1});
 
-  if (what.number)
+  if (what.number) {
     q.limit(what.number);
+  }
 
-  q.populate({path: 'user', model: 'User', select: 'local username color facebook avatar'});
+  q.populate({
+    path: 'user',
+    model: 'User',
+    select: 'local username color facebook avatar'
+  });
 
   q.exec(function (err, results) {
+    if (err) {
+      return (err);
+    }
     var notifications = [];
     async.eachLimit(results, 1, function (n, fn) {
-      if (!n.data || !n.data.event)
+      if (!n.data || !n.data.event) {
         return fn(null);
+      }
 
-      if (n.getEventType() === 'historyone') {
+      if (n.type === 'roomrefuse' || n.type === 'roomallowed' || n.type === 'roomjoinrequest') {
+        NotificationModel.findOne({_id: n._id})
+          .populate({
+            path: 'data.user',
+            model: 'User',
+            select: 'facebook username local avatar color'})
+          .populate({
+            path: 'data.by_user',
+            model: 'User',
+            select: 'facebook username local avatar color'})
+          .populate({
+            path: 'data.room',
+            model: 'Room',
+            select: 'avatar color name'})
+          .exec(function (err, notification) {
+            if (err) {
+              return fn(err);
+            }
+            if (!notification) {
+              return fn(null);
+            }
+
+            n = notification;
+            notifications.push(n);
+            return fn(null);
+          });
+      } else if (n.getEventType() === 'historyone') {
         var q = HistoryOne.findOne({_id: n.data.event.toString()})
           .populate('from', 'username avatar color facebook')
           .populate('to', 'username avatar color facebook');
         q.exec(function (err, event) {
-          if (err)
+          if (err) {
             return fn(err);
-          if (!event)
+          }
+          if (!event) {
             return fn(null);
+          }
 
           n.data.event = event;
           notifications.push(n);
@@ -136,10 +182,12 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
           .populate('by_user', 'username avatar color facebook')
           .populate('room', 'avatar color name')
           .exec(function (err, event) {
-            if (err)
+            if (err) {
               return fn(err);
-            if (!event)
+            }
+            if (!event) {
               return fn(null);
+            }
 
             n.data.event = event;
             notifications.push(n);
@@ -147,8 +195,9 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
           });
       }
     }, function (err) {
-      if (err)
+      if (err) {
         return callback(err);
+      }
 
       callback(err, notifications);
     });
@@ -175,23 +224,55 @@ Facade.prototype.retrieveUserNotificationsUnviewedCount = function (uid, callbac
   }).count().exec(callback);
 };
 
+Facade.prototype.retrieveUserNotificationsCount = function (uid, time, callback) {
+  var criteria = {
+    user: uid,
+    done: false,
+    to_browser: true
+  };
+  if (time !== null) {
+    criteria.time = {};
+    criteria.time.$lt = new Date(time);
+  }
+  NotificationModel.find(criteria).count().exec(callback);
+};
+
 Facade.prototype.retrieveScheduledNotifications = function (callback) {
   var time = new Date();
   time.setSeconds(time.getSeconds() - conf.notifications.delay);
   var q = NotificationModel.find({
     done: false,
     viewed: false,
-    time: { $lt: time }, // @todo : add delay before sending email/mobile for each notification type here
+    time: {$lt: time}, // @todo : add delay before sending email/mobile for each notification type here
     $or: [
-      { to_email: true, sent_to_email: false },
-      //{ to_mobile: true, sent_to_mobile: false }
+      {to_email: true, sent_to_email: false}
     ]
   });
 
-  q.populate({ path: 'user', model: 'User', select: 'facebook username local avatar color' });
+  q.populate({
+    path: 'user',
+    model: 'User',
+    select: 'facebook username local avatar color'
+  });
+  q.populate({
+    path: 'data.user',
+    model: 'User',
+    select: 'facebook username local avatar color'
+  });
+  q.populate({
+    path: 'data.by_user',
+    model: 'User',
+    select: 'facebook username local avatar color'
+  });
+  q.populate({
+    path: 'data.room',
+    model: 'Room',
+    select: 'avatar color name'
+  });
   q.exec(function (err, results) {
-    if (err)
+    if (err) {
       callback(err);
+    }
 
     callback(null, results);
   });
@@ -228,19 +309,19 @@ Facade.prototype.avoidNotificationsSending = function (userId, callback) {
     user: userId,
     done: false,
     $or: [
-      { to_email: true },
-      { to_mobile: true }
+      {to_email: true},
+      {to_mobile: true}
     ]
-  }, { $set: { to_email: false, to_mobile: false } }, { multi: true }, callback);
+  }, {$set: {to_email: false, to_mobile: false}}, {multi: true}, callback);
 };
 
-Facade.prototype.markOldNotificationsAsDone = function(callback) {
+Facade.prototype.markOldNotificationsAsDone = function (callback) {
   var timeLimit = new Date();
   timeLimit.setMonth(timeLimit.getMonth() - conf.notifications.done);
   NotificationModel.update({
     done: false,
-    time: { $lt: timeLimit}
+    time: {$lt: timeLimit}
   }, {
-    $set: { done: true }
+    $set: {done: true}
   }, {multi: true}).exec(callback);
 };

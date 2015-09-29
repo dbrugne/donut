@@ -1,4 +1,5 @@
-var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+'use strict';
+var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var async = require('async');
 var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
@@ -14,26 +15,24 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
-
   var user = session.__currentUser__;
 
-  var that = this;
-
-  var name = data.name || null; // @todo : should be replaced with Room._id??
+  var id = data.room_id || null;
 
   var event = {};
 
   async.waterfall([
 
-    function prepare(callback) {
+    function prepare (callback) {
       var preferences = {};
       _.each(User.preferencesKeys(), function (config, key) {
         // skip non-needed key for this request
-        if ((name && key.indexOf('room:') !== 0) || (!name && key.indexOf('room:') === 0))
+        if ((id && key.indexOf('room:') !== 0) || (!id && key.indexOf('room:') === 0)) {
           return;
+        }
 
         // key to lookup
-        var _key = (name) ? key.replace('__what__', name) : key;
+        var _key = (id) ? key.replace('__what__', id) : key;
 
         // current (or default) value
         var _value = user.preferencesValue(_key);
@@ -45,7 +44,7 @@ handler.call = function (data, session, next) {
       return callback(null);
     },
 
-    function bannedUsers(callback) {
+    function bannedUsers (callback) {
       event.bannedUsers = _.map(user.bans, function (b) {
         return {
           user_id: b.user.id,
@@ -59,10 +58,9 @@ handler.call = function (data, session, next) {
   ], function (err) {
     if (err) {
       logger.error('[preferences:read] ' + err);
-      return next(null, {code: 500, err: err});
+      return next(null, {code: 500, err: 'internal'});
     }
 
     next(null, event);
   });
-
 };

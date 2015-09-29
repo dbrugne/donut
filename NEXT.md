@@ -1,23 +1,18 @@
 # Things to do on next deploy
 
-* Replace old user mentions in history:
+* Remove flag from env: 
 ```
-grunt mentions-migration
+"RAW_MESSAGE": true
 ```
-* Replace old website attributes on rooms and users:
+* Cleanup logs collection
 ```
-grunt website-migration
+db.getCollection('logs').drop()
 ```
-* Set preferences roommessage, roomtopic, roomjoin owner:
+* Query mongo to set all existing room  with join_mode=public
 ```
-grunt preferences-owner-migration
+db.getCollection('rooms').update({}, { $set: { mode: "public" } }, {"multi" : true});
 ```
-* Rename #Support => #help
+* Cleanup legacy history data
 ```
-db.getCollection('rooms').update({ _id: ObjectId("557ed3a4bcb50bc52b74745a")}, {$set: {name: '#help'}})
-```
-* Cleanup 'user:online/offline' event from history
-```
-db.getCollection('history-room').remove({event: {$in: ['user:online','user:offline']}})
-db.getCollection('history-one').remove({event: {$in: ['user:online','user:offline']}})
+db.getCollection('history-room').update({users: {$exists: true}}, {$unset: {users: true}}, {multi: true});
 ```

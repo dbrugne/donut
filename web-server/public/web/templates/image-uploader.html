@@ -1,0 +1,17 @@
+<div class="image-uploader">
+    <div class="uploader-current">
+        <span class="current">
+            <% if (imgTag) { %>
+                <%= imgTag %>
+            <% } else { %>
+                <%= t('chat.form.common.edit.upload.nopicture') %>,
+            <% } %>
+        </span>
+        (<a class="change"><%= t('global.change') %></a> <%= t('global.or') %> <a class="remove"><%= t('global.delete') %></a>).
+        <% if (typeof error != 'undefined') { %><p class="error-block"><%= error %></p><% } %>
+        <p class="help-block">
+            <%= t('chat.form.common.edit.upload.help.format') %>
+            <% if (resized_width && resized_width > 0) { print(t('chat.form.common.edit.upload.help.size', {resized_width: resized_width, resized_height: resized_height})); } %>
+        </p>
+    </div>
+</div>

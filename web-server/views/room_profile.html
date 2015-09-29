@@ -3,11 +3,11 @@
 <% var roomUsersLength = (typeof room.users !== 'undefined' ? room.users.length : 0 ) %>
 <% var roomName = room.name.replace('#','') %>
 
-<div class="side dc-back" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>">
-    <div class="blur dc-back-darker" style="<% if (posterBlured) { %>background-image: url(<%= posterBlured %>);<% }; %>">
+<div class="side roomside dc-back <% if (!poster) { %>poster-empty<% } else { %>poster-full<% } %>" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>">
+    <div class="blur dc-back" style="<% if (posterBlured) { %>background-image: url(<%= posterBlured %>);<% }; %>">
         <div class="users hidden-sm hidden-xs">
             <div class="header">
-                <p class="count">
+                <p class="count dc-text-contrast">
                     <%= t('chat.userscount', {count: (1 + roomOpsLength + roomUsersLength)}) %>
                 </p>
             </div>
@@ -17,8 +17,8 @@
                 <li>
                     <a href="/user/<%= room.owner.username%>" class="item owner">
                         <span class="infos">
-                            <span class="avatar open-user-profile" data-username="<%= room.owner.username %>"  style="background-image: url(<%= room.owner.avatar %>)" title="<%= t('chat.owner.is') %>"></span>
-                            <span class="username open-user-profile" data-username="<%= room.owner.username %>" >@<%= room.owner.username %></span>
+                            <span class="avatar open-user-profile" data-user-id="<%= room.owner.user_id %>" style="background-image: url(<%= room.owner.avatar %>)" title="<%= t('chat.owner.is') %>"></span>
+                            <span class="username open-user-profile dc-text-contrast" data-user-id="<%= room.owner.user_id %>">@<%= room.owner.username %></span>
                         </span>
                     </a>
                 </li>
@@ -26,8 +26,8 @@
                 <li>
                     <a href="/user/<%= user.username%>" class="item op">
                         <span class="infos">
-                            <span class="avatar open-user-profile" data-username="<%= user.username %>"  style="background-image: url(<%= user.avatar %>)" title="<%= t('chat.op.is') %>"></span>
-                            <span class="username open-user-profile" data-username="<%= user.username %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></span>
+                            <span class="avatar open-user-profile" data-user-id="<%= user.user_id %>" style="background-image: url(<%= user.avatar %>)" title="<%= t('chat.op.is') %>"></span>
+                            <span class="username open-user-profile dc-text-contrast" data-user-id="<%= user.user_id %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></span>
                         </span>
                     </a>
                 </li>
@@ -36,8 +36,8 @@
                 <li>
                     <a href="/user/<%= user.username%>" class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %> <% if (user.is_devoice === true) { %> devoice<% }; %> <%= user.status %>">
                         <span class="infos">
-                            <span class="avatar open-user-profile" data-username="<%= user.username %>"  style="background-image: url(<%= user.avatar %>)" title=""></span>
-                            <span class="username open-user-profile" data-username="<%= user.username %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></span>
+                            <span class="avatar open-user-profile" data-user-id="<%= user.user_id %>" style="background-image: url(<%= user.avatar %>)" title=""></span>
+                            <span class="username open-user-profile dc-text-contrast" data-user-id="<%= user.user_id %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></span>
                         </span>
                     </a>
                 </li>
@@ -49,17 +49,31 @@
     </div>
 </div><!-- /.side -->
 <div class="content">
-    <div class="mini-header room visible-xs visible-sm">
-        <a href="/room/<%= roomName %>"><img class="avatar" data-room-name="<%= room.name %>" src="<%= room.avatar %>" alt="<%= room.name %> avatar"></a>
-        <a href="/room/<%= roomName %>" class="name dc-text-contrast"><%= room.name %></a>
+    <div class="visible-xs visible-sm">
+        <div class="mini-header room">
+            <a href="/room/<%= roomName %>">
+                <div class="avatar">
+                    <img src="<%= room.avatar %>" alt="<%= room.name %> avatar">
+                </div>
+            </a>
+            <span class="name dc-text-contrast">
+                <a href="/room/<%= roomName %>" class="dc-text-contrast"><%= room.name %></a>
+                <% if (mode === 'private') { %>
+                    <span class="room-profile private dc-text-contrast" data-toggle="tooltip" data-placement="right" title="<%= t('global.private-donut') %>"> </span>
+                <% } %>
+            </span>
+        </div>
     </div>
     <div class="header room">
         <div class="overlay-ctn">
             <a href="/room/<%= roomName %>"><img class="avatar" data-room-name="<%= room.name %>" src="<%= room.avatar %>" alt="<%= room.name %> avatar"></a>
-            <p class="join"><a class="dc-back dc-text-contrast" href="<% if (!user) { %><%= room.join %><% } else { %><%= room.chat %><% } %>"><%= t('actions.join') %> <% if (room.usersCount) { %><%= room.usersCount %><% } %> <i class="icon icon-user-custom"></i></a></p>
+            <p class="joinroom"><a class="dc-back dc-text-contrast" href="<% if (!user) { %><%= room.join %><% } else { %><%= room.chat %><% } %>"><%= t('actions.join') %> <% if (room.usersCount) { %><%= room.usersCount %><% } %> <i class="icon icon-user-custom"></i></a></p>
         </div>
         <div class="info">
             <a href="/room/<%= roomName %>" class="name"><%= room.name %></a>
+            <% if (mode === 'private') { %>
+                <span class="room-profile private" data-toggle="tooltip" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
+            <% } %>
             <div class="share">
                 <%= t('chat.share.label') %>
                 <i class="facebook icon icon-facebook-square" data-url="<%- room.url %>" data-name="<%- room.name %>" data-avatar="<%- room.avatar %>"></i>

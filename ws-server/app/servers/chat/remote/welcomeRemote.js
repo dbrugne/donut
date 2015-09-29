@@ -1,11 +1,12 @@
-var logger = require('../../../../pomelo-logger').getLogger('donut', __filename);
+'use strict';
+var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var async = require('async');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
 var roomDataHelper = require('../../../util/roomData');
 var oneDataHelper = require('../../../util/oneData');
-var featuredRooms = require('../../../util/featuredRooms');
+var featuredRooms = require('../../../../../shared/util/featured-rooms');
 var Notifications = require('../../../components/notifications');
 
 module.exports = function (app) {
@@ -23,9 +24,10 @@ var WelcomeRemote = function (app) {
  * - opened onetoones  details with short piece of history
  *
  * @param {String} uid unique id for user
+ * @param {String} frontendId
+ * @param {Function} globalCallback
  */
 WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) {
-
   var start = Date.now();
 
   // welcome event data
@@ -40,6 +42,7 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
     function retrieveUser (callback) {
       User.findById(uid)
         .populate('onetoones')
+        .populate('blocked')
         .exec(function (err, user) {
           if (err) {
             return callback('Unable to find user: ' + err, null);
@@ -60,10 +63,10 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
           }
 
           welcomeEvent.preferences = {};
-          welcomeEvent.preferences['browser:exitpopin'] = (typeof user.preferences['browser:exitpopin'] === 'undefined' || user.preferences['browser:exitpopin'] === true);
-          welcomeEvent.preferences['browser:welcome'] = (user.preferences && user.preferences['browser:welcome'] === true);
-          welcomeEvent.preferences['browser:sounds'] = (user.preferences && user.preferences['browser:sounds'] === true);
-          welcomeEvent.preferences['notif:channels:desktop'] = (user.preferences && user.preferences['notif:channels:desktop'] === true);
+          welcomeEvent.preferences[ 'browser:exitpopin' ] = (typeof user.preferences[ 'browser:exitpopin' ] === 'undefined' || user.preferences[ 'browser:exitpopin' ] === true);
+          welcomeEvent.preferences[ 'browser:welcome' ] = (user.preferences && user.preferences[ 'browser:welcome' ] === true);
+          welcomeEvent.preferences[ 'browser:sounds' ] = (user.preferences && user.preferences[ 'browser:sounds' ] === true);
+          welcomeEvent.preferences[ 'notif:channels:desktop' ] = (user.preferences && user.preferences[ 'notif:channels:desktop' ] === true);
 
           return callback(null, user);
         });
@@ -99,12 +102,12 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
           var parallels = [];
           _.each(rooms, function (room) {
             if (room.isBanned(user.id)) {
-              logger.warn('User ' + uid + ' seems to be banned from ' + room.name + ' but room name is still present in user.rooms array');
+              logger.warn('User ' + uid + ' seems to be banned from ' + room.name + ' but still present in rooms.users');
               return;
             }
 
             parallels.push(function (fn) {
-              roomDataHelper(that.app, user, room, function (err, r) {
+              roomDataHelper(user, room, function (err, r) {
                 fn(err, r);
               });
             });
@@ -125,8 +128,39 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
         });
     },
 
+    function populateBlocked (user, callback) {
+      var roomsBlocked = [];
+
+      async.forEach(user.blocked, function (room, fn) {
+        User.populate(room, {'path': 'owner'}, function (err, owner) {
+          if (err) {
+            return callback(err);
+          }
+
+          roomDataHelper(user, room, function (err, r) {
+            if (err) {
+              fn(err);
+            }
+            roomsBlocked.push(r);
+            fn(null);
+          });
+        });
+      }, function (err) {
+        if (err) {
+          return callback(err);
+        }
+
+        if (!roomsBlocked.length) {
+          return callback(null, user);
+        }
+
+        welcomeEvent.blocked = roomsBlocked;
+        return callback(null, user);
+      });
+    },
+
     function featured (user, callback) {
-      if (!(user.preferences && user.preferences['browser:welcome'] === true)) {
+      if (!(user.preferences && user.preferences[ 'browser:welcome' ] === true)) {
         return callback(null, user);
       }
 
@@ -154,25 +188,20 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
 
   ], function (err, user) {
     if (err) {
-      logger.error(JSON.stringify({
-        route: 'welcomeRemote.welcome',
+      logger.error('welcomeRemote.welcome', {
         result: 'fail',
         uid: uid,
-        frontendId: frontendId,
-        time: new Date(start)
-      }));
+        frontendId: frontendId
+      });
     } else {
-      logger.debug(JSON.stringify({
-        route: 'welcomeRemote.welcome',
+      logger.debug('welcomeRemote.welcome', {
         result: 'success',
         username: user.username,
         frontendId: frontendId,
-        time: new Date(start),
         timeUsed: (Date.now() - start)
-      }));
+      });
     }
 
     return globalCallback(err, welcomeEvent);
   });
-
 };

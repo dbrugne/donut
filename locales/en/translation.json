@@ -3,6 +3,35 @@
     "title": "Page not found",
     "description": "Sorry we are not able to find this resource! You could just press this neat little button:"
   },
+  "landing": {
+    "signup" : "Sign up",
+    "login" : "Log in",
+    "loginwithfacebook": "Login with Facebook",
+    "orbymail": "or by email",
+    "username-placeholder": "Username",
+    "email-placeholder": "Mail",
+    "password-placeholder": "Password",
+    "yourinterests": "What are your interests ?",
+    "loadmore": "Load more results",
+    "help": "Help",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "cgu": "EUTC",
+    "legals": "Legals",
+    "signup-self": "Sign up",
+    "login-self": "Log in",
+    "carousel": {
+      "heading": "chatroom network ",
+      "slogan": "Talk about your interests. <br/>Get in touch with people in your universe. <br> Create and animate your own community."
+    }
+  },
+  "forms": {
+    "username-required": "username is required",
+    "username-error": "this username does not meet the constraints.",
+    "email-required": "email is required",
+    "password-required": "password is required",
+    "password-error": "this password does not meet the constraints."
+  },
   "title": {
     "default": "DONUT is made for you to chat about your interests and engage your communities!",
     "landing": "DONUT - Instant chat about your interests",
@@ -35,6 +64,47 @@
       }
     }
   },
+  "date": {
+    "days": {
+      "0": "sunday",
+      "1": "monday",
+      "2": "tuesday",
+      "3": "wednesday",
+      "4": "thursday",
+      "5": "friday",
+      "6": "saturday"
+    },
+    "months": {
+      "0": "january",
+      "1": "february",
+      "2": "march",
+      "3": "april",
+      "4": "may",
+      "5": "june",
+      "6": "july",
+      "7": "august",
+      "8": "september",
+      "9": "october",
+      "10": "november",
+      "11": "december"
+    },
+    "relativetime": {
+      "s": "a few seconds",
+      "m": "a minute",
+      "mm": "__minutes__ minutes",
+      "h": "a hour",
+      "hh": "__hours__ hours",
+      "d": "a day",
+      "dd": "__days__ days",
+      "M": "a month",
+      "MM": "__months__ month",
+      "y": "a year",
+      "yy": "__years__ years"
+    },
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "the-day-before": "The day before"
+  },
   "baseline": "Chat about your interests!",
   "actions": {
     "login": "log in",
@@ -54,6 +124,9 @@
     "muted": "sound off"
   },
   "global": {
+    "nobody": "Nobody",
+    "admin": "(admin only)",
+    "default": "default",
     "or": "or",
     "yes": "yes",
     "no": "no",
@@ -66,6 +139,8 @@
     "save": "save",
     "cancel": "cancel",
     "view": "view",
+    "accept": "accept",
+    "refuse": "refuse",
     "viewprofile": "view profile",
     "online": "online",
     "offline": "offline",
@@ -77,19 +152,17 @@
       "before": "Would you like to",
       "after": "?"
     },
-    "switchlanguage": "Language:",
-    "unknownerror": "Unknown error, please retry later"
+    "switchlanguage": "Language",
+    "unknownerror": "Unknown error, please retry later",
+    "private-donut": "Private donut: only authorized users can join, participate and access history"
   },
   "login": {
-    "title": "connect",
     "withfacebook": "with Facebook",
     "withpassword": "with a password",
     "email-placeholder": "your e-mail",
     "password-placeholder": "your password",
     "confirm-placeholder": "confirm your password",
     "username-placeholder": "choose a username",
-    "createanaccount1": "Sign-up,",
-    "createanaccount2": "its free",
     "emailerror": "Invalid e-mail",
     "passworderror": "Your forgot to enter a password"
   },
@@ -106,7 +179,7 @@
     }
   },
   "signup": {
-    "disclaimer": "by clicking the \"Here we go!\" button I accept the user terms and conditions of DONUT."
+    "disclaimer": "By creating an account, I accept <strong><a href=\"/eutc\" target=\"_blank\">EUTC</a></strong>"
   },
   "choose-username": {
     "title": "It's time to choose a username!",
@@ -133,141 +206,14 @@
   },
   "home": {
     "cover": {
-      "line1": "DONUT offers you to",
-      "line2": [
-        "<span>chat</span>",
-        "<span>talk</span>",
-        "<span>discuss</span>",
-        "<span>chatter</span>",
-        "<span>gossip</span>",
-        "<span>express yourself</span>",
-        "<span>speak</span>",
-        "<span>think</span>",
-        "<span>share opinions</span>",
-        "<span>debate</span>",
-        "<span>joke</span>",
-        "<span>laugh</span>",
-        "<span>communicate</span>"
-      ],
-      "line3": "about",
-      "line4": [
-        "<span>your interests</span>",
-        "<span>your passions</span>",
-        "<span>your mood</span>",
-        "<span>the news</span>",
-        "<span>sports</span>",
-        "<span>e-sport</span>",
-        "<span>a TV show</span>",
-        "<span>the show business</span>",
-        "<span>stamps</span>",
-        "<span>everything and nothing</span>",
-        "<span>nothing and everything</span>",
-        "<span>the weather</span>",
-        "<span>the weather forecast</span>",
-        "<span>the good old times</span>",
-        "<span>the good timing</span>",
-        "<span>History</span>",
-        "<span>your story</span>",
-        "<span>storage</span>",
-        "<span>poker</span>",
-        "<span>soccer</span>",
-        "<span>mineral water</span>",
-        "<span>cats</span>",
-        "<span>dogs</span>",
-        "<span>friendship</span>",
-        "<span>fish and chips</span>",
-        "<span>mangas</span>",
-        "<span>tango</span>",
-        "<span>video games</span>",
-        "<span>football</span>",
-        "<span>fuzzball</span>",
-        "<span>frisbees</span>",
-        "<span>education</span>",
-        "<span>potatoes</span>",
-        "<span>pets and toes</span>",
-        "<span>bicycle pumps</span>",
-        "<span>car pimps</span>",
-        "<span>your projects</span>",
-        "<span>your objects</span>",
-        "<span>knitting</span>",
-        "<span>your plans</span>",
-        "<span>your pans</span>",
-        "<span>cosplay</span>",
-        "<span>replay</span>",
-        "<span>electronics</span>",
-        "<span>pandas</span>",
-        "<span>paintings</span>",
-        "<span>paintball</span>",
-        "<span>Art</span>",
-        "<span>Law</span>",
-        "<span>your favorite book</span>",
-        "<span>your favorite cook</span>",
-        "<span>music</span>",
-        "<span>pokemons</span>",
-        "<span>your favorite movies</span>",
-        "<span>surf</span>",
-        "<span>jazz</span>",
-        "<span>tarot</span>",
-        "<span>maths</span>",
-        "<span>anything</span>",
-        "<span>weaving</span>",
-        "<span>sewing</span>",
-        "<span>trucks</span>",
-        "<span>quantum physics</span>",
-        "<span>philosophy</span>",
-        "<span>topology</span>",
-        "<span>science</span>",
-        "<span>computer science</span>",
-        "<span>culture</span>",
-        "<span>agriculture</span>",
-        "<span>postcards</span>",
-        "<span>motorbikes</span>",
-        "<span>classical music</span>"
-      ],
-      "line5": "and engage",
-      "line6": [
-        "<span>your friends</span>",
-        "<span>your families</span>",
-        "<span>your communities</span>",
-        "<span>your buddies</span>",
-        "<span>your brothers and sisters</span>",
-        "<span>random people</span>",
-        "<span>your fans</span>",
-        "<span>your followers</span>",
-        "<span>your parents</span>",
-        "<span>your grand-parents</span>",
-        "<span>your students</span>",
-        "<span>those you love</span>",
-        "<span>those you like</span>",
-        "<span>beautiful stangers</span>",
-        "<span>unicorns</span>",
-        "<span>your fellows</span>",
-        "<span>your children</span>",
-        "<span>your colleagues</span>",
-        "<span>your cousins</span>",
-        "<span>your guru</span>",
-        "<span>your neighbours</span>"
-      ],
-      "knowmore": "More"
+      "knowmore": "Know more"
     },
     "description": {
       "title1": "tasty",
-      "title2": "chatrooms",
-      "definition": "A donut is a cosy discussion spot,<br>a cool place to hang out,<br> a chat room indeed!",
-      "line1": "You can create your very own customized donut and hang out with you community...",
-      "line2": "...or join ongoing discussions around your interests...",
-      "line3": "...and discover like-minded people, during true conversations!"
+      "title2": "chatrooms"
     },
     "signup": {
-      "title1": "Create a",
-      "title2": "account here in 1 bite",
       "etvoila": "Here we go!"
-    },
-    "footer": {
-      "faq": "FAQ",
-      "eutc": "Terms and conditions",
-      "legals": "Legal notices",
-      "contact": "Contact"
     }
   },
   "logged": {
@@ -279,7 +225,7 @@
   },
   "profile": {
     "room": {
-      "ownerops": "The bosses",
+      "ownerops": "The regulars",
       "now": "Currently",
       "nouser": "No user in this donut",
       "disclaimer": {
@@ -307,9 +253,9 @@
   "chat": {
     "rollup": {
       "header": {
-        "commands": "Liste des commandes disponibles",
-        "rooms": "Liste des donuts disponibles",
-        "users": "Liste des utilisateurs",
+        "commands": "List of available commands",
+        "rooms": "List of available donuts",
+        "users": "User list",
         "tonavigate": "to navigate",
         "toselect": "to select",
         "todismiss": "to dismiss"
@@ -329,35 +275,25 @@
     "loading": "Loading",
     "actions": {
       "search": "Search",
+      "searchuser": "Invite a user",
       "create": "create",
       "adonut": "a donut",
       "account": "my account",
       "edit": "my profile",
       "notifications": "notifications",
-      "close": "Close the discussion",
+      "close": "quit the discussion",
       "preferences": "settings and notifications",
       "bannedusers": "locked users",
       "update": "Edit",
       "see": "See",
-      "ban": "Ban",
-      "deban": "Deban",
-      "banned": "You have lock this user",
+      "ban": "Block",
+      "deban": "Unblock",
+      "banned": "You have blocked this user",
       "bannedMessage": {
-        "onetoone": "You have been locked by this user",
-        "room": "You have been locked in this Donut"
+        "onetoone": "You have been blocked by this user",
+        "room": "You are mute in this donut as requested by a moderator"
       },
-      "unlock": "(Click here to unlock)"
-    },
-    "create": {
-      "info": "Attention, the donut name will not be editable later.",
-      "label": "Create your donut",
-      "help": [
-        "Between 3 and 15 characters.<br>",
-        "Valid : letters, numbers and special characters: <strong>-_^</strong><br>",
-        "Invalid: spaces, accents and special characters not listed above.<br>"
-      ],
-      "placeholder": "Donut name",
-      "submit": "Create"
+      "unlock": "(Click here to unblock)"
     },
     "help": "Help",
     "placeholder": "Place here",
@@ -375,6 +311,8 @@
     },
     "userscount": "<strong>__count__</strong> user in this donut",
     "userscount_plural": "<strong>__count__</strong> users in this donut",
+    "usersonlinecount": "<strong>__count__</strong> <span>user online in this donut</span>",
+    "usersonlinecount_plural": "<strong>__count__</strong> <span>users online in this donut</span>",
     "usersoffline": "Offline users",
     "topic": {
       "label": "Currently",
@@ -384,6 +322,15 @@
     },
     "owner": {
       "is": "This user is the creator of this donut."
+    },
+    "allow": {
+      "infobox": {
+        "accept": "Authorize",
+        "refuse": "Refuse"
+      }
+    },
+    "disallow": {
+      "infobox": "Remove"
     },
     "op": {
       "is": "This user is the moderator of this donut.",
@@ -409,45 +356,67 @@
       "infobox": "Unblock this user"
     },
     "voice": {
-      "infobox": "Voice this user"
+      "infobox": "Unmute this user"
     },
     "devoice": {
-      "infobox": "Devoice this user"
+      "infobox": "Mute this user"
     },
     "profile": {
       "infobox": "View the user profile"
+    },
+    "allowed": {
+      "success": "A request has been sent successfully",
+      "error" : {
+        "notallowed": "An access request is already pending",
+        "banned": "You have been ban from this donut"
+      }
+    },
+    "password": {
+      "wrong-password": "Wrong password",
+      "spam-password": "You have made ​​too many tests ! Wait or made ​​a request for access",
+      "error": "An error has occurred"
     },
     "confirmation": {
       "sure": "Do you confirm this action?",
       "placeholder": "Explain why, visible in this donut (optional)",
       "cancel": "No, cancel",
-      "confirm": "Yes, confirm"
+      "confirm": "Yes, confirm",
+      "message": {
+        "modechange": "WARNING this action is irreversible.",
+        "refuseuser": "You are about to refuse @__username__",
+        "acceptuser": "You are about to authorize @__username__",
+        "disallowuser": "You are about to disallow @__username__",
+        "invite": "You are about to authorize @__username__. A notification will be sent to invite @__username__ to join #__name__."
+      }
     },
     "commands": {
-      "join": "Join a donut",
-      "leave": "Leave this donut or another one",
-      "topic": "Change topic of current donut",
-      "op": "Make moderator in this donut",
-      "deop": "Remove from moderators of this donut",
-      "kick": "Kick out a user from this donut",
-      "ban": "Kick out and ban a user from this donut",
-      "deban": "Unban a user from this donut",
-      "block": "Block user private messages to you",
-      "deblock": "Deblock private messages from a user",
-      "voice": "Unmute a user from this donut",
-      "devoice": "Mute a user from this donut",
-      "msg": "Send a message",
-      "profile": "Open donut or user profile",
-      "me": "What are you doing?",
+      "join": "join a donut",
+      "leave": "leave this donut or another one",
+      "topic": "change topic of current donut",
+      "op": "make moderator in this donut",
+      "deop": "remove from moderators of this donut",
+      "kick": "kick out a user from this donut",
+      "ban": "kick out and ban a user from this donut",
+      "unban": "unban a user from this donut",
+      "block": "block private messages from a user",
+      "unblock": "unblock private messages from a user",
+      "unmute": "unmute a user of this donut",
+      "mute": "mute a user of this donut",
+      "msg": "send a message",
+      "profile": "open a donut or a user profile",
+      "me": "tell what you are doing or feeling",
       "ping": "pong",
       "clear": "remove all visible history from interface",
-      "random": "Display a random value (between 1 and 100 by default)",
+      "random": "display a random value (between 1 and 100 by default)",
       "help": "this message",
       "errors": {
         "parameters": "Invalid parameter",
         "invalidcommand": "Command not found",
         "invalidusername": "User not found",
         "invalidroom": "Donut not found",
+        "unknown-user-room": "User not found in this donut",
+        "already-oped": "This user is already modérator in this donut",
+        "no-op": "You do not have permission to do that",
         "commandaccess": "You can not use this command here"
       }
     },
@@ -455,57 +424,44 @@
       "message": "DONUT platform responds in __ms__ ms"
     },
     "notifications": {
-      "hello": "You enter",
-      "disconnected": "You have been disconnected from the server, please wait",
-      "reconnected": "You have been reconnected",
-      "offline": "This user is currently offline, the message cannot be sent.",
       "topic": " defined a new topic: ",
       "topicempty": "empty",
-      "kick": "  was kicked out by ",
-      "ban": " was banned by",
-      "deban": " is no longer banned as requested by",
-      "op": "  is now a moderator as requested by",
-      "deop": "  is no longer a moderator as requested by",
-      "voice": " makes speech of ",
-      "devoice": " mutes ",
-      "in": " entered at ",
-      "out": " left at ",
-      "online": " is online,",
-      "offline": " is offline,",
+      "roomkick": "  was kicked out by ",
+      "roomban": " was banned by",
+      "roomdeban": " is no longer banned as requested by",
+      "roomop": "  is now a moderator as requested by",
+      "roomdeop": "  is no longer a moderator as requested by",
+      "roomvoice": " is no longer mute as requested by ",
+      "roomdevoice": " is now mute as requested by ",
+      "in": "entered at",
+      "out": "left at",
+      "online": "is online,",
+      "offline": "is offline,",
       "read-more": "Read more",
       "count" : "<strong class=\"nb\"></strong><strong> New</strong> Notification(s)",
       "tag-as-read" : "Tag as read",
       "empty": "You have no new notification",
-      "random": "rolls",
-      "dropdown": {
-        "op": "<a href=\"#room/__roomname__\">You are a moderator of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "deop": "<a href=\"#room/__roomname__\">You are no longer a moderator of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "kick": "<a href=\"#room/__roomname__\">You were kicked out of </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "ban": "<a href=\"#room/__roomname__\">You were banned from </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "deban": "<a href=\"#room/__roomname__\">You are no longer banned from </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "voice": "<a href=\"#room/__roomname__\">You are unmute in </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "devoice": "<a href=\"#room/__roomname__\">You are mute in </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "roomjoin": "<span class=\"name open-user-profile\" data-username=\"__username__\">@__username__</span><a href=\"#room/__roomname__\"> joined </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "roomtopic": "<a href=\"#room/__roomname__\">New topic in </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "roommessage": "<a href=\"#room/__roomname__\">New message in </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "usermention": "<a href=\"#room/__roomname__\">You were mentionned in </a><span class=\"name open-room-profile\" data-room-name=\"#__roomname__\">#__roomname__</span>",
-        "usermessage": "<span class=\"name open-user-profile\" data-username=\"__username__\">@__username__</span>: <a href=\"#user/__username__\">__message__</a>"
+      "random": "Gets __result__ (randomly between __min__ and __max__)",
+      "messages": {
+        "roomop": "You are moderator of <span>#__name__</span>",
+        "roomdeop": "You are no longer moderator of <span>#__name__</span>",
+        "roomkick": "You were kicked out of <span>#__name__</span>",
+        "roomban": "You were banned from <span>#__name__</span>",
+        "roomdeban": "You are no longer banned from <span>#__name__</span>",
+        "roomvoice": "You are unmute in <span>#__name__</span>",
+        "roomdevoice": "You are mute in <span>#__name__</span>",
+        "roomallowed": "You are now authorized to join <span>#__name__</span>",
+        "roomrefuse": "Your request to join <span>#__name__</span></br> has been refused",
+        "roomjoin": "<span>@__username__</span> joined <span>#__name__</span>",
+        "roomjoinrequest": "<span>@__username__</span> wants to join <span>#__name__</span>",
+        "roomtopic": "New topic in <span>#__name__</span>",
+        "roommessage": "New message in <span>#__name__</span>",
+        "usermention": "You were mentionned in <span>#__name__</span>",
+        "usermessage": "<span>@__username__</span>: __message__",
+        "roominvite": "<span>@__username__</span> invites you to join <span>#__name__</span>"
       },
-      "desktop": {
-        "roomop": "You are moderator of __roomname__",
-        "roomdeop": "You are no longer moderator of __roomname__",
-        "roomkick": "You were kicked out of __roomname__",
-        "roomban": "You were banned from __roomname__",
-        "roomdeban": "You are no longer banned from __roomname__",
-        "roomvoice": "You were unmuted in __roomname__",
-        "roomdevoice": "You were muted in __roomname__",
-        "usermessage": "@__username__: __message__",
-        "roommessage": "__roomname__: __message__",
-        "roomjoin": "@__username__ joined __roomname__",
-        "roomtopic": "New topic in __roomname__: __topic__",
-        "usermention": "Mention by @__username__ in __roomname__: __message__",
-        "by": "by"
-      }
+      "userban": " was blocked by",
+      "userdeban": " is no longer blocked as requested by"
     },
     "unread": {
       "title": "(new)"
@@ -513,42 +469,51 @@
     "history": {
       "help": "Scroll up to see more",
       "loading": "Loading more...",
-      "nomore": "Conversation history fully displayed",
       "top": "go to top",
-      "bottom": "go to bottom"
+      "bottom": "go to bottom",
+      "currently": "This is it... You are at the very start of the conversation on <span class=\"name dc-text open-room-profile\" data-room-id=\"__roomid__\">__roomname__</span>, donut created by <span class=\"owner dc-text open-user-profile\" data-user-id=\"__ownerid__\">@__owner__</span> on <span class=\"date\">__created_at__</span>",
+      "hasPassword": "Your donut is private. Configure the access to your donut so that other users can join",
+      "onestart": "This conversation is private. Only you and your interlocutor can see it.",
+      "edit": "Edit profile",
+      "users": "Manage users",
+      "access": "Manage access,"
     },
     "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
     "closeapp": "Are you sure you want to leave ?",
-    "closemessage": "Are you sure you want to leave? Your conversation log will be lost.",
+    "closemessage": "Are you sure you want to leave?",
     "kickmessage": "You have been kicked out of __name__",
     "banmessage": "You have been banned from __name__",
-    "bannedfromroom": "Unable to join __name__, you were banned",
+    "disallowmessage": "You are not allowed anymore in __name__",
     "roomnotexists": "The donut __name__ does not exist yet, <a class='open-create-room' data-name='__name__'>would you like to create it</a>?",
-    "alreadyexists": "Donut __name__ already exists, <a href='#__uri__'>would you like to join it</a>?",
-    "successfullycreated": "Donut __name__ successfully created",
     "reason": "(reason: \"__reason__\")",
     "deletemessage": "The donut __name__ has been deleted",
     "users": {
-      "link": "users",
-      "owner": {
-        "label": "Creator",
-        "help": "The donut creator has all priviledges"
+      "username": "Username",
+      "usertype": "Type",
+      "users": "User",
+      "users_plural": "Users",
+      "link": "User list,",
+      "label": "See all users",
+      "search": "search a username in this donut",
+      "type": {
+        "owner": "Owner",
+        "users": "Users",
+        "op": "Moderators",
+        "allowed": "Authorized users",
+        "ban": "Banned",
+        "devoice": "Mute"
       },
-      "ops": {
-        "label": "Moderators",
-        "help": "Moderators can change the donut topic, kick or ban users and make/remove moderators"
-      },
-      "bans": {
-        "label": "Banned",
-        "help": "Banned users cannot join this donut any longer"
-      },
-      "devoices": {
-        "label": "Mutes",
-        "help": "The dumb users can not send messages"
-      },
-      "users": {
-        "label": "Users",
-        "help": "Users of the donut can only view and post messages"
+      "usernotexist": "User not found"
+    },
+    "access": {
+      "link": "access",
+      "labelsearch": "Allow users",
+      "add": "Allow a user",
+      "labelpending": "Pending users",
+      "types": {
+        "all": "All",
+        "allowed": "Allowed",
+        "allowedPending": "Allow pending"
       }
     },
     "share": {
@@ -557,12 +522,20 @@
       "description": "Join me on DONUT.me, the new chat platform. I discuss on __name__."
     },
     "welcome": {
-      "room": [
-        "Welcome in <strong>__name__</strong>. Only users that have joined this donut (listed on right) can see the conversation. Even if they are currently offline.",
-        "Post a message to start the conversation."
-      ],
+      "private": {
+        "room": [
+          "Welcome to <a class=\"open-room-profile\" data-room-id=\"__room_id__\"><strong>__name__</strong></a>. The conversation is private so only users authorized by <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a> can join. Once users have joined they can participate and access history.",
+          "Post a message to engage in the discussion."
+        ]
+      },
+      "public": {
+        "room": [
+          "Welcome to <a class=\"open-room-profile\" data-room-id=\"__room_id__\"><strong>__name__</strong></a>. The conversation is public so anyone can join, participate and access history. Share the link with your friends! ",
+          "Post a message to engage in the discussion."
+        ]
+      },
       "onetoone": [
-        "If <strong>__username__</strong> isn't online he will get your messages on his next connexion",
+        "If <strong>__username__</strong> isn't online he will get your messages on his next connection",
         "Post a message to start the conversation."
       ]
     },
@@ -588,14 +561,150 @@
           "unmark-spam": "Unmark as spam"
         },
         "edit": "Edit my message"
-      },
-      "today": "Today",
-      "yesterday": "Yesterday",
-      "the-day-before": "The day before"
+      }
     },
     "input": {
       "typing": "is typing",
       "typing_plural": "are typing"
+    },
+    "blocked": {
+      "allowed": "This donut is private. Only users you authorize can join, participate and access history Authorize users.",
+      "ask-for-access": "To request access, <a href=\"#\" class=\"ask-for-allowance\"><strong>click here</strong></a>.",
+      "rejoin-donut": "<a class=\"rejoin curp\"><strong>Click here</strong></a> to get back in.",
+      "allowed_button": "Request access",
+      "password": "Or you can join directly if you know the password:",
+      "password_placeholder": "Password",
+      "password_button": "Join",
+      "banned": "You were banned from this donut on __at__",
+      "banned_reason": "for the following reason: ",
+      "kicked": "You have been kicked out from this donut.",
+      "kicked_button": "Join",
+      "changemode": "Switch to private mode",
+      "disclaimer-private": "This donut is private, Only users specifically authorized by the owner can access it. To add new users, thanks to search in the list below.",
+      "disclaimer-public": "This donut is public. Any user can access it.",
+      "disclaimer-password": "You have also chosen to put a password. Users with the password can enter without having to be asked first.",
+      "disclaimer-changing": "You can switch this donut to private mode. Then, only users you authorize will be able to join, participate and access history. Access will be based on invitation and/or password. The current members of this public donut will remain members once this donut switched to private. Caution, this action cannot be undone.",
+      "close": "Close this donut"
+    },
+    "form": {
+      "common": {
+        "edit": {
+          "website": {
+            "label": "Website",
+            "placeholder": "URL of a website related to this account",
+            "help": "Optional"
+          },
+          "avatar": {
+            "label": "Profile picture"
+          },
+          "poster": {
+            "label": "Poster",
+            "help": "The poster is the large vertical image on the right-hand side of the chat thread. Recommended dimensions: 430px width, 975px height."
+          },
+          "color": {
+            "label": "Color"
+          },
+          "upload": {
+            "nopicture": "No picture",
+            "failed": "Upload failed",
+            "done": "Upload successful, please wait during image rendering",
+            "help": {
+              "format": "Image file (.jpeg, .jpg, .png or .gif).",
+              "size": "Will be automatically resized to __resized_width__x__resized_height__px."
+            }
+          },
+          "left": "<strong>%left</strong> to go"
+        }
+      },
+      "room-form": {
+        "common": {
+          "join-mode-label": "Who can join the donut",
+          "mode": {
+            "public": "Public",
+            "private": "Private",
+            "password-change": "Change password",
+            "password-field": "Password",
+            "password-keep": "Change the password",
+            "password-disclaimer": "You can set a password on this donut",
+            "password-protection": "Protect by a password"
+          }
+        },
+        "mode": {
+          "disclaimer": {
+            "public": "Any user can join, participate and access history. Moderation tools available.",
+            "private": "Only users you authorize can join, participate and access history. Moderation tools available.",
+            "password": "You can also set a password. Users with the password can join without prior invitation."
+          }
+        },
+        "create": {
+          "label": "Create a donut",
+          "help": "Between 3 and 24 characters, only letters, numbers,  dashes (-) and underscores (_)",
+          "placeholder": "Donut name",
+          "submit": "Create"
+        },
+        "edit": {
+          "othersettings": "Other settings",
+          "description": {
+            "label": "Description",
+            "placeholder": "Describe the donut in a few words",
+            "help": "Optional"
+          },
+          "visibility": {
+            "label": "Visibility (admin only)",
+            "true": "This donut is displayed on homepage",
+            "false": "This donut <strong>is not</strong> displayed on homepage"
+          },
+          "priority": {
+            "label": "Priority (admin only)",
+            "placeholder": "",
+            "help": "Number, more is more prioritary"
+          },
+          "room": {
+            "delete": {
+              "link": "To delete this donut <a class='open-room-delete' data-room-id=\"__id__\"> click here</a>.",
+              "title": "Delete",
+              "info": [
+                "You are about to delete this donut. This action is immediate and cannot be undone.<br><br>",
+                "To confirm deletion please enter donut name (<strong>__name__</strong>) and then click the button:"
+              ],
+              "placeholder": "Enter the donut name",
+              "success": "donut deleted!",
+              "error": {
+                "permanent": "It is not possible to delete a 'permanent' donut"
+              }
+            }
+          }
+        }
+      },
+      "user-form": {
+        "edit": {
+          "bio": {
+            "label": "Bio",
+            "placeholder": "Describe yourself in a few words",
+            "help": "Optional"
+          },
+          "location": {
+            "label": "Place",
+            "placeholder": "City, country where you are",
+            "help": "Optional"
+          }
+        }
+      },
+      "errors": {
+        "bio": "Bio must be 200 characters max.",
+        "location": "Location must be 70 characters max.",
+        "description": "Description must be 200 characters max.",
+        "website-size": "Website must be 5 characters min. and 255 characters max.",
+        "website-url": "Website must be a valid site URL.",
+        "color-hexadecimal": "Color must be explained has hexadecimal (e.g.: #FF00AA).",
+        "color-integer": "Priority must be explained has number (integer).",
+        "positions": "Positions must be an array.",
+        "invalid-name": "Invalid name",
+        "invalid-mode": "You must select a mode for this room",
+        "invalid-password": "The password must be 4 and 255 characters",
+        "alreadyexists": "Donut __name__ already exists, <a href='#__uri__'>would you like to join it</a>?",
+        "invalid-rights": "You do not have access to do this."
+      }
     }
   },
   "account": {
@@ -614,7 +723,6 @@
         "alreadyyours": "You already use this e-mail",
         "empty": "The champ is empty"
       },
-      "format": "Invalid format",
       "new": "New E-mail",
       "confirm": "Confirm"
     },
@@ -627,7 +735,7 @@
       "defined": "Password defined: ",
       "error": {
         "confirm": "Pass two passwords are not the same.",
-        "length": "Password should have between 6 and 50 characters length.",
+        "length": "Password must have between 6 and 50 characters length.",
         "wrong": "Sorry, your old password don't match"
       }
     },
@@ -653,84 +761,6 @@
       "success": "Account successfully deleted, see you soon!"
     }
   },
-  "edit": {
-    "upload": {
-      "nopicture": "No picture",
-      "failed": "Upload failed",
-      "done": "Upload successful, please wait during image rendering",
-      "help": {
-        "format": "Image file (.jpeg, .jpg, .png or .gif).",
-        "size": "Will be automatically resized to __resized_width__x__resized_height__px."
-      }
-    },
-    "left": "<strong>%left</strong> to go",
-    "othersettings": "Other settings",
-    "description": {
-      "label": "Description",
-      "placeholder": "Describe the donut in a few words",
-      "help": "Optional"
-    },
-    "bio": {
-      "label": "Bio",
-      "placeholder": "Describe yourself in a few words",
-      "help": "Optional"
-    },
-    "location": {
-      "label": "Place",
-      "placeholder": "City, country where you are",
-      "help": "Optional"
-    },
-    "website": {
-      "label": "Website",
-      "placeholder": "URL of a website related to this account",
-      "help": "Optional"
-    },
-    "avatar": {
-      "label": "Profile picture"
-    },
-    "poster": {
-      "label": "Poster",
-      "help": "The poster is the large vertical image on the right-hand side of the chat thread. Recommended dimensions: 430px width, 975px height."
-    },
-    "color": {
-      "label": "Color"
-    },
-    "visibility": {
-      "label": "Visibility (admin only)",
-      "true": "This donut is displayed on homepage",
-      "false": "This donut <strong>is not</strong> displayed on homepage"
-    },
-    "priority": {
-      "label": "Priority (admin only)",
-      "placeholder": "",
-      "help": "Number, more is more prioritary"
-    },
-    "room": {
-      "delete": {
-        "link": "To delete this donut <a class='open-room-delete' data-room-name=\"__name__\"> click here</a>.",
-        "title": "Delete",
-        "info": [
-          "You are about to delete this donut. This action is immediate and cannot be undone.<br><br>",
-          "To confirm deletion please enter donut name (<strong>__name__</strong>) and then click the button:"
-        ],
-        "placeholder": "Enter the donut name",
-        "success": "donut deleted!",
-        "error": {
-          "permanent": "It is not possible to delete a 'permanent' donut"
-        }
-      }
-    },
-    "errors": {
-      "bio": "Bio should be 200 characters max.",
-      "location": "Location should be 70 characters max.",
-      "description": "Description should be 200 characters max.",
-      "website-size": "Website should be 5 characters min. and 255 characters max.",
-      "website-url": "Website should be a valid site URL.",
-      "color-hexadecimal": "Color should be explained has hexadecimal (e.g.: #FF00AA).",
-      "color-integer": "Priority should be explained has number (integer).",
-      "positions": "Positions should be an array."
-    }
-  },
   "page": {
     "faq": {
       "title": "FAQ"
@@ -748,6 +778,9 @@
         "team": "The DONUT.me team",
         "ps": "P.S.: To avoid receiving these notification types, please uncheck it from your notification options in your account preferences on <a href=\"https://__fqdn__\">__fqdn__</a>. For any question, we are available on <a href=\"https://__fqdn__/!#room/help\">#help</a>"
       }
+    },
+    "common": {
+      "reason": "Reason: __reason__"
     },
     "welcome": {
       "subject": "Welcome to DONUT.me! Your account was successfully created",
@@ -830,21 +863,57 @@
       }
     },
     "roomvoice": {
-      "subject": "You were unmuted in #__roomname__",
+      "subject": "You are unmute in #__roomname__",
       "content": {
-        "title": "You were unmuted in #__roomname__",
-        "disclaimer": "It looks like all is well that ends well!",
+        "title": "You are unmute in #__roomname__",
+        "disclaimer": "You are unmute in <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>... as requested by <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong> Now can write as much as you want. Enjoy !",
         "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
       }
     },
-    "roomdevoice": {
-      "subject": "You were muted in #__roomname__",
+    "roomjoinrequest": {
+      "subject": "An user want to join #__roomname__",
       "content": {
-        "title": "You were muted in #__roomname__",
-        "disclaimer": "This is sad news... You are mute in #__roomname__",
+        "title": "@__username__ ask for allowance in #__roomname__",
+        "disclaimer": "Looks like your donut have great success!",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
+      }
+    },
+    "roomallow": {
+      "subject": "An user accept your request to join #__roomname__",
+      "content": {
+        "title": "@__username__ allow you to join #__roomname__",
+        "disclaimer": "You can now enjoy this donut !",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
+      }
+    },
+    "roomrefuse": {
+      "subject": "An user refuse your request to join #__roomname__",
+      "content": {
+        "title": "@__username__ refuse your request to join #__roomname__",
+        "disclaimer": "Don't worry you can make another request to join this donut later !",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
+      }
+    },
+    "roominvite": {
+      "subject": "An user invites you to join #__roomname__",
+      "content": {
+        "title": "@__username__ invites you to join #__roomname__",
+        "disclaimer": "You can join his room right now!",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
+      }
+    },
+    "roomdevoice": {
+      "subject": "You are mute in #__roomname__",
+      "content": {
+        "title": "You are mute in #__roomname__",
+        "disclaimer": "You have been muted in <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>. This only applies to <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>. Don't worry, the moderators of <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> should unmute you very shortly. Meanwhile pick a donut and join another discussion!",
         "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "Return to DONUT"
+        "button": "Back to DONUT"
       }
     },
     "usermessage": {
@@ -950,8 +1019,8 @@
         "help": "",
         "desktop": "Desktop",
         "desktop-default": "Your browser will prompt for approval : approve !",
-        "desktop-refused" : "You have chosen to <strong>refuse</strong> notifications on your desktop. To modify this choice, you must modify the settings of your browser.",
-        "desktop-validated" : "You have chosen to <strong>accept</strong> notifications on your desktop. To modify this choice, you must modify the settings of your browser.",
+        "desktop-denied" : "You have chosen to <strong>refuse</strong> notifications on your desktop. To modify this choice, you must modify the settings of your browser.",
+        "desktop-granted" : "You have chosen to <strong>accept</strong> notifications on your desktop. To modify this choice, you must modify the settings of your browser.",
         "desktop-test": "try",
         "desktop-notify-test": "test notification",
         "email": "Email (only if you are offline)",

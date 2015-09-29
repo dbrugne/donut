@@ -1,58 +1,59 @@
-var debug = require('debug')('donut:notifications');
+'use strict';
 var _ = require('underscore');
 var mongoose = require('../io/mongoose');
-var User = require('./user');
 
 var notificationSchema = mongoose.Schema({
+  type: String,
+  user: { type: mongoose.Schema.ObjectId, ref: 'User' },
+  data: mongoose.Schema.Types.Mixed,
+  time: { type: Date, default: Date.now },
 
-  type         : String,
-  user         : { type: mongoose.Schema.ObjectId, ref: 'User' },
-  data         : mongoose.Schema.Types.Mixed,
-  time         : { type: Date, default: Date.now },
+  done: { type: Boolean, default: false }, // avoid totally sending of this
+                                           // notification
 
-  done         : { type: Boolean, default: false }, // avoid totally sending of this notification
+  to_browser: { type: Boolean, default: false },
+  sent_to_browser: { type: Boolean, default: false },
+  sent_to_browser_at: { type: Date },
 
-  to_browser         : { type: Boolean, default: false },
-  sent_to_browser    : { type: Boolean, default: false },
-  sent_to_browser_at : { type: Date },
+  viewed: { type: Boolean, default: false },
+  viewed_at: { type: Date },
 
-  viewed       : { type: Boolean, default: false },
-  viewed_at    : { type: Date },
+  to_email: { type: Boolean, default: false },
+  sent_to_email: { type: Boolean, default: false },
+  sent_to_email_at: { type: Date },
 
-  to_email          : { type: Boolean, default: false },
-  sent_to_email     : { type: Boolean, default: false },
-  sent_to_email_at  : { type: Date },
-
-  to_mobile         : { type: Boolean, default: false },
-  sent_to_mobile    : { type: Boolean, default: false },
-  sent_to_mobile_at : { type: Date }
+  to_mobile: { type: Boolean, default: false },
+  sent_to_mobile: { type: Boolean, default: false },
+  sent_to_mobile_at: { type: Date }
 
 });
 
 /**
- * Return new Notification instance with some attributes pre-filled with default values
+ * Return new Notification instance with some attributes pre-filled with
+ * default values
  *
  * @param type
  * @param user
  * @param data
  * @returns {Notification}
  */
-notificationSchema.statics.getNewModel = function(type, user, data) {
+notificationSchema.statics.getNewModel = function (type, user, data) {
   var model = new this();
 
-  model.type  = type;
-  model.user  = user;
-  model.data  = data;
+  model.type = type;
+  model.user = user;
+  model.data = data;
 
   return model;
 };
 
 /**
- * Return the Event type associated to current notification, depending of its type
+ * Return the Event type associated to current notification, depending of its
+ * type
  *
  * @returns historyroom || historyone || undefined
  */
-notificationSchema.methods.getEventType = function() {
+notificationSchema.methods.getEventType = function () {
   switch (this.type) {
     case 'roomop':
     case 'roomdeop':
@@ -66,12 +67,10 @@ notificationSchema.methods.getEventType = function() {
     case 'roomjoin':
     case 'usermention':
       return 'historyroom';
-      break;
     case 'userban':
     case 'userdeban':
     case 'usermessage':
       return 'historyone';
-      break;
   }
 
   return undefined;
@@ -85,24 +84,27 @@ notificationSchema.methods.getEventType = function() {
  * @param models [{Notification}]
  * @param fn(err, [{Notification}])
  */
-notificationSchema.statics.bulkInsert = function(models, fn) {
-  if (!models || !models.length)
+notificationSchema.statics.bulkInsert = function (models, fn) {
+  if (!models || !models.length) {
     return fn(null, models);
+  }
 
   var bulk = this.collection.initializeOrderedBulkOp();
-  if (!bulk)
+  if (!bulk) {
     return fn('bulkInsertModels: MongoDb connection is not yet established');
+  }
 
-  _.each(models, function(model) {
+  _.each(models, function (model) {
     bulk.insert(model.toJSON());
   });
 
-  bulk.execute(function(err, results) {
-    if (err)
+  bulk.execute(function (err, results) {
+    if (err) {
       return fn(err);
+    }
 
-    _.each(models, function(model, index, list) {
-      list[index].isNew = false;
+    _.each(models, function (model, index, list) {
+      list[ index ].isNew = false;
     });
 
     fn(null, models);

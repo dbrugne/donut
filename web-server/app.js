@@ -4,13 +4,13 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 // middleware declaration order is VERY important to avoid useless computing
-var debug = require('debug')('donut:web');
+var logger = require('../shared/util/logger').getLogger('web', __filename);
 var express = require('express');
 var errors = require('./app/middlewares/errors');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
-var underscoreTemplate = require('../shared/util/underscoreTemplate');
+var httpLogger = require('morgan');
+var underscoreTemplate = require('../shared/util/underscore-template');
 var less = require('less-middleware');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -34,7 +34,26 @@ app.use(cors()); // allow requests from mobile client (@todo: whitelist allowed 
 app.use(less(__dirname + '/public', { force: conf.less.force }));
 app.use(express.static(path.join(__dirname, '../node_modules/socket.io-client'))); // => require('socket.io-client');
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(logger('dev'));
+app.use(httpLogger('dev'));
+
+// on-the-fly browserify middleware
+if (process.env.NODE_ENV === 'development') {
+  app.use(require('browserify-dev-middleware')({
+    src: __dirname + '/public/web',
+    transforms: [
+      require('../shared/util/browserify-jst'),
+      require('../shared/util/browserify-i18next')
+    ]
+  }));
+  app.use(require('browserify-dev-middleware')({
+    src: __dirname + '/public/outside',
+    transforms: [
+      require('../shared/util/browserify-jst'),
+      require('../shared/util/browserify-i18next')
+    ]
+  }));
+}
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator()); // must be immediately after bodyParser()
 app.use(cookieParser());
@@ -70,10 +89,7 @@ app.use(require('./app/routes/chat'));
 app.use(require('./app/routes/contact-form'));
 app.use(require('./app/routes/static'));
 app.use(require('./app/routes/create'));
-
-// admin routes
-app.use(require('./app/dashboard/index'));
-app.use(require('./app/dashboard/rest'));
+app.use(require('./app/routes/rest'));
 
 app.use(errors('404'));
 app.use(errors('500', app));
@@ -81,5 +97,5 @@ app.use(errors('500', app));
 // Launch HTTP server
 var port = process.env.PORT || 3000;
 var server = app.listen(port, function () {
-  debug('Express server listening on port ' + server.address().port);
+  logger.info('Express server listening on port ' + server.address().port);
 });

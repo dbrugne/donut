@@ -1,10 +1,11 @@
-var logger = require('../../pomelo-logger').getLogger('donut', __filename);
-var debug = require('debug')('donut:server:ws:room-emitter');
+'use strict';
+var logger = require('../../../shared/util/logger').getLogger('donut', __filename);
 var _ = require('underscore');
 var async = require('async');
 
 /**
- * Store history in MongoDB, emit event in corresponding one to one and call callback
+ * Store history in MongoDB, emit event in corresponding one to one and call
+ * callback
  *
  * @param app
  * @param onetoone // {from: String, to: String}
@@ -12,40 +13,40 @@ var async = require('async');
  * @param eventData
  * @param callback
  */
-module.exports = function(app, onetoone, eventName, eventData, callback) {
-
+module.exports = function (app, onetoone, eventName, eventData, callback) {
   var onetoones = [];
-  if (Array.isArray(onetoone))
+  if (Array.isArray(onetoone)) {
     onetoones = onetoone;
-  else
+  } else {
     onetoones.push(onetoone);
+  }
 
   var parallels = [];
-  _.each(onetoones, function(one) {
-    parallels.push(function(fn) {
-      var ed = _.clone(eventData);// avoid modification on the object reference
+  _.each(onetoones, function (one) {
+    parallels.push(function (fn) {
+      var ed = _.clone(eventData); // avoid modification on the object reference
       ed.from = one.from;
       ed.to = one.to;
       ed.time = Date.now();
 
       ed.id = Date.now() + one.from + one.to;
 
-      if (one.from.toString() ===  one.to.toString())
+      if (one.from.toString() === one.to.toString()) {
         return fn(null);
+      }
 
-      app.globalChannelService.pushMessage('connector', eventName, ed, 'user:'+one.to.toString(), {}, function(err) {
-        if (err)
-          return logger.error('Error while pushing message: '+err);
+      app.globalChannelService.pushMessage('connector', eventName, ed, 'user:' + one.to.toString(), {}, function (err) {
+        if (err) {
+          return logger.error('Error while pushing message: ' + err);
+        }
 
         return fn(null);
       });
-
     });
   });
 
   // run tasks
-  async.parallel(parallels, function(err, results) {
+  async.parallel(parallels, function (err, results) {
     return callback(err);
   });
-
 };
