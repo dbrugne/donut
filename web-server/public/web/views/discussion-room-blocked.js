@@ -78,7 +78,9 @@ var RoomBlockedView = Backbone.View.extend({
       this.$el.hide();
     }
   },
-  onRequestAllowance: function () {
+  onRequestAllowance: function (event) {
+    event.preventDefault();
+
     client.roomJoinRequest(this.model.get('id'), function (response) {
       if (response.err) {
         if (response.err === 'banned' || response.err === 'notallowed') {

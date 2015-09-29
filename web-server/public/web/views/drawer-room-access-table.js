@@ -4,6 +4,7 @@ var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
 var app = require('../models/app');
+var confirmationView = require('./modal-confirmation');
 
 var DrawerRoomUsersTableView = Backbone.View.extend({
   template: require('../templates/drawer-room-access-table.html'),
@@ -53,8 +54,10 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
     var userId = $(event.currentTarget).data('userId');
 
     if (userId) {
-      client.roomAllow(this.roomId, userId, _.bind(function (data) {
-        app.trigger('redraw-tables');
+      confirmationView.open({}, _.bind(function () {
+        client.roomAllow(this.roomId, userId, _.bind(function (data) {
+          app.trigger('redraw-tables');
+        }, this));
       }, this));
     }
   },
@@ -63,8 +66,10 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
     var userId = $(event.currentTarget).data('userId');
 
     if (userId) {
-      client.roomRefuse(this.roomId, userId, _.bind(function (data) {
-        app.trigger('redraw-tables');
+      confirmationView.open({}, _.bind(function () {
+        client.roomRefuse(this.roomId, userId, _.bind(function (data) {
+          app.trigger('redraw-tables');
+        }, this));
       }, this));
     }
   },
@@ -73,8 +78,10 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
     var userId = $(event.currentTarget).data('userId');
 
     if (userId) {
-      client.roomDisallow(this.roomId, userId, _.bind(function (data) {
-        app.trigger('redraw-tables');
+      confirmationView.open({}, _.bind(function () {
+        client.roomDisallow(this.roomId, userId, _.bind(function (data) {
+          app.trigger('redraw-tables');
+        }, this));
       }, this));
     }
     this.$el.find('[data-toggle="tooltip"]').tooltip('hide');
