@@ -24,15 +24,15 @@
             <label>
                 <input type="radio" class="savable public" name="mode" value="public" checked>
                 <%= t('chat.form.room-form.common.mode.public') %> (<%= t('global.default') %>)
-                <br/><%= t('chat.form.room-form.mode.disclaimer.public') %>
             </label>
+            <p class="help-block ml20"><%= t('chat.form.room-form.mode.disclaimer.public') %></p>
         </div>
         <div class="radio">
             <label>
                 <input type="radio" class="savable private" name="mode" value="private">
                 <%= t('chat.form.room-form.common.mode.private') %>
-                <br/><%= t('chat.form.room-form.mode.disclaimer.private') %>
             </label>
+            <p class="help-block ml20"><%= t('chat.form.room-form.mode.disclaimer.private') %></p>
         </div>
     </div>
 
