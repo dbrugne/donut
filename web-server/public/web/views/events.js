@@ -3,6 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
 var date = require('../libs/date');
+var EventsDateView = require('./events-date');
 var EventsViewedView = require('./events-viewed');
 var EventsHistoryView = require('./events-history');
 var EventsSpamView = require('./events-spam');
@@ -55,12 +56,19 @@ module.exports = Backbone.View.extend({
       el: this.$el,
       model: this.model
     });
+    this.eventsDateView = new EventsDateView({
+      el: this.$el
+    });
 
     this.listenTo(this.eventsHistoryView, 'addBatchEvents', _.bind(function (data) {
       this.addBatchEvents(data.history, data.more);
     }, this));
     this.listenTo(app, 'scrollDown', _.bind(function () {
       this.scrollDown();
+    }, this));
+
+    this.listenTo(app, 'resetDate', _.bind(function () {
+      this.eventsDateView.reset();
     }, this));
   },
   render: function () {
@@ -91,15 +99,15 @@ module.exports = Backbone.View.extend({
     this.$goToTop = this.$('.go-to-top');
     this.$goToBottom = this.$('.go-to-bottom');
 
-    var that = this;
-    this.$scrollable.on('scroll', $.proxy(function () {
-      that.onScroll();
+    this.$scrollable.on('scroll', _.bind(function () {
+      this.onScroll();
     }, this));
 
     this.scrollDown();
   },
   _remove: function () {
     this.eventsViewedView.remove();
+    this.eventsDateView.remove();
     this.eventsHistoryView.remove();
     this.eventsSpamView.remove();
     this.eventsEditView._remove();
@@ -136,6 +144,10 @@ module.exports = Backbone.View.extend({
 
     var currentScrollPosition = this.$scrollable.scrollTop();
     var bottom = this._scrollBottomPosition();
+
+    this.eventsDateView.scroll({
+      currentScrollPosition: currentScrollPosition
+    });
 
     // toggle the "go to top and bottom" links
     if (bottom > 100) { // content should be longer than 100px of viewport to avoid link display for

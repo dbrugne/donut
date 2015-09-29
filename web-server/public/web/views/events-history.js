@@ -62,6 +62,7 @@ module.exports = Backbone.View.extend({
     });
   },
   toggleHistoryLoader: function (more) {
+    app.trigger('resetDate');
     this.$loader.find('.help, .loading, .no-more').hide();
     this.$pad.removeClass('loading');
     if (more === 'loading') {

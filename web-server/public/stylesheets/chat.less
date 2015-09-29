@@ -570,7 +570,7 @@
     } // #chat #center #home
     .discussion { background-color: @cl-background; height: 100%;
       @header-height: 35px; @size-user-item: 205px;
-      .content { height: 100%; position: relative; padding-left: 35px; .display-flex; .flex-flow(column nowrap);
+      .content { height: 100%; position: relative; margin-left: 20px; .display-flex; .flex-flow(column nowrap);
         &.blocked { align-items: center; justify-content: center;
           .header .info { padding:0; }
         }
@@ -642,7 +642,7 @@
             .hello-block { font-size: 1.2em; margin-left: 110px; font-style: italic; }
           } // #chat #center .discussion .content .header.user
         } // #chat #center .discussion .content .header
-        .events { border-top: 1px solid @cl-subtext10; overflow-y: scroll; overflow-x: hidden; .flex(1); .scrollbar-grey;
+        .events { /*border-top: 1px solid @cl-subtext10;*/ overflow-y: scroll; overflow-x: hidden; .flex(1); .scrollbar-grey; position: relative;
           .go-to-top {
             display: none;
             position: absolute;
@@ -701,6 +701,7 @@
               }
             }
           }
+
           .scrollable { margin-right: 5px;
             .scrollable-content { position: relative; padding-right: 10px;
               hr { border-color: @cl-subtext5; }
@@ -743,12 +744,6 @@
                     }
                   }
                   &.date + .block { border-top: transparent; }
-                  &.date { margin-top: 16px; margin-bottom: 10px; clear: both; border-top: 0;
-                    height: 1px;
-                    background-color: @cl-subtext10;
-                    text-align: center;
-                    .moment { position: relative; top: -0.7em; background-color: @cl-background; text-align: center; font-size: 1.1em; font-weight: bold; color: @cl-subtext30; padding: 0 10px; text-transform: capitalize; }
-                  }
                   &.hello {
                     i {
                       font-size: 1.5em;
@@ -1219,6 +1214,14 @@
   .status.connecting { color: #f0ad4e; }
   .status.offline { color: #d9534f; }
   .status.error { color: #d9534f; }
+
+  .block { border-top: 1px solid @cl-subtext0; margin: 0;
+    &.date { margin-top: 16px; margin-bottom: 10px; clear: both; border-top: 0; height: 1px; background-color: @cl-subtext10; text-align: center;
+      .moment { position: relative; top: -0.7em; background-color: @cl-background; text-align: center; font-size: 1.5rem; font-weight: bold; color: @cl-subtext30; padding: 0 10px; text-transform: capitalize; }
+    }
+  }
+
+  .date-ctn { padding: 0 22px 10px 0; position: absolute; width: 100%; background-color: white; z-index: 2; min-height: 40px }
 
   @import './drawer';
 }
