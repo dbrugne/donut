@@ -34,7 +34,15 @@ var exports = module.exports = function (options) {
   this.bottomEvent = '';
 };
 
-exports.prototype.insertBottom = function (event, direction) {
+exports.prototype.insertBottom = function (event) {
+  var id = event.get('id');
+  if (!id) {
+    return;
+  }
+  if (this.$el.find('#' + id).length) {
+    return console.warn('history and realtime event colision', id);
+  }
+
   var previous = this.bottomEvent;
 
   var html = '';
@@ -63,11 +71,7 @@ exports.prototype.insertBottom = function (event, direction) {
   if (!this.topEvent && !this.bottomEvent) {
     this.topEvent = this.bottomEvent = event; // first inserted element
   } else {
-    if (direction === 'top') {
-      this.topEvent = event;
-    } else {
-      this.bottomEvent = event;
-    }
+    this.bottomEvent = event;
   }
 
   this.empty = false;
