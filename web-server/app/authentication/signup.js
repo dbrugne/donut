@@ -60,7 +60,7 @@ router.route('/signup')
       }
       req.logIn(user, function (err) {
         if (err) { return next(err); }
-        return res.redirect('/!');
+        return bouncer.redirect(req, res);
       });
     })(req, res, next);
   }], bouncer.redirect);
