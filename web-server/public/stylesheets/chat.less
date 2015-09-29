@@ -307,7 +307,7 @@
             box-shadow: 0 6px 12px rgba(0,0,0,0.175); }
         }
         & > li { float: left;
-          & > a, & > div.ctn { padding: 9px 15px 10px;
+          & .toggle { padding: 9px 15px 10px;
             &:active, &:visited, &:focus { background-color: transparent; }
             .icon { font-size: 20px; } // #chat #color .container .navbar-nav>li>a .icon
           } // #chat #color .container .navbar-nav>li>a
@@ -1187,6 +1187,10 @@
   }
 
   .date-ctn { padding: 0 22px 10px 0; position: absolute; width: 100%; background-color: white; z-index: 2; min-height: 40px }
+
+  #block-current-user { .display-flex; align-items: center; height: 40px;
+    img { .border-radius(5px); width: 30px; border-width: 2px; border-style: solid; height: 30px; }
+  }
 
   @import './drawer';
 }
