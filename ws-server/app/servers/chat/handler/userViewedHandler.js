@@ -25,15 +25,15 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.user_id) {
-        return callback('user_id parameter is mandatory');
+        return callback('params');
       }
 
       if (!data.events || !_.isArray(data.events)) {
-        return callback('events parameter is mandatory');
+        return callback('params');
       }
 
       if (!withUser) {
-        return callback('unable to retrieve user: ' + data.username);
+        return callback('unknown');
       }
 
       data.events = _.filter(data.events, function (id) {
@@ -41,7 +41,7 @@ handler.call = function (data, session, next) {
         return pattern.test(id);
       });
       if (!data.events.length) {
-        return callback('events parameter should contains at least one valid event _id');
+        return callback('params');
       }
 
       return callback(null);
@@ -76,9 +76,17 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
+      if (err === 'params') {
+        logger.warn('[user:viewed] ' + err);
+        return next(null, { code: 400, err: err });
+      }
+      if (err === 'unknown') {
+        logger.warn('[user:viewed] ' + err);
+        return next(null, { code: 404, err: err });
+      }
       logger.error('[user:viewed] ' + err);
+      return next(null, { code: 500, err: 'internal' });
     }
-
-    next(err);
+    return next(null, { success: true });
   });
 };
