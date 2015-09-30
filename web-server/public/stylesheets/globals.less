@@ -122,7 +122,9 @@
   &:hover { color: @cl-text; text-decoration: none; }
 }
 
-.navbar .divider-vertical { height: 20px; margin: 15px 0; border-left: 1px solid #333; }
+.navbar .divider-vertical { height: 20px; margin: 15px 0; border-left: 1px solid #333;
+  &.small { height:10px; }
+}
 
 .dropdown { position: relative; display:block;
   .dropdown-menu { color: @cl-subtext50;

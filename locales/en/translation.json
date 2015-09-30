@@ -124,7 +124,6 @@
     "muted": "sound off"
   },
   "global": {
-    "nobody": "Nobody",
     "admin": "(admin only)",
     "default": "default",
     "or": "or",
