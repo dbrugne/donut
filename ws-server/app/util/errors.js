@@ -31,7 +31,10 @@ var errors = {
 
   // CONFLICT (409)
   'mail-already-exist': 409,   // Mail already used by an other user
-  'same-mail': 409             // Same mail as before
+  'same-mail': 409,            // Same mail as before
+
+  // UNPROCESSABLE ENTITY (422)
+  'wrong-password': 422        // User type a wrong password
 };
 
 module.exports = {

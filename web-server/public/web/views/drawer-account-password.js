@@ -1,9 +1,6 @@
-var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var client = require('../libs/client');
-var currentUser = require('../models/current-user');
 
 var DrawerAccountPasswordView = Backbone.View.extend({
   template: require('../templates/drawer-account-password.html'),
@@ -77,7 +74,7 @@ var DrawerAccountPasswordView = Backbone.View.extend({
     var that = this;
 
     if (this.$inputNewPassword.val().length < 6 || this.$inputNewPassword.val().length > 50) {
-      this.putError('length');
+      this.putError('wrong-format');
       return;
     }
 
@@ -110,7 +107,7 @@ var DrawerAccountPasswordView = Backbone.View.extend({
   putError: function (err) {
     this.$form.addClass('has-error');
 
-    if (err === 'length') {
+    if (err === 'wrong-format') {
       this.$errorLabel.text(i18next.t('account.password.error.length'));
     } else if (err === 'confirm') {
       this.$errorLabel.text(i18next.t('account.password.error.confirm'));
@@ -122,6 +119,5 @@ var DrawerAccountPasswordView = Backbone.View.extend({
   }
 
 });
-
 
 module.exports = DrawerAccountPasswordView;
