@@ -9,32 +9,32 @@ var MessageEditView = require('./message-edit');
 
 module.exports = Backbone.View.extend({
   events: {
-    'click .dropdown-menu .edited': 'onEditMessage',
-    'dblclick .event': 'onEditMessage',
-    'keydown .form-message-edit': 'onPrevOrNextFormEdit'
+    'click .dropdown-menu .edited': 'onEdit',
+    'dblclick .block.message': 'onEdit',
+    'keydown .form-message-edit': 'editNext'
   },
 
   initialize: function () {
-    this.listenTo(this.model, 'messageEdit', this.onMessageEdited);
-    this.listenTo(this.model, 'editMessageClose', this.onEditMessageClose);
-    this.listenTo(this.model, 'editPreviousInput', this.pushUpFromInput);
+    this.listenTo(this.model, 'messageEdit', this.onEdited);
+    this.listenTo(this.model, 'editMessageClose', this.onClose);
+    this.listenTo(this.model, 'editPreviousInput', this.editNext);
     this.render();
   },
   render: function () {
     this.$realtime = this.$('.realtime');
     return this;
   },
-  onEditMessage: function (event) {
+  onEdit: function (event) {
     event.preventDefault();
 
     var $event = $(event.currentTarget).closest('.block.message');
 
-    if (!this.isEditableMessage($event)) {
+    if (!this.isEditable($event)) {
       return;
     }
     this.editMessage($event);
   },
-  isEditableMessage: function ($event) {
+  isEditable: function ($event) {
     var special = $event.data('special');
     if (special && special !== 'me') {
       return false;
@@ -50,65 +50,46 @@ module.exports = Backbone.View.extend({
 
     return !$event.hasClass('spammed');
   },
-  onPrevOrNextFormEdit: function (event) {
-    var direction;
+  editNext: function (event) {
     var key = keyboard._getLastKeyCode(event);
-    if (key.key === keyboard.UP) {
-      direction = 'prev';
-    } else if (key.key === keyboard.DOWN) {
-      direction = 'next';
-    } else {
+    if (key.key !== keyboard.UP && key.key !== keyboard.DOWN) {
       return app.trigger('scrollDown');
     }
 
-    var $currentEventMessage = $(event.currentTarget).closest('.event');
-    var $currentBlockMessage = $(event.currentTarget).closest('.message');
+    var $listMessages = this.$realtime.find('.block.message[data-user-id="' + currentUser.get('user_id') + '"]');
+    if (!$listMessages.length) {
+      return;
+    }
 
-    var userId = $currentBlockMessage.data('userId');
-
-    // get sibling .event
-    var $candidate = $currentEventMessage[direction]();
-    var $candidateBlock = $currentBlockMessage[direction]();
-
-    // no sibling .event, try with sibling .block
-    if (!$candidate.length && $candidateBlock.length) {
-      var _lastBlock = $candidateBlock;
-      while ((_lastBlock.data('userId') !== userId)) {
-        if (!_lastBlock[direction]().length) {
-          return;
+    var $candidate;
+    if (!this.messageUnderEdition) {
+      $candidate = $listMessages.last();
+    } else {
+      var that = this;
+      if (key.key === keyboard.DOWN) {
+        $listMessages = $($listMessages.get().reverse());
+      }
+      $listMessages.each(function () {
+        if (that.messageUnderEdition.$el.attr('id') === $(this).attr('id')) {
+          return false;
         }
-        _lastBlock = _lastBlock[direction]();
-      }
-
-      $candidate = (direction === 'prev')
-        ? _lastBlock.find('.event').last()
-        : _lastBlock.find('.event').first();
+        $candidate = $(this);
+      });
     }
 
-    if (this.isEditableMessage($candidate)) {
+    if (!$candidate) {
+      return;
+    }
+
+    if (this.isEditable($candidate)) {
       this.editMessage($candidate);
-    }
-
-    app.trigger('scrollDown');
-  },
-  pushUpFromInput: function () {
-    var _lastBlock = this.$realtime.find('.block.message[data-user-id="' + currentUser.get('user_id') + '"]').last();
-    // @todo dbr: can no longer edit message excecpt the last one
-    while (_lastBlock.data('userId') !== currentUser.get('user_id')) {
-      if (!_lastBlock.prev().length) {
-        return;
-      }
-      _lastBlock = _lastBlock.prev();
-    }
-    if (this.isEditableMessage(_lastBlock)) {
-      this.editMessage(_lastBlock);
     }
 
     app.trigger('scrollDown');
   },
   editMessage: function ($event) {
     if (this.messageUnderEdition) {
-      this.onEditMessageClose();
+      this.onClose();
     }
     this.messageUnderEdition = new MessageEditView({
       el: $event,
@@ -117,7 +98,7 @@ module.exports = Backbone.View.extend({
 
     app.trigger('scrollDown');
   },
-  onMessageEdited: function (data) {
+  onEdited: function (data) {
     var $event = this.$('#' + data.event);
 
     if ($event.find('.text').html() === undefined) {
@@ -141,14 +122,18 @@ module.exports = Backbone.View.extend({
     }
     this.remove();
   },
-  onEditMessageClose: function () {
+  onClose: function () {
     if (!this.messageUnderEdition) {
       return;
     }
     this.messageUnderEdition.remove();
     this.messageUnderEdition = null;
   },
-  getMessageUnderEdition: function () {
-    return this.messageUnderEdition;
+  getEditionHeight: function () {
+    if (!this.messageUnderEdition) {
+      return;
+    }
+
+    return this.messageUnderEdition.$el.height();
   }
 });
