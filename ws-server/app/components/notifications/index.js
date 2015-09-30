@@ -130,11 +130,11 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
     }
     var notifications = [];
     async.eachLimit(results, 1, function (n, fn) {
-      if (!n.data || !n.data.event) {
+      if (!n.data) {
         return fn(null);
       }
 
-      if (n.type === 'roomrefuse' || n.type === 'roomallowed' || n.type === 'roomjoinrequest') {
+      if (n.type === 'roomrefuse' || n.type === 'roomallowed' || n.type === 'roomjoinrequest' || n.type === 'roominvite') {
         NotificationModel.findOne({_id: n._id})
           .populate({
             path: 'data.user',
