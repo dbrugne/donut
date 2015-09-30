@@ -29,7 +29,7 @@ var DrawerUserProfileView = Backbone.View.extend({
 
     var that = this;
     client.userRead(this.user_id, null, function (data) {
-      if (data.err === 'unknown') {
+      if (data.err === 'user-not-found') {
         return;
       }
       if (!data.err) {

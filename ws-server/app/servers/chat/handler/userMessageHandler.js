@@ -27,20 +27,20 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.username && !data.user_id) {
-        return callback('params');
+      if (!data.user_id && !data.username) {
+        return callback('params-username-user-id');
       }
 
       if (!withUser) {
-        return callback('unknown');
+        return callback('user-not-found');
       }
 
       if (withUser.isBanned(user.id)) {
-        return callback('user is banned by withUser');
+        return callback('banned');
       }
 
       if (data.special && ['me', 'random'].indexOf(data.special) === -1) {
-        return callback('not allowed special type: ' + data.special);
+        return callback('not-allowed');
       }
 
       return callback(null);
@@ -65,7 +65,7 @@ handler.call = function (data, session, next) {
       var images = imagesUtil.filter(data.images);
 
       if (!message && !images) {
-        return callback('empty message (no text, no image)');
+        return callback('params');
       }
 
       // mentions
