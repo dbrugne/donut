@@ -17,24 +17,28 @@ var DiscussionBlockView = Backbone.View.extend({
     this.listenTo(app, 'redraw-block', this.render);
     this.listenTo(onetoones, 'change:avatar', this.render);
     this.listenTo(rooms, 'change:avatar', this.render);
-    this.$list = this.$('.list');
+    this.$list = this.$('.discussion-list');
   },
   render: function () {
     // prepare data
-    var data = [];
+    var data = {
+      onetoones: [],
+      rooms: []
+    };
 
     function prepareItems (o) {
       var json = o.toJSON();
       if (o.get('type') === 'room') {
-        json.avatar = common.cloudinary.prepare(json.avatar, 40);
+        // json.avatar = common.cloudinary.prepare(json.avatar, 40); // no more required
         json.uri = '#room/' + o.get('name').replace('#', '');
         json.identifier = o.get('id');
+        data.rooms.push(json);
       } else {
         json.avatar = common.cloudinary.prepare(json.avatar, 40);
         json.uri = '#user/' + o.get('username');
         json.identifier = o.get('user_id');
+        data.onetoones.push(json);
       }
-      data.push(json);
     }
 
     _.each(rooms.models, prepareItems);

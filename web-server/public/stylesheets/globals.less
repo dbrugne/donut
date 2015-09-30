@@ -50,7 +50,7 @@
 //.cl-green_sea             { color: @cl-green_sea !important ;}
 //.cl-emerald               { color: @cl-emerald !important ;}
 //.cl-nephritis             { color: @cl-nephritis !important ;}
-//.cl-peter_river           { color: @cl-peter_river !important ;}
+.cl-peter_river           { color: @cl-peter_river !important ;}
 //.cl-belize_hole           { color: @cl-belize_hole !important ;}
 //.cl-amethyst              { color: @cl-amethyst !important ;}
 //.cl-wisteria              { color: @cl-wisteria !important ;}
@@ -170,8 +170,15 @@
 
 html { height: 100%;   background: #f9f9f9; }
 body { .ft-opensans; font-size: 14px; overflow-x: hidden;
-  a { color: @cl-text; }
-  a:hover { color: @cl-text; }
+  a { color: @cl-text; text-decoration: none;
+    &:hover { color: @cl-text; text-decoration: underline; }
+    &.inverse { text-decoration: underline;
+      &:hover { text-decoration: none; }
+    }
+    &.clean { text-decoration: none;
+      &:hover { text-decoration: none; }
+    }
+  }
 }
 
 [data-toggle="contactform"] {

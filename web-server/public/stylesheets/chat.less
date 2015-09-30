@@ -351,54 +351,7 @@
     }
 
 
-    #block-discussions { overflow-x: hidden; overflow-y: auto; padding-bottom: 0; margin-bottom: 25px; .flex(1); .scrollbar-grey-thin;
-      ul { padding:0;
-        li { list-style: none; padding:0; margin:0;position: relative; }
-      } // #chat #left #block-discussions ul
-      .list { height: 100%; margin-bottom: 0; padding: 0; background-repeat: no-repeat; background-position: left top; position: relative;
-        .item { display: block; position: relative; color: @cl-title; .display-flex; .flex-flow(row nowrap); padding-right:5px;
-          a, a:hover { text-decoration:none; }
-          .avatar-ctn { margin: auto; }
-          .name-ctn { .flex(1); margin: auto; }
-          .avatar { width: 22px; height: 22px; margin-left: 16px; display: inline; }
-          &[data-type="room"] {
-            .avatar { .img-circle; }
-          }
-          .name, .username { margin-top: 5px; margin-left: 5px; font-family: "Open Sans"; font-size: 14px; display: inline-block; width: 138px; overflow: hidden; text-overflow: ellipsis;
-            > span { font-size: 13px; padding-right: 1px; }
-          }
-          .close-discussion { font-size: 1.8em; color: @cl-subtext20;
-            &:hover { color: @cl-subtext20; }
-          }
-          &:hover { text-decoration: none;
-            span.name { color: @cl-subtext50; }
-            &::before { content: url('@{img-path}/svg/draggable.svg'); position: absolute; left: 4px; top: 8px; }
-          }
-          &.blocked { span.name { color: green; } }
-          &.active,
-          &.active:hover,
-          &.active:focus {
-            background-color: @cl-background;
-          }
-        }
-        .unread { padding: 1px 6px; font-size: 11px; background-color: @cl-first; color: #fff; .border-radius(10px); align-self: center;
-          i { line-height: 1.5; margin-left: 2px;
-            &:last-child { margin-left: 0; }
-          }
-          i.icon-user-custom { font-size: 12px; }
-          i.icon-atxx { font-size: 12px; margin-left: 0; }
-          i.icon-envelope { font-size: 11px; }
-        }
-        .placeholder {
-          .ft-opensans-bold-italic;
-          background-color: @cl-subtext20;
-          color: @cl-subtext50;
-          text-align: center;
-          font-size: 1.2em;
-          padding: 8px 8px 0;
-        }
-      }
-    } // #chat #left #block-discussions
+    #block-discussions { overflow-x: hidden; overflow-y: auto; padding-bottom: 0; margin-bottom: 25px; .flex(1); .scrollbar-grey-thin; } // #chat #left #block-discussions
   }
 
   #center { height: 100%; z-index: 5; margin-left: @size-left; font-size: 12px; background-color: @cl-subtext0; background-image: url('@{img-path}/logo-onecolor-gr.svg'); background-repeat: no-repeat; background-position: center center; background-size: 60%;
@@ -697,10 +650,9 @@
                   &.message { word-break: break-all; }
                   &.unviewed {
                     &::before {
-                      content: "\f028";
-                      font-family: Donut;
+                      .icon-circle;
                       font-size: 6px;
-                      color: #10a4fe;
+                      color: @cl-peter_river;
                       position: absolute;
                       top: 7px;
                       left: 37px;
@@ -1176,10 +1128,10 @@
     }
   }
   .status { color: transparent; }
-  .status.online { color: #5cb85c; }
-  .status.connecting { color: #f0ad4e; }
-  .status.offline { color: #d9534f; }
-  .status.error { color: #d9534f; }
+  .status.online { color: @cl-green_sea; }
+  .status.connecting { color: @cl-warning; }
+  .status.offline { color: @cl-pomegranate; }
+  .status.error { color: @cl-pomegranate; }
 
   .block { border-top: 1px solid @cl-subtext0; margin: 0;
     &.date { margin-top: 16px; margin-bottom: 10px; clear: both; border-top: 0; height: 1px; background-color: @cl-subtext10; text-align: center;
@@ -1191,6 +1143,28 @@
 
   #block-current-user { .display-flex; align-items: center; height: 40px;
     img { .border-radius(5px); width: 30px; border-width: 2px; border-style: solid; height: 30px; }
+  }
+
+  .discussion-list { padding: 0; margin: 20px 0;
+    li { list-style: none;
+      &.title { color: @cl-subtext40; margin-bottom: 5px; font-weight: bold; background-color: transparent; padding: 0 10px; }
+      .item { position: relative; color: @cl-title; padding: 0 10px;
+        .avatar-ctn { margin: auto;
+          .avatar { width: 22px; height: 22px; display: inline; }
+        }
+        .name-ctn { .flex(1); margin: auto 0 auto 5px;
+          .name, .username { .ft-opensans; display: inline-block; width: 138px; overflow: hidden; text-overflow: ellipsis;
+            > span { font-size: 13px; }
+          }
+        }
+        .close-discussion { font-size: 2.1rem; margin:auto; }
+        &:hover { background-color: @cl-subtext5;
+          span.name { color: @cl-subtext50; }
+        }
+        &.blocked { span.name { color: @cl-error; } }
+        &.active, &.active:hover, &.active:focus { background-color: @cl-background; }
+      }
+    }
   }
 
   @import './drawer';
