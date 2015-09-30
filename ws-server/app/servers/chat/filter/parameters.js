@@ -78,13 +78,16 @@ Filter.prototype.before = function (data, session, next) {
       }
 
       if (data.__route__ === 'chat.roomJoinHandler.call') {
-        q.populate('owner', 'username avatar color facebook');
+        q.populate('owner', 'username avatar color facebook')
+         .populate('group', 'name');
       }
       if (data.__route__ === 'chat.roomJoinRequestHandler.call') {
-        q.populate('owner', 'username avatar color facebook');
+        q.populate('owner', 'username avatar color facebook')
+         .populate('group', 'name');
       }
       if (data.__route__ === 'chat.roomReadHandler.call') {
         q.populate('owner', 'username avatar color facebook')
+          .populate('group', 'name')
           .populate('op', 'username avatar color facebook')
           .populate('users', 'username avatar color facebook')
           .populate('bans.user', 'username avatar color facebook')

@@ -1145,10 +1145,11 @@
     img { .border-radius(5px); width: 30px; border-width: 2px; border-style: solid; height: 30px; }
   }
 
-  #ones .list, #rooms .list, .discussion-list {
-    padding: 0; margin: 20px 0;
+  #ones, #rooms { padding: 0; margin: 20px 0;
+    .title { color: @cl-subtext40; margin-bottom: 5px; font-weight: bold; background-color: transparent; padding: 0 10px; }
+    ul { padding-left: 0;
+    }
     li { list-style: none;
-      &.title { color: @cl-subtext40; margin-bottom: 5px; font-weight: bold; background-color: transparent; padding: 0 10px; }
       &.group { padding: 0 10px; font-weight:bold; }
       .item { position: relative; color: @cl-title; padding: 0 10px;
         .avatar-ctn { margin: auto;
@@ -1166,7 +1167,7 @@
         &.blocked { span.name { color: @cl-error; } }
         &.active, &.active:hover, &.active:focus { background-color: @cl-background; }
         &.grouped {
-          a { border-left: 1px solid @cl-subtext15; padding-left:5px;
+          a { /*border-left: 1px solid @cl-subtext15; padding-left:5px;*/
             .name { padding-left: 5px; }
           }
         }

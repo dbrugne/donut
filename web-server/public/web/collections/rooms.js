@@ -94,8 +94,14 @@ var RoomsCollection = Backbone.Collection.extend({
       hasPassword: room.hasPassword,
       blocked: blocked || false,
       users_number: room.users_number,
-      created_at: room.created_at
+      created_at: room.created_at,
+      grouped: (room.group && room.group.group_id)
     };
+
+    if (roomData.grouped) {
+      roomData.group_id = room.group.group_id;
+      roomData.group_name = room.group.name;
+    }
 
     if (roomData.blocked === 'banned') {
       roomData.banned_at = room.banned_at;

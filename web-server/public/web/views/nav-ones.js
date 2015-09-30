@@ -15,6 +15,7 @@ module.exports = Backbone.View.extend({
   initialize: function (options) {
     this.listenTo(onetoones, 'add', this.render);
     this.listenTo(onetoones, 'remove', this.render);
+
     this.listenTo(app, 'redraw-block', this.render);
     this.listenTo(onetoones, 'change:avatar', this.render);
     this.$list = this.$('.list');

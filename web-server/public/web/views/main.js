@@ -29,7 +29,6 @@ var DrawerUserAccountView = require('./drawer-account');
 var RoomView = require('./discussion-room');
 var RoomViewBlocked = require('./discussion-room-blocked');
 var OneToOneView = require('./discussion-onetoone');
-var DiscussionsBlockView = require('./discussions-block');
 var NavOnesView = require('./nav-ones');
 var NavRoomsView = require('./nav-rooms');
 var NotificationsView = require('./notifications');
@@ -106,7 +105,6 @@ var MainView = Backbone.View.extend({
   run: function () {
     // generate and attach subviews
     this.currentUserView = new CurrentUserView({model: currentUser});
-    this.discussionsBlock = new DiscussionsBlockView();
     this.navOnes = new NavOnesView();
     this.navRooms = new NavRoomsView();
     this.drawerView = new DrawerView();
@@ -165,8 +163,6 @@ var MainView = Backbone.View.extend({
     _.each(data.blocked, function (lock) {
       rooms.addModel(lock, lock.blocked ? lock.blocked : true);
     });
-
-    this.discussionsBlock.redraw();
 
     // Notifications
     if (data.notifications) {
@@ -469,8 +465,6 @@ var MainView = Backbone.View.extend({
       this.focus(model);
       this.thisDiscussionShouldBeFocusedOnSuccess = null;
     }
-
-    this.discussionsBlock.redraw();
   },
 
   onCloseDiscussion: function (event) {
@@ -509,8 +503,6 @@ var MainView = Backbone.View.extend({
     // Focus default
     if (wasFocused) {
       this.focusHome();
-    } else {
-      this.discussionsBlock.redraw();
     }
   },
 
@@ -558,7 +550,6 @@ var MainView = Backbone.View.extend({
     this.unfocusAll();
     this.$home.show();
     windowView.setTitle();
-    this.discussionsBlock.redraw();
     this.color(this.defaultColor);
     Backbone.history.navigate('#'); // just change URI, not run route action
   },
@@ -617,7 +608,6 @@ var MainView = Backbone.View.extend({
 
     // Focus the one we want
     model.set('focused', true);
-    this.discussionsBlock.redraw();
 
     // Change interface color
     if (model.get('color')) {

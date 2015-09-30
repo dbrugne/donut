@@ -3,6 +3,7 @@ var _ = require('underscore');
 var mongoose = require('../io/mongoose');
 var common = require('@dbrugne/donut-common/server');
 var cloudinary = require('../util/cloudinary');
+require('./group')
 
 var MAX_PASSWORD_TRIES = 5;
 var MAX_PASSWORD_TIME = 60 * 1000; // 1mn

@@ -20,6 +20,12 @@ module.exports = function (user, room, fn) {
     users_number: room.numberOfUsers(),
     created_at: room.created_at
   };
+  if (room.group) {
+    data.group = {
+      group_id: room.group.id,
+      name: room.group.name
+    };
+  }
   if (room.owner) {
     data.owner = {
       user_id: room.owner.id,

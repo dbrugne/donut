@@ -86,6 +86,7 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
     function populateRooms (user, callback) {
       Room.findByUser(user.id)
         .populate('owner', 'username avatar color facebook')
+        .populate('group', 'name')
         .exec(function (err, rooms) {
           if (err) {
             return callback(err);

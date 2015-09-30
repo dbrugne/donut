@@ -26,16 +26,6 @@ module.exports = Backbone.View.extend({
       json.avatar = common.cloudinary.prepare(json.avatar, 40);
       json.uri = '#room/' + o.get('name').replace('#', '');
       json.identifier = o.get('id');
-
-      json.group = null;
-      // @todo dbr remove that ugly hack
-      if (json.name === '#paintball' || json.name === '#DagnirDae' || json.name === '#Shop-Paintball') {
-        json.group = '#paintball';
-      }
-      if (json.name === '#donut' || json.name === '#help') {
-        json.group = '#donut';
-      }
-
       data.push(json);
     });
 
