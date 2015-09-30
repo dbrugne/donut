@@ -30,6 +30,8 @@ var RoomView = require('./discussion-room');
 var RoomViewBlocked = require('./discussion-room-blocked');
 var OneToOneView = require('./discussion-onetoone');
 var DiscussionsBlockView = require('./discussions-block');
+var NavOnesView = require('./nav-ones');
+var NavRoomsView = require('./nav-rooms');
 var NotificationsView = require('./notifications');
 var ConfirmationView = require('./modal-confirmation');
 var MuteView = require('./mute');
@@ -105,6 +107,8 @@ var MainView = Backbone.View.extend({
     // generate and attach subviews
     this.currentUserView = new CurrentUserView({model: currentUser});
     this.discussionsBlock = new DiscussionsBlockView();
+    this.navOnes = new NavOnesView();
+    this.navRooms = new NavRoomsView();
     this.drawerView = new DrawerView();
     this.alertView = new AlertView();
     this.connectionView = new ConnectionModalView();

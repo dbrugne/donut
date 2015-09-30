@@ -6,7 +6,7 @@ var common = require('@dbrugne/donut-common/browser');
 var rooms = require('../collections/rooms');
 var onetoones = require('../collections/onetoones');
 
-var DiscussionBlockView = Backbone.View.extend({
+module.exports = Backbone.View.extend({
   el: $('#block-discussions'),
 
   template: require('../templates/discussion-block.html'),
@@ -62,5 +62,3 @@ var DiscussionBlockView = Backbone.View.extend({
     return this.render();
   }
 });
-
-module.exports = DiscussionBlockView;
