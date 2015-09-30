@@ -29,9 +29,19 @@ var DiscussionBlockView = Backbone.View.extend({
     function prepareItems (o) {
       var json = o.toJSON();
       if (o.get('type') === 'room') {
-        // json.avatar = common.cloudinary.prepare(json.avatar, 40); // no more required
+        json.avatar = common.cloudinary.prepare(json.avatar, 40); // required on responsive
         json.uri = '#room/' + o.get('name').replace('#', '');
         json.identifier = o.get('id');
+        json.group = null;
+
+        // @todo dbr remove that ugly hack
+        if (json.name === '#paintball' || json.name === '#DagnirDae') {
+          json.group = '#paintball';
+        }
+        if (json.name === '#donut' || json.name === '#help') {
+          json.group = '#donut';
+        }
+
         data.rooms.push(json);
       } else {
         json.avatar = common.cloudinary.prepare(json.avatar, 40);

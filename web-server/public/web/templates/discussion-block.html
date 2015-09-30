@@ -1,29 +1,26 @@
 <% if(list.onetoones && list.onetoones.length > 0) { %>
     <li class="title">ONETOONE</li>
     <% _.each(list.onetoones, function(item) { %>
-    <li>
-        <span class="item center flex-parent <% if (item.focused) { %>active<% }; %> <% if (item.blocked) { print('blocked'); } %>">
-            <a class="clean avatar-ctn hidden-xs hidden-sm" href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
-                <img src="<%= item.avatar %>" class="avatar" alt="<%= item.identifier %> avatar">
-            </a>
-            <a class="clean name-ctn hidden-xs hidden-sm" href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
-                <span class="name"><span>@</span><%= item.username %></span>
-            </a>
-            <a href="<%= item.uri %>" class="visible-xs visible-sm" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
-                <img src="<%= item.avatar %>" class="avatar" alt="<%= item.identifier %> avatar">
-                <span class="selected"></span>
-            </a>
+        <li>
+            <span class="item center flex-parent <% if (isGrouped) { %> grouped <% } %><% if (item.focused) { %> active <% } %> <% if (item.blocked) { %> blocked <% } %>">
+                <a class="clean avatar-ctn hidden-xs hidden-sm" href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
+                    <img src="<%= item.avatar %>" class="avatar" alt="<%= item.identifier %> avatar">
+                </a>
 
-            <% if (item.newuser === true || item.newmention === true || item.unviewed === true) { %>
-                <span class="icon icon-circle unread cl-peter_river fs10"></span>
-            <% } %>
+                <a class="clean name-ctn hidden-xs hidden-sm" href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
+                    <span class="name"><span>@</span><%= item.username %></span>
+                </a>
 
-            <a href="#" class="ml5 close-discussion hidden-xs hidden-sm" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
-                <i class="icon hover icon-times-circle-o" title="<%= t('chat.discussion.close') %>"></i>
-            </a>
-        </span>
+                <% if (item.newuser === true || item.newmention === true || item.unviewed === true) { %>
+                    <span class="icon icon-circle unread cl-peter_river fs10"></span>
+                <% } %>
 
-    </li>
+                <a href="#" class="ml5 close-discussion hidden-xs hidden-sm" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
+                    <i class="icon hover icon-times-circle-o" title="<%= t('chat.discussion.close') %>"></i>
+                </a>
+            </span>
+
+        </li>
     <% }); %>
 <% } %>
 
@@ -32,24 +29,46 @@
         <li><hr></li>
     <% } %>
     <li class="title">ROOMS</li>
+    <% var lastGroup = null %>
+    <% var isGrouped = false %>
+    <% var firstUngrouped = true %>
     <% _.each(list.rooms, function(item) { %>
-    <li>
-        <span class="item flex-parent center <% if (item.focused) { %>active<% }; %> <% if (item.blocked) { print('blocked'); } %>">
-            <a class="clean name-ctn hidden-xs hidden-sm" href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
-                <span class="name"><span>#</span><%= item.name.replace('#', '') %></span>
-            </a>
-            <a href="<%= item.uri %>" class="visible-xs visible-sm" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
-                <img src="<%= item.avatar %>" class="avatar" alt="<%= item.identifier %> avatar">
-                <span class="selected"></span>
-            </a>
-
-            <% if (item.newuser === true || item.newmention === true || item.unviewed === true) { %>
-                <span class="icon icon-circle unread cl-peter_river fs10"></span>
+        <% isGrouped = false %>
+        <% if (item.group !== null) { %>
+            <% isGrouped = true %>
+        <% } %>
+        <% if (item.group !== lastGroup ) { %>
+            <% lastGroup = item.group %>
+            <% if (item.group !== null) { %>
+                <li class="group">
+                    <a class="clean" href="#" data-group="<%- item.group %>">
+                        <%= item.group %>
+                    </a>
+                </li>
             <% } %>
+        <% } %>
+        <% if(firstUngrouped && !isGrouped) { %>
+            <% firstUngrouped = false %>
+            <li class="mt20">
+        <% } else { %>
+            <li>
+        <% } %>
+            <span class="item flex-parent center <% if (isGrouped) { %> grouped <% } %><% if (item.focused) { %> active <% } %> <% if (item.blocked) { %> blocked <% } %>">
+                <a class="clean name-ctn hidden-xs hidden-sm" href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
+                    <% if(isGrouped) { %>
+                        <span class="name"><%= item.name.replace('#', '') %></span>
+                    <% } else { %>
+                        <span class="name"><span>#</span><%= item.name.replace('#', '') %></span>
+                    <% } %>
+                </a>
 
-            <a href="#" class="close-discussion hidden-xs hidden-sm" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>"></a>
-        </span>
+                <% if (item.newuser === true || item.newmention === true || item.unviewed === true) { %>
+                    <span class="icon icon-circle unread cl-peter_river fs10"></span>
+                <% } %>
 
-    </li>
+                <a href="#" class="close-discussion hidden-xs hidden-sm" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>"></a>
+            </span>
+
+        </li>
     <% }); %>
 <% } %>
