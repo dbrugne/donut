@@ -1,10 +1,32 @@
 var logger = require('../../../shared/util/logger').getLogger('donut');
 
 var errors = {
-  params: 400,
-  unknown: 404,
-  notallowed: 403,
-  internal: 500
+  // WRONG PARAMS (400)
+  'params-room-id': 400,      // room_id params not set
+  'params-user-id': 400,      // user_id params not set
+  'params-id': 400,           // id params not set
+  'params-username': 400,     // username params not set
+  'params-name': 400,         // name params not set
+  'params': 400,              // == GENERAL TAG ==
+
+  // NOT ALLOWED ERROR (403)
+  'no-op': 403,               // User not op
+  'no-owner': 403,            // User not owner
+  'no-op-owner': 403,         // User not op and owner
+  'no-op-owner-admin': 403,   // User not op, owner and admin
+  'no-allow': 403,            // User not in allowed list (private room)
+  'no-admin': 403,            // User not admin
+  'no-in': 403,               // User not in the room
+  'banned': 403,              // User is banned from the room or the 1&1
+  'devoiced': 403,            // User is devoiced in the room
+  'not-allowed': 403,         // == GENERAL TAG ==
+
+  // NOT FOUND ERROR (404)
+  'room-not-found': 404,      // Room not found
+  'user-not-found': 404,      // User not found
+  'event-not-found': 404,     // Event not found
+  'history-not-found': 404,   // History not found
+  'not-found': 404           // == GENERAL TAG ==
 };
 
 module.exports = {
