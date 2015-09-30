@@ -11,7 +11,7 @@
     <span class="item flex-parent center <% if (item.group_id) { %> grouped <% } %><% if (item.focused) { %> active <% } %> <% if (item.blocked) { %> blocked <% } %>">
         <a class="clean name-ctn hidden-xs hidden-sm" href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
             <% if (item.group_id) { %>
-            <span class="name"><%= item.name.replace('#', '') %></span>
+            <span class="name">/<%= item.name.replace('#', '') %></span>
             <% } else { %>
             <span class="name"><span>#</span><%= item.name.replace('#', '') %></span>
             <% } %>

@@ -12,8 +12,32 @@
         <nav id="color" class="navbar navbar-default navbar-fixed-top dc-back">
             <div class="container">
                 <div id="navbar">
-                    <a class="navbar-brand-a hidden-xs hidden-sm" href="/!#"><img class="logo" src="/images/logo-bordered-small.png" alt="<%= t('title.chat') %>"> <span class="beta dc-text-contrast">alpha</span></a>
+                    <a class="navbar-brand-a hidden-xs hidden-sm" href="/!#"><img class="logo" src="/images/logo-bordered-small.png" alt="<%= t('title.chat') %>"></a>
 
+                    <ul class="nav navbar-nav navbar-left">
+                        <li class="icontop help">
+                            <span id="block-current-user">
+                                <img class="mr5" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
+                                <span class="mr5 dc-text-contrast">@<%- user.username %></span>
+                                <span class="connection"> <i class="icon icon-circle status"></i></span>
+                                <a href="#" class="dropdown-toggle toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    <i class="icon icon-menu dc-text-contrast hover"></i>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li class="arrow-up"></li>
+                                    <li><a href="/!#room/help"><%= t('chat.help') %></a></li>
+                                    <li><a href="/faq" target="_blank"><%= t('page.faq.title') %></a></li>
+                                    <li><a data-toggle="contactform"><%= t('page.contact.title') %></a></li>
+                                    <li><a href="/eutc" target="_blank"><%= t('page.eutc.title') %></a></li>
+                                    <li><a href="/legals" target="_blank"><%=t('landing.legals')%></a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li class="dropdown-header"><%= t('global.switchlanguage') %></li>
+                                    <li class="colored"><a href="" data-language="fr" class="switch">Français</a></li>
+                                    <li class="colored"><a href="" data-language="en" class="switch">English</a></li>
+                                </ul>
+                            </span>
+                        </li>
+                    </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="icontop">
                             <a href="/!#" class="toggle dc-text-contrast">
@@ -60,28 +84,6 @@
                                 <i class="icon icon-volume-up dc-text-contrast hover"></i>
                             </a>
                         </li>
-                        <li class="icontop help">
-                            <span id="block-current-user">
-                                <img class="mr5 dc-border-darker" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
-                                <span class="mr5 dc-text-contrast">@<%- user.username %></span>
-                                <span class="connection mr5"> <i class="icon icon-circle status"></i></span>
-                                <a href="#" class="dropdown-toggle toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    <i class="icon icon-menu dc-text-contrast hover"></i>
-                                </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li class="arrow-up"></li>
-                                    <li><a href="/!#room/help"><%= t('chat.help') %></a></li>
-                                    <li><a href="/faq" target="_blank"><%= t('page.faq.title') %></a></li>
-                                    <li><a data-toggle="contactform"><%= t('page.contact.title') %></a></li>
-                                    <li><a href="/eutc" target="_blank"><%= t('page.eutc.title') %></a></li>
-                                    <li><a href="/legals" target="_blank"><%=t('landing.legals')%></a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li class="dropdown-header"><%= t('global.switchlanguage') %></li>
-                                    <li class="colored"><a href="" data-language="fr" class="switch">Français</a></li>
-                                    <li class="colored"><a href="" data-language="en" class="switch">English</a></li>
-                                </ul>
-                            </span>
-                        </li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
@@ -93,9 +95,9 @@
                         <div class="title mt20">ONE TO ONES</div>
                         <ul class="list"><!--ones--></ul>
                     </li>
-                    <li><hr></li>
+                    <li class="separator"><hr></li>
                     <li id="rooms">
-                        <div class="title mt20">ROOMS</div>
+                        <div class="title">ROOMS</div>
                         <ul class="list"><!--rooms--></ul>
                     </li>
                 </ul>

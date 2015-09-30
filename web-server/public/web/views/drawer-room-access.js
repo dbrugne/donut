@@ -59,8 +59,6 @@ var RoomAccessView = Backbone.View.extend({
     this.room_name = data.name;
 
     var html = this.template({
-      owner_id: data.owner.user_id,
-      owner_name: data.owner.username,
       room_id: data.id,
       room_name: data.name,
       mode: data.mode,

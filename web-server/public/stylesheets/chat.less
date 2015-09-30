@@ -178,10 +178,9 @@
       width: 100%;
       padding-left: 7px;
       padding-right: 0;
-      .navbar-brand-a { height: auto; padding: 0 15px 0 10px; float:left; margin-top:1px;
+      .navbar-brand-a { height: auto; padding: 2px 20px 0 0; float:left; margin-top:1px;
         &:hover { text-decoration: none; }
-        .logo { display: inline-block; width: 144px; }
-        .beta { vertical-align: bottom; height: @size-color; .ft-raleway-medium; font-size: 13px; padding-left: 0px; padding-top: 18px; text-decoration: none; }
+        .logo { display: inline-block; width: 125px; }
       } // #chat #color .container .navbar-brand-a
       .navbar-nav-ul>li>a {
         &:hover { text-decoration:underline; }
@@ -1142,21 +1141,24 @@
   .date-ctn { padding: 0 22px 10px 0; position: absolute; width: 100%; background-color: white; z-index: 2; min-height: 40px }
 
   #block-current-user { .display-flex; align-items: center; height: 40px;
-    img { .border-radius(5px); width: 30px; border-width: 2px; border-style: solid; height: 30px; }
+    img { width: 28px; height: 28px; }
   }
 
-  #ones, #rooms { padding: 0; margin: 20px 0;
+  .separator {
+    list-style: none;
+  }
+  #ones, #rooms { padding: 0; margin: 0;
     .title { color: @cl-subtext40; margin-bottom: 5px; font-weight: bold; background-color: transparent; padding: 0 10px; }
     ul { padding-left: 0;
     }
     li { list-style: none;
-      &.group { padding: 0 10px; font-weight:bold; }
+      &.group { padding: 5px 10px 0; font-weight:bold; }
       .item { position: relative; color: @cl-title; padding: 0 10px;
         .avatar-ctn { margin: auto;
           .avatar { width: 22px; height: 22px; display: inline; }
         }
         .name-ctn { .display-flex; .flex(1); margin: auto 0 auto 5px;
-          .name, .username { .ft-opensans; display: inline-block; width: 138px; overflow: hidden; text-overflow: ellipsis; margin: 2px 0;
+          .name, .username { .ft-opensans; display: inline-block; width: 138px; overflow: hidden; text-overflow: ellipsis; margin: 2px 0; font-weight: bold;
             > span { font-size: 13px; }
           }
         }
@@ -1168,7 +1170,7 @@
         &.active, &.active:hover, &.active:focus { background-color: @cl-background; }
         &.grouped {
           a { /*border-left: 1px solid @cl-subtext15; padding-left:5px;*/
-            .name { padding-left: 5px; }
+            .name { padding-left: 5px; font-weight: normal; }
           }
         }
       }
