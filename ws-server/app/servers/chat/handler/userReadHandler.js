@@ -26,7 +26,7 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.user_id && !data.username) {
-        return callback('user_id or name is mandatory');
+        return callback('params');
       }
 
       if (!readUser) {
@@ -139,12 +139,16 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[user:read] ' + err);
-
-      if (err === 'unknown') {
-        return next(null, {code: 404, err: err});
+      if (err === 'params') {
+        logger.warn('[user:read] ' + err);
+        return next(null, { code: 400, err: err });
       }
-      return next(null, {code: 500, err: 'internal'});
+      if (err === 'unknown') {
+        logger.warn('[user:read] ' + err);
+        return next(null, { code: 404, err: err });
+      }
+      logger.error('[user:read] ' + err);
+      return next(null, { code: 500, err: 'internal' });
     }
 
     return next(null, read);
