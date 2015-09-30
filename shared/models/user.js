@@ -42,7 +42,6 @@ var userSchema = mongoose.Schema({
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
     banned_at: {type: Date, default: Date.now}
   }],
-  positions: {type: String},
   created_at: {type: Date, default: Date.now},
   lastlogin_at: {type: Date},
   online: Boolean,

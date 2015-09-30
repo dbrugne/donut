@@ -99,7 +99,6 @@ var MainView = Backbone.View.extend({
     this.listenTo(app, 'joinRoom', this.focusRoomByName);
     this.listenTo(app, 'joinOnetoone', this.focusOneToOneByUsername);
     this.listenTo(app, 'changeColor', this.onChangeColor);
-    this.listenTo(app, 'persistPositions', this.persistPositions);
     this.listenTo(app, 'changeTitle', this.onChangeTitle);
   },
   run: function () {
@@ -503,33 +502,12 @@ var MainView = Backbone.View.extend({
     view.removeView();
     delete this.views[model.get('id')];
 
-    this.persistPositions(true); // warning, this call (will trigger broadcast to all user sockets) could generate weird behavior on discussion block on multi-devices
-
     // Focus default
     if (wasFocused) {
       this.focusHome();
     } else {
       this.discussionsBlock.redraw();
     }
-  },
-
-  persistPositions: function (silent) {
-    silent = silent | false;
-
-    var positions = [];
-    this.discussionsBlock.$list.find('a.item').each(function () {
-      var identifier = '' + $(this).data('identifier'); // force string to handle fully numeric username
-      if (identifier) {
-        positions.push(identifier);
-      }
-    });
-
-    currentUser.set({positions: positions}, {silent: silent});
-    client.userUpdate({positions: positions}, function (data) {
-      if (data.err) {
-        debug('error(s) on userUpdate call', data.errors);
-      }
-    });
   },
 
 //    updateViews: function () {

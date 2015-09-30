@@ -54,10 +54,6 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
             avatar: user._avatar()
           };
 
-          if (user.positions) {
-            welcomeEvent.user.positions = JSON.parse(user.positions);
-          }
-
           if (user.admin === true) {
             welcomeEvent.user.admin = true;
           }

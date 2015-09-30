@@ -100,20 +100,6 @@ handler.call = function (data, session, next) {
         }
       }
 
-      // positions
-      if (_.has(data.data, 'positions')) {
-        welcome = validator.toBoolean(data.data.welcome);
-        if (welcome !== user.welcome) {
-          sanitized.welcome = welcome;
-        }
-
-        if (!_.isArray(data.data.positions)) {
-          errors.positions = 'positions'; // Positions should be an array
-        } else {
-          sanitized.positions = JSON.stringify(data.data.positions);
-        }
-      }
-
       var errNum = Object.keys(errors).length;
       if (errNum > 0) {
         return callback(errors);
@@ -186,16 +172,11 @@ handler.call = function (data, session, next) {
     function broadcast (sanitized, callback) {
       // notify only certain fields
       var sanitizedToNotify = {};
-      var fieldToNotify = ['avatar', 'positions'];
       _.each(Object.keys(sanitized), function (key) {
-        if (fieldToNotify.indexOf(key) !== -1) {
-          if (key === 'avatar') {
-            sanitizedToNotify[key] = user._avatar();
-          } else if (key === 'positions') {
-            sanitizedToNotify[key] = JSON.parse(sanitized[key]);
-          } else {
-            sanitizedToNotify[key] = sanitized[key];
-          }
+        if (key === 'avatar') {
+          sanitizedToNotify[key] = user._avatar();
+        } else {
+          sanitizedToNotify[key] = sanitized[key];
         }
       });
 

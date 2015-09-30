@@ -699,7 +699,6 @@
         "website-url": "Url du site web invalide.",
         "color-hexadecimal": "La couleur doit être dans un format hexadécimale (e.g.: #FF00AA).",
         "color-integer": "La priorité devrait être exprimer en nombre (entier).",
-        "positions": "Positions doit être un tableau.",
         "invalid-name": "Le nom du donut est invalide",
         "invalid-mode": "Vous devez séléctionner un mode pour ce donut",
         "invalid-password": "Le mot de passe doit être compris entre 4 et 255 caractères",

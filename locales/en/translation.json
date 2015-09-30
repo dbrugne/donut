@@ -492,7 +492,7 @@
       "usertype": "Type",
       "users": "User",
       "users_plural": "Users",
-      "link": "User list,",
+      "link": "User list",
       "label": "See all users",
       "search": "search a username in this donut",
       "type": {
@@ -698,7 +698,6 @@
         "website-url": "Website must be a valid site URL.",
         "color-hexadecimal": "Color must be explained has hexadecimal (e.g.: #FF00AA).",
         "color-integer": "Priority must be explained has number (integer).",
-        "positions": "Positions must be an array.",
         "invalid-name": "Invalid name",
         "invalid-mode": "You must select a mode for this room",
         "invalid-password": "The password must be 4 and 255 characters",
