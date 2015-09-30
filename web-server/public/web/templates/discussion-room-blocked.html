@@ -3,9 +3,9 @@
         <div class="header room">
             <div class="margin-top: auto">
                 <div class="error alert alert-danger"></div>
-                <img class="avatar border-shadow open-room-profile mb20" data-room-id="<%= room_id %>" src="<%= avatar %>" alt="<%= name %> avatar">
+                <img class="avatar border-shadow open-room-profile mb20" data-room-id="<%= room_id %>" src="<%= avatar %>" alt="<%= identifier %> avatar">
                 <div>
-                    <span class="name open-room-profile" data-room-id="<%= room_id %>"><%= name %></span>
+                    <span class="name open-room-profile" data-room-id="<%= room_id %>"><%= identifier %></span>
                     <% if (mode === 'private') { %>
                         <span class="room-profile private" data-toggle="tooltip" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
                     <% } %>

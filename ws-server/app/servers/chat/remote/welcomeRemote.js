@@ -32,7 +32,8 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
 
   // welcome event data
   var welcomeEvent = {
-    notifications: {}
+    notifications: {},
+    blocked: []
   };
 
   var that = this;
@@ -126,34 +127,34 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
     },
 
     function populateBlocked (user, callback) {
-      var roomsBlocked = [];
+      if (!user.blocked || !user.blocked.length) {
+        return callback(null, user);
+      }
 
-      async.forEach(user.blocked, function (room, fn) {
-        User.populate(room, {'path': 'owner'}, function (err, owner) {
+      Room.find({_id: {$in: user.blocked}})
+        .populate('owner', 'username avatar color facebook')
+        .populate('group', 'name')
+        .exec(function (err, rooms) {
           if (err) {
             return callback(err);
           }
 
-          roomDataHelper(user, room, function (err, r) {
-            if (err) {
-              fn(err);
-            }
-            roomsBlocked.push(r);
-            fn(null);
+          if (!rooms.length) {
+            return callback(null, user);
+          }
+
+          async.forEach(rooms, function (room, fn) {
+            roomDataHelper(user, room, function (err, r) {
+              if (err) {
+                fn(err);
+              }
+              welcomeEvent.blocked.push(r);
+              fn(null);
+            });
+          }, function (err) {
+            return callback(err, user);
           });
         });
-      }, function (err) {
-        if (err) {
-          return callback(err);
-        }
-
-        if (!roomsBlocked.length) {
-          return callback(null, user);
-        }
-
-        welcomeEvent.blocked = roomsBlocked;
-        return callback(null, user);
-      });
     },
 
     function featured (user, callback) {

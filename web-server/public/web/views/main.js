@@ -131,6 +131,7 @@ var MainView = Backbone.View.extend({
    * @param data
    */
   onWelcome: function (data) {
+    console.log(data.blocked);
     // Current user data (should be done before onetoone logic)
     currentUser.set(data.user, {silent: true});
     currentUser.setPreferences(data.preferences, {silent: true});
