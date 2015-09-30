@@ -9,13 +9,13 @@ var MessageEditView = require('./message-edit');
 
 module.exports = Backbone.View.extend({
   events: {
-    'click .dropdown-menu .edited': 'onEditMessage',
-    'dblclick .block.message': 'onEditMessage',
+    'click .dropdown-menu .edited': 'onEdit',
+    'dblclick .block.message': 'onEdit',
     'keydown .form-message-edit': 'editNext'
   },
 
   initialize: function () {
-    this.listenTo(this.model, 'messageEdit', this.onMessageEdited);
+    this.listenTo(this.model, 'messageEdit', this.onEdited);
     this.listenTo(this.model, 'editMessageClose', this.onClose);
     this.listenTo(this.model, 'editPreviousInput', this.editNext);
     this.render();
@@ -24,17 +24,17 @@ module.exports = Backbone.View.extend({
     this.$realtime = this.$('.realtime');
     return this;
   },
-  onEditMessage: function (event) {
+  onEdit: function (event) {
     event.preventDefault();
 
     var $event = $(event.currentTarget).closest('.block.message');
 
-    if (!this.isEditableMessage($event)) {
+    if (!this.isEditable($event)) {
       return;
     }
     this.editMessage($event);
   },
-  isEditableMessage: function ($event) {
+  isEditable: function ($event) {
     var special = $event.data('special');
     if (special && special !== 'me') {
       return false;
@@ -56,20 +56,20 @@ module.exports = Backbone.View.extend({
       return app.trigger('scrollDown');
     }
 
-    var $listMessageCurrentUser = this.$realtime.find('.block.message[data-user-id="' + currentUser.get('user_id') + '"]');
-    if (!$listMessageCurrentUser.length) {
+    var $listMessages = this.$realtime.find('.block.message[data-user-id="' + currentUser.get('user_id') + '"]');
+    if (!$listMessages.length) {
       return;
     }
 
     var $candidate;
     if (!this.messageUnderEdition) {
-      $candidate = $listMessageCurrentUser.last();
+      $candidate = $listMessages.last();
     } else {
       var that = this;
       if (key.key === keyboard.DOWN) {
-        $listMessageCurrentUser = $($listMessageCurrentUser.get().reverse());
+        $listMessages = $($listMessages.get().reverse());
       }
-      $listMessageCurrentUser.each(function () {
+      $listMessages.each(function () {
         if (that.messageUnderEdition.$el.attr('id') === $(this).attr('id')) {
           return false;
         }
@@ -81,7 +81,7 @@ module.exports = Backbone.View.extend({
       return;
     }
 
-    if (this.isEditableMessage($candidate)) {
+    if (this.isEditable($candidate)) {
       this.editMessage($candidate);
     }
 
@@ -98,7 +98,7 @@ module.exports = Backbone.View.extend({
 
     app.trigger('scrollDown');
   },
-  onMessageEdited: function (data) {
+  onEdited: function (data) {
     var $event = this.$('#' + data.event);
 
     if ($event.find('.text').html() === undefined) {

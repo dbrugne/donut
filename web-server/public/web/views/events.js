@@ -261,7 +261,7 @@ module.exports = Backbone.View.extend({
     var userId = $event.closest('[data-user-id]').data('userId');
     var isMessageOwner = (ownerUserId === userId);
 
-    var isEditable = this.eventsEditView.isEditableMessage($event);
+    var isEditable = this.eventsEditView.isEditable($event);
 
     if (this.model.get('type') === 'room') {
       var isOp = this.model.currentUserIsOp();

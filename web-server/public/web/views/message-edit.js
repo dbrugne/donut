@@ -119,6 +119,4 @@ var MessageEditView = Backbone.View.extend({
     return $html.text();
   }
 });
-
-
 module.exports = MessageEditView;
