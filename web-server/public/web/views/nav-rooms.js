@@ -13,8 +13,8 @@ module.exports = Backbone.View.extend({
   events: {},
 
   initialize: function (options) {
-    this.listenTo(rooms, 'add', this.render);
-    this.listenTo(rooms, 'remove', this.render);
+//    this.listenTo(rooms, 'add', this.render);
+//    this.listenTo(rooms, 'remove', this.render);
     this.listenTo(app, 'redraw-block', this.render);
     this.listenTo(rooms, 'change:avatar', this.render);
     this.$list = this.$('.list');

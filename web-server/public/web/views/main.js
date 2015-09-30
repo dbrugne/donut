@@ -164,6 +164,9 @@ var MainView = Backbone.View.extend({
       rooms.addModel(lock, lock.blocked ? lock.blocked : true);
     });
 
+    // only one time for each welcome event
+    app.trigger('redraw-block');
+
     // Notifications
     if (data.notifications) {
       this.notificationsView.initializeNotificationState(data.notifications);

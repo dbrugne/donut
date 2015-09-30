@@ -8,6 +8,7 @@ var UserModel = require('../models/user');
 var EventModel = require('../models/event');
 
 var RoomsCollection = Backbone.Collection.extend({
+  comparator: 'group_name',
   iwhere: function (key, val) { // insencitive case search
     var matches = this.filter(function (item) {
       return item.get(key).toLocaleLowerCase() === val.toLocaleLowerCase();
@@ -101,6 +102,9 @@ var RoomsCollection = Backbone.Collection.extend({
     if (roomData.grouped) {
       roomData.group_id = room.group.group_id;
       roomData.group_name = room.group.name;
+      roomData.identifier = '#' + room.group.name + '/' + room.name.replace('#', '');
+    } else {
+      roomData.identifier = room.name;
     }
 
     if (roomData.blocked === 'banned') {

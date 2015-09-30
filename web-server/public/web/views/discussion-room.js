@@ -99,12 +99,15 @@ var RoomView = Backbone.View.extend({
     data.share = this.share.class;
 
     // dropdown
-    data.dropdown = require('../templates/dropdown-room-actions.html')({
+    var dropdown = require('../templates/dropdown-room-actions.html')({
       data: data
     });
 
     // render
-    var html = this.template(data);
+    var html = this.template({
+      data: data,
+      dropdown: dropdown
+    });
     this.$el.html(html);
     this.$el.hide();
 

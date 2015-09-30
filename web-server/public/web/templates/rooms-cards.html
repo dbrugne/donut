@@ -11,6 +11,11 @@
 <% } %>
 
     <% _.each(rooms, function(room) { %>
+        <%
+        var _name = (room.group)
+          ? '#' + room.group.name + '/' + room.name.replace('#', '')
+          : room.name;
+        %>
         <div class="room dc-i-<%= room.color.replace('#', '').toLowerCase() %>">
 
             <div class="mini-card hidden">
@@ -18,7 +23,7 @@
                     <div class="avatar" style="background-image:url(<%= room.avatar %>)"></div>
                     <div class="ctn">
                         <span class="name">
-                            <a href="<%= room.url %>"><%= room.name %></a>
+                            <a href="<%= room.url %>"><%= _name %></a>
                             <span class="room-profile <%= room.mode %>"> </span>
                         </span>
                         <a class="dc-text" href="<%= room.join %>">
@@ -35,7 +40,7 @@
                 <div class="top">
                     <div class="ctn">
                         <span class="name">
-                            <a href="<%= room.url %>"><%= room.name %></a>
+                            <a href="<%= room.url %>"><%= _name %></a>
                             <span class="room-profile <%= room.mode %>"> </span>
                         </span>
                         <% if (room.owner && room.owner.username) { %>
@@ -55,7 +60,7 @@
             <div class="back dc-back dc-text-contrast">
                 <div class="ctn">
                     <p class="name dc-text-contrast open-room-profile" data-dismiss="modal" data-room-id="<%= room.room_id %>">
-                        <a class="dc-text-contrast" href="<%= room.url %>"><%= room.name %></a>
+                        <a class="dc-text-contrast" href="<%= room.url %>"><%= _name %></a>
                         <span class="room-profile <%= room.mode %>"> </span>
                     </p>
                     <% if (room.owner && room.owner.username) { %>

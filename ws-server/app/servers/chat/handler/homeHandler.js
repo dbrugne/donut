@@ -31,6 +31,7 @@ handler.call = function (data, session, next) {
       })
         .sort({priority: -1, 'lastjoin_at': -1})
         .limit(roomLimit + 1)
+        .populate('group', 'name')
         .populate('owner', 'username avatar');
 
       q.exec(function (err, rooms) {
@@ -65,6 +66,13 @@ handler.call = function (data, session, next) {
             lastjoin_at: new Date(room.lastjoin_at).getTime(),
             priority: room.priority || 0
           };
+
+          if (room.group) {
+            _data.group = {
+              group_id: room.group.id,
+              name: room.group.name
+            };
+          }
 
           _rooms.push(_data);
         });
