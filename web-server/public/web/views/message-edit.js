@@ -1,11 +1,9 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var donutDebug = require('../libs/donut-debug');
 var keyboard = require('../libs/keyboard');
 var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
-var currentUser = require('../models/current-user');
 
 var MessageEditView = Backbone.View.extend({
   template: require('../templates/message-edit.html'),
@@ -44,6 +42,7 @@ var MessageEditView = Backbone.View.extend({
       .focus();
 
     this.$formMessageEdit = this.$('.form-message-edit');
+    this.$el.find('.date.pull-right').hide();
 
     this.updateFormSize();
 
@@ -69,6 +68,7 @@ var MessageEditView = Backbone.View.extend({
     this.$text.removeClass('hidden');
     this.$messageForm.remove();
     this.$el.addClass('has-hover');
+    this.$el.find('.date.pull-right').show();
     this.undelegateEvents();
     this.stopListening();
   },
@@ -121,6 +121,4 @@ var MessageEditView = Backbone.View.extend({
     return $html.text();
   }
 });
-
-
 module.exports = MessageEditView;

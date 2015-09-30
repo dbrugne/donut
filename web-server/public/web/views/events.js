@@ -204,13 +204,11 @@ module.exports = Backbone.View.extend({
   _scrollBottomPosition: function () {
     var contentHeight = this.$scrollableContent.outerHeight(true);
     var viewportHeight = this.$scrollable.height();
+//    console.log('scroll', contentHeight, viewportHeight, this.$el.height(), (contentHeight - viewportHeight));
     return contentHeight - viewportHeight;
   },
   isScrollOnBottom: function () {
-    var scrollMargin = 10;
-    if (this.eventsEditView.getMessageUnderEdition()) {
-      scrollMargin = this.eventsEditView.getMessageUnderEdition().$el.height();
-    }
+    var scrollMargin = this.eventsEditView.getEditionHeight() || 10;
 
     // add a 10px margin
     var bottom = this._scrollBottomPosition() - scrollMargin;
@@ -219,8 +217,7 @@ module.exports = Backbone.View.extend({
     return (this.$scrollable.scrollTop() >= bottom);
   },
   scrollDown: function () {
-    var bottom = this._scrollBottomPosition();
-    this.$scrollable.scrollTop(bottom);
+    this.$scrollable.scrollTop(this.$scrollableContent.outerHeight(true));
   },
   scrollTop: function () {
     var targetTop = this.eventsHistoryView.getLoaderTop();
@@ -243,7 +240,7 @@ module.exports = Backbone.View.extend({
     this.engine.insertBottom(model);
 
     // scrollDown
-    if (needToScrollDown && !this.eventsEditView.getMessageUnderEdition()) {
+    if (needToScrollDown && !this.eventsEditView.messageUnderEdition) {
       this.scrollDown();
     } else {
       this.$goToBottom.show().addClass('unread');
@@ -264,7 +261,7 @@ module.exports = Backbone.View.extend({
     var userId = $event.closest('[data-user-id]').data('userId');
     var isMessageOwner = (ownerUserId === userId);
 
-    var isEditable = this.eventsEditView.isEditableMessage($event);
+    var isEditable = this.eventsEditView.isEditable($event);
 
     if (this.model.get('type') === 'room') {
       var isOp = this.model.currentUserIsOp();

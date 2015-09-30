@@ -133,10 +133,6 @@ var DiscussionInputView = Backbone.View.extend({
     if (data.key === keyboard.RETURN && !data.isShift) {
       event.preventDefault();
     }
-    // Navigate between editable messages
-    if (event.which === keyboard.UP && message === '') {
-      this.model.trigger('editPreviousInput');
-    }
 
     this.model.trigger('inputKeyDown', event);
   },
