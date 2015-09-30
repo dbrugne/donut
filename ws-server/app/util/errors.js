@@ -5,6 +5,7 @@ var errors = {
   'params-room-id': 400,          // room_id params not set
   'params-user-id': 400,          // user_id params not set
   'params-id': 400,               // id params not set
+  'params-ids': 400,              // ids params not set
   'params-username': 400,         // username params not set
   'params-username-user-id': 400, // username and user_id params not set
   'params-name': 400,             // name params not set
@@ -30,6 +31,7 @@ var errors = {
   'user-not-found': 404,          // User not found
   'event-not-found': 404,         // Event not found
   'history-not-found': 404,       // History not found
+  'notification-not-found': 404,  // Notification not found
   'not-found': 404,               // == GENERAL TAG ==
 
   // CONFLICT (409)
