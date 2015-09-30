@@ -43,8 +43,7 @@ Notification.prototype.create = function (user, room, event, done) {
     function save (userModel, roomModel, status, callback) {
       var data = {
         by_user: event.by_user_id,
-        room: roomModel._id,
-        event: that.type
+        room: roomModel._id
       };
       var model = NotificationModel.getNewModel(that.type, userModel._id, data);
       model.to_browser = true;

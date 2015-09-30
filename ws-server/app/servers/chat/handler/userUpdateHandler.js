@@ -27,7 +27,7 @@ handler.call = function (data, session, next) {
     function validate (callback) { // @doc: https://www.npmjs.org/package/validator
 
       if (!data.data || data.data.length < 1) {
-        return callback('No data to update');
+        return callback('params');
       }
 
       var errors = {};
@@ -275,6 +275,10 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
+      if (err === 'params') {
+        logger.warn('[user:update] ' + err);
+        return next(null, { code: 400, err: err });
+      }
       logger.error('[user:update] ' + err);
       return next(null, {code: 500, err: 'internal'});
     }

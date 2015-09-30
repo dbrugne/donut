@@ -22,11 +22,11 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.user_id) {
-        return callback('user_id is mandatory');
+        return callback('params');
       }
 
       if (!withUser) {
-        return callback('unable to retrieve withUser: ' + data.user_id);
+        return callback('unknown');
       }
 
       return callback(null);
@@ -44,9 +44,18 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
+      if (err === 'params') {
+        logger.warn('[user:typing] ' + err);
+        return next(null, { code: 400, err: err });
+      }
+      if (err === 'unknown') {
+        logger.warn('[user:typing] ' + err);
+        return next(null, { code: 404, err: err });
+      }
       logger.error('[user:typing] ' + err);
+      return next(null, { code: 500, err: 'internal' });
     }
 
-    next(err);
+    return next(null, { success: true });
   });
 };
