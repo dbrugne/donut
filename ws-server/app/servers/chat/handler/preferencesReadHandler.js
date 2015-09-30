@@ -57,7 +57,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      return errors.getHandler('notification:viewed', next)(err);
+      return errors.getHandler('preferences:read', next)(err);
     }
 
     next(null, event);

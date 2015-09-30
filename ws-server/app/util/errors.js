@@ -10,6 +10,7 @@ var errors = {
   'params-username-user-id': 400, // username and user_id params not set
   'params-name': 400,             // name params not set
   'params-events': 400,           // events params not set
+  'params-data': 400,             // data params not set
   'wrong-format': 400,            // params are not well formatted
   'params': 400,                  // == GENERAL TAG ==
 
@@ -37,6 +38,7 @@ var errors = {
   // CONFLICT (409)
   'mail-already-exist': 409,      // Mail already used by an other user
   'same-mail': 409,               // Same mail as before
+  'same-preferences': 409,        // Same preferences as before
 
   // UNPROCESSABLE ENTITY (422)
   'wrong-password': 422           // User type a wrong password
