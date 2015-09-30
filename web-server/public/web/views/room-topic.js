@@ -12,8 +12,13 @@ var RoomTopicView = Backbone.View.extend({
     'click .cancel': 'hideForm',
     'click .submit': 'sendNewTopic',
     'keypress .topic-input': function (event) {
-      if (event.which === 13) {
+      if (event.keyCode === 13) {
         this.sendNewTopic(event);
+      }
+    },
+    'keyup .topic-input': function (event) {
+      if (event.keyCode === 27) {
+        this.hideForm();
       }
     }
   },
