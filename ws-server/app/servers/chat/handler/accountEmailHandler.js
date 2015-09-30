@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var User = require('../../../../../shared/models/user');
 var emailer = require('../../../../../shared/io/emailer');
@@ -46,7 +46,7 @@ handler.call = function (data, session, next) {
           return callback(err);
         }
         if (user) {
-          return callback('exist');
+          return callback('mail-already-exist');
         }
 
         return callback(null);
@@ -80,12 +80,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[user:email:edit] ' + err);
-
-      err = (['wrong-format', 'same-mail', 'exist'].indexOf(err) !== -1)
-        ? err
-        : 'internal';
-      return next(null, {code: 500, err: 'internal'});
+      return errors.getHandler('user:email:edit', next)(err);
     }
     return next(null, {success: true});
   });

@@ -98,10 +98,8 @@ var DrawerAccountEmailView = Backbone.View.extend({
       this.$errorLabel.text(i18next.t('account.email.error.format'));
     } else if (error === 'same-mail') {
       this.$errorLabel.text(i18next.t('account.email.error.alreadyyours'));
-    } else if (error === 'exist') {
+    } else if (error === 'mail-already-exist') {
       this.$errorLabel.text(i18next.t('account.email.error.alreadyexists'));
-    } else if (error === 'empty') {
-      this.$errorLabel.text(i18next.t('account.email.error.empty'));
     } else {
       this.$errorLabel.text(i18next.t('global.unknownerror'));
     }

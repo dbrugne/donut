@@ -720,8 +720,7 @@
       "error": {
         "format": "Cette adresse email n'est pas valide",
         "alreadyexists": "Cette adresse email est déjà utilisée par un autre compte",
-        "alreadyyours": "Vous utilisez déjà cette adresse mail",
-        "empty": "Le champ est vide"
+        "alreadyyours": "Vous utilisez déjà cette adresse mail"
       },
       "new": "Nouvel email",
       "confirm": "Confirmer"

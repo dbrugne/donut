@@ -7,6 +7,7 @@ var errors = {
   'params-id': 400,           // id params not set
   'params-username': 400,     // username params not set
   'params-name': 400,         // name params not set
+  'wrong-format': 400,        // params are not well formatted
   'params': 400,              // == GENERAL TAG ==
 
   // NOT ALLOWED ERROR (403)
@@ -26,7 +27,11 @@ var errors = {
   'user-not-found': 404,      // User not found
   'event-not-found': 404,     // Event not found
   'history-not-found': 404,   // History not found
-  'not-found': 404           // == GENERAL TAG ==
+  'not-found': 404,           // == GENERAL TAG ==
+
+  // CONFLICT (409)
+  'mail-already-exist': 409,   // Mail already used by an other user
+  'same-mail': 409             // Same mail as before
 };
 
 module.exports = {
