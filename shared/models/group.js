@@ -5,7 +5,6 @@ var MAX_PASSWORD_TIME = 60 * 1000; // 1mn
 
 var groupSchema = mongoose.Schema({
   name: String,
-  group: {type: mongoose.Schema.ObjectId, ref: 'Group'},
   deleted: {type: Boolean, default: false},
   visibility: {type: Boolean, default: false},
   priority: Number,
@@ -17,7 +16,6 @@ var groupSchema = mongoose.Schema({
     message: String,
     created_at: {type: Date, default: Date.now}
   }],
-  allow_group_member: Boolean,
   password: String,
   password_indication: String,
   avatar: String,

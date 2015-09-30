@@ -9,6 +9,7 @@ var MAX_PASSWORD_TIME = 60 * 1000; // 1mn
 
 var roomSchema = mongoose.Schema({
   name: String,
+  group: {type: mongoose.Schema.ObjectId, ref: 'Group'},
   permanent: Boolean,
   deleted: {type: Boolean, default: false},
   visibility: {type: Boolean, default: false},
@@ -34,6 +35,7 @@ var roomSchema = mongoose.Schema({
     count: Number,
     created_at: {type: Date, default: Date.now}
   }],
+  allow_group_member: Boolean,
   allowed: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
   allowed_pending: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
   avatar: String,
