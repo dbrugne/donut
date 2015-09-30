@@ -471,7 +471,7 @@
       "loading": "Chargement de l'historique ...",
       "top": "aller tout en haut",
       "bottom": "aller tout en bas",
-      "currently": "C'est ici que tout commence... Vous êtes au tout début de la conversation <span class=\"name dc-text open-room-profile\" data-room-id=\"__roomid__\">__roomname__</span>, donut créé par <span class=\"owner dc-text open-user-profile\" data-user-id=\"__ownerid__\">@__owner__</span> le <span class=\"date\">__created_at__</span>",
+      "currently": "C'est ici que tout commence... Vous êtes au tout début de la conversation <span class=\"name dc-text open-room-profile\" data-room-id=\"__room_id__\">__name__</span>, donut créé par <span class=\"owner dc-text open-user-profile\" data-user-id=\"__owner_id__\">@__owner_username__</span> le <span class=\"date\">__created_at__</span>",
       "hasPassword": "Votre donut est privé. Paramétrez les modalités d'accès en cliquant sur \"Gérer les accès\"",
       "onestart": "Cette conversation est privée. Seuls vous et votre interlocuteur pouvez y avoir accès.",
       "edit": "Editer le profil",

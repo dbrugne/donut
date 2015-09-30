@@ -31,10 +31,6 @@ var RoomBlockedView = Backbone.View.extend({
   render: function () {
     var data = this.model.toJSON();
 
-    // owner
-    var owner = this.model.get('owner').toJSON();
-    data.owner = owner;
-
     // banned_at
     if (data.banned_at) {
       data.banned_at = date.longDate(data.banned_at);

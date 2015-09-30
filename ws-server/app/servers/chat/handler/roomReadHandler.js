@@ -86,7 +86,9 @@ handler.call = function (data, session, next) {
         name: room.name,
         id: room.id,
         room_id: room.id,
-        owner: owner,
+        owner_id: owner.user_id,
+        owner_username: owner.username,
+        owner_avatar: owner.avatar,
         users: users,
         avatar: room._avatar(),
         poster: room._poster(),
@@ -97,6 +99,11 @@ handler.call = function (data, session, next) {
         created: room.created_at,
         mode: room.mode
       };
+
+      if (room.group) {
+        read.group_id = room.group.id;
+        read.group_name = room.group.name;
+      }
 
       if (room.isOwner(user.id) || session.settings.admin === true) {
         read.password = room.password;

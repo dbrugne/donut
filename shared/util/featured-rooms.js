@@ -145,7 +145,6 @@ var retriever = function (app, fn) {
           var data = {
             name: room.name,
             room_id: room.id,
-            owner: {},
             avatar: room._avatar(),
             poster: room._poster(),
             color: room.color,
@@ -155,16 +154,12 @@ var retriever = function (app, fn) {
             mode: room.mode
           };
           if (room.group) {
-            data.group = {
-              group_id: room.group.id,
-              name: room.group.name
-            };
+            data.group_id = room.group.id;
+            data.group_name = room.group.name;
           }
           if (room.owner) {
-            data.owner = {
-              user_id: room.owner._id,
-              username: room.owner.username
-            };
+            data.owner_id = room.owner.id;
+            data.owner_username = room.owner.username;
           }
           roomsData.push(data);
         });

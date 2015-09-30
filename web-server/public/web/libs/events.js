@@ -163,8 +163,8 @@ exports.prototype._data = function (event) {
   if (this.discussion.get('type') === 'room') {
     data.name = this.discussion.get('name');
     data.mode = this.discussion.get('mode');
-    data.owner = this.discussion.get('owner').get('username');
-    data.owner_id = this.discussion.get('owner').get('user_id');
+    data.owner_username = this.discussion.get('owner_username');
+    data.owner_id = this.discussion.get('owner_id');
   }
 
   // spammed & edited

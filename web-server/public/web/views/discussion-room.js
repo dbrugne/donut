@@ -69,8 +69,6 @@ var RoomView = Backbone.View.extend({
     var data = this.model.toJSON();
 
     // owner
-    var owner = this.model.get('owner').toJSON();
-    data.owner = owner;
     data.isOwner = this.model.currentUserIsOwner();
     data.isOp = this.model.currentUserIsOp();
     data.isAdmin = this.model.currentUserIsAdmin();

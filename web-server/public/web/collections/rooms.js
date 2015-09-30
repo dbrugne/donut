@@ -18,10 +18,10 @@ var RoomsCollection = Backbone.Collection.extend({
       return undefined;
     }
 
-    return matches[0];
+    return matches[ 0 ];
   },
   getByName: function (name) {
-    return this.findWhere({name: name});
+    return this.findWhere({ name: name });
   },
 
   initialize: function () {
@@ -66,63 +66,23 @@ var RoomsCollection = Backbone.Collection.extend({
       this.addModel(data);
     }
   },
-  addModel: function (room, blocked) {
-    // prepare model data
-    var owner;
-    if (room.owner.user_id) {
-      owner = new UserModel({
-        id: room.owner.user_id,
-        user_id: room.owner.user_id,
-        username: room.owner.username,
-        avatar: room.owner.avatar
-      });
-    } else {
-      owner = new UserModel();
-    }
+  addModel: function (data, blocked) {
+    data.blocked = blocked || false;
 
-    var roomData = {
-      name: room.name,
-      owner: owner,
-      op: room.op,
-      devoices: room.devoices,
-      topic: room.topic,
-      avatar: room.avatar,
-      poster: room.poster,
-      posterblured: room.posterblured,
-      color: room.color,
-      unviewed: room.unviewed,
-      mode: room.mode,
-      hasPassword: room.hasPassword,
-      blocked: blocked || false,
-      users_number: room.users_number,
-      created_at: room.created_at,
-      grouped: (room.group && room.group.group_id)
-    };
-
-    if (roomData.grouped) {
-      roomData.group_id = room.group.group_id;
-      roomData.group_name = room.group.name;
-      roomData.identifier = '#' + room.group.name + '/' + room.name.replace('#', '');
-    } else {
-      roomData.identifier = room.name;
-    }
-
-    if (roomData.blocked === 'banned') {
-      roomData.banned_at = room.banned_at;
-      roomData.banned_reason = room.banned_reason;
-    }
+    data.identifier = (data.group_id)
+      ? '#' + data.group_name + '/' + data.name.replace('#', '')
+      : data.name;
 
     // update model
-    var isNew = (this.get(room.id) === undefined);
+    var isNew = (this.get(data.id) === undefined);
     var model;
     if (!isNew) {
       // already exist in IHM (maybe reconnecting)
-      model = this.get(room.id);
-      model.set(roomData);
+      model = this.get(data.id);
+      model.set(data);
     } else {
       // add in IHM
-      roomData.id = room.id;
-      model = new RoomModel(roomData);
+      model = new RoomModel(data);
     }
 
     if (isNew) {
@@ -220,7 +180,11 @@ var RoomsCollection = Backbone.Collection.extend({
     // if i'm the "targeted user" destroy the model/view
     if (currentUser.get('user_id') === data.user_id) {
       var isFocused = model.get('focused');
-      var blocked = (what === 'ban') ? 'banned' : (what === 'kick') ? 'kicked' : true;
+      var blocked = (what === 'ban')
+        ? 'banned'
+        : (what === 'kick')
+        ? 'kicked'
+        : true;
       var modelTmp = model.attributes;
       if (what === 'ban' && data.banned_at) {
         modelTmp.banned_at = data.banned_at;
@@ -329,7 +293,7 @@ var RoomsCollection = Backbone.Collection.extend({
     this.remove(model);
 
     if (data.reason && data.reason === 'deleted') {
-      this.trigger('deleted', {reason: i18next.t('chat.deletemessage', {name: data.name})});
+      this.trigger('deleted', { reason: i18next.t('chat.deletemessage', { name: data.name }) });
     }
   },
   onLeaveBlock: function (data) {

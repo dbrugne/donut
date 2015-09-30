@@ -13,14 +13,7 @@
                             <span class="open-room-profile" data-room-id="<%= model.id %>"><%= model.name %></span>
                         </div>
                         <div class="info">
-                            <p><%= t('chat.history.currently', {
-                                'roomname': model.name,
-                                'roomid': model.id,
-                                'owner': model.owner.username,
-                                'ownerid': model.owner.id,
-                                created_at: created_at,
-                                created_time: created_time,
-                            }) %>
+                            <p><%= t('chat.history.currently', model) %>
                             </p>
                             <% if(isOwner) { %>
                                 <p><%= t('chat.history.hasPassword') %></p>

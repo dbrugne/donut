@@ -30,7 +30,6 @@ var DrawerUserRoomPreferencesView = Backbone.View.extend({
   onResponse: function (data) {
     var html = this.template({
       room: this.model.toJSON(),
-      owner: this.model.get('owner').toJSON(),
       preferences: data.preferences
     });
 

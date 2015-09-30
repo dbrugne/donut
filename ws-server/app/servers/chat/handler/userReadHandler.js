@@ -95,7 +95,7 @@ handler.call = function (data, session, next) {
             color: room.color
           };
 
-          if (room.owner.toString() === readUser.id) {
+          if (room.owner && room.owner.toString() === readUser.id) {
             read.rooms.owned.push(_room);
           } else if (room.op.length && room.op.indexOf(readUser._id) !== -1) {
             read.rooms.oped.push(_room);

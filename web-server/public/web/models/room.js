@@ -45,8 +45,7 @@ var RoomModel = Backbone.Model.extend({
       return model;
     }
 
-    var is_owner = (this.get('owner') &&
-    this.get('owner').get('user_id') === data.user_id);
+    var is_owner = (this.get('owner_id') && this.get('owner_id') === data.user_id);
 
     var is_op = (this.get('op') && this.get('op').indexOf(data.user_id) !== -1);
 
@@ -78,10 +77,10 @@ var RoomModel = Backbone.Model.extend({
     return (this.get('devoices') && this.get('devoices').indexOf(userId) !== -1);
   },
   currentUserIsOwner: function () {
-    if (!this.get('owner')) {
+    if (!this.get('owner_id')) {
       return false;
     }
-    return (this.get('owner').get('user_id') === currentUser.get('user_id'));
+    return (this.get('owner_id') === currentUser.get('user_id'));
   },
   currentUserIsOp: function () {
     return (this.get('op') && this.get('op').indexOf(currentUser.get('user_id')) !== -1);

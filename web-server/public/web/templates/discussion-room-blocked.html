@@ -11,8 +11,8 @@
                     <% } %>
                 </div>
 
-                <% if (owner && owner.username) { %>
-                <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= owner.id %>">@<%= owner.username %></a></span>
+                <% if (owner_id) { %>
+                <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= owner_id %>">@<%= owner_username %></a></span>
                 <% } %>
 
                 <% if (mode === 'private' && blocked !== 'banned' && blocked !== 'kicked') { %>
