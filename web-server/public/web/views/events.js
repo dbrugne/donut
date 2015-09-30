@@ -204,6 +204,7 @@ module.exports = Backbone.View.extend({
   _scrollBottomPosition: function () {
     var contentHeight = this.$scrollableContent.outerHeight(true);
     var viewportHeight = this.$scrollable.height();
+//    console.log('scroll', contentHeight, viewportHeight, this.$el.height(), (contentHeight - viewportHeight));
     return contentHeight - viewportHeight;
   },
   isScrollOnBottom: function () {
@@ -216,8 +217,7 @@ module.exports = Backbone.View.extend({
     return (this.$scrollable.scrollTop() >= bottom);
   },
   scrollDown: function () {
-    var bottom = this._scrollBottomPosition();
-    this.$scrollable.scrollTop(bottom);
+    this.$scrollable.scrollTop(this.$scrollableContent.outerHeight(true));
   },
   scrollTop: function () {
     var targetTop = this.eventsHistoryView.getLoaderTop();
