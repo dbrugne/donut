@@ -42,6 +42,7 @@ var MessageEditView = Backbone.View.extend({
       .focus();
 
     this.$formMessageEdit = this.$('.form-message-edit');
+    this.$el.find('.date.pull-right').hide();
 
     this.updateFormSize();
 
@@ -67,6 +68,7 @@ var MessageEditView = Backbone.View.extend({
     this.$text.removeClass('hidden');
     this.$messageForm.remove();
     this.$el.addClass('has-hover');
+    this.$el.find('.date.pull-right').show();
     this.undelegateEvents();
     this.stopListening();
   },
