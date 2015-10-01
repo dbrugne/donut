@@ -258,6 +258,9 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
+      if (_.isObject(err)) {
+        return next(null, {code: 400, err: err});
+      }
       return errors.getHandler('room:updated', next)(err);
     }
 
