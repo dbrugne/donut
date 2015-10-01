@@ -13,9 +13,11 @@ var errors = {
   'params-events': 400,           // events params not set
   'params-data': 400,             // data params not set
   'params-mode': 400,             // mode params not set
+  'params-message': 400,          // message params not set or not good
   'wrong-format': 400,            // params are not well formatted
   'name-wrong-format': 400,       // name params are not well formatted
   'mode-wrong-format': 400,       // mode params are not well formatted
+  'message-wrong-format': 400,    // message params are not well formatted
   'params': 400,                  // == GENERAL TAG ==
 
   // NOT ALLOWED ERROR (403)

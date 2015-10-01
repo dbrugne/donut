@@ -1,4 +1,5 @@
 'use strict';
+var errors = require('../../../util/errors');
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var async = require('async');
 var _ = require('underscore');
@@ -27,54 +28,54 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.room_id) {
-        return callback('id is mandatory');
+        return callback('params-room-id');
       }
 
       if (!data.event) {
-        return callback('require event param');
+        return callback('params-events');
       }
 
       if (!data.message && !event.data.images) {
-        return callback('require message param');
+        return callback('params-message');
       }
 
       if (!room) {
-        return callback('unable to retrieve room: ' + data.room_id);
+        return callback('room-not-found');
       }
 
       if (!event) {
-        return callback('unable to retrieve event: ' + data.event);
+        return callback('event-not-found');
       }
 
       if (event.event !== 'room:message') {
-        return callback('event should be room:message: ' + data.event);
+        return callback('params-message');
       }
 
       if (event.data.special && event.data.special !== 'me') {
-        return callback('only special me could be edited: ' + data.event);
+        return callback('params-message');
       }
 
       if (event.room.toString() !== room.id) {
-        return callback('event ' + data.event + ' not correspond to given room ' + room.name);
+        return callback('not-allowed');
       }
 
       if (user.id !== event.user.toString()) {
-        return callback(user.id + ' tries to modify message ' + data.event + ' from ' + event.user.toString());
+        return callback('not-allowed');
       }
 
       if ((Date.now() - event.time) > conf.chat.message.maxedittime * 60 * 1000) {
-        return callback(user.id + ' tries to edit an old message: ' + event.id);
+        return callback('not-allowed');
       }
 
       if (data.message) {
         var message = inputUtil.filter(data.message, 512);
 
         if (!message) {
-          return callback('empty message (no text)');
+          return callback('message-wrong-format');
         }
 
         if (message === event.data.message) {
-          return callback('posted message is the same as original');
+          return callback('message-wrong-format');
         }
       }
 
@@ -121,8 +122,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[room:message:edit] ' + err);
-      return next(null, { code: 500, err: 'internal' });
+      return errors.getHandler('room:message:edit', next)(err);
     }
 
     return next(null, { success: true });
