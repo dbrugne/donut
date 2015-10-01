@@ -420,6 +420,8 @@
         "no-banned": "This user is not banned in this donut",
         "no-op": "This user is not moderator in this donut",
         "no-in": "This user is not in this donut",
+        "owner": "This user is the owner of the donut",
+        "devoiced": "This user is already muted in this donut",
         "user-not-found": "Can't find this user."
       }
     },

@@ -421,6 +421,8 @@
         "no-banned": "Cet utilisateur n'est pas bannis dans ce donut.",
         "no-op": "Cet utilisateur n'est pas moderateur dans ce donut",
         "no-in": "Cet utilisateur n'est pas dans ce donut",
+        "owner": "Cet utilisateur est le créateur de ce donut",
+        "devoiced": "Cet utilisateur est déjà muet dans ce donut",
         "user-not-found": "Cet utilisateur n'a pas été trouvé."
       }
     },
