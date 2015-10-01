@@ -124,7 +124,7 @@ handler.call = function (data, session, next) {
           if (password !== null) {
             // Change password
             if (passwordPattern.test(password) && (password /* user.generateHash(password)*/ !== room.password || !_.has(room.toJSON(), 'password'))) {
-              sanitized.password = password; // user.generateHash(password);
+              sanitized.password = validator.escape(password); // user.generateHash(password);
             }
             // password is null, Remove password attr from document
           } else {

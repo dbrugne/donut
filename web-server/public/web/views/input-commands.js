@@ -84,7 +84,7 @@ var InputCommandsView = Backbone.View.extend({
     topic: {
       parameters: 'messageNotMandatory',
       access: 'room',
-      help: '[topic]',
+      help: 'topic',
       description: 'chat.commands.topic'
     },
     op: {
@@ -175,7 +175,7 @@ var InputCommandsView = Backbone.View.extend({
     help: {
       parameters: 'helpCommand',
       access: 'everywhere',
-      help: '[command]',
+      help: 'command',
       description: 'chat.commands.help'
     }
   },

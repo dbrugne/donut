@@ -540,7 +540,7 @@
         ]
       },
       "onetoone": [
-        "If <strong>__username__</strong> isn't online he will get your messages on his next connection",
+        "If <strong>@__username__</strong> isn't online he will get your messages on his next connection",
         "Post a message to start the conversation."
       ]
     },
@@ -585,7 +585,7 @@
       "kicked": "You have been kicked out from this donut.",
       "kicked_button": "Join",
       "changemode": "Switch to private mode",
-      "disclaimer-private": "This donut is private, Only users specifically authorized by the owner can access it. To add new users, thanks to search in the list below.",
+      "disclaimer-private": "This donut is private. Only users you authorize can join, participate and access history Authorize users.",
       "disclaimer-public": "This donut is public. Any user can access it.",
       "disclaimer-password": "You have also chosen to put a password. Users with the password can enter without having to be asked first.",
       "disclaimer-changing": "You can switch this donut to private mode. Then, only users you authorize will be able to join, participate and access history. Access will be based on invitation and/or password. The current members of this public donut will remain members once this donut switched to private. Caution, this action cannot be undone.",
