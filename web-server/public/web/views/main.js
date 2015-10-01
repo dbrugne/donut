@@ -131,7 +131,6 @@ var MainView = Backbone.View.extend({
    * @param data
    */
   onWelcome: function (data) {
-    console.log(data.blocked);
     // Current user data (should be done before onetoone logic)
     currentUser.set(data.user, {silent: true});
     currentUser.setPreferences(data.preferences, {silent: true});
@@ -466,8 +465,10 @@ var MainView = Backbone.View.extend({
 
     var identifier = (model.get('type') === 'room') ? model.get('name') : model.get('username');
     if (this.thisDiscussionShouldBeFocusedOnSuccess === identifier) {
-      this.focus(model);
+      this.focus(model); // implicit redraw-block
       this.thisDiscussionShouldBeFocusedOnSuccess = null;
+    } else {
+      collection.trigger('redraw-block');
     }
   },
 
@@ -494,7 +495,7 @@ var MainView = Backbone.View.extend({
 
     return false; // stop propagation
   },
-  onRemoveDiscussion: function (model) {
+  onRemoveDiscussion: function (model, collection) {
     var view = this.views[model.get('id')];
     if (view === undefined) {
       return debug('close discussion error: unable to find view');
@@ -504,23 +505,13 @@ var MainView = Backbone.View.extend({
     view.removeView();
     delete this.views[model.get('id')];
 
+    collection.trigger('redraw-block');
+
     // Focus default
     if (wasFocused) {
       this.focusHome();
     }
   },
-
-//    updateViews: function () {
-//      // call update() method on each view
-//      _.each(this.views, function (view) {
-//        debug('update on ' + view.model.get('id'));
-//      });
-//
-//      // set next tick
-//      this.interval = setTimeout(_.bind(function () {
-//        this.updateViews();
-//      }, this), this.intervalDuration);
-//    },
 
   // FOCUS TAB/PANEL MANAGEMENT
   // ======================================================================
@@ -555,6 +546,8 @@ var MainView = Backbone.View.extend({
     this.$home.show();
     windowView.setTitle();
     this.color(this.defaultColor);
+    onetoones.trigger('redraw-block');
+    rooms.trigger('redraw-block');
     Backbone.history.navigate('#'); // just change URI, not run route action
   },
 
@@ -613,12 +606,17 @@ var MainView = Backbone.View.extend({
     // Focus the one we want
     model.set('focused', true);
 
-    // Change interface color
+    // color
     if (model.get('color')) {
       this.color(model.get('color'));
     } else {
       this.color(this.defaultColor);
     }
+
+    // nav
+    onetoones.trigger('redraw-block');
+    rooms.trigger('redraw-block');
+
     // Update URL (always!) and page title
     var uri;
     var title;
