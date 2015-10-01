@@ -51,6 +51,8 @@ var DrawerUserProfileView = Backbone.View.extend({
 
     user.avatar = common.cloudinary.prepare(user.avatar, 90);
 
+    user.uri = '#u/' + user.username;
+
     user.url = '/user/' + ('' + user.username).toLocaleLowerCase();
 
     this._rooms(user); // decorate user object with rooms_list

@@ -12,7 +12,8 @@ var DonutRouter = Backbone.Router.extend({
   routes: {
     '': 'root',
     'u/:user': 'focusOne',
-    ':group(/:room)': 'focusGroupOrRoom',
+    'g/:group': 'focusGroup',
+    ':group(/:room)': 'focusRoom',
     '*default': 'default'
   },
 
@@ -46,15 +47,17 @@ var DonutRouter = Backbone.Router.extend({
     Backbone.history.navigate('#'); // just change URI, not run route action
   },
 
-  focusGroupOrRoom: function () {
+  focusGroup: function (group) {
+
+  },
+
+  focusRoom: function () {
     var identifier;
     if (!arguments[1]) {
       identifier = '#' + arguments[0];
     } else {
       identifier = '#' + arguments[0] + '/' + arguments[1];
     }
-
-    console.log('goto', identifier, arguments);
 
     var model = rooms.iwhere('identifier', identifier);
     if (typeof model !== 'undefined') {
@@ -79,7 +82,7 @@ var DonutRouter = Backbone.Router.extend({
     var model = onetoones.iwhere('username', username);
     if (typeof model === 'undefined') {
       // Not already open
-      this.nextFocus = username;
+      this.nextFocus = '@' + username;
       onetoones.join(username);
     } else {
       this.focus(model);
