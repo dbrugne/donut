@@ -416,7 +416,9 @@
         "unknown-user-room": "User not found in this donut",
         "already-oped": "This user is already modérator in this donut",
         "no-op-owner-admin": "You do not have permission to do that",
-        "commandaccess": "You can not use this command here"
+        "commandaccess": "You can not use this command here",
+        "no-banned": "This is not banned in this donut",
+        "user-not-found": "Can't find this user."
       }
     },
     "ping": {
