@@ -37,6 +37,7 @@ var errors = {
   'voiced': 403,                  // User is voiced in the room
   'allowed': 403,                 // User is allowed in the room
   'owner': 403,                   // User is owner in the room
+  'oped': 403,                    // User is op in the room
   'allow-pending': 403,           // User is in allowed pending list (private room)
   'not-allowed': 403,             // == GENERAL TAG ==
 
