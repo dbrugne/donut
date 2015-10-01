@@ -21,16 +21,6 @@
             <p><%= t('chat.blocked.disclaimer-private') %></p>
         </div>
 
-        <div class="allow-pending block">
-            <label><%= t('chat.access.labelpending') %></label>
-            <div class="ctn"></div>
-        </div>
-
-        <div class="allowed mt20">
-            <label><%= t('chat.users.type.allowed') %></label>
-            <div class="ctn"></div>
-        </div>
-
         <div class="search block">
             <div class="flex-child flex-parent relative">
                 <input type="text" id="input-search" placeholder="<%= t('chat.actions.searchuser') %>" class="form-control flex-child" />
@@ -39,6 +29,16 @@
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1"></ul>
                 </div>
             </div>
+        </div>
+
+        <div class="allow-pending block">
+            <label><%= t('chat.access.labelpending') %></label>
+            <div class="ctn"></div>
+        </div>
+
+        <div class="allowed mt20">
+            <label><%= t('chat.users.type.allowed') %></label>
+            <div class="ctn"></div>
         </div>
 
         <h2 class="block"><%= t('chat.blocked.password_placeholder') %></h2>
