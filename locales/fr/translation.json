@@ -415,6 +415,8 @@
         "invalidroom": "Ce donut n'existe pas.",
         "unknown-user-room": "Cet utilisateur n'existe pas dans ce donut",
         "already-oped": "Cet utilisateur est déjà modérateur de ce donut",
+        "already-blocked": "Cet utilisateur est déjà bloqué",
+        "already-unblocked": "Cet utilisateur n'est pas bloqué",
         "no-op-owner-admin": "Vous n'avez pas les droits pour faire ça",
         "commandaccess": "Vous ne pouvez pas utiliser cette commande ici.",
         "no-banned": "Cet utilisateur n'est pas bannis dans ce donut.",

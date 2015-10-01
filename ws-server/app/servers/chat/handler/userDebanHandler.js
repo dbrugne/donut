@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
 var oneEmitter = require('../../../util/oneEmitter');
@@ -32,7 +32,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!user.isBanned(bannedUser.id)) {
-        return callback('not-banned');
+        return callback('no-banned');
       }
 
       return callback(null);
@@ -67,8 +67,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[user:deban] ' + err);
-      return next(null, {code: 500, err: 'internal'});
+      return errors.getHandler('user:deban', next)(err);
     }
 
     next(null, {});
