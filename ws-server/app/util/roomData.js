@@ -18,7 +18,8 @@ module.exports = function (user, room, fn) {
     avatar: room._avatar(),
     color: room.color,
     users_number: room.numberOfUsers(),
-    created_at: room.created_at
+    created_at: room.created_at,
+    lastactivity_at: room.lastactivity_at
   };
   if (room.group) {
     data.group_id = room.group.id;

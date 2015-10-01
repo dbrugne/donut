@@ -2,6 +2,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var client = require('../libs/client');
+var app = require('../models/app');
 var currentUser = require('../models/current-user');
 var RoomModel = require('../models/room');
 var UserModel = require('../models/user');
@@ -11,12 +12,13 @@ var RoomsCollection = Backbone.Collection.extend({
   comparator: function (a, b) {
     var aGroup = a.get('group_name');
     var bGroup = b.get('group_name');
+
     if (!aGroup && bGroup) {
       return 1;
     } else if (aGroup && !bGroup) {
       return -1;
     } else if (!aGroup && !bGroup) {
-      if (a.get('name').toLocaleLowerCase() < b.get('name').toLocaleLowerCase()) {
+      if (a.get('last') > b.get('last')) {
         return -1;
       } else {
         return 1;
@@ -26,7 +28,7 @@ var RoomsCollection = Backbone.Collection.extend({
     aGroup = aGroup.toLocaleLowerCase();
     bGroup = bGroup.toLocaleLowerCase();
     if (aGroup === bGroup) {
-      if (a.get('name').toLocaleLowerCase() < b.get('name').toLocaleLowerCase()) {
+      if (a.get('last') > b.get('last')) {
         return -1;
       } else {
         return 1;
@@ -79,6 +81,7 @@ var RoomsCollection = Backbone.Collection.extend({
     this.listenTo(client, 'room:message:unspam', this.onMessageUnspam);
     this.listenTo(client, 'room:message:edit', this.onMessageEdited);
     this.listenTo(client, 'room:typing', this.onTyping);
+    this.listenTo(app, 'refreshRoomsList', this.onRefreshList);
   },
   onJoin: function (data) {
     var model;
@@ -98,6 +101,11 @@ var RoomsCollection = Backbone.Collection.extend({
   addModel: function (data, blocked) {
     data.blocked = blocked || false;
 
+    data.last = (data.lastactivity_at)
+      ? new Date(data.lastactivity_at).getTime()
+      : '';
+    delete data.lastactivity_at;
+
     data.identifier = (data.group_id)
       ? '#' + data.group_name + '/' + data.name.replace('#', '')
       : data.name;
@@ -116,6 +124,10 @@ var RoomsCollection = Backbone.Collection.extend({
       model = new RoomModel(data);
       this.add(model);
     }
+  },
+  onRefreshList: function () {
+    this.sort();
+    app.trigger('redraw-block');
   },
   onIn: function (data) {
     var model;

@@ -26,13 +26,6 @@ module.exports = Backbone.View.extend({
       data.push(json);
     });
 
-    // sort by last activity
-    data.sort(function (a, b) {
-      if (a.lastactivity_at < b.lastactivity_at) return 1;
-      if (b.lastactivity_at < a.lastactivity_at) return -1;
-      return 0;
-    });
-
     var html = this.template({list: data});
     this.$list.html(html);
     return this;

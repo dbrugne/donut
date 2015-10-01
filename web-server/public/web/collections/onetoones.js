@@ -1,13 +1,19 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var client = require('../libs/client');
+var app = require('../models/app');
 var currentUser = require('../models/current-user');
 var OneToOneModel = require('../models/onetoone');
 var i18next = require('i18next-client');
-var app = require('../models/app');
 
 var OnetoonesCollection = Backbone.Collection.extend({
-  comparator: 'username',
+  comparator: function (a, b) {
+    if (a.get('last') > b.get('last')) {
+      return -1;
+    } else {
+      return 1;
+    }
+  },
   iwhere: function (key, val) { // insensitive case search
     var matches = this.filter(function (item) {
       return item.get(key).toLocaleLowerCase() === val.toLocaleLowerCase();
@@ -32,6 +38,7 @@ var OnetoonesCollection = Backbone.Collection.extend({
     this.listenTo(client, 'user:deban', this.onDeban);
     this.listenTo(client, 'user:message:edit', this.onMessageEdited);
     this.listenTo(client, 'user:typing', this.onTyping);
+    this.listenTo(app, 'refreshOnesList', this.onRefreshList);
   },
   join: function (username) {
     // we ask to server to open this one to one
@@ -48,6 +55,11 @@ var OnetoonesCollection = Backbone.Collection.extend({
     this.addModel(data);
   },
   addModel: function (data) {
+    data.last = (data.lastactivity_at)
+      ? new Date(data.lastactivity_at).getTime()
+      : '';
+    delete data.lastactivity_at;
+
     data.identifier = '@' + data.username;
 
     data.uri = '#u/' + data.username;
@@ -67,6 +79,10 @@ var OnetoonesCollection = Backbone.Collection.extend({
     }
 
     return model;
+  },
+  onRefreshList: function () {
+    this.sort();
+    app.trigger('redraw-block');
   },
   getModelFromEvent: function (event, autoCreate) {
     var key;

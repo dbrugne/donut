@@ -144,6 +144,9 @@ var RoomModel = Backbone.Model.extend({
       model.set('unviewed', true);
     }
 
+    this.set('last', Date.now());
+    app.trigger('refreshRoomsList');
+
     app.trigger('unviewedMessage', model, this);
     this.trigger('freshEvent', model);
   },

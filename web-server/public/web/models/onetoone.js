@@ -41,6 +41,9 @@ var OneToOneModel = Backbone.Model.extend({
       model.set('unviewed', true);
     }
 
+    this.set('last', Date.now());
+    app.trigger('refreshOnesList');
+
     app.trigger('unviewedMessage', model, this);
     this.trigger('freshEvent', model);
   },
