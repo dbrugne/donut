@@ -94,10 +94,13 @@ Filter.prototype.before = function (data, session, next) {
       var q;
 
       if (data.name) {
-        if (!common.validate.name(data.name)) {
-          return callback('invalid room name parameter: ' + data.name);
+        var identifier = common.validate.uriExtract(data.name);
+        if (!identifier) {
+          return callback('invalid room identifier parameter: ' + data.name);
         }
-        q = RoomModel.findByName(data.name);
+        console.error(identifier);
+        // @todo dbr: search for both group and room if identifier.group is sets
+        q = RoomModel.findByName('#' + identifier.room);
       }
 
       if (data.room_id) {
