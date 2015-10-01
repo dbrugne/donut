@@ -68,6 +68,20 @@ historySchema.statics.record = function () {
   };
 };
 
+historySchema.statics.getLastMessage = function (fromUid, toUid, fn) {
+  this.find({
+    $or: [
+      {from: [fromUid], to: [toUid]},
+      {from: [toUid], to: [fromUid]}
+    ],
+    event: 'user:message'
+  }).sort({time: -1})
+    .limit(1)
+    .exec(function (err, doc) {
+      return fn(err, doc);
+    });
+};
+
 historySchema.methods.toClientJSON = function (userViewed) {
   userViewed = userViewed || false;
 
