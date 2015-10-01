@@ -47,11 +47,11 @@ handler.call = function (data, session, next) {
     },
 
     function persistOnBoth (callback) {
-      user.update({ $addToSet: { onetoones: withUser._id } }, function (err) {
+      user.updateActivity(withUser._id, function (err) {
         if (err) {
           return callback(err);
         }
-        withUser.update({ $addToSet: { onetoones: user._id } }, function (err) {
+        withUser.updateActivity(user._id, function (err) {
           return callback(err);
         });
       });
@@ -144,6 +144,6 @@ handler.call = function (data, session, next) {
       return errors.getHandler('user:message', next)(err);
     }
 
-    return next(null, { success: true });
+    return next(null, {success: true});
   });
 };
