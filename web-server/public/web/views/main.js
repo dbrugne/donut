@@ -92,7 +92,7 @@ var MainView = Backbone.View.extend({
   },
   run: function () {
     // generate and attach subviews
-    this.currentUserView = new CurrentUserView({model: currentUser});
+    this.currentUserView = new CurrentUserView({ model: currentUser });
     this.navOnes = new NavOnesView();
     this.navRooms = new NavRoomsView();
     this.drawerView = new DrawerView();
@@ -104,11 +104,15 @@ var MainView = Backbone.View.extend({
 
     // @debug
     // @todo : mount only on debug mode
-    // window.current = currentUser;
-    // window.rooms = rooms;
-    // window.onetoones = onetoones;
-    // window.client = client;
-    // window.main = this;
+    window.d = {
+      $: $,
+      app: app,
+      current: currentUser,
+      rooms: rooms,
+      onetoones: onetoones,
+      client: client,
+      main: this
+    };
 
     client.connect();
   },
@@ -120,8 +124,8 @@ var MainView = Backbone.View.extend({
    */
   onWelcome: function (data) {
     // Current user data (should be done before onetoone logic)
-    currentUser.set(data.user, {silent: true});
-    currentUser.setPreferences(data.preferences, {silent: true});
+    currentUser.set(data.user, { silent: true });
+    currentUser.setPreferences(data.preferences, { silent: true });
     this.currentUserView.render();
     this.muteView.render();
 
@@ -149,7 +153,9 @@ var MainView = Backbone.View.extend({
 
     // blocked
     _.each(data.blocked, function (lock) {
-      rooms.addModel(lock, lock.blocked ? lock.blocked : true);
+      rooms.addModel(lock, lock.blocked
+        ? lock.blocked
+        : true);
     });
 
     // only one time for each welcome event
@@ -177,8 +183,9 @@ var MainView = Backbone.View.extend({
     _.each(this.views, function (view) {
       view.hasBeenFocused = false;
       // @todo : to cover completely this case we should:
-      //   - on short disconnection: request history for bottom of the discussion from last known event
-      //   - on long disconnection: cleanup history and request normal history
+      //   - on short disconnection: request history for bottom of the
+      // discussion from last known event - on long disconnection: cleanup
+      // history and request normal history
     });
   },
 
@@ -208,7 +215,7 @@ var MainView = Backbone.View.extend({
       return;
     }
     var matches = expression.match(pattern);
-    if (!matches || !matches[1] || !matches[2]) {
+    if (!matches || !matches[ 1 ] || !matches[ 2 ]) {
       return;
     }
     var $root = $('body > .responsive');
@@ -222,30 +229,30 @@ var MainView = Backbone.View.extend({
       lg: $root.find('.device-lg').is(':visible')
     };
 
-    var compare = matches[1];
-    var breakpoint = matches[2];
+    var compare = matches[ 1 ];
+    var breakpoint = matches[ 2 ];
 
     if (compare === '=') {
-      return breakpoints[breakpoint];
+      return breakpoints[ breakpoint ];
     }
 
     if (compare === '>') {
       if (breakpoint === 'xs') {
-        return ((breakpoints['sm'] || breakpoints['md'] || breakpoints['lg']) && !breakpoints['xs']);
+        return ((breakpoints[ 'sm' ] || breakpoints[ 'md' ] || breakpoints[ 'lg' ]) && !breakpoints[ 'xs' ]);
       } else if (breakpoint === 'sm') {
-        return ((breakpoints['md'] || breakpoints['lg']) && !breakpoints['sm']);
+        return ((breakpoints[ 'md' ] || breakpoints[ 'lg' ]) && !breakpoints[ 'sm' ]);
       } else if (breakpoint === 'md') {
-        return (breakpoints['lg'] && !breakpoints['md']);
+        return (breakpoints[ 'lg' ] && !breakpoints[ 'md' ]);
       } else {
         return false;
       }
     } else if (compare === '<') {
       if (breakpoint === 'lg') {
-        return ((breakpoints['md'] || breakpoints['sm'] || breakpoints['xs']) && !breakpoints['lg']);
+        return ((breakpoints[ 'md' ] || breakpoints[ 'sm' ] || breakpoints[ 'xs' ]) && !breakpoints[ 'lg' ]);
       } else if (breakpoint === 'md') {
-        return ((breakpoints['sm'] || breakpoints['xs']) && !breakpoints['md']);
+        return ((breakpoints[ 'sm' ] || breakpoints[ 'xs' ]) && !breakpoints[ 'md' ]);
       } else if (breakpoint === 'sm') {
-        return (breakpoints['xs'] && !breakpoints['sm']);
+        return (breakpoints[ 'xs' ] && !breakpoints[ 'sm' ]);
       } else {
         return false;
       }
@@ -261,8 +268,8 @@ var MainView = Backbone.View.extend({
   },
 
   /**
-   * Trigger when currentUser is kicked or banned from a room to handle focus and
-   * notification
+   * Trigger when currentUser is kicked or banned from a room to handle focus
+   * and notification
    * @param event
    * @returns {boolean}
    */
@@ -275,17 +282,17 @@ var MainView = Backbone.View.extend({
     var message;
     switch (what) {
       case 'kick':
-        message = i18next.t('chat.kickmessage', {name: data.name});
+        message = i18next.t('chat.kickmessage', { name: data.name });
         break;
       case 'ban':
-        message = i18next.t('chat.banmessage', {name: data.name});
+        message = i18next.t('chat.banmessage', { name: data.name });
         break;
       case 'disallow':
-        message = i18next.t('chat.disallowmessage', {name: data.name});
+        message = i18next.t('chat.disallowmessage', { name: data.name });
         break;
     }
     if (data.reason) {
-      message += ' ' + i18next.t('chat.reason', {reason: _.escape(data.reason)});
+      message += ' ' + i18next.t('chat.reason', { reason: _.escape(data.reason) });
     }
     app.trigger('alert', 'warning', message);
   },
@@ -312,7 +319,7 @@ var MainView = Backbone.View.extend({
   openCreateRoom: function (event) {
     event.preventDefault();
     var name = $(event.currentTarget).data('name') || '';
-    var view = new DrawerRoomCreateView({name: name});
+    var view = new DrawerRoomCreateView({ name: name });
     this.drawerView.setSize('450px').setView(view).open();
     view.focusField();
   },
@@ -329,11 +336,11 @@ var MainView = Backbone.View.extend({
     if (!userId) {
       return;
     }
-    var view = new DrawerUserProfileView({user_id: userId});
+    var view = new DrawerUserProfileView({ user_id: userId });
     this.drawerView.setSize('380px').setView(view).open();
   },
   openUserProfile: function (data) {
-    var view = new DrawerUserProfileView({data: data});
+    var view = new DrawerUserProfileView({ data: data });
     this.drawerView.setSize('380px').setView(view).open();
   },
   onOpenRoomProfile: function (event) {
@@ -344,11 +351,11 @@ var MainView = Backbone.View.extend({
     if (!roomId) {
       return;
     }
-    var view = new DrawerRoomProfileView({room_id: roomId});
+    var view = new DrawerRoomProfileView({ room_id: roomId });
     this.drawerView.setSize('380px').setView(view).open();
   },
   openRoomProfile: function (data) {
-    var view = new DrawerRoomProfileView({data: data});
+    var view = new DrawerRoomProfileView({ data: data });
     this.drawerView.setSize('380px').setView(view).open();
   },
   openRoomEdit: function (event) {
@@ -358,7 +365,7 @@ var MainView = Backbone.View.extend({
     if (!roomId) {
       return;
     }
-    var view = new DrawerRoomEditView({room_id: roomId});
+    var view = new DrawerRoomEditView({ room_id: roomId });
     this.drawerView.setSize('450px').setView(view).open();
   },
   openRoomUsers: function (event) {
@@ -374,7 +381,7 @@ var MainView = Backbone.View.extend({
       return;
     }
 
-    var view = new DrawerRoomUsersView({model: model});
+    var view = new DrawerRoomUsersView({ model: model });
     this.drawerView.setSize('450px').setView(view).open();
   },
   openRoomAccess: function (event) {
@@ -385,7 +392,7 @@ var MainView = Backbone.View.extend({
       return;
     }
 
-    var view = new DrawerRoomAccessView({room_id: roomId});
+    var view = new DrawerRoomAccessView({ room_id: roomId });
     this.drawerView.setSize('450px').setView(view).open();
   },
   openRoomPreferences: function (event) {
@@ -401,7 +408,7 @@ var MainView = Backbone.View.extend({
       return;
     }
 
-    var view = new DrawerRoomPreferencesView({model: model});
+    var view = new DrawerRoomPreferencesView({ model: model });
     this.drawerView.setSize('450px').setView(view).open();
   },
   openRoomDelete: function (event) {
@@ -410,7 +417,7 @@ var MainView = Backbone.View.extend({
     if (!roomId) {
       return;
     }
-    var view = new DrawerRoomDeleteView({room_id: roomId});
+    var view = new DrawerRoomDeleteView({ room_id: roomId });
     this.drawerView.setSize('450px').setView(view).open();
   },
   openUserEdit: function (event) {
@@ -446,12 +453,14 @@ var MainView = Backbone.View.extend({
     });
 
     // add to views list
-    this.views[model.get('id')] = view;
+    this.views[ model.get('id') ] = view;
 
     // append to DOM
     this.$discussionsPanelsContainer.append(view.$el);
 
-    var identifier = (model.get('type') === 'room') ? model.get('name') : model.get('username');
+    var identifier = (model.get('type') === 'room')
+      ? model.get('name')
+      : model.get('username');
     app.trigger('viewAdded', model, collection);
   },
 
@@ -466,33 +475,39 @@ var MainView = Backbone.View.extend({
     var identifier = $target.data('identifier');
     var model;
     if (type === 'room') {
-      model = rooms.findWhere({id: identifier});
+      model = rooms.findWhere({ id: identifier });
     } else {
-      model = onetoones.findWhere({user_id: '' + identifier}); // force string to handle fully numeric username
+      model = onetoones.findWhere({ user_id: '' + identifier }); // force
+                                                                 // string to
+                                                                 // handle
+                                                                 // fully
+                                                                 // numeric
+                                                                 // username
     }
 
     if (typeof model === 'undefined') {
       return debug('close discussion error: unable to find model');
     }
-    model.leave(); // trigger a server back and forth, *:leave will remove view from interface
+    model.leave(); // trigger a server back and forth, *:leave will remove view
+                   // from interface
 
     return false; // stop propagation
   },
   onRemoveDiscussion: function (model, collection) {
-    var view = this.views[model.get('id')];
+    var view = this.views[ model.get('id') ];
     if (view === undefined) {
       return debug('close discussion error: unable to find view');
     }
     var wasFocused = model.get('focused');
 
     view.removeView();
-    delete this.views[model.get('id')];
+    delete this.views[ model.get('id') ];
 
     collection.trigger('redraw-block');
 
     // focus default (home)
     if (wasFocused) {
-      Backbone.history.navigate('#', {trigger: true});
+      Backbone.history.navigate('#', { trigger: true });
     }
   },
 

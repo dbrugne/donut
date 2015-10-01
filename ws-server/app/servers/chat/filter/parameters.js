@@ -1,6 +1,7 @@
 'use strict';
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var async = require('async');
+var GroupModel = require('../../../../../shared/models/group');
 var RoomModel = require('../../../../../shared/models/room');
 var UserModel = require('../../../../../shared/models/user');
 var HistoryRoomModel = require('../../../../../shared/models/historyroom');
@@ -45,6 +46,35 @@ Filter.prototype.before = function (data, session, next) {
         }
         return callback(null, user);
       });
+    },
+
+    group: function (callback) {
+      if (!data.group && !data.group_id) {
+        return callback(null);
+      }
+      if (!data.group_id && data.group &&
+          [ 'chat.groupReadHandler.call' ].indexOf(data.__route__) === -1) {
+        return callback(null);
+      }
+
+      var q;
+
+      if (data.group) {
+        if (!common.validate.group(data.group)) {
+          return callback('invalid group name parameter: ' + data.group);
+        }
+        q = GroupModel.findByName(data.group);
+      }
+
+      if (data.group_id) {
+        if (!common.validate.objectId(data.group_id)) {
+          return callback('invalid group_id parameter: ' + data.group_id);
+        }
+        q = GroupModel.findOne({ _id: data.group_id });
+      }
+
+      q.populate('owner', 'username avatar color facebook');
+      q.exec(callback);
     },
 
     room: function (callback) {
@@ -161,6 +191,9 @@ Filter.prototype.before = function (data, session, next) {
 
     if (results.currentUser) {
       session.__currentUser__ = results.currentUser;
+    }
+    if (results.group) {
+      session.__group__ = results.group;
     }
     if (results.room) {
       session.__room__ = results.room;

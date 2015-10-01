@@ -3,10 +3,10 @@ var _ = require('underscore');
 var mongoose = require('../io/mongoose');
 var common = require('@dbrugne/donut-common/server');
 var cloudinary = require('../util/cloudinary');
-require('./group')
+require('./group');
 
-var MAX_PASSWORD_TRIES = 5;
-var MAX_PASSWORD_TIME = 60 * 1000; // 1mn
+var MAX_PASSWORD_TRIES = 5; // @todo sp : move in conf file
+var MAX_PASSWORD_TIME = 60 * 1000; // 1mn // @todo sp : move in conf file
 
 var roomSchema = mongoose.Schema({
   name: String,

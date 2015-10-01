@@ -2,6 +2,7 @@ var logger = require('../../../shared/util/logger').getLogger('donut');
 
 var errors = {
   // WRONG PARAMS (400)
+  'params-group-id': 400,         // group_id params not set
   'params-room-id': 400,          // room_id params not set
   'params-room-id-name': 400,     // room_id and name params not set
   'params-user-id': 400,          // user_id params not set
@@ -44,6 +45,7 @@ var errors = {
   'not-allowed': 403,             // == GENERAL TAG ==
 
   // NOT FOUND ERROR (404)
+  'group-not-found': 404,         // Group not found
   'room-not-found': 404,          // Room not found
   'user-not-found': 404,          // User not found
   'event-not-found': 404,         // Event not found

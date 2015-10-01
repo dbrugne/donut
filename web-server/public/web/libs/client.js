@@ -141,6 +141,27 @@ var client = _.extend({
     );
   },
 
+  // GROUP
+  // ======================================================
+
+  groupRead: function (groupId, groupName, callback) {
+    var data = {};
+    if (groupId) {
+      data.group_id = groupId;
+    } else if (groupName) {
+      data.group = groupName;
+    } else {
+      return;
+    }
+
+    debug('io:out:group:read', data);
+    pomelo.request(
+      'chat.groupReadHandler.call',
+      data,
+      this.applyRequestCallback('group:read', callback)
+    );
+  },
+
   // ROOM
   // ======================================================
 
