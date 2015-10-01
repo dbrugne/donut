@@ -46,8 +46,8 @@ var roomSchema = mongoose.Schema({
   description: String,
   website: mongoose.Schema.Types.Mixed,
   created_at: {type: Date, default: Date.now},
-  lastjoin_at: {type: Date}
-
+  lastjoin_at: {type: Date},
+  lastactivity_at: {type: Date}
 });
 
 roomSchema.statics.findByName = function (name) {

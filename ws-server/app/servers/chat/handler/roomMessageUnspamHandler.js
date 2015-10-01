@@ -59,6 +59,14 @@ handler.call = function (data, session, next) {
       });
     },
 
+    function persist (callback) {
+      // Update topic and activity date
+      room.lastactivity_at = Date.now();
+      room.save(function (err) {
+        return callback(err);
+      });
+    },
+
     function broadcast (callback) {
       var eventToSend = {
         room_id: room.id,

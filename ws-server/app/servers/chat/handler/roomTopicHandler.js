@@ -56,7 +56,10 @@ handler.call = function (data, session, next) {
     },
 
     function persist (topic, callback) {
-      room.update({$set: {topic: topic}}, function (err) {
+      // Update topic and activity date
+      room.topic = topic;
+      room.lastactivity_at = Date.now();
+      room.save(function (err) {
         return callback(err, topic);
       });
     },
