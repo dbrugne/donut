@@ -49,6 +49,7 @@ var RoomBlockedView = Backbone.View.extend({
 
     // render
     var html = this.template(data);
+    this.$el.attr('data-identifier', this.model.get('identifier'));
     this.$el.html(html);
     this.$error = this.$('.error');
     this.$el.hide();

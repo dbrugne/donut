@@ -106,6 +106,7 @@ var RoomView = Backbone.View.extend({
       data: data,
       dropdown: dropdown
     });
+    this.$el.attr('data-identifier', this.model.get('identifier'));
     this.$el.html(html);
     this.$el.hide();
 

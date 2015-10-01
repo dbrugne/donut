@@ -201,7 +201,7 @@ exports.prototype._data = function (event) {
     _.each(data.data.images, function (i) {
       images.push({
         url: common.cloudinary.prepare(i, 1500, 'limit'),
-        thumbnail: common.cloudinary.prepare(i, 50, 'fill')
+        thumbnail: common.cloudinary.prepare(i, 100, 'fill')
       });
     });
 
