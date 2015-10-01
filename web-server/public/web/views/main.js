@@ -8,12 +8,10 @@ var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 var rooms = require('../collections/rooms');
 var onetoones = require('../collections/onetoones');
-var windowView = require('./window');
 var ConnectionModalView = require('./modal-connection');
 var WelcomeModalView = require('./modal-welcome');
 var CurrentUserView = require('./current-user');
 var AlertView = require('./alert');
-var HomeView = require('./home');
 var DrawerView = require('./drawer');
 var DrawerRoomAccessView = require('./drawer-room-access');
 var DrawerRoomCreateView = require('./drawer-room-create');
@@ -40,13 +38,9 @@ var debug = donutDebug('donut:main');
 var MainView = Backbone.View.extend({
   el: $('body'),
 
-  $home: $('#home'),
-
   $discussionsPanelsContainer: $('#center'),
 
   firstConnection: true,
-
-  thisDiscussionShouldBeFocusedOnSuccess: '',
 
   defaultColor: '',
 
@@ -92,15 +86,9 @@ var MainView = Backbone.View.extend({
     this.listenTo(rooms, 'allowed', this.roomAllowed);
     this.listenTo(rooms, 'join', this.roomJoin);
     this.listenTo(rooms, 'deleted', this.roomRoomDeleted);
-    this.listenTo(app, 'focusHome', this.focusHome);
-    this.listenTo(app, 'focusRoom', this.focusRoomByName);
-    this.listenTo(app, 'focusOneToOne', this.focusOneToOneByUsername);
     this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
     this.listenTo(app, 'openUserProfile', this.openUserProfile);
-    this.listenTo(app, 'joinRoom', this.focusRoomByName);
-    this.listenTo(app, 'joinOnetoone', this.focusOneToOneByUsername);
     this.listenTo(app, 'changeColor', this.onChangeColor);
-    this.listenTo(app, 'changeTitle', this.onChangeTitle);
   },
   run: function () {
     // generate and attach subviews
@@ -464,12 +452,7 @@ var MainView = Backbone.View.extend({
     this.$discussionsPanelsContainer.append(view.$el);
 
     var identifier = (model.get('type') === 'room') ? model.get('name') : model.get('username');
-    if (this.thisDiscussionShouldBeFocusedOnSuccess === identifier) {
-      this.focus(model); // implicit redraw-block
-      this.thisDiscussionShouldBeFocusedOnSuccess = null;
-    } else {
-      collection.trigger('redraw-block');
-    }
+    app.trigger('viewAdded', model, collection);
   },
 
   onCloseDiscussion: function (event) {
@@ -507,130 +490,10 @@ var MainView = Backbone.View.extend({
 
     collection.trigger('redraw-block');
 
-    // Focus default
+    // focus default (home)
     if (wasFocused) {
-      this.focusHome();
+      Backbone.history.navigate('#', {trigger: true});
     }
-  },
-
-  // FOCUS TAB/PANEL MANAGEMENT
-  // ======================================================================
-
-  focusOnSearch: function () {
-    this.focusHome(true);
-    this.homeView.searchView.$search
-      .focus();
-    this.drawerView.close();
-  },
-
-  unfocusAll: function () {
-    rooms.each(function (o) {
-      o.set('focused', false);
-    });
-    onetoones.each(function (o) {
-      o.set('focused', false);
-    });
-    this.$home.hide();
-  },
-
-  // called by router only
-  focusHome: function (avoidReload) {
-    // init view
-    if (!this.homeView) {
-      this.homeView = new HomeView({});
-    }
-    if (avoidReload !== true) {
-      this.homeView.request();
-    }
-    this.unfocusAll();
-    this.$home.show();
-    windowView.setTitle();
-    this.color(this.defaultColor);
-    onetoones.trigger('redraw-block');
-    rooms.trigger('redraw-block');
-    Backbone.history.navigate('#'); // just change URI, not run route action
-  },
-
-  focusRoomByName: function (name) {
-    var model = rooms.iwhere('name', name);
-    if (typeof model !== 'undefined') {
-      model.resetNew();
-      return this.focus(model);
-    }
-
-    // Not already open
-    this.thisDiscussionShouldBeFocusedOnSuccess = name;
-    client.roomJoin(null, name, null, _.bind(function (response) {
-      if (response.code === 404) {
-        return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', { name: name }));
-      } else if (response.code === 403) {
-        return rooms.addModel(response.room, response.err);
-      } else if (response.code === 500) {
-        return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
-      }
-    }, this));
-  },
-
-  // called by router only
-  focusOneToOneByUsername: function (username) {
-    var model = onetoones.iwhere('username', username);
-    if (model === undefined) {
-      // Not already open
-      this.thisDiscussionShouldBeFocusedOnSuccess = username;
-      onetoones.join(username);
-    } else {
-      this.focus(model);
-    }
-  },
-
-  focus: function (model) {
-    // No opened discussion, display default
-    if (rooms.length < 1 && onetoones.length < 1) {
-      return this.focusHome();
-    }
-
-    // No discussion provided, take first
-    if (typeof model === 'undefined') {
-      model = rooms.first();
-      if (typeof model === 'undefined') {
-        model = onetoones.first();
-        if (typeof model === 'undefined') {
-          return this.focusHome();
-        }
-      }
-    }
-
-    // unfocus every model
-    this.unfocusAll();
-
-    // Focus the one we want
-    model.set('focused', true);
-
-    // color
-    if (model.get('color')) {
-      this.color(model.get('color'));
-    } else {
-      this.color(this.defaultColor);
-    }
-
-    // nav
-    onetoones.trigger('redraw-block');
-    rooms.trigger('redraw-block');
-
-    // Update URL (always!) and page title
-    var uri;
-    var title;
-    if (model.get('type') === 'room') {
-      uri = 'room/' + model.get('name').replace('#', '');
-      title = model.get('name');
-    } else {
-      uri = 'user/' + model.get('username');
-      title = model.get('username');
-    }
-    windowView.setTitle(title);
-    Backbone.history.navigate(uri); // just change URI, not run route action
-
-    this.drawerView.close();
   },
 
   userBan: function (event) {
@@ -659,16 +522,6 @@ var MainView = Backbone.View.extend({
       client.userDeban(userId);
       app.trigger('userDeban');
     }, this));
-  },
-
-  onChangeTitle: function (model) {
-    var title;
-    if (model.get('type') === 'room') {
-      title = model.get('name');
-    } else {
-      title = model.get('username');
-    }
-    windowView.setTitle(title);
   },
 
   switchLanguage: function (event) {

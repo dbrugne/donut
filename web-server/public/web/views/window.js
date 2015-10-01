@@ -33,7 +33,7 @@ var WindowView = Backbone.View.extend({
     this.listenTo(app, 'playSoundForce', this._play);
     this.listenTo(app, 'unviewedInOut', this.triggerInout);
     this.listenTo(app, 'unviewedMessage', this.triggerMessage);
-    this.listenTo(app, 'renderTitle', this.renderTitle);
+    this.listenTo(app, 'setTitle', this.setTitle);
 
     this.$window = $(window);
 

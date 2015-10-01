@@ -16,8 +16,6 @@ module.exports = Backbone.View.extend({
   },
 
   initialize: function (options) {
-//    this.listenTo(rooms, 'add', this.render);
-//    this.listenTo(rooms, 'remove', this.render);
     this.listenTo(app, 'redraw-block', this.render);
     this.listenTo(rooms, 'redraw-block', this.render);
     this.listenTo(rooms, 'change:avatar', this.render);
@@ -28,8 +26,6 @@ module.exports = Backbone.View.extend({
     _.each(rooms.models, function (o) {
       var json = o.toJSON();
       json.avatar = common.cloudinary.prepare(json.avatar, 40);
-      json.uri = '#room/' + o.get('name').replace('#', '');
-      json.identifier = o.get('id');
       data.push(json);
     });
 
