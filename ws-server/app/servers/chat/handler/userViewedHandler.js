@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
 var HistoryOne = require('../../../../../shared/models/historyone');
@@ -25,15 +25,15 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.user_id) {
-        return callback('params');
+        return callback('params-rooms-id');
       }
 
       if (!data.events || !_.isArray(data.events)) {
-        return callback('params');
+        return callback('params-events');
       }
 
       if (!withUser) {
-        return callback('unknown');
+        return callback('user-not-found');
       }
 
       data.events = _.filter(data.events, function (id) {
@@ -41,7 +41,7 @@ handler.call = function (data, session, next) {
         return pattern.test(id);
       });
       if (!data.events.length) {
-        return callback('params');
+        return callback('params-events');
       }
 
       return callback(null);
@@ -76,16 +76,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      if (err === 'params') {
-        logger.warn('[user:viewed] ' + err);
-        return next(null, { code: 400, err: err });
-      }
-      if (err === 'unknown') {
-        logger.warn('[user:viewed] ' + err);
-        return next(null, { code: 404, err: err });
-      }
-      logger.error('[user:viewed] ' + err);
-      return next(null, { code: 500, err: 'internal' });
+      return errors.getHandler('user:viewed', next)(err);
     }
     return next(null, { success: true });
   });

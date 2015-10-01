@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
 var Notifications = require('../../../components/notifications');
@@ -35,7 +35,7 @@ handler.call = function (data, session, next) {
       } else {
         var notifications = [];
         if (!data.ids || !_.isArray(data.ids)) {
-          return callback('ids parameter is mandatory for notifications:viewed');
+          return callback('params-ids');
         }
 
         // filter array to preserve only valid
@@ -47,7 +47,7 @@ handler.call = function (data, session, next) {
 
         // test if at least one entry remain
         if (notifications.length === 0) {
-          return callback('No notification to set as Read remaining');
+          return callback('notification-not-found');
         }
 
         return callback(null, notifications);
@@ -76,8 +76,7 @@ handler.call = function (data, session, next) {
 
   ], function (err, event) {
     if (err) {
-      logger.error('[notification:viewed] ' + err);
-      return next(null, {code: 500, err: 'internal'});
+      return errors.getHandler('notification:viewed', next)(err);
     }
 
     next(null, event);

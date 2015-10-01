@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var emailer = require('../../../../../shared/io/emailer');
 
@@ -20,7 +20,7 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.password || data.password.length < 6 || data.password.length > 50) {
-        return callback('length');
+        return callback('wrong-format');
       }
 
       // already have a password
@@ -50,12 +50,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[account:password] ' + err);
-
-      err = (['length', 'wrong-password'].indexOf(err) !== -1)
-        ? err
-        : 'internal';
-      return next(null, {code: 500, err: 'internal'});
+      return errors.getHandler('user:password:edit', next)(err);
     }
     return next(null, {success: true});
   });

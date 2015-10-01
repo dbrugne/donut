@@ -1,9 +1,8 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var Room = require('../../../../../shared/models/room');
 var Notifications = require('../../../components/notifications');
-var roomEmitter = require('../../../util/roomEmitter');
 
 var Handler = function (app) {
   this.app = app;
@@ -30,27 +29,27 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.room_id) {
-        return callback('room_id is mandatory');
+        return callback('params-room-id');
       }
 
       if (!data.user_id) {
-        return callback('user_id is mandatory');
+        return callback('params-user-id');
       }
 
       if (!room) {
-        return callback('unable to retrieve room: ' + data.room_id);
+        return callback('room-not-found');
       }
 
       if (!room.isOwner(currentUser.id)) {
-        return callback('User ' + currentUser.username + ' is not owner');
+        return callback('no-owner');
       }
 
       if (room.isAllowed(user.id)) {
-        return callback('user is allready allowed in room ' + room.name);
+        return callback('allowed');
       }
 
       if (room.isBanned(user.id)) {
-        return callback('User ' + user.username + 'is banned in room: ' + room.name);
+        return callback('banned');
       }
 
       return callback(null);
@@ -116,8 +115,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[room:allow] ' + err);
-      return next(null, { code: 500, err: err });
+      return errors.getHandler('room:allow', next)(err);
     }
 
     return next(null, {success: true});
@@ -135,31 +133,31 @@ handler.refuse = function (data, session, next) {
 
     function check (callback) {
       if (!data.room_id) {
-        return callback('room_id is mandatory');
+        return callback('params-room-id');
       }
 
       if (!data.user_id) {
-        return callback('user_id is mandatory');
+        return callback('params-user-id');
       }
 
       if (!room) {
-        return callback('unable to retrieve room: ' + data.room_id);
+        return callback('room-not-found');
       }
 
       if (!room.isOwner(currentUser.id)) {
-        return callback('User ' + currentUser.username + ' is not owner');
+        return callback('no-owner');
       }
 
       if (room.isAllowed(user.id)) {
-        return callback('user is allowed in room ' + room.name);
+        return callback('allowed');
       }
 
       if (room.isBanned(user.id)) {
-        return callback('User ' + user.username + 'is banned in room: ' + room.name);
+        return callback('banned');
       }
 
       if (!room.isAllowedPending(user.id)) {
-        return callback('User ' + user.username + 'don\'t have allow pending in room: ' + room.name);
+        return callback('no-allow-pending');
       }
 
       return callback(null);
@@ -194,8 +192,7 @@ handler.refuse = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[room:refuse] ' + err);
-      return next(null, { code: 500, err: 'internal' });
+      return errors.getHandler('room:allow', next)(err);
     }
 
     return next(null, {success: true});

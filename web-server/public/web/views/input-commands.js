@@ -476,7 +476,7 @@ var InputCommandsView = Backbone.View.extend({
     } else {
       parameters[1] = parameters[1].replace(/^@/, '');
       client.userRead(null, parameters[1], function (data) {
-        if (data.err === 'unknown') {
+        if (data.err === 'user-not-found') {
           that.errorCommand('profile', 'invalidusername');
           return;
         }
