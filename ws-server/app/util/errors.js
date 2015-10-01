@@ -35,6 +35,7 @@ var errors = {
   'devoiced': 403,                // User is devoiced in the room
   'allowed': 403,                 // User is allowed in the room
   'owner': 403,                   // User is owner in the room
+  'allow-pending': 403,           // User is in allowed pending list (private room)
   'not-allowed': 403,             // == GENERAL TAG ==
 
   // NOT FOUND ERROR (404)

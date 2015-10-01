@@ -367,8 +367,7 @@
     "allowed": {
       "success": "La demande d'accès a bien été envoyée",
       "error" : {
-        "notallowed": "Une demande d'accès a déjà été envoyée",
-        "banned": "Vous êtes banni de ce donut"
+        "allow-pending": "Une demande d'accès a déjà été envoyée"
       }
     },
     "password": {
