@@ -8,7 +8,36 @@ var UserModel = require('../models/user');
 var EventModel = require('../models/event');
 
 var RoomsCollection = Backbone.Collection.extend({
-  comparator: 'group_name',
+  comparator: function (a, b) {
+    var aGroup = a.get('group_name');
+    var bGroup = b.get('group_name');
+    if (!aGroup && bGroup) {
+      return 1;
+    } else if (aGroup && !bGroup) {
+      return -1;
+    } else if (!aGroup && !bGroup) {
+      if (a.get('name').toLocaleLowerCase() < b.get('name').toLocaleLowerCase()) {
+        return -1;
+      } else {
+        return 1;
+      }
+    }
+
+    aGroup = aGroup.toLocaleLowerCase();
+    bGroup = bGroup.toLocaleLowerCase();
+    if (aGroup === bGroup) {
+      if (a.get('name').toLocaleLowerCase() < b.get('name').toLocaleLowerCase()) {
+        return -1;
+      } else {
+        return 1;
+      }
+    }
+    if (aGroup < bGroup) {
+      return -1;
+    } else {
+      return 1;
+    }
+  },
   iwhere: function (key, val) { // insencitive case search
     var matches = this.filter(function (item) {
       return item.get(key).toLocaleLowerCase() === val.toLocaleLowerCase();
@@ -18,10 +47,10 @@ var RoomsCollection = Backbone.Collection.extend({
       return undefined;
     }
 
-    return matches[ 0 ];
+    return matches[0];
   },
   getByName: function (name) {
-    return this.findWhere({ name: name });
+    return this.findWhere({name: name});
   },
 
   initialize: function () {
@@ -291,7 +320,7 @@ var RoomsCollection = Backbone.Collection.extend({
     this.remove(model);
 
     if (data.reason && data.reason === 'deleted') {
-      this.trigger('deleted', { reason: i18next.t('chat.deletemessage', { name: data.name }) });
+      this.trigger('deleted', {reason: i18next.t('chat.deletemessage', {name: data.name})});
     }
   },
   onLeaveBlock: function (data) {
