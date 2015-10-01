@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
 
@@ -23,11 +23,11 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.room_id && !data.name) {
-        return callback('room_id or name is mandtory');
+        return callback('params-room-id');
       }
 
       if (!room) {
-        return callback('unknown');
+        return callback('room-not-found');
       }
 
       return callback(null);
@@ -112,16 +112,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[room:read] ' + err);
-
-      switch (err) {
-        case 'invalid-name':
-          return next(null, {code: 400, err: err});
-        case 'unknown':
-          return next(null, {code: 404, err: err});
-        default:
-          return next(null, {code: 500, err: 'internal'});
-      }
+      return errors.getHandler('room:read', next)(err);
     }
 
     return next(null, read);
