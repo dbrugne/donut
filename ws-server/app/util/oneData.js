@@ -24,7 +24,9 @@ module.exports = function (app, user, users, fn) {
 
     function prepare (statuses, callback) {
       var data = [];
-      _.each(users, function (u, index, list) {
+      _.each(users, function (obj, index, list) {
+        var u = obj.user;
+
         if (!u.username) {
           return;
         }
@@ -39,7 +41,8 @@ module.exports = function (app, user, users, fn) {
           website: u.website,
           banned: user.isBanned(u.id), // for ban/deban menu
           i_am_banned: u.isBanned(user.id), // for input enable/disable
-          unviewed: user.hasUnviewedOneMessage(u)
+          unviewed: user.hasUnviewedOneMessage(u),
+          lastactivity_at: obj.lastactivity_at
         };
 
         if (statuses[ u.id ] === true) {

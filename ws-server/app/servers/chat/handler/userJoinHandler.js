@@ -34,7 +34,7 @@ handler.call = function (data, session, next) {
     },
 
     function welcome (callback) {
-      oneDataHelper(that.app, user, withUser, callback);
+      oneDataHelper(that.app, user, { user: withUser, lastactivity_at: new Date() }, callback);
     },
 
     function persist (oneData, callback) {
