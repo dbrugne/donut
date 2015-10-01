@@ -3,6 +3,7 @@ var logger = require('../../../shared/util/logger').getLogger('donut');
 var errors = {
   // WRONG PARAMS (400)
   'params-room-id': 400,          // room_id params not set
+  'params-room-id-name': 400,     // room_id and name params not set
   'params-user-id': 400,          // user_id params not set
   'params-id': 400,               // id params not set
   'params-ids': 400,              // ids params not set

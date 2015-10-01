@@ -91,7 +91,7 @@ var DrawerRoomCreateView = Backbone.View.extend({
     this.$submit.addClass('loading');
     client.roomCreate(name, mode, null, _.bind(function (response) {
       this.$submit.removeClass('loading');
-      if (response.code !== 500) {
+      if (response.code !== 500 && response.success !== true) {
         var uri = 'room/' + name.replace('#', '');
         var error = i18next.t('chat.form.errors.' +
           response.err, {name: name, uri: uri});
