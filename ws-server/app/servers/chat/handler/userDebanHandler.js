@@ -24,15 +24,15 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.username && !data.user_id) {
-        return callback('require username or user_id param');
+        return callback('params-username-user-id');
       }
 
       if (!bannedUser) {
-        return callback('unable to retrieve bannedUser: ' + data.username);
+        return callback('user-not-found');
       }
 
       if (!user.isBanned(bannedUser.id)) {
-        return callback('this user ' + bannedUser.username + ' is not banned');
+        return callback('not-banned');
       }
 
       return callback(null);
