@@ -1,5 +1,6 @@
 'use strict';
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
 var Room = require('../../../../../shared/models/room');
@@ -275,12 +276,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      if (err === 'params') {
-        logger.warn('[user:update] ' + err);
-        return next(null, { code: 400, err: err });
-      }
-      logger.error('[user:update] ' + err);
-      return next(null, {code: 500, err: 'internal'});
+      return errors.getHandler('user:updated', next)(err);
     }
 
     next(null, {});

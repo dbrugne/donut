@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
 var Room = require('../../../../../shared/models/room');
@@ -26,11 +26,11 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.user_id && !data.username) {
-        return callback('params');
+        return callback('params-username-user-id');
       }
 
       if (!readUser) {
-        return callback('unknown');
+        return callback('user-not-found');
       }
 
       return callback(null);
@@ -139,16 +139,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      if (err === 'params') {
-        logger.warn('[user:read] ' + err);
-        return next(null, { code: 400, err: err });
-      }
-      if (err === 'unknown') {
-        logger.warn('[user:read] ' + err);
-        return next(null, { code: 404, err: err });
-      }
-      logger.error('[user:read] ' + err);
-      return next(null, { code: 500, err: 'internal' });
+      return errors.getHandler('user:read', next)(err);
     }
 
     return next(null, read);

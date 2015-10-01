@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var User = require('../../../../../shared/models/user');
 var validator = require('validator');
@@ -25,28 +25,28 @@ handler.call = function (data, session, next) {
       // @doc: https://www.npmjs.org/package/validator
 
       if (!data.data || data.data.length < 1) {
-        return callback('No data to update');
+        return callback('params-data');
       }
 
       if (data.data.length > 1) {
-        return callback('Too many data to update (max. 1)');
+        return callback('wrong-format');
       }
 
       // key
       var keys = Object.keys(data.data);
       var key = keys[0];
       if (!key || (!(/^[a-z0-9]+[a-z0-9:]+[a-z0-9]+$/i).test(key) && !(/^[a-z0-9]+[a-z0-9:]+:#[-a-z0-9\._|[\]^]{3,24}$/i).test(key))) { // plain and contextual keys
-        return callback('invalidkey');
+        return callback('wrong-format');
       }
 
       if (!User.preferencesIsKeyAllowed(key)) { // only if whitelisted
-        return callback('notallowedkey');
+        return callback('not-allowed');
       }
 
       // value
       var value = validator.toBoolean(data.data[key]);
       if (user.preferences && user.preferences[key] === value) {
-        return callback('samevalue');
+        return callback('same-preferences');
       }
 
       return callback(null, key, value);
@@ -74,8 +74,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[preferences:update] ' + err);
-      return next(null, {code: 500, err: 'internal'});
+      return errors.getHandler('preferences:update', next)(err);
     }
 
     next(null, {});

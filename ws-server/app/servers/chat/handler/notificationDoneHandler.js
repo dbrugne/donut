@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var NotificationModel = require('../../../../../shared/models/notification');
 var Notifications = require('../../../components/notifications');
@@ -23,7 +23,7 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.id) {
-        return callback('id parameter is mandatory for notifications:done');
+        return callback('params-id');
       }
 
       NotificationModel.findOne({_id: data.id}, function (err, notification) {
@@ -32,7 +32,7 @@ handler.call = function (data, session, next) {
         }
 
         if (notification.user.toString() !== user.id) {
-          return callback('This notification is not associated to this user');
+          return callback('no-right-user');
         }
 
         return callback(null, notification);
@@ -56,8 +56,7 @@ handler.call = function (data, session, next) {
 
   ], function (err, event) {
     if (err) {
-      logger.error('[notification:done] ' + err);
-      return next(null, {code: 500, err: 'internal'});
+      return errors.getHandler('notification:done', next)(err);
     }
 
     next(null, event);

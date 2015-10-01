@@ -1,4 +1,5 @@
 'use strict';
+var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
@@ -193,10 +194,10 @@ handler.call = function (data, session, next) {
       });
     }
   ], function (err) {
-      if (err) {
-        return next(null, {code: 500, err: 'internal'});
-      }
-      return next(null, homeEvent);
+    if (err) {
+      return errors.getHandler('home', next)(err);
     }
+    return next(null, homeEvent);
+  }
   );
 };

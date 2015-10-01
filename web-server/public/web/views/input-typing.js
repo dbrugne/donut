@@ -1,11 +1,7 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var donutDebug = require('../libs/donut-debug');
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');
-
-var debug = donutDebug('donut:input');
 
 var InputTypingView = Backbone.View.extend({
   template: require('../templates/input-typing.html'),
@@ -24,8 +20,9 @@ var InputTypingView = Backbone.View.extend({
   },
 
   render: function () {
-    if (_.keys(this.usersTyping).length == 0)
+    if (_.keys(this.usersTyping).length == 0) {
       return this.$el.html('');
+    }
 
     var html = this.template({users: this.usersTyping});
     this.$el.html(html);
@@ -33,8 +30,9 @@ var InputTypingView = Backbone.View.extend({
   },
 
   onSomeoneTyping: function (data) {
-    if (data.user_id === currentUser.get('user_id'))
+    if (data.user_id === currentUser.get('user_id')) {
       return;
+    }
 
     var that = this;
     if (!_.has(this.usersTyping, data.username)) {
@@ -53,13 +51,15 @@ var InputTypingView = Backbone.View.extend({
   },
 
   onCurrentUserTyping: function (data) {
-    if (!this.canSendTypingEvent)
+    if (!this.canSendTypingEvent) {
       return;
+    }
 
-    if (this.model.get('type') === 'room')
+    if (this.model.get('type') === 'room') {
       client.roomTyping(this.model.get('id'));
-    else
+    } else {
       client.userTyping(this.model.get('user_id'));
+    }
 
     this.canSendTypingEvent = false;
     setTimeout(_.bind(function () {
@@ -68,6 +68,4 @@ var InputTypingView = Backbone.View.extend({
   }
 
 });
-
-
 module.exports = InputTypingView;
