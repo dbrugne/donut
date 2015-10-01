@@ -417,7 +417,9 @@
         "already-oped": "This user is already modérator in this donut",
         "no-op-owner-admin": "You do not have permission to do that",
         "commandaccess": "You can not use this command here",
-        "no-banned": "This is not banned in this donut",
+        "no-banned": "This user is not banned in this donut",
+        "no-op": "This user is not moderator in this donut",
+        "no-in": "This user is not in this donut",
         "user-not-found": "Can't find this user."
       }
     },

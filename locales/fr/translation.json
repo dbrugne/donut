@@ -419,6 +419,8 @@
         "no-op-owner-admin": "Vous n'avez pas les droits pour faire ça",
         "commandaccess": "Vous ne pouvez pas utiliser cette commande ici.",
         "no-banned": "Cet utilisateur n'est pas bannis dans ce donut.",
+        "no-op": "Cet utilisateur n'est pas moderateur dans ce donut",
+        "no-in": "Cet utilisateur n'est pas dans ce donut",
         "user-not-found": "Cet utilisateur n'a pas été trouvé."
       }
     },
