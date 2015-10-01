@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var Notifications = require('../../../components/notifications');
 var roomEmitter = require('../../../util/roomEmitter');
@@ -25,35 +25,35 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.room_id) {
-        return callback('room_id is mandatory');
+        return callback('params-room-id');
       }
 
       if (!data.user_id && !data.username) {
-        return callback('user_id or username mandatory');
+        return callback('params-username-user-id');
       }
 
       if (!room) {
-        return callback('unable to retrieve room: ' + data.room_id);
+        return callback('room-not-found');
       }
 
       if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
-        return callback('no-op');
+        return callback('no-op-owner-admin');
       }
 
       if (!opedUser) {
-        return callback('unable to retrieve opedUser in room:op: ' + data.username);
+        return callback('user-not-found');
       }
 
       if (!room.isIn(opedUser.id)) {
-        return callback('unknown-user-room');
+        return callback('no-in');
       }
 
       if (room.isOwner(opedUser.id)) {
-        return callback(opedUser.username + ' is owner and can not be devoiced of ' + room.name);
+        return callback('owner');
       }
 
       if (room.isOp(opedUser.id)) {
-        return callback('already-oped');
+        return callback('oped');
       }
 
       return callback(null);
@@ -84,17 +84,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[room:op] ' + err);
-
-      switch (err) {
-        case 'unknow-user-room':
-          return next(null, {code: 404, err: err});
-        case 'already-oped':
-        case 'no-op':
-          return next(null, {code: 403, err: err});
-        default:
-          return next(null, {code: 500, err: 'internal'});
-      }
+      return errors.getHandler('room:op', next)(err);
     }
 
     next(null, {});

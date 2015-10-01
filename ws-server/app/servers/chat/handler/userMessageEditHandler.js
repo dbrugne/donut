@@ -64,11 +64,11 @@ handler.call = function (data, session, next) {
       if (data.message) {
         var message = inputUtil.filter(data.message, 512);
         if (!message) {
-          return callback('params');
+          return callback('params-message');
         }
 
         if (event.data.message === message) {
-          return callback('params');
+          return callback('params-message');
         }
       }
       // mentions

@@ -6,6 +6,7 @@ var validator = require('validator');
 var cloudinary = require('../../../../../shared/util/cloudinary').cloudinary;
 var common = require('@dbrugne/donut-common/server');
 var linkify = require('linkifyjs');
+var errors = require('../../../util/errors');
 
 var Handler = function (app) {
   this.app = app;
@@ -28,15 +29,15 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.room_id) {
-        return callback('room_id is mandatory');
+        return callback('params-room-id');
       }
 
       if (!room) {
-        return callback('unable to retrieve room: ' + data.room_id);
+        return callback('room-not-found');
       }
 
       if (!room.isOwner(user.id) && session.settings.admin !== true) {
-        return callback('this user ' + user.id + " isn't able to update data of " + data.room_id);
+        return callback('no-op-owner-admin');
       }
 
       return callback(null);
@@ -46,7 +47,7 @@ handler.call = function (data, session, next) {
       // @doc: https://www.npmjs.org/package/validator
 
       if (!data.data || data.data.length < 1) {
-        return callback('no data to update');
+        return callback('params-data');
       }
 
       var errors = {};
@@ -122,8 +123,8 @@ handler.call = function (data, session, next) {
           // Add password or change password
           if (password !== null) {
             // Change password
-            if (passwordPattern.test(password) && (password /*user.generateHash(password)*/ !== room.password || !_.has(room.toJSON(), 'password'))) {
-              sanitized.password = password; //user.generateHash(password);
+            if (passwordPattern.test(password) && (password /* user.generateHash(password)*/ !== room.password || !_.has(room.toJSON(), 'password'))) {
+              sanitized.password = password; // user.generateHash(password);
             }
             // password is null, Remove password attr from document
           } else {
@@ -257,12 +258,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[room:update] ', err);
-      if (_.isObject(err)) {
-        return next(null, {code: 400, err: err});
-      } else {
-        return next(null, {code: 500, err: 'internal'});
-      }
+      return errors.getHandler('room:updated', next)(err);
     }
 
     next(null, {});

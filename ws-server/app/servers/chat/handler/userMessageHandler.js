@@ -65,7 +65,7 @@ handler.call = function (data, session, next) {
       var images = imagesUtil.filter(data.images);
 
       if (!message && !images) {
-        return callback('params');
+        return callback('params-message');
       }
 
       // mentions

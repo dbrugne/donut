@@ -26,7 +26,7 @@ var DrawerRoomProfileView = Backbone.View.extend({
     // ask for data
     var that = this;
     client.roomRead(this.roomId, null, function (data) {
-      if (data.err === 'unknown') {
+      if (data.err === 'room-not-found') {
         return;
       }
       if (!data.err) {
