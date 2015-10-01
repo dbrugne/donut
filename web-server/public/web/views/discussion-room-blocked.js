@@ -80,7 +80,7 @@ var RoomBlockedView = Backbone.View.extend({
 
     client.roomJoinRequest(this.model.get('id'), function (response) {
       if (response.err) {
-        if (response.err === 'banned' || response.err === 'notallowed') {
+        if (response.err === 'allow-pending') {
           app.trigger('alert', 'error', i18next.t('chat.allowed.error.' + response.err));
         } else {
           app.trigger('alert', 'error', i18next.t('global.unknownerror'));

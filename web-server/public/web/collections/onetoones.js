@@ -36,7 +36,7 @@ var OnetoonesCollection = Backbone.Collection.extend({
   join: function (username) {
     // we ask to server to open this one to one
     client.userJoin(username, function (response) {
-      if (response.code === 404) {
+      if (response.err && response !== 500) {
         return app.trigger('alert', 'error', i18next.t('chat.users.usernotexist'));
       } else if (response.code === 500) {
         return app.trigger('alert', 'error', i18next.t('global.unknownerror'));

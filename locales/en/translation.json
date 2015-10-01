@@ -366,8 +366,7 @@
     "allowed": {
       "success": "A request has been sent successfully",
       "error" : {
-        "notallowed": "An access request is already pending",
-        "banned": "You have been ban from this donut"
+        "allow-pending": "An access request is already pending"
       }
     },
     "password": {
@@ -415,8 +414,16 @@
         "invalidroom": "Donut not found",
         "unknown-user-room": "User not found in this donut",
         "already-oped": "This user is already modérator in this donut",
+        "already-blocked": "This user is already blocked",
+        "already-unblocked": "This user is not blocked",
         "no-op-owner-admin": "You do not have permission to do that",
-        "commandaccess": "You can not use this command here"
+        "commandaccess": "You can not use this command here",
+        "no-banned": "This user is not banned in this donut",
+        "no-op": "This user is not moderator in this donut",
+        "no-in": "This user is not in this donut",
+        "owner": "This user is the owner of the donut",
+        "devoiced": "This user is already muted in this donut",
+        "user-not-found": "Can't find this user."
       }
     },
     "ping": {
@@ -697,10 +704,11 @@
         "website-url": "Website must be a valid site URL.",
         "color-hexadecimal": "Color must be explained has hexadecimal (e.g.: #FF00AA).",
         "color-integer": "Priority must be explained has number (integer).",
-        "invalid-name": "Invalid name",
-        "invalid-mode": "You must select a mode for this room",
+        "positions": "Positions must be an array.",
+        "name-wrong-format": "Invalid name",
+        "mode-wrong-format": "You must select a mode for this room",
         "invalid-password": "The password must be 4 and 255 characters",
-        "alreadyexists": "Donut __name__ already exists, <a href='#__uri__'>would you like to join it</a>?",
+        "room-already-exist": "Donut __name__ already exists, <a href='#__uri__'>would you like to join it</a>?",
         "invalid-rights": "You do not have access to do this."
       }
     }

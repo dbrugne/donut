@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var retriever = require('../../../../../shared/models/historyone').retrieve();
 
@@ -21,11 +21,11 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.user_id) {
-        return callback('user_id is mandatory');
+        return callback('params-user-id');
       }
 
       if (!withUser) {
-        return callback('unable to retrieve withUser: ' + data.username);
+        return callback('user-not-found');
       }
 
       return callback(null);
@@ -52,8 +52,7 @@ handler.call = function (data, session, next) {
 
   ], function (err, historyEvent) {
     if (err) {
-      logger.error('[user:history]' + err);
-      return next(null, { code: 500, err: 'internal' });
+      return errors.getHandler('user:history', next)(err);
     }
 
     next(null, historyEvent);

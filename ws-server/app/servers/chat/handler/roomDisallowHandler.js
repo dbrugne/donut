@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
 var Room = require('../../../../../shared/models/room');
@@ -30,27 +30,27 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.room_id) {
-        return callback('room_id is mandatory');
+        return callback('params-room-id');
       }
 
       if (!data.user_id) {
-        return callback('user_id is mandatory');
+        return callback('params-user-id');
       }
 
       if (!room) {
-        return callback('unable to retrieve room: ' + data.room_id);
+        return callback('room-not-found');
       }
 
       if (!room.isOwner(currentUser.id)) {
-        return callback('User ' + currentUser.username + ' is not owner');
+        return callback('no-owner');
       }
 
       if (room.isOwner(user)) {
-        return callback('User ' + user.username + ' is owner');
+        return callback('owner');
       }
 
       if (!room.isAllowed(user.id)) {
-        return callback('user isn\'t allowed in room ' + room.name);
+        return callback('no-allow');
       }
 
       return callback(null);
@@ -137,8 +137,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[room:disallow] ' + err);
-      return next(null, { code: 500, err: 'internal' });
+      return errors.getHandler('room:disallow', next)(err);
     }
 
     return next(null, {success: true});

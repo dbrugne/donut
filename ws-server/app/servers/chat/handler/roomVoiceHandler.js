@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
 var roomEmitter = require('../../../util/roomEmitter');
@@ -26,31 +26,31 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.room_id) {
-        return callback('room id is mandatory');
+        return callback('params-room-id');
       }
 
       if (!data.user_id && !data.username) {
-        return callback('user id is mandatory');
+        return callback('params-username-user-id');
       }
 
       if (!room) {
-        return callback('unable to retrieve room ' + data.room_id);
+        return callback('room-not-found');
       }
 
       if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
-        return callback('no-op');
+        return callback('no-op-owner-admin');
       }
 
       if (!devoicedUser) {
-        return callback('unable to retrieve devoicedUser: ' + user.id);
+        return callback('user-not-found');
       }
 
       if (room.isOwner(devoicedUser)) {
-        return callback(devoicedUser.username + ' is owner and can not be voiced in ' + room.name);
+        return callback('owner');
       }
 
       if (!room.isDevoice(devoicedUser.id)) {
-        return callback('user ' + devoicedUser.username + ' is already voiced in ' + room.name);
+        return callback('voiced');
       }
 
       return callback(null);
@@ -58,7 +58,7 @@ handler.call = function (data, session, next) {
 
     function persist (callback) {
       if (!room.devoices || !room.devoices.length) {
-        return callback('there is no user to devoice in this room: ' + room.name);
+        return callback('not-found');
       }
 
       var subDocument = _.find(room.devoices, function (devoice) {
@@ -91,12 +91,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[room:voice] ' + err);
-
-      if (err === 'no-op') {
-        return next(null, {code: 403, err: err});
-      }
-      return next(null, {code: 500, err: 'internal'});
+      return errors.getHandler('room:voice', next)(err);
     }
 
     next(null, { success: true });

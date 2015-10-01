@@ -3,6 +3,7 @@ var logger = require('../../../../../shared/util/logger').getLogger('donut', __f
 var async = require('async');
 var inputUtil = require('../../../util/input');
 var conf = require('../../../../../config');
+var errors = require('../../../util/errors');
 
 var Handler = function (app) {
   this.app = app;
@@ -25,49 +26,49 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.user_id) {
-        return callback('user_id is mandatory');
+        return callback('params-user-id');
       }
 
       if (!data.event) {
-        return callback('require event param');
+        return callback('params-events');
       }
 
       if (!data.message && !event.data.images) {
-        return callback('require message param');
+        return callback('params');
       }
 
       if (!withUser) {
-        return callback('Unable to retrieve user: ' + data.username);
+        return callback('user-not-found');
       }
 
       if (!event) {
-        return callback('Unable to retrieve event: ' + data.event);
+        return callback('event-not-found');
       }
 
       if (event.event !== 'user:message') {
-        return callback('event should be a user:message: ' + data.event);
+        return callback('params-events');
       }
 
       if (event.data.special && event.data.special !== 'me') {
-        return callback('only special me could be edited: ' + data.event);
+        return callback('params');
       }
 
       if (user.id !== event.from.toString()) {
-        return callback(user.username + ' tries to modify a message ' + data.event + ' from ' + event.from.toString());
+        return callback('params-events');
       }
 
       if ((Date.now() - event.time) > conf.chat.message.maxedittime * 60 * 1000) {
-        return callback('user ' + user.id + ' tries to edit an old message: ' + event.id);
+        return callback('expired-time');
       }
 
       if (data.message) {
         var message = inputUtil.filter(data.message, 512);
         if (!message) {
-          return callback('empty message (no text)');
+          return callback('params');
         }
 
         if (event.data.message === message) {
-          return callback('posted message is the same as original');
+          return callback('params');
         }
       }
       // mentions
@@ -122,8 +123,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[user:message:edit] ' + err);
-      return next(null, { code: 500, err: 'internal' });
+      return errors.getHandler('user:message:edit', next)(err);
     }
 
     return next(null, { success: true });

@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var oneDataHelper = require('../../../util/oneData');
 
@@ -23,11 +23,11 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.username) {
-        return callback('username is mandatory');
+        return callback('params-username');
       }
 
       if (!withUser) {
-        return callback('notexists');
+        return callback('user-not-found');
       }
 
       return callback(null);
@@ -49,12 +49,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[user:join] ' + err);
-
-      if (err === 'notexists') {
-        return next(null, {code: 404, err: err});
-      }
-      return next(null, {code: 500, err: 'internal'});
+      return errors.getHandler('user:join', next)(err);
     }
 
     return next(null);

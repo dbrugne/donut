@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
 var roomDataHelper = require('../../../util/roomData');
@@ -21,10 +21,10 @@ handler.call = function (data, session, next) {
   var room = session.__room__;
 
   if (!data.room_id && !data.name) {
-    return next(null, {code: 400, err: 'params'});
+    return next(null, {code: 400, err: 'params-room-id-name'});
   }
   if (!room) {
-    return next(null, {code: 404, err: 'notexists'});
+    return next(null, {code: 404, err: 'room-not-found'});
   }
 
   var blocked = room.isUserBlocked(user.id, data.password);
@@ -47,8 +47,7 @@ handler.blocked = function (user, room, blocked, next) {
     }
   ], function (err, data) {
     if (err) {
-      logger.error('[room:join] ' + err);
-      return next(null, {code: 500, err: 'internal'});
+      return errors.getHandler('room:join', next)(err);
     }
 
     return next(null, {code: 403, err: blocked, room: data});
@@ -141,8 +140,7 @@ handler.join = function (user, room, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[room:join] ' + err);
-      return next(null, {code: 500, err: 'internal'});
+      return errors.getHandler('room:join', next)(err);
     }
 
     return next(null);

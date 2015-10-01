@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var RoomModel = require('../../../../../shared/models/room');
 var conf = require('../../../../../config/index');
@@ -22,12 +22,20 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.name || !common.validate.name(data.name)) {
-        return callback('invalid-name');
+      if (!data.name) {
+        return callback('params-name');
       }
 
-      if (!data.mode || !common.validate.mode(data.mode)) {
-        return callback('invalid-mode');
+      if (!common.validate.name(data.name)) {
+        return callback('name-wrong-format');
+      }
+
+      if (!data.mode) {
+        return callback('params-mode');
+      }
+
+      if (!common.validate.mode(data.mode)) {
+        return callback('mode-wrong-format');
       }
 
       return callback(null);
@@ -40,7 +48,7 @@ handler.call = function (data, session, next) {
           return callback(err);
         }
         if (room) {
-          return callback('alreadyexists');
+          return callback('room-already-exist');
         }
 
         room = RoomModel.getNewRoom();
@@ -51,7 +59,7 @@ handler.call = function (data, session, next) {
         room.priority = 0;
         room.mode = data.mode;
         if (data.mode === 'private' && data.password !== null) {
-          room.password = data.password; //user.generateHash(data.password);
+          room.password = data.password; // user.generateHash(data.password);
         }
 
         room.save(function (err) {
@@ -88,12 +96,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[room:create] ' + err);
-      if (['invalid-name', 'invalid-mode', 'invalid-password', 'alreadyexists'].indexOf(err) !== -1) {
-        return next(null, {code: 400, err: err});
-      } else {
-        return next(null, {code: 500, err: 'internal'});
-      }
+      return errors.getHandler('room:create', next)(err);
     }
 
     return next(null, {success: true});
