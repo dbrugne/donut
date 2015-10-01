@@ -512,7 +512,7 @@
               }
             }
           } // #chat #center .discussion .content .header .info
-          &.room { min-height: 135px;
+          &.room { min-height: 117px;
             .overlay-ctn {
               .avatar { position: absolute; width: 100px; height: 100px; .border-shadow; } // #chat #center .discussion .content .header.room .overlay-ctn .avatar
               .overlay { height: 100px; width: 100px; top:0; .border-radius(50%); }
@@ -563,7 +563,7 @@
           .go-to-top {
             display: none;
             position: absolute;
-            top: 135px;
+            top: 117px;
             right: 0;
             padding: 4px 8px 6px;
             background-color: @cl-background;
@@ -620,7 +620,7 @@
           }
 
           .scrollable { margin-right: 5px;
-            .scrollable-content { position: relative; padding-right: 10px;
+            .scrollable-content { position: relative;
               hr { border-color: @cl-subtext5; }
               .pad { min-height: 30px; text-align: center; font-size: 2em;
                 i { display: none; }
@@ -646,7 +646,7 @@
               }
               .realtime {
                 a.mention { font-weight: bold; }
-                .block { line-height: 19px; position: relative; margin: 0; border-top: 1px solid @cl-subtext0; font-size: 1.1em;
+                .block { line-height: 19px; position: relative; font-size: 1.1em;
                   &.message { word-break: break-all; }
                   &.unviewed {
                     &::before {
@@ -715,7 +715,7 @@
                     }
                   }
                 }
-                .block.user { padding-top: 23px; padding-left: 40px; border-top: 1px solid @cl-subtext10; clear: both;
+                .block.user { padding-top: 23px; padding-left: 40px; clear: both; /*border-top: 1px solid @cl-subtext0;*/
                   .avatar { position: absolute; top: 5px; left: 5px; border: none; width: 30px; height: 30px; background-position: center center; background-size: 30px 30px; }
                   .username { position: absolute; top: 5px; left: 45px; .ft-opensans-bold; font-size: 1em; }
                 }
@@ -739,8 +739,8 @@
                       .pull-left;
                       display: block;
                       position: relative;
-                      width: 50px;
-                      height: 50px;
+                      width: 100px;
+                      height: 100px;
                       margin: 2px;
                       background-position: center center;
                       background-repeat: no-repeat;
@@ -1133,13 +1133,13 @@
   .status.offline { color: @cl-pomegranate; }
   .status.error { color: @cl-pomegranate; }
 
-  .block { border-top: 1px solid @cl-subtext0; margin: 0;
+  .block { margin: 0;
     &.date { margin-top: 16px; margin-bottom: 10px; clear: both; border-top: 0; height: 1px; background-color: @cl-subtext10; text-align: center;
       .moment { position: relative; top: -0.7em; background-color: @cl-background; text-align: center; font-size: 1.5rem; font-weight: bold; color: @cl-subtext30; padding: 0 10px; text-transform: capitalize; }
     }
   }
 
-  .date-ctn { padding: 0 22px 10px 0; position: absolute; width: 100%; background-color: white; z-index: 2; min-height: 40px }
+  .date-ctn { padding: 0 12px 10px 0; position: absolute; width: 100%; background-color: white; z-index: 2; min-height: 22px }
 
   #block-current-user { .display-flex; align-items: center; height: 40px;
     img { width: 28px; height: 28px; }
@@ -1163,8 +1163,8 @@
             > span { font-size: 13px; }
           }
         }
-        .close-discussion { font-size: 2.1rem; margin:auto; }
-        &:hover { background-color: @cl-subtext5;
+        .close-discussion { font-size: 1.6rem; margin:auto; }
+        &:hover { /*background-color: @cl-subtext5;*/
           span.name { color: @cl-subtext50; }
         }
         &.blocked { span.name { color: @cl-error; } }
