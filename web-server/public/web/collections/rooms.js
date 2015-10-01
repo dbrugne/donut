@@ -73,6 +73,8 @@ var RoomsCollection = Backbone.Collection.extend({
       ? '#' + data.group_name + '/' + data.name.replace('#', '')
       : data.name;
 
+    data.uri = data.identifier;
+
     // update model
     var isNew = (this.get(data.id) === undefined);
     var model;
@@ -81,13 +83,9 @@ var RoomsCollection = Backbone.Collection.extend({
       model = this.get(data.id);
       model.set(data);
     } else {
-      // add in IHM
+      // add in IHM (by mainView)
       model = new RoomModel(data);
-    }
-
-    if (isNew) {
       this.add(model);
-      // now the view exists (created by mainView)
     }
   },
   onIn: function (data) {

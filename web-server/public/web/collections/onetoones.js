@@ -7,6 +7,7 @@ var i18next = require('i18next-client');
 var app = require('../models/app');
 
 var OnetoonesCollection = Backbone.Collection.extend({
+  comparator: 'username',
   iwhere: function (key, val) { // insensitive case search
     var matches = this.filter(function (item) {
       return item.get(key).toLocaleLowerCase() === val.toLocaleLowerCase();
@@ -46,40 +47,22 @@ var OnetoonesCollection = Backbone.Collection.extend({
     // server ask to client to open this one to one in IHM
     this.addModel(data);
   },
-  addModel: function (user) {
-    // server confirm that we was joined to the one to one and give us some data on user
-    // prepare model data
-    var oneData = {
-      user_id: user.user_id,
-      username: user.username,
-      avatar: user.avatar,
-      poster: user.poster,
-      color: user.color,
-      location: user.location,
-      website: user.website,
-      onlined: user.onlined,
-      status: user.status,
-      banned: user.banned,
-      i_am_banned: user.i_am_banned,
-      unviewed: user.unviewed
-    };
+  addModel: function (data) {
+    data.identifier = '@' + data.username;
 
-    // update model
-    var isNew = (this.get(user.user_id) === undefined);
+    data.uri = '#u/' + data.username;
+
+    var isNew = (this.get(data.user_id) === undefined);
     var model;
     if (!isNew) {
       // already exist in IHM (maybe reconnecting)
-      model = this.get(user.user_id);
-      model.set(oneData);
+      model = this.get(data.user_id);
+      model.set(data);
     } else {
-      // add in IHM
-      oneData.id = user.user_id;
-      oneData.key = this._key(oneData.user_id, currentUser.get('user_id'));
-      model = new OneToOneModel(oneData);
-    }
-
-    if (isNew) {
-      // now the view exists (created by mainView)
+      // add in IHM (by mainView)
+      data.id = data.user_id;
+      data.key = this._key(data.user_id, currentUser.get('user_id'));
+      model = new OneToOneModel(data);
       this.add(model);
     }
 
