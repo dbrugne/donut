@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var User = require('../../../../../shared/models/user');
 var async = require('async');
 var _ = require('underscore');
@@ -54,19 +54,19 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.room_id) {
-        return callback('room_id is mandatory');
+        return callback('params-room-id');
       }
 
       if (!data.attributes) {
-        return callback('attributes is mandatory');
+        return callback('params');
       }
 
       if (!data.attributes.type) {
-        return callback('attributes.type is mandatory');
+        return callback('params');
       }
 
       if (searchTypes.indexOf(data.attributes.type) === -1) {
-        return callback('search type \'' + data.type + '\' don\'t exist');
+        return callback('not-found');
       }
 
       if (data.attributes.type === 'allowed' && room.mode !== 'private') {
@@ -78,20 +78,20 @@ handler.call = function (data, session, next) {
       }
 
       if (data.attributes.status && data.attributes.status !== 'online' && data.attributes.status !== 'offline') {
-        return callback('status attribute ' + data.attributes.status + ' don\'t exist');
+        return callback('not-found');
       }
 
       if ((searchTypesThatNeedPower.indexOf(data.attributes.type) !== -1) &&
       !room.isOwnerOrOp(user.id) && !user.admin) {
-        return callback('this user ' + user.id + ' is not allowed to perform this type of search : ' + data.attributes.type);
+        return callback('not-found');
       }
 
       if (!room) {
-        return callback('unable to retrieve room: ' + data.room_id);
+        return callback('room-not-found');
       }
 
       if (!room.isIn(user.id)) {
-        return callback('this user ' + user.id + ' is not currently in ' + room.name);
+        return callback('no-in');
       }
 
       return callback(null);
@@ -185,8 +185,7 @@ handler.call = function (data, session, next) {
 
   ], function (err, users, count) {
     if (err) {
-      logger.error('[room:users] ' + err);
-      return next(null, {code: 500, err: 'internal'});
+      return errors.getHandler('room:users', next)(err);
     }
 
     return next(null, {

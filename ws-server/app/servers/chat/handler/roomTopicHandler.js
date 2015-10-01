@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var Notifications = require('../../../components/notifications');
 var roomEmitter = require('../../../util/roomEmitter');
@@ -26,19 +26,19 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.room_id) {
-        return callback('id is mandatory');
+        return callback('params-room-id');
       }
 
       if (!room) {
-        return callback('unable to retrieve room: ' + data.room_id);
+        return callback('room-not-found');
       }
 
       if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
-        return callback('no-op');
+        return callback('no-op-owner-admin');
       }
 
       if (!common.validate.topic(data.topic)) {
-        return callback('invalid topic for  ' + data.room_id + ': ' + data.topic);
+        return callback('params');
       }
 
       return callback(null);
@@ -81,12 +81,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[room:topic] ' + err);
-
-      if (err === 'no-op') {
-        return next(null, {code: 403, err: err});
-      }
-      return next(null, {code: 500, err: 'internal'});
+      return errors.getHandler('room:topic', next)(err);
     }
 
     next(null, {success: true});

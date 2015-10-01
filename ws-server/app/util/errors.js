@@ -10,12 +10,14 @@ var errors = {
   'params-username': 400,         // username params not set
   'params-username-user-id': 400, // username and user_id params not set
   'params-name': 400,             // name params not set
-  'params-events': 400,           // events params not set
+  'params-events': 400,           // events params not set or not good
   'params-data': 400,             // data params not set
   'params-mode': 400,             // mode params not set
+  'params-message': 400,          // message params not set or not good
   'wrong-format': 400,            // params are not well formatted
   'name-wrong-format': 400,       // name params are not well formatted
   'mode-wrong-format': 400,       // mode params are not well formatted
+  'message-wrong-format': 400,    // message params are not well formatted
   'params': 400,                  // == GENERAL TAG ==
 
   // NOT ALLOWED ERROR (403)
@@ -32,9 +34,12 @@ var errors = {
   'no-banned': 403,               // User is not banned from the room
   'banned': 403,                  // User is banned from the room or the 1&1
   'devoiced': 403,                // User is devoiced in the room
+  'private': 403,                 // Room is private
+  'permanent': 403,               // Room is permanent can\'t set private
   'voiced': 403,                  // User is voiced in the room
   'allowed': 403,                 // User is allowed in the room
   'owner': 403,                   // User is owner in the room
+  'oped': 403,                    // User is op in the room
   'allow-pending': 403,           // User is in allowed pending list (private room)
   'not-allowed': 403,             // == GENERAL TAG ==
 

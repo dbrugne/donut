@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
 var HistoryRoom = require('../../../../../shared/models/historyroom');
@@ -25,15 +25,15 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.room_id) {
-        return callback('id is mandatory');
+        return callback('params-room-id');
       }
 
       if (!data.events || !_.isArray(data.events)) {
-        return callback('events parameter is mandatory');
+        return callback('params-events');
       }
 
       if (!room) {
-        return callback('unable to retrieve room: ' + data.room_id);
+        return callback('room-not-found');
       }
 
       data.events = _.filter(data.events, function (id) {
@@ -41,7 +41,7 @@ handler.call = function (data, session, next) {
         return pattern.test(id);
       });
       if (!data.events.length) {
-        return callback('events parameter should contains at least one valid event _id');
+        return callback('params-events');
       }
 
       return callback(null);
@@ -75,7 +75,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[room:viewed] ' + err);
+      return errors.getHandler('room:viewed', next)(err);
     }
 
     next(err);
