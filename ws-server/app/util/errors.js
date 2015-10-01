@@ -20,11 +20,13 @@ var errors = {
   'no-op-owner': 403,             // User not op and owner
   'no-op-owner-admin': 403,       // User not op, owner and admin
   'no-allow': 403,                // User not in allowed list (private room)
+  'no-allow-pending': 403,        // User not in allowed pending list (private room)
   'no-admin': 403,                // User not admin
   'no-in': 403,                   // User not in the room
   'no-right-user': 403,           // User not the right user to acces the data
   'banned': 403,                  // User is banned from the room or the 1&1
   'devoiced': 403,                // User is devoiced in the room
+  'allowed': 403,                 // User is allowed in the room
   'not-allowed': 403,             // == GENERAL TAG ==
 
   // NOT FOUND ERROR (404)
