@@ -10,7 +10,10 @@ module.exports = Backbone.View.extend({
 
   template: require('../templates/nav-rooms.html'),
 
-  events: {},
+  events: {
+    'click .more': 'onToggleMore',
+    'click .less': 'onToggleLess'
+  },
 
   initialize: function (options) {
 //    this.listenTo(rooms, 'add', this.render);
@@ -30,11 +33,22 @@ module.exports = Backbone.View.extend({
       data.push(json);
     });
 
-    var html = this.template({list: data});
+    var html = this.template({list: data, toggleCount: 4});
     this.$list.html(html);
+
+    this.initializeCollapse();
     return this;
   },
   redraw: function () {
     return this.render();
+  },
+  initializeCollapse: function () {
+    this.$('[data-toggle="collapse"]').collapse();
+  },
+  onToggleMore: function (event) {
+    $(event.currentTarget).hide();
+  },
+  onToggleLess: function (event) {
+    $(event.currentTarget).prevAll('.more:first').show();
   }
 });

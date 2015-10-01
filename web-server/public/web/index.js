@@ -11,6 +11,7 @@ require('bootstrap/js/dropdown');
 require('bootstrap/js/modal');
 require('bootstrap/js/tooltip');
 require('bootstrap/js/popover');
+require('bootstrap/js/collapse');
 
 // contact form
 $('[data-toggle="contactform"]').contactform({});

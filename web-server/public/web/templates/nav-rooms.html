@@ -1,19 +1,44 @@
 <% var lastGroup = null; %>
+<% var count = 0; %>
+<% var more = false; %>
 <% _.each(list, function(item) { %>
-<% if (item.group_id && item.group_id !== lastGroup) { %>
-<li class="group">
-    <a class="clean" href="#group/<%- item.group_name %>" data-group-id="<%- item.group_id %>">
-        #<%= item.group_name %>
-    </a>
-</li>
+<% if(more && ( !item.group_id || ( item.group_id && item.group_id !== lastGroup ) )) { %>
+    <% more = false; %>
+    <li class="less collapse collapse-<%-lastGroup%>">
+        <a class="inverse" role="button" href=".collapse-<%-lastGroup%>" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-<%-lastGroup%>">
+            see less
+        </a>
+    </li>
 <% } %>
-<li>
+<% if (item.group_id && item.group_id !== lastGroup) { %>
+    <li class="group">
+        <a class="clean" href="#group/<%- item.group_name %>" data-group-id="<%- item.group_id %>">
+            #<%= item.group_name %>
+        </a>
+    </li>
+<% } %>
+<%
+if (item.group_id && item.group_id === lastGroup) {
+    count++;
+} else {
+    count = 0;
+}
+%>
+<% if(count === toggleCount) { %>
+    <% more = true; %>
+    <li class="more">
+        <a class="inverse" role="button" href=".collapse-<%-lastGroup%>" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-<%-lastGroup%>">
+            see more
+        </a>
+    </li>
+<% } %>
+<li class="<% if(count >= toggleCount) { %>collapse collapse-<%-lastGroup%><%}%>" >
     <span class="item flex-parent center <% if (item.group_id) { %> grouped <% } %><% if (item.focused) { %> active <% } %> <% if (item.blocked) { %> blocked <% } %>">
         <a class="clean name-ctn hidden-xs hidden-sm" href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
             <% if (item.group_id) { %>
-            <span class="name">/<%= item.name.replace('#', '') %></span>
+                <span class="name">/<%= item.name.replace('#', '') %></span>
             <% } else { %>
-            <span class="name"><span>#</span><%= item.name.replace('#', '') %></span>
+                <span class="name"><span>#</span><%= item.name.replace('#', '') %></span>
             <% } %>
         </a>
         <% if (item.newuser === true || item.newmention === true || item.unviewed === true) { %>
