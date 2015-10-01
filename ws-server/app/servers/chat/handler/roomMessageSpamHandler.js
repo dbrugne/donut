@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 
 var Handler = function (app) {
@@ -23,31 +23,31 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.room_id) {
-        return callback('id is mandatory');
+        return callback('params-room-id');
       }
 
       if (!data.event) {
-        return callback('require event param');
+        return callback('params-events');
       }
 
       if (!room) {
-        return callback('unable to retrieve room: ' + data.room_id);
+        return callback('room-not-found');
       }
 
       if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
-        return callback('this user ' + user.id + " isn't able to spammed a message in " + room.name);
+        return callback('no-op-owner-admin');
       }
 
       if (!event) {
-        return callback('unable to retrieve event: ' + data.event);
+        return callback('event-not-found');
       }
 
       if (event.room.toString() !== room.id) {
-        return callback('event and room parameters not correspond ' + data.event);
+        return callback('not-allowed');
       }
 
       if (event.event !== 'room:message') {
-        return callback('event ' + data.event + ' should be a room:message');
+        return callback('wrong-format');
       }
 
       return callback(null);
@@ -71,8 +71,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[room:message:spam] ' + err);
-      return next(null, {code: 500, err: 'internal'});
+      return errors.getHandler('room:message:spam', next)(err);
     }
 
     next(null, {});
