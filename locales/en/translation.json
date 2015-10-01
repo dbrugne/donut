@@ -415,7 +415,7 @@
         "invalidroom": "Donut not found",
         "unknown-user-room": "User not found in this donut",
         "already-oped": "This user is already modérator in this donut",
-        "no-op": "You do not have permission to do that",
+        "no-op-owner-admin": "You do not have permission to do that",
         "commandaccess": "You can not use this command here"
       }
     },

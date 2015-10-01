@@ -27,6 +27,7 @@ var errors = {
   'banned': 403,                  // User is banned from the room or the 1&1
   'devoiced': 403,                // User is devoiced in the room
   'allowed': 403,                 // User is allowed in the room
+  'owner': 403,                   // User is owner in the room
   'not-allowed': 403,             // == GENERAL TAG ==
 
   // NOT FOUND ERROR (404)
