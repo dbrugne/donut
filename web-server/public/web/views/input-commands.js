@@ -1,4 +1,3 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
@@ -577,6 +576,4 @@ var InputCommandsView = Backbone.View.extend({
   }
 
 });
-
-
 module.exports = InputCommandsView;
