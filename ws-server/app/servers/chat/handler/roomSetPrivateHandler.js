@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
 
@@ -23,23 +23,23 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.room_id) {
-        return callback('room_id is mandatory');
+        return callback('params-room-id');
       }
 
       if (!room) {
-        return callback('unable to retrieve room: ' + data.room_id);
+        return callback('room-not-found');
       }
 
       if (!room.isOwner(currentUser.id) && session.settings.admin !== true) {
-        return callback('User ' + currentUser.username + ' is not owner or admin');
+        return callback('no-op-owner-admin');
       }
 
       if (room.mode === 'private') {
-        return callback('Room is already private');
+        return callback('private');
       }
 
       if (room.permanent === true) {
-        return callback('This room : ' + room.name + 'is permanent can\'t set private');
+        return callback('permanent');
       }
       return callback(null);
     },
@@ -63,8 +63,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[room:allow] ' + err);
-      return next(null, { code: 500, err: err });
+      return errors.getHandler('room:set:private', next)(err);
     }
 
     return next(null, {success: true});
