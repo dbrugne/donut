@@ -23,13 +23,10 @@ var errors = {
 
   // NOT ALLOWED ERROR (403)
   'no-op': 403,                   // User not op
-  'no-owner': 403,                // User not owner
   'no-admin-owner': 403,          // User not admin or owner
-  'no-op-owner': 403,             // User not op and owner
   'no-op-owner-admin': 403,       // User not op, owner and admin
   'no-allow': 403,                // User not in allowed list (private room)
   'no-allow-pending': 403,        // User not in allowed pending list (private room)
-  'no-admin': 403,                // User not admin
   'no-in': 403,                   // User not in the room
   'no-right-user': 403,           // User not the right user to acces the data
   'no-banned': 403,               // User is not banned from the room
@@ -49,7 +46,6 @@ var errors = {
   'room-not-found': 404,          // Room not found
   'user-not-found': 404,          // User not found
   'event-not-found': 404,         // Event not found
-  'history-not-found': 404,       // History not found
   'notification-not-found': 404,  // Notification not found
   'not-found': 404,               // == GENERAL TAG ==
 

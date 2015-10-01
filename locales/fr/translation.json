@@ -389,7 +389,7 @@
       }
     },
     "commands": {
-      "join": "Rejoindre le donut",
+      "join": "Rejoindre un donut",
       "leave": "Quitter un donut (ou celui-ci)",
       "topic": "Changer le sujet de ce donut",
       "op": "Nommer un utilisateur modérateur de ce donut",
@@ -541,7 +541,7 @@
         ]
       },
       "onetoone": [
-        "Si <strong>__username__</strong> n'est pas en ligne les nouveaux messages lui seront remis à sa prochaine connexion",
+        "Si <strong>@__username__</strong> n'est pas en ligne les nouveaux messages lui seront remis à sa prochaine connexion",
         "Postez un message pour amorcer la conversation."
       ]
     },
@@ -586,7 +586,7 @@
       "kicked": "Vous avez été expulsé de ce donut.",
       "kicked_button": "Rejoindre",
       "changemode": "Passer en mode privé",
-      "disclaimer-private": "Ce donut est privé, seul les utilisateurs explicitement autorisés par le propriétaire peuvent y accéder. Pour ajouter de nouveaux utilisateurs, merci de les rechercher dans la liste ci-dessous.",
+      "disclaimer-private": "Ce donut est privé. Seuls les utilisateurs que vous autorisez pourront rejoindre, participer et accéder à l'historique.",
       "disclaimer-public": "Ce donut est public. N'importe quel utilisateur pourra y accéder.",
       "disclaimer-password": "Vous avez également choisi de mettre un mot de passe. Les utilisateurs avec le mot de passe pourront y entrer sans avoir besoin d'être invités au préalable.",
       "disclaimer-changing": "Vous pouvez passer ce donut en mode privé. Alors, seuls les utilisateurs que vous autoriserez pourront rejoindre, participer et accéder à l'historique. L'accès se fera par invitation et/ou par mot de passe. Les membres actuels de donut public resteront autorisés dans ce donut une fois qu'il sera devenu privé. Attention, cette action est irréversible.",
@@ -904,11 +904,10 @@
       }
     },
     "roominvite": {
-      "subject": "Un utilisateur vous invite à rejoindre #__roomname__",
+      "subject": "@__username__ vous invite à rejoindre #__roomname__",
       "content": {
         "title": "@__username__ vous invite à rejoindre #__roomname__",
-        "disclaimer": "Vous pouvez rejoindre sa room sans plus tarder!",
-        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "disclaimer": "Vous pouvez rejoindre son donut sans plus tarder !",
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
       }
     },
