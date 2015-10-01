@@ -115,11 +115,15 @@ var MainView = Backbone.View.extend({
 
     // @debug
     // @todo : mount only on debug mode
-    // window.current = currentUser;
-    // window.rooms = rooms;
-    // window.onetoones = onetoones;
-    // window.client = client;
-    // window.main = this;
+    window.d = {
+      $: $,
+      app: app,
+      current: currentUser,
+      rooms: rooms,
+      onetoones: onetoones,
+      client: client,
+      main: this
+    };
 
     client.connect();
   },
