@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
 var roomEmitter = require('../../../util/roomEmitter');
@@ -24,15 +24,15 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.room_id) {
-        return callback('id is mandatory');
+        return callback('params-room-id');
       }
 
       if (!room) {
-        return callback('unable to retrieve room: ' + data.room_id);
+        return callback('room-not-found');
       }
 
       if (!room.isIn(user.id)) {
-        return callback('user : ' + user.username + ' is not currently in room ' + room.name);
+        return callback('no-in');
       }
 
       return callback(null);
@@ -99,7 +99,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[room:leave] ' + err);
+      return errors.getHandler('room:leave', next)(err);
     }
 
     return next(null);

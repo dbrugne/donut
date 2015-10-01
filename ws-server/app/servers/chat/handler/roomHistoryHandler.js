@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var retriever = require('../../../../../shared/models/historyroom').retrieve();
 
@@ -21,15 +21,15 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.room_id) {
-        return callback('id parameter is mandatory');
+        return callback('params-room-id');
       }
 
       if (!room) {
-        return callback('unable to retrieve room: ' + data.room_id);
+        return callback('room-not-found');
       }
 
       if (!room.isIn(user.id)) {
-        return callback('user : ' + user.username + ' is not currently in room ' + room.name);
+        return callback('no-in');
       }
 
       return callback(null);
@@ -56,8 +56,7 @@ handler.call = function (data, session, next) {
 
   ], function (err, historyEvent) {
     if (err) {
-      logger.error('[room:history]' + err);
-      return next(null, { code: 500, err: 'internal' });
+      return errors.getHandler('room:history', next)(err);
     }
     next(null, historyEvent);
   });

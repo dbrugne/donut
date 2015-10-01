@@ -1,4 +1,3 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
@@ -401,7 +400,17 @@ var InputCommandsView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({input: false}, function () {
-      client.userBan(userId, username);
+      client.userBan(userId, username, function (data) {
+        if (data.err && data.err === 'banned') {
+          return that.errorCommand('block', 'already-blocked');
+        }
+        if (data.err && data.code !== 500) {
+          return that.errorCommand('block', 'invalidusername');
+        }
+        if (data.err) {
+          return that.errorCommand('block', 'parameters');
+        }
+      });
       that.model.trigger('inputFocus');
     }, this.inputFocus());
   },
@@ -422,7 +431,18 @@ var InputCommandsView = Backbone.View.extend({
       userId = this.model.get('user_id');
     }
 
-    client.userDeban(userId, username);
+    var that = this;
+    client.userDeban(userId, username, function (data) {
+      if (data.err && data.err === 'no-banned') {
+        return that.errorCommand('unblock', 'already-unblocked');
+      }
+      if (data.err && data.code !== 500) {
+        return that.errorCommand('unblock', 'invalidusername');
+      }
+      if (data.err) {
+        return that.errorCommand('unblock', 'parameters');
+      }
+    });
   },
   msg: function (paramString, parameters) {
     var message = (!parameters) ? paramString : parameters[2];
@@ -577,6 +597,4 @@ var InputCommandsView = Backbone.View.extend({
   }
 
 });
-
-
 module.exports = InputCommandsView;

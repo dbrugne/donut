@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var Room = require('../../../../../shared/models/room');
 var Notifications = require('../../../components/notifications');
@@ -24,11 +24,11 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.room_id) {
-        return callback('id is mandatory');
+        return callback('params-room-id');
       }
 
       if (!room) {
-        return callback('unable to retrieve room: ' + data.room_id);
+        return callback('room-not-found');
       }
 
       if (room.isBanned(user.id)) {
@@ -36,11 +36,11 @@ handler.call = function (data, session, next) {
       }
 
       if (room.isAllowed(user.id)) {
-        return callback('user is allready allowed in room ' + room.name);
+        return callback('allowed');
       }
 
       if (room.isAllowedPending(user.id)) {
-        return callback('notallowed');
+        return callback('allow-pending');
       }
 
       return callback(null);
@@ -75,12 +75,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[room:join:request] ' + err);
-
-      err = (['banned', 'notallowed'].indexOf(err) !== -1)
-        ? err
-        : 'internal';
-      return next(null, { code: 500, err: err });
+      return errors.getHandler('room:join:request', next)(err);
     }
 
     return next(null, {success: true});

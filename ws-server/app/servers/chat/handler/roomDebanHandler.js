@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
 var Notifications = require('../../../components/notifications');
@@ -28,23 +28,23 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.room_id) {
-        return callback('room_id is mandatory');
+        return callback('params-room-id');
       }
 
       if (!data.user_id && !data.username) {
-        return callback('user_id or username is mandatory');
+        return callback('params-username-user-id');
       }
 
       if (!room) {
-        return callback('unable to retrieve room: ' + data.room_id);
+        return callback('room-not-found');
       }
 
       if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
-        return callback('no-op');
+        return callback('no-op-owner-admin');
       }
 
       if (!bannedUser) {
-        return callback('unable to retrieve bannedUser: ' + data.username);
+        return callback('user-not-found');
       }
 
       return callback(null);
@@ -52,11 +52,11 @@ handler.call = function (data, session, next) {
 
     function persist (callback) {
       if (!room.bans || !room.bans.length) {
-        return callback('there is no user banned from this room');
+        return callback('no-banned');
       }
 
       if (!room.isBanned(bannedUser.id)) {
-        return callback('this user ' + bannedUser.username + ' is not banned from ' + room.name);
+        return callback('no-banned');
       }
 
       var subDocument = _.find(room.bans, function (ban) {
@@ -74,8 +74,8 @@ handler.call = function (data, session, next) {
       bannedUser.update({
         $pull: {blocked: room.id}
       }, function (err) {
-          return callback(err);
-        }
+        return callback(err);
+      }
       );
     },
 
@@ -104,12 +104,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[room:deban] ' + err);
-
-      if (err === 'no-op') {
-        return next(null, {code: 403, err: err});
-      }
-      return next(null, {code: 500, err: 'internal'});
+      return errors.getHandler('room:deban', next)(err);
     }
 
     next(null, {});

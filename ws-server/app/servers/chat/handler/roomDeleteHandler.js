@@ -1,4 +1,5 @@
 'use strict';
+var errors = require('../../../util/errors');
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var async = require('async');
 
@@ -22,19 +23,19 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.room_id) {
-        return callback('id is mandatory');
+        return callback('params-room-id');
       }
 
       if (!room) {
-        return callback('unable to retrieve room: ' + data.room_id);
+        return callback('room-not-found');
       }
 
       if (!room.isOwner(user.id) && session.settings.admin !== true) {
-        return callback(user.id + ' is not allowed to delete ' + data.room_id);
+        return callback('no-admin-owner');
       }
 
       if (room.permanent === true) {
-        return callback('permanent');
+        return callback('not-allowed');
       }
 
       return callback(null);
@@ -71,8 +72,7 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error('[room:delete] ' + err);
-      return next(null, {code: 500, err: 'internal'});
+      return errors.getHandler('room:delete', next)(err);
     }
 
     next(null, {success: true});
