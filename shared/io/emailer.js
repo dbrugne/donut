@@ -272,11 +272,7 @@ emailer.roomInvite = function (to, data, callback) {
     username: data.username,
     roomname: data.roomname.replace('#', ''),
     title: i18next.t('email.roominvite.content.title', { roomname: data.roomname.replace('#', ''), username: data.username }),
-    email_heading_action: i18next.t('email.roominvite.content.action', {
-      fqdn: conf.fqdn,
-      username: data.username
-    }),
-    subject: i18next.t('email.roominvite.subject', { roomname: data.roomname.replace('#', '') })
+    subject: i18next.t('email.roominvite.subject', { roomname: data.roomname.replace('#', ''), username: data.username })
   }, callback);
 };
 
