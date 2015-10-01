@@ -44,7 +44,8 @@ var errors = {
   'same-preferences': 409,        // Same preferences as before
 
   // UNPROCESSABLE ENTITY (422)
-  'wrong-password': 422           // User type a wrong password
+  'wrong-password': 422,           // User type a wrong password
+  'expired-time': 422              // Expired time
 };
 
 module.exports = {
