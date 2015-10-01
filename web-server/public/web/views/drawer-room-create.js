@@ -77,12 +77,12 @@ var DrawerRoomCreateView = Backbone.View.extend({
     this.reset();
     // name
     if (!this._valid()) {
-      return this.setError(i18next.t('chat.form.errors.invalid-name'));
+      return this.setError(i18next.t('chat.form.errors.name-wrong-format'));
     }
 
     // mode
     if (!this.isValidMode()) {
-      return this.setError(i18next.t('chat.form.errors.invalid-mode'));
+      return this.setError(i18next.t('chat.form.errors.mode-wrong-format'));
     }
     var mode = this._getMode();
 
@@ -91,7 +91,7 @@ var DrawerRoomCreateView = Backbone.View.extend({
     this.$submit.addClass('loading');
     client.roomCreate(name, mode, null, _.bind(function (response) {
       this.$submit.removeClass('loading');
-      if (response.code === 400) {
+      if (response.code !== 500) {
         var uri = 'room/' + name.replace('#', '');
         var error = i18next.t('chat.form.errors.' +
           response.err, {name: name, uri: uri});

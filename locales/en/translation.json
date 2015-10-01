@@ -698,10 +698,10 @@
         "color-hexadecimal": "Color must be explained has hexadecimal (e.g.: #FF00AA).",
         "color-integer": "Priority must be explained has number (integer).",
         "positions": "Positions must be an array.",
-        "invalid-name": "Invalid name",
-        "invalid-mode": "You must select a mode for this room",
+        "name-wrong-format": "Invalid name",
+        "mode-wrong-format": "You must select a mode for this room",
         "invalid-password": "The password must be 4 and 255 characters",
-        "alreadyexists": "Donut __name__ already exists, <a href='#__uri__'>would you like to join it</a>?",
+        "room-already-exist": "Donut __name__ already exists, <a href='#__uri__'>would you like to join it</a>?",
         "invalid-rights": "You do not have access to do this."
       }
     }
