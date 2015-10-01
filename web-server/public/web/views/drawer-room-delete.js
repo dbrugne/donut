@@ -1,4 +1,3 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
@@ -62,7 +61,7 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     event.preventDefault();
     this.reset();
     if (!this._valid()) {
-      return this.setError(i18next.t('chat.form.errors.invalid-name'));
+      return this.setError(i18next.t('chat.form.errors.name-wrong-format'));
     }
 
     client.roomDelete(this.roomId);
@@ -112,6 +111,5 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     });
   }
 });
-
 
 module.exports = DrawerRoomDeleteView;

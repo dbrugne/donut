@@ -20,6 +20,7 @@ var errors = {
   // NOT ALLOWED ERROR (403)
   'no-op': 403,                   // User not op
   'no-owner': 403,                // User not owner
+  'no-admin-owner': 403,          // User not admin or owner
   'no-op-owner': 403,             // User not op and owner
   'no-op-owner-admin': 403,       // User not op, owner and admin
   'no-allow': 403,                // User not in allowed list (private room)
