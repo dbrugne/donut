@@ -48,7 +48,10 @@ var DonutRouter = Backbone.Router.extend({
   },
 
   focusGroup: function (group) {
-
+    // @todo dbr
+    client.groupRead(null, group, _.bind(function (response) {
+      console.log('show', response);
+    }, this));
   },
 
   focusRoom: function () {
