@@ -33,19 +33,19 @@ handler.call = function (data, session, next) {
     },
 
     function persist (callback) {
-      user.update({$pull: { onetoones: withUser._id }}, function (err) {
+      user.update({$pull: { onetoones: { user: withUser._id } }}, function (err) {
         return callback(err);
       });
     },
 
     function sendToUserClients (callback) {
-      that.app.globalChannelService.pushMessage('connector', 'user:leave', { user_id: withUser._id }, 'user:' + user.id, {}, callback);
+      that.app.globalChannelService.pushMessage('connector', 'user:leave', {user_id: withUser._id}, 'user:' + user.id, {}, callback);
     }
 
   ], function (err) {
     if (err) {
       logger.error('[user:join] ' + err);
-      return next(null, { code: 500, err: 'internal' });
+      return next(null, {code: 500, err: 'internal'});
     }
 
     return next(null);

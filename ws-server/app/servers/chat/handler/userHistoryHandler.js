@@ -21,7 +21,7 @@ handler.call = function (data, session, next) {
 
     function check (callback) {
       if (!data.user_id) {
-        return callback('username is mandatory');
+        return callback('user_id is mandatory');
       }
 
       if (!withUser) {

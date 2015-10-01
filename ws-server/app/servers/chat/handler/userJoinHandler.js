@@ -38,8 +38,7 @@ handler.call = function (data, session, next) {
     },
 
     function persist (oneData, callback) {
-      // persist on current user
-      user.update({$addToSet: { onetoones: withUser._id }}, function (err) {
+      user.updateActivity(withUser._id, function (err) {
         return callback(err, oneData);
       });
     },
@@ -53,9 +52,9 @@ handler.call = function (data, session, next) {
       logger.error('[user:join] ' + err);
 
       if (err === 'notexists') {
-        return next(null, { code: 404, err: err });
+        return next(null, {code: 404, err: err});
       }
-      return next(null, { code: 500, err: 'internal' });
+      return next(null, {code: 500, err: 'internal'});
     }
 
     return next(null);

@@ -42,7 +42,7 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
 
     function retrieveUser (callback) {
       User.findById(uid)
-        .populate('onetoones')
+        .populate('onetoones.user')
         .populate('blocked')
         .exec(function (err, user) {
           if (err) {

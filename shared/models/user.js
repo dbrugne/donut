@@ -31,7 +31,10 @@ var userSchema = mongoose.Schema({
     name: String
   },
   preferences: mongoose.Schema.Types.Mixed,
-  onetoones: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
+  onetoones: [{
+    user: {type: mongoose.Schema.ObjectId, ref: 'User'},
+    lastactivity_at: {type: Date}
+  }],
   blocked: [{type: mongoose.Schema.ObjectId, ref: 'Room'}],
   unviewed: [{
     room: {type: mongoose.Schema.ObjectId, ref: 'Room'},
@@ -47,7 +50,6 @@ var userSchema = mongoose.Schema({
   online: Boolean,
   lastonline_at: {type: Date},
   lastoffline_at: {type: Date}
-
 });
 
 /**
@@ -481,6 +483,40 @@ userSchema.methods.posterId = function () {
   }
   var id = data[1].substr(0, data[1].lastIndexOf('.'));
   return id;
+};
+
+userSchema.methods.findOnetoone = function (userId) {
+  if (!this.onetoones || !this.onetoones.length) {
+    return;
+  }
+
+  return _.find(this.onetoones, function (onetoone) {
+    if (onetoone.user._id) {
+      // populated
+      return (onetoone.user.id === userId);
+    } else {
+      return (onetoone.user.toString() === userId);
+    }
+  });
+};
+
+userSchema.methods.isOnetoone = function (userId) {
+  var doc = this.findOnetoone(userId);
+  return (typeof doc !== 'undefined');
+};
+
+userSchema.methods.updateActivity = function (userId, callback) {
+  if (this.isOnetoone(userId.toString())) {
+    this.constructor.update(
+      {_id: this._id, 'onetoones.user': userId},
+      {$set: {'onetoones.$.lastactivity_at': new Date()}}, callback);
+  } else {
+    var oneuser = {
+      user: userId,
+      lastactivity_at: new Date()
+    };
+    this.update({$addToSet: {onetoones: oneuser}}, callback);
+  }
 };
 
 module.exports = mongoose.model('User', userSchema);
