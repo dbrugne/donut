@@ -50,22 +50,19 @@ module.exports = function (search, searchInUsers, searchInRooms, limit, skip, li
       var q;
       if (!lightSearch) {
         q = Room
-          .find(criteria, 'name owner description topic avatar color users lastjoin_at mode')
+          .find(criteria, 'name owner group description topic avatar color users lastjoin_at mode')
           .sort({'lastjoin_at': -1})
           .skip(skip)
           .limit(limit)
-          .populate({
-            path: 'owner',
-            select: 'username'
-          })
-        ;
+          .populate('owner', 'username')
+          .populate('group', 'name');
       } else {
         q = Room
-          .find(criteria, 'name avatar color lastjoin_at mode')
+          .find(criteria, 'name group avatar color lastjoin_at mode')
           .sort({'lastjoin_at': -1})
           .skip(skip)
           .limit(limit)
-          ;
+          .populate('group', 'name');
       }
       q.exec(function (err, rooms) {
         if (err) {
@@ -92,6 +89,11 @@ module.exports = function (search, searchInUsers, searchInRooms, limit, skip, li
             mode: room.mode,
             lastjoin_at: new Date(room.lastjoin_at).getTime()
           };
+
+          if (room.group) {
+            r.group_id = room.group.id;
+            r.group_name = room.group.name;
+          }
 
           if (!lightSearch) {
             r.owner = owner;

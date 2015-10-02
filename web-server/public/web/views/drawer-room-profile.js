@@ -23,16 +23,19 @@ var DrawerRoomProfileView = Backbone.View.extend({
       this.onResponse(options.data);
     }
 
-    // ask for data
-    var that = this;
-    client.roomRead(this.roomId, null, function (data) {
+    var what = {
+      more: true,
+      users: true,
+      admin: false
+    };
+    client.roomRead(this.roomId, null, what, _.bind(function (data) {
       if (data.err === 'room-not-found') {
         return;
       }
       if (!data.err) {
-        that.onResponse(data);
+        this.onResponse(data);
       }
-    });
+    }, this));
   },
   render: function () {
     // render spinner only

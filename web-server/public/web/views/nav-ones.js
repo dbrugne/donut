@@ -19,6 +19,13 @@ module.exports = Backbone.View.extend({
     this.$list = this.$('.list');
   },
   render: function () {
+    console.log('render onetoones');
+    if (!onetoones.models.length) {
+      this.$list.empty();
+      return this.$el.hide();
+    } else {
+      this.$el.show();
+    }
     var data = [];
     _.each(onetoones.models, function (o) {
       var json = o.toJSON();

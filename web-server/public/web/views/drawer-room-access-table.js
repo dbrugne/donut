@@ -9,43 +9,59 @@ var confirmationView = require('./modal-confirmation');
 var DrawerRoomUsersTableView = Backbone.View.extend({
   template: require('../templates/drawer-room-access-table.html'),
 
+  paginationTemplate: require('../templates/pagination.html'),
+
+  page: 1, // Start on index 1
+
+  paginate: 15, // Number of users display on a page
+
+  nbPages: 0, // Store total number of pages
+
   events: {
     'click .accept-allow': 'onAllowUser',
     'click .refuse-allow': 'onRefuseUser',
-    'click .disallow': 'onDisallow'
+    'click .disallow': 'onDisallow',
+    'click .pagination>li>a': 'onChangePage'
   },
 
   initialize: function (options) {
     this.roomId = options.room_id;
+    this.$ctn = this.$('.ctn');
+    this.pagination = this.$('.paginate');
+
     this.listenTo(app, 'removeTooltips', this.onRemoveTooltips);
   },
 
   render: function (type) {
-    if (type === 'pending') {
-      client.roomUsers(this.roomId, {type: 'allowedPending'}, _.bind(function (data) {
-        this.onResponse(data.users);
-      }, this));
-    } else if (type === 'allowed') {
-      client.roomUsers(this.roomId, {type: 'allowed'}, _.bind(function (data) {
-        this.onResponse(data.users);
-      }, this));
-    }
-    this.$ctn = this.$('.ctn');
+    var searchAttributes = {
+      type: (type === 'pending' ? 'allowedPending' : 'allowed'),
+      selector: {start: (this.page - 1) * this.paginate, length: this.paginate}
+    };
+
+    client.roomUsers(this.roomId, searchAttributes, _.bind(function (data) {
+      this.onResponse(data);
+    }, this));
+
     return this;
   },
 
-  onResponse: function (users) {
-    if (!users.length) {
+  onResponse: function (data) {
+    if (!data.users.length) {
       this.$el.hide();
       return;
     }
 
     this.$el.show();
-    _.each(users, function (element, index, list) {
+    _.each(data.users, function (element, index, list) {
       list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 20);
     });
 
-    this.$ctn.html(this.template({users: users}));
+    this.$ctn.html(this.template({users: data.users}));
+    this.pagination.html(this.paginationTemplate({
+      currentPage: this.page,
+      totalNbPages: Math.ceil(data.count / this.paginate),
+      nbPages: 5
+    }));
 
     this.initializeTooltips();
   },
@@ -98,6 +114,24 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
   onRemoveTooltips: function () {
     this.$el.find('[data-toggle="tooltip"]').tooltip('hide');
+  },
+
+  onChangePage: function (event) {
+    event.preventDefault();
+
+    var id = $(event.currentTarget).data('identifier');
+    if (!id) {
+      return;
+    }
+
+    if (id === 'previous') {
+      this.page -= 1;
+    } else if (id === 'next') {
+      this.page += 1;
+    } else {
+      this.page = parseInt(id, 10);
+    }
+    this.render();
   }
 });
 

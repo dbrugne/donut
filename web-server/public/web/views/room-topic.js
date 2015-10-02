@@ -87,7 +87,7 @@ var RoomTopicView = Backbone.View.extend({
     var newTopic = this.$('.topic-input').val();
 
     // only if different
-    if (newTopic === this.model.get('topic')) {
+    if (newTopic === common.markup.toText(this.model.get('topic'))) {
       this.hideForm();
       return;
     }

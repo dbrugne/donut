@@ -5,7 +5,6 @@ var client = require('../libs/client');
 var app = require('../models/app');
 var currentUser = require('../models/current-user');
 var RoomModel = require('../models/room');
-var UserModel = require('../models/user');
 var EventModel = require('../models/event');
 
 var RoomsCollection = Backbone.Collection.extend({
@@ -202,13 +201,13 @@ var RoomsCollection = Backbone.Collection.extend({
     model.onUserOffline(data);
   },
   onKick: function (data) {
-    this._kickBanDisallow('kick', data);
+    this._kickBanDisallow('kicked', data);
   },
   onBan: function (data) {
-    this._kickBanDisallow('ban', data);
+    this._kickBanDisallow('banned', data);
   },
   onDisallow: function (data) {
-    this._kickBanDisallow('disallow', data);
+    this._kickBanDisallow('allowed', data);
   },
   _kickBanDisallow: function (what, data) {
     var model;
@@ -219,13 +218,13 @@ var RoomsCollection = Backbone.Collection.extend({
     // if i'm the "targeted user" destroy the model/view
     if (currentUser.get('user_id') === data.user_id) {
       var isFocused = model.get('focused');
-      var blocked = (what === 'ban')
+      var blocked = (what === 'banned')
         ? 'banned'
         : (what === 'kick')
         ? 'kicked'
         : true;
       var modelTmp = model.attributes;
-      if (what === 'ban' && data.banned_at) {
+      if (what === 'banned' && data.banned_at) {
         modelTmp.banned_at = data.banned_at;
         if (data.banned_reason) {
           modelTmp.banned_reason = data.banned_reason;
@@ -233,12 +232,14 @@ var RoomsCollection = Backbone.Collection.extend({
       }
       this.remove(model);
       this.addModel(modelTmp, blocked);
-      this.trigger('kickedOrBanned', {
-        model: this.get(data.room_id),
-        wasFocused: isFocused,
-        what: what,
-        data: data
-      }); // focus + alert
+      var message = i18next.t('chat.alert.' + what, { name: model.get('identifier') });
+      if (data.reason) {
+        message += ' ' + i18next.t('chat.reason', { reason: _.escape(data.reason) });
+      }
+      app.trigger('alert', 'warning', message);
+      if (isFocused) {
+        app.trigger('focus', this.get(data.room_id));
+      }
       return;
     }
 
@@ -280,8 +281,7 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    client.roomJoin(data.room_id, null, null, function (data) {
-    });
+    client.roomJoin(data.room_id, null, null);
   },
   onDeban: function (data) {
     var model;
@@ -291,7 +291,7 @@ var RoomsCollection = Backbone.Collection.extend({
 
     if (currentUser.get('user_id') === data.user_id) {
       client.roomJoin(data.room_id, null, null, _.bind(function (response) {
-        if (response.room.mode === 'private') {
+        if (model.get('mode') === 'private') {
           var isFocused = model.get('focused');
           var modelTmp = model.attributes;
           this.remove(model);

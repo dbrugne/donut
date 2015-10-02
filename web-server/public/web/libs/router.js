@@ -2,6 +2,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('./../models/app');
 var client = require('./client');
+var groups = require('../collections/groups');
 var rooms = require('../collections/rooms');
 var onetoones = require('../collections/onetoones');
 var i18next = require('i18next-client');
@@ -19,7 +20,9 @@ var DonutRouter = Backbone.Router.extend({
 
   clientOnline: false,
 
-  nextFocus: '',
+  nextFocus: null,
+
+  homeView: null,
 
   initialize: function (options) {
     var that = this;
@@ -31,9 +34,11 @@ var DonutRouter = Backbone.Router.extend({
       that.clientOnline = false;
       Backbone.history.stop();
     }, this));
+    this.listenTo(app, 'focus', this.focus);
     this.listenTo(app, 'joinRoom', this.focusRoom);
     this.listenTo(app, 'joinOnetoone', this.focusOne);
     this.listenTo(app, 'viewAdded', this.viewAdded);
+    this.listenTo(app, 'goToSearch', this.focusOnSearch);
 
     // static views
     this.homeView = new HomeView({});
@@ -48,10 +53,18 @@ var DonutRouter = Backbone.Router.extend({
   },
 
   focusGroup: function (group) {
-    // @todo dbr
-    client.groupRead(null, group, _.bind(function (response) {
-      console.log('show', response);
-    }, this));
+    var identifier = '#' + group;
+    var model = groups.iwhere('identifier', identifier);
+    if (model) {
+      this.focus(model);
+    } else {
+      client.groupRead(null, group, _.bind(function (response) {
+        if (!response.err) {
+          model = groups.addModel(response);
+          this.focus(model);
+        }
+      }, this));
+    }
   },
 
   focusRoom: function () {
@@ -98,12 +111,14 @@ var DonutRouter = Backbone.Router.extend({
 
   focusOnSearch: function () {
     this.root();
-    this.homeView.searchView.$search
-      .focus();
+    this.homeView.searchView.$search.focus();
     app.trigger('drawerClose');
   },
 
   unfocusAll: function () {
+    groups.each(function (o) {
+      o.set('focused', false);
+    });
     rooms.each(function (o) {
       o.set('focused', false);
     });

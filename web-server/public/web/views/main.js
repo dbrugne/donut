@@ -6,6 +6,7 @@ var donutDebug = require('../libs/donut-debug');
 var app = require('../models/app');
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');
+var groups = require('../collections/groups');
 var rooms = require('../collections/rooms');
 var onetoones = require('../collections/onetoones');
 var ConnectionModalView = require('./modal-connection');
@@ -25,6 +26,7 @@ var DrawerUserProfileView = require('./drawer-user-profile');
 var DrawerUserEditView = require('./drawer-user-edit');
 var DrawerUserPreferencesView = require('./drawer-user-preferences');
 var DrawerUserAccountView = require('./drawer-account');
+var GroupView = require('./group');
 var RoomView = require('./discussion-room');
 var RoomViewBlocked = require('./discussion-room-blocked');
 var OneToOneView = require('./discussion-onetoone');
@@ -54,7 +56,7 @@ var MainView = Backbone.View.extend({
   intervalDuration: 240000, // ms
 
   events: {
-    'click .go-to-search': 'focusOnSearch',
+    'click .go-to-search': 'goToSearch',
     'click .open-create-room': 'openCreateRoom',
     'click .open-user-edit': 'openUserEdit',
     'click .open-user-preferences': 'openUserPreferences',
@@ -79,11 +81,12 @@ var MainView = Backbone.View.extend({
     this.listenTo(client, 'welcome', this.onWelcome);
     this.listenTo(client, 'admin:message', this.onAdminMessage);
     this.listenTo(client, 'disconnect', this.onDisconnect);
+    this.listenTo(groups, 'add', this.addView);
+    this.listenTo(groups, 'remove', this.addView);
     this.listenTo(rooms, 'add', this.addView);
     this.listenTo(rooms, 'remove', this.onRemoveDiscussion);
     this.listenTo(onetoones, 'add', this.addView);
     this.listenTo(onetoones, 'remove', this.onRemoveDiscussion);
-    this.listenTo(rooms, 'kickedOrBanned', this.roomKickedOrBanned);
     this.listenTo(rooms, 'allowed', this.roomAllowed);
     this.listenTo(rooms, 'join', this.roomJoin);
     this.listenTo(rooms, 'deleted', this.roomRoomDeleted);
@@ -275,41 +278,18 @@ var MainView = Backbone.View.extend({
    * @param event
    * @returns {boolean}
    */
-  roomKickedOrBanned: function (event) {
-    var what = event.what;
-    var data = event.data;
-    if (event.wasFocused) { // if remove model was focused, focused the new one
-      this.focus(event.model);
-    }
-    var message;
-    switch (what) {
-      case 'kick':
-        message = i18next.t('chat.kickmessage', { name: data.name });
-        break;
-      case 'ban':
-        message = i18next.t('chat.banmessage', { name: data.name });
-        break;
-      case 'disallow':
-        message = i18next.t('chat.disallowmessage', { name: data.name });
-        break;
-    }
-    if (data.reason) {
-      message += ' ' + i18next.t('chat.reason', { reason: _.escape(data.reason) });
-    }
-    app.trigger('alert', 'warning', message);
-  },
   roomAllowed: function (event) {
     if (event.wasFocused) { // if remove model was focused, focused the new one
-      this.focus(event.model);
+      app.trigger('focus', event.model);
     }
   },
   roomJoin: function (event) {
     if (event.wasFocused) { // if remove model was focused, focused the new one
-      this.focus(event.model);
+      app.trigger('focus', event.model);
     }
   },
   roomRoomDeleted: function (data) {
-    this.focus();
+    app.trigger('focus');
     if (data && data.reason) {
       app.trigger('alert', 'warning', data.reason);
     }
@@ -449,6 +429,8 @@ var MainView = Backbone.View.extend({
       } else {
         constructor = RoomView;
       }
+    } else if (model.get('type') === 'group') {
+      constructor = GroupView;
     } else {
       constructor = OneToOneView;
     }
@@ -464,10 +446,6 @@ var MainView = Backbone.View.extend({
 
     // append to DOM
     this.$discussionsPanelsContainer.append(view.$el);
-
-    var identifier = (model.get('type') === 'room')
-      ? model.get('name')
-      : model.get('username');
     app.trigger('viewAdded', model, collection);
   },
 
@@ -544,6 +522,10 @@ var MainView = Backbone.View.extend({
       client.userDeban(userId);
       app.trigger('userDeban');
     }, this));
+  },
+
+  goToSearch: function (event) {
+    app.trigger('goToSearch');
   },
 
   switchLanguage: function (event) {
