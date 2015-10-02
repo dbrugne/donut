@@ -68,7 +68,7 @@ handler.call = function (data, session, next) {
 
     function createWelcome (group, callback) {
       var room = RoomModel.getNewRoom();
-      room.name = '#Welcome';
+      room.name = '#welcome';
       room.group = group.id;
       room.owner = user.id;
       room.color = conf.room.default.color;

@@ -621,6 +621,15 @@
           "left": "<strong>%left</strong> to go"
         }
       },
+      "group-form": {
+        "create": {
+          "label": "Create a group",
+          "help": "Un groupe est un espace regroupant vos donut et permettant à votre communautés de devenir membre et d'accèder à un groupe de donuts.",
+          "help-name": "Between 3 and 20 characters, only letters, numbers,  dashes (-) and underscores (_).<br>Caution the group name will no longer be editable.",
+          "placeholder": "Group name",
+          "submit": "Create"
+        }
+      },
       "room-form": {
         "common": {
           "join-mode-label": "Who can join the donut",
@@ -645,7 +654,8 @@
           "label": "Create a donut",
           "help": "Between 3 and 24 characters, only letters, numbers,  dashes (-) and underscores (_)",
           "placeholder": "Donut name",
-          "submit": "Create"
+          "submit": "Create",
+          "group": "Already owner of a community? Want to create a dedicated space for you users? You can <a href=\"#\" class=\"new-group\">create a group</a>"
         },
         "edit": {
           "othersettings": "Other settings",

@@ -15,6 +15,7 @@ var AlertView = require('./alert');
 var DrawerView = require('./drawer');
 var DrawerRoomAccessView = require('./drawer-room-access');
 var DrawerRoomCreateView = require('./drawer-room-create');
+var DrawerGroupCreateView = require('./drawer-group-create');
 var DrawerRoomProfileView = require('./drawer-room-profile');
 var DrawerRoomEditView = require('./drawer-room-edit');
 var DrawerRoomUsersView = require('./drawer-room-users');
@@ -89,6 +90,7 @@ var MainView = Backbone.View.extend({
     this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
     this.listenTo(app, 'openUserProfile', this.openUserProfile);
     this.listenTo(app, 'changeColor', this.onChangeColor);
+    this.listenTo(app, 'openCreateGroup', this.openCreateGroup);
   },
   run: function () {
     // generate and attach subviews
@@ -320,6 +322,11 @@ var MainView = Backbone.View.extend({
     event.preventDefault();
     var name = $(event.currentTarget).data('name') || '';
     var view = new DrawerRoomCreateView({ name: name });
+    this.drawerView.setSize('450px').setView(view).open();
+    view.focusField();
+  },
+  openCreateGroup: function () {
+    var view = new DrawerGroupCreateView();
     this.drawerView.setSize('450px').setView(view).open();
     view.focusField();
   },
