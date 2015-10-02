@@ -42,7 +42,7 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
 
     function retrieveUser (callback) {
       User.findById(uid)
-        .populate('onetoones.user')
+        .populate('ones.user')
         .populate('blocked')
         .exec(function (err, user) {
           if (err) {
@@ -70,11 +70,11 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
     },
 
     function populateOnes (user, callback) {
-      if (user.onetoones.length < 1) {
+      if (user.ones.length < 1) {
         return callback(null, user);
       }
 
-      oneDataHelper(that.app, user, user.onetoones, function (err, ones) {
+      oneDataHelper(that.app, user, user.ones, function (err, ones) {
         if (err) {
           return callback(err, user);
         }

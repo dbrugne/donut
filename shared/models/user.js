@@ -31,10 +31,7 @@ var userSchema = mongoose.Schema({
     name: String
   },
   preferences: mongoose.Schema.Types.Mixed,
-  onetoones: [{ // @todo yfuks remove this
-    user: {type: mongoose.Schema.ObjectId, ref: 'User'},
-    lastactivity_at: {type: Date}
-  }],
+  onetoones: [{type: mongoose.Schema.ObjectId, ref: 'User'}], // @todo yfuks remove after prod migration
   ones: [{
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
     lastactivity_at: {type: Date, default: Date.now}
@@ -489,11 +486,11 @@ userSchema.methods.posterId = function () {
   return id;
 };
 userSchema.methods.findOnetoone = function (userId) {
-  if (!this.onetoones || !this.onetoones.length) {
+  if (!this.ones || !this.ones.length) {
     return;
   }
 
-  return _.find(this.onetoones, function (onetoone) {
+  return _.find(this.ones, function (onetoone) {
     if (onetoone.user._id) {
        // populated
       return (onetoone.user.id === userId);
@@ -509,11 +506,11 @@ userSchema.methods.isOnetoone = function (userId) {
 userSchema.methods.updateActivity = function (userId, callback) {
   if (this.isOnetoone(userId.toString())) {
     this.constructor.update(
-       {_id: this._id, 'onetoones.user': userId},
-       {$set: {'onetoones.$.lastactivity_at': new Date()}}, callback);
+       {_id: this._id, 'ones.user': userId},
+       {$set: {'ones.$.lastactivity_at': new Date()}}, callback);
   } else {
     var oneuser = {user: userId, lastactivity_at: new Date()};
-    this.update({$addToSet: {onetoones: oneuser}}, callback);
+    this.update({$addToSet: {ones: oneuser}}, callback);
   }
 };
 module.exports = mongoose.model('User', userSchema);
