@@ -45,7 +45,12 @@ var RoomAccessView = Backbone.View.extend({
     return this;
   },
   reload: function () {
-    client.roomRead(this.roomId, null, _.bind(function (data) {
+    var what = {
+      more: true,
+      users: false,
+      admin: true
+    };
+    client.roomRead(this.roomId, null, what, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }
@@ -229,13 +234,11 @@ var RoomAccessView = Backbone.View.extend({
     });
     this.$errors.html(message).show();
   },
-
   initializeTooltips: function () {
     this.$el.find('[data-toggle="tooltip"]').tooltip({
       container: 'body'
     });
   }
-
 });
 
 module.exports = RoomAccessView;

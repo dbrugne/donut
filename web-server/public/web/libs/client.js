@@ -228,7 +228,14 @@ var client = _.extend({
       this.applyRequestCallback('room:topic', callback)
     );
   },
-  roomRead: function (roomId, roomName, callback) {
+  /**
+   * what: {
+     *   more:  true // add description, poster, ...
+     *   users: true // users list
+     *   admin: true // password, visibility, priority...
+     * }
+   */
+  roomRead: function (roomId, roomName, what, callback) {
     var data = {};
     if (roomId) {
       data.room_id = roomId;
@@ -236,6 +243,16 @@ var client = _.extend({
       data.name = roomName;
     } else {
       return;
+    }
+
+    if (what) {
+      data.what = what;
+    } else {
+      data.what = {
+        more: false,
+        users: false,
+        admin: false
+      };
     }
 
     debug('io:out:room:read', data);
@@ -622,7 +639,9 @@ var client = _.extend({
   // ======================================================
 
   userPreferencesRead: function (roomId, callback) {
-    var data = (roomId) ? {room_id: roomId} : {};
+    var data = (roomId)
+      ? {room_id: roomId}
+      : {};
     debug('io:out:user:preferences:read', data);
     pomelo.request(
       'chat.preferencesReadHandler.call',
