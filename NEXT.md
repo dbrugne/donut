@@ -1,4 +1,5 @@
 # Things to do on next deploy
+* Migrate onetoones to the new format:
 ```
 grunt migration-onetoones
 ```

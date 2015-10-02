@@ -44,7 +44,7 @@ module.exports = function (grunt) {
       },
 
       function removeOldField (callback) {
-        UserModel.update({}, {$unset: {onetoones: ''}}, {multi: true}, function (err, result) {
+        UserModel.update({}, {$unset: {onetoones: true}}, {multi: true}, function (err, result) {
           if (err) {
             return callback(err);
           }
