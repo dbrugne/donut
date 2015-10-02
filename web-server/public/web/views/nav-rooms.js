@@ -18,10 +18,17 @@ module.exports = Backbone.View.extend({
   initialize: function (options) {
     this.listenTo(app, 'redraw-block', this.render);
     this.listenTo(rooms, 'redraw-block', this.render);
-    this.listenTo(rooms, 'change:avatar', this.render);
     this.$list = this.$('.list');
+    this.$empty = this.$('.empty');
   },
   render: function () {
+    console.log('render onetoones');
+    if (!rooms.models.length) {
+      this.$list.empty();
+      return this.$empty.show();
+    } else {
+      this.$empty.hide();
+    }
     var data = [];
     _.each(rooms.models, function (o) {
       var json = o.toJSON();

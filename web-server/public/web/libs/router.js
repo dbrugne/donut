@@ -34,6 +34,7 @@ var DonutRouter = Backbone.Router.extend({
     this.listenTo(app, 'joinRoom', this.focusRoom);
     this.listenTo(app, 'joinOnetoone', this.focusOne);
     this.listenTo(app, 'viewAdded', this.viewAdded);
+    this.listenTo(app, 'goToSearch', this.focusOnSearch);
 
     // static views
     this.homeView = new HomeView({});
@@ -98,8 +99,7 @@ var DonutRouter = Backbone.Router.extend({
 
   focusOnSearch: function () {
     this.root();
-    this.homeView.searchView.$search
-      .focus();
+    this.homeView.searchView.$search.focus();
     app.trigger('drawerClose');
   },
 

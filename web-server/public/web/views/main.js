@@ -53,7 +53,7 @@ var MainView = Backbone.View.extend({
   intervalDuration: 240000, // ms
 
   events: {
-    'click .go-to-search': 'focusOnSearch',
+    'click .go-to-search': 'goToSearch',
     'click .open-create-room': 'openCreateRoom',
     'click .open-user-edit': 'openUserEdit',
     'click .open-user-preferences': 'openUserPreferences',
@@ -537,6 +537,10 @@ var MainView = Backbone.View.extend({
       client.userDeban(userId);
       app.trigger('userDeban');
     }, this));
+  },
+
+  goToSearch: function (event) {
+    app.trigger('goToSearch');
   },
 
   switchLanguage: function (event) {
