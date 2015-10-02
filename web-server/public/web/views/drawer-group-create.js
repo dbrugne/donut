@@ -17,10 +17,10 @@ var DrawerGroupCreateView = Backbone.View.extend({
   },
 
   initialize: function (options) {
-    this.render();
+    this.render(options.name);
   },
-  render: function () {
-    var html = this.template();
+  render: function (name) {
+    var html = this.template({name: name.replace('#', '')});
     this.$el.html(html);
     this.$input = this.$el.find('input[name=input-create]');
     this.$errors = this.$el.find('.errors');
@@ -77,7 +77,7 @@ var DrawerGroupCreateView = Backbone.View.extend({
     client.groupCreate(name, _.bind(function (response) {
       this.$submit.removeClass('loading');
       if (response.code !== 500 && response.success !== true) {
-        var uri = 'room/' + name;
+        var uri = 'group/' + name;
         var error = i18next.t('chat.form.errors.' +
           response.err, {name: name, uri: uri});
         return this.setError(error);
@@ -85,7 +85,6 @@ var DrawerGroupCreateView = Backbone.View.extend({
         return this.setError(i18next.t('global.unknownerror'));
       }
 
-      app.trigger('joinGroup', name);
       this.reset();
       this.trigger('close');
     }, this));
