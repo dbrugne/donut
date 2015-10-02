@@ -42,6 +42,7 @@ handler.call = function (data, session, next) {
     },
 
     function create (callback) {
+      // @todo : make it works with group rooms (#aaa/aaa)
       var q = RoomModel.findByName(data.name);
       q.exec(function (err, room) {
         if (err) {
