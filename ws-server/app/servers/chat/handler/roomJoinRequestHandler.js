@@ -3,6 +3,7 @@ var errors = require('../../../util/errors');
 var async = require('async');
 var Room = require('../../../../../shared/models/room');
 var Notifications = require('../../../components/notifications');
+var validator = require('validator');
 
 var Handler = function (app) {
   this.app = app;
@@ -25,6 +26,10 @@ handler.call = function (data, session, next) {
     function check (callback) {
       if (!data.room_id) {
         return callback('params-room-id');
+      }
+
+      if (data.message && data.message.length > 200) {
+        return callback('message-wrong-format');
       }
 
       if (!room) {
@@ -59,9 +64,13 @@ handler.call = function (data, session, next) {
     },
 
     function persist (eventData, callback) {
+      var pendingModel = {user: user._id};
+      if (data.message) {
+        pendingModel.message = validator.escape(data.message);
+      }
       Room.update(
         {_id: { $in: [room.id] }},
-        {$addToSet: {allowed_pending: user._id}}, function (err) {
+        {$addToSet: {allowed_pending: pendingModel}}, function (err) {
           return callback(err, eventData);
         }
       );

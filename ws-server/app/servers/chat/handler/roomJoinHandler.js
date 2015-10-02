@@ -85,7 +85,7 @@ handler.join = function (user, room, next) {
     },
 
     function removeAllowedPending (eventData, callback) {
-      room.update({$pull: {allowed_pending: user._id}}, function (err) {
+      room.update({$pull: {allowed_pending: {user: user._id}}}, function (err) {
         return callback(err, eventData);
       });
     },

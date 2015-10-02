@@ -38,7 +38,11 @@ var roomSchema = mongoose.Schema({
   }],
   allow_group_member: Boolean,
   allowed: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
-  allowed_pending: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
+  allowed_pending: [{
+    user: {type: mongoose.Schema.ObjectId, ref: 'User'},
+    message: String,
+    created_at: {type: Date, default: Date.now}
+  }],
   avatar: String,
   poster: String,
   color: String,
@@ -178,7 +182,7 @@ roomSchema.methods.isAllowed = function (userId) {
 
 roomSchema.methods.isAllowedPending = function (userId) {
   var subDocument = _.find(this.allowed_pending, function (u) {
-    return (u.toString() === userId);
+    return (u.user.toString() === userId);
   });
   return (typeof subDocument !== 'undefined');
 };
@@ -305,7 +309,7 @@ roomSchema.methods.getIdsByType = function (type) {
     });
   } else if (type === 'allowedPending') {
     _.each(this.allowed_pending, function (u) {
-      ids.push(u.toString());
+      ids.push(u.user.toString());
     });
   } else if (type === 'regular') {
     var that = this;

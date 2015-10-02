@@ -446,8 +446,11 @@ var client = _.extend({
     debug('io:out:room:typing', data);
     pomelo.notify('chat.roomTypingHandler.call', data);
   },
-  roomJoinRequest: function (roomId, callback) {
+  roomJoinRequest: function (roomId, message, callback) {
     var data = {room_id: roomId};
+    if (message) {
+      data.message = message;
+    }
     debug('io:out:room:join:request', data);
     pomelo.request(
       'chat.roomJoinRequestHandler.call',

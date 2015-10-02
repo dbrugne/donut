@@ -1,4 +1,5 @@
 var $ = require('jquery');
+var _ = require('underscore');
 var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
 var i18next = require('i18next-client');
@@ -6,6 +7,7 @@ var date = require('../libs/date');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../models/app');
 var client = require('../libs/client');
+var ConfirmationView = require('./modal-confirmation');
 
 var RoomBlockedView = Backbone.View.extend({
   tagName: 'div',
@@ -78,17 +80,19 @@ var RoomBlockedView = Backbone.View.extend({
   onRequestAllowance: function (event) {
     event.preventDefault();
 
-    client.roomJoinRequest(this.model.get('id'), function (response) {
-      if (response.err) {
-        if (response.err === 'allow-pending') {
-          app.trigger('alert', 'error', i18next.t('chat.allowed.error.' + response.err));
+    ConfirmationView.open({message: 'request-allowance', area: true, room_name: this.model.get('name')}, _.bind(function (message) {
+      client.roomJoinRequest(this.model.get('id'), message, function (response) {
+        if (response.err) {
+          if (response.err === 'allow-pending' || response.err === 'message-wrong-format') {
+            app.trigger('alert', 'error', i18next.t('chat.allowed.error.' + response.err));
+          } else {
+            app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+          }
         } else {
-          app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+          app.trigger('alert', 'info', i18next.t('chat.allowed.success'));
         }
-      } else {
-        app.trigger('alert', 'info', i18next.t('chat.allowed.success'));
-      }
-    });
+      });
+    }, this));
   },
   onValidPassword: function (event) {
     var that = this;

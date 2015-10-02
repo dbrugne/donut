@@ -367,7 +367,8 @@
     "allowed": {
       "success": "La demande d'accès a bien été envoyée",
       "error" : {
-        "allow-pending": "Une demande d'accès a déjà été envoyée"
+        "allow-pending": "Une demande d'accès a déjà été envoyée",
+        "message-wrong-format": "Le message ne doit pas faire plus de 200 caractères"
       }
     },
     "password": {
@@ -378,6 +379,8 @@
     "confirmation": {
       "sure": "Vous confirmez que vous voulez faire cela ?",
       "placeholder": "Expliquez pourquoi, visible dans le donut (optionnel)",
+      "placeholderarea": "200 caractères maximum",
+      "label": "Expliquez pourquoi (optionnel)",
       "cancel": "Non, j'annule",
       "confirm": "Oui, je confirme",
       "message": {
@@ -385,7 +388,8 @@
         "refuseuser": "Vous allez refuser l'accès à @__username__",
         "acceptuser": "Vous allez autoriser l'accès à @__username__",
         "disallowuser": "Vous allez supprimer l'accès à @__username__",
-        "invite": "Vous allez autoriser l'accès à @__username__. Une notification va lui être adressée pour l'inviter à rejoindre #__name__."
+        "invite": "Vous allez autoriser l'accès à @__username__. Une notification va lui être adressée pour l'inviter à rejoindre #__name__.",
+        "requestallowance": "Vous allez envoyer une demande d'accés pour #__name__. Le créateur du donut aura accès à votre vrais nom et addresse mail."
       }
     },
     "commands": {

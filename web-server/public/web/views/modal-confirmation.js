@@ -24,6 +24,8 @@ var ConfirmationModalView = Backbone.View.extend({
   render: function () {
     this.$inputBlock = this.$('.input');
     this.$input = this.$inputBlock.find('input[type="text"]');
+    this.$bigInputArea = this.$('#big-input-textarea');
+    this.$biginput = this.$('.big-input');
     this.$message = this.$('.message');
 
     // Configure modal
@@ -39,10 +41,15 @@ var ConfirmationModalView = Backbone.View.extend({
 
     // some callback action need to have modal properly closed before execution (e.g.: focus an element)
     this.$el.on('hidden.bs.modal', _.bind(function (e) {
-      if (this.confirmed)
-        this.confirmCallback(this.$input.val()); // confirm
-      else if (_.isFunction(this.cancelCallback))
+      if (this.confirmed) {
+        if (this.$input.val()) {
+          this.confirmCallback(this.$input.val());
+        } else {
+          this.confirmCallback(this.$bigInputArea.val());
+        }
+      } else if (_.isFunction(this.cancelCallback)) {
         this.cancelCallback(); // cancel
+      }
 
       this._reset();
     }, this));
@@ -76,6 +83,11 @@ var ConfirmationModalView = Backbone.View.extend({
     else
       this.$inputBlock.hide();
 
+    if (this.options.area) {
+      this.$biginput.show();
+    } else {
+      this.$biginput.hide();
+    }
     // set message
     if (this.options.message) {
       if (this.options.message === 'mode-change') {
@@ -88,6 +100,8 @@ var ConfirmationModalView = Backbone.View.extend({
         this.$message.text(i18next.t('chat.confirmation.message.disallowuser', {username: this.options.username}));
       } else if (this.options.message === 'invite') {
         this.$message.text(i18next.t('chat.confirmation.message.invite', {username: this.options.username, name: this.options.room_name.replace('#', '')}));
+      } else if (this.options.message === 'request-allowance') {
+        this.$message.text(i18next.t('chat.confirmation.message.requestallowance', {name: this.options.room_name.replace('#', '')}));
       }
     }
     // bind 'enter' only when showing popin
