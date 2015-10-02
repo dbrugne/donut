@@ -10,8 +10,8 @@ module.exports = function (user, room, fn) {
 
   var data = {
     name: room.name,
+    identifier: room.getIdentifier(),
     room_id: room.id,
-    id: room.id,
     mode: room.mode,
     hasPassword: !!room.password,
     blocked: false,

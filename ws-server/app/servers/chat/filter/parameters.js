@@ -53,7 +53,7 @@ Filter.prototype.before = function (data, session, next) {
         return callback(null);
       }
       if (!data.group_id && data.group &&
-          [ 'chat.groupReadHandler.call' ].indexOf(data.__route__) === -1) {
+        [ 'chat.groupReadHandler.call' ].indexOf(data.__route__) === -1) {
         return callback(null);
       }
 
@@ -77,55 +77,33 @@ Filter.prototype.before = function (data, session, next) {
       q.exec(callback);
     },
 
-    room: function (callback) {
+    roomByName: function (callback) {
       if (data.__route__ === 'chat.roomCreateHandler.call') {
         return callback(null);
       }
-      if (!data.name && !data.room_id) {
+      if (!data.name) {
         return callback(null);
       }
-      if (!data.room_id && data.name && [
-        'chat.roomCreateHandler.call',
-        'chat.roomJoinHandler.call',
-        'chat.roomReadHandler.call' ].indexOf(data.__route__) === -1) {
+      if ([ 'chat.roomJoinHandler.call', 'chat.roomReadHandler.call' ]
+          .indexOf(data.__route__) === -1) {
         return callback(null);
       }
 
-      var q;
+      RoomModel.findByIdentifier(data.name, callback);
+    },
 
-      if (data.name) {
-        var identifier = common.validate.uriExtract(data.name);
-        if (!identifier) {
-          return callback('invalid room identifier parameter: ' + data.name);
-        }
-        console.error(identifier);
-        // @todo dbr: search for both group and room if identifier.group is sets
-        q = RoomModel.findByName('#' + identifier.room);
+    roomById: function (callback) {
+      if (!data.room_id) {
+        return callback(null);
       }
 
-      if (data.room_id) {
-        if (!common.validate.objectId(data.room_id)) {
-          return callback('invalid room_id parameter: ' + data.room_id);
-        }
-        q = RoomModel.findOne({ _id: data.room_id });
+      if (!common.validate.objectId(data.room_id)) {
+        return callback('invalid room_id parameter: ' + data.room_id);
       }
 
-      if (data.__route__ === 'chat.roomJoinHandler.call') {
-        q.populate('owner', 'username avatar color facebook')
-         .populate('group', 'name');
-      }
-      if (data.__route__ === 'chat.roomJoinRequestHandler.call') {
-        q.populate('owner', 'username avatar color facebook')
-         .populate('group', 'name');
-      }
-      if (data.__route__ === 'chat.roomReadHandler.call') {
-        q.populate('owner', 'username avatar color facebook')
-          .populate('group', 'name')
-          .populate('op', 'username avatar color facebook')
-          .populate('users', 'username avatar color facebook')
-          .populate('bans.user', 'username avatar color facebook')
-          .populate('devoices.user', 'username avatar color facebook');
-      }
+      var q = RoomModel.findOne({ _id: data.room_id })
+          .populate('owner', 'username avatar color facebook')
+          .populate('group', 'name');
 
       q.exec(callback);
     },
@@ -198,8 +176,11 @@ Filter.prototype.before = function (data, session, next) {
     if (results.group) {
       session.__group__ = results.group;
     }
-    if (results.room) {
-      session.__room__ = results.room;
+    if (results.roomByName) {
+      session.__room__ = results.roomByName;
+    }
+    if (results.roomById) {
+      session.__room__ = results.roomById;
     }
     if (results.user) {
       session.__user__ = results.user;

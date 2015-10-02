@@ -84,12 +84,12 @@ var RoomsCollection = Backbone.Collection.extend({
   },
   onJoin: function (data) {
     var model;
-    if ((model = this.get(data.id)) && model.get('blocked')) {
+    if ((model = this.get(data.room_id)) && model.get('blocked')) {
       var isFocused = model.get('focused');
       this.remove(model);
       this.addModel(data);
       this.trigger('join', {
-        model: this.get(data.id),
+        model: this.get(data.room_id),
         wasFocused: isFocused
       }); // focus
     } else {
@@ -98,6 +98,7 @@ var RoomsCollection = Backbone.Collection.extend({
     }
   },
   addModel: function (data, blocked) {
+    data.id = data.room_id;
     data.blocked = blocked || false;
 
     data.last = (data.lastactivity_at)
@@ -112,11 +113,11 @@ var RoomsCollection = Backbone.Collection.extend({
     data.uri = data.identifier;
 
     // update model
-    var isNew = (this.get(data.id) === undefined);
+    var isNew = (this.get(data.room_id) === undefined);
     var model;
     if (!isNew) {
       // already exist in IHM (maybe reconnecting)
-      model = this.get(data.id);
+      model = this.get(data.room_id);
       model.set(data);
     } else {
       // add in IHM (by mainView)
