@@ -162,6 +162,16 @@ var client = _.extend({
     );
   },
 
+  groupCreate: function (groupName, callback) {
+    var data = { name: groupName };
+    debug('io:out:group:create', data);
+    pomelo.request(
+      'chat.groupCreateHandler.call',
+      data,
+      this.applyRequestCallback('group:create', callback)
+    );
+  },
+
   // ROOM
   // ======================================================
 

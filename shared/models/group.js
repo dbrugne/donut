@@ -35,6 +35,10 @@ groupSchema.statics.findByName = function (name) {
   });
 };
 
+groupSchema.statics.getNewGroup = function () {
+  return new this();
+};
+
 groupSchema.methods.isOwner = function (userId) {
   if (!this.owner) {
     return false;
