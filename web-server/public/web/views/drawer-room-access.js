@@ -212,7 +212,7 @@ var RoomAccessView = Backbone.View.extend({
 
     client.roomUpdate(this.roomId, {password: this.getPassword()}, _.bind(function (data) {
       if (data.err) {
-        return this.editError(data);
+        return this.setError(i18next.t('chat.form.errors.' + data.err));
       }
       this.trigger('close');
     }, this));
@@ -226,13 +226,6 @@ var RoomAccessView = Backbone.View.extend({
     }
 
     return null;
-  },
-  editError: function (dataErrors) {
-    var message = '';
-    _.each(dataErrors.err, function (error) {
-      message += i18next.t('chat.form.errors.' + error) + '<br>';
-    });
-    this.$errors.html(message).show();
   },
   initializeTooltips: function () {
     this.$el.find('[data-toggle="tooltip"]').tooltip({
