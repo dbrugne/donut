@@ -17,10 +17,10 @@ var DrawerGroupCreateView = Backbone.View.extend({
   },
 
   initialize: function (options) {
-    this.render(options.name);
+    this.render();
   },
   render: function (name) {
-    var html = this.template({name: name.replace('#', '')});
+    var html = this.template();
     this.$el.html(html);
     this.$input = this.$el.find('input[name=input-create]');
     this.$errors = this.$el.find('.errors');

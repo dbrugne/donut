@@ -6,17 +6,17 @@ var currentUser = require('../models/current-user');
 var ImageUploader = require('./image-uploader');
 var ColorPicker = require('./color-picker');
 
-var DrawerRoomEditView = Backbone.View.extend({
-  template: require('../templates/drawer-room-edit.html'),
+var DrawerGroupEditView = Backbone.View.extend({
+  template: require('../templates/drawer-group-edit.html'),
 
-  id: 'room-edit',
+  id: 'group-edit',
 
   events: {
-    'submit form.room-form': 'onSubmit'
+    'submit form.group-form': 'onSubmit'
   },
 
   initialize: function (options) {
-    this.roomId = options.room_id;
+    this.groupId = options.group_id;
 
     // show spinner as temp content
     this.render();
@@ -26,7 +26,7 @@ var DrawerRoomEditView = Backbone.View.extend({
       users: false,
       admin: true
     };
-    client.roomRead(this.roomId, null, what, _.bind(function (data) {
+    client.groupRead(this.groupId, null, what, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }
@@ -40,28 +40,27 @@ var DrawerRoomEditView = Backbone.View.extend({
   _remove: function () {
     this.colorPicker.remove();
     this.avatarUploader.remove();
-    this.posterUploader.remove();
     this.remove();
   },
-  onResponse: function (room) {
-    if (room.color) {
-      this.trigger('color', room.color);
+  onResponse: function (group) {
+    if (group.color) {
+      this.trigger('color', group.color);
     }
 
-    room.isOwner = (room.owner)
-      ? (room.owner.user_id === currentUser.get('user_id'))
+    group.isOwner = (group.owner)
+      ? (group.owner.user_id === currentUser.get('user_id'))
       : false;
 
-    room.isAdmin = (currentUser.get('admin') === true);
+    group.isAdmin = (currentUser.get('admin') === true);
 
-    var currentAvatar = room.avatar;
+    var currentAvatar = group.avatar;
 
-    var html = this.template({room: room});
+    var html = this.template({group: group});
     this.$el.html(html);
 
     // description
-    this.$('#roomDescription').maxlength({
-      counterContainer: this.$('#roomDescription').siblings('.help-block').find('.counter'),
+    this.$('#groupDescription').maxlength({
+      counterContainer: this.$('#groupDescription').siblings('.help-block').find('.counter'),
       text: i18next.t('chat.form.common.edit.left')
     });
 
@@ -70,33 +69,21 @@ var DrawerRoomEditView = Backbone.View.extend({
 
     // color
     this.colorPicker = new ColorPicker({
-      color: room.color,
+      color: group.color,
       name: 'color',
-      el: this.$('.room-color').first()
+      el: this.$('.group-color').first()
     });
 
     // avatar
     this.avatarUploader = new ImageUploader({
-      el: this.$('.room-avatar').first(),
+      el: this.$('.group-avatar').first(),
       current: currentAvatar,
-      tags: 'room,avatar',
+      tags: 'group,avatar',
       field_name: 'avatar',
       resized_width: 200,
       resized_height: 200,
       cropping_aspect_ratio: 1, // squared avatar
-      success: _.bind(this.onRoomAvatarUpdate, this)
-    });
-
-    // poster
-    this.posterUploader = new ImageUploader({
-      el: this.$('.room-poster').first(),
-      current: room.poster,
-      tags: 'room,poster',
-      field_name: 'poster',
-      resized_width: 0,
-      resized_height: 0,
-      cropping_aspect_ratio: 0.36, // portrait
-      success: _.bind(this.onRoomPosterUpdate, this)
+      success: _.bind(this.onGroupAvatarUpdate, this)
     });
 
     this.initializeTooltips();
@@ -123,11 +110,7 @@ var DrawerRoomEditView = Backbone.View.extend({
       updateData.avatar = this.avatarUploader.data;
     }
 
-    if (this.posterUploader.data) {
-      updateData.poster = this.posterUploader.data;
-    }
-
-    client.roomUpdate(this.roomId, updateData, _.bind(function (data) {
+    client.groupUpdate(this.groupId, updateData, _.bind(function (data) {
       this.$('.errors').hide();
       if (data.err) {
         return this.editError(data);
@@ -136,25 +119,12 @@ var DrawerRoomEditView = Backbone.View.extend({
     }, this));
   },
 
-  onRoomAvatarUpdate: function (data) {
+  onGroupAvatarUpdate: function (data) {
     var updateData = {
       avatar: data
     };
     var that = this;
-    client.roomUpdate(this.roomId, updateData, function (d) {
-      that.$('.errors').hide();
-      if (d.err) {
-        that.editError(d);
-      }
-    });
-  },
-
-  onRoomPosterUpdate: function (data) {
-    var updateData = {
-      poster: data
-    };
-    var that = this;
-    client.roomUpdate(this.roomId, updateData, function (d) {
+    client.groupUpdate(this.groupId, updateData, function (d) {
       that.$('.errors').hide();
       if (d.err) {
         that.editError(d);
@@ -192,4 +162,4 @@ var DrawerRoomEditView = Backbone.View.extend({
 
 });
 
-module.exports = DrawerRoomEditView;
+module.exports = DrawerGroupEditView;

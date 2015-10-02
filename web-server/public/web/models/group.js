@@ -1,4 +1,5 @@
 var Backbone = require('backbone');
+var _ = require('underscore');
 
 var GroupModel = Backbone.Model.extend({
   defaults: function () {
@@ -8,6 +9,12 @@ var GroupModel = Backbone.Model.extend({
     };
   },
   initialize: function () {
+  },
+  onUpdated: function (data) {
+    var that = this;
+    _.each(data.data, function (value, key, list) {
+      that.set(key, value);
+    });
   }
 });
 
