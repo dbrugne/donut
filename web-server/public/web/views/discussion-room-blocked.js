@@ -50,7 +50,7 @@ var RoomBlockedView = Backbone.View.extend({
     });
 
     // render
-    var html = this.template(data);
+    var html = this.template({data: data});
     this.$el.attr('data-identifier', this.model.get('identifier'));
     this.$el.html(html);
     this.$error = this.$('.error');
@@ -122,7 +122,6 @@ var RoomBlockedView = Backbone.View.extend({
       }
     });
   },
-
   onCloseRoom: function (event) {
     event.preventDefault();
     client.roomLeaveBlock(this.model.get('id'));

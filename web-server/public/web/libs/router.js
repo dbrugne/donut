@@ -31,6 +31,7 @@ var DonutRouter = Backbone.Router.extend({
       that.clientOnline = false;
       Backbone.history.stop();
     }, this));
+    this.listenTo(app, 'focus', this.focus);
     this.listenTo(app, 'joinRoom', this.focusRoom);
     this.listenTo(app, 'joinOnetoone', this.focusOne);
     this.listenTo(app, 'viewAdded', this.viewAdded);

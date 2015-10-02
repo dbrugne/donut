@@ -34,11 +34,8 @@ handler.call = function (data, session, next) {
     },
 
     function prepare (callback) {
-      var users = [];
-      var alreadyIn = [];
-
-      // owner
       var owner = {};
+
       if (room.owner) {
         owner = {
           user_id: room.owner.id,
@@ -47,56 +44,15 @@ handler.call = function (data, session, next) {
           color: room.owner.color,
           is_owner: true
         };
-        users.push(owner);
       }
 
-      // op
-      if (room.op && room.op.length > 0) {
-        _.each(room.op, function (op) {
-          var el = {
-            user_id: op.id,
-            username: op.username,
-            avatar: op._avatar(),
-            color: op.color,
-            is_op: true
-          };
-          users.push(el);
-          alreadyIn.push(el.user_id);
-        });
-      }
-
-      // users
-      if (room.users && room.users.length > 0) {
-        _.each(room.users, function (u) {
-          if (u.id === owner.user_id || alreadyIn.indexOf(u.id) !== -1) {
-            return;
-          }
-          var el = {
-            user_id: u.id,
-            username: u.username,
-            avatar: u._avatar(),
-            color: u.color
-          };
-          users.push(el);
-          alreadyIn.push(el.user_id);
-        });
-      }
-
+      // Default roomRead values
       read = {
         name: room.name,
         id: room.id,
         room_id: room.id,
         owner_id: owner.user_id,
         owner_username: owner.username,
-        owner_avatar: owner.avatar,
-        users: users,
-        avatar: room._avatar(),
-        poster: room._poster(),
-        color: room.color,
-        website: room.website,
-        topic: room.topic,
-        description: room.description,
-        created: room.created_at,
         mode: room.mode
       };
 
@@ -105,13 +61,72 @@ handler.call = function (data, session, next) {
         read.group_name = room.group.name;
       }
 
-      if (room.isOwner(user.id) || session.settings.admin === true) {
-        read.password = room.password;
+      // required more values ?
+      if (data.what && data.what.more && data.what.more === true) {
+        read.owner_avatar = room.owner_avatar;
+        read.avatar = room._avatar();
+        read.poster = room._poster();
+        read.color = room.color;
+        read.website = room.website;
+        read.topic = room.topic;
+        read.description = room.description;
+        read.created = room.created_at;
+        if (room.isOwner(user.id)) {
+          read.password = room.password;
+        }
       }
 
-      if (session.settings.admin === true) {
-        read.visibility = room.visibility || false;
-        read.priority = room.priority || 0;
+      // required user list ?
+      if (data.what && data.what.users && data.what.users === true) {
+        var users = [];
+        var alreadyIn = [];
+
+        if (room.owner) {
+          users.push(owner);
+        }
+
+        // op
+        if (room.op && room.op.length > 0) {
+          _.each(room.op, function (op) {
+            var el = {
+              user_id: op.id,
+              username: op.username,
+              avatar: op._avatar(),
+              color: op.color,
+              is_op: true
+            };
+            users.push(el);
+            alreadyIn.push(el.user_id);
+          });
+        }
+
+        // users
+        if (room.users && room.users.length > 0) {
+          _.each(room.users, function (u) {
+            if (u.id === owner.user_id || alreadyIn.indexOf(u.id) !== -1) {
+              return;
+            }
+            var el = {
+              user_id: u.id,
+              username: u.username,
+              avatar: u._avatar(),
+              color: u.color
+            };
+            users.push(el);
+            alreadyIn.push(el.user_id);
+          });
+        }
+
+        read.users = users;
+      }
+
+      // admin values are required
+      if (data.what && data.what.admin && data.what.admin === true) {
+        if (session.settings.admin === true) {
+          read.password = room.password;
+          read.visibility = room.visibility || false;
+          read.priority = room.priority || 0;
+        }
       }
 
       return callback(null);

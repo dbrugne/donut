@@ -107,6 +107,7 @@
   },
   "baseline": "Chat about your interests!",
   "actions": {
+    "clickhere": "click here",
     "login": "log in",
     "tologin": "log in",
     "logout": "log out",
@@ -490,9 +491,11 @@
     "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
     "closeapp": "Are you sure you want to leave ?",
     "closemessage": "Are you sure you want to leave?",
-    "kickmessage": "You have been kicked out of __name__",
-    "banmessage": "You have been banned from __name__",
-    "disallowmessage": "You are not allowed anymore in __name__",
+    "alert": {
+      "kicked": "You have been kicked out of __name__",
+      "banned": "You have been banned from __name__",
+      "allowed": "You are not allowed anymore in __name__"
+    },
     "roomnotexists": "The donut __name__ does not exist yet, <a class='open-create-room' data-name='__name__'>would you like to create it</a>?",
     "reason": "(reason: \"__reason__\")",
     "deletemessage": "The donut __name__ has been deleted",
@@ -579,7 +582,7 @@
     "blocked": {
       "allowed": "This donut is private. Only users you authorize can join, participate and access history Authorize users.",
       "ask-for-access": "To request access, <a href=\"#\" class=\"ask-for-allowance\"><strong>click here</strong></a>.",
-      "rejoin-donut": "<a class=\"rejoin curp\"><strong>Click here</strong></a> to get back in.",
+      "rejoin": " to get back in.",
       "allowed_button": "Request access",
       "password": "Or you can join directly if you know the password:",
       "password_placeholder": "Password",
@@ -711,7 +714,7 @@
         "name-wrong-format": "Invalid name",
         "mode-wrong-format": "You must select a mode for this room",
         "invalid-password": "The password must be 4 and 255 characters",
-        "room-already-exist": "Donut __name__ already exists, <a href='#__uri__'>would you like to join it</a>?",
+        "room-already-exist": "Donut __name__ already exists, <a href='__uri__'>would you like to join it</a>?",
         "invalid-rights": "You do not have access to do this."
       }
     }

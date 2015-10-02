@@ -22,13 +22,11 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     // show spinner as temp content
     this.render();
 
-    // ask for data
-    var that = this;
-    client.roomRead(this.roomId, null, function (data) {
+    client.roomRead(this.roomId, null, null, _.bind(function (data) {
       if (!data.err) {
-        that.onResponse(data);
+        this.onResponse(data);
       }
-    });
+    }, this));
 
     // on room:delete callback
     this.listenTo(client, 'room:delete', this.onDelete);

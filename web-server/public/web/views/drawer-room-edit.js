@@ -22,13 +22,16 @@ var DrawerRoomEditView = Backbone.View.extend({
     // show spinner as temp content
     this.render();
 
-    // ask for data
-    var that = this;
-    client.roomRead(this.roomId, null, function (data) {
+    var what = {
+      more: true,
+      users: false,
+      admin: true
+    };
+    client.roomRead(this.roomId, null, what, _.bind(function (data) {
       if (!data.err) {
-        that.onResponse(data);
+        this.onResponse(data);
       }
-    });
+    }, this));
   },
   render: function () {
     // render spinner only

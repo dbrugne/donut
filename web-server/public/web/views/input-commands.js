@@ -484,7 +484,12 @@ var InputCommandsView = Backbone.View.extend({
 
     var that = this;
     if ((/^#/.test(parameters[1]))) {
-      client.roomRead(null, parameters[1], function (data) {
+      var what = {
+        more: true,
+        users: true,
+        admin: false
+      };
+      client.roomRead(null, parameters[1], what, function (data) {
         if (data.err === 'room-not-found') {
           that.errorCommand('profile', 'invalidroom');
           return;
