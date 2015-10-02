@@ -23,6 +23,7 @@ var client = _.extend({
       'admin:message',
       // donut
       'welcome',
+      'group:updated',
       'room:join',
       'room:request',
       'room:leave',
@@ -169,6 +170,16 @@ var client = _.extend({
       'chat.groupCreateHandler.call',
       data,
       this.applyRequestCallback('group:create', callback)
+    );
+  },
+
+  groupUpdate: function (groupId, fields, callback) {
+    var data = {group_id: groupId, data: fields};
+    debug('io:out:group:update', data);
+    pomelo.request(
+      'chat.groupUpdateHandler.call',
+      data,
+      this.applyRequestCallback('group:update', callback)
     );
   },
 

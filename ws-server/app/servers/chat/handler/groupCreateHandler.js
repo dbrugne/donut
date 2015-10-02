@@ -81,7 +81,7 @@ handler.call = function (data, session, next) {
     }
   ], function (err) {
     if (err) {
-      return errors.getHandler('room:create', next)(err);
+      return errors.getHandler('group:create', next)(err);
     }
 
     return next(null, {success: true});

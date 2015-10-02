@@ -206,7 +206,7 @@ handler.call = function (data, session, next) {
         room_id: group.id,
         data: sanitizedToNotify
       };
-      that.app.globalChannelService.pushMessage('connector', 'room:updated', event, group.name, {}, callback);
+      that.app.globalChannelService.pushMessage('connector', 'group:updated', event, group.name, {}, callback);
     }
 
   ], function (err) {
@@ -214,7 +214,7 @@ handler.call = function (data, session, next) {
       if (_.isObject(err)) {
         return next(null, {code: 400, err: err});
       }
-      return errors.getHandler('room:updated', next)(err);
+      return errors.getHandler('group:updated', next)(err);
     }
 
     next(null, {});
