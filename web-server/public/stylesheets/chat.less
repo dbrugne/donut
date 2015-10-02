@@ -375,41 +375,11 @@
 
   #center { height: 100%; z-index: 5; margin-left: @size-left; font-size: 12px; background-color: @cl-subtext0; background-image: url('@{img-path}/logo-onecolor-gr.svg'); background-repeat: no-repeat; background-position: center center; background-size: 60%;
     .user-list { height: 100%;
-      .list {
-        overflow-y: auto;
-        overflow-x: hidden;
-        height: 100%;
-        .scrollbar-white;
-        .item {
-          .pull-left;
-          position: relative;
-          margin-top: 10px;
-          margin-right: 10px;
-          .avatar {
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-          }
-          .username {
-            display: none;
-            position: absolute;
-            top: 0;
-            right: -20px;
-            height: 30px;
-            line-height: 30px;
-            margin-right: 50px;
-            padding-left: 10px;
-            padding-right: 8px;
-            background-color: @cl-subtext10;
-            text-align: left;
-            .ft-opensans-bold;
-            color: #ffffff;
-            z-index: 99999;
-            white-space: nowrap;
-          }
-          &:hover .username {
-            display: block;
-          }
+      .list { overflow-y: auto; overflow-x: hidden; height: 100%; .scrollbar-white;
+        .item { .pull-left; position: relative; margin-top: 10px; margin-right: 10px;
+          .avatar { display: inline-block; width: 30px; height: 30px; }
+          .username { display: none; position: absolute; top: 0; right: -20px; height: 30px; line-height: 30px; margin-right: 50px; padding-left: 10px; padding-right: 8px; background-color: @cl-subtext10; text-align: left; .ft-opensans-bold; color: #ffffff; z-index: 99999; white-space: nowrap; }
+          &:hover .username { display: block; }
         }
       }
     }
@@ -507,12 +477,96 @@
         } // #chat #center #home .right .users
       } // #chat #center #home .right
     } // #chat #center #home
+    .content { height: 100%; position: relative; margin-left: 20px; .display-flex; .flex-flow(column nowrap);
+      .header { padding-top: 18px; padding-right: 10px;
+        .info { padding-left: 110px; }
+        &.room { min-height: 117px;
+          .overlay-ctn {
+            .avatar { position: absolute; width: 100px; height: 100px; .border-shadow; } // #chat #center .discussion .content .header.room .overlay-ctn .avatar
+            .overlay { height: 100px; width: 100px; top:0; .border-radius(50%); }
+            .overlay-text { width: 100px; top: 40px; }
+          } // #chat #center .discussion .content .header.room .overlay-ctn
+          .info {
+            .name { display: inline-block; margin-top: 2px; font-size: 2.7rem; }
+            #chat #center .discussion .content .header.room .info .name .owner { display: inline-block; font-size: 1.2em; }
+            .dropdown { display: inline-block; position: relative;
+              .dropdown-menu>li>a { color: @cl-subtext40; }
+              button { font-size: 24px; border: none; background-color: transparent; }
+            }
+          } // #chat #center .discussion .content .header.room .info
+        } // #chat #center .discussion .content .header.room
+      } // #chat #center .discussion .content .header
+    }
+    .side { float: right; width: @size-right; height: 100%; margin: 0; padding: 0;
+      @header-height: 35px; @size-user-item: 205px;
+      hr { margin-left: 0; margin-right: 0; }
+      .users { position: relative; padding: 10px 0 30px; height: 100%; // #chat #center .discussion .side .blur .users
+        .list {
+          .li-title .item { width: (@size-user-item + 10px); padding:10px; }
+          .item { position: relative; width: @size-user-item; padding-top: 10px; padding-left: 10px; font-size: 0.9em; font-weight: bold; white-space: nowrap; display: block;
+            .avatar { position: relative; display: inline-block; width: 34px; height: 34px; background-position: center center; background-size: 34px 34px; vertical-align: middle; }
+            .username { position: relative; font-size: 12px; margin-left: 9px; padding-right: 12px; overflow: hidden; display: inline-block; vertical-align: middle; max-width: 110px; white-space: nowrap;
+              .icon-dot-circle-o {
+                &.online { color: @cl-success; }
+                &.offline { color: @cl-error; }
+              }
+            }
+            .dropdown {
+              button { position: absolute; left: 165px; top: -28px;  }
+            }
+            &.offline {
+              .username { .opacity(0.4); }
+              .avatar { .opacity(0.4); width: 30px; height: 30px; background-size: 30px 30px; }
+            }
+            &.op {
+              .avatar { .border-radius(5px); border: 2px solid @cl-success !important; }
+              .avatar::before { z-index: 5; position: absolute; content: " "; top: -10px; left: -7px; width: 12px; height: 16px; background-image: url("@{img-path}/op.png"); background-size: 12px 16px;
+              }
+            }
+            &.devoice {
+              .avatar { .border-radius(5px); border: 2px solid @cl-error !important;
+                &::after { content: '\f037'; display: inline-block; font: normal normal normal 14px/1 'Donut'; text-rendering: auto; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; transform: translate(0, 0); right: -9px; bottom: -10px; position: absolute; color: @cl-error; font-size: 19px; border-radius: 50%; }
+              }
+            }
+            &.owner {
+              .avatar { .border-radius(5px); border: 2px solid #fbec4d !important; }
+              .avatar::before { z-index: 5; position: absolute; content: url("@{img-path}/owner.png") !important; top: -15px !important; left: 7px !important; }
+            }
+          }
+        }
+      } // #chat #center .discussion .side .blur
+    } // #chat #center .discussion .side
     .group { background-color: @cl-background; height: 100%;
+      .side {
+        .users {
+          .scrollable {overflow-y: auto; overflow-x: hidden; height: 100%; .scrollbar-white;}
+          .title { font-size: 2rem; text-transform: uppercase; padding: 10px; margin: 0 20px; }
+          .user-list { height: auto;
+            .list { .display-flex; .flex-flow(row wrap); justify-content: space-between;
+              .item { width: auto; padding:0;
+                .infos { .display-flex; .flex-flow(column nowrap); align-items: center; }
+                .avatar { background-size: contain; width: 30px; height:30px; }
+              }
+            }
+          }
+          .list { position: relative; padding: 0 20px;
+            &.op {
+              .ctn { padding: 10px; position:relative; .display-flex; .flex-flow(row wrap); align-items: center; justify-content: flex-start;
+                .background { background-color: #FFF; .opacity(0.4); top:0; left:0; height:100%; width:100%; position: absolute; .border-radius(3px); }
+                .item { width: 121px; padding: 10px;
+                  .infos { .display-flex; .flex-flow(column nowrap); align-items: center; }
+                  .avatar { background-size: contain; width: 50px; height:50px;
 
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
     .discussion { background-color: @cl-background; height: 100%;
-      @header-height: 35px; @size-user-item: 205px;
-      .content { height: 100%; position: relative; margin-left: 20px; .display-flex; .flex-flow(column nowrap);
+      .content {
         &.blocked { align-items: center; justify-content: center; position:relative;
           .header .info { padding:0; }
           .password-form { max-width: 555px; }
@@ -525,30 +579,15 @@
           &.is-banned .show-if-unbanned { display:none; }
           &.is-banned .avatar::after { .icon-ban; position: absolute; font-size: 100px; color: rgba(119, 119, 119, 0.75); top: 0; line-height: 100px; left:10px; }
         }
-        .header { padding-top: 18px; padding-right: 10px;
-          .info { padding-left: 110px;
-            .share { display: inline-block;
-              i { font-size: 16px; color: @cl-text; margin-left: 3px; vertical-align: middle; cursor: pointer;
-                &.facebook { color: #3b5998; }
-                &.twitter { color: #4099FF; }
-                &.googleplus { color: #dd4b39; }
-              }
+        .header {
+          .info .share { display: inline-block;
+            i { font-size: 16px; color: @cl-text; margin-left: 3px; vertical-align: middle; cursor: pointer;
+              &.facebook { color: #3b5998; }
+              &.twitter { color: #4099FF; }
+              &.googleplus { color: #dd4b39; }
             }
-          } // #chat #center .discussion .content .header .info
-          &.room { min-height: 117px;
-            .overlay-ctn {
-              .avatar { position: absolute; width: 100px; height: 100px; .border-shadow; } // #chat #center .discussion .content .header.room .overlay-ctn .avatar
-              .overlay { height: 100px; width: 100px; top:0; .border-radius(50%); }
-              .overlay-text { width: 100px; top: 40px; }
-            } // #chat #center .discussion .content .header.room .overlay-ctn
-            .info {
-              .name { display: inline-block; margin-top: 2px; font-size: 2.2em; } #chat #center .discussion .content .header.room .info .name
-              .owner { display: inline-block; font-size: 1.2em; }
-              .dropdown { display: inline-block; position: relative;
-                .dropdown-menu>li>a { color: @cl-subtext40; }
-                button { font-size: 24px; border: none; background-color: transparent; }
-              }
-            } // #chat #center .discussion .content .header.room .info
+          }
+          &.room {
             .topic { min-height: 32px; margin-top: 4px; padding: 5px 15px 5px 110px;
               .topic-current { .txt-bubble; overflow: hidden; text-overflow: ellipsis; padding: 0.6em 1.2em; display: inline-block; white-space: nowrap; max-width: 100%; width: 100%;
                 label { font-size: 13px; display: block; width: 90px; float: left; margin: 0; color: @cl-subtext40; }
@@ -562,7 +601,7 @@
                 input[type=text] { width: 100%; }
               }
             } // #chat #center .discussion .content .header.room .topic
-          } // #chat #center .discussion .content .header.room
+          }
           &.user { min-height: 135px; position: relative;
             .avatar { position: absolute; width: 100px; height: 100px;
               img { width:100%; }
@@ -581,7 +620,7 @@
             } // #chat #center .discussion .content .header.user .status-block
             .hello-block { font-size: 1.2em; margin-left: 110px; font-style: italic; }
           } // #chat #center .discussion .content .header.user
-        } // #chat #center .discussion .content .header
+        }
         .events { /*border-top: 1px solid @cl-subtext10;*/ overflow-y: scroll; overflow-x: hidden; .flex(1); .scrollbar-grey; position: relative;
           .go-to-top {
             display: none;
@@ -1053,51 +1092,20 @@
           }
         }
       } // #chat #center .discussion .content
-      .side { float: right; width: @size-right; height: 100%; background-repeat: no-repeat; background-position: left top; margin: 0; padding: 0;
+      .side { background-repeat: no-repeat; background-position: left top;
+        @header-height: 35px;
         .blur { width: @size-right-mid; position: relative; height: 100%; color: @cl-background; font-size: 1.1em; .scrollbar-grey;
           hr { margin-left: 0; margin-right: 0; }
-          .users { position: relative; background-color: rgba(0, 0, 0, 0.2); padding: 10px 0 30px 0; height: 100%; // #chat #center .discussion .side .blur .users
+          .users { background-color: rgba(0, 0, 0, 0.2);
             .header { position: absolute;     white-space: nowrap; top: 14px; left: 16px; right: 10px;
               .count { .pull-left; }
               .between { font-size: 1.2em; line-height: 1; padding-left: 10px; padding-right: 10px; }
               .actions { .pull-right; }
             }
             > hr { position: absolute; left: 14px; right: 14px; top: @header-height; }
-            .list { width: 215px; overflow-y: auto; height: 100%; margin-top: (@header-height + 10px); margin-bottom: 0; margin-left: 0; padding: 0 0 10px 0; background-repeat: no-repeat; background-position: left top; position: relative; .scrollbar-white; // #chat #center .discussion .side .blur .users .list
-              .li-title .item { width: (@size-user-item + 10px); padding:10px; }
-              .item { position: relative; width: @size-user-item; padding-top: 10px; padding-left: 10px; font-size: 0.9em; font-weight: bold; white-space: nowrap; display: block;
-                .avatar { position: relative; display: inline-block; width: 34px; height: 34px; background-position: center center; background-size: 34px 34px; vertical-align: middle; }
-                .username { position: relative; font-size: 12px; margin-left: 9px; padding-right: 12px; overflow: hidden; display: inline-block; vertical-align: middle; max-width: 110px; white-space: nowrap;
-                  .icon-dot-circle-o {
-                    &.online { color: @cl-success; }
-                    &.offline { color: @cl-error; }
-                  }
-                }
-                .dropdown {
-                  button { position: absolute; left: 165px; top: -28px;  }
-                }
-                &.offline {
-                  .username { .opacity(0.4); }
-                  .avatar { .opacity(0.4); width: 30px; height: 30px; background-size: 30px 30px; }
-                }
-                &.op {
-                  .avatar { .border-radius(5px); border: 2px solid @cl-success !important; }
-                  .avatar::before { z-index: 5; position: absolute; content: " "; top: -10px; left: -7px; width: 12px; height: 16px; background-image: url("@{img-path}/op.png"); background-size: 12px 16px;
-                  }
-                }
-                &.devoice {
-                  .avatar { .border-radius(5px); border: 2px solid @cl-error !important;
-                    &::after { content: '\f037'; display: inline-block; font: normal normal normal 14px/1 'Donut'; text-rendering: auto; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; transform: translate(0, 0); right: -9px; bottom: -10px; position: absolute; color: @cl-error; font-size: 19px; border-radius: 50%; }
-                  }
-                }
-                &.owner {
-                  .avatar { .border-radius(5px); border: 2px solid #fbec4d !important; }
-                  .avatar::before { z-index: 5; position: absolute; content: url("@{img-path}/owner.png") !important; top: -15px !important; left: 7px !important; }
-                }
-              }
-            }
+            .list { width: 215px; overflow-y: auto; height: 100%; margin-top: (@header-height + 10px); margin-bottom: 0; margin-left: 0; padding: 0 0 10px 0; background-repeat: no-repeat; background-position: left top; position: relative; .scrollbar-white; }
           }
-        } // #chat #center .discussion .side .blur
+        }
         &.oneside { width:@size-right-mid; }
         &.poster-empty { width:40px;
           &.roomside { width:@size-right-mid; }
@@ -1107,7 +1115,7 @@
         }
         &.poster-full .dc-text-contrast { color:#fff; }
         &.poster-full .blur .users .list .item.dc-back-darker { background-color: transparent; border-style: solid; border-width: 1px 0; border-color:#FFF; margin: 0 14px; width: 187px; }
-      } // #chat #center .discussion .side
+      }
     }
   } // #chat #center
 
