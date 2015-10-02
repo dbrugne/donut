@@ -56,6 +56,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
     _.each(data.users, function (element, index, list) {
       list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 20);
       element.date = date.shortDayMonthTime(element.date);
+      element.message = _.escape(element.message);
     });
 
     this.$ctn.html(this.template({users: data.users}));
