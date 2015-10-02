@@ -10,11 +10,9 @@ var SearchView = require('./home-search');
 var HomeView = Backbone.View.extend({
   el: $('#home'),
 
-  firstFocus: true,
+  empty: true,
 
   initialize: function (options) {
-    this.listenTo(this.searchView, 'searchResults', this.onSearchResults);
-    this.listenTo(this.searchView, 'emptySearch', this.request);
     this.render();
     this.roomsView = new RoomsView({
       el: this.$('.rooms')
@@ -25,6 +23,8 @@ var HomeView = Backbone.View.extend({
     this.searchView = new SearchView({
       el: this.$('.search')
     });
+    this.listenTo(this.searchView, 'searchResults', this.onSearchResults);
+    this.listenTo(this.searchView, 'emptySearch', this.request);
   },
   render: function () {
     return this;
@@ -33,10 +33,8 @@ var HomeView = Backbone.View.extend({
     client.home(_.bind(this.onHome, this));
   },
   focus: function () {
-    if (this.firstFocus) {
+    if (this.empty) {
       this.request();
-    } else {
-      this.firstFocus = false;
     }
     this.$el.show();
     app.trigger('setTitle');
@@ -47,6 +45,7 @@ var HomeView = Backbone.View.extend({
     // or empty result
     this.roomsView.render(data);
     this.usersView.render(data);
+    this.empty = false;
   },
   onSearchResults: function (data) {
     data.search = true;
