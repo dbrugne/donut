@@ -236,11 +236,11 @@ handler.call = function (data, session, next) {
       }
 
       // inform onetoones
-      if (user.onetoones && user.onetoones.length > 0) {
-        _.each(user.onetoones, function (userId) {
-          that.app.globalChannelService.pushMessage('connector', 'user:updated', event, 'user:' + userId, {}, function (err) {
+      if (user.ones && user.ones.length > 0) {
+        _.each(user.ones, function (one) {
+          that.app.globalChannelService.pushMessage('connector', 'user:updated', event, 'user:' + one.user, {}, function (err) {
             if (err) {
-              logger.error('Error while pushing user:updated message to ' + userId + ' on user:update: ' + err);
+              logger.error('Error while pushing user:updated message to ' + one.user + ' on user:update: ' + err);
             }
           });
         });

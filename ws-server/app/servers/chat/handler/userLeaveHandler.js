@@ -33,7 +33,7 @@ handler.call = function (data, session, next) {
     },
 
     function persist (callback) {
-      user.update({$pull: { onetoones: { user: withUser._id } }}, function (err) {
+      user.update({$pull: { ones: { user: withUser._id } }}, function (err) {
         return callback(err);
       });
     },

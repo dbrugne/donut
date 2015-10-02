@@ -93,7 +93,7 @@ DisconnectRemote.prototype.online = function (uid, welcome, globalCallback) {
         return callback(null, event);
       }
 
-      User.find({ onetoones: { $in: [ uid ] } }, 'username', function (err, ones) {
+      User.find({ 'ones.user': { $in: [ uid ] } }, 'username', function (err, ones) {
         if (err) {
           return callback('Unable to find onetoones to inform on connection: ' + err);
         }
@@ -213,7 +213,7 @@ DisconnectRemote.prototype.offline = function (uid) {
     function retrieveUser (callback) {
       User.findById(uid)
         .exec(function (err, user) {
-          if (err) {
+          if (err || !user) {
             return callback('Unable to find user: ' + err, null);
           }
 
@@ -276,7 +276,7 @@ DisconnectRemote.prototype.offline = function (uid) {
     },
 
     function emitUserOfflineToOnes (user, event, callback) {
-      User.find({ onetoones: { $in: [ uid ] } }, 'username', function (err, ones) {
+      User.find({ 'ones.user': { $in: [ uid ] } }, 'username', function (err, ones) {
         if (err) {
           return callback('Unable to find onetoones to inform on connection: ' + err);
         }
@@ -308,7 +308,7 @@ DisconnectRemote.prototype.offline = function (uid) {
     if (err) {
       logger.error('statusRemote.offline', {
         result: 'fail',
-        username: user.username
+        username: (user) ? user.username : 'not found'
       });
     } else {
       logger.debug('statusRemote.offline', {
