@@ -14,6 +14,7 @@ module.exports = function (req, res, next, roomname) {
     });
   }
 
+  // @todo : make it works with group rooms (#aaa/aaa)
   Room.findByName('#' + roomname)
     .populate('owner', 'username avatar color location website facebook')
     .populate('op', 'username avatar color location website facebook')
