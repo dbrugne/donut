@@ -33,7 +33,7 @@ handler.call = function (data, session, next) {
       return callback(null);
     },
 
-    function create (callback) {
+    function createGroup (callback) {
       var q = RoomModel.findByName(data.name);
       q.exec(function (err, room) {
         if (err) {
@@ -63,6 +63,20 @@ handler.call = function (data, session, next) {
         group.save(function (err) {
           return callback(err, group);
         });
+      });
+    },
+
+    function createWelcome (group, callback) {
+      var room = RoomModel.getNewRoom();
+      room.name = '#Welcome';
+      room.group = group.id;
+      room.owner = user.id;
+      room.color = conf.room.default.color;
+      room.visibility = false; // not visible on home until admin change this value
+      room.priority = 0;
+
+      room.save(function (err) {
+        return callback(err, room);
       });
     }
   ], function (err) {
