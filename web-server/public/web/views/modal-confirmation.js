@@ -60,6 +60,7 @@ var ConfirmationModalView = Backbone.View.extend({
   _reset: function () {
     this.$inputBlock.show();
     this.$input.val('');
+    this.$bigInputArea.val('');
     this.$message.text('');
     this.confirmCallback = null;
     this.cancelCallback = null;

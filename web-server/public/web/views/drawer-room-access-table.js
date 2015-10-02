@@ -5,6 +5,7 @@ var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
 var app = require('../models/app');
 var confirmationView = require('./modal-confirmation');
+var date = require('../libs/date');
 
 var DrawerRoomUsersTableView = Backbone.View.extend({
   template: require('../templates/drawer-room-access-table.html'),
@@ -54,6 +55,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
     this.$el.show();
     _.each(data.users, function (element, index, list) {
       list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 20);
+      element.date = date.shortDayMonthTime(element.date);
     });
 
     this.$ctn.html(this.template({users: data.users}));
@@ -64,6 +66,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
     }));
 
     this.initializeTooltips();
+    this.initializePopover();
   },
 
   onAllowUser: function (event) {
@@ -108,6 +111,12 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
   initializeTooltips: function () {
     this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
+  },
+
+  initializePopover: function () {
+    this.$el.find('[data-toggle="popover"]').popover({
       container: 'body'
     });
   },

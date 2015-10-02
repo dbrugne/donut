@@ -284,6 +284,20 @@ roomSchema.methods.isUserBlocked = function (userId, password) {
   return 'notallowed';
 };
 
+roomSchema.methods.getAllowPendingByUid = function (userId) {
+  if (!this.allowed_pending) {
+    return;
+  }
+
+  return _.find(this.allowed_pending, function (doc) {
+    if (doc.user._id) {
+      return (doc.user.id === userId);
+    } else {
+      return (doc.user.toString() === userId);
+    }
+  });
+};
+
 roomSchema.methods.getIdsByType = function (type) {
   var ids = [];
 
