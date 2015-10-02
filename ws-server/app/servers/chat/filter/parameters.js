@@ -74,6 +74,8 @@ Filter.prototype.before = function (data, session, next) {
       }
 
       q.populate('owner', 'username avatar color facebook');
+      q.populate('op', 'username avatar color facebook');
+      q.populate('members', 'username avatar color facebook');
       q.exec(callback);
     },
 

@@ -716,6 +716,11 @@
       }
     }
   },
+  "group": {
+    "administrator": "Administrateur",
+    "users": "Utilisateurs",
+    "invite": "Inviter"
+  },
   "account": {
     "error": {
       "invalid": "Désolé, ce compte n'existe pas ou le mot de passe est invalide"
