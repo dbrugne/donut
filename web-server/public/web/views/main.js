@@ -6,6 +6,7 @@ var donutDebug = require('../libs/donut-debug');
 var app = require('../models/app');
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');
+var groups = require('../collections/groups');
 var rooms = require('../collections/rooms');
 var onetoones = require('../collections/onetoones');
 var ConnectionModalView = require('./modal-connection');
@@ -24,6 +25,7 @@ var DrawerUserProfileView = require('./drawer-user-profile');
 var DrawerUserEditView = require('./drawer-user-edit');
 var DrawerUserPreferencesView = require('./drawer-user-preferences');
 var DrawerUserAccountView = require('./drawer-account');
+var GroupView = require('./group');
 var RoomView = require('./discussion-room');
 var RoomViewBlocked = require('./discussion-room-blocked');
 var OneToOneView = require('./discussion-onetoone');
@@ -78,6 +80,8 @@ var MainView = Backbone.View.extend({
     this.listenTo(client, 'welcome', this.onWelcome);
     this.listenTo(client, 'admin:message', this.onAdminMessage);
     this.listenTo(client, 'disconnect', this.onDisconnect);
+    this.listenTo(groups, 'add', this.addView);
+    this.listenTo(groups, 'remove', this.addView);
     this.listenTo(rooms, 'add', this.addView);
     this.listenTo(rooms, 'remove', this.onRemoveDiscussion);
     this.listenTo(onetoones, 'add', this.addView);
@@ -418,6 +422,8 @@ var MainView = Backbone.View.extend({
       } else {
         constructor = RoomView;
       }
+    } else if (model.get('type') === 'group') {
+      constructor = GroupView;
     } else {
       constructor = OneToOneView;
     }
