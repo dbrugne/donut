@@ -37,7 +37,7 @@ module.exports = function (grunt) {
           if (err) {
             return callback(err);
           }
-          RoomModel.update({name: {$in: ['#donut', '#help', '#avenirDONUT', '#Insolites', '#TV_en_live']}}, {$set: {group: group._id}}, {multi: true}, function (err) {
+          RoomModel.update({name: {$in: ['#donut', '#help', '#avenirDONUT', '#Insolites', '#TV_en_live', '#admin']}}, {$set: {group: group._id}}, {multi: true}, function (err) {
             return callback(err);
           });
         });
