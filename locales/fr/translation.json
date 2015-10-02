@@ -107,6 +107,7 @@
   },
   "baseline": "vous avez des choses à (vous) dire !",
   "actions": {
+    "clickhere": "cliquez ici",
     "login": "connexion",
     "tologin": "connecter",
     "logout": "déconnexion",
@@ -487,9 +488,11 @@
     "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions (<a href='/signup'>créer un compte</a> ou <a href='/login'>se connecter</a>)",
     "closeapp": "Etes-vous sur de vouloir quitter ?",
     "closemessage": "Etes-vous sur de vouloir fermer l'onglet ?",
-    "kickmessage": "Vous venez d'être expulsé de __name__",
-    "banmessage": "Vous venez d'être banni de __name__",
-    "disallowmessage": "Vous ne faites plus partie de la liste des gens autorisés dans __name__",
+    "alert": {
+      "kicked": "Vous venez d'être expulsé de __name__",
+      "banned": "Vous venez d'être banni de __name__",
+      "allowed": "Vous ne faites plus partie de la liste des gens autorisés dans __name__"
+    },
     "roomnotexists": "Le donut __name__ n'existe pas, <a class='open-create-room' data-name='__name__'>souhaitez-vous le créer </a> ?",
     "reason": "(motif : \"__reason__\")",
     "deletemessage": "Le donut __name__ vient d'être supprimé",
@@ -576,7 +579,7 @@
     "blocked": {
       "allowed": "Ce donut est privé. Seuls les utilisateurs que vous autorisez pourront rejoindre, participer et accéder à l'historique.",
       "ask-for-access": "Pour demander un accès, <a href=\"#\" class=\"ask-for-allowance\"><strong>cliquer ici</strong></a>.",
-      "rejoin-donut": "<a class=\"rejoin curp\"><strong>cliquez ici</strong></a> pour le rejoindre à nouveau.",
+      "rejoin": " pour le rejoindre à nouveau.",
       "allowed_button": "Demander l'accès",
       "password": "Ou vous pouvez le rejoindre directement si vous connaissez le mot de passe :",
       "password_placeholder": "Mot de passe",

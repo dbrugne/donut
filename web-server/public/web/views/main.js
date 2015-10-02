@@ -82,7 +82,6 @@ var MainView = Backbone.View.extend({
     this.listenTo(rooms, 'remove', this.onRemoveDiscussion);
     this.listenTo(onetoones, 'add', this.addView);
     this.listenTo(onetoones, 'remove', this.onRemoveDiscussion);
-    this.listenTo(rooms, 'kickedOrBanned', this.roomKickedOrBanned);
     this.listenTo(rooms, 'allowed', this.roomAllowed);
     this.listenTo(rooms, 'join', this.roomJoin);
     this.listenTo(rooms, 'deleted', this.roomRoomDeleted);
@@ -273,41 +272,18 @@ var MainView = Backbone.View.extend({
    * @param event
    * @returns {boolean}
    */
-  roomKickedOrBanned: function (event) {
-    var what = event.what;
-    var data = event.data;
-    if (event.wasFocused) { // if remove model was focused, focused the new one
-      this.focus(event.model);
-    }
-    var message;
-    switch (what) {
-      case 'kick':
-        message = i18next.t('chat.kickmessage', { name: data.name });
-        break;
-      case 'ban':
-        message = i18next.t('chat.banmessage', { name: data.name });
-        break;
-      case 'disallow':
-        message = i18next.t('chat.disallowmessage', { name: data.name });
-        break;
-    }
-    if (data.reason) {
-      message += ' ' + i18next.t('chat.reason', { reason: _.escape(data.reason) });
-    }
-    app.trigger('alert', 'warning', message);
-  },
   roomAllowed: function (event) {
     if (event.wasFocused) { // if remove model was focused, focused the new one
-      this.focus(event.model);
+      app.trigger('focus', event.model);
     }
   },
   roomJoin: function (event) {
     if (event.wasFocused) { // if remove model was focused, focused the new one
-      this.focus(event.model);
+      app.trigger('focus', event.model);
     }
   },
   roomRoomDeleted: function (data) {
-    this.focus();
+    app.trigger('focus');
     if (data && data.reason) {
       app.trigger('alert', 'warning', data.reason);
     }
@@ -457,10 +433,6 @@ var MainView = Backbone.View.extend({
 
     // append to DOM
     this.$discussionsPanelsContainer.append(view.$el);
-
-    var identifier = (model.get('type') === 'room')
-      ? model.get('name')
-      : model.get('username');
     app.trigger('viewAdded', model, collection);
   },
 
