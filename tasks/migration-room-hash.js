@@ -25,8 +25,8 @@ module.exports = function (grunt) {
             if (room.name === 'Ajisai-FanGraphicArts') {
               room.name = 'AjisaiFanGraphicArts'; // 21-20
             }
-            if (room.name === 'PoneyLicornePandaPika') {
-              room.name = 'PoneyLicornePandaPika'; // 21-
+            if (room.name === 'Addict-Pandora-Hearts') {
+              room.name = 'AddictPandoraHearts'; // 21-19
             }
             if (room.name === 'DesBetisesPleinLaTete') {
               room.name = 'BetisesPleinLaTete'; // 21-18
@@ -34,7 +34,7 @@ module.exports = function (grunt) {
             if (room.name === 'YumeGyakusetsuFanClub') {
               room.name = 'YumeGyakusetsuFans'; // 21-18
             }
-            if (room.name === 'LesPresentsDeParisManga') {
+            if (room.name === 'LesPresentDeParisManga') {
               room.name = 'PresentsAParisManga'; // 22-19
             }
             if (room.name === 'FairyTailImageInedites') {
@@ -50,7 +50,10 @@ module.exports = function (grunt) {
               room.name = 'mondialDeLAuto2014'; // 24-18
             }
             if (room.name === 'PiyoSurLeDosDeLaLicorne') {
-              room.name = 'PiyoSurLeDosDeLaLicorne'; // 23-
+              room.name = 'SurLeDosDeLaLicorne'; // 23-19
+            }
+            if (room.name === 'PoneyLicornePandaPika') {
+              room.name = 'PoneyLicornePandaPik'; // 21-20
             }
             if (room.name === 'Licorne_Rose_Invisible') {
               room.name = 'LicorneRoseInvisible'; // 22-20
