@@ -3,7 +3,7 @@ var _ = require('underscore');
 var mongoose = require('../io/mongoose');
 var common = require('@dbrugne/donut-common/server');
 var cloudinary = require('../util/cloudinary');
-require('./group');
+var GroupModel = require('./group');
 
 var MAX_PASSWORD_TRIES = 5; // @todo sp : move in conf file
 var MAX_PASSWORD_TIME = 60 * 1000; // 1mn // @todo sp : move in conf file
@@ -55,6 +55,56 @@ roomSchema.statics.findByName = function (name) {
     name: common.regexp.exact(name, 'i'),
     deleted: {$ne: true}
   });
+};
+
+roomSchema.statics.findByIdentifier = function (identifier, callback) {
+  var data = common.validate.uriExtract(identifier);
+  if (!data) {
+    return callback('invalid-identifier');
+  }
+
+  var that = this;
+  var populate = function (err, room) {
+    if (err) {
+      return callback(err);
+    }
+    if (!room) {
+      return callback(null);
+    }
+    that.populate(room, [
+      {path: 'owner', select: 'username avatar color facebook'},
+      {path: 'group', select: 'name'}
+    ], callback);
+  };
+
+  if (!data.group) {
+    // non-group rooms only
+    this.findOne({
+      name: common.regexp.exact('#' + data.room, 'i'),
+      deleted: {$ne: true},
+      group: {$exists: false}
+    }, populate);
+  } else {
+    GroupModel.findByName(data.group).exec(function (err, group) {
+      if (err) {
+        return callback(err);
+      }
+      if (!group) {
+        return callback(null);
+      }
+      that.findOne({
+        group: group._id,
+        name: common.regexp.exact('#' + data.room, 'i'),
+        deleted: {$ne: true}
+      }, populate);
+    });
+  }
+};
+
+roomSchema.methods.getIdentifier = function () {
+  return (!this.group)
+    ? '#' + this.name.replace('#', '')
+    : '#' + this.group.name + '/' + this.name.replace('#', '')
 };
 
 roomSchema.statics.listByName = function (names) {

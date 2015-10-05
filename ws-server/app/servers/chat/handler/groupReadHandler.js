@@ -84,8 +84,7 @@ handler.call = function (data, session, next) {
 
       read = {
         name: group.name,
-        id: group.id,
-        room_id: group.id,
+        group_id: group.id,
         owner_id: owner.user_id,
         owner_username: owner.username,
         members: members,

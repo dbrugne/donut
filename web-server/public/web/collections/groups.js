@@ -26,11 +26,11 @@ var GroupsCollection = Backbone.Collection.extend({
     data.uri = '#g/' + data.name;
 
     // update model
-    var isNew = (this.get(data.id) === undefined);
+    var isNew = (this.get(data.group_id) === undefined);
     var model;
     if (!isNew) {
       // already exist in IHM (maybe reconnecting)
-      model = this.get(data.id);
+      model = this.get(data.group_id);
       model.set(data);
     } else {
       // add in IHM (by mainView)

@@ -154,10 +154,7 @@ var NotificationsView = Backbone.View.extend({
     if (n.type === 'roomjoinrequest') {
       n.href = '';
       n.css += 'open-room-access';
-      var roomId = (n.data.room._id)
-        ? n.data.room._id
-        : n.data.room.id;
-      n.html += 'data-room-id="' + roomId + '"';
+      n.html += 'data-room-id="' + n.data.room.room_id + '"';
       n.username = null;
     }
 

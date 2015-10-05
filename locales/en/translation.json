@@ -725,6 +725,11 @@
       }
     }
   },
+  "group": {
+    "administrator": "Administrator",
+    "users": "Users",
+    "invite": "Invite"
+  },
   "account": {
     "error": {
       "invalid": "Sorry, this account does not exist or the password is not valid"
