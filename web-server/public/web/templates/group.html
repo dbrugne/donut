@@ -19,8 +19,8 @@
 <!--<%=group.description%><br/>-->
 <!--<%=group.website%><br/>-->
 
-<div class="side roomside dc-back poster-empty dc-back">
-    <div class="users hidden-sm hidden-xs dc-back-darker">
+<div class="side roomside poster-empty">
+    <div class="users hidden-sm hidden-xs">
         <div class="scrollable">
             <div class="title dc-text-contrast"><%= t('group.administrator') %></div>
             <div class="list op">
@@ -30,7 +30,7 @@
                         <div class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %><%= user.status %>">
                             <span class="infos">
                                 <span class="avatar open-user-profile" data-user-id="<%= user.user_id %>" style="background-image: url(<%= user.avatar %>)" title="<% if (user.is_op === true) { %><%= t('chat.op.is') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.is') %><% }; %>"></span>
-                                <span class="username open-user-profile dc-text-contrast" data-user-id="<%= user.user_id %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></span>
+                                <span class="username open-user-profile" data-user-id="<%= user.user_id %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></span>
                             </span>
                         </div>
                     <% }) %>
@@ -41,7 +41,7 @@
                     <div class="title dc-text-contrast flex-child">
                         <%= t('group.users') %>
                     </div>
-                    <input type="button" class="flex-end btn btn-default centered mr20" value="<%= t('group.invite') %>" />
+                    <input type="button" class="flex-end btn btn-primary centered mr20" value="<%= t('group.invite') %>" />
                 </div>
                 <div class="user-list block">
                     <div class="list">

@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../util/logger').getLogger('redis', __filename);
+var logger = require('../util/logger').getLogger('donut', __filename);
 var redis = require('redis');
 
 redis.debug_mode = false; // @debug
