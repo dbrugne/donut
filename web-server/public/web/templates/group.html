@@ -62,7 +62,7 @@
 <div class="content">
     <div class="header room">
         <div class="overlay-ctn hidden-xs hidden-sm">
-            <img class="avatar" data-group-id="<%= group.id %>" src="<%= group.avatarUrl %>" alt="<%= group.identifier %> avatar">
+            <img class="avatar group" data-group-id="<%= group.id %>" src="<%= group.avatarUrl %>" alt="<%= group.identifier %> avatar">
         </div>
         <div class="info hidden-xs hidden-sm">
             <div class="name open-room-profile" data-group-id="<%= group.id %>">
@@ -88,6 +88,14 @@
                 <%=group.disclaimer%>
             </div>
         </div>
+    </div>
+
+    <div class="flex-parent center mt100">
+        <h2 class="vcentered"><%= t('global.donuts') %></h2>
+        <span class="open-create-room btn btn-primary ml20 curp" data-group-id="<%=group.id%>"><%= t('actions.create') %></span>
+    </div>
+    <div class="ctn-results mt30">
+        <div class="rooms cards"><!--room list--></div>
     </div>
 </div>
 

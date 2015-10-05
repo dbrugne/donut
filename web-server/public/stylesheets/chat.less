@@ -555,14 +555,16 @@
                 .background { background-color: #FFF; .opacity(0.4); top:0; left:0; height:100%; width:100%; position: absolute; .border-radius(3px); }
                 .item { width: 121px; padding: 10px;
                   .infos { .display-flex; .flex-flow(column nowrap); align-items: center; }
-                  .avatar { background-size: contain; width: 50px; height:50px;
-
-                  }
+                  .avatar { background-size: contain; width: 50px; height:50px; }
                 }
               }
             }
           }
         }
+      }
+      .content .header {
+        .overlay-ctn .avatar { width:150px; height:150px; }
+        .info { padding-left:160px; }
       }
     }
     .discussion { background-color: @cl-background; height: 100%;

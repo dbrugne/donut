@@ -58,7 +58,12 @@ var DonutRouter = Backbone.Router.extend({
     if (model) {
       this.focus(model);
     } else {
-      client.groupRead(null, group, _.bind(function (response) {
+      var what = {
+        users: true,
+        admin: true,
+        rooms: true
+      };
+      client.groupRead(null, group, what, _.bind(function (response) {
         if (!response.err) {
           model = groups.addModel(response);
           this.focus(model);

@@ -104,7 +104,7 @@ roomSchema.statics.findByIdentifier = function (identifier, callback) {
 roomSchema.methods.getIdentifier = function () {
   return (!this.group)
     ? '#' + this.name.replace('#', '')
-    : '#' + this.group.name + '/' + this.name.replace('#', '')
+    : '#' + this.group.name + '/' + this.name.replace('#', '');
 };
 
 roomSchema.statics.listByName = function (names) {
@@ -311,7 +311,7 @@ roomSchema.methods.isUserBlocked = function (userId, password) {
       return false;
     }
     if (tries) {
-      tries.count ++;
+      tries.count++;
     } else {
       this.password_tries.push({
         user: userId,
@@ -374,6 +374,10 @@ roomSchema.methods.getIdsByType = function (type) {
     });
   }
   return ids;
+};
+
+roomSchema.statics.findByGroup = function (groupId) {
+  return this.find({group: groupId});
 };
 
 module.exports = mongoose.model('Room', roomSchema);

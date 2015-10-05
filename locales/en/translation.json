@@ -125,6 +125,7 @@
     "muted": "sound off"
   },
   "global": {
+    "donuts": "Donuts",
     "admin": "(admin only)",
     "default": "default",
     "or": "or",
