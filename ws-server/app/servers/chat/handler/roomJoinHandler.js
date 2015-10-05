@@ -20,14 +20,20 @@ handler.call = function (data, session, next) {
   var user = session.__currentUser__;
   var room = session.__room__;
 
+  var blocked;
+
   if (!data.room_id && !data.name) {
     return next(null, {code: 400, err: 'params-room-id-name'});
   }
   if (!room) {
     return next(null, {code: 404, err: 'room-not-found'});
   }
+  if ((data.password || data.password === '') && room.password &&
+    (room.isGoodPassword(user.id, data.password)) === true) {
+    this.joinPass(user, room, next);
+  }
 
-  var blocked = room.isUserBlocked(user.id, data.password);
+  blocked = room.isUserBlocked(user.id);
   if (blocked === false) {
     this.join(user, room, next);
   } else {
@@ -54,6 +60,72 @@ handler.blocked = function (user, room, blocked, next) {
   });
 };
 
+handler.joinPass = function (user, room, next) {
+  var that = this;
+  async.waterfall([
+    function persist (callback) {
+      room.lastjoin_at = Date.now();
+      room.users.addToSet(user._id);
+      room.allowed.addToSet(user._id);
+      room.save(function (err) {
+        return callback(err);
+      });
+    },
+
+    function removeBlocked (callback) {
+      user.update({$pull: {blocked: room._id}}, function (err) {
+        return callback(err);
+      });
+    },
+
+    function removeAllowedPending (callback) {
+      room.update({$pull: {allowed_pending: user._id}}, function (err) {
+        return callback(err);
+      });
+    }
+
+  ], function (err) {
+    if (err) {
+      return errors.getHandler('room:join', next)(err);
+    }
+
+    that.join(user, room, next);
+  });
+};
+
+handler.joinPass = function (user, room, next) {
+  var that = this;
+  async.waterfall([
+    function persist (callback) {
+      room.lastjoin_at = Date.now();
+      room.users.addToSet(user._id);
+      room.allowed.addToSet(user._id);
+      room.save(function (err) {
+        return callback(err);
+      });
+    },
+
+    function removeBlocked (callback) {
+      user.update({$pull: {blocked: room._id}}, function (err) {
+        return callback(err);
+      });
+    },
+
+    function removeAllowedPending (callback) {
+      room.update({$pull: {allowed_pending: user._id}}, function (err) {
+        return callback(err);
+      });
+    }
+
+  ], function (err) {
+    if (err) {
+      return errors.getHandler('room:join', next)(err);
+    }
+
+    that.join(user, room, next);
+  });
+};
+
 handler.join = function (user, room, next) {
   var that = this;
   async.waterfall([
@@ -72,20 +144,7 @@ handler.join = function (user, room, next) {
     function persist (eventData, callback) {
       room.lastjoin_at = Date.now();
       room.users.addToSet(user._id);
-      room.allowed.addToSet(user._id);
       room.save(function (err) {
-        return callback(err, eventData);
-      });
-    },
-
-    function removeBlocked (eventData, callback) {
-      user.update({$pull: {blocked: room._id}}, function (err) {
-        return callback(err, eventData);
-      });
-    },
-
-    function removeAllowedPending (eventData, callback) {
-      room.update({$pull: {allowed_pending: user._id}}, function (err) {
         return callback(err, eventData);
       });
     },

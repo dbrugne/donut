@@ -30,7 +30,8 @@ var RoomAccessView = Backbone.View.extend({
     'click .dropdown-menu>li': 'onAllowUser',
     'change [type="checkbox"]': 'onChoosePassword',
     'click .random-password': 'onRandomPassword',
-    'click .change-mode': 'onChangeMode'
+    'click .change-mode': 'onChangeMode',
+    'click #input-allowgroupmember-checkbox': 'onChangeGroupAllow'
   },
 
   initialize: function (options) {
@@ -67,7 +68,9 @@ var RoomAccessView = Backbone.View.extend({
       room_id: data.room_id,
       room_name: data.name,
       mode: data.mode,
-      password: data.password
+      password: data.password,
+      group: data.group_id || false,
+      allow_group_member: data.allow_group_member || false
     });
     this.$el.html(html);
 
@@ -76,6 +79,7 @@ var RoomAccessView = Backbone.View.extend({
     this.$dropdown = this.$('.dropdown');
     this.$dropdownMenu = this.$('.dropdown-menu');
     this.$toggleCheckbox = this.$('#input-password-checkbox');
+    this.$checkboxGroupAllow = this.$('#input-allowgroupmember-checkbox');
     this.$password = this.$('.input-password');
     this.$randomPassword = this.$('.random-password');
 
@@ -194,6 +198,17 @@ var RoomAccessView = Backbone.View.extend({
         }
       });
     });
+  },
+  onChangeGroupAllow: function (event) {
+    if (this.$checkboxGroupAllow.is(':checked')) {
+      client.roomAllowGroup(this.roomId, function (err) {
+        return (err);
+      });
+    } else {
+      client.roomDisallowGroup(this.roomId, function (err) {
+        return (err);
+      });
+    }
   },
   reset: function () {
     this.$errors.html('').hide();

@@ -45,6 +45,7 @@ handler.call = function (data, session, next) {
       if (room.group) {
         read.group_id = room.group.id;
         read.group_name = room.group.name;
+        read.allow_group_member = room.allow_group_member;
       }
       if (room.owner) {
         read.owner_id = room.owner.id;

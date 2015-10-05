@@ -221,7 +221,7 @@ var RoomsCollection = Backbone.Collection.extend({
       var isFocused = model.get('focused');
       var blocked = (what === 'banned')
         ? 'banned'
-        : (what === 'kick')
+        : (what === 'kicked')
         ? 'kicked'
         : true;
       var modelTmp = model.attributes;
