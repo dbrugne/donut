@@ -48,7 +48,6 @@
     "moment": "^2.10.3",
     "mongoose": "4.x",
     "morgan": "1.x",
-    "newrelic": "^1.14.1",
     "node-uuid": "^1.4.3",
     "nodemailer": "1.x",
     "nodemailer-mailgun-transport": "^1.0.0",

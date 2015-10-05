@@ -1,7 +1,4 @@
 'use strict';
-if (process.env.NODE_ENV !== 'development') {
-  require('newrelic');
-}
 
 var pomelo = require('pomelo');
 var logger = require('../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
