@@ -155,7 +155,19 @@
     },
     "switchlanguage": "Language",
     "unknownerror": "Unknown error, please retry later",
-    "private-donut": "Private donut: only authorized users can join, participate and access history"
+    "mode": {
+      "title": {
+        "members": "Members",
+        "invites": "Invites",
+        "members-invites": "Members & Invites",
+        "public": "Public"
+      },
+      "description": {
+        "invites": "This donut is private, for invites only",
+        "members-invites": "This donut is private, for members of this community and invites only",
+        "public": "This donut is public, any user can join"
+      }
+    }
   },
   "login": {
     "withfacebook": "with Facebook",

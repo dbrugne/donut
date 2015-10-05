@@ -156,7 +156,19 @@
     },
     "switchlanguage": "Langue",
     "unknownerror": "Erreur inconnue, veuillez réessayer",
-    "private-donut": "Donut privé: seuls les utilisateurs autorisés peuvent rejoindre, participer et accéder à l'historique."
+    "mode": {
+      "title": {
+        "members": "Membres",
+        "invites": "Invités",
+        "members-invites": "Membres & Invités",
+        "public": "Public"
+      },
+      "description": {
+        "invites": "Ce donut est privé, accessible uniquement sur invitation",
+        "members-invites": "Ce donut est privé, accessible uniquement aux membres de cette de communauté et sur invitation",
+        "public": "Ce donut est public, accessible à tout utilisateur"
+      }
+    }
   },
   "login": {
     "withfacebook": "avec Facebook",
