@@ -720,7 +720,8 @@
   "group": {
     "administrator": "Administrateur",
     "users": "Utilisateurs",
-    "invite": "Inviter"
+    "invite": "Inviter",
+    "ask-membership": "Demander l'accès"
   },
   "account": {
     "error": {

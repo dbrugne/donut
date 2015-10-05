@@ -36,26 +36,28 @@
                     <% }) %>
                 </div>
             </div>
-            <div class="flex-parent center mt20">
-                <div class="title dc-text-contrast flex-child">
-                    <%= t('group.users') %>
+            <% if(members.length > 0) { %>
+                <div class="flex-parent center mt20">
+                    <div class="title dc-text-contrast flex-child">
+                        <%= t('group.users') %>
+                    </div>
+                    <input type="button" class="flex-end btn btn-default centered mr20" value="<%= t('group.invite') %>" />
                 </div>
-                <input type="button" class="flex-end btn btn-default centered mr20" value="<%= t('group.invite') %>" />
-            </div>
-            <div class="user-list block">
-                <div class="list">
-                    <% _.each(members, function(user) { %>
-                        <% var bgColor = txtColor = ''; %>
-                        <% if (user.color) {
-                        bgColor = "background-color: "+user.color;
-                        txtColor = "color: "+user.color;
-                        }; %>
-                        <div class="item open-user-profile <% if (user.is_owner) { %>owner<% }; %> <% if (user.is_op) { %>op<% }; %>" data-bgcolor="<%= bgColor %>" data-type="room-users" data-txtcolor="<%= txtColor %>" data-user-id="<%= user.user_id %>" data-username="<%= user.username %>" data-toggle="tooltip" data-placement="left">
-                            <div class="avatar" style="background-image:url(<%= user.avatar %>)"></div>
-                        </div>
-                    <% }); %>
+                <div class="user-list block">
+                    <div class="list">
+                        <% _.each(members, function(user) { %>
+                            <% var bgColor = txtColor = ''; %>
+                            <% if (user.color) {
+                            bgColor = "background-color: "+user.color;
+                            txtColor = "color: "+user.color;
+                            }; %>
+                            <div class="item open-user-profile <% if (user.is_owner) { %>owner<% }; %> <% if (user.is_op) { %>op<% }; %>" data-bgcolor="<%= bgColor %>" data-type="room-users" data-txtcolor="<%= txtColor %>" data-user-id="<%= user.user_id %>" data-username="<%= user.username %>" data-toggle="tooltip" data-placement="left">
+                                <div class="avatar" style="background-image:url(<%= user.avatar %>)"></div>
+                            </div>
+                        <% }); %>
+                    </div>
                 </div>
-            </div>
+            <% } %>
         </div>
     </div>
 </div><!-- /.side -->
@@ -83,7 +85,14 @@
                     </li>
                 </ul>
             </div>
+            
+            <% if (!isMember) { %>
+                <span class="curp btn btn-primary pull-right"><%= t('group.ask-membership') %></span>
+                <div class="clearfix"></div>
+            <% } %>
 
+        </div>
+        <div class="info">
             <div class="disclaimer fs18">
                 <%=group.disclaimer%>
             </div>
@@ -92,10 +101,14 @@
 
     <div class="flex-parent center mt100">
         <h2 class="vcentered"><%= t('global.donuts') %></h2>
-        <span class="open-create-room btn btn-primary ml20 curp" data-group-id="<%=group.id%>"><%= t('actions.create') %></span>
+        <% if(isOwner || isAdmin) { %>
+            <span class="open-create-room btn btn-primary ml20 curp" data-group-id="<%=group.id%>"><%= t('actions.create') %></span>
+        <% } %>
     </div>
     <div class="ctn-results mt30">
-        <div class="rooms cards"><!--room list--></div>
+        <div class="rooms cards">
+            <div class="list"><!--room list--></div>
+        </div>
     </div>
 </div>
 

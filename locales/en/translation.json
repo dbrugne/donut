@@ -719,7 +719,8 @@
   "group": {
     "administrator": "Administrator",
     "users": "Users",
-    "invite": "Invite"
+    "invite": "Invite",
+    "ask-membership": "Ask for membership"
   },
   "account": {
     "error": {

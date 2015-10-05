@@ -19,6 +19,9 @@ var GroupView = Backbone.View.extend({
     var group = this.model.toJSON();
     var op = [];
     var members = [];
+    var isMember = this.model.currentUserIsMember();
+    var isOwner = this.model.currentUserIsOwner();
+    var isAdmin = this.model.currentUserIsAdmin();
 
     // prepare avatars for members & op
     _.each(group.members, function (u) {
@@ -26,8 +29,10 @@ var GroupView = Backbone.View.extend({
         u.avatar = common.cloudinary.prepare(u.avatar, 60);
         op.push(u);
       } else {
-        u.avatar = common.cloudinary.prepare(u.avatar, 34);
-        members.push(u);
+        if (isMember) {
+          u.avatar = common.cloudinary.prepare(u.avatar, 34);
+          members.push(u);
+        }
       }
     });
     // prepare avatar for group
@@ -44,9 +49,14 @@ var GroupView = Backbone.View.extend({
         room.join = room.name;
       }
 
-      rooms.push(room);
+      if (room.mode === 'public' || isMember) {
+        rooms.push(room);
+      }
     });
     var html = this.template({
+      isMember: isMember,
+      isOwner: isOwner,
+      isAdmin: isAdmin,
       group: group,
       op: op,
       members: members
@@ -55,10 +65,10 @@ var GroupView = Backbone.View.extend({
       rooms: rooms,
       title: false,
       more: false,
-      replace: true
+      replace: false
     });
     this.$el.html(html);
-    this.$cards = this.$('.ctn-results .rooms.cards');
+    this.$cards = this.$('.ctn-results .rooms.cards .list');
     this.$cards.html(htmlCards);
 
     this.initializeTooltips();
