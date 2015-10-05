@@ -89,7 +89,7 @@ var RoomView = Backbone.View.extend({
     data.mode = this.model.get('mode');
 
     // share widget
-    var share = 'share-room-' + this.model.get('name').replace('#', '').toLocaleLowerCase();
+    var share = 'share-room-' + this.model.get('id')
     this.share = {
       class: share,
       selector: '.' + share

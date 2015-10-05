@@ -114,7 +114,7 @@ var NotificationsView = Backbone.View.extend({
       : '';
     var message = i18next.t('chat.notifications.messages.' + data.type, {
       name: (data.data.room)
-        ? data.data.room.name.replace('#', '')
+        ? data.data.room.name
         : '',
       username: (data.data.by_user)
         ? data.data.by_user.username
@@ -134,7 +134,8 @@ var NotificationsView = Backbone.View.extend({
     if (n.data.room) {
       n.avatar = common.cloudinary.prepare(n.data.room.avatar, 90);
       n.title = n.data.room.name;
-      n.name = n.data.room.name.replace('#', '');
+      n.name = n.data.room.name;
+      // @todo : new room uri schema
       n.href = '#room/' + n.name;
     } else if (n.data.by_user) {
       n.avatar = common.cloudinary.prepare(n.data.by_user.avatar, 90);

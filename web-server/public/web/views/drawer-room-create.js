@@ -21,7 +21,7 @@ var DrawerRoomCreateView = Backbone.View.extend({
     this.render(options.name);
   },
   render: function (name) {
-    var html = this.template({name: name.replace('#', '')});
+    var html = this.template({name: name});
     this.$el.html(html);
     this.$input = this.$el.find('input[name=input-create]');
     this.$errors = this.$el.find('.errors');
@@ -92,7 +92,7 @@ var DrawerRoomCreateView = Backbone.View.extend({
     client.roomCreate(name, mode, null, _.bind(function (response) {
       this.$submit.removeClass('loading');
       if (response.code !== 500 && response.success !== true) {
-        var uri = '#' + name.replace('#', '');
+        var uri = '#' + name;
         var error = i18next.t('chat.form.errors.' +
           response.err, {name: name, uri: uri});
         return this.setError(error);

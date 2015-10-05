@@ -12,7 +12,7 @@ var RoomsView = Backbone.View.extend({
       room.avatar = common.cloudinary.prepare(room.avatar, 135);
 
       if (room.group_id) {
-        room.join = '#' + room.group_name + '/' + room.name.replace('#', '');
+        room.join = '#' + room.group_name + '/' + room.name;
       } else {
         room.join = room.name;
       }

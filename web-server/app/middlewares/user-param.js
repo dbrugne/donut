@@ -81,7 +81,7 @@ module.exports = function (req, res, next, username) {
 
           room.avatar = dbroom._avatar(80);
           room.url = (room.name)
-            ? req.protocol + '://' + conf.fqdn + '/room/' + room.name.replace('#', '').toLocaleLowerCase()
+            ? req.protocol + '://' + conf.fqdn + '/room/' + room.name.toLocaleLowerCase()
             : '';
           room.mode = dbroom.mode;
 

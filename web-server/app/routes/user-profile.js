@@ -28,7 +28,7 @@ router.get('/user/:user', function (req, res) {
 
   var rooms = req.requestedUser.roomsList;
   _.each(rooms, function (element, index, list) {
-    var identifier = element.name.replace('#', '');
+    var identifier = element.name;
     list[index].url = req.protocol + '://' + conf.fqdn + '/room/' + identifier;
     list[index].join = (req.user)
       ? req.protocol + '://' + conf.fqdn + '/!#room/' + identifier

@@ -37,7 +37,7 @@ router.get('/', [require('csurf')()], function (req, res) {
     function renderTemplate (featured, callback) {
       _.each(featured, function (element, index, list) {
         list[index].avatar = common.cloudinary.prepare(element.avatar, 135);
-        var identifier = element.name.replace('#', '');
+        var identifier = element.name;
         list[index].url = req.protocol + '://' + conf.fqdn + '/room/' + identifier;
         list[index].join = (req.user)
           ? req.protocol + '://' + conf.fqdn + '/!#room/' + identifier

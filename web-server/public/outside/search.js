@@ -17,7 +17,7 @@ var SearchView = Backbone.View.extend({
     _.each(data.rooms, function (room) {
       room.avatar = common.cloudinary.prepare(room.avatar, 135);
 
-      var identifier = room.name.replace('#', '');
+      var identifier = room.name;
       room.url = protocol + '//' + fqdn + '/room/' + identifier;
       room.join = protocol + '//' + fqdn + '/!#room/' + identifier;
       if (room.owner) {

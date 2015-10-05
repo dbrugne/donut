@@ -80,7 +80,7 @@ roomSchema.statics.findByIdentifier = function (identifier, callback) {
   if (!data.group) {
     // non-group rooms only
     this.findOne({
-      name: common.regexp.exact('#' + data.room, 'i'),
+      name: common.regexp.exact(data.room, 'i'),
       deleted: {$ne: true},
       group: {$exists: false}
     }, populate);
@@ -94,7 +94,7 @@ roomSchema.statics.findByIdentifier = function (identifier, callback) {
       }
       that.findOne({
         group: group._id,
-        name: common.regexp.exact('#' + data.room, 'i'),
+        name: common.regexp.exact(data.room, 'i'),
         deleted: {$ne: true}
       }, populate);
     });
@@ -103,8 +103,8 @@ roomSchema.statics.findByIdentifier = function (identifier, callback) {
 
 roomSchema.methods.getIdentifier = function () {
   return (!this.group)
-    ? '#' + this.name.replace('#', '')
-    : '#' + this.group.name + '/' + this.name.replace('#', '');
+    ? '#' + this.name
+    : '#' + this.group.name + '/' + this.name;
 };
 
 roomSchema.statics.listByName = function (names) {

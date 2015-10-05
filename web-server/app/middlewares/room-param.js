@@ -15,7 +15,7 @@ module.exports = function (req, res, next, roomname) {
   }
 
   // @todo : make it works with group rooms (#aaa/aaa)
-  Room.findByName('#' + roomname)
+  Room.findByName(roomname)
     .populate('owner', 'username avatar color location website facebook')
     .populate('op', 'username avatar color location website facebook')
     .populate('users', 'username avatar color location website facebook')
@@ -44,7 +44,7 @@ module.exports = function (req, res, next, roomname) {
         };
 
         // urls
-        var ident = model.name.replace('#', '');
+        var ident = model.name;
         room.url = req.protocol + '://' + conf.fqdn + '/room/' + ident;
         room.chat = req.protocol + '://' + conf.fqdn + '/!#room/' + ident;
         room.join = req.protocol + '://' + conf.fqdn + '/room/join/' + ident;

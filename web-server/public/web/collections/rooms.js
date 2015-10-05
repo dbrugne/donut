@@ -107,7 +107,7 @@ var RoomsCollection = Backbone.Collection.extend({
     delete data.lastactivity_at;
 
     data.identifier = (data.group_id)
-      ? '#' + data.group_name + '/' + data.name.replace('#', '')
+      ? '#' + data.group_name + '/' + data.name
       : data.name;
 
     data.uri = data.identifier;

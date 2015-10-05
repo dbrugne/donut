@@ -13,7 +13,7 @@
     <% _.each(rooms, function(room) { %>
         <%
         var _name = (room.group_id)
-          ? '#' + room.group_name + '/' + room.name.replace('#', '')
+          ? '#' + room.group_name + '/' + room.name
           : room.name;
         %>
         <div class="room dc-i-<%= room.color.replace('#', '').toLowerCase() %>">

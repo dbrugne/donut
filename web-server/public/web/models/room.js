@@ -68,7 +68,7 @@ var RoomModel = Backbone.Model.extend({
       '//' +
       window.location.host +
       '/room/' +
-      this.get('name').replace('#', '').toLocaleLowerCase();
+      this.get('name').toLocaleLowerCase();
   },
   leave: function () {
     client.roomLeave(this.get('id'));
