@@ -21,7 +21,12 @@ var DrawerGroupEditView = Backbone.View.extend({
     // show spinner as temp content
     this.render();
 
-    client.groupRead(this.groupId, null, _.bind(function (data) {
+    var what = {
+      more: true,
+      users: false,
+      admin: true
+    };
+    client.groupRead(this.groupId, null, what, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }
