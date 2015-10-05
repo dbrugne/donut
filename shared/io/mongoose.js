@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../util/logger').getLogger('mongoose', __filename);
+var logger = require('../util/logger').getLogger('donut', __filename);
 var mongoose = require('mongoose');
 var conf = require('../../config/index');
 

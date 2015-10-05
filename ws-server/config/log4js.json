@@ -106,12 +106,23 @@
       ],
       "json": true,
       "category": "pomelo-rpc"
+    },
+    {
+      "type": "loggly",
+      "token": "a8e38745-bdeb-4ff6-947c-86ee7f6fa182",
+      "subdomain": "donut",
+      "tags": [
+        "web"
+      ],
+      "json": true,
+      "category": "web"
     }
   ],
   "levels": {
     "[all]": "INFO",
     "forward-log": "WARN",
-    "donut": "INFO"
+    "donut": "INFO",
+    "web": "WARN"
   },
   "replaceConsole": false,
   "lineDebug": false
