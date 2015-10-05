@@ -36,6 +36,7 @@ var DonutRouter = Backbone.Router.extend({
     }, this));
     this.listenTo(app, 'focus', this.focus);
     this.listenTo(app, 'joinRoom', this.focusRoom);
+    this.listenTo(app, 'joinGroup', this.focusGroup);
     this.listenTo(app, 'joinOnetoone', this.focusOne);
     this.listenTo(app, 'viewAdded', this.viewAdded);
     this.listenTo(app, 'goToSearch', this.focusOnSearch);
