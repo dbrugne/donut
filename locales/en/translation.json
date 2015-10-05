@@ -157,10 +157,10 @@
     "unknownerror": "Unknown error, please retry later",
     "mode": {
       "title": {
-        "members": "Members",
-        "invites": "Invites",
-        "members-invites": "Members & Invites",
-        "public": "Public"
+        "members": "members",
+        "invites": "invites",
+        "members-invites": "members & invites",
+        "public": "public"
       },
       "description": {
         "invites": "This donut is private, for invites only",
