@@ -192,6 +192,15 @@ var client = _.extend({
       this.applyRequestCallback('group:update', callback)
     );
   },
+  groupDelete: function (groupId, callback) {
+    var data = {group_id: groupId};
+    debug('io:out:group:delete', data);
+    pomelo.request(
+      'chat.groupDeleteHandler.call',
+      data,
+      this.applyRequestCallback('group:delete', callback)
+    );
+  },
 
   // ROOM
   // ======================================================
