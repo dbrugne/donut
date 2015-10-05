@@ -2,7 +2,11 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
 
-var HomeView = Backbone.View.extend({
+var GroupView = Backbone.View.extend({
+  template: require('../templates/group.html'),
+
+  templateCards: require('../templates/rooms-cards.html'),
+
   tagName: 'div',
 
   className: 'group',
@@ -15,19 +19,57 @@ var HomeView = Backbone.View.extend({
     var group = this.model.toJSON();
     var op = [];
     var members = [];
+    var isMember = this.model.currentUserIsMember();
+    var isOwner = this.model.currentUserIsOwner();
+    var isAdmin = this.model.currentUserIsAdmin();
 
-    _.each(group.members, function (u) { // prepare avatars
+    // prepare avatars for members & op
+    _.each(group.members, function (u) {
       if (u.is_owner || u.is_op) {
         u.avatar = common.cloudinary.prepare(u.avatar, 60);
         op.push(u);
       } else {
-        u.avatar = common.cloudinary.prepare(u.avatar, 34);
-        members.push(u);
+        if (isMember) {
+          u.avatar = common.cloudinary.prepare(u.avatar, 34);
+          members.push(u);
+        }
       }
     });
-    group.avatarUrl = common.cloudinary.prepare(group.avatar, 80);
-    var html = require('../templates/group.html')({group: group, op: op, members: members});
+    // prepare avatar for group
+    group.avatarUrl = common.cloudinary.prepare(group.avatar, 160);
+    // prepare room avatar & uri
+    var rooms = [];
+    _.each(group.rooms, function (room) {
+      room.avatar = common.cloudinary.prepare(room.avatar, 135);
+      room.owner_id = room.owner.user_id;
+      room.owner_username = room.owner.username;
+      if (room.group_id) {
+        room.join = '#' + room.group_name + '/' + room.name.replace('#', '');
+      } else {
+        room.join = room.name;
+      }
+
+      if (room.mode === 'public' || isMember) {
+        rooms.push(room);
+      }
+    });
+    var html = this.template({
+      isMember: isMember,
+      isOwner: isOwner,
+      isAdmin: isAdmin,
+      group: group,
+      op: op,
+      members: members
+    });
+    var htmlCards = this.templateCards({
+      rooms: rooms,
+      title: false,
+      more: false,
+      replace: false
+    });
     this.$el.html(html);
+    this.$cards = this.$('.ctn-results .rooms.cards .list');
+    this.$cards.html(htmlCards);
 
     this.initializeTooltips();
     return this;
@@ -56,4 +98,4 @@ var HomeView = Backbone.View.extend({
 
 });
 
-module.exports = HomeView;
+module.exports = GroupView;

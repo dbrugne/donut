@@ -145,7 +145,7 @@ var client = _.extend({
   // GROUP
   // ======================================================
 
-  groupRead: function (groupId, groupName, callback) {
+  groupRead: function (groupId, groupName, what, callback) {
     var data = {};
     if (groupId) {
       data.group_id = groupId;
@@ -153,6 +153,16 @@ var client = _.extend({
       data.group = groupName;
     } else {
       return;
+    }
+
+    if (what) {
+      data.what = what;
+    } else {
+      data.what = {
+        users: true,
+        admin: true,
+        rooms: true
+      };
     }
 
     debug('io:out:group:read', data);

@@ -478,7 +478,7 @@
       } // #chat #center #home .right
     } // #chat #center #home
     .content { height: 100%; position: relative; margin-left: 20px; .display-flex; .flex-flow(column nowrap);
-      .header { padding-top: 18px; padding-right: 10px;
+      .header { padding-top: 18px; padding-right: 20px;
         .info { padding-left: 110px; }
         &.room { min-height: 117px;
           .overlay-ctn {
@@ -520,7 +520,7 @@
             }
             &.op {
               .avatar { .border-radius(5px); border: 2px solid @cl-success !important; }
-              .avatar::before { z-index: 5; position: absolute; content: " "; top: -10px; left: -7px; width: 12px; height: 16px; background-image: url("@{img-path}/op.png"); background-size: 12px 16px;
+              .avatar::before { z-index: 5; position: absolute; .icon-op; color:@cl-success; top: -10px; left: -7px; width: 12px; height: 16px; background-size: 12px 16px;
               }
             }
             &.devoice {
@@ -529,18 +529,18 @@
               }
             }
             &.owner {
-              .avatar { .border-radius(5px); border: 2px solid #fbec4d !important; }
-              .avatar::before { z-index: 5; position: absolute; content: url("@{img-path}/owner.png") !important; top: -15px !important; left: 7px !important; }
+              .avatar { .border-radius(5px); border: 2px solid @cl-warning !important; }
+              .avatar::before { z-index: 5; position: absolute; .icon-owner; color:@cl-warning; top: -12px !important; left: 7px !important; }
             }
           }
         }
       } // #chat #center .discussion .side .blur
     } // #chat #center .discussion .side
     .group { background-color: @cl-background; height: 100%;
-      .side {
+      .side { border-left:1px solid @cl-subtext15; width: 330px;
         .users {
           .scrollable {overflow-y: auto; overflow-x: hidden; height: 100%; .scrollbar-white;}
-          .title { font-size: 2rem; text-transform: uppercase; padding: 10px; margin: 0 20px; }
+          .title { font-size: 2rem; padding: 10px; margin: 0 20px; color:@cl-title; }
           .user-list { height: auto;
             .list { .display-flex; .flex-flow(row wrap); justify-content: space-between;
               .item { width: auto; padding:0;
@@ -551,18 +551,22 @@
           }
           .list { position: relative; padding: 0 20px;
             &.op {
-              .ctn { padding: 10px; position:relative; .display-flex; .flex-flow(row wrap); align-items: center; justify-content: flex-start;
+              .ctn { position:relative; .display-flex; .flex-flow(row wrap); align-items: center; justify-content: flex-start;
                 .background { background-color: #FFF; .opacity(0.4); top:0; left:0; height:100%; width:100%; position: absolute; .border-radius(3px); }
-                .item { width: 121px; padding: 10px;
+                .item { width: 94px; padding: 10px;
                   .infos { .display-flex; .flex-flow(column nowrap); align-items: center; }
-                  .avatar { background-size: contain; width: 50px; height:50px;
-
-                  }
+                  .avatar { background-size: contain; width: 50px; height:50px; }
+                  &.owner .avatar::before { font-size: 2rem; left: 13px !important; top: -16px !important; }
+                  &.op .avatar::before { font-size: 2rem; width: 12px; height: 17px; background-color: #FFF; }
                 }
               }
             }
           }
         }
+      }
+      .content .header {
+        .overlay-ctn .avatar { width:150px; height:150px; }
+        .info { padding-left:160px; }
       }
     }
     .discussion { background-color: @cl-background; height: 100%;

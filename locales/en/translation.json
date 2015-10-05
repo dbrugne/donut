@@ -125,6 +125,7 @@
     "muted": "sound off"
   },
   "global": {
+    "donuts": "Donuts",
     "admin": "(admin only)",
     "default": "default",
     "or": "or",
@@ -738,7 +739,8 @@
   "group": {
     "administrator": "Administrator",
     "users": "Users",
-    "invite": "Invite"
+    "invite": "Invite",
+    "ask-membership": "Ask for membership"
   },
   "account": {
     "error": {
