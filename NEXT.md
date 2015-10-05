@@ -12,3 +12,7 @@ grunt migration-onetoones
 ```
 db.getCollection('users').update({}, {$unset: {positions: 1}}, {multi: true});
 ```
+* Create some groups (for dev only)
+```
+grunt donut-groups
+```
