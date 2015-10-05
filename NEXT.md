@@ -1,4 +1,9 @@
 # Things to do on next deploy
+
+* Migrate room name from with-hash to no-hash:
+```
+grunt migration-room-hash
+```
 * Migrate onetoones to the new format:
 ```
 grunt migration-onetoones
