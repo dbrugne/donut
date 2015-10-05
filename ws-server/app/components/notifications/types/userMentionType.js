@@ -29,6 +29,10 @@ Notification.prototype.create = function (user, room, history, done) {
     utils.retrieveHistoryRoom(history),
 
     function checkOwn (userModel, roomModel, historyModel, callback) {
+      if (!userModel) {
+        logger.debug('userMentionType.create no notification due to unknown user: ' + user);
+        return callback(true);
+      }
       if (historyModel.user.id === userModel.id) {
         logger.debug('userMentionType.create no notification due to my own message');
         return callback(true);
