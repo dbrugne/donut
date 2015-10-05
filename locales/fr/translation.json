@@ -632,6 +632,18 @@
           "help-name": "Entre 3 et 20 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement.<br>Attention le nom du groupe ne sera plus modifiable.",
           "placeholder": "Nom du groupe",
           "submit": "Créer le groupe"
+        },
+        "edit": {
+          "description": {
+            "label": "Description",
+            "placeholder": "Décrivez le groupe en quelques mots",
+            "help": "Facultatif"
+          },
+          "disclaimer": {
+            "label": "Disclaimer",
+            "placeholder": "Disclaimer",
+            "help": "Facultatif"
+          }
         }
       },
       "room-form": {

@@ -19,7 +19,7 @@ var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
   var user = session.__currentUser__;
-  var group = session.__room__;
+  var group = session.__group__;
 
   var that = this;
 

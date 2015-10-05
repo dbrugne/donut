@@ -631,6 +631,16 @@
           "help-name": "Between 3 and 20 characters, only letters, numbers,  dashes (-) and underscores (_).<br>Caution the group name will no longer be editable.",
           "placeholder": "Group name",
           "submit": "Create"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Describe the group in a few words",
+          "help": "Optional"
+        },
+        "disclaimer": {
+          "label": "Disclaimer",
+          "placeholder": "Disclaimer",
+          "help": "Optional"
         }
       },
       "room-form": {

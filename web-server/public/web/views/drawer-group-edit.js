@@ -21,12 +21,7 @@ var DrawerGroupEditView = Backbone.View.extend({
     // show spinner as temp content
     this.render();
 
-    var what = {
-      more: true,
-      users: false,
-      admin: true
-    };
-    client.groupRead(this.groupId, null, what, _.bind(function (data) {
+    client.groupRead(this.groupId, null, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }
@@ -64,6 +59,12 @@ var DrawerGroupEditView = Backbone.View.extend({
       text: i18next.t('chat.form.common.edit.left')
     });
 
+    // disclaimer
+    this.$('#groupDisclaimer').maxlength({
+      counterContainer: this.$('#groupDisclaimer').siblings('.help-block').find('.counter'),
+      text: i18next.t('chat.form.common.edit.left')
+    });
+
     // website
     this.$website = this.$('input[name=website]');
 
@@ -97,6 +98,7 @@ var DrawerGroupEditView = Backbone.View.extend({
 
     var updateData = {
       description: this.$('textarea[name=description]').val(),
+      disclaimer: this.$('textarea[name=disclaimer]').val(),
       website: this.$website.val(),
       color: this.$('input[name=color]').val()
     };

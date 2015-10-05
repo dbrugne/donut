@@ -62,10 +62,10 @@
 <div class="content">
     <div class="header room">
         <div class="overlay-ctn hidden-xs hidden-sm">
-            <img class="avatar" data-group-id="<%= group.id %>" src="<%= group.avatarUrl %>" alt="<%= group.identifier %> avatar">
+            <img class="avatar" data-group-id="<%= group.group_id %>" src="<%= group.avatarUrl %>" alt="<%= group.identifier %> avatar">
         </div>
         <div class="info hidden-xs hidden-sm">
-            <div class="name open-room-profile" data-group-id="<%= group.id %>">
+            <div class="name open-room-profile" data-group-id="<%= group.group_id %>">
                 <%= group.identifier %>
                 <span class="room-profile private" data-toggle="tooltip" data-type="room-mode" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
             </div>
@@ -79,6 +79,11 @@
                     <li role="presentation">
                         <a role="menuitem" tabindex="-1" href="<%= group.uri %>" target="_blank" title="<%= group.name %> <%= t('global.permalink') %>">
                             <i class="icon icon-link"></i> <%= t('global.permalink') %>
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" class="open-group-edit" data-group-id="<%= group.group_id %>">
+                            <i class="icon icon-pencil"></i> <%= t('global.edit') %>
                         </a>
                     </li>
                 </ul>

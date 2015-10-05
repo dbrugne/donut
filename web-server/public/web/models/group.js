@@ -1,5 +1,6 @@
 var Backbone = require('backbone');
 var _ = require('underscore');
+var client = require('../libs/client');
 
 var GroupModel = Backbone.Model.extend({
   defaults: function () {
@@ -9,6 +10,7 @@ var GroupModel = Backbone.Model.extend({
     };
   },
   initialize: function () {
+    this.listenTo(client, 'group:updated', this.onUpdated);
   },
   onUpdated: function (data) {
     var that = this;

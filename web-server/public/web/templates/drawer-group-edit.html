@@ -2,7 +2,7 @@
 
 <div class="title">
     <%= t('profile.room.editlink') %>
-    <%= room.name %>
+    <%= group.name %>
 </div>
 
 <div class="ctn-drawer">
@@ -10,9 +10,14 @@
 
     <form class="group-form" role="form">
         <div class="form-group">
-            <label for="groupDescription"><%= t('chat.form.room-form.edit.description.label') %></label>
-            <textarea name="description" class="form-control" id="groupDescription" placeholder="<%= t('chat.form.room-form.edit.description.placeholder') %>" maxlength="200"><%= group.description %></textarea>
-            <p class="help-block"><%= t('chat.form.room-form.edit.description.help') %> <span class="counter"></span></p>
+            <label for="groupDescription"><%= t('chat.form.group-form.edit.description.label') %></label>
+            <textarea name="description" class="form-control" id="groupDescription" placeholder="<%= t('chat.form.group-form.edit.description.placeholder') %>" maxlength="200"><%= group.description %></textarea>
+            <p class="help-block"><%= t('chat.form.group-form.edit.description.help') %> <span class="counter"></span></p>
+        </div>
+        <div class="form-group">
+            <label for="groupDisclaimer"><%= t('chat.form.group-form.edit.disclaimer.label') %></label>
+            <textarea name="disclaimer" class="form-control" id="groupDisclaimer" placeholder="<%= t('chat.form.group-form.edit.disclaimer.placeholder') %>" maxlength="200"><%= group.disclaimer %></textarea>
+            <p class="help-block"><%= t('chat.form.group-form.edit.description.help') %> <span class="counter"></span></p>
         </div>
         <div class="block">
             <label for="groupWebsite"><%= t('chat.form.common.edit.website.label') %></label>
