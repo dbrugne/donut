@@ -19,7 +19,7 @@ var SearchView = Backbone.View.extend({
 
       var identifier = room.name;
       room.url = protocol + '//' + fqdn + '/room/' + identifier;
-      room.join = protocol + '//' + fqdn + '/!#room/' + identifier;
+      room.join = protocol + '//' + fqdn + '/!' + room.identifier;
       if (room.owner) {
         room.owner.url = protocol + '//' + fqdn + '/user/' +
           ('' + room.owner.username).toLocaleLowerCase();

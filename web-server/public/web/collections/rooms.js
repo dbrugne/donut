@@ -108,7 +108,7 @@ var RoomsCollection = Backbone.Collection.extend({
 
     data.identifier = (data.group_id)
       ? '#' + data.group_name + '/' + data.name
-      : data.name;
+      : '#' + data.name;
 
     data.uri = data.identifier;
 

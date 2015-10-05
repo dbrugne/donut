@@ -31,7 +31,7 @@ router.get('/user/:user', function (req, res) {
     var identifier = element.name;
     list[index].url = req.protocol + '://' + conf.fqdn + '/room/' + identifier;
     list[index].join = (req.user)
-      ? req.protocol + '://' + conf.fqdn + '/!#room/' + identifier
+      ? req.protocol + '://' + conf.fqdn + '/!' + element.identifier
       : req.protocol + '://' + conf.fqdn + '/room/join/' + identifier;
   });
 

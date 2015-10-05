@@ -791,7 +791,7 @@
     "global": {
       "content": {
         "team": "L'équipe DONUT.me",
-        "ps": "P.S.: pour ne plus recevoir ce type de notifications veuillez décocher les options de notifications dans les préférences de votre compte sur <a href=\"https://__fqdn__\">__fqdn__</a>, pour toute question nous sommes à votre écoute sur <a href=\"https://__fqdn__/!#room/help\">#help</a>"
+        "ps": "P.S.: pour ne plus recevoir ce type de notifications veuillez décocher les options de notifications dans les préférences de votre compte sur <a href=\"https://__fqdn__\">__fqdn__</a>, pour toute question nous sommes à votre écoute sur <a href=\"https://__fqdn__/!#donut/help\">#help</a>"
       }
     },
     "common": {
@@ -1022,7 +1022,7 @@
     "notif": {
       "title": "Notifications",
       "help": {
-        "user": "DONUT cherche à limiter intelligemment le nombre de notifications que nous vous envoyons. Toutefois si vous trouvez que vous en recevez trop ou pas assez, n’hésitez pas à nous le dire <a data-toggle='contactform'>par email</a> ou sur le <a href='#room/help'>#help</a>"
+        "user": "DONUT cherche à limiter intelligemment le nombre de notifications que nous vous envoyons. Toutefois si vous trouvez que vous en recevez trop ou pas assez, n’hésitez pas à nous le dire <a data-toggle='contactform'>par email</a> ou sur le <a href='#donut/help'>#help</a>"
       },
       "nothing": {
         "label": "Ne recevoir aucune notification pour ce donut",

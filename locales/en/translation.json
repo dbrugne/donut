@@ -483,7 +483,7 @@
       "onestart": "This conversation is private. Only you and your interlocutor can see it.",
       "edit": "Edit profile",
       "users": "Manage users",
-      "access": "Manage access,"
+      "access": "Manage access"
     },
     "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
     "closeapp": "Are you sure you want to leave ?",
@@ -790,7 +790,7 @@
     "global": {
       "content": {
         "team": "The DONUT.me team",
-        "ps": "P.S.: To avoid receiving these notification types, please uncheck it from your notification options in your account preferences on <a href=\"https://__fqdn__\">__fqdn__</a>. For any question, we are available on <a href=\"https://__fqdn__/!#room/help\">#help</a>"
+        "ps": "P.S.: To avoid receiving these notification types, please uncheck it from your notification options in your account preferences on <a href=\"https://__fqdn__\">__fqdn__</a>. For any question, we are available on <a href=\"https://__fqdn__/!#donut/help\">#help</a>"
       }
     },
     "common": {
@@ -1022,7 +1022,7 @@
     "notif": {
       "title": "Notifications",
       "help": {
-        "user": "DONUT tries to limit smartly the amount of emails and mobile notifications. However if you find that we send too many notifications feel free to send your feedback <a data-toggle='contactform'>by email</a> or on <a href='#room/help'>#help</a>"
+        "user": "DONUT tries to limit smartly the amount of emails and mobile notifications. However if you find that we send too many notifications feel free to send your feedback <a data-toggle='contactform'>by email</a> or on <a href='#donut/help'>#help</a>"
       },
       "nothing": {
         "label": "Never receive notifications about this donut",
