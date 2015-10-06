@@ -53,7 +53,7 @@ var client = _.extend({
       'user:message:edit',
       'user:online',
       'user:offline',
-      'user:update',
+      'user:updated',
       'user:viewed',
       'user:ban',
       'user:deban',
