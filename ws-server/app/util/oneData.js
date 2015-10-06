@@ -12,14 +12,16 @@ var _ = require('underscore');
 module.exports = function (app, user, users, fn) {
   var single = false;
   if (!_.isArray(users)) {
-    users = [ users ];
+    users = [users];
     single = true;
   }
 
   async.waterfall([
 
     function status (callback) {
-      app.statusService.getStatusByUids(_.map(users, 'id'), callback);
+      app.statusService.getStatusByUids(_.map(users, function (user) {
+        return user.get('user').id;
+      }), callback);
     },
 
     function prepare (statuses, callback) {
@@ -45,7 +47,7 @@ module.exports = function (app, user, users, fn) {
           lastactivity_at: obj.lastactivity_at
         };
 
-        if (statuses[ u.id ] === true) {
+        if (statuses[u.id] === true) {
           one.status = 'online';
           one.onlined = u.lastonline_at;
         } else {
@@ -61,7 +63,7 @@ module.exports = function (app, user, users, fn) {
       }
 
       if (single) {
-        return callback(null, data[ 0 ]);
+        return callback(null, data[0]);
       } else {
         return callback(null, data);
       }
