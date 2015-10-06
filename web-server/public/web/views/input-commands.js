@@ -185,10 +185,10 @@ var InputCommandsView = Backbone.View.extend({
     message: /(.+)/,
     messageNotMandatory: /(.*)/,
     helpCommand: /(^[a-z]+)/i,
-    name: /^(#[-a-z0-9_^]{3,24})/i,
-    username: /^@([-a-z0-9_^\.]+)/i,
-    usernameName: /^([@#][-a-z0-9_^\.]+)/i,
-    usernameNameMsg: /^([@#][-a-z0-9_^\.]+)\s+(.+)/i,
+    name: /^(#[-a-z0-9_]{3,24})/i,
+    username: /^@([-a-z0-9_\.]+)/i,
+    usernameName: /^([@#][-a-z0-9_\.]+)/i,
+    usernameNameMsg: /^([@#][-a-z0-9_\.]+)\s+(.+)/i,
     twoNumber: /(-?[0-9]+)(\s+(-?[0-9]+))?/
   },
 

@@ -144,6 +144,7 @@ var retriever = function (app, fn) {
 
           var data = {
             name: room.name,
+            identifier: room.getIdentifier(),
             room_id: room.id,
             avatar: room._avatar(),
             poster: room._poster(),

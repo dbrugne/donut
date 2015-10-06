@@ -52,7 +52,7 @@ var GroupView = Backbone.View.extend({
       room.owner_id = room.owner.user_id;
       room.owner_username = room.owner.username;
       if (room.group_id) {
-        room.join = '#' + room.group_name + '/' + room.name.replace('#', '');
+        room.join = '#' + room.group_name + '/' + room.name;
       } else {
         room.join = room.name;
       }

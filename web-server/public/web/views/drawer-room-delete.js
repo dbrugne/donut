@@ -99,7 +99,7 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     }
   },
   _valid: function () {
-    var name = '#' + this.$input.val();
+    var name = '#' + this.$input.val(); // @todo : remove # from name validation
     var pattern = new RegExp('^' + this.roomNameConfirmation + '$', 'i');
     return pattern.test(name);
   },

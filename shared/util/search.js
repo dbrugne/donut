@@ -82,8 +82,9 @@ module.exports = function (search, searchInUsers, searchInRooms, limit, skip, li
           var count = (room.users) ? room.users.length : 0;
 
           var r = {
-            name: room.name,
             room_id: room.id,
+            name: room.name,
+            identifier: room.getIdentifier(),
             avatar: room._avatar(),
             color: room.color,
             mode: room.mode,

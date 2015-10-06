@@ -625,8 +625,16 @@
             .status-block { font-size: 1.2em; margin-left: 110px;
               i { font-size: 0.9em; }
               .ago { display: none; font-size: 0.9em; font-style: italic; }
+              &.online {
+                .display-online { display:inline-block; }
+                .display-offline { display:none; }
+              }
+              &.offline {
+                .display-online { display:none; }
+                .display-offline { display:inline-block; }
+              }
             } // #chat #center .discussion .content .header.user .status-block
-            .hello-block { font-size: 1.2em; margin-left: 110px; font-style: italic; }
+            .hello-block { font-style: italic; }
           } // #chat #center .discussion .content .header.user
         }
         .events { /*border-top: 1px solid @cl-subtext10;*/ overflow-y: scroll; overflow-x: hidden; .flex(1); .scrollbar-grey; position: relative;
@@ -1168,10 +1176,10 @@
     }
   }
   .status { color: transparent; }
-  .status.online { color: @cl-green_sea; }
-  .status.connecting { color: @cl-warning; }
-  .status.offline { color: @cl-pomegranate; }
-  .status.error { color: @cl-pomegranate; }
+  .online>.status, .status.online { color: @cl-green_sea; }
+  .connecting>.status, .status.connecting { color: @cl-warning; }
+  .offline>.status, .status.offline { color: @cl-pomegranate; }
+  .error>.status, .status.error { color: @cl-pomegranate; }
 
   .block { margin: 0;
     &.date { margin-top: 16px; margin-bottom: 10px; clear: both; border-top: 0; height: 1px; background-color: @cl-subtext10; text-align: center;

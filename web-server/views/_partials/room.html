@@ -20,7 +20,11 @@
     </div>
 
     <div class="cover">
-        <div class="avatar" style="background-image:url(<%= room.avatar %>)"></div>
+        <div class="avatar relative" style="background-image:url(<%= room.avatar %>)">
+            <span class="room-profile mt5 label label-default label-sm" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + room.mode) %>">
+                <%= t('global.mode.title.' + room.mode) %>
+            </span>
+        </div>
         <div class="top">
             <div class="ctn">
                 <span class="name">
@@ -29,9 +33,6 @@
                 <% if (room.owner && room.owner.username) { %>
                     <span class="owner"><%= t('global.by') %> <a href="<%= room.owner.url %>" class="dc-text">@<%= room.owner.username %></a></span>
                 <% } %>
-                <span class="room-profile mt5 label label-default label-sm" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + room.mode) %>">
-                    <%= t('global.mode.title.' + room.mode) %>
-                </span>
             </div>
             <!-- p class="topic"><%= room.topic %></p -->
             <p class="join dc-back">

@@ -1,7 +1,7 @@
 <% layout('profile') %>
 <% var roomOpsLength = (typeof room.op !== 'undefined' ? room.op.length : 0 ) %>
 <% var roomUsersLength = (typeof room.users !== 'undefined' ? room.users.length : 0 ) %>
-<% var roomName = room.name.replace('#','') %>
+<% var roomName = room.name %>
 
 <div class="side roomside dc-back <% if (!poster) { %>poster-empty<% } else { %>poster-full<% } %>" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>">
     <div class="blur dc-back" style="<% if (posterBlured) { %>background-image: url(<%= posterBlured %>);<% }; %>">

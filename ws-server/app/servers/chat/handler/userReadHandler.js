@@ -77,7 +77,9 @@ handler.call = function (data, session, next) {
           {op: {$in: [readUser._id]}},
           {users: {$in: [readUser._id]}}
         ]
-      }, 'name avatar color owner op users').exec(function (err, models) {
+      }, 'name avatar color owner op users group')
+        .populate('group', 'name')
+        .exec(function (err, models) {
         if (err) {
           return callback(err);
         }
@@ -90,6 +92,7 @@ handler.call = function (data, session, next) {
         _.each(models, function (room) {
           var _room = {
             name: room.name,
+            identifier: room.getIdentifier(),
             id: room.id,
             avatar: room._avatar(),
             color: room.color

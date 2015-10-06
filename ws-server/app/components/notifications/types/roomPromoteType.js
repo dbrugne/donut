@@ -42,8 +42,8 @@ Notification.prototype.create = function (user, room, history, done) {
     },
 
     function checkPreferences (userModel, roomModel, historyModel, callback) {
-      if (userModel.preferencesValue('room:notif:nothing:__what__'.replace('__what__', roomModel.name)) ||
-        !userModel.preferencesValue('room:notif:roompromote:__what__'.replace('__what__', roomModel.name))) {
+      if (userModel.preferencesValue('room:notif:nothing:__what__'.replace('__what__', roomModel.id)) ||
+        !userModel.preferencesValue('room:notif:roompromote:__what__'.replace('__what__', roomModel.id))) {
         logger.debug('roomPromoteType.create no notification due to user preferences');
         return callback(true);
       }

@@ -501,14 +501,14 @@
       "onestart": "This conversation is private. Only you and your interlocutor can see it.",
       "edit": "Edit profile",
       "users": "Manage users",
-      "access": "Manage access,"
+      "access": "Manage access"
     },
     "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
     "closeapp": "Are you sure you want to leave ?",
     "closemessage": "Are you sure you want to leave?",
     "alert": {
       "kicked": "You have been kicked out of __name__",
-      "banned": "You have been banned from __name__",
+      "ban": "You have been banned from __name__",
       "allowed": "You are not allowed anymore in __name__"
     },
     "roomnotexists": "The donut __name__ does not exist yet, <a class='open-create-room' data-name='__name__'>would you like to create it</a>?",
@@ -562,7 +562,7 @@
         ]
       },
       "onetoone": [
-        "If <strong>@__username__</strong> isn't online he will get your messages on his next connection",
+        "<strong>@__username__</strong> isn't online, he will get your messages on his next connection",
         "Post a message to start the conversation."
       ]
     },
@@ -603,7 +603,7 @@
       "password_placeholder": "Password",
       "password_button": "Join",
       "banned": "You were banned from this donut on __at__",
-      "banned_reason": "for the following reason: ",
+      "reason": "for the following reason: ",
       "kicked": "You have been kicked out from this donut.",
       "kicked_button": "Join",
       "changemode": "Switch to private mode",
@@ -810,7 +810,7 @@
     "global": {
       "content": {
         "team": "The DONUT.me team",
-        "ps": "P.S.: To avoid receiving these notification types, please uncheck it from your notification options in your account preferences on <a href=\"https://__fqdn__\">__fqdn__</a>. For any question, we are available on <a href=\"https://__fqdn__/!#room/help\">#help</a>"
+        "ps": "P.S.: To avoid receiving these notification types, please uncheck it from your notification options in your account preferences on <a href=\"https://__fqdn__\">__fqdn__</a>. For any question, we are available on <a href=\"https://__fqdn__/!#donut/help\">#help</a>"
       }
     },
     "common": {
@@ -1051,7 +1051,7 @@
     "notif": {
       "title": "Notifications",
       "help": {
-        "user": "DONUT tries to limit smartly the amount of emails and mobile notifications. However if you find that we send too many notifications feel free to send your feedback <a data-toggle='contactform'>by email</a> or on <a href='#room/help'>#help</a>"
+        "user": "DONUT tries to limit smartly the amount of emails and mobile notifications. However if you find that we send too many notifications feel free to send your feedback <a data-toggle='contactform'>by email</a> or on <a href='#donut/help'>#help</a>"
       },
       "nothing": {
         "label": "Never receive notifications about this donut",

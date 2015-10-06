@@ -21,7 +21,7 @@ var DrawerRoomCreateView = Backbone.View.extend({
     this.render(options.name);
   },
   render: function (name) {
-    var html = this.template({name: name.replace('#', '')});
+    var html = this.template({name: name});
     this.$el.html(html);
     this.$input = this.$el.find('input[name=input-create]');
     this.$errors = this.$el.find('.errors');
@@ -63,7 +63,7 @@ var DrawerRoomCreateView = Backbone.View.extend({
     }
   },
   _valid: function () {
-    var name = '#' + this.$input.val();
+    var name = this.$input.val();
     var mode = this._getMode();
     return common.validate.name(name) && common.validate.mode(mode);
   },
@@ -86,13 +86,14 @@ var DrawerRoomCreateView = Backbone.View.extend({
     }
     var mode = this._getMode();
 
-    var name = '#' + this.$input.val();
+    var name = this.$input.val();
 
     this.$submit.addClass('loading');
     client.roomCreate(name, mode, null, _.bind(function (response) {
       this.$submit.removeClass('loading');
       if (response.code !== 500 && response.success !== true) {
-        var uri = '#' + name.replace('#', '');
+        // @todo : make it works with group rooms (#aaa/aaa)
+        var uri = '#' + name;
         var error = i18next.t('chat.form.errors.' +
           response.err, {name: name, uri: uri});
         return this.setError(error);

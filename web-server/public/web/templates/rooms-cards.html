@@ -11,11 +11,6 @@
 <% } %>
 
     <% _.each(rooms, function(room) { %>
-        <%
-        var _name = (room.group_id)
-          ? '<span class="fs14">#' + room.group_name + '</span><span>/' + room.name.replace('#', '') + '</span>'
-          : '<span>' + room.name + '</span>';
-        %>
         <div class="room dc-i-<%= room.color.replace('#', '').toLowerCase() %>">
 
             <div class="mini-card hidden">
@@ -23,7 +18,7 @@
                     <div class="avatar" style="background-image:url(<%= room.avatar %>)"></div>
                     <div class="ctn">
                         <span class="name">
-                            <a href="<%= room.url %>" class="flex-parent column"><%= _name %></a>
+                            <a href="<%= room.url %>" class="flex-parent column"><%= room.identifier %></a>
                         </span>
                         <div class="room-profile label label-default label-sm" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + room.mode) %>">
                             <%= t('global.mode.title.' + room.mode) %>
@@ -46,7 +41,7 @@
                 <div class="top">
                     <div class="ctn">
                         <span class="name">
-                            <a href="<%= room.url %>" class="flex-parent column"><%= _name %></a>
+                            <a href="<%= room.url %>" class="flex-parent column"><%= room.identifier %></a>
                         </span>
                         <% if (room.owner_id) { %>
                             <span class="owner"><%= t('global.by') %> <a href="<%= room.owner_url %>" class="dc-text">@<%= room.owner_username %></a></span>
@@ -65,7 +60,7 @@
             <div class="back dc-back dc-text-contrast">
                 <div class="ctn">
                     <p class="name dc-text-contrast open-room-profile" data-dismiss="modal" data-room-id="<%= room.room_id %>">
-                        <a class="dc-text-contrast flex-parent column" href="<%= room.url %>"><%= _name %></a>
+                        <a class="dc-text-contrast flex-parent column" href="<%= room.url %>"><%= room.identifier %></a>
                     </p>
                     <% if (room.owner_id) { %>
                         <p class="owner"><%= t('global.by') %> <a href="<%=room.owner_url%>" class="open-user-profile dc-text-contrast" data-user-id="<%= room.owner_id %>">@<%= room.owner_username %></a></p>
