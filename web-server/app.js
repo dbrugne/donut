@@ -1,7 +1,10 @@
 'use strict';
 
+// configure logger
+require('pomelo-logger').configure(require('../ws-server/config/log4js'));
+
 // middleware declaration order is VERY important to avoid useless computing
-var logger = require('../shared/util/logger').getLogger('web', __filename);
+var logger = require('pomelo-logger').getLogger('web', __filename);
 var express = require('express');
 var errors = require('./app/middlewares/errors');
 var path = require('path');
@@ -82,6 +85,7 @@ app.use(require('./app/routes/seo'));
 app.use(require('./app/routes/landing'));
 app.use(require('./app/routes/user-profile'));
 app.use(require('./app/routes/room-profile'));
+app.use(require('./app/routes/group-profile'));
 app.use(require('./app/routes/chat'));
 app.use(require('./app/routes/contact-form'));
 app.use(require('./app/routes/static'));

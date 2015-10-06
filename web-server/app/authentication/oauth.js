@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../shared/util/logger').getLogger('web', __filename);
+var logger = require('pomelo-logger').getLogger('web', __filename);
 var async = require('async');
 var _ = require('underscore');
 var express = require('express');

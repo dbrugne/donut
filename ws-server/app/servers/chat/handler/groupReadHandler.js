@@ -152,14 +152,16 @@ handler.call = function (data, session, next) {
         var sanitizedRooms = [];
         _.each(rooms, function (r) {
           var room = {
-            id: r.id,
+            name: r.name,
+            identifier: '#' + r.name,
             room_id: r.id,
+            id: r.id,
             avatar: r._avatar(),
             poster: r._poster(),
             mode: r.mode,
             color: r.color,
-            name: r.name,
-            description: r.description
+            description: r.description,
+            users: (r.users) ? r.users.length : 0
           };
 
           if (r.owner) {

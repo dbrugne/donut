@@ -794,7 +794,7 @@
     }
   },
   "group": {
-    "administrator": "Administrator",
+    "administrator": "Administrators",
     "users": "Users",
     "invite": "Invite",
     "ask-membership": "Ask for membership"

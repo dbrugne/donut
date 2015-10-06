@@ -795,7 +795,7 @@
     }
   },
   "group": {
-    "administrator": "Administrateur",
+    "administrator": "Administrateurs",
     "users": "Utilisateurs",
     "invite": "Inviter",
     "ask-membership": "Demander l'accès"

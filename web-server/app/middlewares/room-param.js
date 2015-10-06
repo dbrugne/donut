@@ -2,7 +2,7 @@
 var _ = require('underscore');
 var Room = require('../../../shared/models/room');
 var conf = require('../../../config/index');
-var logger = require('../../../shared/util/logger').getLogger('web', __filename);
+var logger = require('pomelo-logger').getLogger('web', __filename);
 
 module.exports = function (req, res, next, roomname) {
   if (roomname === undefined || roomname === '') {

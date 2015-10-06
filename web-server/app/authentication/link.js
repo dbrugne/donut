@@ -3,7 +3,7 @@ var express = require('express');
 var router = express.Router();
 var passport = require('../../../shared/authentication/passport');
 var i18next = require('../../../shared/util/i18next');
-var logger = require('../../../shared/util/logger').getLogger('web', __filename);
+var logger = require('pomelo-logger').getLogger('web', __filename);
 
 router.get('/connect/facebook', passport.authorize('facebook', { scope: 'email' }));
 

@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../shared/util/logger').getLogger('web', __filename);
+var logger = require('pomelo-logger').getLogger('web', __filename);
 var express = require('express');
 var router = express.Router();
 var conf = require('../../../config/index');
