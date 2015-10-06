@@ -68,6 +68,13 @@
                             <i class="icon icon-link"></i> <%= t('global.permalink') %>
                         </a>
                     </li>
+                    <% if (isOwner || isAdmin ) { %>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" class="open-group-access" data-group-id="<%= group.group_id %>">
+                            <i class="icon icon-public"></i> <%= t('chat.access.link') %>
+                        </a>
+                    </li>
+                    <% }; %>
                 </ul>
             </div>
             
