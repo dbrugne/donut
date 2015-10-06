@@ -557,7 +557,7 @@
         ]
       },
       "onetoone": [
-        "Si <strong>@__username__</strong> n'est pas en ligne les nouveaux messages lui seront remis à sa prochaine connexion",
+        "<strong>@__username__</strong> n'est pas en ligne, les nouveaux messages lui seront remis à sa prochaine connexion",
         "Postez un message pour amorcer la conversation."
       ]
     },

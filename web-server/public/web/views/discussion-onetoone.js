@@ -61,6 +61,8 @@ var OneToOnePanelView = Backbone.View.extend({
     this.$el.html(html);
     this.$el.hide();
 
+    this.$statusBlock = this.$('.header .status-block');
+
     // other
     this.onStatus();
 
@@ -124,22 +126,12 @@ var OneToOnePanelView = Backbone.View.extend({
     this.$('.header .website').text(value);
   },
   onStatus: function () {
-    if (this.model.get('status') === 'online') {
-      this.$('.header .status-block em').text(i18next.t('global.online'));
-      this.$('.header .status')
-        .removeClass('offline online')
-        .addClass('online');
-      this.$('.ago').hide();
-    } else {
-      this.$('.header .status-block em').text(i18next.t('global.offline'));
-      this.$('.header .status')
-        .removeClass('offline online')
-        .addClass('offline');
+    this.$statusBlock.attr('class', 'status-block').addClass(this.model.get('status'));
 
+    if (this.model.get('status') !== 'online') {
       var $ago = this.$('.ago span');
       $ago.attr('data-time', this.model.get('onlined'));
       date.from('fromnow', $ago);
-      this.$('.ago').show();
     }
   },
   onBannedChange: function (model, value, options) {

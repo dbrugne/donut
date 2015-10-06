@@ -27,8 +27,11 @@
         </div>
         <div class="status-block">
             <i class="icon icon-circle status contrast"></i>
-            <em></em>
-            <span class="ago">(<%= t('profile.user.onlined', {time: '<span data-time="'+onlined+'"></span>'}) %>)</span>
+            <em>
+                <span class="display-online"><%= t('global.online') %></span>
+                <span class="display-offline"><%= t('global.offline') %></span>
+            </em>
+            <span class="ago display-offline">(<%= t('profile.user.onlined', {time: '<span data-time="'+onlined+'"></span>'}) %>)</span>
             <span class="show-if-banned hidden-xs hidden-sm">
                 <span class="banned-status">
                     &nbsp;-&nbsp;<%= t('chat.actions.banned') %>&nbsp;
@@ -37,9 +40,9 @@
                     </span>
                 </span>
             </span>
-        </div>
-        <div class="hello-block hidden-xs hidden-sm">
-            <%= t('chat.welcome.onetoone', {username: username}) %>
+            <div class="hello-block hidden-xs hidden-sm display-offline">
+                <%= t('chat.welcome.onetoone', {username: username}) %>
+            </div>
         </div>
     </div>
     <div class="date-ctn hidden"></div>

@@ -556,7 +556,7 @@
         ]
       },
       "onetoone": [
-        "If <strong>@__username__</strong> isn't online he will get your messages on his next connection",
+        "<strong>@__username__</strong> isn't online, he will get your messages on his next connection",
         "Post a message to start the conversation."
       ]
     },
