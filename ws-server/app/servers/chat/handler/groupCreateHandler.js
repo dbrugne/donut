@@ -22,11 +22,11 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.name) {
+      if (!data.group_name) {
         return callback('params-name');
       }
 
-      if (!common.validate.group(data.name)) {
+      if (!common.validate.group(data.group_name)) {
         return callback('name-wrong-format');
       }
 
@@ -34,7 +34,7 @@ handler.call = function (data, session, next) {
     },
 
     function createGroup (callback) {
-      var q = RoomModel.findByName(data.name);
+      var q = RoomModel.findByName(data.group_name);
       q.exec(function (err, room) {
         if (err) {
           return callback(err);
@@ -44,7 +44,7 @@ handler.call = function (data, session, next) {
         }
       });
 
-      var r = GroupModel.findByName(data.name);
+      var r = GroupModel.findByName(data.group_name);
       r.exec(function (err, group) {
         if (err) {
           return callback(err);
@@ -54,7 +54,7 @@ handler.call = function (data, session, next) {
         }
 
         group = GroupModel.getNewGroup();
-        group.name = data.name;
+        group.name = data.group_name;
         group.owner = user.id;
         group.color = conf.room.default.color;
         group.visibility = false; // not visible on home until admin change this value

@@ -186,7 +186,7 @@ var client = _.extend({
   },
 
   groupCreate: function (groupName, callback) {
-    var data = { name: groupName };
+    var data = { group_name: groupName };
     debug('io:out:group:create', data);
     pomelo.request(
       'chat.groupCreateHandler.call',
