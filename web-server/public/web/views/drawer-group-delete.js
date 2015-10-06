@@ -99,7 +99,7 @@ var DrawerGroupDeleteView = Backbone.View.extend({
     }
   },
   _valid: function () {
-    var name = '#' + this.$input.val();
+    var name = this.$input.val();
     var pattern = new RegExp('^' + this.groupNameConfirmation + '$', 'i');
     return pattern.test(name);
   },

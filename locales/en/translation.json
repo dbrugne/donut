@@ -237,6 +237,9 @@
     "logout": "Logout"
   },
   "profile": {
+    "common": {
+      "editlink": "Edit"
+    },
     "room": {
       "ownerops": "The regulars",
       "now": "Currently",
@@ -246,7 +249,6 @@
         "after": "on the chat platform <a href=\"/\">DONUT.me</a>. On <a href=\"/\">DONUT.me</a> you can join or create a thematic chat room (a donut) about whatever you like. You can chat with people who share your interests."
       },
       "permalink": "Permalink of this profile",
-      "editlink": "Edit",
       "editusers": "Manage users",
       "createdat": "Created on"
     },
@@ -266,7 +268,6 @@
         "after": "on the chat platform <a href=\"/\">DONUT.me</a>. On <a href=\"/\">DONUT.me</a> you can join or create a thematic chat room (a donut) about whatever you like. You can chat with people who share your interests."
       },
       "permalink": "Permalink of this profile",
-      "editlink": "Edit",
       "signuped": "Signed up on",
       "onlined": "online __time__ ago",
       "edit": "Edit"
@@ -671,6 +672,16 @@
             "label": "Disclaimer",
             "placeholder": "Disclaimer",
             "help": "Optional"
+          },
+          "visibility": {
+            "label": "Visibility (admin only)",
+            "true": "This donut is displayed on homepage",
+            "false": "This donut <strong>is not</strong> displayed on homepage"
+          },
+          "priority": {
+            "label": "Priority (admin only)",
+            "placeholder": "",
+            "help": "Number, more is more prioritary"
           },
           "group": {
             "delete": {

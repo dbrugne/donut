@@ -2,6 +2,8 @@
 var errors = require('../../../util/errors');
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var async = require('async');
+var RoomModel = require('../../../../../shared/models/room');
+var _ = require('underscore');
 
 var Handler = function (app) {
   this.app = app;
@@ -48,7 +50,7 @@ handler.call = function (data, session, next) {
         group_id: group.id,
         reason: 'deleted'
       };
-      that.app.globalChannelService.pushMessage('connector', 'group:leave', event, group.name, {}, function (err) {
+      that.app.globalChannelService.pushMessage('connector', 'room:leave', event, group.name, {}, function (err) {
         if (err) {
           logger.error(err);
         } // not 'return', we delete even if error happen
@@ -66,10 +68,19 @@ handler.call = function (data, session, next) {
     },
 
     function persist (callback) {
+      RoomModel.findByGroup(group._id)
+        .exec(function (err, rooms) {
+          if (err) {
+            return callback(err);
+          }
+          _.each(rooms, function (room) {
+            room.deleted = true;
+            room.save(callback);
+          });
+        });
       group.deleted = true;
       group.save(callback);
     }
-
   ], function (err) {
     if (err) {
       return errors.getHandler('group:delete', next)(err);

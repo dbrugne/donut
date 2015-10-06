@@ -85,7 +85,8 @@ var DrawerGroupCreateView = Backbone.View.extend({
         return this.setError(i18next.t('global.unknownerror'));
       }
 
-      app.trigger('joinGroup', name);
+      var identifier = '#' + name + '/welcome';
+      app.trigger('joinRoom', identifier);
       this.reset();
       this.trigger('close');
     }, this));
