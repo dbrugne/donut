@@ -3,6 +3,7 @@ var logger = require('../../../../shared/util/logger').getLogger('donut', __file
 var _ = require('underscore');
 var UserModel = require('../../../../shared/models/user');
 var RoomModel = require('../../../../shared/models/room');
+var GroupModel = require('../../../../shared/models/group');
 var HistoryOneModel = require('../../../../shared/models/historyone');
 var HistoryRoomModel = require('../../../../shared/models/historyroom');
 var conf = require('../../../../config/index');
@@ -46,6 +47,28 @@ module.exports = {
       }
 
       RoomModel.findById(room, function (err, model) {
+        args.unshift(err);
+        args.push(model);
+        callback.apply(undefined, args);
+      });
+    };
+  },
+
+  retrieveGroup: function (group) {
+    return function () {
+      var args = _.toArray(arguments);
+      var callback = args.pop();
+      if (!_.isFunction(callback)) {
+        return logger.error('retrieveGroup parameters error, missing callback');
+      }
+
+      if (_.isObject(group)) {
+        args.unshift(null);
+        args.push(group);
+        return callback.apply(undefined, args);
+      }
+
+      GroupModel.findById(group).exec(function (err, model) {
         args.unshift(err);
         args.push(model);
         callback.apply(undefined, args);

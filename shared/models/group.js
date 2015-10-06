@@ -79,4 +79,15 @@ groupSchema.methods.avatarId = function () {
   return data[1].substr(0, data[1].lastIndexOf('.'));
 };
 
+groupSchema.methods.isAllowedPending = function (userId) {
+  var subDocument = _.find(this.members_pending, function (doc) {
+    if (doc.user._id) {
+      return (doc.user.id === userId);
+    } else {
+      return (doc.user.toString() === userId);
+    }
+  });
+  return (typeof subDocument !== 'undefined');
+};
+
 module.exports = mongoose.model('Group', groupSchema);

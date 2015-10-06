@@ -103,6 +103,8 @@ var ConfirmationModalView = Backbone.View.extend({
         this.$message.text(i18next.t('chat.confirmation.message.invite', {username: this.options.username, name: this.options.room_name.replace('#', '')}));
       } else if (this.options.message === 'request-allowance') {
         this.$message.text(i18next.t('chat.confirmation.message.requestallowance', {name: this.options.room_name.replace('#', '')}));
+      } else if (this.options.message === 'request-allowance-group') {
+        this.$message.text(i18next.t('chat.confirmation.message.requestallowancegroup', {name: this.options.group_name.replace('#', '')}));
       }
     }
     // bind 'enter' only when showing popin

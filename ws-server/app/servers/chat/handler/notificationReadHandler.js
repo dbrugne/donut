@@ -83,6 +83,9 @@ handler.call = function (data, session, next) {
           if (notification.data.room) {
             d.data.room = notification.data.room;
             d.data.room.avatar = notification.data.room._avatar();
+          } else if (notification.data.group) {
+            d.data.group = notification.data.group;
+            d.data.group.avatar = notification.data.group._avatar();
           }
 
           if (notification.data.by_user) {

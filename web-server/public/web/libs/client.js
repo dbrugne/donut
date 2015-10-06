@@ -171,6 +171,18 @@ var client = _.extend({
       this.applyRequestCallback('group:read', callback)
     );
   },
+  groupJoinRequest: function (groupId, message, callback) {
+    var data = {group_id: groupId};
+    if (message) {
+      data.message = message;
+    }
+    debug('io:out:group:join:request', data);
+    pomelo.request(
+      'chat.groupJoinRequestHandler.call',
+      data,
+      this.applyRequestCallback('group:join:request', callback)
+    );
+  },
 
   // ROOM
   // ======================================================

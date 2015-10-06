@@ -328,3 +328,16 @@ emailer.roomMessage = function (to, events, roomName, roomAvatar, callback) {
     subject: i18next.t('email.roommessage.subject', { roomname: roomName.replace('#', '') })
   }, callback);
 };
+
+emailer.groupJoinRequest = function (to, data, callback) {
+  sendEmail(to, 'emails/group-join-request.html', {
+    username: data.username,
+    groupname: data.groupname.replace('#', ''),
+    title: i18next.t('email.groupjoinrequest.content.title', { groupname: data.groupname.replace('#', ''), username: data.username }),
+    email_heading_action: i18next.t('email.groupjoinrequest.content.action', {
+      fqdn: conf.fqdn,
+      username: data.username
+    }),
+    subject: i18next.t('email.groupjoinrequest.subject', { groupname: data.groupname.replace('#', '') })
+  }, callback);
+};

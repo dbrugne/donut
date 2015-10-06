@@ -403,7 +403,8 @@
         "acceptuser": "Vous allez autoriser l'accès à @__username__",
         "disallowuser": "Vous allez supprimer l'accès à @__username__",
         "invite": "Vous allez autoriser l'accès à @__username__. Une notification va lui être adressée pour l'inviter à rejoindre #__name__.",
-        "requestallowance": "Vous allez envoyer une demande d'accés pour #__name__. Le créateur du donut aura accès à votre vrais nom et addresse mail."
+        "requestallowance": "Vous allez envoyer une demande d'accés pour #__name__. Le créateur du donut aura accès à votre vrais nom et addresse mail.",
+        "requestallowancegroup": "Vous allez envoyer une demande d'accés pour #__name__. Le créateur du groupe aura accès à votre vrais nom et addresse mail."
       }
     },
     "commands": {
@@ -482,7 +483,8 @@
         "roommessage": "Nouveaux messages dans <span>#__name__</span>",
         "usermention": "Vous êtes mentionné dans <span>#__name__</span>",
         "usermessage": "<span>@__username__</span>: __message__",
-        "roominvite": "<span>@__username__</span> vous invite à rejoindre <span>#__name__</span>"
+        "roominvite": "<span>@__username__</span> vous invite à rejoindre <span>#__name__</span>",
+        "groupjoinrequest": "<span>@__username__</span> souhaite rejoindre <span>#__name__</span>"
       },
       "userban": " est bloqué à la demande de",
       "userdeban": " n'est plus bloqué à la demande de"
@@ -991,6 +993,15 @@
     },
     "contact": {
       "subject": "[DONUT] Nouveau formulaire de contact"
+    },
+    "groupjoinrequest": {
+      "subject": "Un utilisateur veut rejoindre #__groupname__",
+      "content": {
+        "title": "@__username__ demande l'accès à #__groupname__",
+        "disclaimer": "On dirait que votre groupe est parti pour aller loin !",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder au groupe</a>"
+      }
     }
   },
   "welcome": {
