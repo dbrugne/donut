@@ -122,7 +122,7 @@
     "[all]": "INFO",
     "forward-log": "WARN",
     "donut": "INFO",
-    "web": "WARN"
+    "web": "INFO"
   },
   "replaceConsole": false,
   "lineDebug": false
