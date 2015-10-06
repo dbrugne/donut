@@ -4,15 +4,15 @@
             <div class="margin-top: auto">
                 <div class="error alert alert-danger"></div>
                 <img class="avatar border-shadow open-room-profile mb20" data-room-id="<%= data.room_id %>" src="<%= data.avatar %>" alt="<%= data.identifier %> avatar">
-                <div>
+                <div class="flex-parent center jc-center">
                     <span class="name open-room-profile" data-room-id="<%= data.room_id %>"><%= data.identifier %></span>
-                    <% if (data.mode === 'private') { %>
-                        <span class="room-profile private" data-toggle="tooltip" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
-                    <% } %>
+                    <span class="room-profile label label-default label-sm" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + data.mode) %>">
+                        <%= t('global.mode.title.' + data.mode) %>
+                    </span>
                 </div>
 
                 <% if (data.owner_id) { %>
-                <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= data.owner_id %>">@<%= data.owner_username %></a></span>
+                    <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= data.owner_id %>">@<%= data.owner_username %></a></span>
                 <% } %>
 
                 <% if (data.mode === 'private' && data.blocked !== 'banned' && data.blocked !== 'kicked') { %>
@@ -35,10 +35,10 @@
                 <% } else if (data.blocked === 'banned') { %>
                     <div class="mt15 fs15">
                         <% if (data.banned_at) { print(t('chat.blocked.banned', { at: data.banned_at })); } %>
-                        <% if (data.banned_reason) { %>
+                        <% if (data.reason) { %>
                         <p class="reason">
-                            <span class="title"><%= t('chat.blocked.banned_reason') %></span>
-                            <span class="reason"><i class="icon icon-quote"></i><%= data.banned_reason %></span>
+                            <span class="title"><%= t('chat.blocked.reason') %></span>
+                            <span class="reason"><i class="icon icon-quote"></i><%= data.reason %></span>
                         </p>
                         <% } %>
                     </div>

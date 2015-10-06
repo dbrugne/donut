@@ -36,9 +36,9 @@ if (item.group_id && item.group_id === lastGroup) {
     <span class="item flex-parent center <% if (item.group_id) { %> grouped <% } %><% if (item.focused) { %> active <% } %> <% if (item.blocked) { %> blocked <% } %>">
         <a class="clean name-ctn hidden-xs hidden-sm" href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
             <% if (item.group_id) { %>
-                <span class="name">/<%= item.name.replace('#', '') %></span>
+                <span class="name">/<%= item.name %></span>
             <% } else { %>
-                <span class="name"><span>#</span><%= item.name.replace('#', '') %></span>
+                <span class="name"><span>#</span><%= item.name %></span>
             <% } %>
         </a>
         <% if (item.newuser === true || item.newmention === true || item.unviewed === true) { %>

@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var mongoose = require('../io/mongoose');
 var common = require('@dbrugne/donut-common/server');
 var cloudinary = require('../util/cloudinary');
@@ -35,6 +36,24 @@ groupSchema.statics.findByName = function (name) {
   });
 };
 
+groupSchema.statics.findById = function (id) {
+  return this.findOne({
+    _id: id,
+    deleted: {$ne: true}
+  });
+};
+
+groupSchema.methods.isMember = function (userId) {
+  if (this.isOwner(userId)) {
+    return true;
+  }
+
+  var subDocument = _.find(this.members, function (u) {
+    return (u.toString() === userId);
+  });
+  return (typeof subDocument !== 'undefined');
+};
+
 groupSchema.statics.getNewGroup = function () {
   return new this();
 };
@@ -62,6 +81,17 @@ groupSchema.methods.avatarId = function () {
     return '';
   }
   return data[1].substr(0, data[1].lastIndexOf('.'));
+};
+
+groupSchema.methods.isAllowedPending = function (userId) {
+  var subDocument = _.find(this.members_pending, function (doc) {
+    if (doc.user._id) {
+      return (doc.user.id === userId);
+    } else {
+      return (doc.user.toString() === userId);
+    }
+  });
+  return (typeof subDocument !== 'undefined');
 };
 
 module.exports = mongoose.model('Group', groupSchema);

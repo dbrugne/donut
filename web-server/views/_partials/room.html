@@ -6,7 +6,9 @@
             <div class="ctn">
                 <span class="name">
                     <a href="<%= room.url %>"><%= room.name %></a>
-                    <span class="room-profile <%= room.mode %>"> </span>
+                </span>
+                <span class="room-profile label label-default label-sm" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + room.mode) %>">
+                    <%= t('global.mode.title.' + room.mode) %>
                 </span>
                 <a class="dc-text" href="<%= room.join %>">
                     <%= t('actions.join') %>
@@ -18,15 +20,18 @@
     </div>
 
     <div class="cover">
-        <div class="avatar" style="background-image:url(<%= room.avatar %>)"></div>
+        <div class="avatar relative" style="background-image:url(<%= room.avatar %>)">
+            <span class="room-profile mt5 label label-default label-sm" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + room.mode) %>">
+                <%= t('global.mode.title.' + room.mode) %>
+            </span>
+        </div>
         <div class="top">
             <div class="ctn">
                 <span class="name">
                     <a href="<%= room.url %>"><%= room.name %></a>
-                    <span class="room-profile <%= room.mode %>"> </span>
                 </span>
                 <% if (room.owner && room.owner.username) { %>
-                <span class="owner"><%= t('global.by') %> <a href="<%= room.owner.url %>" class="dc-text">@<%= room.owner.username %></a></span>
+                    <span class="owner"><%= t('global.by') %> <a href="<%= room.owner.url %>" class="dc-text">@<%= room.owner.username %></a></span>
                 <% } %>
             </div>
             <!-- p class="topic"><%= room.topic %></p -->
@@ -43,10 +48,9 @@
         <div class="ctn">
             <p class="name dc-text-contrast open-room-profile" data-room-id="<%= room.room_id %>">
                 <a class="dc-text-contrast" href="<%= room.url %>"><%= room.name %></a>
-                <span class="room-profile <%= room.mode %>"> </span>
             </p>
             <% if (room.owner && room.owner.username) { %>
-            <p class="owner"><%= t('global.by') %> <a href="<%=room.owner.url%>" class="open-user-profile dc-text-contrast" data-user-id="<%= room.owner.user_id %>">@<%= room.owner.username %></a></p>
+                <p class="owner"><%= t('global.by') %> <a href="<%=room.owner.url%>" class="open-user-profile dc-text-contrast" data-user-id="<%= room.owner.user_id %>">@<%= room.owner.username %></a></p>
             <% } %>
             <p class="description"><%= room.description %></p>
         </div>

@@ -11,11 +11,11 @@
         <% } %>
     </div>
 
-    <div class="roomname text-center block">
+    <div class="roomname text-center block flex-parent column center">
         <%= room.identifier %>
-        <% if (room.mode === 'private') { %>
-            <span class="room-profile private" data-toggle="tooltip" data-type="mode" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
-        <% } %>
+        <div class="room-profile label label-default label-sm" data-type="mode" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + room.mode) %>">
+            <%= t('global.mode.title.' + room.mode) %>
+        </div>
     </div>
     <div class="owner text-center">
         <%= t('global.by') %> <a class="colored open-user-profile dc-text" data-user-id="<%= room.owner_id %>">@<%= room.owner_username %></a>
@@ -54,7 +54,7 @@
                     bgColor = "background-color: "+user.color;
                     txtColor = "color: "+user.color;
                 }; %>
-                <div class="item open-user-profile <% if (user.is_owner) { %>owner<% }; %> <% if (user.is_op) { %>op<% }; %>" data-bgcolor="<%= bgColor %>" data-type="room-users" data-txtcolor="<%= txtColor %>" data-user-id="<%= user.user_id %>" data-username="<%= user.username %>" data-toggle="tooltip" data-placement="left">
+                <div class="item open-user-profile <% if (user.is_owner) { %>owner<% }; %> <% if (user.is_op) { %>op<% }; %>" data-bgcolor="<%= bgColor %>" data-type="room-users" data-txtcolor="<%= txtColor %>" data-user-id="<%= user.user_id %>" data-username="<%= user.username %>" data-toggle="tooltip" data-placement="right">
                     <div class="avatar" style="background-image:url(<%= user.avatar %>)"></div>
                 </div>
                 <% }); %>

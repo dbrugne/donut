@@ -155,7 +155,19 @@
     },
     "switchlanguage": "Language",
     "unknownerror": "Unknown error, please retry later",
-    "private-donut": "Private donut: only authorized users can join, participate and access history"
+    "mode": {
+      "title": {
+        "members": "members",
+        "invites": "invites",
+        "members-invites": "members & invites",
+        "public": "public"
+      },
+      "description": {
+        "invites": "This donut is private, for invites only",
+        "members-invites": "This donut is private, for members of this community and invites only",
+        "public": "This donut is public, any user can join"
+      }
+    }
   },
   "login": {
     "withfacebook": "with Facebook",
@@ -235,6 +247,15 @@
       },
       "permalink": "Permalink of this profile",
       "editlink": "Edit",
+      "editusers": "Manage users",
+      "createdat": "Created on"
+    },
+    "group": {
+      "ownerops": "The regulars",
+      "nouser": "No user in this group",
+      "permalink": "Permalink of this profile",
+      "editlink": "Edit",
+      "profilelink": "Profile of ",
       "editusers": "Manage users",
       "createdat": "Created on"
     },
@@ -368,7 +389,8 @@
     "allowed": {
       "success": "A request has been sent successfully",
       "error" : {
-        "allow-pending": "An access request is already pending"
+        "allow-pending": "An access request is already pending",
+        "message-wrong-format": "The message should be less than 200 character"
       }
     },
     "password": {
@@ -378,7 +400,9 @@
     },
     "confirmation": {
       "sure": "Do you confirm this action?",
-      "placeholder": "Explain why, visible in this donut (optional)",
+      "placeholder": "Explain why, visible in the donut (optional)",
+      "placeholderarea": "200 character maximum",
+      "label": "Explain why (optional)",
       "cancel": "No, cancel",
       "confirm": "Yes, confirm",
       "message": {
@@ -386,7 +410,9 @@
         "refuseuser": "You are about to refuse @__username__",
         "acceptuser": "You are about to authorize @__username__",
         "disallowuser": "You are about to disallow @__username__",
-        "invite": "You are about to authorize @__username__. A notification will be sent to invite @__username__ to join #__name__."
+        "invite": "You are about to authorize @__username__. A notification will be sent to invite @__username__ to join #__name__.",
+        "requestallowance": "You are about to request allowance for #__name__. Owner will see your real name and your email on your membership request.",
+        "requestallowancegroup": "You are about to request allowance for #__name__. Owner will see your real name and your email on your membership request."
       }
     },
     "commands": {
@@ -465,7 +491,8 @@
         "roommessage": "New message in <span>#__name__</span>",
         "usermention": "You were mentionned in <span>#__name__</span>",
         "usermessage": "<span>@__username__</span>: __message__",
-        "roominvite": "<span>@__username__</span> invites you to join <span>#__name__</span>"
+        "roominvite": "<span>@__username__</span> invites you to join <span>#__name__</span>",
+        "groupjoinrequest": "<span>@__username__</span> wants to join <span>#__name__</span>"
       },
       "userban": " was blocked by",
       "userdeban": " is no longer blocked as requested by"
@@ -483,14 +510,14 @@
       "onestart": "This conversation is private. Only you and your interlocutor can see it.",
       "edit": "Edit profile",
       "users": "Manage users",
-      "access": "Manage access,"
+      "access": "Manage access"
     },
     "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
     "closeapp": "Are you sure you want to leave ?",
     "closemessage": "Are you sure you want to leave?",
     "alert": {
       "kicked": "You have been kicked out of __name__",
-      "banned": "You have been banned from __name__",
+      "ban": "You have been banned from __name__",
       "allowed": "You are not allowed anymore in __name__"
     },
     "roomnotexists": "The donut __name__ does not exist yet, <a class='open-create-room' data-name='__name__'>would you like to create it</a>?",
@@ -544,7 +571,7 @@
         ]
       },
       "onetoone": [
-        "If <strong>@__username__</strong> isn't online he will get your messages on his next connection",
+        "<strong>@__username__</strong> isn't online, he will get your messages on his next connection",
         "Post a message to start the conversation."
       ]
     },
@@ -585,7 +612,7 @@
       "password_placeholder": "Password",
       "password_button": "Join",
       "banned": "You were banned from this donut on __at__",
-      "banned_reason": "for the following reason: ",
+      "reason": "for the following reason: ",
       "kicked": "You have been kicked out from this donut.",
       "kicked_button": "Join",
       "changemode": "Switch to private mode",
@@ -593,7 +620,8 @@
       "disclaimer-public": "This donut is public. Any user can access it.",
       "disclaimer-password": "You have also chosen to put a password. Users with the password can enter without having to be asked first.",
       "disclaimer-changing": "You can switch this donut to private mode. Then, only users you authorize will be able to join, participate and access history. Access will be based on invitation and/or password. The current members of this public donut will remain members once this donut switched to private. Caution, this action cannot be undone.",
-      "close": "Close this donut"
+      "close": "Close this donut",
+      "allowgroupmember": "Allow group members to join this donut"
     },
     "form": {
       "common": {
@@ -678,7 +706,8 @@
           "disclaimer": {
             "public": "Any user can join, participate and access history. Moderation tools available.",
             "private": "Only users you authorize can join, participate and access history. Moderation tools available.",
-            "password": "You can also set a password. Users with the password can join without prior invitation."
+            "password": "You can also set a password. Users with the password can join without prior invitation.",
+            "allowgroupmember": "You can allow group members to join this room."
           }
         },
         "create": {
@@ -827,7 +856,7 @@
     "global": {
       "content": {
         "team": "The DONUT.me team",
-        "ps": "P.S.: To avoid receiving these notification types, please uncheck it from your notification options in your account preferences on <a href=\"https://__fqdn__\">__fqdn__</a>. For any question, we are available on <a href=\"https://__fqdn__/!#room/help\">#help</a>"
+        "ps": "P.S.: To avoid receiving these notification types, please uncheck it from your notification options in your account preferences on <a href=\"https://__fqdn__\">__fqdn__</a>. For any question, we are available on <a href=\"https://__fqdn__/!#donut/help\">#help</a>"
       }
     },
     "common": {
@@ -1010,6 +1039,15 @@
     },
     "contact": {
       "subject": "[DONUT] New contact form"
+    },
+    "groupjoinrequest": {
+      "subject": "An user want to join #__groupname__",
+      "content": {
+        "title": "@__username__ ask for allowance in #__groupname__",
+        "disclaimer": "Looks like your donut have great success!",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to group</a>"
+      }
     }
   },
   "welcome": {
@@ -1059,7 +1097,7 @@
     "notif": {
       "title": "Notifications",
       "help": {
-        "user": "DONUT tries to limit smartly the amount of emails and mobile notifications. However if you find that we send too many notifications feel free to send your feedback <a data-toggle='contactform'>by email</a> or on <a href='#room/help'>#help</a>"
+        "user": "DONUT tries to limit smartly the amount of emails and mobile notifications. However if you find that we send too many notifications feel free to send your feedback <a data-toggle='contactform'>by email</a> or on <a href='#donut/help'>#help</a>"
       },
       "nothing": {
         "label": "Never receive notifications about this donut",

@@ -1,6 +1,10 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
+var ConfirmationView = require('./modal-confirmation');
+var client = require('../libs/client');
+var i18next = require('i18next-client');
+var app = require('../models/app');
 
 var GroupView = Backbone.View.extend({
   template: require('../templates/group.html'),
@@ -10,6 +14,10 @@ var GroupView = Backbone.View.extend({
   tagName: 'div',
 
   className: 'group',
+
+  events: {
+    'click .request-allowance': 'onRequestAllowance'
+  },
 
   initialize: function (options) {
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
@@ -29,7 +37,7 @@ var GroupView = Backbone.View.extend({
         u.avatar = common.cloudinary.prepare(u.avatar, 60);
         op.push(u);
       } else {
-        if (isMember) {
+        if (isMember || isAdmin) {
           u.avatar = common.cloudinary.prepare(u.avatar, 34);
           members.push(u);
         }
@@ -44,12 +52,12 @@ var GroupView = Backbone.View.extend({
       room.owner_id = room.owner.user_id;
       room.owner_username = room.owner.username;
       if (room.group_id) {
-        room.join = '#' + room.group_name + '/' + room.name.replace('#', '');
+        room.join = '#' + room.group_name + '/' + room.name;
       } else {
         room.join = room.name;
       }
 
-      if (room.mode === 'public' || isMember) {
+      if (room.mode === 'public' || isMember || isAdmin) {
         rooms.push(room);
       }
     });
@@ -59,7 +67,9 @@ var GroupView = Backbone.View.extend({
       isAdmin: isAdmin,
       group: group,
       op: op,
-      members: members
+      members: members,
+      members_count: group.members_count,
+      members_more: group.members_more
     });
     var htmlCards = this.templateCards({
       rooms: rooms,
@@ -80,6 +90,21 @@ var GroupView = Backbone.View.extend({
     } else {
       this.$el.hide();
     }
+  },
+  onRequestAllowance: function (event) {
+    ConfirmationView.open({message: 'request-allowance-group', area: true, group_name: this.model.get('name')}, _.bind(function (message) {
+      client.groupJoinRequest(this.model.get('group_id'), message, function (response) {
+        if (response.err) {
+          if (response.err === 'allow-pending' || response.err === 'message-wrong-format') {
+            app.trigger('alert', 'error', i18next.t('chat.allowed.error.' + response.err));
+          } else {
+            app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+          }
+        } else {
+          app.trigger('alert', 'info', i18next.t('chat.allowed.success'));
+        }
+      });
+    }, this));
   },
   initializeTooltips: function () {
     this.$('[data-toggle="tooltip"][data-type="room-mode"]').tooltip({

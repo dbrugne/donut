@@ -83,7 +83,7 @@ handler.call = function (data, session, next) {
           if (wasPending) {
             Room.update(
               {_id: { $in: [room.id] }},
-              {$pull: {allowed_pending: user.id},
+              {$pull: {allowed_pending: {user: user.id}},
               $addToSet: {users: user.id}}, function (err) {
                 return callback(err, eventData);
               }
@@ -178,7 +178,7 @@ handler.refuse = function (data, session, next) {
     function persist (eventData, callback) {
       Room.update(
         {_id: { $in: [room.id] }},
-        {$pull: {allowed_pending: user.id}}, function (err) {
+        {$pull: {allowed_pending: {user: user.id}}}, function (err) {
           return callback(err, eventData);
         }
       );
@@ -193,6 +193,52 @@ handler.refuse = function (data, session, next) {
   ], function (err) {
     if (err) {
       return errors.getHandler('room:allow', next)(err);
+    }
+
+    return next(null, {success: true});
+  });
+};
+
+handler.group = function (data, session, next) {
+  var currentUser = session.__currentUser__;
+  var room = session.__room__;
+
+  async.waterfall([
+
+    function check (callback) {
+      if (!data.room_id) {
+        return callback('params-room-id');
+      }
+
+      if (!room) {
+        return callback('room-not-found');
+      }
+
+      if (!room.group) {
+        return callback('group-not-found');
+      }
+
+      if (!room.isOwner(currentUser.id) && session.settings.admin !== true) {
+        return callback('no-admin-owner');
+      }
+
+      if (room.allow_group_member) {
+        return callback('allowed');
+      }
+
+      return callback(null);
+    },
+
+    function add (callback) {
+      room.allow_group_member = true;
+      room.save(function (err) {
+        return callback(err);
+      });
+    }
+
+  ], function (err) {
+    if (err) {
+      return errors.getHandler('room:group:allow', next)(err);
     }
 
     return next(null, {success: true});

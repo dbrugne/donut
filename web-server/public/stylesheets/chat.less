@@ -126,8 +126,12 @@
         .question {
           margin-bottom: 15px;
         }
-        .input {
+        .input, .big-input {
           margin-bottom: 15px;
+        }
+        textarea {
+          max-width: 368px;
+          max-height: 450px;
         }
         .buttons {
           .cancel {
@@ -487,7 +491,7 @@
             .overlay-text { width: 100px; top: 40px; }
           } // #chat #center .discussion .content .header.room .overlay-ctn
           .info {
-            .name { display: inline-block; margin-top: 2px; font-size: 2.7rem; }
+            .name { margin-top: 2px; font-size: 2.7rem; display: inline-flex; }
             #chat #center .discussion .content .header.room .info .name .owner { display: inline-block; font-size: 1.2em; }
             .dropdown { display: inline-block; position: relative;
               .dropdown-menu>li>a { color: @cl-subtext40; }
@@ -540,7 +544,7 @@
       .side { border-left:1px solid @cl-subtext15; width: 330px;
         .users {
           .scrollable {overflow-y: auto; overflow-x: hidden; height: 100%; .scrollbar-white;}
-          .title { font-size: 2rem; padding: 10px; margin: 0 20px; color:@cl-title; }
+          .title { font-size: 2rem; padding: 10px 0; margin: 0 20px; color:@cl-title; }
           .user-list { height: auto;
             .list { .display-flex; .flex-flow(row wrap); justify-content: space-between;
               .item { width: auto; padding:0;
@@ -621,8 +625,16 @@
             .status-block { font-size: 1.2em; margin-left: 110px;
               i { font-size: 0.9em; }
               .ago { display: none; font-size: 0.9em; font-style: italic; }
+              &.online {
+                .display-online { display:inline-block; }
+                .display-offline { display:none; }
+              }
+              &.offline {
+                .display-online { display:none; }
+                .display-offline { display:inline-block; }
+              }
             } // #chat #center .discussion .content .header.user .status-block
-            .hello-block { font-size: 1.2em; margin-left: 110px; font-style: italic; }
+            .hello-block { font-style: italic; }
           } // #chat #center .discussion .content .header.user
         }
         .events { /*border-top: 1px solid @cl-subtext10;*/ overflow-y: scroll; overflow-x: hidden; .flex(1); .scrollbar-grey; position: relative;
@@ -1164,10 +1176,10 @@
     }
   }
   .status { color: transparent; }
-  .status.online { color: @cl-green_sea; }
-  .status.connecting { color: @cl-warning; }
-  .status.offline { color: @cl-pomegranate; }
-  .status.error { color: @cl-pomegranate; }
+  .online>.status, .status.online { color: @cl-green_sea; }
+  .connecting>.status, .status.connecting { color: @cl-warning; }
+  .offline>.status, .status.offline { color: @cl-pomegranate; }
+  .error>.status, .status.error { color: @cl-pomegranate; }
 
   .block { margin: 0;
     &.date { margin-top: 16px; margin-bottom: 10px; clear: both; border-top: 0; height: 1px; background-color: @cl-subtext10; text-align: center;

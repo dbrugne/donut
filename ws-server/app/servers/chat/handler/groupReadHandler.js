@@ -19,7 +19,6 @@ handler.call = function (data, session, next) {
   var group = session.__group__;
 
   var read = {};
-  var members = [];
   var alreadyIn = [];
 
   var what = data.what;
@@ -39,6 +38,18 @@ handler.call = function (data, session, next) {
     },
 
     function basic (callback) {
+      read = {
+        name: group.name,
+        group_id: group.id,
+        avatar: group._avatar(),
+        color: group.color,
+        website: group.website,
+        description: group.description,
+        disclaimer: group.disclaimer,
+        created: group.created_at,
+        members: []
+      };
+
       // owner
       var owner = {};
       if (group.owner) {
@@ -49,22 +60,11 @@ handler.call = function (data, session, next) {
           color: group.owner.color,
           is_owner: true
         };
-        members.push(owner);
+        read.members.push(owner);
+        read.owner_id = owner.user_id;
+        read.owner_username = owner.username;
+        alreadyIn.push(group.owner.id);
       }
-
-      read = {
-        name: group.name,
-        group_id: group.id,
-        owner_id: owner.user_id,
-        owner_username: owner.username,
-        members: members,
-        avatar: group._avatar(),
-        color: group.color,
-        website: group.website,
-        description: group.description,
-        disclaimer: group.disclaimer,
-        created: group.created_at
-      };
 
       return callback(null);
     },
@@ -84,16 +84,24 @@ handler.call = function (data, session, next) {
             color: op.color,
             is_op: true
           };
-          members.push(el);
+          read.members.push(el);
           alreadyIn.push(el.user_id);
         });
       }
 
-      // users
+      var max = 60;
+      read.members_count = group.members.length;
+      read.members_more = false;
+
+      // pad list to 'max' users
       if (group.members && group.members.length > 0) {
-        _.each(group.members, function (u) {
-          if (u.id === group.owner.user_id || alreadyIn.indexOf(u.id) !== -1) {
+        _.find(group.members, function (u) {
+          if (alreadyIn.indexOf(u.id) !== -1) {
             return;
+          }
+          if (read.members.length === max) {
+            read.members_more = true;
+            return true; // stop iteration
           }
           var el = {
             user_id: u.id,
@@ -101,8 +109,11 @@ handler.call = function (data, session, next) {
             avatar: u._avatar(),
             color: u.color
           };
-          members.push(el);
-          alreadyIn.push(el.user_id);
+          read.members.push(el);
+
+          if (read.members.length > max) {
+            return true; // stop iteration
+          }
         });
       }
 

@@ -172,6 +172,18 @@ var client = _.extend({
       this.applyRequestCallback('group:read', callback)
     );
   },
+  groupJoinRequest: function (groupId, message, callback) {
+    var data = {group_id: groupId};
+    if (message) {
+      data.message = message;
+    }
+    debug('io:out:group:join:request', data);
+    pomelo.request(
+      'chat.groupJoinRequestHandler.call',
+      data,
+      this.applyRequestCallback('group:join:request', callback)
+    );
+  },
 
   groupCreate: function (groupName, callback) {
     var data = { name: groupName };
@@ -503,8 +515,11 @@ var client = _.extend({
     debug('io:out:room:typing', data);
     pomelo.notify('chat.roomTypingHandler.call', data);
   },
-  roomJoinRequest: function (roomId, callback) {
+  roomJoinRequest: function (roomId, message, callback) {
     var data = {room_id: roomId};
+    if (message) {
+      data.message = message;
+    }
     debug('io:out:room:join:request', data);
     pomelo.request(
       'chat.roomJoinRequestHandler.call',
@@ -519,6 +534,15 @@ var client = _.extend({
       'chat.roomAllowHandler.call',
       data,
       this.applyRequestCallback('room:allow', callback)
+    );
+  },
+  roomAllowGroup: function (roomId, callback) {
+    var data = {room_id: roomId};
+    debug('io:out:room:allow:group', data);
+    pomelo.request(
+      'chat.roomAllowHandler.group',
+      data,
+      this.applyRequestCallback('room:allow:group', callback)
     );
   },
   roomRefuse: function (roomId, userId, callback) {
@@ -537,6 +561,15 @@ var client = _.extend({
       'chat.roomDisallowHandler.call',
       data,
       this.applyRequestCallback('room:disallow', callback)
+    );
+  },
+  roomDisallowGroup: function (roomId, callback) {
+    var data = {room_id: roomId};
+    debug('io:out:room:disallow:group', data);
+    pomelo.request(
+      'chat.roomDisallowHandler.group',
+      data,
+      this.applyRequestCallback('room:disallow:group', callback)
     );
   },
   roomSetPrivate: function (roomId, callback) {

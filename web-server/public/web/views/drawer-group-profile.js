@@ -6,15 +6,15 @@ var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 var date = require('../libs/date');
 
-var DrawerRoomProfileView = Backbone.View.extend({
-  template: require('../templates/drawer-room-profile.html'),
+var DrawerGroupProfileView = Backbone.View.extend({
+  template: require('../templates/drawer-group-profile.html'),
 
-  id: 'room-profile',
+  id: 'group-profile',
 
   events: {},
 
   initialize: function (options) {
-    this.roomId = options.room_id;
+    this.groupId = options.group_id;
 
     // show spinner as temp content
     this.render();
@@ -24,12 +24,12 @@ var DrawerRoomProfileView = Backbone.View.extend({
     }
 
     var what = {
-      more: true,
+      rooms: true,
       users: true,
-      admin: false
+      admin: true
     };
-    client.roomRead(this.roomId, null, what, _.bind(function (data) {
-      if (data.err === 'room-not-found') {
+    client.groupRead(this.groupId, null, what, _.bind(function (data) {
+      if (data.err === 'group-not-found') {
         return;
       }
       if (!data.err) {
@@ -43,39 +43,36 @@ var DrawerRoomProfileView = Backbone.View.extend({
 
     return this;
   },
-  onResponse: function (room) {
-    if (!room.name) {
+  onResponse: function (group) {
+    if (!group.name) {
       return app.trigger('drawerClose');
     }
 
-    room.isOwner = (room.owner && room.owner.user_id === currentUser.get('user_id'));
+    group.isOwner = (group.owner && group.owner.user_id === currentUser.get('user_id'));
 
-    room.isAdmin = currentUser.isAdmin();
+    group.isAdmin = currentUser.isAdmin();
 
-    room.avatar = common.cloudinary.prepare(room.avatar, 90);
+    group.avatar = common.cloudinary.prepare(group.avatar, 90);
 
-    room.uri = room.identifier;
+    group.uri = '#g/' + group.name;
 
-    room.url = 'room/' + room.name.replace('#', '');
+    group.url = 'group/' + group.name;
 
-    _.each(room.users, function (element, key, list) {
+    _.each(group.members, function (element, key, list) {
       element.avatar = common.cloudinary.prepare(element.avatar, 34);
     });
 
-    var html = this.template({room: room});
+    var html = this.template({group: group});
     this.$el.html(html);
     date.from('date', this.$('.created span'));
 
-    if (room.color) {
-      this.trigger('color', room.color);
+    if (group.color) {
+      this.trigger('color', group.color);
     }
 
     this.initializeTooltips();
   },
   initializeTooltips: function () {
-    this.$el.find('[data-toggle="tooltip"][data-type="mode"]').tooltip({
-      container: 'body'
-    });
     this.$el.find('[data-toggle="tooltip"][data-type="room-users"]').tooltip({
       html: true,
       animation: false,
@@ -89,4 +86,4 @@ var DrawerRoomProfileView = Backbone.View.extend({
 
 });
 
-module.exports = DrawerRoomProfileView;
+module.exports = DrawerGroupProfileView;

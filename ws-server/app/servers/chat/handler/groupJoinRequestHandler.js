@@ -1,7 +1,7 @@
 'use strict';
 var errors = require('../../../util/errors');
 var async = require('async');
-var Room = require('../../../../../shared/models/room');
+var Group = require('../../../../../shared/models/group');
 var Notifications = require('../../../components/notifications');
 
 var Handler = function (app) {
@@ -16,34 +16,30 @@ var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
   var user = session.__currentUser__;
-  var room = session.__room__;
+  var group = session.__group__;
 
   var that = this;
 
   async.waterfall([
 
     function check (callback) {
-      if (!data.room_id) {
-        return callback('params-room-id');
+      if (!data.group_id) {
+        return callback('params-group-id');
       }
 
       if (data.message && data.message.length > 200) {
         return callback('message-wrong-format');
       }
 
-      if (!room) {
+      if (!group) {
         return callback('room-not-found');
       }
 
-      if (room.isBanned(user.id)) {
-        return callback('banned');
-      }
-
-      if (room.isAllowed(user.id)) {
+      if (group.isMember(user.id)) {
         return callback('allowed');
       }
 
-      if (room.isAllowedPending(user.id)) {
+      if (group.isAllowedPending(user.id)) {
         return callback('allow-pending');
       }
 
@@ -55,9 +51,9 @@ handler.call = function (data, session, next) {
         by_user_id: user._id,
         by_username: user.username,
         by_avatar: user._avatar(),
-        user_id: room.owner._id,
-        username: room.owner.username,
-        avatar: room.owner._avatar()
+        user_id: group.owner._id,
+        username: group.owner.username,
+        avatar: group.owner._avatar()
       };
       callback(null, event);
     },
@@ -67,23 +63,23 @@ handler.call = function (data, session, next) {
       if (data.message) {
         pendingModel.message = data.message;
       }
-      Room.update(
-        {_id: { $in: [room.id] }},
-        {$addToSet: {allowed_pending: pendingModel}}, function (err) {
+      Group.update(
+        {_id: { $in: [group.id] }},
+        {$addToSet: {members_pending: pendingModel}}, function (err) {
           return callback(err, eventData);
         }
       );
     },
 
     function notification (event, callback) {
-      Notifications(that.app).getType('roomjoinrequest').create(room.owner.id, room, event, function (err) {
+      Notifications(that.app).getType('groupjoinrequest').create(group.owner.id, group, event, function (err) {
         return callback(err, event);
       });
     }
 
   ], function (err) {
     if (err) {
-      return errors.getHandler('room:join:request', next)(err);
+      return errors.getHandler('group:join:request', next)(err);
     }
 
     return next(null, {success: true});

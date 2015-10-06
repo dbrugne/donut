@@ -25,6 +25,7 @@ var DrawerUserProfileView = Backbone.View.extend({
 
     if (options.data) {
       this.onResponse(options.data);
+      return;
     }
 
     var that = this;

@@ -24,6 +24,7 @@ module.exports = function (user, room, fn) {
   if (room.group) {
     data.group_id = room.group.id;
     data.group_name = room.group.name;
+    data.allow_group_member = room.allow_group_member;
   }
   if (room.owner) {
     data.owner_id = room.owner.id;
@@ -42,7 +43,7 @@ module.exports = function (user, room, fn) {
     data.banned_at = doc.banned_at;
     data.blocked = 'banned';
     if (doc.reason) {
-      data.banned_reason = doc.reason;
+      data.reason = doc.reason;
     }
   }
 

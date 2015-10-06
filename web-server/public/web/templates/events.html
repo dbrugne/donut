@@ -10,7 +10,7 @@
                 <% if (model.type === 'room') { %>
                     <div class="room">
                         <div class="title">
-                            <span class="open-room-profile" data-room-id="<%= model.room_id %>"><%= model.name %></span>
+                            <span class="open-room-profile" data-room-id="<%= model.room_id %>"><%= model.identifier %></span>
                         </div>
                         <div class="info">
                             <p><%= t('chat.history.currently', model) %>

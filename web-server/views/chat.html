@@ -177,6 +177,10 @@
                     <div class="input">
                         <input type="text" class="form-control" placeholder="<%= t('chat.confirmation.placeholder') %>">
                     </div>
+                    <div class="big-input">
+                        <label class="big-input-label" for="big-input-textarea"><%= t('chat.confirmation.label') %></label>
+                        <textarea id="big-input-textarea" class="form-control" rows="5" maxlength="200" placeholder="<%= t('chat.confirmation.placeholderarea') %>"></textarea>
+                    </div>
                     <div class="buttons">
                         <button type="button" class="cancel" data-dismiss="modal"><i class="icon icon-times"></i> <%= t('chat.confirmation.cancel') %></button>
                         <button type="button" class="confirm"><i class="icon icon-check"></i> <%= t('chat.confirmation.confirm') %></button>

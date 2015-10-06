@@ -44,7 +44,7 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     return this;
   },
   onResponse: function (room) {
-    if (room.owner.user_id !== currentUser.get('user_id') && !currentUser.isAdmin()) {
+    if (room.owner_id !== currentUser.get('user_id') && !currentUser.isAdmin()) {
       return;
     }
 
@@ -99,7 +99,7 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     }
   },
   _valid: function () {
-    var name = '#' + this.$input.val();
+    var name = '#' + this.$input.val(); // @todo : remove # from name validation
     var pattern = new RegExp('^' + this.roomNameConfirmation + '$', 'i');
     return pattern.test(name);
   },

@@ -114,7 +114,7 @@ var NotificationsView = Backbone.View.extend({
       : '';
     var message = i18next.t('chat.notifications.messages.' + data.type, {
       name: (data.data.room)
-        ? data.data.room.name.replace('#', '')
+        ? data.data.room.name
         : '',
       username: (data.data.by_user)
         ? data.data.by_user.username
@@ -135,7 +135,13 @@ var NotificationsView = Backbone.View.extend({
       n.avatar = common.cloudinary.prepare(n.data.room.avatar, 90);
       n.title = n.data.room.name;
       n.name = n.data.room.name.replace('#', '');
-      n.href = '#room/' + n.name;
+      // @todo : new room uri schema
+      n.href = '#' + n.name;
+    } else if (n.data.group) {
+      n.avatar = common.cloudinary.prepare(n.data.group.avatar, 90);
+      n.title = n.data.group.name;
+      n.name = n.data.group.name.replace('#', '');
+      n.href = '#g/' + n.name;
     } else if (n.data.by_user) {
       n.avatar = common.cloudinary.prepare(n.data.by_user.avatar, 90);
       n.title = n.data.by_user.username;
@@ -154,7 +160,8 @@ var NotificationsView = Backbone.View.extend({
     if (n.type === 'roomjoinrequest') {
       n.href = '';
       n.css += 'open-room-access';
-      n.html += 'data-room-id="' + n.data.room.room_id + '"';
+      var roomId = (n.data.room._id) ? n.data.room._id : n.data.room.id;
+      n.html += 'data-room-id="' + roomId + '"';
       n.username = null;
     }
 

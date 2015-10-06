@@ -15,7 +15,8 @@ module.exports = function (req, res, next, roomname) {
   }
 
   // @todo : make it works with group rooms (#aaa/aaa)
-  Room.findByName('#' + roomname)
+  Room.findByName(roomname)
+    .populate('group', 'name')
     .populate('owner', 'username avatar color location website facebook')
     .populate('op', 'username avatar color location website facebook')
     .populate('users', 'username avatar color location website facebook')
@@ -28,7 +29,8 @@ module.exports = function (req, res, next, roomname) {
       if (model) {
         var room = {
           id: model.id,
-          name: model.name,
+          name: model.getIdentifier(),
+          identifier: model.getIdentifier(),
           permanent: model.permanent,
           avatar: model._avatar(160),
           poster: model._poster(),
@@ -44,10 +46,9 @@ module.exports = function (req, res, next, roomname) {
         };
 
         // urls
-        var ident = model.name.replace('#', '');
-        room.url = req.protocol + '://' + conf.fqdn + '/room/' + ident;
-        room.chat = req.protocol + '://' + conf.fqdn + '/!#room/' + ident;
-        room.join = req.protocol + '://' + conf.fqdn + '/room/join/' + ident;
+        room.url = req.protocol + '://' + conf.fqdn + '/room/' + room.identifier.replace('#', '');
+        room.chat = req.protocol + '://' + conf.fqdn + '/!' + model.getIdentifier();
+        room.join = req.protocol + '://' + conf.fqdn + '/room/join/' + room.identifier.replace('#', '');
 
         // owner
         var ownerId;

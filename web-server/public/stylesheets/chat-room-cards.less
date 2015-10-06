@@ -1,7 +1,7 @@
 .rooms.cards { margin-left: -1px; // for welcome popin
   .list { .display-flex; .flex-flow(row wrap); .clearfix; }
   .room { float:left; position: relative; width: 217px; height: 286px; margin-top: 10px; text-align: center;
-    .avatar { display: inline-block; margin: auto; width: 135px; height: 135px; background-position: center center; border: 5px solid rgba(167,167,167,0.1); background-size: 100%; }
+    .avatar { display: inline-block; margin: auto; width: 100px; height: 100px; background-position: center center; .border-shadow; background-size: 100%; }
     .name { margin-top: 10px; font-size: 20px; }
     .owner { font-size: 13px; }
     .join { position: absolute; left: 10px; right: 10px; bottom: 30px; padding: 13px 20px; .border-radius(100px);
@@ -9,6 +9,7 @@
     }
     .cover {
       .name, .owner { display:block; }
+      .room-profile { margin: 0; position: absolute; bottom: 0; right: -30px; }
     }
     .back { display: none; width: 100%; height: 100%; .border-radius(25px);
       .ctn { height: 100%; padding-bottom: 70px; .display-flex; .flex-flow(column nowrap);

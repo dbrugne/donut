@@ -2,7 +2,7 @@
 
 <div class="title">
     <%= t('chat.history.access') %>
-    <%= room_name %>
+    <%= room.identifier %>
 </div>
 
 <div class="ctn-drawer">
@@ -42,6 +42,18 @@
             <div class="ctn"></div>
             <div class="paginate flex-parent block"></div>
         </div>
+
+        <% if (group !== false) { %>
+        <h2 class="block"><%= t('chat.blocked.allowgroupmember') %></h2>
+
+        <div class="field-password radio block">
+            <p><%= t('chat.form.room-form.mode.disclaimer.allowgroupmember') %></p>
+            <div class="password-block form-inline mt10 flex-parent baseline space-between">
+                <input type="checkbox" id="input-allowgroupmember-checkbox" name="input-allowgroupmember-checkbox" <% if (allow_group_member !== false) { %> checked <% } %> />
+                <label for="input-allowgroupmember-checkbox"><%= t('chat.blocked.allowgroupmember') %></label>
+            </div>
+        </div>
+        <% } %>
 
         <h2 class="block"><%= t('chat.blocked.password_placeholder') %></h2>
 
