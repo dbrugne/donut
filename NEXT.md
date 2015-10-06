@@ -16,3 +16,7 @@ db.getCollection('users').update({}, {$unset: {positions: 1}}, {multi: true});
 ```
 grunt donut-groups
 ```
+* Remove all old allowed_pending
+```
+db.getCollection('rooms').update({},{$set: {allowed_pending: []}},{"multi" : true});
+```
