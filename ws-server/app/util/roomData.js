@@ -10,8 +10,8 @@ module.exports = function (user, room, fn) {
 
   var data = {
     name: room.name,
+    identifier: room.getIdentifier(),
     room_id: room.id,
-    id: room.id,
     mode: room.mode,
     hasPassword: !!room.password,
     blocked: false,
@@ -24,6 +24,7 @@ module.exports = function (user, room, fn) {
   if (room.group) {
     data.group_id = room.group.id;
     data.group_name = room.group.name;
+    data.allow_group_member = room.allow_group_member;
   }
   if (room.owner) {
     data.owner_id = room.owner.id;

@@ -100,7 +100,7 @@ module.exports = function (grunt) {
       },
 
       function retrieveRoom (callback) {
-        RoomModel.findByName(roomName).exec(function (err, r) {
+        RoomModel.findByName(roomName).exec(function (err, r) { // @todo : make it works with group rooms (#aaa/aaa)
           if (err) {
             return callback('Error while retrieving room ' + roomName + ': ' + err);
           }

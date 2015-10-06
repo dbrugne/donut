@@ -79,7 +79,7 @@ module.exports = function (req, res, next, username) {
             room.owner.url = req.protocol + '://' + conf.fqdn + '/user/' + ('' + room.owner.username).toLocaleLowerCase();
           }
 
-          room.avatar = dbroom._avatar(80);
+          room.avatar = dbroom._avatar(160);
           room.url = (room.name)
             ? req.protocol + '://' + conf.fqdn + '/room/' + room.name.replace('#', '').toLocaleLowerCase()
             : '';

@@ -1,7 +1,4 @@
 'use strict';
-if (process.env.NODE_ENV !== 'development') {
-  require('newrelic');
-}
 
 // middleware declaration order is VERY important to avoid useless computing
 var logger = require('../shared/util/logger').getLogger('web', __filename);

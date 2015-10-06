@@ -2,6 +2,7 @@
 var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
+var RoomModel = require('../../../../../shared/models/room');
 
 var Handler = function (app) {
   this.app = app;
@@ -18,6 +19,10 @@ handler.call = function (data, session, next) {
   var group = session.__group__;
 
   var read = {};
+  var members = [];
+  var alreadyIn = [];
+
+  var what = data.what;
 
   async.waterfall([
 
@@ -33,10 +38,7 @@ handler.call = function (data, session, next) {
       return callback(null);
     },
 
-    function prepare (callback) {
-      var members = [];
-      var alreadyIn = [];
-
+    function basic (callback) {
       // owner
       var owner = {};
       if (group.owner) {
@@ -48,6 +50,28 @@ handler.call = function (data, session, next) {
           is_owner: true
         };
         members.push(owner);
+      }
+
+      read = {
+        name: group.name,
+        group_id: group.id,
+        owner_id: owner.user_id,
+        owner_username: owner.username,
+        members: members,
+        avatar: group._avatar(),
+        color: group.color,
+        website: group.website,
+        description: group.description,
+        disclaimer: group.disclaimer,
+        created: group.created_at
+      };
+
+      return callback(null);
+    },
+
+    function users (callback) {
+      if (what.users !== true) {
+        return callback(null);
       }
 
       // op
@@ -68,7 +92,7 @@ handler.call = function (data, session, next) {
       // users
       if (group.members && group.members.length > 0) {
         _.each(group.members, function (u) {
-          if (u.id === owner.user_id || alreadyIn.indexOf(u.id) !== -1) {
+          if (u.id === group.owner.user_id || alreadyIn.indexOf(u.id) !== -1) {
             return;
           }
           var el = {
@@ -82,22 +106,13 @@ handler.call = function (data, session, next) {
         });
       }
 
-      read = {
-        name: group.name,
-        id: group.id,
-        room_id: group.id,
-        owner_id: owner.user_id,
-        owner_username: owner.username,
-        members: members,
-        avatar: group._avatar(),
-        color: group.color,
-        website: group.website,
-        description: group.description,
-        disclaimer: group.disclaimer,
-        created: group.created_at
-      };
+      return callback(null);
+    },
 
-      // @todo hydrate rooms
+    function admin (callback) {
+      if (what.admin !== true) {
+        return callback(null);
+      }
 
       if (group.isOwner(user.id) || session.settings.admin === true) {
         read.password = group.password;
@@ -109,6 +124,49 @@ handler.call = function (data, session, next) {
       }
 
       return callback(null);
+    },
+
+    function rooms (callback) {
+      if (what.rooms !== true) {
+        return callback(null);
+      }
+
+      RoomModel.findByGroup(group._id).populate({
+        path: 'owner',
+        select: 'username avatar color facebook'
+      }).exec(function (err, rooms) {
+        if (err) {
+          return callback(err);
+        }
+        var sanitizedRooms = [];
+        _.each(rooms, function (r) {
+          var room = {
+            id: r.id,
+            room_id: r.id,
+            avatar: r._avatar(),
+            poster: r._poster(),
+            mode: r.mode,
+            color: r.color,
+            name: r.name,
+            description: r.description
+          };
+
+          if (r.owner) {
+            room.owner = {
+              user_id: r.owner.id,
+              username: r.owner.username,
+              avatar: r.owner._avatar(),
+              color: r.owner.color,
+              is_owner: true
+            };
+          }
+
+          sanitizedRooms.push(room);
+        });
+
+        read.rooms = sanitizedRooms;
+        return callback(null);
+      });
     }
 
   ], function (err) {

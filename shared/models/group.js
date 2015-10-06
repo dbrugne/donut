@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var mongoose = require('../io/mongoose');
 var common = require('@dbrugne/donut-common/server');
 var cloudinary = require('../util/cloudinary');
@@ -33,6 +34,24 @@ groupSchema.statics.findByName = function (name) {
     name: common.regexp.exact(name, 'i'),
     deleted: {$ne: true}
   });
+};
+
+groupSchema.statics.findById = function (id) {
+  return this.findOne({
+    _id: id,
+    deleted: {$ne: true}
+  });
+};
+
+groupSchema.methods.isMember = function (userId) {
+  if (this.isOwner(userId)) {
+    return true;
+  }
+
+  var subDocument = _.find(this.members, function (u) {
+    return (u.toString() === userId);
+  });
+  return (typeof subDocument !== 'undefined');
 };
 
 groupSchema.methods.isOwner = function (userId) {
