@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../shared/util/logger').getLogger('web', __filename);
+var logger = require('pomelo-logger').getLogger('web', __filename);
 
 var bouncer = {};
 module.exports = bouncer;

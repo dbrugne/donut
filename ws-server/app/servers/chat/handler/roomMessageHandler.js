@@ -108,6 +108,10 @@ handler.call = function (data, session, next) {
 
       var usersIds = _.first(_.map(mentions, 'id'), 10);
       async.each(usersIds, function (userId, fn) {
+        if (!userId) {
+          // happens when a non-existing username is mentionned
+          return fn(null);
+        }
         Notifications(that.app).getType('usermention').create(userId, room, sentEvent.id, fn);
       }, function (err) {
         if (err) {

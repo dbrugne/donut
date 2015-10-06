@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../shared/util/logger').getLogger('web', __filename);
+var logger = require('pomelo-logger').getLogger('web', __filename);
 module.exports = function (code, app) {
   // Error 404
   if (code === '404') {

@@ -6,7 +6,7 @@ var async = require('async');
 var crypto = require('crypto');
 var User = require('../../../shared/models/user');
 var i18next = require('../../../shared/util/i18next');
-var logger = require('../../../shared/util/logger').getLogger('web', __filename);
+var logger = require('pomelo-logger').getLogger('web', __filename);
 
 // @doc: http://sahatyalkabov.com/how-to-implement-password-reset-in-nodejs/
 
