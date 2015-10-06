@@ -41,6 +41,10 @@ handler.call = function (data, session, next) {
         return callback('room-not-found');
       }
 
+      if (!user) {
+        return callback('user-not-found');
+      }
+
       if (!room.isOwner(currentUser.id) && session.settings.admin !== true) {
         return callback('no-admin-owner');
       }
@@ -138,6 +142,61 @@ handler.call = function (data, session, next) {
   ], function (err) {
     if (err) {
       return errors.getHandler('room:disallow', next)(err);
+    }
+
+    return next(null, {success: true});
+  });
+};
+
+handler.group = function (data, session, next) {
+  var currentUser = session.__currentUser__;
+  var room = session.__room__;
+
+  async.waterfall([
+
+    function check (callback) {
+      if (!data.room_id) {
+        return callback('params-room-id');
+      }
+
+      if (!room) {
+        return callback('room-not-found');
+      }
+
+      if (!room.group) {
+        return callback('group-not-found');
+      }
+
+      if (!room.isOwner(currentUser.id) && session.settings.admin !== true) {
+        return callback('no-admin-owner');
+      }
+
+      if (!room.allow_group_member) {
+        return callback('no-allow');
+      }
+
+      return callback(null);
+    },
+
+    function persist (callback) {
+      room.allow_group_member = false;
+      room.save(function (err) {
+        return callback(err);
+      });
+    },
+
+    function addUsersToAllow (callback) {
+      Room.update(
+        {_id: { $in: [room.id] }},
+        {$addToSet: {allowed: {$each: room.getIdsByType('users')}}}, function (err) {
+          return callback(err);
+        }
+      );
+    }
+
+  ], function (err) {
+    if (err) {
+      return errors.getHandler('room:group:disallow', next)(err);
     }
 
     return next(null, {success: true});

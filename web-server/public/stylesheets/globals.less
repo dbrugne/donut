@@ -163,10 +163,12 @@
   &.icon-deop             { color: @cl-subtext40; }
 }
 
-.room-profile { min-height:2rem; min-width:2rem;
-  &.private::after { .icon-lock; font-size: 1.2rem; margin: auto; padding-left: 3px; }
-  //&.public::after { .icon-public; }
+.label {
+  &.label-sm { padding: .3rem 1rem .3rem; font-size: 1.0rem; font-weight:normal; line-height: 1.4rem; }
+  &.label-default { .label-variant(@cl-subtext20); }
 }
+
+.room-profile { min-height:2rem; min-width:2rem; display: inline-block; margin: auto 0 auto 10px; }
 
 .modal-backdrop { &.in { opacity: 0.5; } } // fix less .opacity() bug, web-server/public/vendor/bootstrap/less/modals.less:72
 

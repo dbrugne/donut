@@ -198,3 +198,49 @@ handler.refuse = function (data, session, next) {
     return next(null, {success: true});
   });
 };
+
+handler.group = function (data, session, next) {
+  var currentUser = session.__currentUser__;
+  var room = session.__room__;
+
+  async.waterfall([
+
+    function check (callback) {
+      if (!data.room_id) {
+        return callback('params-room-id');
+      }
+
+      if (!room) {
+        return callback('room-not-found');
+      }
+
+      if (!room.group) {
+        return callback('group-not-found');
+      }
+
+      if (!room.isOwner(currentUser.id) && session.settings.admin !== true) {
+        return callback('no-admin-owner');
+      }
+
+      if (room.allow_group_member) {
+        return callback('allowed');
+      }
+
+      return callback(null);
+    },
+
+    function add (callback) {
+      room.allow_group_member = true;
+      room.save(function (err) {
+        return callback(err);
+      });
+    }
+
+  ], function (err) {
+    if (err) {
+      return errors.getHandler('room:group:allow', next)(err);
+    }
+
+    return next(null, {success: true});
+  });
+};
