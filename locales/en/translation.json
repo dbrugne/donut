@@ -633,15 +633,32 @@
           "placeholder": "Group name",
           "submit": "Create"
         },
-        "description": {
-          "label": "Description",
-          "placeholder": "Describe the group in a few words",
-          "help": "Optional"
-        },
-        "disclaimer": {
-          "label": "Disclaimer",
-          "placeholder": "Disclaimer",
-          "help": "Optional"
+        "edit": {
+          "description": {
+            "label": "Description",
+            "placeholder": "Describe the group in a few words",
+            "help": "Optional"
+          },
+          "disclaimer": {
+            "label": "Disclaimer",
+            "placeholder": "Disclaimer",
+            "help": "Optional"
+          },
+          "group": {
+            "delete": {
+              "link": "To delete this group <a class='open-group-delete' data-group-id=\"__id__\"> click here</a>.",
+              "title": "Delete",
+              "info": [
+                "You are about to delete this group. This action is immediate and cannot be undone.<br><br>",
+                "To confirm deletion please enter group name (<strong>__name__</strong>) and then click the button:"
+              ],
+              "placeholder": "Enter the group name",
+              "success": "group deleted!",
+              "error": {
+                "permanent": "It is not possible to delete a 'permanent' group"
+              }
+            }
+          }
         }
       },
       "room-form": {

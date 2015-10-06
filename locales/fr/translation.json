@@ -644,6 +644,21 @@
             "label": "Disclaimer",
             "placeholder": "Disclaimer",
             "help": "Facultatif"
+          },
+          "group": {
+            "delete": {
+              "link": "Vous pouvez également supprimer ce groupe <a class='open-group-delete' data-group-id=\"__id__\">en cliquant ici</a>.",
+              "title": "Supprimer",
+              "info": [
+                "Vous êtes sur le point de supprimer ce groupe, cette opération est immédiate et irréversible.<br><br>",
+                "Veuillez confirmer la suppression en saissant le nom du groupe (<strong>__name__</strong>) puis en cliquant sur supprimer :"
+              ],
+              "placeholder": "Saisir le nom du groupe",
+              "success": "groupe supprimé !",
+              "error": {
+                "permanent": "Il n'est pas possible de supprimer un group 'permanent'"
+              }
+            }
           }
         }
       },

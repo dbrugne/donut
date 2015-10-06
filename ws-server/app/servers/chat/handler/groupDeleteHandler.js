@@ -22,8 +22,8 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.room_id) {
-        return callback('params-room-id');
+      if (!data.group_id) {
+        return callback('params-group-id');
       }
 
       if (!group) {
@@ -45,10 +45,10 @@ handler.call = function (data, session, next) {
       var event = {
         name: group.name,
         id: group.id,
-        room_id: group.id,
+        group_id: group.id,
         reason: 'deleted'
       };
-      that.app.globalChannelService.pushMessage('connector', 'room:leave', event, group.name, {}, function (err) {
+      that.app.globalChannelService.pushMessage('connector', 'group:leave', event, group.name, {}, function (err) {
         if (err) {
           logger.error(err);
         } // not 'return', we delete even if error happen
