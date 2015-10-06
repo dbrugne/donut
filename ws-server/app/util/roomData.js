@@ -43,7 +43,7 @@ module.exports = function (user, room, fn) {
     data.banned_at = doc.banned_at;
     data.blocked = 'banned';
     if (doc.reason) {
-      data.banned_reason = doc.reason;
+      data.reason = doc.reason;
     }
   }
 

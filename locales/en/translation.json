@@ -502,7 +502,7 @@
     "closemessage": "Are you sure you want to leave?",
     "alert": {
       "kicked": "You have been kicked out of __name__",
-      "banned": "You have been banned from __name__",
+      "ban": "You have been banned from __name__",
       "allowed": "You are not allowed anymore in __name__"
     },
     "roomnotexists": "The donut __name__ does not exist yet, <a class='open-create-room' data-name='__name__'>would you like to create it</a>?",
@@ -597,7 +597,7 @@
       "password_placeholder": "Password",
       "password_button": "Join",
       "banned": "You were banned from this donut on __at__",
-      "banned_reason": "for the following reason: ",
+      "reason": "for the following reason: ",
       "kicked": "You have been kicked out from this donut.",
       "kicked_button": "Join",
       "changemode": "Switch to private mode",

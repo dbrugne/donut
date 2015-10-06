@@ -202,10 +202,10 @@ var RoomsCollection = Backbone.Collection.extend({
     model.onUserOffline(data);
   },
   onKick: function (data) {
-    this._kickBanDisallow('kicked', data);
+    this._kickBanDisallow('kick', data);
   },
   onBan: function (data) {
-    this._kickBanDisallow('banned', data);
+    this._kickBanDisallow('ban', data);
   },
   onDisallow: function (data) {
     this._kickBanDisallow('allowed', data);
@@ -219,23 +219,23 @@ var RoomsCollection = Backbone.Collection.extend({
     // if i'm the "targeted user" destroy the model/view
     if (currentUser.get('user_id') === data.user_id) {
       var isFocused = model.get('focused');
-      var blocked = (what === 'banned')
+      var blocked = (what === 'ban')
         ? 'banned'
-        : (what === 'kicked')
-        ? 'kicked'
-        : true;
+        : (what === 'kick')
+          ? 'kicked'
+          : true;
       var modelTmp = model.attributes;
-      if (what === 'banned' && data.banned_at) {
+      if (what === 'ban' && data.banned_at) {
         modelTmp.banned_at = data.banned_at;
-        if (data.banned_reason) {
-          modelTmp.banned_reason = data.banned_reason;
+        if (data.reason) {
+          modelTmp.reason = data.reason;
         }
       }
       this.remove(model);
       this.addModel(modelTmp, blocked);
-      var message = i18next.t('chat.alert.' + what, { name: model.get('identifier') });
+      var message = i18next.t('chat.alert.' + what, {name: model.get('identifier')});
       if (data.reason) {
-        message += ' ' + i18next.t('chat.reason', { reason: _.escape(data.reason) });
+        message += ' ' + i18next.t('chat.reason', {reason: _.escape(data.reason)});
       }
       app.trigger('alert', 'warning', message);
       if (isFocused) {

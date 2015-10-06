@@ -503,7 +503,7 @@
     "closemessage": "Etes-vous sur de vouloir fermer l'onglet ?",
     "alert": {
       "kicked": "Vous venez d'être expulsé de __name__",
-      "banned": "Vous venez d'être banni de __name__",
+      "ban": "Vous venez d'être banni de __name__",
       "allowed": "Vous ne faites plus partie de la liste des gens autorisés dans __name__"
     },
     "roomnotexists": "Le donut __name__ n'existe pas, <a class='open-create-room' data-name='__name__'>souhaitez-vous le créer </a> ?",
@@ -598,7 +598,7 @@
       "password_placeholder": "Mot de passe",
       "password_button": "Rejoindre",
       "banned": "Vous avez été banni de ce donut le __at__",
-      "banned_reason": "pour la raison suivante : ",
+      "reason": "pour la raison suivante : ",
       "kicked": "Vous avez été expulsé de ce donut.",
       "kicked_button": "Rejoindre",
       "changemode": "Passer en mode privé",
