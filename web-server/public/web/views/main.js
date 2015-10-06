@@ -21,6 +21,7 @@ var DrawerRoomEditView = require('./drawer-room-edit');
 var DrawerRoomUsersView = require('./drawer-room-users');
 var DrawerRoomPreferencesView = require('./drawer-room-preferences');
 var DrawerRoomDeleteView = require('./drawer-room-delete');
+var DrawerGroupProfileView = require('./drawer-group-profile');
 var DrawerUserProfileView = require('./drawer-user-profile');
 var DrawerUserEditView = require('./drawer-user-edit');
 var DrawerUserPreferencesView = require('./drawer-user-preferences');
@@ -69,6 +70,7 @@ var MainView = Backbone.View.extend({
     'click .open-room-preferences': 'openRoomPreferences',
     'click .open-room-users': 'openRoomUsers',
     'click .open-room-delete': 'openRoomDelete',
+    'click .open-group-profile': 'onOpenGroupProfile',
     'click .close-discussion': 'onCloseDiscussion',
     'click .open-room-access': 'openRoomAccess',
     'click .switch[data-language]': 'switchLanguage'
@@ -90,6 +92,7 @@ var MainView = Backbone.View.extend({
     this.listenTo(rooms, 'join', this.roomJoin);
     this.listenTo(rooms, 'deleted', this.roomRoomDeleted);
     this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
+    this.listenTo(app, 'openGroupProfile', this.openGroupProfile);
     this.listenTo(app, 'openUserProfile', this.openUserProfile);
     this.listenTo(app, 'changeColor', this.onChangeColor);
   },
@@ -321,6 +324,21 @@ var MainView = Backbone.View.extend({
   },
   openUserProfile: function (data) {
     var view = new DrawerUserProfileView({ data: data });
+    this.drawerView.setSize('380px').setView(view).open();
+  },
+  onOpenGroupProfile: function (event) {
+    this.$el.find('.tooltip').tooltip('hide');
+    event.preventDefault();
+
+    var groupId = $(event.currentTarget).data('group-id');
+    if (!groupId) {
+      return;
+    }
+    var view = new DrawerGroupProfileView({ group_id: groupId });
+    this.drawerView.setSize('380px').setView(view).open();
+  },
+  openGroupProfile: function (data) {
+    var view = new DrawerGroupProfileView({ data: data });
     this.drawerView.setSize('380px').setView(view).open();
   },
   onOpenRoomProfile: function (event) {

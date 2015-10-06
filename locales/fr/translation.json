@@ -251,6 +251,15 @@
       "editusers": "Gérer les utilisateurs",
       "createdat": "créé le"
     },
+    "group": {
+      "ownerops": "Les habitués",
+      "nouser": "Pas d'utilisateur dans ce groupe",
+      "permalink": "Permalien de ce profil",
+      "editlink": "Editer",
+      "profilelink": "Profil de ",
+      "editusers": "Gérer les utilisateurs",
+      "createdat": "créé le"
+    },
     "user": {
       "hisrooms": "Ses donuts",
       "disclaimer": {

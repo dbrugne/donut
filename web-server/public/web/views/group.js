@@ -37,7 +37,7 @@ var GroupView = Backbone.View.extend({
         u.avatar = common.cloudinary.prepare(u.avatar, 60);
         op.push(u);
       } else {
-        if (isMember) {
+        if (isMember || isAdmin) {
           u.avatar = common.cloudinary.prepare(u.avatar, 34);
           members.push(u);
         }
@@ -57,7 +57,7 @@ var GroupView = Backbone.View.extend({
         room.join = room.name;
       }
 
-      if (room.mode === 'public' || isMember) {
+      if (room.mode === 'public' || isMember || isAdmin) {
         rooms.push(room);
       }
     });
@@ -67,7 +67,9 @@ var GroupView = Backbone.View.extend({
       isAdmin: isAdmin,
       group: group,
       op: op,
-      members: members
+      members: members,
+      members_count: group.members_count,
+      members_more: group.members_more
     });
     var htmlCards = this.templateCards({
       rooms: rooms,

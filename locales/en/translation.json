@@ -250,6 +250,15 @@
       "editusers": "Manage users",
       "createdat": "Created on"
     },
+    "group": {
+      "ownerops": "The regulars",
+      "nouser": "No user in this group",
+      "permalink": "Permalink of this profile",
+      "editlink": "Edit",
+      "profilelink": "Profile of ",
+      "editusers": "Manage users",
+      "createdat": "Created on"
+    },
     "user": {
       "hisrooms": "Active in these donuts",
       "disclaimer": {
