@@ -156,7 +156,19 @@
     },
     "switchlanguage": "Langue",
     "unknownerror": "Erreur inconnue, veuillez réessayer",
-    "private-donut": "Donut privé: seuls les utilisateurs autorisés peuvent rejoindre, participer et accéder à l'historique."
+    "mode": {
+      "title": {
+        "members": "membres",
+        "invites": "invités",
+        "members-invites": "membres & invités",
+        "public": "public"
+      },
+      "description": {
+        "invites": "Ce donut est privé, accessible uniquement sur invitation",
+        "members-invites": "Ce donut est privé, accessible uniquement aux membres de cette de communauté et sur invitation",
+        "public": "Ce donut est public, accessible à tout utilisateur"
+      }
+    }
   },
   "login": {
     "withfacebook": "avec Facebook",
@@ -595,7 +607,8 @@
       "disclaimer-public": "Ce donut est public. N'importe quel utilisateur pourra y accéder.",
       "disclaimer-password": "Vous avez également choisi de mettre un mot de passe. Les utilisateurs avec le mot de passe pourront y entrer sans avoir besoin d'être invités au préalable.",
       "disclaimer-changing": "Vous pouvez passer ce donut en mode privé. Alors, seuls les utilisateurs que vous autoriserez pourront rejoindre, participer et accéder à l'historique. L'accès se fera par invitation et/ou par mot de passe. Les membres actuels de donut public resteront autorisés dans ce donut une fois qu'il sera devenu privé. Attention, cette action est irréversible.",
-      "close": "Fermer ce donut"
+      "close": "Fermer ce donut",
+      "allowgroupmember": "Autoriser les membres du groupe à rejoindre ce donut"
     },
     "form": {
       "common": {
@@ -690,7 +703,8 @@
           "disclaimer": {
             "public": "Tout utilisateur peut rejoindre, participer et accéder à l'historique. Vous disposez d'outils de modération.",
             "private": "Seuls les utilisateurs que vous autorisez pourront rejoindre, participer et accéder à l'historique. Vous disposez d'outils de modération.",
-            "password": "Vous pouvez également mettre un mot de passe. Les utilisateurs ayant le mot de passe pourront rejoindre le donut sans avoir besoin d'être invités au préalable."
+            "password": "Vous pouvez également mettre un mot de passe. Les utilisateurs ayant le mot de passe pourront rejoindre le donut sans avoir besoin d'être invités au préalable.",
+            "allowgroupmember": "Vous pouvez autoriser les membres du groupe à rejoindre ce donut."
           }
         },
         "create": {
@@ -839,7 +853,7 @@
     "global": {
       "content": {
         "team": "L'équipe DONUT.me",
-        "ps": "P.S.: pour ne plus recevoir ce type de notifications veuillez décocher les options de notifications dans les préférences de votre compte sur <a href=\"https://__fqdn__\">__fqdn__</a>, pour toute question nous sommes à votre écoute sur <a href=\"https://__fqdn__/!#room/help\">#help</a>"
+        "ps": "P.S.: pour ne plus recevoir ce type de notifications veuillez décocher les options de notifications dans les préférences de votre compte sur <a href=\"https://__fqdn__\">__fqdn__</a>, pour toute question nous sommes à votre écoute sur <a href=\"https://__fqdn__/!#donut/help\">#help</a>"
       }
     },
     "common": {
@@ -1070,7 +1084,7 @@
     "notif": {
       "title": "Notifications",
       "help": {
-        "user": "DONUT cherche à limiter intelligemment le nombre de notifications que nous vous envoyons. Toutefois si vous trouvez que vous en recevez trop ou pas assez, n’hésitez pas à nous le dire <a data-toggle='contactform'>par email</a> ou sur le <a href='#room/help'>#help</a>"
+        "user": "DONUT cherche à limiter intelligemment le nombre de notifications que nous vous envoyons. Toutefois si vous trouvez que vous en recevez trop ou pas assez, n’hésitez pas à nous le dire <a data-toggle='contactform'>par email</a> ou sur le <a href='#donut/help'>#help</a>"
       },
       "nothing": {
         "label": "Ne recevoir aucune notification pour ce donut",

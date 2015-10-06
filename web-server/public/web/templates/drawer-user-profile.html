@@ -67,7 +67,7 @@
                     bgColor = "background-color: "+room.color;
                     txtColor = "color: "+room.color;
                 }; %>
-                <div class="item open-room-profile <% if (room.oped) { %>op<% } %> <% if (room.owned) { %>owner<% } %>" data-room-id="<%= room.id %>" data-bgcolor="<%= bgColor %>" data-type="rooms" data-username="<%= room.name %>"  data-txtcolor="<%= txtColor %>" data-toggle="tooltip" data-placement="right">
+                <div class="item open-room-profile <% if (room.oped) { %>op<% } %> <% if (room.owned) { %>owner<% } %>" data-room-id="<%= room.id %>" data-bgcolor="<%= bgColor %>" data-type="rooms" data-username="<%= room.identifier %>"  data-txtcolor="<%= txtColor %>" data-toggle="tooltip" data-placement="right">
                     <div class="avatar" style="background-image:url(<%= room.avatar %>)"></div>
                 </div>
                 <% }); %>

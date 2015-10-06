@@ -63,7 +63,7 @@ module.exports.mentions = function (string, callback) {
         }
 
         var _rooms = _.uniq(_.map(markups.rooms, function (r) {
-          return '#' + r.name;
+          return r.name;
         }));
         RoomModel.listByName(_rooms).exec(cb);
       },

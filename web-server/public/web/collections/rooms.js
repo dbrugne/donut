@@ -107,8 +107,8 @@ var RoomsCollection = Backbone.Collection.extend({
     delete data.lastactivity_at;
 
     data.identifier = (data.group_id)
-      ? '#' + data.group_name + '/' + data.name.replace('#', '')
-      : data.name;
+      ? '#' + data.group_name + '/' + data.name
+      : '#' + data.name;
 
     data.uri = data.identifier;
 
@@ -221,7 +221,7 @@ var RoomsCollection = Backbone.Collection.extend({
       var isFocused = model.get('focused');
       var blocked = (what === 'banned')
         ? 'banned'
-        : (what === 'kick')
+        : (what === 'kicked')
         ? 'kicked'
         : true;
       var modelTmp = model.attributes;

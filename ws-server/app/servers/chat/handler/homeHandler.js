@@ -56,6 +56,7 @@ handler.call = function (data, session, next) {
 
           var _data = {
             name: room.name,
+            identifier: room.getIdentifier(),
             mode: room.mode,
             room_id: room.id,
             topic: room.topic,

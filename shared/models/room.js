@@ -36,7 +36,7 @@ var roomSchema = mongoose.Schema({
     count: Number,
     created_at: {type: Date, default: Date.now}
   }],
-  allow_group_member: Boolean,
+  allow_group_member: {type: Boolean, default: true},
   allowed: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
   allowed_pending: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
   avatar: String,
@@ -73,14 +73,14 @@ roomSchema.statics.findByIdentifier = function (identifier, callback) {
     }
     that.populate(room, [
       {path: 'owner', select: 'username avatar color facebook'},
-      {path: 'group', select: 'name'}
+      {path: 'group', select: 'name members'}
     ], callback);
   };
 
   if (!data.group) {
     // non-group rooms only
     this.findOne({
-      name: common.regexp.exact('#' + data.room, 'i'),
+      name: common.regexp.exact(data.room, 'i'),
       deleted: {$ne: true},
       group: {$exists: false}
     }, populate);
@@ -94,7 +94,7 @@ roomSchema.statics.findByIdentifier = function (identifier, callback) {
       }
       that.findOne({
         group: group._id,
-        name: common.regexp.exact('#' + data.room, 'i'),
+        name: common.regexp.exact(data.room, 'i'),
         deleted: {$ne: true}
       }, populate);
     });
@@ -103,8 +103,8 @@ roomSchema.statics.findByIdentifier = function (identifier, callback) {
 
 roomSchema.methods.getIdentifier = function () {
   return (!this.group)
-    ? '#' + this.name.replace('#', '')
-    : '#' + this.group.name + '/' + this.name.replace('#', '');
+    ? '#' + this.name
+    : '#' + this.group.name + '/' + this.name;
 };
 
 roomSchema.statics.listByName = function (names) {
@@ -223,7 +223,13 @@ roomSchema.methods.isAllowed = function (userId) {
   var subDocument = _.find(this.allowed, function (allowed) {
     return (allowed.toString() === userId);
   });
-  return (typeof subDocument !== 'undefined');
+
+  // check if it's a group member
+  if (typeof subDocument === 'undefined' && this.group && this.allow_group_member) {
+    return (this.group.isMember(userId));
+  } else {
+    return (typeof subDocument !== 'undefined');
+  }
 };
 
 roomSchema.methods.isAllowedPending = function (userId) {
@@ -284,7 +290,34 @@ roomSchema.methods.cleanupPasswordTries = function () {
   });
 };
 
-roomSchema.methods.isUserBlocked = function (userId, password) {
+roomSchema.methods.isGoodPassword = function (userId, password) {
+  // remove expired subdocs on model synchronously and in database asynchronously
+  this.cleanupPasswordTries();
+  var tries = this.isInPasswordTries(userId);
+  if (tries && tries.count > MAX_PASSWORD_TRIES) {
+    return 'spam-password';
+  }
+  if (this.validPassword(password)) {
+    return true;
+  }
+  if (tries) {
+    tries.count ++;
+  } else {
+    this.password_tries.push({
+      user: userId,
+      count: 1
+    });
+  }
+  // persistence will happen later
+  this.save(function (err) {
+    if (err) {
+      logger.error(err);
+    }
+  });
+  return 'wrong-password';
+};
+
+roomSchema.methods.isUserBlocked = function (userId) {
   if (this.isOwner(userId)) {
     return false;
   }
@@ -294,37 +327,8 @@ roomSchema.methods.isUserBlocked = function (userId, password) {
   if (this.mode === 'public') {
     return false;
   }
-  if (this.isIn(userId)) {
-    return false;
-  }
   if (this.isAllowed(userId)) {
     return false;
-  }
-  if (this.password && (password || password === '')) {
-    // remove expired subdocs on model synchronously and in database asynchronously
-    this.cleanupPasswordTries();
-    var tries = this.isInPasswordTries(userId);
-    if (tries && tries.count > MAX_PASSWORD_TRIES) {
-      return 'spam-password';
-    }
-    if (this.validPassword(password)) {
-      return false;
-    }
-    if (tries) {
-      tries.count++;
-    } else {
-      this.password_tries.push({
-        user: userId,
-        count: 1
-      });
-    }
-    // persistence will happen later
-    this.save(function (err) {
-      if (err) {
-        logger.error(err);
-      }
-    });
-    return 'wrong-password';
   }
 
   return 'notallowed';

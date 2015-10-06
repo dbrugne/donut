@@ -204,7 +204,7 @@ userSchema.statics.findByUid = function (uid) {
  * @param callback
  */
 userSchema.statics.findRoomUsersHavingPreference = function (room, preferenceName, userId, callback) {
-  var keyNothing = 'preferences.room:notif:nothing:__what__'.replace('__what__', room.name);
+  var keyNothing = 'preferences.room:notif:nothing:__what__'.replace('__what__', room.id);
   var keyTopic = 'preferences.room:notif:__preference__:__what__'.replace('__preference__', preferenceName).replace('__what__', room.id);
 
   var criteria = {

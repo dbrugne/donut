@@ -47,7 +47,7 @@ module.exports = function (req, res, next, username) {
       // url
       var ident = ('' + user.username).toLocaleLowerCase();
       data.url = req.protocol + '://' + conf.fqdn + '/user/' + ident;
-      data.chat = req.protocol + '://' + conf.fqdn + '/!#user/' + ident;
+      data.chat = req.protocol + '://' + conf.fqdn + '/!#u/' + ident;
       data.discuss = req.protocol + '://' + conf.fqdn + '/user/discuss/' + ident;
 
       return callback(null, user);
@@ -61,6 +61,7 @@ module.exports = function (req, res, next, username) {
           {users: {$in: [user._id]}}
         ]
       }, 'name owner op avatar color description mode')
+        .populate('group', 'name')
         .populate('owner', 'username');
       q.exec(function (err, rooms) {
         if (err) {
@@ -76,12 +77,13 @@ module.exports = function (req, res, next, username) {
         _.each(rooms, function (dbroom) {
           var room = dbroom.toJSON();
           if (room.owner) {
-            room.owner.url = req.protocol + '://' + conf.fqdn + '/user/' + ('' + room.owner.username).toLocaleLowerCase();
+            room.owner.url = req.protocol + '://' + conf.fqdn + '/u/' + ('' + room.owner.username).toLocaleLowerCase();
           }
 
-          room.avatar = dbroom._avatar(80);
+          room.avatar = dbroom._avatar(160);
+          room.identifier = dbroom.getIdentifier();
           room.url = (room.name)
-            ? req.protocol + '://' + conf.fqdn + '/room/' + room.name.replace('#', '').toLocaleLowerCase()
+            ? req.protocol + '://' + conf.fqdn + '/room/' + room.name.toLocaleLowerCase()
             : '';
           room.mode = dbroom.mode;
 
