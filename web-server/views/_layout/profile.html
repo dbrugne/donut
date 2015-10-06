@@ -1,5 +1,11 @@
 <%- partial('head') %>
-<% var color = (typeof room !== 'undefined' ? room.color : typeof _user !== 'undefined' ? _user.color : ''); %>
+<% var color = (typeof room !== 'undefined'
+    ? room.color
+    : ( typeof _user !== 'undefined')
+        ? _user.color
+        : ( typeof group !== 'undefined')
+            ? group.color
+            : ''); %>
 <% color = (_.isString(color) ? color.replace('#','').toLowerCase() : 'default') %>
 <body class="body-chat body-profile dc-<%= color %>">
 <div id="chat">
@@ -11,12 +17,12 @@
 
                     <% if (typeof user === 'undefined' || typeof user.avatar === 'undefined') { %>
                         <li class="signup">
-                            <a href="/signup"><%= t('landing.signup') %></a>
+                            <a class="dc-text-contrast" href="/signup"><%= t('landing.signup') %></a>
                         </li>
-                        <li class="divider-vertical small"></li>
+                        <li class="divider-vertical small dc-text-contrast"></li>
                         <li class="nav-divider"></li>
                         <li class="login">
-                            <a href="/login"><%= t('landing.login') %></a>
+                            <a class="dc-text-contrast" href="/login"><%= t('landing.login') %></a>
                         </li>
                     <% } %>
 
@@ -81,13 +87,13 @@
             <ul class="page-sidebar-menu">
 
                 <li id="block-discussions" style="padding: 15px; text-align: left;">
-                    <div class="list  hidden-sm hidden-xs">
+                    <div class="list hidden-sm hidden-xs">
 
                         <% if (typeof room !== "undefined") { %>
                             <%= t('profile.room.disclaimer.before') %>
                             <a class="dct" href="<%= room.url %>"><%= room.name %></a>
                             <%= t('profile.room.disclaimer.after') %>
-                        <% } else { %>
+                        <% } else if (typeof _user !== "undefined") { %>
                             <%= t('profile.user.disclaimer.before') %>
                             <a class="dct" href="<%= _user.url %>">@<%= _user.username %></a>
                             <%= t('profile.user.disclaimer.after') %>

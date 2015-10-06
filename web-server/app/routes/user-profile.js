@@ -42,7 +42,7 @@ router.get('/user/:user', function (req, res) {
     rooms: rooms,
     poster: req.requestedUser.poster,
     color: req.requestedUser.color,
-    userDefaultAvatar: cd.userAvatar('', conf.room.default.color, false, 50)
+    userDefaultAvatar: cd.roomAvatar('', conf.room.default.color, false, 50)
   });
 });
 
