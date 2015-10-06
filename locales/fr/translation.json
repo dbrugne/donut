@@ -226,6 +226,9 @@
     "logout": "Déconnexion"
   },
   "profile": {
+    "common": {
+      "editlink": "Editer"
+    },
     "room": {
       "ownerops": "Les habitués",
       "now": "En ce moment",
@@ -235,7 +238,6 @@
         "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. <a href=\"/\">DONUT.me</a> vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
       },
       "permalink": "Permalien de ce profil",
-      "editlink": "Editer",
       "editusers": "Gérer les utilisateurs",
       "createdat": "créé le"
     },
@@ -246,7 +248,6 @@
         "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. <a href=\"/\">DONUT.me</a> vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
       },
       "permalink": "Permalien de ce profil",
-      "editlink": "Editer",
       "signuped": "inscrit le",
       "onlined": "connecté il y a __time__",
       "edit": "Editer"
@@ -644,6 +645,16 @@
             "label": "Disclaimer",
             "placeholder": "Disclaimer",
             "help": "Facultatif"
+          },
+          "visibility": {
+            "label": "Visibilité (administrateur)",
+            "true": "Le donut est visible sur la homepage",
+            "false": "Le donut <strong>n'est pas</strong> visible sur la homepage"
+          },
+          "priority": {
+            "label": "Priorité (administrateur)",
+            "placeholder": "",
+            "help": "Nombre, plus est grand, plus est prioritaire"
           },
           "group": {
             "delete": {
