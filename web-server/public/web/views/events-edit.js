@@ -89,6 +89,9 @@ module.exports = Backbone.View.extend({
   },
   editMessage: function ($event) {
     if (this.messageUnderEdition) {
+      if ($event.attr('id') === this.messageUnderEdition.$el.attr('id')) {
+        return;
+      }
       this.onClose();
     }
     this.messageUnderEdition = new MessageEditView({
