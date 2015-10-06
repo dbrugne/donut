@@ -38,8 +38,8 @@ Notification.prototype.create = function (user, room, history, done) {
     },
 
     function checkPreferences (userModel, roomModel, historyModel, callback) {
-      var key1 = 'room:notif:nothing:__what__'.replace('__what__', roomModel.name);
-      var key2 = 'room:notif:__type__:__what__'.replace('__type__', that.type).replace('__what__', roomModel.name);
+      var key1 = 'room:notif:nothing:__what__'.replace('__what__', roomModel.id);
+      var key2 = 'room:notif:__type__:__what__'.replace('__type__', that.type).replace('__what__', roomModel.id);
       if (userModel.preferencesValue(key1) || !userModel.preferencesValue(key2)) {
         logger.debug('userMentionType.create no notification due to user preferences');
         return callback(true);
