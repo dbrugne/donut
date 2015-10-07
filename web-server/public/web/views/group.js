@@ -61,6 +61,9 @@ var GroupView = Backbone.View.extend({
         rooms.push(room);
       }
     });
+    if (group.disclaimer) {
+      group.disclaimer = _.escape(group.disclaimer);
+    }
     var html = this.template({
       isMember: isMember,
       isOwner: isOwner,
