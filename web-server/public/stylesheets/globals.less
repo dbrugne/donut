@@ -167,9 +167,11 @@
   &.label-sm { padding: .3rem 1rem .3rem; font-size: 1.0rem; font-weight:normal; line-height: 1.4rem; }
   &.label-default { .label-variant(@cl-subtext20); }
   &.label-primary { .label-variant(@cl-first); }
-  &.label-group { position: absolute; color: #FFFFFF; font-size: 1rem; top: 0; left: 0; padding: 0.3rem 0.6rem;
+
+  &.label-group { .label-primary; position: absolute; color: #FFFFFF; top: 0; left: 0; margin: -5px;
     &::before { .icon-star; font-size: 1rem; margin-right: 2px; }
   }
+  &.label-mode { .label-default; position: absolute; color: #FFFFFF; top: 0; left: 0; margin: -5px; }
 }
 
 .room-profile { min-height:2rem; min-width:2rem; display: inline-block; margin: auto 0 auto 10px; }

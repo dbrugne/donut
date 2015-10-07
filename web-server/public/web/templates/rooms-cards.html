@@ -11,21 +11,20 @@
 <% } %>
 
     <% _.each(rooms, function(card) { %>
-        <% if (!card.is_group) { return; } %>
         <% var _color = card.color ? card.color.replace('#', '').toLowerCase() : 'default' %>
         <div class="room dc-i-<%= _color %>">
             <div class="mini-card hidden">
                 <div class="flex-parent">
                     <div class="avatar" style="background-image:url(<%= card.avatar %>)"></div>
                     <% if(card.is_group) { %>
-                    <span class="label label-primary label-group"><%= t('global.group') %></span>
+                    <span class="label label-group label-sm"><%= t('global.group') %></span>
                     <% } %>
                     <div class="ctn">
                         <span class="name">
                             <a href="<%= card.url %>" class="flex-parent column"><%= card.identifier %></a>
                         </span>
                         <% if (!card.is_group) { %>
-                            <div class="room-profile label label-default label-sm" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + card.mode) %>">
+                            <div class="room-profile label label-mode label-sm" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + card.mode) %>">
                                 <%= t('global.mode.title.' + card.mode) %>
                             </div>
                         <% } %>
@@ -41,12 +40,12 @@
             <div class="cover">
                 <div class="avatar relative" style="background-image:url(<%= card.avatar %>)">
                     <% if (!card.is_group) { %>
-                    <div class="room-profile label label-default label-sm" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + card.mode) %>">
+                    <div class="room-profile label label-mode label-sm" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + card.mode) %>">
                         <%= t('global.mode.title.' + card.mode) %>
                     </div>
                     <% } %>
                     <% if(card.is_group) { %>
-                    <span class="label label-primary label-group"><%= t('global.group') %></span>
+                    <span class="label label-group label-sm"><%= t('global.group') %></span>
                     <% } %>
                 </div>
                 <div class="top">
