@@ -62,7 +62,7 @@ Filter.prototype.before = function (data, session, next) {
 
       if (data.group) {
         if (!common.validate.group(data.group)) {
-          return callback('invalid group name parameter: ' + data.group);
+          return callback('group-name-wrong-format');
         }
         q = GroupModel.findByName(data.group);
       }

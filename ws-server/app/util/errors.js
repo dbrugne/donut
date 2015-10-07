@@ -17,6 +17,7 @@ var errors = {
   'params-message': 400,          // message params not set or not good
   'wrong-format': 400,            // params are not well formatted
   'name-wrong-format': 400,       // name params are not well formatted
+  'group-name-wrong-format': 400, // group name params are not well formatted
   'mode-wrong-format': 400,       // mode params are not well formatted
   'message-wrong-format': 400,    // message params are not well formatted
   'params': 400,                  // == GENERAL TAG ==
