@@ -1,5 +1,5 @@
-<img class="mr5 dc-border-darker open-user-profile" data-user-id="<%= user_id %>" src="<%= avatar %>" alt="<%= username %> avatar">
-<span data-user-id="<%= user_id %>" class="mr5 dc-text-contrast username open-user-profile">
+<img class="mr5 dc-border-darker curp open-user-profile" data-user-id="<%= user_id %>" src="<%= avatar %>" alt="<%= username %> avatar">
+<span data-user-id="<%= user_id %>" class="mr5 dc-text-contrast username open-user-profile curp ">
     @<%= username %>
 </span>
 <span class="connection mr5">
@@ -15,11 +15,11 @@
 <ul class="dropdown-menu" role="menu">
     <li class="arrow-up"></li>
 
-    <li role="presentation"><a role="menuitem" tabindex="-1" class="open-user-account"><i class="icon icon-fw icon-lock"></i> <%= t('chat.actions.account') %></a></li>
-    <li role="presentation"><a role="menuitem" tabindex="-1" class="open-user-edit"><i class="icon icon-fw icon-pencil"></i> <%= t('chat.actions.edit') %></a></li>
-    <li role="presentation"><a role="menuitem" tabindex="-1" class="open-user-preferences"><i class="icon icon-fw icon-bell"></i> <%= t('chat.actions.preferences') %></a></li>
+    <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-user-account"><i class="icon icon-fw icon-lock"></i> <%= t('chat.actions.account') %></a></li>
+    <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-user-edit"><i class="icon icon-fw icon-pencil"></i> <%= t('chat.actions.edit') %></a></li>
+    <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-user-preferences"><i class="icon icon-fw icon-bell"></i> <%= t('chat.actions.preferences') %></a></li>
     <li role="presentation" class="divider"></li>
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="/logout"><i class="icon icon-fw icon-power-off"></i> <%= t('actions.logout') %></a></li>
+    <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" href="/logout"><i class="icon icon-fw icon-power-off"></i> <%= t('actions.logout') %></a></li>
 
     <li role="separator" class="divider"></li>
     <li><a href="/!#donut/help"><%= t('chat.help') %></a></li>
