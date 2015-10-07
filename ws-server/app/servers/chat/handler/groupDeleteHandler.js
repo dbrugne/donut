@@ -44,18 +44,26 @@ handler.call = function (data, session, next) {
     },
 
     function kick (callback) {
-      var event = {
-        name: group.name,
-        id: group.id,
-        group_id: group.id,
-        reason: 'deleted'
-      };
-      that.app.globalChannelService.pushMessage('connector', 'room:leave', event, group.name, {}, function (err) {
-        if (err) {
-          logger.error(err);
-        } // not 'return', we delete even if error happen
-        return callback(null);
-      });
+      RoomModel.findByGroup(group._id)
+        .exec(function (err, rooms) {
+          if (err) {
+            return callback(err);
+          }
+          _.each(rooms, function (room) {
+            var event = {
+              name: room.name,
+              id: room.id,
+              room_id: room.id,
+              reason: 'deleted'
+            };
+            that.app.globalChannelService.pushMessage('connector', 'room:leave', event, room.name, {}, function (err) {
+              if (err) {
+                logger.error(err);
+              } // not 'return', we delete even if error happen
+              return callback(null);
+            });
+          });
+        });
     },
 
     function destroy (callback) {

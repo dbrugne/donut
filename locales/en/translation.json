@@ -117,7 +117,7 @@
     "search": "search a donut",
     "create": "create a donut",
     "signup": "sign up",
-    "orsignup": "or sign up",
+    "orsignup": "or signup",
     "forgot": "forgotten password",
     "join": "join",
     "discuss": "chat",
@@ -667,7 +667,7 @@
       "group-form": {
         "create": {
           "label": "Create a group",
-          "help": "Un groupe est un espace regroupant vos donut et permettant à votre communautés de devenir membre et d'accèder à un groupe de donuts.",
+          "help": "A group is a place grouping your donut and allowing your community to become a member and access a group of donuts.",
           "help-name": "Between 3 and 20 characters, only letters, numbers,  dashes (-) and underscores (_).<br>Caution the group name will no longer be editable.",
           "placeholder": "Group name",
           "submit": "Create"
@@ -738,7 +738,7 @@
           "help": "Between 3 and 24 characters, only letters, numbers,  dashes (-) and underscores (_)",
           "placeholder": "Donut name",
           "submit": "Create",
-          "group": "Already owner of a community? Want to create a dedicated space for you users? You can <a href=\"#\" class=\"new-group\">create a group</a>"
+          "group": "Already owner of a community? Want to create a dedicated space for you users? You can <a href=\"#\" class=\"open-group-create\">create a group</a>"
         },
         "edit": {
           "othersettings": "Other settings",
@@ -801,6 +801,7 @@
         "mode-wrong-format": "You must select a mode for this room",
         "invalid-password": "The password must be 4 and 255 characters",
         "room-already-exist": "Donut __name__ already exists, <a href='__uri__'>would you like to join it</a>?",
+        "group-name-already-exist": "Group __name__ already exists, <a href='__uri__'>would you like to join it</a>?",
         "invalid-rights": "You do not have access to do this."
       }
     }
