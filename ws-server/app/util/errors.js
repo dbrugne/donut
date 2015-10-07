@@ -43,6 +43,7 @@ var errors = {
 
   // NOT FOUND ERROR (404)
   'group-not-found': 404,         // Group not found
+  'current-user-not-found': 404,  // Current user not found
   'room-not-found': 404,          // Room not found
   'user-not-found': 404,          // User not found
   'event-not-found': 404,         // Event not found
@@ -63,6 +64,7 @@ var errors = {
 module.exports = {
   errors: errors,
   getHandler: function (handlerName, callback) {
+    // log and return error object to client
     return function (err) {
       if (!errors[err]) {
         logger.error('[' + handlerName + '] ' + err);
@@ -71,6 +73,18 @@ module.exports = {
 
       logger.warn('[' + handlerName + '] ' + err);
       callback(null, { code: errors[err], err: err });
+    };
+  },
+  getFilterHandler: function (handlerName, callback) {
+    // log, bypass handler and return error object to client
+    return function (err) {
+      if (!errors[err]) {
+        logger.error('[' + handlerName + '] ' + err);
+        return callback(err, { code: 500, err: 'internal' });
+      }
+
+      logger.warn('[' + handlerName + '] ' + err);
+      callback(err, { code: errors[err], err: err });
     };
   }
 };
