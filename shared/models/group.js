@@ -49,7 +49,7 @@ groupSchema.methods.isMember = function (userId) {
     return true;
   }
 
-  if (!this.members || this.members.length) {
+  if (!this.members || !this.members.length) {
     return false;
   }
 
