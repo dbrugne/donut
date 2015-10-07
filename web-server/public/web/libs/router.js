@@ -35,7 +35,7 @@ var DonutRouter = Backbone.Router.extend({
       Backbone.history.stop();
     }, this));
     this.listenTo(app, 'focus', this.focus);
-    this.listenTo(app, 'joinRoomFromCommand', this.focusRoom);
+    this.listenTo(app, 'joinRoom', this.focusRoom);
     this.listenTo(app, 'joinOnetoone', this.focusOne);
     this.listenTo(app, 'viewAdded', this.viewAdded);
     this.listenTo(app, 'goToSearch', this.focusOnSearch);
@@ -89,6 +89,7 @@ var DonutRouter = Backbone.Router.extend({
   },
 
   focusRoom: function (identifier) {
+    console.warn('identifier', identifier);
     var model = rooms.iwhere('identifier', identifier);
     if (typeof model !== 'undefined') {
       model.resetNew();

@@ -100,8 +100,7 @@ var DrawerRoomCreateView = Backbone.View.extend({
         return this.setError(i18next.t('global.unknownerror'));
       }
 
-      var identifier = '#' + name;
-      app.trigger('joinRoom', identifier);
+      app.trigger('joinRoom', '#' + name);
       this.reset();
       this.trigger('close');
     }, this));

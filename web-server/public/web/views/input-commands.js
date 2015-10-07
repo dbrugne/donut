@@ -197,7 +197,7 @@ var InputCommandsView = Backbone.View.extend({
       return this.errorCommand('join', 'parameters');
     }
 
-    app.trigger('joinRoomFromCommand', parameters[1].replace('#', ''));
+    app.trigger('joinRoom', parameters[1]);
   },
   leave: function (paramString, parameters) {
     if (!paramString) {
