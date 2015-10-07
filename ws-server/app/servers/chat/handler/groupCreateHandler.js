@@ -40,35 +40,35 @@ handler.call = function (data, session, next) {
           return callback(err);
         }
         if (room) {
-          return callback('group-name-already-exist');
-        }
-      });
-
-      var r = GroupModel.findByName(data.group_name);
-      r.exec(function (err, group) {
-        if (err) {
-          return callback(err);
-        }
-        if (group) {
-          return callback('group-name-already-exist');
+          return callback('room-already-exist');
         }
 
-        group = GroupModel.getNewGroup();
-        group.name = data.group_name;
-        group.owner = user.id;
-        group.color = conf.room.default.color;
-        group.visibility = false; // not visible on home until admin change this value
-        group.priority = 0;
+        var r = GroupModel.findByName(data.group_name);
+        r.exec(function (err, group) {
+          if (err) {
+            return callback(err);
+          }
+          if (group) {
+            return callback('group-name-already-exist');
+          }
 
-        group.save(function (err) {
-          return callback(err, group);
+          group = GroupModel.getNewGroup();
+          group.name = data.group_name;
+          group.owner = user.id;
+          group.color = conf.room.default.color;
+          group.visibility = false; // not visible on home until admin change this value
+          group.priority = 0;
+
+          group.save(function (err) {
+            return callback(err, group);
+          });
         });
       });
     },
 
     function createWelcome (group, callback) {
       var room = RoomModel.getNewRoom();
-      room.name = 'welcome';
+      room.name = conf.group.default.name;
       room.permanent = true;
       room.group = group.id;
       room.owner = user.id;
@@ -77,7 +77,14 @@ handler.call = function (data, session, next) {
       room.priority = 0;
 
       room.save(function (err) {
-        return callback(err, room);
+        return callback(err, group, room);
+      });
+    },
+
+    function persist (group, room, callback) {
+      group.default = room._id;
+      group.save(function (err) {
+        return callback(err, group, room);
       });
     }
   ], function (err) {

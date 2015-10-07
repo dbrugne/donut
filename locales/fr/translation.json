@@ -727,7 +727,7 @@
           "help": "Entre 3 et 24 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement",
           "placeholder": "Nom du donut",
           "submit": "Créer le donut",
-          "group": "Déjà propriétaire d'une communauté ? Vous voulez créer un espace dédié à vos utilisateurs ? Vous pouvez <a href=\"#\" class=\"new-group\">créer un groupe</a>."
+          "group": "Déjà propriétaire d'une communauté ? Vous voulez créer un espace dédié à vos utilisateurs ? Vous pouvez <a href=\"#\" class=\"open-group-create\">créer un groupe</a>."
         },
         "edit": {
           "othersettings": "Autres paramètres",
@@ -790,6 +790,7 @@
         "mode-wrong-format": "Vous devez séléctionner un mode pour ce donut",
         "invalid-password": "Le mot de passe doit être compris entre 4 et 255 caractères",
         "room-already-exist": "Le donut __name__ existe déjà, <a href='#__uri__'>voulez-vous le rejoindre</a> ?",
+        "group-name-already-exist": "Le groupe __name__ existe déjà, <a href='#__uri__'>voulez-vous le rejoindre</a> ?",
         "invalid-rights": "Vous n'avez pas les droits pour faire cela."
       }
     }
@@ -995,6 +996,7 @@
       "content": {
         "title": "@__username__ vous invite à rejoindre #__roomname__",
         "disclaimer": "Vous pouvez rejoindre son donut sans plus tarder !",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
       }
     },

@@ -76,6 +76,7 @@ var MainView = Backbone.View.extend({
     'click .open-room-delete': 'openRoomDelete',
     'click .open-group-profile': 'onOpenGroupProfile',
     'click .open-group-delete': 'openGroupDelete',
+    'click .open-group-create': 'openGroupCreate',
     'click .close-discussion': 'onCloseDiscussion',
     'click .open-room-access': 'openRoomAccess',
     'click .switch[data-language]': 'switchLanguage'
@@ -100,7 +101,6 @@ var MainView = Backbone.View.extend({
     this.listenTo(app, 'openGroupProfile', this.openGroupProfile);
     this.listenTo(app, 'openUserProfile', this.openUserProfile);
     this.listenTo(app, 'changeColor', this.onChangeColor);
-    this.listenTo(app, 'openCreateGroup', this.openCreateGroup);
   },
   run: function () {
     // generate and attach subviews
@@ -312,7 +312,7 @@ var MainView = Backbone.View.extend({
     this.drawerView.setSize('450px').setView(view).open();
     view.focusField();
   },
-  openCreateGroup: function () {
+  openGroupCreate: function () {
     var view = new DrawerGroupCreateView();
     this.drawerView.setSize('450px').setView(view).open();
     view.focusField();

@@ -13,8 +13,7 @@ var DrawerRoomCreateView = Backbone.View.extend({
 
   events: {
     'keyup input[name=input-create]': 'valid',
-    'click .submit': 'submit',
-    'click .new-group': 'openCreateGroup'
+    'click .submit': 'submit'
   },
 
   initialize: function (options) {
@@ -106,10 +105,6 @@ var DrawerRoomCreateView = Backbone.View.extend({
       this.reset();
       this.trigger('close');
     }, this));
-  },
-  openCreateGroup: function () {
-    app.trigger('openCreateGroup');
-    this.reset();
   },
   _cleanupState: function () {
     this.$el.removeClass(function (index, css) {
