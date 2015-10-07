@@ -1,4 +1,5 @@
 'use strict';
+var errors = require('../../../util/errors');
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var async = require('async');
 var RoomModel = require('../../../../../shared/models/room');
@@ -41,7 +42,7 @@ Filter.prototype.before = function (data, session, next) {
           return callback(err);
         }
         if (!user) {
-          return callback('unable to retrieve current user: ' + session.uid);
+          return callback('current-user-not-found');
         }
         return callback(null, user);
       });
@@ -72,7 +73,7 @@ Filter.prototype.before = function (data, session, next) {
 
       if (data.room_id) {
         if (!common.validate.objectId(data.room_id)) {
-          return callback('invalid room_id parameter: ' + data.room_id);
+          return callback('params-room-id');
         }
         q = RoomModel.findOne({ _id: data.room_id });
       }
@@ -116,12 +117,12 @@ Filter.prototype.before = function (data, session, next) {
 
       if (data.username) {
         if (!common.validate.username(data.username)) {
-          return callback('invalid username parameter: ' + data.username);
+          return callback('params-username');
         }
         UserModel.findByUsername(data.username).exec(callback);
       } else {
         if (!common.validate.objectId(data.user_id)) {
-          return callback('invalid user_id parameter: ' + data.user_id);
+          return callback('params-user-id');
         }
         UserModel.findByUid(data.user_id).exec(callback);
       }
@@ -132,7 +133,7 @@ Filter.prototype.before = function (data, session, next) {
         return callback(null);
       }
       if (!common.validate.objectId(data.event)) {
-        return callback('invalid event ID parameter: ' + data.event);
+        return callback('params-id');
       }
       switch (data.__route__) {
         case 'chat.userMessageEditHandler.call':
@@ -152,8 +153,7 @@ Filter.prototype.before = function (data, session, next) {
 
   }, function (err, results) {
     if (err) {
-      logger.error('[' + data.__route__.replace('chat.', '') + '] ' + err);
-      return next(err);
+      return errors.getFilterHandler(data.__route__.replace('chat.', ''), next)(err);
     }
 
     if (results.currentUser) {
