@@ -144,6 +144,15 @@ var client = _.extend({
   // GROUP
   // ======================================================
 
+  groupId: function (identifier, callback) {
+    var data = {identifier: identifier};
+    debug('io:out:group:id', data);
+    pomelo.request(
+      'chat.groupIdHandler.call',
+      data,
+      this.applyRequestCallback('group:id', callback)
+    );
+  },
   groupRead: function (groupId, what, callback) {
     var data = {};
     if (groupId) {
@@ -291,7 +300,7 @@ var client = _.extend({
       this.applyRequestCallback('room:topic', callback)
     );
   },
-  roomRead: function (roomId, callback) {
+  roomRead: function (roomId, what, callback) {
     var data = {};
     if (roomId) {
       data.room_id = roomId;

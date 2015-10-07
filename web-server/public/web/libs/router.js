@@ -35,7 +35,7 @@ var DonutRouter = Backbone.Router.extend({
       Backbone.history.stop();
     }, this));
     this.listenTo(app, 'focus', this.focus);
-    this.listenTo(app, 'joinRoom', this.focusRoom);
+    this.listenTo(app, 'joinRoomFromCommand', this.focusRoom);
     this.listenTo(app, 'joinOnetoone', this.focusOne);
     this.listenTo(app, 'viewAdded', this.viewAdded);
     this.listenTo(app, 'goToSearch', this.focusOnSearch);
@@ -52,24 +52,30 @@ var DonutRouter = Backbone.Router.extend({
     Backbone.history.navigate('#'); // just change URI, not run route action
   },
 
-  focusGroup: function (group) {
-    var identifier = '#' + group;
-    var model = groups.iwhere('identifier', identifier);
+  focusGroup: function (name) {
+    var model = groups.iwhere('name', name);
     if (model) {
-      this.focus(model);
-    } else {
+      return this.focus(model);
+    }
+
+    client.groupId(name, _.bind(function (response) {
+      if (response.code === 404) {
+        return app.trigger('alert', 'error', i18next.t('chat.groupnotexists', { name: name }));
+      } else if (response.code === 500) {
+        return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+      }
       var what = {
         users: true,
         admin: true,
         rooms: true
       };
-      client.groupRead(null, group, what, _.bind(function (response) {
+      client.groupRead(response.group_id, what, _.bind(function (response) {
         if (!response.err) {
           model = groups.addModel(response);
           this.focus(model);
         }
       }, this));
-    }
+    }, this));
   },
 
   focusRoom: function () {
@@ -88,15 +94,22 @@ var DonutRouter = Backbone.Router.extend({
 
     // not already open
     this.nextFocus = identifier;
-    client.roomJoin(null, identifier, null, _.bind(function (response) {
+    client.roomId(identifier, function (response) {
       if (response.code === 404) {
         return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', { name: identifier }));
-      } else if (response.code === 403) {
-        return rooms.addModel(response.room, response.err);
       } else if (response.code === 500) {
         return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
       }
-    }, this));
+      client.roomJoin(response.room_id, null, _.bind(function (response) {
+        if (response.code === 404) {
+          return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', { name: identifier }));
+        } else if (response.code === 403) {
+          return rooms.addModel(response.room, response.err);
+        } else if (response.code === 500) {
+          return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+        }
+      }, this));
+    });
   },
 
   focusOne: function (username) {

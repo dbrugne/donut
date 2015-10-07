@@ -1,6 +1,6 @@
 'use strict';
 var errors = require('../../../util/errors');
-var RoomModel = require('../../../../../shared/models/room');
+var GroupModel = require('../../../../../shared/models/group');
 
 var Handler = function (app) {
   this.app = app;
@@ -13,20 +13,20 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
-  var errorHandler = errors.getHandler('room:id', next);
+  var errorHandler = errors.getHandler('group:id', next);
 
   if (!data.identifier) {
-    return errorHandler('params-room-identifier');
+    return errorHandler('params-group-name');
   }
 
-  RoomModel.findByIdentifier(data.identifier, function (err, model) {
+  GroupModel.findByName(data.identifier).exec(function (err, model) {
     if (err) {
       return errorHandler(err);
     }
     if (!model) {
-      return errorHandler('room-not-found');
+      return errorHandler('group-not-found');
     }
 
-    return next(null, {identifier: model.name, room_id: model.id});
+    return next(null, {identifier: model.name, group_id: model.id});
   });
 };

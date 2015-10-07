@@ -1,6 +1,5 @@
 'use strict';
 var errors = require('../../../util/errors');
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var async = require('async');
 var GroupModel = require('../../../../../shared/models/group');
 var RoomModel = require('../../../../../shared/models/room');
@@ -50,34 +49,19 @@ Filter.prototype.before = function (data, session, next) {
     },
 
     group: function (callback) {
-      if (!data.group && !data.group_id) {
+      if (!data.group_id) {
         return callback(null);
       }
-      if (!data.group_id && data.group &&
-        [ 'chat.groupReadHandler.call' ].indexOf(data.__route__) === -1) {
-        return callback(null);
+      if (!common.validate.objectId(data.group_id)) {
+        return callback('params-group-id');
       }
 
-      var q;
-
-      if (data.group) {
-        if (!common.validate.group(data.group)) {
-          return callback('group-name-wrong-format');
-        }
-        q = GroupModel.findByName(data.group);
-      }
-
-      if (data.group_id) {
-        if (!common.validate.objectId(data.group_id)) {
-          return callback('invalid group_id parameter: ' + data.group_id);
-        }
-        q = GroupModel.findOne({ _id: data.group_id });
-      }
-
-      q.populate('owner', 'username avatar color facebook');
-      q.populate('op', 'username avatar color facebook');
-      q.populate('members', 'username avatar color facebook');
-      q.exec(callback);
+      // @todo : need all this population for each route??
+      GroupModel.findOne({ _id: data.group_id })
+        .populate('owner', 'username avatar color facebook')
+        .populate('op', 'username avatar color facebook')
+        .populate('members', 'username avatar color facebook')
+        .exec(callback);
     },
 
     room: function (callback) {
@@ -88,11 +72,10 @@ Filter.prototype.before = function (data, session, next) {
         return callback('params-room-id');
       }
 
-      var q = RoomModel.findOne({ _id: data.room_id })
+      RoomModel.findOne({ _id: data.room_id })
         .populate('owner', 'username avatar color facebook')
-        .populate('group', 'name members');
-
-      q.exec(callback);
+        .populate('group', 'name members')
+        .exec(callback);
     },
 
     user: function (callback) {
@@ -135,6 +118,9 @@ Filter.prototype.before = function (data, session, next) {
 
     if (results.currentUser) {
       session.__currentUser__ = results.currentUser;
+    }
+    if (results.group) {
+      session.__group__ = results.group;
     }
     if (results.room) {
       session.__room__ = results.room;

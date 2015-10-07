@@ -28,7 +28,7 @@ var DrawerGroupProfileView = Backbone.View.extend({
       users: true,
       admin: true
     };
-    client.groupRead(this.groupId, null, what, _.bind(function (data) {
+    client.groupRead(this.groupId, what, _.bind(function (data) {
       if (data.err === 'group-not-found') {
         return;
       }

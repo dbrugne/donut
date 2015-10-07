@@ -15,7 +15,7 @@ var DrawerUserProfileView = Backbone.View.extend({
   events: {},
 
   initialize: function (options) {
-    this.user_id = options.user_id;
+    this.userId = options.user_id;
 
     this.listenTo(app, 'userDeban', this.onUserBanChange);
     this.listenTo(app, 'userBan', this.onUserBanChange);
@@ -29,7 +29,7 @@ var DrawerUserProfileView = Backbone.View.extend({
     }
 
     var that = this;
-    client.userRead(this.user_id, null, function (data) {
+    client.userRead(this.userId, function (data) {
       if (data.err === 'user-not-found') {
         return;
       }
@@ -128,7 +128,7 @@ var DrawerUserProfileView = Backbone.View.extend({
   },
   onUserBanChange: function () {
     this.render();
-    client.userRead(this.user_id, null, _.bind(function (data) {
+    client.userRead(this.userId, null, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }

@@ -1,6 +1,6 @@
 'use strict';
 var errors = require('../../../util/errors');
-var User = require('../../../../../shared/models/user');
+var UserModel = require('../../../../../shared/models/user');
 
 var Handler = function (app) {
   this.app = app;
@@ -19,14 +19,14 @@ handler.call = function (data, session, next) {
     return errorHandler('params-username');
   }
 
-  User.findByUsername(data.username).exec(function (err, user) {
+  UserModel.findByUsername(data.username).exec(function (err, model) {
     if (err) {
       return errorHandler(err);
     }
-    if (!user) {
+    if (!model) {
       return errorHandler('user-not-found');
     }
 
-    return next(null, {username: user.username, user_id: user.id});
+    return next(null, {username: model.username, user_id: model.id});
   });
 };
