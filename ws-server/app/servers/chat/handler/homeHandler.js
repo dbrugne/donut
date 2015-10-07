@@ -130,14 +130,8 @@ handler.call = function (data, session, next) {
         _list.push(_data);
       });
 
-      // sort (group first, priority, users, lastjoin_at, name)
+      // sort (priority, users, lastjoin_at, name)
       _list.sort(function (a, b) {
-        if (a.is_group && !b.is_group) {
-          return -1;
-        } else if (!a.is_group && b.is_group) {
-          return 1;
-        }
-
         if (a.priority !== b.priority) {
           return b.priority - a.priority;
         }

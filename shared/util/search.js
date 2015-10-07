@@ -2,11 +2,12 @@ var async = require('async');
 var _ = require('underscore');
 var User = require('../models/user');
 var Room = require('../models/room');
+var Group = require('../models/group');
 var diacritics = require('diacritics').remove;
 var common = require('@dbrugne/donut-common/server');
 
 /**
- * Search in database rooms and/or users.
+ * Search in database rooms, groups and/or users.
  * Results is returned as:
  *
  * {
@@ -34,8 +35,37 @@ module.exports = function (search, searchInUsers, searchInRooms, limit, skip, li
   search = diacritics(search);
 
   var _regexp = common.regexp.contains(search);
+  var rooms = [];
+  var groups = [];
+  var roomResults = [];
+  var userResults = [];
 
-  async.parallel([
+  async.waterfall([
+
+    function groupSearch (callback) {
+      if (!searchInRooms) {
+        return callback(null, false);
+      }
+
+      var criteria = {
+        name: _regexp,
+        deleted: { $ne: true }
+      };
+
+      Group.find(criteria, 'name owner disclaimer avatar color members op')
+      .skip(skip)
+      .limit(limit)
+      .populate('owner', 'username')
+      .exec(function (err, dbgroups) {
+        if (err) {
+          return callback(err);
+        }
+
+        groups = dbgroups;
+
+        return callback(null);
+      });
+    },
 
     function roomSearch (callback) {
       if (!searchInRooms) {
@@ -64,65 +94,89 @@ module.exports = function (search, searchInUsers, searchInRooms, limit, skip, li
           .limit(limit)
           .populate('group', 'name');
       }
-      q.exec(function (err, rooms) {
+      q.exec(function (err, dbrooms) {
         if (err) {
           return callback(err);
         }
 
-        var results = [];
-        _.each(rooms, function (room) {
-          var owner = {};
-          if (room.owner) {
-            owner = {
-              user_id: room.owner.id,
-              username: room.owner.username
-            };
-          }
+        rooms = dbrooms;
 
-          var count = (room.users) ? room.users.length : 0;
-
-          var r = {
-            room_id: room.id,
-            name: room.name,
-            identifier: room.getIdentifier(),
-            avatar: room._avatar(),
-            color: room.color,
-            mode: room.mode,
-            lastjoin_at: new Date(room.lastjoin_at).getTime()
-          };
-
-          if (room.group) {
-            r.group_id = room.group.id;
-            r.group_name = room.group.name;
-          }
-
-          if (!lightSearch) {
-            r.owner = owner;
-            r.description = room.description;
-            r.topic = room.topic;
-            r.users = count;
-          }
-
-          results.push(r);
-        });
-
-        // sort (users, lastjoin_at, name)
-        results.sort(function (a, b) {
-          if (a.users !== b.users) {
-            // b - a == descending
-            return (b.users - a.users);
-          }
-
-          if (a.lastjoin_at !== b.lastjoin_at) {
-            // b - a == descending
-            return (b.lastjoin_at - a.lastjoin_at);
-          }
-
-          return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-        });
-
-        return callback(null, results);
+        return callback(null);
       });
+    },
+
+    function computeResults (callback) {
+      _.each(rooms, function (room) {
+        var count = (room.users) ? room.users.length : 0;
+
+        var r = {
+          is_group: false,
+          room_id: room.id,
+          name: room.name,
+          identifier: room.getIdentifier(),
+          avatar: room._avatar(),
+          color: room.color,
+          mode: room.mode,
+          lastjoin_at: new Date(room.lastjoin_at).getTime()
+        };
+
+        if (room.group) {
+          r.group_id = room.group.id;
+          r.group_name = room.group.name;
+        }
+
+        if (!lightSearch) {
+          r.description = room.description;
+          r.topic = room.topic;
+          r.users = count;
+          if (room.owner !== undefined) {
+            r.owner_id = room.owner.id;
+            r.owner_username = room.owner.username;
+          }
+        }
+
+        roomResults.push(r);
+      });
+
+      _.each(groups, function (group) {
+        var count = group.count();
+
+        var _data = {
+          is_group: true,
+          name: group.name,
+          identifier: group.getIdentifier(),
+          group_id: group.id,
+          disclaimer: group.disclaimer,
+          color: group.color,
+          avatar: group._avatar(),
+          users: count,
+          priority: group.priority || 0
+        };
+
+        if (group.owner !== undefined) {
+          _data.owner_id = group.owner.id;
+          _data.owner_username = group.owner.username;
+        }
+
+        roomResults.push(_data);
+      });
+
+      // sort (users, lastjoin_at, name)
+      roomResults.sort(function (a, b) {
+        if (a.users !== b.users) {
+          // b - a == descending
+          return (b.users - a.users);
+        }
+
+        if (!a.is_group && !b.is_group && a.lastjoin_at !== b.lastjoin_at) {
+          // b - a == descending
+          return (b.lastjoin_at - a.lastjoin_at);
+        }
+
+        return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+      });
+
+      return callback(null);
     },
 
     function userSearch (callback) {
@@ -142,7 +196,6 @@ module.exports = function (search, searchInUsers, searchInRooms, limit, skip, li
           return callback(err);
         }
 
-        var list = [];
         _.each(users, function (user) {
           var r = {
             user_id: user.id,
@@ -152,43 +205,43 @@ module.exports = function (search, searchInUsers, searchInRooms, limit, skip, li
             bio: user.bio
           };
 
-          list.push(r);
+          userResults.push(r);
         });
 
-        return callback(null, list);
+        return callback(null);
       });
     }
 
-  ], function (err, results) {
+  ], function (err) {
     if (err) {
       return callback(err);
     }
 
     var searchResults = {};
-    if (results[0] !== false) {
-      if (results[0].length > limit) {
-        results[0].pop();
+    if (roomResults !== false) {
+      if (roomResults.length > limit) {
+        roomResults.pop();
         searchResults.rooms = {
-          list: results[0],
+          list: roomResults,
           more: true
         };
       } else {
         searchResults.rooms = {
-          list: results[0],
+          list: roomResults,
           more: false
         };
       }
     }
-    if (results[1] !== false) {
-      if (results[1].length > limit) {
-        results[1].pop();
+    if (userResults !== false) {
+      if (userResults.length > limit) {
+        userResults.pop();
         searchResults.users = {
-          list: results[1],
+          list: userResults,
           more: true
         };
       } else {
         searchResults.users = {
-          list: results[1],
+          list: userResults,
           more: false
         };
       }
