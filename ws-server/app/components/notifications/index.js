@@ -90,6 +90,9 @@ Facade.prototype.getType = function (type) {
       break;
 
     case 'groupjoinrequest':
+    case 'groupallowed':
+    case 'grouprefuse':
+    case 'groupinvite':
       typeConstructor = groupRequest;
       break;
 
@@ -165,7 +168,7 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
             notifications.push(n);
             return fn(null);
           });
-      } else if (n.type === 'groupjoinrequest') {
+      } else if (n.type === 'groupjoinrequest' || n.type === 'grouprefuse' || n.type === 'groupallowed' || n.type === 'groupinvite') {
         NotificationModel.findOne({_id: n._id})
           .populate({
             path: 'data.by_user',

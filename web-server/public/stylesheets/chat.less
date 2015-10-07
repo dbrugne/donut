@@ -301,7 +301,7 @@
         }
       } // #color .container #notifications
       .navbar-nav { float:left; margin: 0;
-        &.navbar-right { float:right; margin: 0; position: absolute; top: 0; right: 0;
+        &.navbar-right { float:right; margin: 0;
           > li > a { background-color:transparent; }
           .dropdown-menu { right:0; left: initial; }
           .open .dropdown-menu { position: absolute;
@@ -634,7 +634,6 @@
                 .display-offline { display:inline-block; }
               }
             } // #chat #center .discussion .content .header.user .status-block
-            .hello-block { font-style: italic; }
           } // #chat #center .discussion .content .header.user
         }
         .events { /*border-top: 1px solid @cl-subtext10;*/ overflow-y: scroll; overflow-x: hidden; .flex(1); .scrollbar-grey; position: relative;
@@ -724,6 +723,38 @@
               }
               .realtime {
                 a.mention { font-weight: bold; }
+                .block.hello,
+                .block.topic,
+                .block.kick,
+                .block.ban,
+                .block.deban,
+                .block.op,
+                .block.deop,
+                .block.voice,
+                .block.command-help,
+                .block.devoice {
+                  clear: both;
+                  margin-top: 5px;
+                  padding: 5px;
+                  img { height: 20px; }
+                  .avatar {
+                    display: inline-block;
+                    width: 20px;
+                    height: 20px;
+                    background-position: center center;
+                    background-size: 20px 20px;
+                    vertical-align: middle;
+                  }
+                  .username { font-weight: bold; }
+                  .detail { font-weight: normal; }
+                  .event {
+                    .text {
+                      font-style: italic;
+                      padding-right: 50px;
+                      img { margin-right: 3px; }
+                    }
+                  }
+                }
                 .block { line-height: 19px; position: relative; font-size: 1.1em;
                   &.message { word-break: break-all; }
                   &.unviewed {
@@ -741,11 +772,11 @@
                   &.date + .block { border-top: transparent; }
                   &.hello {
                     i {
-                      font-size: 1.5em;
                       color: @cl-success;
-                      vertical-align: bottom;
+                      vertical-align: baseline;
                       line-height: normal;
                     }
+                    padding-top: 20px; font-size:1.5rem; line-height: 2rem;
                   }
                   &.promote {
                     i {
@@ -845,8 +876,10 @@
                         border-color: #ccc transparent transparent transparent; position: absolute; bottom: -6px; right: 2px; display: block; padding: 0; }
                       ul.a { padding: 0; margin: 0; white-space: nowrap;
                         li {  list-style: none; text-align: left; padding: 5px 10px 5px; cursor:pointer;
-                          &:hover { background-color: @cl-subtext5; }
-                          .unspam { display: none; }
+                          &:hover { background-color: @cl-subtext5;
+                            a { text-decoration:underline; }
+                          }
+                          &.unspam { display: none; }
                         }
                       }
                     }
@@ -855,15 +888,15 @@
                   &.has-hover:hover .actions, .actions.open { display:block; }
                   &.spammed {
                     .text, .images { display: none; }
-                    .actions .dropdown-menu ul.a li .unspam { display:inline; }
-                    .actions .dropdown-menu ul.a li .spammed { display:none; }
+                    .actions .dropdown-menu ul.a li.unspam { display:block; }
+                    .actions .dropdown-menu ul.a li.spammed { display:none; }
                     .text-spammed { display: block; font-style: italic; color: #333; padding-right:50px;
                       a { cursor:pointer; }
                     }
                   }
                   &.viewed {
-                    .actions .dropdown-menu ul.a li .unspam { display:inline; }
-                    .actions .dropdown-menu ul.a li .spammed { display:none; }
+                    .actions .dropdown-menu ul.a li.unspam { display:block; }
+                    .actions .dropdown-menu ul.a li.spammed { display:none; }
                     .ctn { background-color: lighten(#e74c3c, 30%);
                       .remask-spammed-message {
                         float: left;
@@ -908,38 +941,6 @@
                     }
                     &.out:hover {
                       border-color: @cl-error;
-                    }
-                  }
-                }
-                .block.hello,
-                .block.topic,
-                .block.kick,
-                .block.ban,
-                .block.deban,
-                .block.op,
-                .block.deop,
-                .block.voice,
-                .block.command-help,
-                .block.devoice {
-                  clear: both;
-                  margin-top: 5px;
-                  padding: 5px;
-                  img { height: 20px; }
-                  .avatar {
-                    display: inline-block;
-                    width: 20px;
-                    height: 20px;
-                    background-position: center center;
-                    background-size: 20px 20px;
-                    vertical-align: middle;
-                  }
-                  .username { font-weight: bold; }
-                  .detail { font-weight: normal; }
-                  .event {
-                    .text {
-                      font-style: italic;
-                      padding-right: 50px;
-                      img { margin-right: 3px; }
                     }
                   }
                 }

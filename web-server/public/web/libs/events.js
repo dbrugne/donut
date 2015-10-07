@@ -161,8 +161,10 @@ exports.prototype._data = function (event) {
 
   // room
   if (this.discussion.get('type') === 'room') {
-    data.name = this.discussion.get('name');
+    data.identifier = this.discussion.get('identifier');
     data.mode = this.discussion.get('mode');
+    data.group_name = this.discussion.get('group_name');
+    data.group_id = this.discussion.get('group_id');
     data.owner_username = this.discussion.get('owner_username');
     data.owner_id = this.discussion.get('owner_id');
   }

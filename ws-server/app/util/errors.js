@@ -3,7 +3,9 @@ var logger = require('../../../shared/util/logger').getLogger('donut');
 var errors = {
   // WRONG PARAMS (400)
   'params-group-id': 400,         // group_id params not set
+  'params-group-name': 400,
   'params-room-id': 400,          // room_id params not set
+  'params-room-identifier': 400,
   'params-room-id-name': 400,     // room_id and name params not set
   'params-user-id': 400,          // user_id params not set
   'params-id': 400,               // id params not set
@@ -17,6 +19,7 @@ var errors = {
   'params-message': 400,          // message params not set or not good
   'wrong-format': 400,            // params are not well formatted
   'name-wrong-format': 400,       // name params are not well formatted
+  'group-name-wrong-format': 400, // group name params are not well formatted
   'mode-wrong-format': 400,       // mode params are not well formatted
   'message-wrong-format': 400,    // message params are not well formatted
   'params': 400,                  // == GENERAL TAG ==
@@ -43,6 +46,7 @@ var errors = {
 
   // NOT FOUND ERROR (404)
   'group-not-found': 404,         // Group not found
+  'current-user-not-found': 404,  // Current user not found
   'room-not-found': 404,          // Room not found
   'user-not-found': 404,          // User not found
   'event-not-found': 404,         // Event not found
@@ -64,6 +68,7 @@ var errors = {
 module.exports = {
   errors: errors,
   getHandler: function (handlerName, callback) {
+    // log and return error object to client
     return function (err) {
       if (!errors[err]) {
         logger.error('[' + handlerName + '] ' + err);
@@ -72,6 +77,18 @@ module.exports = {
 
       logger.warn('[' + handlerName + '] ' + err);
       callback(null, { code: errors[err], err: err });
+    };
+  },
+  getFilterHandler: function (handlerName, callback) {
+    // log, bypass handler and return error object to client
+    return function (err) {
+      if (!errors[err]) {
+        logger.error('[' + handlerName + '] ' + err);
+        return callback(err, { code: 500, err: 'internal' });
+      }
+
+      logger.warn('[' + handlerName + '] ' + err);
+      callback(err, { code: errors[err], err: err });
     };
   }
 };

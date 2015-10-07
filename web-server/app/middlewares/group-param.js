@@ -113,8 +113,12 @@ module.exports = function (req, res, next, groupname) {
         //}
 
         group.membersCount = 1; // owner
-        group.membersCount += (group.op) ? group.op.length : 0;
-        group.membersCount += (model.members) ? model.members.length : 0;
+        group.membersCount += (group.op)
+          ? group.op.length
+          : 0;
+        group.membersCount += (model.members)
+          ? model.members.length
+          : 0;
 
         // populate rooms
         RoomModel.findByGroup(group.id).populate({
@@ -135,6 +139,9 @@ module.exports = function (req, res, next, groupname) {
               mode: r.mode,
               color: r.color,
               name: r.name,
+              users: (r.users)
+                ? r.users.length
+                : 0,
               url: (r.name)
                 ? req.protocol + '://' + conf.fqdn + '/room/' + r.name.toLocaleLowerCase()
                 : '',

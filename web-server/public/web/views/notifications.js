@@ -163,6 +163,12 @@ var NotificationsView = Backbone.View.extend({
       var roomId = (n.data.room._id) ? n.data.room._id : n.data.room.id;
       n.html += 'data-room-id="' + roomId + '"';
       n.username = null;
+    } else if (n.type === 'groupjoinrequest') {
+      n.href = '';
+      n.css += 'open-group-access';
+      var groupId = (n.data.group._id) ? n.data.group._id : n.data.group.id;
+      n.html += 'data-group-id="' + groupId + '"';
+      n.username = null;
     }
 
     if (n.viewed === false) {

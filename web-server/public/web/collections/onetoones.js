@@ -41,13 +41,22 @@ var OnetoonesCollection = Backbone.Collection.extend({
     this.listenTo(app, 'refreshOnesList', this.onRefreshList);
   },
   join: function (username) {
-    // we ask to server to open this one to one
-    client.userJoin(username, function (response) {
+    client.userId(username, function (response) {
       if (response.err && response !== 500) {
         return app.trigger('alert', 'error', i18next.t('chat.users.usernotexist'));
       } else if (response.code === 500) {
         return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
       }
+      if (!response.user_id) {
+        return;
+      }
+      client.userJoin(response.user_id, function (response) {
+        if (response.err && response !== 500) {
+          return app.trigger('alert', 'error', i18next.t('chat.users.usernotexist'));
+        } else if (response.code === 500) {
+          return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+        }
+      });
     });
   },
   onJoin: function (data) {

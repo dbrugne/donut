@@ -60,7 +60,7 @@ module.exports = function (req, res, next, username) {
           {op: {$in: [user._id]}},
           {users: {$in: [user._id]}}
         ]
-      }, 'name owner op avatar color description mode')
+      }, 'name owner op avatar color description mode users')
         .populate('group', 'name')
         .populate('owner', 'username');
       q.exec(function (err, rooms) {
@@ -86,6 +86,9 @@ module.exports = function (req, res, next, username) {
             ? req.protocol + '://' + conf.fqdn + '/room/' + room.name.toLocaleLowerCase()
             : '';
           room.mode = dbroom.mode;
+          room.users = (dbroom.users)
+            ? dbroom.users.length
+            : 0;
 
           list.push(room);
         });

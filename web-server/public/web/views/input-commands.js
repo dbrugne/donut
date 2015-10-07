@@ -197,7 +197,7 @@ var InputCommandsView = Backbone.View.extend({
       return this.errorCommand('join', 'parameters');
     }
 
-    app.trigger('joinRoom', parameters[1]);
+    app.trigger('joinRoomFromCommand', parameters[1].replace('#', ''));
   },
   leave: function (paramString, parameters) {
     if (!paramString) {
@@ -209,7 +209,7 @@ var InputCommandsView = Backbone.View.extend({
       return this.errorCommand('leave', 'parameters');
     }
 
-    var model = rooms.getByName(parameters[1]);
+    var model = rooms.getByName(parameters[1].replace('#', ''));
     if (!model) {
       return;
     }
@@ -235,213 +235,100 @@ var InputCommandsView = Backbone.View.extend({
     });
   },
   op: function (paramString, parameters) {
-    if (this.model.get('type') !== 'room') {
-      return this.errorCommand('op', 'commandaccess');
-    }
-    if (!parameters) {
-      return this.errorCommand('op', 'parameters');
-    }
-
-    var that = this;
-    confirmationView.open({}, function () {
-      client.roomOp(that.model.get('id'), null, parameters[1], function (data) {
-        if (data.err && data.code !== 500) {
-          return that.errorCommand('op', data.err);
-        }
-        if (data.err) {
-          return that.errorCommand('op', 'parameters');
-        }
-      });
-      that.model.trigger('inputFocus');
-    }, this.inputFocus());
+    this._promote('op', parameters[1]);
   },
   deop: function (paramString, parameters) {
-    if (this.model.get('type') !== 'room') {
-      return this.errorCommand('deop', 'commandaccess');
-    }
-
-    if (!parameters) {
-      return this.errorCommand('deop', 'parameters');
-    }
-
-    var that = this;
-    confirmationView.open({}, function () {
-      client.roomDeop(that.model.get('id'), null, parameters[1], function (data) {
-        if (data.err && data.code !== 500) {
-          return that.errorCommand('deop', data.err);
-        }
-        if (data.err) {
-          return that.errorCommand('deop', 'parameters');
-        }
-      });
-      that.model.trigger('inputFocus');
-    }, this.inputFocus());
+    this._promote('deop', parameters[1]);
   },
   kick: function (paramString, parameters) {
-    if (this.model.get('type') !== 'room') {
-      return this.errorCommand('kick', 'commandaccess');
-    }
-
-    if (!parameters) {
-      return this.errorCommand('kick', 'parameters');
-    }
-
-    var that = this;
-    confirmationView.open({input: true}, function (reason) {
-      client.roomKick(that.model.get('id'), null, parameters[1], reason, function (data) {
-        if (data.err && data.code !== 500) {
-          return that.errorCommand('kick', data.err);
-        }
-        if (data.err) {
-          return that.errorCommand('kick', 'parameters');
-        }
-        that.model.trigger('inputFocus');
-      });
-    }, this.inputFocus());
+    this._promote('kick', parameters[1]);
   },
   ban: function (paramString, parameters) {
-    if (this.model.get('type') !== 'room') {
-      return this.errorCommand('ban', 'commandaccess');
-    }
-
-    if (!parameters) {
-      return this.errorCommand('ban', 'parameters');
-    }
-
-    var that = this;
-    confirmationView.open({input: true}, function (reason) {
-      client.roomBan(that.model.get('id'), null, parameters[1], reason, function (data) {
-        if (data.err && data.code !== 500) {
-          return that.errorCommand('ban', data.err);
-        }
-        if (data.err) {
-          return that.errorCommand('ban', 'parameters');
-        }
-        that.model.trigger('inputFocus');
-      });
-    }, this.inputFocus());
+    this._promote('ban', parameters[1]);
   },
   unban: function (paramString, parameters) {
-    if (this.model.get('type') !== 'room') {
-      return this.errorCommand('unban', 'commandaccess');
-    }
-
-    if (!parameters) {
-      return this.errorCommand('unban', 'parameters');
-    }
-
-    var that = this;
-    client.roomDeban(this.model.get('id'), null, parameters[1], function (data) {
-      if (data.err && data.code !== 500) {
-        return that.errorCommand('unban', data.err);
-      }
-      if (data.err) {
-        return that.errorCommand('unban', 'parameters');
-      }
-    });
+    this._promote('unban', parameters[1]);
   },
   unmute: function (paramString, parameters) {
-    if (this.model.get('type') !== 'room') {
-      return this.errorCommand('unmute', 'commandaccess');
-    }
-
-    if (!parameters) {
-      return this.errorCommand('unmute', 'parameters');
-    }
-
-    var that = this;
-    client.roomVoice(this.model.get('id'), null, parameters[1], function (data) {
-      if (data.err && data.code !== 500) {
-        return that.errorCommand('unmute', data.err);
-      }
-      if (data.err) {
-        return that.errorCommand('unmute', 'parameters');
-      }
-    });
+    this._promote('unmute', parameters[1]);
   },
   mute: function (paramString, parameters) {
+    this._promote('mute', parameters[1]);
+  },
+  _promote: function (what, username) {
     if (this.model.get('type') !== 'room') {
-      return this.errorCommand('mute', 'commandaccess');
+      return;
+    }
+    if (!username) {
+      return this.errorCommand(what, 'parameters');
     }
 
-    if (!parameters) {
-      return this.errorCommand('mute', 'parameters');
-    }
+    var input = (['kick', 'ban', 'mute'].indexOf(what) !== -1);
+    var method = ({
+      'op': 'roomOp',
+      'deop': 'roomDeop',
+      'kick': 'roomKick',
+      'ban': 'roomBan',
+      'unban': 'roomDeban',
+      'unmute': 'roomVoice',
+      'mute': 'roomDevoice'
+    })[what];
 
     var that = this;
-    confirmationView.open({input: true}, function (reason) {
-      client.roomDevoice(that.model.get('id'), null, parameters[1], reason, function (data) {
-        if (data.err && data.code !== 500) {
-          return that.errorCommand('mute', data.err);
-        }
-        if (data.err) {
-          return that.errorCommand('mute', 'parameters');
-        }
-        that.model.trigger('inputFocus');
-      });
-    }, this.inputFocus());
+    client.userId(username, function (response) {
+      if (response.err || !response.user_id) {
+        return;
+      }
+      confirmationView.open({input: input}, function (reason) {
+        client[method](that.model.get('id'), response.user_id, reason, function (data) {
+          if (data.err && data.code !== 500) {
+            return that.errorCommand(what, data.err);
+          } else if (data.err) {
+            return that.errorCommand(what, 'parameters');
+          }
+          that.model.trigger('inputFocus');
+        });
+      }, that.inputFocus());
+    });
   },
   block: function (paramString, parameters) {
-    var username = null;
-    var userId = null;
-    // from a room
-    if (this.model.get('type') !== 'onetoone') {
-      if (!paramString) {
-        return this.errorCommand('block', 'commandaccess');
-      } if (!parameters) {
-        return this.errorCommand('block', 'parameters');
-      }
-
-      username = parameters[0].replace(/^@/, '');
-    } else {
-      // from a onetoone
-      userId = this.model.get('user_id');
-    }
-
-    var that = this;
-    confirmationView.open({input: false}, function () {
-      client.userBan(userId, username, function (data) {
-        if (data.err && data.err === 'banned') {
-          return that.errorCommand('block', 'already-blocked');
-        }
-        if (data.err && data.code !== 500) {
-          return that.errorCommand('block', 'invalidusername');
-        }
-        if (data.err) {
-          return that.errorCommand('block', 'parameters');
-        }
-      });
-      that.model.trigger('inputFocus');
-    }, this.inputFocus());
+    this._userPromote('block', parameters[0].replace(/^@/, ''));
   },
   unblock: function (paramString, parameters) {
-    var username;
-    var userId;
-    // from a room
-    if (this.model.get('type') !== 'onetoone') {
-      if (!paramString) {
-        return this.errorCommand('unblock', 'commandaccess');
-      } if (!parameters) {
-        return this.errorCommand('unblock', 'parameters');
-      }
-
-      username = parameters[0].replace(/^@/, '');
-    } else {
-      // from a onetoone
-      userId = this.model.get('user_id');
+    this._userPromote('unblock', parameters[0].replace(/^@/, ''));
+  },
+  _userPromote: function (what, username) {
+    if (!username) {
+      return this.errorCommand(what, 'parameters');
     }
 
     var that = this;
-    client.userDeban(userId, username, function (data) {
-      if (data.err && data.err === 'no-banned') {
-        return that.errorCommand('unblock', 'already-unblocked');
+    client.userId(username, function (response) {
+      if (response.err || !response.user_id) {
+        return;
       }
-      if (data.err && data.code !== 500) {
-        return that.errorCommand('unblock', 'invalidusername');
-      }
-      if (data.err) {
-        return that.errorCommand('unblock', 'parameters');
-      }
+
+      var method = (what === 'block')
+        ? 'userBan'
+        : 'userDeban';
+
+      confirmationView.open({input: false}, function () {
+        client[method](response.user_id, function (data) {
+          if (data.err && data.err === 'banned') {
+            return that.errorCommand(what, 'already-blocked');
+          }
+          if (data.err && data.err === 'no-banned') {
+            return that.errorCommand(what, 'already-unblocked');
+          }
+          if (data.err && data.code !== 500) {
+            return that.errorCommand(what, 'invalidusername');
+          }
+          if (data.err) {
+            return that.errorCommand(what, 'parameters');
+          }
+        });
+        that.model.trigger('inputFocus');
+      }, that.inputFocus());
     });
   },
   msg: function (paramString, parameters) {
@@ -459,9 +346,14 @@ var InputCommandsView = Backbone.View.extend({
     if (!parameters) {
       model = this.model;
     } else if (/^#/.test(parameters[1])) {
-      model = rooms.getByName(parameters[1]);
+      model = rooms.getByName(parameters[1].replace('#', ''));
     } else if (/^@/.test(parameters[1])) {
-      client.userMessage(null, parameters[1].replace(/^@/, ''), message);
+      client.userId(parameters[1].replace('@', ''), function (response) {
+        if (!response.user_id) {
+          return;
+        }
+        client.userMessage(response.user_id, message);
+      });
       return;
     } else {
       return this.errorCommand('msg', 'parameters');
@@ -474,7 +366,7 @@ var InputCommandsView = Backbone.View.extend({
     if (model.get('type') === 'room') {
       client.roomMessage(model.get('id'), message);
     } else if (model.get('type') === 'onetoone') {
-      client.userMessage(model.get('user_id'), null, message);
+      client.userMessage(model.get('user_id'), message);
     }
   },
   profile: function (paramString, parameters) {
@@ -489,25 +381,37 @@ var InputCommandsView = Backbone.View.extend({
         users: true,
         admin: false
       };
-      client.roomRead(null, parameters[1], what, function (data) {
-        if (data.err === 'room-not-found') {
+      client.roomId(parameters[1], function (response) {
+        if (response.code === 404) {
           that.errorCommand('profile', 'invalidroom');
           return;
         }
-        if (!data.err) {
-          app.trigger('openRoomProfile', data);
-        }
+        client.roomRead(response.room_id, what, function (data) {
+          if (data.code === 404) {
+            that.errorCommand('profile', 'invalidroom');
+            return;
+          }
+          if (!data.err) {
+            app.trigger('openRoomProfile', data);
+          }
+        });
       });
     } else {
       parameters[1] = parameters[1].replace(/^@/, '');
-      client.userRead(null, parameters[1], function (data) {
-        if (data.err === 'user-not-found') {
+      client.userId(parameters[1], function (response) {
+        if (response.code === 404) {
           that.errorCommand('profile', 'invalidusername');
           return;
         }
-        if (!data.err) {
-          app.trigger('openUserProfile', data);
-        }
+        client.userRead(response.user_id, function (data) {
+          if (data.code === 404) {
+            that.errorCommand('profile', 'invalidusername');
+            return;
+          }
+          if (!data.err) {
+            app.trigger('openUserProfile', data);
+          }
+        });
       });
     }
   },
@@ -520,7 +424,7 @@ var InputCommandsView = Backbone.View.extend({
     if (this.model.get('type') === 'room') {
       client.roomMessage(this.model.get('id'), message, null, 'me');
     } else {
-      client.userMessage(this.model.get('id'), null, message, null, 'me');
+      client.userMessage(this.model.get('id'), message, null, 'me');
     }
   },
   ping: function (paramString, parameters) {
@@ -559,7 +463,7 @@ var InputCommandsView = Backbone.View.extend({
     if (this.model.get('type') === 'room') {
       client.roomMessage(this.model.get('id'), message, null, 'random');
     } else {
-      client.userMessage(this.model.get('id'), null, message, null, 'random');
+      client.userMessage(this.model.get('id'), message, null, 'random');
     }
   },
   help: function (paramString, parameters, error) {

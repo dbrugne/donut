@@ -12,7 +12,8 @@ var DrawerRoomEditView = Backbone.View.extend({
   id: 'room-edit',
 
   events: {
-    'submit form.room-form': 'onSubmit'
+    'submit form.room-form': 'onSubmit',
+    'input #roomDescription': 'onTypingDescription'
   },
 
   initialize: function (options) {
@@ -26,7 +27,7 @@ var DrawerRoomEditView = Backbone.View.extend({
       users: false,
       admin: true
     };
-    client.roomRead(this.roomId, null, what, _.bind(function (data) {
+    client.roomRead(this.roomId, what, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }
@@ -60,10 +61,11 @@ var DrawerRoomEditView = Backbone.View.extend({
     this.$el.html(html);
 
     // description
-    this.$('#roomDescription').maxlength({
-      counterContainer: this.$('#roomDescription').siblings('.help-block').find('.counter'),
-      text: i18next.t('chat.form.common.edit.left')
-    });
+    if (room.description) {
+      this.$('.counter').html(i18next.t('chat.form.common.edit.left', {count: 200 - room.description.length}));
+    } else {
+      this.$('.counter').html(i18next.t('chat.form.common.edit.left', {count: 200}));
+    }
 
     // website
     this.$website = this.$('input[name=website]');
@@ -182,6 +184,10 @@ var DrawerRoomEditView = Backbone.View.extend({
       message += i18next.t('chat.form.errors.' + error) + '<br>';
     });
     this.$('.errors').html(message).show();
+  },
+
+  onTypingDescription: function (event) {
+    this.$('.counter').html(i18next.t('chat.form.common.edit.left', {count: 200 - this.$('#roomDescription').val().length}));
   },
 
   initializeTooltips: function () {

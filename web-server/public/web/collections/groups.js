@@ -3,7 +3,7 @@ var GroupModel = require('../models/group');
 var client = require('../libs/client');
 
 var GroupsCollection = Backbone.Collection.extend({
-  iwhere: function (key, val) { // insencitive case search
+  iwhere: function (key, val) { // insensitive case search
     var matches = this.filter(function (item) {
       return item.get(key).toLocaleLowerCase() === val.toLocaleLowerCase();
     });
@@ -26,7 +26,7 @@ var GroupsCollection = Backbone.Collection.extend({
     data.uri = '#g/' + data.name;
 
     // update model
-    var isNew = (this.get(data.group_id) === undefined);
+    var isNew = (typeof this.get(data.group_id) === 'undefined');
     var model;
     if (!isNew) {
       // already exist in IHM (maybe reconnecting)

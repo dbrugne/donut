@@ -170,7 +170,7 @@ var RoomView = Backbone.View.extend({
     }
     var that = this;
     confirmationView.open({}, function () {
-      client.roomOp(that.model.get('id'), userId, null, function (err) {
+      client.roomOp(that.model.get('id'), userId, function (err) {
         if (err) {
           return;
         }
@@ -188,7 +188,7 @@ var RoomView = Backbone.View.extend({
     }
     var that = this;
     confirmationView.open({}, function () {
-      client.roomDeop(that.model.get('id'), userId, null, function (err) {
+      client.roomDeop(that.model.get('id'), userId, function (err) {
         if (err) {
           return;
         }
@@ -206,7 +206,7 @@ var RoomView = Backbone.View.extend({
     }
     var that = this;
     confirmationView.open({input: true}, function (reason) {
-      client.roomKick(that.model.get('id'), userId, null, reason);
+      client.roomKick(that.model.get('id'), userId, reason);
     });
   },
   banUser: function (event) {
@@ -220,7 +220,7 @@ var RoomView = Backbone.View.extend({
     }
     var that = this;
     confirmationView.open({input: true}, function (reason) {
-      client.roomBan(that.model.get('id'), userId, null, reason);
+      client.roomBan(that.model.get('id'), userId, reason);
     });
   },
   voiceUser: function (event) {
@@ -232,7 +232,7 @@ var RoomView = Backbone.View.extend({
     if (!userId) {
       return;
     }
-    client.roomVoice(this.model.get('id'), userId, null);
+    client.roomVoice(this.model.get('id'), userId);
   },
   devoiceUser: function (event) {
     event.preventDefault();
@@ -245,7 +245,7 @@ var RoomView = Backbone.View.extend({
     }
     var that = this;
     confirmationView.open({input: true}, function (reason) {
-      client.roomDevoice(that.model.get('id'), userId, null, reason);
+      client.roomDevoice(that.model.get('id'), userId, reason);
     });
   },
 

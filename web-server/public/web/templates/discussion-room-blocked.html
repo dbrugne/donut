@@ -32,6 +32,9 @@
                             <%= t('chat.blocked.ask-for-access') %>
                         </div>
                     <% } %>
+                <% if (data.disclaimer) { %>
+                <p class="disclaimer fs20"><%= data.disclaimer %></p>
+                <% } %>
                 <% } else if (data.blocked === 'banned') { %>
                     <div class="mt15 fs15">
                         <% if (data.banned_at) { print(t('chat.blocked.banned', { at: data.banned_at })); } %>

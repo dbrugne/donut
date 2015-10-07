@@ -10,22 +10,27 @@
         <% } %>
 <% } %>
 
-    <% _.each(rooms, function(room) { %>
-        <div class="room dc-i-<%= room.color.replace('#', '').toLowerCase() %>">
-
+    <% _.each(rooms, function(card) { %>
+        <% var _color = card.color ? card.color.replace('#', '').toLowerCase() : 'default' %>
+        <div class="room dc-i-<%= _color %>">
             <div class="mini-card hidden">
                 <div class="flex-parent">
-                    <div class="avatar" style="background-image:url(<%= room.avatar %>)"></div>
+                    <div class="avatar" style="background-image:url(<%= card.avatar %>)"></div>
+                    <% if(card.is_group) { %>
+                    <span class="label label-group label-sm"><%= t('global.group') %></span>
+                    <% } %>
                     <div class="ctn">
                         <span class="name">
-                            <a href="<%= room.url %>" class="flex-parent column"><%= room.identifier %></a>
+                            <a href="<%= card.url %>" class="flex-parent column"><%= card.identifier %></a>
                         </span>
-                        <div class="room-profile label label-default label-sm" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + room.mode) %>">
-                            <%= t('global.mode.title.' + room.mode) %>
-                        </div>
-                        <a class="dc-text" href="<%= room.join %>">
+                        <% if (!card.is_group) { %>
+                            <div class="room-profile label label-mode label-sm" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + card.mode) %>">
+                                <%= t('global.mode.title.' + card.mode) %>
+                            </div>
+                        <% } %>
+                        <a class="dc-text" href="<%= card.join %>">
                             <%= t('actions.join') %>
-                            <% if (room.users > 0) { %><%= room.users %><% } %>
+                            <% if (card.users > 0) { %><%= card.users %><% } %>
                             <i class="icon icon-user-custom"></i>
                         </a>
                     </div>
@@ -33,25 +38,30 @@
             </div>
 
             <div class="cover">
-                <div class="avatar relative" style="background-image:url(<%= room.avatar %>)">
-                    <div class="room-profile label label-default label-sm" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + room.mode) %>">
-                        <%= t('global.mode.title.' + room.mode) %>
+                <div class="avatar relative" style="background-image:url(<%= card.avatar %>)">
+                    <% if (!card.is_group) { %>
+                    <div class="room-profile label label-mode label-sm" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + card.mode) %>">
+                        <%= t('global.mode.title.' + card.mode) %>
                     </div>
+                    <% } %>
+                    <% if(card.is_group) { %>
+                    <span class="label label-group label-sm"><%= t('global.group') %></span>
+                    <% } %>
                 </div>
                 <div class="top">
                     <div class="ctn">
                         <span class="name">
-                            <a href="<%= room.url %>" class="flex-parent column"><%= room.identifier %></a>
+                            <a href="<%= card.url %>" class="flex-parent column"><%= card.identifier %></a>
                         </span>
-                        <% if (room.owner_id) { %>
-                            <span class="owner"><%= t('global.by') %> <a href="<%= room.owner_url %>" class="dc-text">@<%= room.owner_username %></a></span>
+                        <% if (card.owner_id) { %>
+                            <span class="owner"><%= t('global.by') %> <a href="<%= card.owner_url %>" class="dc-text">@<%= card.owner_username %></a></span>
                         <% } %>
                     </div>
-                    <!-- p class="topic"><%= room.topic %></p -->
+                    <!-- p class="topic"><%= card.topic %></p -->
                     <p class="join dc-back">
-                        <a class="dc-text-contrast" href="<%= room.join %>" data-dismiss="modal">
+                        <a class="dc-text-contrast" href="<%= card.join %>" data-dismiss="modal">
                             <%= t('actions.join') %>
-                            <% if (room.users > 0) { %><%= room.users %><% } %>
+                            <% if (card.users > 0) { %><%= card.users %><% } %>
                             <i class="icon icon-user-custom"></i>
                         </a>
                     </p>
@@ -59,18 +69,24 @@
             </div>
             <div class="back dc-back dc-text-contrast">
                 <div class="ctn">
-                    <p class="name dc-text-contrast open-room-profile" data-dismiss="modal" data-room-id="<%= room.room_id %>">
-                        <a class="dc-text-contrast flex-parent column" href="<%= room.url %>"><%= room.identifier %></a>
+                    <p class="name dc-text-contrast open-room-profile" data-dismiss="modal" data-room-id="<%= card.room_id %>">
+                        <a class="dc-text-contrast flex-parent column" href="<%= card.url %>"><%= card.identifier %></a>
                     </p>
-                    <% if (room.owner_id) { %>
-                        <p class="owner"><%= t('global.by') %> <a href="<%=room.owner_url%>" class="open-user-profile dc-text-contrast" data-user-id="<%= room.owner_id %>">@<%= room.owner_username %></a></p>
+                    <% if (card.owner_id) { %>
+                        <p class="owner"><%= t('global.by') %> <a href="<%=card.owner_url%>" class="open-user-profile dc-text-contrast" data-user-id="<%= card.owner_id %>">@<%= card.owner_username %></a></p>
                     <% } %>
-                    <p class="description"><%= room.description %></p>
+                    <p class="description">
+                        <% if(card.is_group) { %>
+                            <%= card.disclaimer %>
+                        <% } else { %>
+                            <%= card.description %>
+                        <% } %>
+                    </p>
                 </div>
                 <p class="join dc-back dc-back-hover">
-                    <a class="dc-text-contrast" href="<%= room.join %>">
+                    <a class="dc-text-contrast" href="<%= card.join %>">
                         <%= t('actions.join') %>
-                        <% if (room.users > 0) { %><%= room.users %><% } %>
+                        <% if (card.users > 0) { %><%= card.users %><% } %>
                         <i class="icon icon-user-custom"></i>
                     </a>
                 </p>

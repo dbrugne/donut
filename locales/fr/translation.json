@@ -127,6 +127,7 @@
   },
   "global": {
     "donuts": "Donuts",
+    "group": "group",
     "admin": "(administrateur)",
     "default": "défaut",
     "or": "ou",
@@ -494,7 +495,10 @@
         "usermention": "Vous êtes mentionné dans <span>#__name__</span>",
         "usermessage": "<span>@__username__</span>: __message__",
         "roominvite": "<span>@__username__</span> vous invite à rejoindre <span>#__name__</span>",
-        "groupjoinrequest": "<span>@__username__</span> souhaite rejoindre <span>#__name__</span>"
+        "groupjoinrequest": "<span>@__username__</span> souhaite rejoindre <span>#__name__</span>",
+        "groupallowed": "Vous êtes autorisé à rejoindre <span>#__name__</span>",
+        "groupinvite": "<span>@__username__</span> vous invite à rejoindre <span>#__name__</span>",
+        "grouprefuse": "Demande d'accès au groupe <span>#__name__</span></br> refusée"
       },
       "userban": " est bloqué à la demande de",
       "userdeban": " n'est plus bloqué à la demande de"
@@ -507,7 +511,7 @@
       "loading": "Chargement de l'historique ...",
       "top": "aller tout en haut",
       "bottom": "aller tout en bas",
-      "currently": "C'est ici que tout commence... Vous êtes au tout début de la conversation <span class=\"name dc-text open-room-profile\" data-room-id=\"__room_id__\">__name__</span>, donut créé par <span class=\"owner dc-text open-user-profile\" data-user-id=\"__owner_id__\">@__owner_username__</span> le <span class=\"date\">__created_at__</span>",
+      "currently": "C'est ici que tout commence... Vous êtes au tout début de la conversation <span class=\"name dc-text open-room-profile\" data-room-id=\"__room_id__\">__identifier__</span>, donut créé par <span class=\"owner dc-text open-user-profile\" data-user-id=\"__owner_id__\">@__owner_username__</span> le <span class=\"date\">__created_at__</span>",
       "hasPassword": "Votre donut est privé. Paramétrez les modalités d'accès en cliquant sur \"Gérer les accès\"",
       "onestart": "Cette conversation est privée. Seuls vous et votre interlocuteur pouvez y avoir accès.",
       "edit": "Editer le profil",
@@ -539,7 +543,8 @@
         "op": "Modérateurs",
         "allowed": "Utilisateurs autorisés",
         "ban": "Bannis",
-        "devoice": "Muets"
+        "devoice": "Muets",
+        "members": "Membres"
       },
       "usernotexist": "Cette utilisateur n'existe pas."
     },
@@ -560,21 +565,24 @@
       "description": "Venez me rejoindre sur DONUT.me le nouveau site de chat. J'y discute sur __name__."
     },
     "welcome": {
-      "private": {
-        "room": [
-          "Bienvenue dans <a class=\"open-room-profile\" data-room-id=\"__room_id__\"><strong>__name__</strong></a>. La conversation est privée. Seuls les utilisateurs autorisés par <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a> pourront rejoindre ce donut. Les utilisateurs qui ont rejoint le donut peuvent y participer et accéder à son historique.",
-          "Postez un message pour amorcer la conversation."
-        ]
-      },
-      "public": {
-        "room": [
-          "Bienvenue dans <a class=\"open-room-profile\" data-room-id=\"__room_id__\"><strong>__name__</strong></a>. La conversation est publique donc accessible à tous de même que l'historique. Vous pouvez partager le lien avec vos amis.",
-          "Postez un message pour amorcer la conversation."
-        ]
-      },
+      "members-invites": [
+        "<p><i class=\"icon icon-hello\"></i> Bienvenue!</p>",
+        "<p>La conversation est privée. Seuls les membres de la communauté <a class=\"open-group-profile curp\" data-group-id=\"__group_id__\"><strong>#__group_name__</strong></a> ainsi utilisateurs autorisés par <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a> peuvent rejoindre ce donut, y participer et accéder à son historique.</p>",
+        "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
+      ],
+      "invites": [
+        "<p><i class=\"icon icon-hello\"></i> Bienvenue!</p>",
+        "<p>La conversation est privée. Seuls les utilisateurs autorisés par <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a> peuvent rejoindre ce donut, y participer et accéder à son historique.</p>",
+        "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
+      ],
+      "public": [
+        "<p><i class=\"icon icon-hello\"></i> Bienvenue !</p>",
+        "<p>Cette conversation est publique donc accessible à tous de même que l'historique. Vous pouvez partager le lien avec vos amis.</p>",
+        "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
+      ],
       "onetoone": [
-        "<strong>@__username__</strong> n'est pas en ligne, les nouveaux messages lui seront remis à sa prochaine connexion",
-        "Postez un message pour amorcer la conversation."
+        "<p><strong>@__username__</strong> n'est pas en ligne, les nouveaux messages lui seront remis à sa prochaine connexion</p>",
+        "<p>Postez un message pour amorcer la conversation.</p>"
       ]
     },
     "connection": {
@@ -622,6 +630,7 @@
       "disclaimer-public": "Ce donut est public. N'importe quel utilisateur pourra y accéder.",
       "disclaimer-password": "Vous avez également choisi de mettre un mot de passe. Les utilisateurs avec le mot de passe pourront y entrer sans avoir besoin d'être invités au préalable.",
       "disclaimer-changing": "Vous pouvez passer ce donut en mode privé. Alors, seuls les utilisateurs que vous autoriserez pourront rejoindre, participer et accéder à l'historique. L'accès se fera par invitation et/ou par mot de passe. Les membres actuels de donut public resteront autorisés dans ce donut une fois qu'il sera devenu privé. Attention, cette action est irréversible.",
+      "disclaimer-group": "Tous les membres du groupe peuvent créer un donut dans ce groupe est en gerer l'accès. Ils peuvent également rejoindre les donuts privés qui autorisent les membres du groupe. Les donuts publics de ce groupe sont accessibles par tous les utilisateurs du site.",
       "close": "Fermer ce donut",
       "allowgroupmember": "Autoriser les membres du groupe à rejoindre ce donut"
     },
@@ -652,7 +661,7 @@
               "size": "Sera automatiquement redimensionné au format __resized_width__x__resized_height__px."
             }
           },
-          "left": "<strong>%left</strong> restant"
+          "left": "<strong>__count__/strong> restant"
         }
       },
       "group-form": {
@@ -719,7 +728,9 @@
             "public": "Tout utilisateur peut rejoindre, participer et accéder à l'historique. Vous disposez d'outils de modération.",
             "private": "Seuls les utilisateurs que vous autorisez pourront rejoindre, participer et accéder à l'historique. Vous disposez d'outils de modération.",
             "password": "Vous pouvez également mettre un mot de passe. Les utilisateurs ayant le mot de passe pourront rejoindre le donut sans avoir besoin d'être invités au préalable.",
-            "allowgroupmember": "Vous pouvez autoriser les membres du groupe à rejoindre ce donut."
+            "group-password": "Vous pouvez également mettre un mot de passe. Les utilisateurs ayant le mot de passe pourront rejoindre le groupe sans avoir besoin d'être invités au préalable.",
+            "allowgroupmember": "Vous pouvez autoriser les membres du groupe à rejoindre ce donut.",
+            "memberscondition": "Conditions d'entrée ou procédure"
           }
         },
         "create": {
@@ -1056,6 +1067,33 @@
       "content": {
         "title": "@__username__ demande l'accès à #__groupname__",
         "disclaimer": "On dirait que votre groupe est parti pour aller loin !",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder au groupe</a>"
+      }
+    },
+    "groupallow": {
+      "subject": "Un utilisateur a accepté votre demande de rejoindre #__groupname__",
+      "content": {
+        "title": "@__username__ vous autorise à rejoindre #__groupname__",
+        "disclaimer": "Vous pouvez maintenant profiter de ce groupe !",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder au groupe</a>"
+      }
+    },
+    "groupinvite": {
+      "subject": "@__username__ vous invite à rejoindre #__groupname__",
+      "content": {
+        "title": "@__username__ vous invite à rejoindre #__groupname__",
+        "disclaimer": "Vous pouvez rejoindre son groupe sans plus tarder !",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder au groupe</a>"
+      }
+    },
+    "grouprefuse": {
+      "subject": "Un utilisateur a refusé votre demande de rejoindre #__groupname__",
+      "content": {
+        "title": "@__username__ a refusé votre demande de rejoindre #__groupname__",
+        "disclaimer": "Ne vous inquiétez pas vous pouvez toujours refaire une demande plus tard !",
         "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder au groupe</a>"
       }

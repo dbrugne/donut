@@ -66,6 +66,7 @@ handler.call = function (data, session, next) {
       read.website = room.website;
       read.topic = room.topic;
       read.description = room.description;
+      read.disclaimer = room.disclaimer;
       read.created = room.created_at;
 
       return callback(null);

@@ -20,7 +20,7 @@ module.exports = function (app, user, users, fn) {
 
     function status (callback) {
       app.statusService.getStatusByUids(_.map(users, function (user) {
-        return user.get('user').id;
+        return user.user.id;
       }), callback);
     },
 

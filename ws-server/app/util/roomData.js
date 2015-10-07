@@ -30,6 +30,9 @@ module.exports = function (user, room, fn) {
     data.owner_id = room.owner.id;
     data.owner_username = room.owner.username;
   }
+  if (room.disclaimer) {
+    data.disclaimer = room.disclaimer;
+  }
 
   // kicked user
   if (room.mode === 'private' && room.isAllowed(user.id) && !room.isIn(user.id)) {

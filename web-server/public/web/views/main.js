@@ -25,6 +25,7 @@ var DrawerRoomPreferencesView = require('./drawer-room-preferences');
 var DrawerRoomDeleteView = require('./drawer-room-delete');
 var DrawerGroupDeleteView = require('./drawer-group-delete');
 var DrawerGroupProfileView = require('./drawer-group-profile');
+var DrawerGroupAccessView = require('./drawer-group-access');
 var DrawerUserProfileView = require('./drawer-user-profile');
 var DrawerUserEditView = require('./drawer-user-edit');
 var DrawerUserPreferencesView = require('./drawer-user-preferences');
@@ -76,6 +77,7 @@ var MainView = Backbone.View.extend({
     'click .open-room-delete': 'openRoomDelete',
     'click .open-group-profile': 'onOpenGroupProfile',
     'click .open-group-delete': 'openGroupDelete',
+    'click .open-group-access': 'onOpenGroupAccess',
     'click .close-discussion': 'onCloseDiscussion',
     'click .open-room-access': 'openRoomAccess',
     'click .switch[data-language]': 'switchLanguage'
@@ -348,6 +350,17 @@ var MainView = Backbone.View.extend({
     var view = new DrawerGroupProfileView({ group_id: groupId });
     this.drawerView.setSize('380px').setView(view).open();
   },
+  onOpenGroupAccess: function (event) {
+    this.$el.find('.tooltip').tooltip('hide');
+    event.preventDefault();
+
+    var groupId = $(event.currentTarget).data('group-id');
+    if (!groupId) {
+      return;
+    }
+    var view = new DrawerGroupAccessView({ group_id: groupId });
+    this.drawerView.setSize('380px').setView(view).open();
+  },
   openGroupProfile: function (data) {
     var view = new DrawerGroupProfileView({ data: data });
     this.drawerView.setSize('380px').setView(view).open();
@@ -546,7 +559,7 @@ var MainView = Backbone.View.extend({
     }
 
     ConfirmationView.open({}, _.bind(function () {
-      client.userBan(userId, null);
+      client.userBan(userId);
       app.trigger('userBan');
     }, this));
   },
