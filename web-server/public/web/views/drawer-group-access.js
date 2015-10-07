@@ -26,6 +26,7 @@ var RoomAccessView = Backbone.View.extend({
   events: {
     'keyup input[type=text]': 'onSearch',
     'click input.save-access': 'onSubmit',
+    'click input.save-conditions': 'onSubmitConditions',
     'click i.icon-search': 'onSearch',
     'click .dropdown-menu>li': 'onAllowUser',
     'change [type="checkbox"]': 'onChoosePassword',
@@ -76,8 +77,13 @@ var RoomAccessView = Backbone.View.extend({
     this.$checkboxGroupAllow = this.$('#input-allowgroupmember-checkbox');
     this.$password = this.$('.input-password');
     this.$randomPassword = this.$('.random-password');
-    this.$countConditions = this.$('counter');
+    this.$countConditions = this.$('.counter');
     this.$conditions = this.$('#conditions-area');
+
+    if (data.disclaimer) {
+      this.$conditions.html(data.disclaimer);
+      this.onTypeConditions();
+    }
 
     this.tablePending = new TableView({
       el: this.$('.allow-pending'),
@@ -191,20 +197,30 @@ var RoomAccessView = Backbone.View.extend({
   onSubmit: function (event) {
     this.reset();
 
-    /* // password
+    // password
     if (!this.isValidPassword()) {
       return this.setError(i18next.t('chat.form.errors.invalid-password'));
     }
 
-    client.roomUpdate(this.roomId, {password: this.getPassword()}, _.bind(function (data) {
+    client.groupUpdate(this.groupId, {password: this.getPassword()}, _.bind(function (data) {
       if (data.err) {
         return this.setError(i18next.t('chat.form.errors.' + data.err));
       }
       this.trigger('close');
-    }, this));*/
+    }, this));
   },
   onTypeConditions: function (event) {
-    this.$countConditions.html(i18next.t('chat.form.common.edit.left', {count: this.$conditions.val().length}));
+    this.$countConditions.html(i18next.t('chat.form.common.edit.left', {count: 200 - this.$conditions.val().length}));
+  },
+  onSubmitConditions: function (event) {
+    this.reset();
+
+    client.groupUpdate(this.groupId, {disclaimer: this.$conditions.val()}, _.bind(function (data) {
+      if (data.err) {
+        return this.setError(i18next.t('chat.form.errors.' + data.err));
+      }
+      this.trigger('close');
+    }, this));
   },
   isValidPassword: function () {
     return (!this.$toggleCheckbox.is(':checked') || (this.$toggleCheckbox.is(':checked') && this.currentPassword && this.getPassword() === '') || (this.$toggleCheckbox.is(':checked') && this.passwordPattern.test(this.getPassword())));

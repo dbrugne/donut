@@ -20,6 +20,7 @@ var handler = Handler.prototype;
 handler.call = function (data, session, next) {
   var user = session.__currentUser__;
   var group = session.__group__;
+  var passwordPattern = /(.{4,255})$/i;
 
   var that = this;
 
@@ -71,8 +72,6 @@ handler.call = function (data, session, next) {
           errors.description = 'description'; // Description should be 200 characters max.
         } else {
           var disclaimer = data.data.disclaimer;
-          disclaimer = validator.stripLow(disclaimer, true);
-          disclaimer = validator.escape(disclaimer);
           if (disclaimer !== group.disclaimer) {
             sanitized.disclaimer = disclaimer;
           }
@@ -128,6 +127,24 @@ handler.call = function (data, session, next) {
             var priority = data.data.priority;
             if (priority !== group.priority) {
               sanitized.priority = priority;
+            }
+          }
+        }
+
+        // A password is to update
+        if (_.has(data.data, 'password')) {
+          var password = data.data.password;
+          // Add password or change password
+          if (password !== null) {
+            // Change password
+            if (passwordPattern.test(password) && (password /* user.generateHash(password)*/ !== group.password || !_.has(group.toJSON(), 'password'))) {
+              sanitized.password = validator.escape(password); // user.generateHash(password);
+            }
+            // password is null, Remove password attr from document
+          } else {
+            // a password is set on the room, so remove it
+            if (_.has(group.toJSON(), 'password')) {
+              sanitized.password = undefined;
             }
           }
         }

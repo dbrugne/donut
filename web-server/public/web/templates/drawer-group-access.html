@@ -18,12 +18,6 @@
         <div class="paginate flex-parent block"></div>
     </div>
 
-    <div class="allowed block">
-        <label><%= t('chat.users.type.members') %></label>
-        <div class="ctn"></div>
-        <div class="paginate flex-parent block"></div>
-    </div>
-
     <div class="search block">
         <div class="flex-child flex-parent relative">
             <input type="text" id="input-search" placeholder="<%= t('chat.actions.searchuser') %>" class="form-control flex-child" />
@@ -32,6 +26,19 @@
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1"></ul>
             </div>
         </div>
+    </div>
+
+    <div class="allowed block">
+        <label><%= t('chat.users.type.members') %></label>
+        <div class="ctn"></div>
+        <div class="paginate flex-parent block"></div>
+    </div>
+
+    <div class="membership-conditions mt10">
+        <label for="conditions-area"><%= t('chat.form.room-form.mode.disclaimer.memberscondition') %></label>
+        <textarea id="conditions-area" maxlength="200" cols="46" rows="4" style="max-width: 345px"></textarea>
+        <p class="help-block"><%= t('chat.form.room-form.edit.description.help') %> <span class="counter"><%= t('chat.form.common.edit.left', {count: 200}) %></span></p>
+        <input class="btn btn-success save-access save-conditions" type="submit" value="<%= t('global.save')%>" />
     </div>
 
     <h2 class="block"><%= t('chat.blocked.password_placeholder') %></h2>
