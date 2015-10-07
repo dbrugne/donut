@@ -2,12 +2,20 @@
 .curp { cursor:pointer; }
 
 // Default colors
-.dc-default, .dc-i-default {
+.dc-default {
   .dc-text { color: @cl-first; }
   .dc-back { background-color: @cl-first; }
   .dc-back-darker { background-color: darken(@cl-first, 10%); }
   .dc-text-contrast { .color-text(@cl-first); }
   .dc-border { border-color: @cl-first; }
+}
+
+.dc-i-default {
+  .dc-text { color: @cl-first !important; }
+  .dc-back { background-color: @cl-first !important; }
+  .dc-back-darker { background-color: darken(@cl-first, 10%) !important; }
+  .dc-text-contrast { .color-text(@cl-first) !important; }
+  .dc-border { border-color: @cl-first !important; }
 }
 
 /*******************************************************************************
@@ -168,7 +176,7 @@
   &.label-default { .label-variant(@cl-subtext20); }
   &.label-primary { .label-variant(@cl-first); }
 
-  &.label-group { .label-primary; position: absolute; color: #FFFFFF; top: 0; left: 0; margin: -5px;
+  &.label-group { position: absolute; top: 0; left: 0; margin: -5px;
     &::before { .icon-star; font-size: 1rem; margin-right: 2px; }
   }
   &.label-mode { .label-default; position: absolute; color: #FFFFFF; top: 0; left: 0; margin: -5px; }
