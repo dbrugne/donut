@@ -1,5 +1,6 @@
 var Backbone = require('backbone');
 var GroupModel = require('../models/group');
+var client = require('../libs/client');
 
 var GroupsCollection = Backbone.Collection.extend({
   iwhere: function (key, val) { // insensitive case search
@@ -18,6 +19,7 @@ var GroupsCollection = Backbone.Collection.extend({
   },
 
   initialize: function () {
+    this.listenTo(client, 'group:updated', this.onUpdated);
   },
   addModel: function (data, blocked) {
     data.identifier = '#' + data.name;
@@ -37,6 +39,14 @@ var GroupsCollection = Backbone.Collection.extend({
     }
 
     return model;
+  },
+  onUpdated: function (data) {
+    var model;
+    if (!data || !data.group_id || !(model = this.get(data.group_id))) {
+      return;
+    }
+
+    model.onUpdated(data);
   }
 });
 

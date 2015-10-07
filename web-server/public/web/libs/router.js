@@ -14,7 +14,7 @@ var DonutRouter = Backbone.Router.extend({
     '': 'root',
     'u/:user': 'focusOne',
     'g/:group': 'focusGroup',
-    ':group(/:room)': 'focusRoom',
+    ':group(/:room)': 'identifierRoom',
     '*default': 'default'
   },
 
@@ -35,7 +35,7 @@ var DonutRouter = Backbone.Router.extend({
       Backbone.history.stop();
     }, this));
     this.listenTo(app, 'focus', this.focus);
-    this.listenTo(app, 'joinRoomFromCommand', this.focusRoom);
+    this.listenTo(app, 'joinRoom', this.focusRoom);
     this.listenTo(app, 'joinOnetoone', this.focusOne);
     this.listenTo(app, 'viewAdded', this.viewAdded);
     this.listenTo(app, 'goToSearch', this.focusOnSearch);
@@ -78,14 +78,18 @@ var DonutRouter = Backbone.Router.extend({
     }, this));
   },
 
-  focusRoom: function () {
+  identifierRoom: function () {
     var identifier;
     if (!arguments[1]) {
       identifier = '#' + arguments[0];
     } else {
       identifier = '#' + arguments[0] + '/' + arguments[1];
     }
+    this.focusRoom(identifier);
+  },
 
+  focusRoom: function (identifier) {
+    console.warn('identifier', identifier);
     var model = rooms.iwhere('identifier', identifier);
     if (typeof model !== 'undefined') {
       model.resetNew();

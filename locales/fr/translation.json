@@ -239,6 +239,9 @@
     "logout": "Déconnexion"
   },
   "profile": {
+    "common": {
+      "editlink": "Editer"
+    },
     "room": {
       "ownerops": "Les habitués",
       "now": "En ce moment",
@@ -248,7 +251,6 @@
         "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. <a href=\"/\">DONUT.me</a> vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
       },
       "permalink": "Permalien de ce profil",
-      "editlink": "Editer",
       "editusers": "Gérer les utilisateurs",
       "createdat": "créé le"
     },
@@ -268,7 +270,6 @@
         "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. <a href=\"/\">DONUT.me</a> vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
       },
       "permalink": "Permalien de ce profil",
-      "editlink": "Editer",
       "signuped": "inscrit le",
       "onlined": "connecté il y a __time__",
       "edit": "Editer"
@@ -663,6 +664,52 @@
           "left": "<strong>__count__/strong> restant"
         }
       },
+      "group-form": {
+        "create": {
+          "label": "Créez un groupe",
+          "help": "Un groupe est un espace regroupant vos donut et permettant à votre communauté de devenir membre et d'accèder à un groupe de donuts.",
+          "help-name": "Entre 3 et 20 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement.<br>Attention le nom du groupe ne sera plus modifiable.",
+          "placeholder": "Nom du groupe",
+          "submit": "Créer le groupe"
+        },
+        "edit": {
+          "description": {
+            "label": "Description",
+            "placeholder": "Décrivez le groupe en quelques mots",
+            "help": "Facultatif"
+          },
+          "disclaimer": {
+            "label": "Disclaimer",
+            "placeholder": "Disclaimer",
+            "help": "Facultatif"
+          },
+          "visibility": {
+            "label": "Visibilité (administrateur)",
+            "true": "Le donut est visible sur la homepage",
+            "false": "Le donut <strong>n'est pas</strong> visible sur la homepage"
+          },
+          "priority": {
+            "label": "Priorité (administrateur)",
+            "placeholder": "",
+            "help": "Nombre, plus est grand, plus est prioritaire"
+          },
+          "group": {
+            "delete": {
+              "link": "Vous pouvez également supprimer ce groupe <a class='open-group-delete' data-group-id=\"__id__\">en cliquant ici</a>.",
+              "title": "Supprimer",
+              "info": [
+                "Vous êtes sur le point de supprimer ce groupe, cette opération est immédiate et irréversible.<br><br>",
+                "Veuillez confirmer la suppression en saissant le nom du groupe (<strong>__name__</strong>) puis en cliquant sur supprimer :"
+              ],
+              "placeholder": "Saisir le nom du groupe",
+              "success": "groupe supprimé !",
+              "error": {
+                "permanent": "Il n'est pas possible de supprimer un group 'permanent'"
+              }
+            }
+          }
+        }
+      },
       "room-form": {
         "common" : {
           "join-mode-label": "Qui peut rejoindre le donut",
@@ -690,7 +737,8 @@
           "label": "Créez un donut",
           "help": "Entre 3 et 24 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement",
           "placeholder": "Nom du donut",
-          "submit": "Créer le donut"
+          "submit": "Créer le donut",
+          "group": "Déjà propriétaire d'une communauté ? Vous voulez créer un espace dédié à vos utilisateurs ? Vous pouvez <a href=\"#\" class=\"open-group-create\">créer un groupe</a>."
         },
         "edit": {
           "othersettings": "Autres paramètres",
@@ -753,6 +801,7 @@
         "mode-wrong-format": "Vous devez séléctionner un mode pour ce donut",
         "invalid-password": "Le mot de passe doit être compris entre 4 et 255 caractères",
         "room-already-exist": "Le donut __name__ existe déjà, <a href='#__uri__'>voulez-vous le rejoindre</a> ?",
+        "group-name-already-exist": "Le groupe __name__ existe déjà, <a href='#__uri__'>voulez-vous le rejoindre</a> ?",
         "invalid-rights": "Vous n'avez pas les droits pour faire cela."
       }
     }
@@ -958,6 +1007,7 @@
       "content": {
         "title": "@__username__ vous invite à rejoindre #__roomname__",
         "disclaimer": "Vous pouvez rejoindre son donut sans plus tarder !",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
       }
     },

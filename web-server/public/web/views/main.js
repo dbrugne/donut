@@ -16,11 +16,14 @@ var AlertView = require('./alert');
 var DrawerView = require('./drawer');
 var DrawerRoomAccessView = require('./drawer-room-access');
 var DrawerRoomCreateView = require('./drawer-room-create');
+var DrawerGroupCreateView = require('./drawer-group-create');
 var DrawerRoomProfileView = require('./drawer-room-profile');
 var DrawerRoomEditView = require('./drawer-room-edit');
+var DrawerGroupEditView = require('./drawer-group-edit');
 var DrawerRoomUsersView = require('./drawer-room-users');
 var DrawerRoomPreferencesView = require('./drawer-room-preferences');
 var DrawerRoomDeleteView = require('./drawer-room-delete');
+var DrawerGroupDeleteView = require('./drawer-group-delete');
 var DrawerGroupProfileView = require('./drawer-group-profile');
 var DrawerGroupAccessView = require('./drawer-group-access');
 var DrawerUserProfileView = require('./drawer-user-profile');
@@ -68,11 +71,14 @@ var MainView = Backbone.View.extend({
     'dblclick .dbl-open-user-profile': 'onOpenUserProfile',
     'click .open-room-profile': 'onOpenRoomProfile',
     'click .open-room-edit': 'openRoomEdit',
+    'click .open-group-edit': 'openGroupEdit',
     'click .open-room-preferences': 'openRoomPreferences',
     'click .open-room-users': 'openRoomUsers',
     'click .open-room-delete': 'openRoomDelete',
     'click .open-group-profile': 'onOpenGroupProfile',
+    'click .open-group-delete': 'openGroupDelete',
     'click .open-group-access': 'onOpenGroupAccess',
+    'click .open-group-create': 'openGroupCreate',
     'click .close-discussion': 'onCloseDiscussion',
     'click .open-room-access': 'openRoomAccess',
     'click .switch[data-language]': 'switchLanguage'
@@ -308,6 +314,11 @@ var MainView = Backbone.View.extend({
     this.drawerView.setSize('450px').setView(view).open();
     view.focusField();
   },
+  openGroupCreate: function () {
+    var view = new DrawerGroupCreateView();
+    this.drawerView.setSize('450px').setView(view).open();
+    view.focusField();
+  },
   openUserAccount: function (event) {
     event.preventDefault();
     var view = new DrawerUserAccountView();
@@ -379,6 +390,16 @@ var MainView = Backbone.View.extend({
     var view = new DrawerRoomEditView({ room_id: roomId });
     this.drawerView.setSize('450px').setView(view).open();
   },
+  openGroupEdit: function (event) {
+    event.preventDefault();
+
+    var groupId = $(event.currentTarget).data('groupId');
+    if (!groupId) {
+      return;
+    }
+    var view = new DrawerGroupEditView({ group_id: groupId });
+    this.drawerView.setSize('450p').setView(view).open();
+  },
   openRoomUsers: function (event) {
     event.preventDefault();
 
@@ -429,6 +450,15 @@ var MainView = Backbone.View.extend({
       return;
     }
     var view = new DrawerRoomDeleteView({ room_id: roomId });
+    this.drawerView.setSize('450px').setView(view).open();
+  },
+  openGroupDelete: function (event) {
+    event.preventDefault();
+    var groupId = $(event.currentTarget).data('groupId');
+    if (!groupId) {
+      return;
+    }
+    var view = new DrawerGroupDeleteView({ group_id: groupId });
     this.drawerView.setSize('450px').setView(view).open();
   },
   openUserEdit: function (event) {

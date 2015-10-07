@@ -8,6 +8,7 @@ var MAX_PASSWORD_TIME = 60 * 1000; // 1mn // @todo sp : move in conf file
 
 var groupSchema = mongoose.Schema({
   name: String,
+  default: {type: mongoose.Schema.ObjectId, ref: 'Room'},
   deleted: {type: Boolean, default: false},
   visibility: {type: Boolean, default: false},
   priority: Number,
@@ -60,6 +61,10 @@ groupSchema.methods.isMember = function (userId) {
     }
   });
   return (typeof subDocument !== 'undefined');
+};
+
+groupSchema.statics.getNewGroup = function () {
+  return new this();
 };
 
 groupSchema.methods.isOwner = function (userId) {

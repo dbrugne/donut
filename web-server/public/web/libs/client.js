@@ -23,6 +23,7 @@ var client = _.extend({
       'admin:message',
       // donut
       'welcome',
+      'group:updated',
       'room:join',
       'room:request',
       'room:leave',
@@ -224,6 +225,35 @@ var client = _.extend({
       'chat.groupAllowHandler.refuse',
       data,
       this.applyRequestCallback('group:refuse', callback)
+    );
+  },
+
+  groupCreate: function (groupName, callback) {
+    var data = { group_name: groupName };
+    debug('io:out:group:create', data);
+    pomelo.request(
+      'chat.groupCreateHandler.call',
+      data,
+      this.applyRequestCallback('group:create', callback)
+    );
+  },
+
+  groupUpdate: function (groupId, fields, callback) {
+    var data = {group_id: groupId, data: fields};
+    debug('io:out:group:update', data);
+    pomelo.request(
+      'chat.groupUpdateHandler.call',
+      data,
+      this.applyRequestCallback('group:update', callback)
+    );
+  },
+  groupDelete: function (groupId, callback) {
+    var data = {group_id: groupId};
+    debug('io:out:group:delete', data);
+    pomelo.request(
+      'chat.groupDeleteHandler.call',
+      data,
+      this.applyRequestCallback('group:delete', callback)
     );
   },
 

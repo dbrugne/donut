@@ -72,6 +72,11 @@
                     </li>
                     <% if (isOwner || isAdmin ) { %>
                     <li role="presentation">
+                        <a role="menuitem" tabindex="-1" class="open-group-edit" data-group-id="<%= group.group_id %>">
+                            <i class="icon icon-pencil"></i> <%= t('global.edit') %>
+                        </a>
+                    </li>
+                    <li role="presentation">
                         <a role="menuitem" tabindex="-1" class="open-group-access" data-group-id="<%= group.group_id %>">
                             <i class="icon icon-public"></i> <%= t('chat.access.link') %>
                         </a>

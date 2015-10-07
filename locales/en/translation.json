@@ -117,7 +117,7 @@
     "search": "search a donut",
     "create": "create a donut",
     "signup": "sign up",
-    "orsignup": "or sign up",
+    "orsignup": "or signup",
     "forgot": "forgotten password",
     "join": "join",
     "discuss": "chat",
@@ -239,6 +239,9 @@
     "logout": "Logout"
   },
   "profile": {
+    "common": {
+      "editlink": "Edit"
+    },
     "room": {
       "ownerops": "The regulars",
       "now": "Currently",
@@ -248,7 +251,6 @@
         "after": "on the chat platform <a href=\"/\">DONUT.me</a>. On <a href=\"/\">DONUT.me</a> you can join or create a thematic chat room (a donut) about whatever you like. You can chat with people who share your interests."
       },
       "permalink": "Permalink of this profile",
-      "editlink": "Edit",
       "editusers": "Manage users",
       "createdat": "Created on"
     },
@@ -268,7 +270,6 @@
         "after": "on the chat platform <a href=\"/\">DONUT.me</a>. On <a href=\"/\">DONUT.me</a> you can join or create a thematic chat room (a donut) about whatever you like. You can chat with people who share your interests."
       },
       "permalink": "Permalink of this profile",
-      "editlink": "Edit",
       "signuped": "Signed up on",
       "onlined": "online __time__ ago",
       "edit": "Edit"
@@ -663,6 +664,52 @@
           "left": "<strong>__count__</strong> to go"
         }
       },
+      "group-form": {
+        "create": {
+          "label": "Create a group",
+          "help": "A group is a place grouping your donut and allowing your community to become a member and access a group of donuts.",
+          "help-name": "Between 3 and 20 characters, only letters, numbers,  dashes (-) and underscores (_).<br>Caution the group name will no longer be editable.",
+          "placeholder": "Group name",
+          "submit": "Create"
+        },
+        "edit": {
+          "description": {
+            "label": "Description",
+            "placeholder": "Describe the group in a few words",
+            "help": "Optional"
+          },
+          "disclaimer": {
+            "label": "Disclaimer",
+            "placeholder": "Disclaimer",
+            "help": "Optional"
+          },
+          "visibility": {
+            "label": "Visibility (admin only)",
+            "true": "This donut is displayed on homepage",
+            "false": "This donut <strong>is not</strong> displayed on homepage"
+          },
+          "priority": {
+            "label": "Priority (admin only)",
+            "placeholder": "",
+            "help": "Number, more is more prioritary"
+          },
+          "group": {
+            "delete": {
+              "link": "To delete this group <a class='open-group-delete' data-group-id=\"__id__\"> click here</a>.",
+              "title": "Delete",
+              "info": [
+                "You are about to delete this group. This action is immediate and cannot be undone.<br><br>",
+                "To confirm deletion please enter group name (<strong>__name__</strong>) and then click the button:"
+              ],
+              "placeholder": "Enter the group name",
+              "success": "group deleted!",
+              "error": {
+                "permanent": "It is not possible to delete a 'permanent' group"
+              }
+            }
+          }
+        }
+      },
       "room-form": {
         "common": {
           "join-mode-label": "Who can join the donut",
@@ -690,7 +737,8 @@
           "label": "Create a donut",
           "help": "Between 3 and 24 characters, only letters, numbers,  dashes (-) and underscores (_)",
           "placeholder": "Donut name",
-          "submit": "Create"
+          "submit": "Create",
+          "group": "Already owner of a community? Want to create a dedicated space for you users? You can <a href=\"#\" class=\"open-group-create\">create a group</a>"
         },
         "edit": {
           "othersettings": "Other settings",
@@ -753,6 +801,7 @@
         "mode-wrong-format": "You must select a mode for this room",
         "invalid-password": "The password must be 4 and 255 characters",
         "room-already-exist": "Donut __name__ already exists, <a href='__uri__'>would you like to join it</a>?",
+        "group-name-already-exist": "Group __name__ already exists, <a href='__uri__'>would you like to join it</a>?",
         "invalid-rights": "You do not have access to do this."
       }
     }

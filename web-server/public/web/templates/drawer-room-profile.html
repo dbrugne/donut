@@ -28,7 +28,7 @@
         <% if (room.website && room.website.href) { %><p class="website left"><i class="icon icon-fw icon-link dc-text"></i> <a class="colored dc-text" href="<%= room.website.href %>" target="_blank" title="<%= room.website.title %>"><%= room.website.title %></a></p><% }; %>
         <% if (room.created) { %><p class="created left"><i class="icon icon-fw icon-clock-o dc-text left"></i> <%= t('profile.room.createdat') %> <span class="ml5" data-time="<%= room.created %>"></span></p><% }; %>
         <p class="permalink left"><i class="icon icon-fw icon-link dc-text"></i> <a class="colored dc-text" href="<%= room.url %>" target="_blank"><%= t('profile.room.permalink') %></a></p>
-        <% if (room.isOwner || room.isAdmin) { %><p class="edit left"><i class="icon icon-fw icon-pencil dc-text"></i> <a class="colored open-room-edit dc-text" data-room-id="<%= room.room_id %>"> <%= t('profile.room.editlink') %></a><p><% }; %>
+        <% if (room.isOwner || room.isAdmin) { %><p class="edit left"><i class="icon icon-fw icon-pencil dc-text"></i> <a class="colored open-room-edit dc-text" data-room-id="<%= room.room_id %>"> <%= t('profile.common.editlink') %></a><p><% }; %>
         <% if (room.isOwner || room.isOp ||room.isAdmin) { %><p class="left"><i class="icon icon-fw icon-users dc-text left"></i> <a class="colored open-room-users dc-text" data-room-id="<%= room.room_id %>"><%= t('profile.room.editusers') %></a></p><% }; %>
         <% if (room.isOwner || room.isAdmin ) { %><p class="left dc-text"><i class="icon icon-fw icon-public"></i> <a role="menuitem" tabindex="-1" class="colored open-room-access dc-text" data-room-id="<%= room.room_id %>"><%= t('chat.access.link') %></a></p><% }; %>
     </div>

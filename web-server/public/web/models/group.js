@@ -1,5 +1,6 @@
-var _ = require('underscore');
 var Backbone = require('backbone');
+var _ = require('underscore');
+var client = require('../libs/client');
 var currentUser = require('./current-user');
 
 var GroupModel = Backbone.Model.extend({
@@ -10,6 +11,13 @@ var GroupModel = Backbone.Model.extend({
     };
   },
   initialize: function () {
+    this.listenTo(client, 'group:updated', this.onUpdated);
+  },
+  onUpdated: function (data) {
+    var that = this;
+    _.each(data.data, function (value, key, list) {
+      that.set(key, value);
+    });
   },
   currentUserIsOwner: function () {
     if (!this.get('owner_id')) {
