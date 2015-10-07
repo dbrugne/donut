@@ -67,6 +67,18 @@ handler.call = function (data, session, next) {
         }
       }
 
+      // disclaimer
+      if (_.has(data.data, 'disclaimer')) {
+        if (!validator.isLength(data.data.disclaimer, 0, 200)) {
+          errors.disclaimer = 'disclaimer'; // Disclaimer should be 200 characters max.
+        } else {
+          var disclaimer = data.data.disclaimer;
+          if (disclaimer !== room.disclaimer) {
+            sanitized.disclaimer = disclaimer;
+          }
+        }
+      }
+
       // website
       if (_.has(data.data, 'website') && data.data.website) {
         if (data.data.website.length < 5 && data.data.website.length > 255) {

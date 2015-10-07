@@ -25,13 +25,15 @@ var RoomAccessView = Backbone.View.extend({
 
   events: {
     'keyup input[type=text]': 'onSearch',
-    'click input.save-access': 'onSubmit',
+    'click input.save-password': 'onSubmit',
+    'click input.save-conditions': 'onSubmitConditions',
     'click i.icon-search': 'onSearch',
     'click .dropdown-menu>li': 'onAllowUser',
     'change [type="checkbox"]': 'onChoosePassword',
     'click .random-password': 'onRandomPassword',
     'click .change-mode': 'onChangeMode',
-    'click #input-allowgroupmember-checkbox': 'onChangeGroupAllow'
+    'click #input-allowgroupmember-checkbox': 'onChangeGroupAllow',
+    'input #conditions-area': 'onTypeConditions'
   },
 
   initialize: function (options) {
@@ -80,6 +82,13 @@ var RoomAccessView = Backbone.View.extend({
     this.$checkboxGroupAllow = this.$('#input-allowgroupmember-checkbox');
     this.$password = this.$('.input-password');
     this.$randomPassword = this.$('.random-password');
+    this.$countConditions = this.$('.counter');
+    this.$conditions = this.$('#conditions-area');
+
+    if (data.disclaimer) {
+      this.$conditions.html(data.disclaimer);
+      this.onTypeConditions();
+    }
 
     // Only render tables if the donut is private
     if (data.mode === 'private') {
@@ -229,6 +238,19 @@ var RoomAccessView = Backbone.View.extend({
       }
       this.trigger('close');
     }, this));
+  },
+  onSubmitConditions: function (event) {
+    this.reset();
+
+    client.roomUpdate(this.roomId, {disclaimer: this.$conditions.val()}, _.bind(function (data) {
+      if (data.err) {
+        return this.setError(i18next.t('chat.form.errors.' + data.err));
+      }
+      this.trigger('close');
+    }, this));
+  },
+  onTypeConditions: function (event) {
+    this.$countConditions.html(i18next.t('chat.form.common.edit.left', {count: 200 - this.$conditions.val().length}));
   },
   isValidPassword: function () {
     return (!this.$toggleCheckbox.is(':checked') || (this.$toggleCheckbox.is(':checked') && this.currentPassword && this.getPassword() === '') || (this.$toggleCheckbox.is(':checked') && this.passwordPattern.test(this.getPassword())));

@@ -127,6 +127,7 @@
   },
   "global": {
     "donuts": "Donuts",
+    "group": "group",
     "admin": "(admin only)",
     "default": "default",
     "or": "or",
@@ -659,7 +660,7 @@
               "size": "Will be automatically resized to __resized_width__x__resized_height__px."
             }
           },
-          "left": "<strong>%left</strong> to go"
+          "left": "<strong>__count__</strong> to go"
         }
       },
       "room-form": {
@@ -681,7 +682,8 @@
             "private": "Only users you authorize can join, participate and access history. Moderation tools available.",
             "password": "You can also set a password. Users with the password can join without prior invitation.",
             "group-password": "You can also set a password. Users with the password can join this group without prior invitation.",
-            "allowgroupmember": "You can allow group members to join this room."
+            "allowgroupmember": "You can allow group members to join this room.",
+            "memberscondition": "Membership conditions or procedures"
           }
         },
         "create": {

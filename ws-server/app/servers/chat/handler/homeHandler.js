@@ -4,6 +4,7 @@ var async = require('async');
 var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
+var Group = require('../../../../../shared/models/group');
 var featuredRooms = require('../../../../../shared/util/featured-rooms');
 
 var Handler = function (app) {
@@ -21,11 +22,14 @@ handler.call = function (data, session, next) {
   var roomLimit = 100;
   var userLimit = 200;
 
+  var rooms = [];
+  var groups = [];
+
   var that = this;
 
   async.waterfall([
 
-    function roomsList (callback) {
+    function roomsFetch (callback) {
       var q = Room.find({
         visibility: true,
         deleted: {$ne: true}
@@ -35,86 +39,136 @@ handler.call = function (data, session, next) {
         .populate('group', 'name')
         .populate('owner', 'username avatar');
 
-      q.exec(function (err, rooms) {
+      q.exec(function (err, dbrooms) {
         if (err) {
           return callback('Error while retrieving home rooms: ' + err);
         }
 
-        var _rooms = [];
-        _.each(rooms, function (room) {
-          var _owner = {};
-          if (room.owner !== undefined) {
-            _owner = {
-              user_id: room.owner.id,
-              username: room.owner.username
-            };
-          }
-
-          var count = (room.users)
-            ? room.users.length
-            : 0;
-
-          var _data = {
-            name: room.name,
-            identifier: room.getIdentifier(),
-            mode: room.mode,
-            room_id: room.id,
-            topic: room.topic,
-            description: room.description,
-            color: room.color,
-            avatar: room._avatar(),
-            owner: _owner,
-            users: count,
-            lastjoin_at: new Date(room.lastjoin_at).getTime(),
-            priority: room.priority || 0
-          };
-
-          if (room.group) {
-            _data.group = {
-              group_id: room.group.id,
-              name: room.group.name
-            };
-          }
-
-          _rooms.push(_data);
-        });
-
-        // sort (priority, users, lastjoin_at, name)
-        _rooms.sort(function (a, b) {
-          if (a.priority !== b.priority) {
-            return b.priority - a.priority;
-          }
-
-          if (a.users !== b.users) {
-            return (b.users - a.users);
-          } // b - a == descending
-
-          if (a.avatar && !b.avatar) {
-            return -1;
-          } else if (!a.avatar && b.avatar) {
-            return 1;
-          } else {
-            return 0;
-          }
-
-          if (a.lastjoin_at !== b.lastjoin_at) {
-            return (b.lastjoin_at - a.lastjoin_at);
-          } // b - a == descending
-
-          return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-        });
-
-        homeEvent.rooms = {};
-        if (_rooms.length > roomLimit) {
-          _rooms.pop();
-          homeEvent.rooms.more = true;
-        } else {
-          homeEvent.rooms.more = false;
-        }
-        homeEvent.rooms.list = _rooms;
+        rooms = dbrooms;
 
         return callback(null);
       });
+    },
+
+    function groupsFetch (callback) {
+      var q = Group.find({
+        visibility: true,
+        deleted: {$ne: true}
+      })
+        .sort({priority: -1})
+        .limit(roomLimit + 1)
+        .populate('owner', 'username avatar');
+
+      q.exec(function (err, dbgroups) {
+        if (err) {
+          return callback('Error while retrieving home groups: ' + err);
+        }
+
+        groups = dbgroups;
+
+        return callback(null);
+      });
+    },
+
+    function computeResults (callback) {
+      var _list = [];
+      _.each(rooms, function (room) {
+        var count = (room.users)
+          ? room.users.length
+          : 0;
+
+        var _data = {
+          is_group: false,
+          name: room.name,
+          identifier: room.getIdentifier(),
+          mode: room.mode,
+          room_id: room.id,
+          topic: room.topic,
+          description: room.description,
+          color: room.color,
+          avatar: room._avatar(),
+          users: count,
+          lastjoin_at: new Date(room.lastjoin_at).getTime(),
+          priority: room.priority || 0
+        };
+
+        if (room.owner !== undefined) {
+          _data.owner_id = room.owner.id;
+          _data.owner_username = room.owner.username;
+        }
+
+        if (room.group) {
+          _data.group = {
+            group_id: room.group.id,
+            name: room.group.name
+          };
+        }
+
+        _list.push(_data);
+      });
+
+      _.each(groups, function (group) {
+        var count = group.count();
+
+        var _data = {
+          is_group: true,
+          name: group.name,
+          identifier: group.getIdentifier(),
+          group_id: group.id,
+          disclaimer: group.disclaimer,
+          color: group.color,
+          avatar: group._avatar(),
+          users: count,
+          priority: group.priority || 0
+        };
+
+        if (group.owner !== undefined) {
+          _data.owner_id = group.owner.id;
+          _data.owner_username = group.owner.username;
+        }
+
+        _list.push(_data);
+      });
+
+      // sort (group first, priority, users, lastjoin_at, name)
+      _list.sort(function (a, b) {
+        if (a.is_group && !b.is_group) {
+          return -1;
+        } else if (!a.is_group && b.is_group) {
+          return 1;
+        }
+
+        if (a.priority !== b.priority) {
+          return b.priority - a.priority;
+        }
+
+        if (a.users !== b.users) {
+          return (b.users - a.users);
+        } // b - a == descending
+
+        if (a.avatar && !b.avatar) {
+          return -1;
+        } else if (!a.avatar && b.avatar) {
+          return 1;
+        }
+
+        if (!a.is_group && !b.is_group && a.lastjoin_at !== b.lastjoin_at) {
+          return (b.lastjoin_at - a.lastjoin_at);
+        } // b - a == descending
+
+        return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+      });
+
+      homeEvent.rooms = {};
+      if (_list.length > roomLimit) {
+        _list.pop();
+        homeEvent.rooms.more = true;
+      } else {
+        homeEvent.rooms.more = false;
+      }
+      homeEvent.rooms.list = _list;
+
+      return callback(null);
     },
 
     function usersList (callback) {
@@ -182,11 +236,11 @@ handler.call = function (data, session, next) {
 
         // union lists
         var alreadyInNames = _.map(featured, function (r) {
-          return r.name;
+          return r.identifier;
         });
-        _.each(homeEvent.rooms.list, function (room) {
-          if (alreadyInNames.indexOf(room.name) === -1) {
-            featured.push(room);
+        _.each(homeEvent.rooms.list, function (item) {
+          if (alreadyInNames.indexOf(item.identifier) === -1) {
+            featured.push(item);
           }
         });
         homeEvent.rooms.list = featured;

@@ -7,6 +7,7 @@ var app = require('../models/app');
 var client = require('../libs/client');
 var ConfirmationView = require('./modal-confirmation');
 var TableView = require('./drawer-group-access-table');
+var i18next = require('i18next-client');
 
 var RoomAccessView = Backbone.View.extend({
 
@@ -28,7 +29,8 @@ var RoomAccessView = Backbone.View.extend({
     'click i.icon-search': 'onSearch',
     'click .dropdown-menu>li': 'onAllowUser',
     'change [type="checkbox"]': 'onChoosePassword',
-    'click .random-password': 'onRandomPassword'
+    'click .random-password': 'onRandomPassword',
+    'keyup #conditions-area': 'onTypeConditions'
   },
 
   initialize: function (options) {
@@ -74,6 +76,8 @@ var RoomAccessView = Backbone.View.extend({
     this.$checkboxGroupAllow = this.$('#input-allowgroupmember-checkbox');
     this.$password = this.$('.input-password');
     this.$randomPassword = this.$('.random-password');
+    this.$countConditions = this.$('counter');
+    this.$conditions = this.$('#conditions-area');
 
     this.tablePending = new TableView({
       el: this.$('.allow-pending'),
@@ -154,7 +158,7 @@ var RoomAccessView = Backbone.View.extend({
     this.$search.val('');
   },
   onChoosePassword: function (event) {
-    /* // Display block on click
+    // Display block on click
     if (this.$toggleCheckbox.is(':checked')) {
       this.$password.removeAttr('disabled').removeClass('disabled');
       this.$randomPassword.removeClass('disabled');
@@ -167,7 +171,7 @@ var RoomAccessView = Backbone.View.extend({
       this.$password.attr('disabled', true).addClass('disabled');
       this.$password.val('');
       this.$randomPassword.addClass('disabled');
-    } */
+    }
   },
   onRandomPassword: function (event) {
     event.preventDefault();
@@ -185,9 +189,9 @@ var RoomAccessView = Backbone.View.extend({
     this.$errors.html(error).show();
   },
   onSubmit: function (event) {
-    /* this.reset();
+    this.reset();
 
-    // password
+    /* // password
     if (!this.isValidPassword()) {
       return this.setError(i18next.t('chat.form.errors.invalid-password'));
     }
@@ -198,6 +202,9 @@ var RoomAccessView = Backbone.View.extend({
       }
       this.trigger('close');
     }, this));*/
+  },
+  onTypeConditions: function (event) {
+    this.$countConditions.html(i18next.t('chat.form.common.edit.left', {count: this.$conditions.val().length}));
   },
   isValidPassword: function () {
     return (!this.$toggleCheckbox.is(':checked') || (this.$toggleCheckbox.is(':checked') && this.currentPassword && this.getPassword() === '') || (this.$toggleCheckbox.is(':checked') && this.passwordPattern.test(this.getPassword())));

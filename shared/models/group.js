@@ -48,7 +48,7 @@ groupSchema.methods.isMember = function (userId) {
     return true;
   }
 
-  if (!this.members.length) {
+  if (!this.members || this.members.length) {
     return false;
   }
 
@@ -173,6 +173,18 @@ groupSchema.methods.getIdsByType = function (type) {
     });
   }
   return ids;
+};
+
+groupSchema.methods.count = function () {
+  var count = 0;
+  count += this.owner ? 1 : 0;
+  count += this.op ? this.op.length : 0;
+  count += this.members ? this.members.length : 0;
+  return count;
+};
+
+groupSchema.methods.getIdentifier = function () {
+  return '#' + this.name;
 };
 
 module.exports = mongoose.model('Group', groupSchema);
