@@ -529,7 +529,7 @@ var MainView = Backbone.View.extend({
     }
 
     ConfirmationView.open({}, _.bind(function () {
-      client.userBan(userId, null);
+      client.userBan(userId);
       app.trigger('userBan');
     }, this));
   },

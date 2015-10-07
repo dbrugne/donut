@@ -144,12 +144,10 @@ var client = _.extend({
   // GROUP
   // ======================================================
 
-  groupRead: function (groupId, groupName, what, callback) {
+  groupRead: function (groupId, what, callback) {
     var data = {};
     if (groupId) {
       data.group_id = groupId;
-    } else if (groupName) {
-      data.group = groupName;
     } else {
       return;
     }
@@ -223,12 +221,19 @@ var client = _.extend({
   // ROOM
   // ======================================================
 
-  roomJoin: function (roomId, roomName, password, callback) {
+  roomId: function (identifier, callback) {
+    var data = {identifier: identifier};
+    debug('io:out:room:id', data);
+    pomelo.request(
+      'chat.roomIdHandler.call',
+      data,
+      this.applyRequestCallback('room:id', callback)
+    );
+  },
+  roomJoin: function (roomId, password, callback) {
     var data = {};
     if (roomId) {
       data.room_id = roomId;
-    } else if (roomName) {
-      data.name = roomName;
     } else {
       return;
     }
@@ -286,19 +291,10 @@ var client = _.extend({
       this.applyRequestCallback('room:topic', callback)
     );
   },
-  /**
-   * what: {
-     *   more:  true // add description, poster, ...
-     *   users: true // users list
-     *   admin: true // password, visibility, priority...
-     * }
-   */
-  roomRead: function (roomId, roomName, what, callback) {
+  roomRead: function (roomId, callback) {
     var data = {};
     if (roomId) {
       data.room_id = roomId;
-    } else if (roomName) {
-      data.name = roomName;
     } else {
       return;
     }
@@ -340,7 +336,7 @@ var client = _.extend({
   },
   roomCreate: function (name, mode, password, callback) {
     var data = {
-      name: name,
+      room_name: name,
       mode: mode,
       password: password
     };
@@ -369,12 +365,10 @@ var client = _.extend({
       this.applyRequestCallback('room:history', callback)
     );
   },
-  roomOp: function (roomId, userId, username, callback) {
+  roomOp: function (roomId, userId, callback) {
     var data = {room_id: roomId};
     if (userId) {
       data.user_id = userId;
-    } else if (username) {
-      data.username = username;
     } else {
       return;
     }
@@ -386,12 +380,10 @@ var client = _.extend({
       this.applyRequestCallback('room:op', callback)
     );
   },
-  roomDeop: function (roomId, userId, username, callback) {
+  roomDeop: function (roomId, userId, callback) {
     var data = {room_id: roomId};
     if (userId) {
       data.user_id = userId;
-    } else if (username) {
-      data.username = username;
     } else {
       return;
     }
@@ -403,12 +395,10 @@ var client = _.extend({
       this.applyRequestCallback('room:deop', callback)
     );
   },
-  roomVoice: function (roomId, userId, username, callback) {
+  roomVoice: function (roomId, userId, callback) {
     var data = {room_id: roomId};
     if (userId) {
       data.user_id = userId;
-    } else if (username) {
-      data.username = username;
     } else {
       return;
     }
@@ -420,12 +410,10 @@ var client = _.extend({
       this.applyRequestCallback('room:voice', callback)
     );
   },
-  roomDevoice: function (roomId, userId, username, reason, callback) {
+  roomDevoice: function (roomId, userId, reason, callback) {
     var data = {room_id: roomId};
     if (userId) {
       data.user_id = userId;
-    } else if (username) {
-      data.username = username;
     } else {
       return;
     }
@@ -439,12 +427,10 @@ var client = _.extend({
       this.applyRequestCallback('room:devoice', callback)
     );
   },
-  roomKick: function (roomId, userId, username, reason, callback) {
+  roomKick: function (roomId, userId, reason, callback) {
     var data = {room_id: roomId};
     if (userId) {
       data.user_id = userId;
-    } else if (username) {
-      data.username = username;
     } else {
       return;
     }
@@ -458,12 +444,10 @@ var client = _.extend({
       this.applyRequestCallback('room:kick', callback)
     );
   },
-  roomBan: function (roomId, userId, username, reason, callback) {
+  roomBan: function (roomId, userId, reason, callback) {
     var data = {room_id: roomId};
     if (userId) {
       data.user_id = userId;
-    } else if (username) {
-      data.username = username;
     } else {
       return;
     }
@@ -477,12 +461,10 @@ var client = _.extend({
       this.applyRequestCallback('room:ban', callback)
     );
   },
-  roomDeban: function (roomId, userId, username, callback) {
+  roomDeban: function (roomId, userId, callback) {
     var data = {room_id: roomId};
     if (userId) {
       data.user_id = userId;
-    } else if (username) {
-      data.username = username;
     } else {
       return;
     }
@@ -591,8 +573,17 @@ var client = _.extend({
   // ONETOONE
   // ======================================================
 
-  userJoin: function (username, callback) {
+  userId: function (username, callback) {
     var data = {username: username};
+    debug('io:out:user:id', data);
+    pomelo.request(
+      'chat.userIdHandler.call',
+      data,
+      this.applyRequestCallback('user:id', callback)
+    );
+  },
+  userJoin: function (userId, callback) {
+    var data = {user_id: userId};
     debug('io:out:user:join', data);
     pomelo.request(
       'chat.userJoinHandler.call',
@@ -605,12 +596,10 @@ var client = _.extend({
     pomelo.notify('chat.userLeaveHandler.call', data);
     debug('io:out:user:leave', data);
   },
-  userBan: function (userId, username, callback) {
+  userBan: function (userId, callback) {
     var data;
     if (userId) {
       data = {user_id: userId};
-    } else if (username) {
-      data = {username: username};
     } else {
       return;
     }
@@ -621,12 +610,10 @@ var client = _.extend({
       this.applyRequestCallback('user:ban', callback)
     );
   },
-  userDeban: function (userId, username, callback) {
+  userDeban: function (userId, callback) {
     var data;
     if (userId) {
       data = {user_id: userId};
-    } else if (username) {
-      data = {username: username};
     } else {
       return;
     }
@@ -637,7 +624,7 @@ var client = _.extend({
       this.applyRequestCallback('user:deban', callback)
     );
   },
-  userMessage: function (userId, username, message, images, special, callback) {
+  userMessage: function (userId, message, images, special, callback) {
     var data = {
       message: message,
       images: images
@@ -647,8 +634,6 @@ var client = _.extend({
     }
     if (userId) {
       data.user_id = userId;
-    } else if (username) {
-      data.username = username;
     } else {
       return;
     }
@@ -668,12 +653,10 @@ var client = _.extend({
       this.applyRequestCallback('user:message:edit', callback)
     );
   },
-  userRead: function (userId, username, callback) {
+  userRead: function (userId, callback) {
     var data = {};
     if (userId) {
       data.user_id = userId;
-    } else if (username) {
-      data.username = username;
     } else {
       return;
     }

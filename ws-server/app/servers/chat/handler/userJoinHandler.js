@@ -22,8 +22,8 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.username) {
-        return callback('params-username');
+      if (!data.user_id) {
+        return callback('params-user-id');
       }
 
       if (!withUser) {

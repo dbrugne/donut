@@ -22,7 +22,7 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     // show spinner as temp content
     this.render();
 
-    client.roomRead(this.roomId, null, null, _.bind(function (data) {
+    client.roomRead(this.roomId, null, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }
@@ -99,7 +99,7 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     }
   },
   _valid: function () {
-    var name = '#' + this.$input.val(); // @todo : remove # from name validation
+    var name = this.$input.val();
     var pattern = new RegExp('^' + this.roomNameConfirmation + '$', 'i');
     return pattern.test(name);
   },

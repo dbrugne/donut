@@ -282,7 +282,7 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    client.roomJoin(data.room_id, null, null);
+    client.roomJoin(data.room_id);
   },
   onDeban: function (data) {
     var model;
@@ -291,8 +291,8 @@ var RoomsCollection = Backbone.Collection.extend({
     }
 
     if (currentUser.get('user_id') === data.user_id) {
-      client.roomJoin(data.room_id, null, null, _.bind(function (response) {
-        if (model.get('mode') === 'private') {
+      client.roomJoin(data.room_id, null, _.bind(function (response) {
+        if (response.room.mode === 'private') {
           var isFocused = model.get('focused');
           var modelTmp = model.attributes;
           this.remove(model);
