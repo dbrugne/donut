@@ -660,7 +660,7 @@
               "size": "Sera automatiquement redimensionné au format __resized_width__x__resized_height__px."
             }
           },
-          "left": "<strong>%left</strong> restant"
+          "left": "<strong>__count__/strong> restant"
         }
       },
       "room-form": {
@@ -682,7 +682,8 @@
             "private": "Seuls les utilisateurs que vous autorisez pourront rejoindre, participer et accéder à l'historique. Vous disposez d'outils de modération.",
             "password": "Vous pouvez également mettre un mot de passe. Les utilisateurs ayant le mot de passe pourront rejoindre le donut sans avoir besoin d'être invités au préalable.",
             "group-password": "Vous pouvez également mettre un mot de passe. Les utilisateurs ayant le mot de passe pourront rejoindre le groupe sans avoir besoin d'être invités au préalable.",
-            "allowgroupmember": "Vous pouvez autoriser les membres du groupe à rejoindre ce donut."
+            "allowgroupmember": "Vous pouvez autoriser les membres du groupe à rejoindre ce donut.",
+            "memberscondition": "Conditions d'entrée ou procédure"
           }
         },
         "create": {
