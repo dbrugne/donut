@@ -154,7 +154,7 @@ var RoomAccessView = Backbone.View.extend({
     this.$search.val('');
   },
   onChoosePassword: function (event) {
-    /* // Display block on click
+    // Display block on click
     if (this.$toggleCheckbox.is(':checked')) {
       this.$password.removeAttr('disabled').removeClass('disabled');
       this.$randomPassword.removeClass('disabled');
@@ -167,7 +167,7 @@ var RoomAccessView = Backbone.View.extend({
       this.$password.attr('disabled', true).addClass('disabled');
       this.$password.val('');
       this.$randomPassword.addClass('disabled');
-    } */
+    }
   },
   onRandomPassword: function (event) {
     event.preventDefault();
@@ -185,9 +185,9 @@ var RoomAccessView = Backbone.View.extend({
     this.$errors.html(error).show();
   },
   onSubmit: function (event) {
-    /* this.reset();
+    this.reset();
 
-    // password
+    /* // password
     if (!this.isValidPassword()) {
       return this.setError(i18next.t('chat.form.errors.invalid-password'));
     }
