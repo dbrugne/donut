@@ -15,13 +15,13 @@
                     <% }) %>
                 </div>
             </div>
-            <% if(members.length > 0) { %>
                 <div class="flex-parent center mt20">
                     <div class="title dc-text-contrast flex-child">
-                        <%= t('group.users') %> ( <%=members_count%> )
+                        <%= t('group.users') %> ( <%= members_count - 1 %> )
                     </div>
-                    <input type="button" class="flex-end btn btn-primary centered mr20" value="<%= t('group.invite') %>" />
+                    <input type="button" class="flex-end btn btn-primary centered mr20 open-group-access" data-group-id="<%= group.group_id %>" value="<%= t('group.invite') %>" />
                 </div>
+            <% if (members.length > 0) { %>
                 <div class="user-list block">
                     <div class="list">
                         <% _.each(members, function(user) { %>
