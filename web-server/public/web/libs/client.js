@@ -183,6 +183,42 @@ var client = _.extend({
       this.applyRequestCallback('group:join:request', callback)
     );
   },
+  groupAllow: function (groupId, userId, callback) {
+    var data = {group_id: groupId, user_id: userId};
+    debug('io:out:group:allow', data);
+    pomelo.request(
+      'chat.groupAllowHandler.call',
+      data,
+      this.applyRequestCallback('group:allow', callback)
+    );
+  },
+  groupUsers: function (groupId, attributes, callback) {
+    var data = {group_id: groupId, attributes: attributes};
+    debug('io:out:group:users', data);
+    pomelo.request(
+      'chat.groupUsersHandler.call',
+      data,
+      this.applyRequestCallback('group:users', callback)
+    );
+  },
+  groupDisallow: function (groupId, userId, callback) {
+    var data = {group_id: groupId, user_id: userId};
+    debug('io:out:group:disallow', data);
+    pomelo.request(
+      'chat.groupDisallowHandler.call',
+      data,
+      this.applyRequestCallback('group:disallow', callback)
+    );
+  },
+  groupRefuse: function (groupId, userId, callback) {
+    var data = {group_id: groupId, user_id: userId};
+    debug('io:out:group:refuse', data);
+    pomelo.request(
+      'chat.groupAllowHandler.refuse',
+      data,
+      this.applyRequestCallback('group:refuse', callback)
+    );
+  },
 
   // ROOM
   // ======================================================

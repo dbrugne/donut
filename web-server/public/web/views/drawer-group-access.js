@@ -2,22 +2,21 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
-var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../models/app');
 var client = require('../libs/client');
 var ConfirmationView = require('./modal-confirmation');
-var TableView = require('./drawer-room-access-table');
+var TableView = require('./drawer-group-access-table');
 
 var RoomAccessView = Backbone.View.extend({
 
-  template: require('../templates/drawer-room-access.html'),
+  template: require('../templates/drawer-group-access.html'),
 
   dropdownTemplate: require('../templates/drawer-room-access-dropdown.html'),
 
   passwordPattern: /(.{4,255})$/i,
 
-  id: 'room-access',
+  id: 'group-access',
 
   timeBufferBeforeSearch: 1000,
 
@@ -29,13 +28,11 @@ var RoomAccessView = Backbone.View.extend({
     'click i.icon-search': 'onSearch',
     'click .dropdown-menu>li': 'onAllowUser',
     'change [type="checkbox"]': 'onChoosePassword',
-    'click .random-password': 'onRandomPassword',
-    'click .change-mode': 'onChangeMode',
-    'click #input-allowgroupmember-checkbox': 'onChangeGroupAllow'
+    'click .random-password': 'onRandomPassword'
   },
 
   initialize: function (options) {
-    this.roomId = options.room_id;
+    this.groupId = options.group_id;
     this.render();
 
     this.reload();
@@ -51,7 +48,7 @@ var RoomAccessView = Backbone.View.extend({
       users: false,
       admin: true
     };
-    client.roomRead(this.roomId, null, what, _.bind(function (data) {
+    client.groupRead(this.groupId, null, what, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }
@@ -61,14 +58,11 @@ var RoomAccessView = Backbone.View.extend({
     this.listenTo(app, 'redraw-tables', this.renderTables);
 
     this.currentPassword = data.password;
-    this.room_name = data.name;
+    this.group_name = data.name;
 
     var html = this.template({
-      room: data,
-      mode: data.mode,
-      password: data.password,
-      group: data.group_id || false,
-      allow_group_member: data.allow_group_member || false
+      group: data,
+      password: data.password
     });
     this.$el.html(html);
 
@@ -81,18 +75,15 @@ var RoomAccessView = Backbone.View.extend({
     this.$password = this.$('.input-password');
     this.$randomPassword = this.$('.random-password');
 
-    // Only render tables if the donut is private
-    if (data.mode === 'private') {
-      this.tablePending = new TableView({
-        el: this.$('.allow-pending'),
-        room_id: this.roomId
-      });
-      this.tableAllowed = new TableView({
-        el: this.$('.allowed'),
-        room_id: this.roomId
-      });
-      this.renderTables();
-    }
+    this.tablePending = new TableView({
+      el: this.$('.allow-pending'),
+      group_id: this.groupId
+    });
+    this.tableAllowed = new TableView({
+      el: this.$('.allowed'),
+      group_id: this.groupId
+    });
+    this.renderTables();
 
     this.initializeTooltips();
   },
@@ -151,9 +142,9 @@ var RoomAccessView = Backbone.View.extend({
     var userName = $(event.currentTarget).data('username');
 
     if (userId && userName) {
-      ConfirmationView.open({message: 'invite', username: userName, room_name: this.room_name}, _.bind(function () {
-        client.roomAllow(this.roomId, userId, _.bind(function () {
-          this.renderTables();
+      ConfirmationView.open({message: 'invite', username: userName, room_name: this.group_name}, _.bind(function () {
+        client.groupAllow(this.groupId, userId, _.bind(function () {
+          // this.renderTables();
         }, this));
       }, this));
     }
@@ -163,7 +154,7 @@ var RoomAccessView = Backbone.View.extend({
     this.$search.val('');
   },
   onChoosePassword: function (event) {
-    // Display block on click
+    /* // Display block on click
     if (this.$toggleCheckbox.is(':checked')) {
       this.$password.removeAttr('disabled').removeClass('disabled');
       this.$randomPassword.removeClass('disabled');
@@ -176,7 +167,7 @@ var RoomAccessView = Backbone.View.extend({
       this.$password.attr('disabled', true).addClass('disabled');
       this.$password.val('');
       this.$randomPassword.addClass('disabled');
-    }
+    } */
   },
   onRandomPassword: function (event) {
     event.preventDefault();
@@ -186,28 +177,6 @@ var RoomAccessView = Backbone.View.extend({
     this.$password.val(common.misc.randomString());
     this.$password.focus();
   },
-  onChangeMode: function (event) {
-    event.preventDefault();
-    var that = this;
-    ConfirmationView.open({message: 'mode-change'}, function () {
-      client.roomSetPrivate(that.roomId, function (response) {
-        if (!response.err) {
-          that.reload();
-        }
-      });
-    });
-  },
-  onChangeGroupAllow: function (event) {
-    if (this.$checkboxGroupAllow.is(':checked')) {
-      client.roomAllowGroup(this.roomId, function (err) {
-        return (err);
-      });
-    } else {
-      client.roomDisallowGroup(this.roomId, function (err) {
-        return (err);
-      });
-    }
-  },
   reset: function () {
     this.$errors.html('').hide();
     this.$el.removeClass('has-error').removeClass('has-success').val('');
@@ -216,7 +185,7 @@ var RoomAccessView = Backbone.View.extend({
     this.$errors.html(error).show();
   },
   onSubmit: function (event) {
-    this.reset();
+    /* this.reset();
 
     // password
     if (!this.isValidPassword()) {
@@ -228,7 +197,7 @@ var RoomAccessView = Backbone.View.extend({
         return this.setError(i18next.t('chat.form.errors.' + data.err));
       }
       this.trigger('close');
-    }, this));
+    }, this));*/
   },
   isValidPassword: function () {
     return (!this.$toggleCheckbox.is(':checked') || (this.$toggleCheckbox.is(':checked') && this.currentPassword && this.getPassword() === '') || (this.$toggleCheckbox.is(':checked') && this.passwordPattern.test(this.getPassword())));

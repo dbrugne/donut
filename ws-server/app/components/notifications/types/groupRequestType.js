@@ -128,6 +128,27 @@ Notification.prototype.sendEmail = function (model, done) {
             groupname: group.name
           };
           break;
+        case 'groupallow':
+          method = emailer.groupAllow;
+          data = {
+            username: model.data.by_user.username,
+            groupname: group.name
+          };
+          break;
+        case 'groupinvite':
+          method = emailer.groupInvite;
+          data = {
+            username: model.data.by_user.username,
+            groupname: group.name
+          };
+          break;
+        case 'grouprefuse':
+          method = emailer.groupRefuse;
+          data = {
+            username: model.data.by_user.username,
+            groupname: group.name
+          };
+          break;
         default:
           return callback('groupResquestType.sendEmail unknown notification type: ' + model.type);
       }

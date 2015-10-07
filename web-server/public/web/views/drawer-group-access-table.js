@@ -26,7 +26,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
   },
 
   initialize: function (options) {
-    this.roomId = options.room_id;
+    this.groupId = options.group_id;
     this.$ctn = this.$('.ctn');
     this.pagination = this.$('.paginate');
 
@@ -35,11 +35,11 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
   render: function (type) {
     var searchAttributes = {
-      type: (type === 'pending' ? 'allowedPending' : 'allowed'),
+      type: (type === 'pending' ? 'pending' : 'members'),
       selector: {start: (this.page - 1) * this.paginate, length: this.paginate}
     };
 
-    client.roomUsers(this.roomId, searchAttributes, _.bind(function (data) {
+    client.groupUsers(this.groupId, searchAttributes, _.bind(function (data) {
       this.onResponse(data);
     }, this));
 
@@ -76,7 +76,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     if (userId && userName) {
       confirmationView.open({message: 'accept-user', username: userName}, _.bind(function () {
-        client.roomAllow(this.roomId, userId, _.bind(function (data) {
+        client.groupAllow(this.groupId, userId, _.bind(function (data) {
           app.trigger('redraw-tables');
         }, this));
       }, this));
@@ -89,7 +89,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     if (userId && userName) {
       confirmationView.open({message: 'refuse-user', username: userName}, _.bind(function () {
-        client.roomRefuse(this.roomId, userId, _.bind(function (data) {
+        client.groupRefuse(this.groupId, userId, _.bind(function (data) {
           app.trigger('redraw-tables');
         }, this));
       }, this));
@@ -102,7 +102,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     if (userId && userName) {
       confirmationView.open({message: 'disallow-user', username: userName}, _.bind(function () {
-        client.roomDisallow(this.roomId, userId, _.bind(function (data) {
+        client.groupDisallow(this.groupId, userId, _.bind(function (data) {
           app.trigger('redraw-tables');
         }, this));
       }, this));

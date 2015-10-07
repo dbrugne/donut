@@ -48,8 +48,16 @@ groupSchema.methods.isMember = function (userId) {
     return true;
   }
 
+  if (!this.members.length) {
+    return false;
+  }
+
   var subDocument = _.find(this.members, function (u) {
-    return (u.toString() === userId);
+    if (u._id) {
+      return (u.id === userId);
+    } else {
+      return (u.toString() === userId);
+    }
   });
   return (typeof subDocument !== 'undefined');
 };
@@ -62,6 +70,25 @@ groupSchema.methods.isOwner = function (userId) {
   return (typeof this.owner.toString === 'function' &&
     this.owner.toString() === userId) ||
     (this.owner._id && this.owner.id === userId);
+};
+
+groupSchema.methods.isOp = function (userId) {
+  if (!this.op.length) {
+    return false;
+  }
+
+  var subDocument = _.find(this.op, function (u) {
+    if (u._id) {
+      return (u.id === userId);
+    } else {
+      return (u.toString() === userId);
+    }
+  });
+  return (typeof subDocument !== 'undefined');
+};
+
+groupSchema.methods.isOwnerOrOp = function (userId) {
+  return (this.isOwner(userId) || this.isOp(userId));
 };
 
 groupSchema.methods._avatar = function (size) {
@@ -80,6 +107,10 @@ groupSchema.methods.avatarId = function () {
 };
 
 groupSchema.methods.isAllowedPending = function (userId) {
+  if (!this.members_pending.length) {
+    return false;
+  }
+
   var subDocument = _.find(this.members_pending, function (doc) {
     if (doc.user._id) {
       return (doc.user.id === userId);
@@ -88,6 +119,60 @@ groupSchema.methods.isAllowedPending = function (userId) {
     }
   });
   return (typeof subDocument !== 'undefined');
+};
+
+groupSchema.methods.getAllowPendingByUid = function (userId) {
+  if (!this.members_pending) {
+    return;
+  }
+
+  return _.find(this.members_pending, function (doc) {
+    if (doc.user._id) {
+      return (doc.user.id === userId);
+    } else {
+      return (doc.user.toString() === userId);
+    }
+  });
+};
+
+groupSchema.methods.getIdsByType = function (type) {
+  var ids = [];
+  var that = this;
+
+  if (type === 'members') {
+    _.each(this.members, function (u) {
+      if (u._id) {
+        ids.push(u._id.toString());
+      } else {
+        ids.push(u.toString());
+      }
+    });
+    if (this.owner._id) {
+      ids.push(this.owner._id.toString());
+    } else {
+      ids.push(this.owner.toString());
+    }
+  } else if (type === 'pending') {
+    _.each(this.members_pending, function (pen) {
+      ids.push(pen.user.toString());
+    });
+  } else if (type === 'op') {
+    _.each(this.op, function (u) {
+      ids.push(u.toString());
+    });
+    if (this.owner._id) {
+      ids.push(this.owner._id.toString());
+    } else {
+      ids.push(this.owner.toString());
+    }
+  } else if (type === 'regular') {
+    _.each(this.members, function (u) {
+      if (!that.isOwnerOrOp(u.toString())) {
+        ids.push(u.toString());
+      }
+    });
+  }
+  return ids;
 };
 
 module.exports = mongoose.model('Group', groupSchema);

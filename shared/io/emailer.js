@@ -341,3 +341,42 @@ emailer.groupJoinRequest = function (to, data, callback) {
     subject: i18next.t('email.groupjoinrequest.subject', { groupname: data.groupname.replace('#', '') })
   }, callback);
 };
+
+emailer.groupAllow = function (to, data, callback) {
+  sendEmail(to, 'emails/group-allow.html', {
+    username: data.username,
+    groupname: data.groupname.replace('#', ''),
+    title: i18next.t('email.groupallow.content.title', { groupname: data.groupname, username: data.username }),
+    email_heading_action: i18next.t('email.groupallow.content.action', {
+      fqdn: conf.fqdn,
+      username: data.username
+    }),
+    subject: i18next.t('email.allow.subject', { groupname: data.groupname })
+  }, callback);
+};
+
+emailer.groupInvite = function (to, data, callback) {
+  sendEmail(to, 'emails/group-invite.html', {
+    username: data.username,
+    groupname: data.groupname.replace('#', ''),
+    title: i18next.t('email.groupinvite.content.title', { groupname: data.groupname, username: data.username }),
+    email_heading_action: i18next.t('email.groupinvite.content.action', {
+      fqdn: conf.fqdn,
+      username: data.username
+    }),
+    subject: i18next.t('email.groupinvite.subject', { groupname: data.groupname, username: data.username })
+  }, callback);
+};
+
+emailer.groupRefuse = function (to, data, callback) {
+  sendEmail(to, 'emails/group-refuse.html', {
+    username: data.username,
+    groupname: data.groupname.replace('#', ''),
+    title: i18next.t('email.grouprefuse.content.title', { groupname: data.groupname, username: data.username }),
+    email_heading_action: i18next.t('email.grouprefuse.content.action', {
+      fqdn: conf.fqdn,
+      username: data.username
+    }),
+    subject: i18next.t('email.grouprefuse.subject', { groupname: data.groupname, username: data.username })
+  }, callback);
+};

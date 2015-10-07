@@ -493,7 +493,10 @@
         "usermention": "Vous êtes mentionné dans <span>#__name__</span>",
         "usermessage": "<span>@__username__</span>: __message__",
         "roominvite": "<span>@__username__</span> vous invite à rejoindre <span>#__name__</span>",
-        "groupjoinrequest": "<span>@__username__</span> souhaite rejoindre <span>#__name__</span>"
+        "groupjoinrequest": "<span>@__username__</span> souhaite rejoindre <span>#__name__</span>",
+        "groupallowed": "Vous êtes autorisé à rejoindre <span>#__name__</span>",
+        "groupinvite": "<span>@__username__</span> vous invite à rejoindre <span>#__name__</span>",
+        "grouprefuse": "Demande d'accès au groupe <span>#__name__</span></br> refusée"
       },
       "userban": " est bloqué à la demande de",
       "userdeban": " n'est plus bloqué à la demande de"
@@ -538,7 +541,8 @@
         "op": "Modérateurs",
         "allowed": "Utilisateurs autorisés",
         "ban": "Bannis",
-        "devoice": "Muets"
+        "devoice": "Muets",
+        "members": "Membres"
       },
       "usernotexist": "Cette utilisateur n'existe pas."
     },
@@ -624,6 +628,7 @@
       "disclaimer-public": "Ce donut est public. N'importe quel utilisateur pourra y accéder.",
       "disclaimer-password": "Vous avez également choisi de mettre un mot de passe. Les utilisateurs avec le mot de passe pourront y entrer sans avoir besoin d'être invités au préalable.",
       "disclaimer-changing": "Vous pouvez passer ce donut en mode privé. Alors, seuls les utilisateurs que vous autoriserez pourront rejoindre, participer et accéder à l'historique. L'accès se fera par invitation et/ou par mot de passe. Les membres actuels de donut public resteront autorisés dans ce donut une fois qu'il sera devenu privé. Attention, cette action est irréversible.",
+      "disclaimer-group": "Tous les membres du groupe peuvent créer un donut dans ce groupe est en gerer l'accès. Ils peuvent également rejoindre les donuts privés qui autorisent les membres du groupe. Les donuts publics de ce groupe sont accessibles par tous les utilisateurs du site.",
       "close": "Fermer ce donut",
       "allowgroupmember": "Autoriser les membres du groupe à rejoindre ce donut"
     },
@@ -675,6 +680,7 @@
             "public": "Tout utilisateur peut rejoindre, participer et accéder à l'historique. Vous disposez d'outils de modération.",
             "private": "Seuls les utilisateurs que vous autorisez pourront rejoindre, participer et accéder à l'historique. Vous disposez d'outils de modération.",
             "password": "Vous pouvez également mettre un mot de passe. Les utilisateurs ayant le mot de passe pourront rejoindre le donut sans avoir besoin d'être invités au préalable.",
+            "group-password": "Vous pouvez également mettre un mot de passe. Les utilisateurs ayant le mot de passe pourront rejoindre le groupe sans avoir besoin d'être invités au préalable.",
             "allowgroupmember": "Vous pouvez autoriser les membres du groupe à rejoindre ce donut."
           }
         },
@@ -1011,6 +1017,33 @@
       "content": {
         "title": "@__username__ demande l'accès à #__groupname__",
         "disclaimer": "On dirait que votre groupe est parti pour aller loin !",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder au groupe</a>"
+      }
+    },
+    "groupallow": {
+      "subject": "Un utilisateur a accepté votre demande de rejoindre #__groupname__",
+      "content": {
+        "title": "@__username__ vous autorise à rejoindre #__groupname__",
+        "disclaimer": "Vous pouvez maintenant profiter de ce groupe !",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder au groupe</a>"
+      }
+    },
+    "groupinvite": {
+      "subject": "@__username__ vous invite à rejoindre #__groupname__",
+      "content": {
+        "title": "@__username__ vous invite à rejoindre #__groupname__",
+        "disclaimer": "Vous pouvez rejoindre son groupe sans plus tarder !",
+        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder au groupe</a>"
+      }
+    },
+    "grouprefuse": {
+      "subject": "Un utilisateur a refusé votre demande de rejoindre #__groupname__",
+      "content": {
+        "title": "@__username__ a refusé votre demande de rejoindre #__groupname__",
+        "disclaimer": "Ne vous inquiétez pas vous pouvez toujours refaire une demande plus tard !",
         "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder au groupe</a>"
       }
