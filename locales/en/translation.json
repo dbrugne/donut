@@ -505,7 +505,7 @@
       "loading": "Loading more...",
       "top": "go to top",
       "bottom": "go to bottom",
-      "currently": "This is it... You are at the very start of the conversation on <span class=\"name dc-text open-room-profile\" data-room-id=\"__room_id__\">__name__</span>, donut created by <span class=\"owner dc-text open-user-profile\" data-user-id=\"__owner_id__\">@__owner_username__</span> on <span class=\"date\">__created_at__</span>",
+      "currently": "This is it... You are at the very start of the conversation on <span class=\"name dc-text open-room-profile\" data-room-id=\"__room_id__\">__identifier__</span>, donut created by <span class=\"owner dc-text open-user-profile\" data-user-id=\"__owner_id__\">@__owner_username__</span> on <span class=\"date\">__created_at__</span>",
       "hasPassword": "Your donut is private. Configure the access to your donut so that other users can join",
       "onestart": "This conversation is private. Only you and your interlocutor can see it.",
       "edit": "Edit profile",
