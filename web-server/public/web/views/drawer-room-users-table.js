@@ -57,7 +57,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({}, function () {
-      client.roomOp(that.model.get('id'), userId, null, function (err) {
+      client.roomOp(that.model.get('id'), userId, function (err) {
         if (err) {
           return;
         }
@@ -77,7 +77,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({}, function () {
-      client.roomDeop(that.model.get('id'), userId, null, function (err) {
+      client.roomDeop(that.model.get('id'), userId, function (err) {
         if (err) {
           return;
         }
@@ -97,7 +97,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({ input: true }, function (reason) {
-      client.roomKick(that.model.get('id'), userId, null, reason);
+      client.roomKick(that.model.get('id'), userId, reason);
     });
   },
   banUser: function (event) {
@@ -113,7 +113,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({ input: true }, function (reason) {
-      client.roomBan(that.model.get('id'), userId, null, reason);
+      client.roomBan(that.model.get('id'), userId, reason);
     });
   },
   debanUser: function (event) {
@@ -129,7 +129,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({}, function () {
-      client.roomDeban(that.model.get('id'), userId, null);
+      client.roomDeban(that.model.get('id'), userId);
     });
   },
   voiceUser: function (event) {
@@ -145,7 +145,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({}, function () {
-      client.roomVoice(that.model.get('id'), userId, null);
+      client.roomVoice(that.model.get('id'), userId);
     });
   },
   devoiceUser: function (event) {
@@ -161,7 +161,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({}, function () {
-      client.roomDevoice(that.model.get('id'), userId, null);
+      client.roomDevoice(that.model.get('id'), userId);
     });
   },
 

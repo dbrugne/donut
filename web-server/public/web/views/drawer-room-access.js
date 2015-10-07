@@ -45,7 +45,7 @@ var RoomAccessView = Backbone.View.extend({
     return this;
   },
   reload: function () {
-    client.roomRead(this.roomId, null, _.bind(function (data) {
+    client.roomRead(this.roomId, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }

@@ -24,7 +24,7 @@ var DrawerRoomEditView = Backbone.View.extend({
 
     // ask for data
     var that = this;
-    client.roomRead(this.roomId, null, function (data) {
+    client.roomRead(this.roomId, function (data) {
       if (!data.err) {
         that.onResponse(data);
       }

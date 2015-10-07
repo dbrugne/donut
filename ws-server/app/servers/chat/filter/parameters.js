@@ -17,7 +17,7 @@ module.exports = function () {
 
 /**
  * Detect expected parameters in 'data', search corresponding models and put in
- * 'session'. Search for: data.name, data.username, data.event and session.uid
+ * 'session'.
  *
  * Route is available in:  data.__route__ = 'chat.roomHistoryHandler.call'
  *
@@ -49,34 +49,14 @@ Filter.prototype.before = function (data, session, next) {
     },
 
     room: function (callback) {
-      if (data.__route__ === 'chat.roomCreateHandler.call') {
+      if (!data.room_id) {
         return callback(null);
       }
-      if (!data.name && !data.room_id) {
-        return callback(null);
-      }
-      if (!data.room_id && data.name && [
-        'chat.roomCreateHandler.call',
-        'chat.roomJoinHandler.call',
-        'chat.roomReadHandler.call' ].indexOf(data.__route__) === -1) {
-        return callback(null);
+      if (!common.validate.objectId(data.room_id)) {
+        return callback('params-room-id');
       }
 
-      var q;
-
-      if (data.name) {
-        if (!common.validate.name(data.name)) {
-          return callback('invalid room name parameter: ' + data.name);
-        }
-        q = RoomModel.findByName(data.name);
-      }
-
-      if (data.room_id) {
-        if (!common.validate.objectId(data.room_id)) {
-          return callback('params-room-id');
-        }
-        q = RoomModel.findOne({ _id: data.room_id });
-      }
+      var q = RoomModel.findOne({ _id: data.room_id });
 
       if (data.__route__ === 'chat.roomJoinHandler.call') {
         q.populate('owner', 'username avatar color facebook');
@@ -96,36 +76,13 @@ Filter.prototype.before = function (data, session, next) {
     },
 
     user: function (callback) {
-      if (!data.username && !data.user_id) {
+      if (!data.user_id) {
         return callback(null);
       }
-      if (!data.user_id && data.username && [
-        'chat.roomOpHandler.call',
-        'chat.roomDeopHandler.call',
-        'chat.roomVoiceHandler.call',
-        'chat.roomDevoiceHandler.call',
-        'chat.roomKickHandler.call',
-        'chat.roomBanHandler.call',
-        'chat.roomDebanHandler.call',
-        'chat.userBanHandler.call',
-        'chat.userDebanHandler.call',
-        'chat.userMessageHandler.call',
-        'chat.userReadHandler.call',
-        'chat.userJoinHandler.call' ].indexOf(data.__route__) === -1) {
-        return callback(null);
+      if (!common.validate.objectId(data.user_id)) {
+        return callback('params-user-id');
       }
-
-      if (data.username) {
-        if (!common.validate.username(data.username)) {
-          return callback('params-username');
-        }
-        UserModel.findByUsername(data.username).exec(callback);
-      } else {
-        if (!common.validate.objectId(data.user_id)) {
-          return callback('params-user-id');
-        }
-        UserModel.findByUid(data.user_id).exec(callback);
-      }
+      UserModel.findByUid(data.user_id).exec(callback);
     },
 
     event: function (callback) {

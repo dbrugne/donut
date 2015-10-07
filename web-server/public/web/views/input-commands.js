@@ -244,6 +244,7 @@ var InputCommandsView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({}, function () {
+      // @todo : getId
       client.roomOp(that.model.get('id'), null, parameters[1], function (data) {
         if (data.err && data.code !== 500) {
           return that.errorCommand('op', data.err);
@@ -266,6 +267,7 @@ var InputCommandsView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({}, function () {
+      // @todo : getId
       client.roomDeop(that.model.get('id'), null, parameters[1], function (data) {
         if (data.err && data.code !== 500) {
           return that.errorCommand('deop', data.err);
@@ -288,6 +290,7 @@ var InputCommandsView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({input: true}, function (reason) {
+      // @todo getId
       client.roomKick(that.model.get('id'), null, parameters[1], reason, function (data) {
         if (data.err && data.code !== 500) {
           return that.errorCommand('kick', data.err);
@@ -310,6 +313,7 @@ var InputCommandsView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({input: true}, function (reason) {
+      // @todo getId
       client.roomBan(that.model.get('id'), null, parameters[1], reason, function (data) {
         if (data.err && data.code !== 500) {
           return that.errorCommand('ban', data.err);
@@ -331,6 +335,7 @@ var InputCommandsView = Backbone.View.extend({
     }
 
     var that = this;
+    // @todo : getId
     client.roomDeban(this.model.get('id'), null, parameters[1], function (data) {
       if (data.err && data.code !== 500) {
         return that.errorCommand('unban', data.err);
@@ -350,6 +355,7 @@ var InputCommandsView = Backbone.View.extend({
     }
 
     var that = this;
+    // @todo : getId
     client.roomVoice(this.model.get('id'), null, parameters[1], function (data) {
       if (data.err && data.code !== 500) {
         return that.errorCommand('unmute', data.err);
@@ -370,6 +376,7 @@ var InputCommandsView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({input: true}, function (reason) {
+      // @todo : getId
       client.roomDevoice(that.model.get('id'), null, parameters[1], reason, function (data) {
         if (data.err && data.code !== 500) {
           return that.errorCommand('mute', data.err);
@@ -400,6 +407,7 @@ var InputCommandsView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({input: false}, function () {
+      // @todo getId
       client.userBan(userId, username, function (data) {
         if (data.err && data.err === 'banned') {
           return that.errorCommand('block', 'already-blocked');
@@ -432,6 +440,7 @@ var InputCommandsView = Backbone.View.extend({
     }
 
     var that = this;
+    // @todo getId
     client.userDeban(userId, username, function (data) {
       if (data.err && data.err === 'no-banned') {
         return that.errorCommand('unblock', 'already-unblocked');
@@ -461,6 +470,7 @@ var InputCommandsView = Backbone.View.extend({
     } else if (/^#/.test(parameters[1])) {
       model = rooms.getByName(parameters[1]);
     } else if (/^@/.test(parameters[1])) {
+      // @todo : getId
       client.userMessage(null, parameters[1].replace(/^@/, ''), message);
       return;
     } else {
@@ -474,7 +484,7 @@ var InputCommandsView = Backbone.View.extend({
     if (model.get('type') === 'room') {
       client.roomMessage(model.get('id'), message);
     } else if (model.get('type') === 'onetoone') {
-      client.userMessage(model.get('user_id'), null, message);
+      client.userMessage(model.get('user_id'), message);
     }
   },
   profile: function (paramString, parameters) {
@@ -484,6 +494,7 @@ var InputCommandsView = Backbone.View.extend({
 
     var that = this;
     if ((/^#/.test(parameters[1]))) {
+      // @todo : getID
       client.roomRead(null, parameters[1], function (data) {
         if (data.err === 'room-not-found') {
           that.errorCommand('profile', 'invalidroom');
@@ -515,7 +526,7 @@ var InputCommandsView = Backbone.View.extend({
     if (this.model.get('type') === 'room') {
       client.roomMessage(this.model.get('id'), message, null, 'me');
     } else {
-      client.userMessage(this.model.get('id'), null, message, null, 'me');
+      client.userMessage(this.model.get('id'), message, null, 'me');
     }
   },
   ping: function (paramString, parameters) {
@@ -554,7 +565,7 @@ var InputCommandsView = Backbone.View.extend({
     if (this.model.get('type') === 'room') {
       client.roomMessage(this.model.get('id'), message, null, 'random');
     } else {
-      client.userMessage(this.model.get('id'), null, message, null, 'random');
+      client.userMessage(this.model.get('id'), message, null, 'random');
     }
   },
   help: function (paramString, parameters, error) {

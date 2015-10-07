@@ -594,6 +594,7 @@ var MainView = Backbone.View.extend({
 
     // Not already open
     this.thisDiscussionShouldBeFocusedOnSuccess = name;
+    // @todo : getID
     client.roomJoin(null, name, null, _.bind(function (response) {
       if (response.code === 404) {
         return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', { name: name }));
@@ -672,7 +673,7 @@ var MainView = Backbone.View.extend({
     }
 
     ConfirmationView.open({}, _.bind(function () {
-      client.userBan(userId, null);
+      client.userBan(userId);
       app.trigger('userBan');
     }, this));
   },
