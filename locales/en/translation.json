@@ -127,6 +127,7 @@
   },
   "global": {
     "donuts": "Donuts",
+    "group": "group",
     "admin": "(admin only)",
     "default": "default",
     "or": "or",

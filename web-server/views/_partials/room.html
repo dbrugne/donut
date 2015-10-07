@@ -1,4 +1,5 @@
-<div class="room dc-i-<%= room.color.replace('#', '').toLowerCase() %>">
+<% var _color = room.color ? room.color.replace('#', '').toLowerCase() : 'default' %>
+<div class="room dc-i-<%= _color %>">
 
     <div class="mini-card hidden">
         <div class="flex-parent">
