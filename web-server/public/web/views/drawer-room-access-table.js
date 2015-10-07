@@ -47,7 +47,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
   },
 
   onResponse: function (data) {
-    if (!data.users.length) {
+    if (!data.users || data.users.length) {
       this.$el.hide();
       return;
     }
