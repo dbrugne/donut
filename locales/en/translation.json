@@ -658,7 +658,7 @@
       "group-form": {
         "create": {
           "label": "Create a group",
-          "help": "Un groupe est un espace regroupant vos donut et permettant à votre communautés de devenir membre et d'accèder à un groupe de donuts.",
+          "help": "A group is a place grouping your donut and allowing your community to become a member and access a group of donuts.",
           "help-name": "Between 3 and 20 characters, only letters, numbers,  dashes (-) and underscores (_).<br>Caution the group name will no longer be editable.",
           "placeholder": "Group name",
           "submit": "Create"
