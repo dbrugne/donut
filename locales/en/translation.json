@@ -117,6 +117,7 @@
     "search": "search a donut",
     "create": "create a donut",
     "signup": "sign up",
+    "orsignup": "or sign up",
     "forgot": "forgotten password",
     "join": "join",
     "discuss": "chat",
@@ -558,18 +559,21 @@
       "description": "Join me on DONUT.me, the new chat platform. I discuss on __name__."
     },
     "welcome": {
-      "private": {
-        "room": [
-          "Welcome to <a class=\"open-room-profile\" data-room-id=\"__room_id__\"><strong>__name__</strong></a>. The conversation is private so only users authorized by <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a> can join. Once users have joined they can participate and access history.",
-          "Post a message to engage in the discussion."
-        ]
-      },
-      "public": {
-        "room": [
-          "Welcome to <a class=\"open-room-profile\" data-room-id=\"__room_id__\"><strong>__name__</strong></a>. The conversation is public so anyone can join, participate and access history. Share the link with your friends! ",
-          "Post a message to engage in the discussion."
-        ]
-      },
+      "members-invites": [
+        "<p><i class=\"icon icon-hello\"></i> Welcome !</p>",
+        "<p>This private conversation and its history are only accessible to <a class=\"open-group-profile\" data-group-id=\"__group_id__\"><strong>__group_name__</strong></a> community members and users authorized by <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a>.</p>",
+        "<p>Say 'hi' to engage in the discussion.</p>"
+      ],
+      "invites": [
+        "<p><i class=\"icon icon-hello\"></i> Welcome !</p>",
+        "<p>This private conversation and its history are only accessible users authorized by <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a>.</p>",
+        "<p>Say 'hi' to engage in the discussion.</p>"
+      ],
+      "public": [
+        "<p><i class=\"icon icon-hello\"></i> Welcome !</p>",
+        "<p>This public conversation and its history are accessible to anyone. Share the link with your friends!</p>",
+        "<p>Say 'hi' to engage in the discussion.</p>"
+      ],
       "onetoone": [
         "<strong>@__username__</strong> isn't online, he will get your messages on his next connection",
         "Post a message to start the conversation."

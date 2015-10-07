@@ -634,7 +634,6 @@
                 .display-offline { display:inline-block; }
               }
             } // #chat #center .discussion .content .header.user .status-block
-            .hello-block { font-style: italic; }
           } // #chat #center .discussion .content .header.user
         }
         .events { /*border-top: 1px solid @cl-subtext10;*/ overflow-y: scroll; overflow-x: hidden; .flex(1); .scrollbar-grey; position: relative;
@@ -724,6 +723,38 @@
               }
               .realtime {
                 a.mention { font-weight: bold; }
+                .block.hello,
+                .block.topic,
+                .block.kick,
+                .block.ban,
+                .block.deban,
+                .block.op,
+                .block.deop,
+                .block.voice,
+                .block.command-help,
+                .block.devoice {
+                  clear: both;
+                  margin-top: 5px;
+                  padding: 5px;
+                  img { height: 20px; }
+                  .avatar {
+                    display: inline-block;
+                    width: 20px;
+                    height: 20px;
+                    background-position: center center;
+                    background-size: 20px 20px;
+                    vertical-align: middle;
+                  }
+                  .username { font-weight: bold; }
+                  .detail { font-weight: normal; }
+                  .event {
+                    .text {
+                      font-style: italic;
+                      padding-right: 50px;
+                      img { margin-right: 3px; }
+                    }
+                  }
+                }
                 .block { line-height: 19px; position: relative; font-size: 1.1em;
                   &.message { word-break: break-all; }
                   &.unviewed {
@@ -741,11 +772,11 @@
                   &.date + .block { border-top: transparent; }
                   &.hello {
                     i {
-                      font-size: 1.5em;
                       color: @cl-success;
-                      vertical-align: bottom;
+                      vertical-align: baseline;
                       line-height: normal;
                     }
+                    padding-top: 20px; font-size:1.5rem; line-height: 2rem;
                   }
                   &.promote {
                     i {
@@ -908,38 +939,6 @@
                     }
                     &.out:hover {
                       border-color: @cl-error;
-                    }
-                  }
-                }
-                .block.hello,
-                .block.topic,
-                .block.kick,
-                .block.ban,
-                .block.deban,
-                .block.op,
-                .block.deop,
-                .block.voice,
-                .block.command-help,
-                .block.devoice {
-                  clear: both;
-                  margin-top: 5px;
-                  padding: 5px;
-                  img { height: 20px; }
-                  .avatar {
-                    display: inline-block;
-                    width: 20px;
-                    height: 20px;
-                    background-position: center center;
-                    background-size: 20px 20px;
-                    vertical-align: middle;
-                  }
-                  .username { font-weight: bold; }
-                  .detail { font-weight: normal; }
-                  .event {
-                    .text {
-                      font-style: italic;
-                      padding-right: 50px;
-                      img { margin-right: 3px; }
                     }
                   }
                 }

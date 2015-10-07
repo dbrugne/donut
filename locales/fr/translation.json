@@ -559,21 +559,24 @@
       "description": "Venez me rejoindre sur DONUT.me le nouveau site de chat. J'y discute sur __name__."
     },
     "welcome": {
-      "private": {
-        "room": [
-          "Bienvenue dans <a class=\"open-room-profile\" data-room-id=\"__room_id__\"><strong>__name__</strong></a>. La conversation est privée. Seuls les utilisateurs autorisés par <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a> pourront rejoindre ce donut. Les utilisateurs qui ont rejoint le donut peuvent y participer et accéder à son historique.",
-          "Postez un message pour amorcer la conversation."
-        ]
-      },
-      "public": {
-        "room": [
-          "Bienvenue dans <a class=\"open-room-profile\" data-room-id=\"__room_id__\"><strong>__name__</strong></a>. La conversation est publique donc accessible à tous de même que l'historique. Vous pouvez partager le lien avec vos amis.",
-          "Postez un message pour amorcer la conversation."
-        ]
-      },
+      "members-invites": [
+        "<p><i class=\"icon icon-hello\"></i> Bienvenue!</p>",
+        "<p>La conversation est privée. Seuls les membres de la communauté <a class=\"open-group-profile\" data-group-id=\"__group_id__\"><strong>__group_name__</strong></a> ainsi utilisateurs autorisés par <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a> peuvent rejoindre ce donut, y participer et accéder à son historique.</p>",
+        "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
+      ],
+      "invites": [
+        "<p><i class=\"icon icon-hello\"></i> Bienvenue!</p>",
+        "<p>La conversation est privée. Seuls les utilisateurs autorisés par <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a> peuvent rejoindre ce donut, y participer et accéder à son historique.</p>",
+        "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
+      ],
+      "public": [
+        "<p><i class=\"icon icon-hello\"></i> Bienvenue !</p>",
+        "<p>Cette conversation est publique donc accessible à tous de même que l'historique. Vous pouvez partager le lien avec vos amis.</p>",
+        "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
+      ],
       "onetoone": [
-        "<strong>@__username__</strong> n'est pas en ligne, les nouveaux messages lui seront remis à sa prochaine connexion",
-        "Postez un message pour amorcer la conversation."
+        "<p><strong>@__username__</strong> n'est pas en ligne, les nouveaux messages lui seront remis à sa prochaine connexion</p>",
+        "<p>Postez un message pour amorcer la conversation.</p>"
       ]
     },
     "connection": {
