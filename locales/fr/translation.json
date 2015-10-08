@@ -566,17 +566,17 @@
     },
     "welcome": {
       "members-invites": [
-        "<p><i class=\"icon icon-hello\"></i> Bienvenue!</p>",
+        "<p>Bienvenue!</p>",
         "<p>La conversation est privée. Seuls les membres de la communauté <a class=\"open-group-profile curp\" data-group-id=\"__group_id__\"><strong>#__group_name__</strong></a> ainsi utilisateurs autorisés par <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a> peuvent rejoindre ce donut, y participer et accéder à son historique.</p>",
         "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
       ],
       "invites": [
-        "<p><i class=\"icon icon-hello\"></i> Bienvenue!</p>",
+        "<p>Bienvenue!</p>",
         "<p>La conversation est privée. Seuls les utilisateurs autorisés par <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a> peuvent rejoindre ce donut, y participer et accéder à son historique.</p>",
         "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
       ],
       "public": [
-        "<p><i class=\"icon icon-hello\"></i> Bienvenue !</p>",
+        "<p>Bienvenue !</p>",
         "<p>Cette conversation est publique donc accessible à tous de même que l'historique. Vous pouvez partager le lien avec vos amis.</p>",
         "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
       ],

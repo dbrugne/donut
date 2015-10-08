@@ -566,17 +566,17 @@
     },
     "welcome": {
       "members-invites": [
-        "<p><i class=\"icon icon-hello\"></i> Welcome !</p>",
+        "<p>Welcome !</p>",
         "<p>This private conversation and its history are only accessible to <a class=\"open-group-profile curp\" data-group-id=\"__group_id__\"><strong>#__group_name__</strong></a> community members and users authorized by <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a>.</p>",
         "<p>Say 'hi' to engage in the discussion.</p>"
       ],
       "invites": [
-        "<p><i class=\"icon icon-hello\"></i> Welcome !</p>",
+        "<p>Welcome !</p>",
         "<p>This private conversation and its history are only accessible users authorized by <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a>.</p>",
         "<p>Say 'hi' to engage in the discussion.</p>"
       ],
       "public": [
-        "<p><i class=\"icon icon-hello\"></i> Welcome !</p>",
+        "<p>Welcome !</p>",
         "<p>This public conversation and its history are accessible to anyone. Share the link with your friends!</p>",
         "<p>Say 'hi' to engage in the discussion.</p>"
       ],
