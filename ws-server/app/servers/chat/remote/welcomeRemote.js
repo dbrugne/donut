@@ -45,7 +45,7 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
         .populate('ones.user')
         .populate('blocked')
         .exec(function (err, user) {
-          if (err) {
+          if (err || !user) {
             return callback('Unable to find user: ' + err, null);
           }
 
