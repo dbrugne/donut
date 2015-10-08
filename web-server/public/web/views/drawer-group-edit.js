@@ -26,7 +26,7 @@ var DrawerGroupEditView = Backbone.View.extend({
       users: false,
       admin: true
     };
-    client.groupRead(this.groupId, null, what, _.bind(function (data) {
+    client.groupRead(this.groupId, what, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }
