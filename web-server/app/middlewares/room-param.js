@@ -1,8 +1,9 @@
 'use strict';
 var _ = require('underscore');
 var Room = require('../../../shared/models/room');
-var conf = require('../../../config/index');
 var logger = require('pomelo-logger').getLogger('web', __filename);
+var urls = require('../../../shared/util/url');
+var conf = require('../../../config/index');
 
 module.exports = function (req, res, next, roomname) {
   if (roomname === undefined || roomname === '') {
@@ -14,7 +15,6 @@ module.exports = function (req, res, next, roomname) {
     });
   }
 
-  // @todo : make it works with group rooms (#aaa/aaa)
   Room.findByName(roomname)
     .populate('group', 'name')
     .populate('owner', 'username avatar color location website facebook')
@@ -29,7 +29,7 @@ module.exports = function (req, res, next, roomname) {
       if (model) {
         var room = {
           id: model.id,
-          name: model.getIdentifier(),
+          name: model.name,
           identifier: model.getIdentifier(),
           permanent: model.permanent,
           avatar: model._avatar(160),
@@ -45,10 +45,16 @@ module.exports = function (req, res, next, roomname) {
           mode: model.mode
         };
 
+        if (model.group) {
+          room.group_name = model.group.name;
+          room.group_id = model.group.id;
+        }
+
         // urls
-        room.url = req.protocol + '://' + conf.fqdn + '/room/' + room.identifier.replace('#', '');
-        room.chat = req.protocol + '://' + conf.fqdn + '/!' + model.getIdentifier();
-        room.join = req.protocol + '://' + conf.fqdn + '/room/join/' + room.identifier.replace('#', '');
+        var data = urls(room, 'room', req.protocol, conf.fqdn);
+        room.url = data.url;
+        room.chat = data.chat;
+        room.join = data.join;
 
         // owner
         var ownerId;
@@ -60,7 +66,7 @@ module.exports = function (req, res, next, roomname) {
             avatar: model.owner._avatar(80),
             color: model.owner.color,
             url: (model.owner.username)
-              ? req.protocol + '://' + conf.fqdn + '/user/' + ('' + model.owner.username).toLocaleLowerCase()
+              ? urls(model.owner, 'user', req.protocol, conf.fqdn, 'url')
               : '',
             isOwner: true,
             isOp: false // could not be both
@@ -82,7 +88,7 @@ module.exports = function (req, res, next, roomname) {
               avatar: _model._avatar(80),
               color: _model.color,
               url: (_model.username)
-                ? req.protocol + '://' + conf.fqdn + '/user/' + ('' + _model.username).toLocaleLowerCase()
+                ? urls(_model, 'user', req.protocol, conf.fqdn, 'url')
                 : '',
               isOp: true,
               isOwner: false
@@ -111,7 +117,7 @@ module.exports = function (req, res, next, roomname) {
               avatar: _model._avatar(80),
               color: _model.color,
               url: (_model.username)
-                ? req.protocol + '://' + conf.fqdn + '/user/' + ('' + _model.username).toLocaleLowerCase()
+                ? urls(_model, 'user', req.protocol, conf.fqdn, 'url')
                 : '',
               isOp: false,
               isOwner: false

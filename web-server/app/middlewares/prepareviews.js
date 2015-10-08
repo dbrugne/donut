@@ -1,5 +1,6 @@
 'use strict';
 var conf = require('../../../config');
+var urls = require('../../../shared/util/url');
 
 /**
  * Register systematically some variables in views
@@ -11,7 +12,7 @@ module.exports = function () {
       res.locals.user = req.user.toObject(); // .toObject() avoid modification on original req.user object (like avatar)
       res.locals.user.avatar = req.user._avatar(80);
       if (req.user.username) {
-        res.locals.user.url = req.protocol + '://' + conf.fqdn + '/user/' + ('' + req.user.username).toLocaleLowerCase();
+        res.locals.user.url = urls(req.user, 'user', req.protocol, conf.fqdn, 'url');
       }
     } else {
       res.locals.user = false;

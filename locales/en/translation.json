@@ -926,10 +926,10 @@
       "subject": "You were promoted to moderator in #__roomname__",
       "content": {
         "title": "You were promoted to moderator in #__roomname__",
-        "disclaimer": "Kudos! You are now a moderator in <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
+        "disclaimer": "Kudos! You are now a moderator in <strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
         "disclaimer2": "It's time to practice your new super powers.",
-        "action": "…and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
+        "action": "…and all of that thanks to <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
       }
     },
     "roomdeop": {
@@ -937,7 +937,7 @@
       "content": {
         "title": "You are no longer a moderator of #__roomname__",
         "disclaimer": "This is sad news... But the good news is you will have more time to focus on your very own donut:)",
-        "action": "…and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "action": "…and all of that thanks to <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Return to DONUT"
       }
     },
@@ -946,7 +946,7 @@
       "content": {
         "title": "You were kicked out of #__roomname__ by @__username__",
         "disclaimer": "That can't be a big deal. The two of you just give a big hug and everything will be fine again!",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Back to DONUT\">Back to DONUT</a>"
+        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Back to DONUT\">Back to DONUT</a>"
       }
     },
     "roomban": {
@@ -961,19 +961,19 @@
       "subject": "You are no longer banned from #__roomname__",
       "content": {
         "title": "You are no longer banned from #__roomname__",
-        "disclaimer": "You are no longer banned from <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>.",
+        "disclaimer": "You are no longer banned from <strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>.",
         "disclaimer2": "It looks like all is well that ends well!",
-        "action": "…and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
+        "action": "…and all of that thanks to <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
       }
     },
     "roomvoice": {
       "subject": "You are unmute in #__roomname__",
       "content": {
         "title": "You are unmute in #__roomname__",
-        "disclaimer": "You are unmute in <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>... as requested by <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong> Now can write as much as you want. Enjoy !",
-        "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
+        "disclaimer": "You are unmute in <strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>... as requested by <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong> Now can write as much as you want. Enjoy !",
+        "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
       }
     },
     "roomjoinrequest": {
@@ -981,8 +981,8 @@
       "content": {
         "title": "@__username__ ask for allowance in #__roomname__",
         "disclaimer": "Looks like your donut have great success!",
-        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
+        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
       }
     },
     "roomallow": {
@@ -990,8 +990,8 @@
       "content": {
         "title": "@__username__ allow you to join #__roomname__",
         "disclaimer": "You can now enjoy this donut !",
-        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
+        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
       }
     },
     "roomrefuse": {
@@ -999,8 +999,8 @@
       "content": {
         "title": "@__username__ refuse your request to join #__roomname__",
         "disclaimer": "Don't worry you can make another request to join this donut later !",
-        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
+        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
       }
     },
     "roominvite": {
@@ -1008,16 +1008,16 @@
       "content": {
         "title": "@__username__ invites you to join #__roomname__",
         "disclaimer": "You can join his room right now!",
-        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
+        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
       }
     },
     "roomdevoice": {
       "subject": "You are mute in #__roomname__",
       "content": {
         "title": "You are mute in #__roomname__",
-        "disclaimer": "You have been muted in <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>. This only applies to <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>. Don't worry, the moderators of <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> should unmute you very shortly. Meanwhile pick a donut and join another discussion!",
-        "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "disclaimer": "You have been muted in <strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>. This only applies to <strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>. Don't worry, the moderators of <strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> should unmute you very shortly. Meanwhile pick a donut and join another discussion!",
+        "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Back to DONUT"
       }
     },
@@ -1025,7 +1025,7 @@
       "subject": "New private message from @__username__",
       "content": {
         "title": "New private message from @__username__",
-        "disclaimer": "You have a new private message from <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">@__username__</a></strong>",
+        "disclaimer": "You have a new private message from <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">@__username__</a></strong>",
         "button": "Go to chat"
       }
     },
@@ -1033,8 +1033,8 @@
       "subject": "New messages in #__roomname__",
       "content": {
         "title": "New messages in #__roomname__",
-        "inroom": "<strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
+        "inroom": "<strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
       }
     },
     "roomjoin": {
@@ -1042,7 +1042,7 @@
       "content": {
         "title": "@__username__ joined #__roomname__",
         "disclaimer": "This is one more! Let's go welcome this marvelous person the right way :).",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
+        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
       }
     },
     "roomtopic": {
@@ -1051,7 +1051,7 @@
         "title": "@__username__ has defined a new topic in #__roomname__",
         "topic": "<strong>New topic : \"__topic__\"</strong>",
         "disclaimer": "You must a thousand things to say about it!",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
+        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
       }
     },
     "usermention": {
@@ -1059,7 +1059,7 @@
       "content": {
         "title": "@__username__ mentionned you in #__roomname__",
         "disclaimer": "It's always cool to have people thinking about you! Think about replying.",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
+        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
       }
     },
     "contact": {
@@ -1070,7 +1070,7 @@
       "content": {
         "title": "@__username__ ask for allowance in #__groupname__",
         "disclaimer": "Looks like your donut have great success!",
-        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to group</a>"
       }
     },
@@ -1079,7 +1079,7 @@
       "content": {
         "title": "@__username__ allow you to join #__groupname__",
         "disclaimer": "You can now enjoy this group !",
-        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to group</a>"
       }
     },
@@ -1088,7 +1088,7 @@
       "content": {
         "title": "@__username__ invites you to join #__groupname__",
         "disclaimer": "You can join his group right now!",
-        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to group</a>"
       }
     },
@@ -1097,7 +1097,7 @@
       "content": {
         "title": "@__username__ refuse your request to join #__groupname__",
         "disclaimer": "Don't worry you can make another request to join this group later !",
-        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to group</a>"
       }
     }

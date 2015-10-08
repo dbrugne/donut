@@ -7,6 +7,7 @@ var i18next = require('../../../shared/util/i18next');
 var conf = require('../../../config/index');
 var common = require('@dbrugne/donut-common/server');
 var featuredRooms = require('../../../shared/util/featured-rooms');
+var urls = require('../../../shared/util/url');
 
 var underscoreTemplate = require('../../../shared/util/underscore-template');
 var renderer = underscoreTemplate.standard({
@@ -37,14 +38,13 @@ router.get('/', [require('csurf')()], function (req, res) {
     function renderTemplate (featured, callback) {
       _.each(featured, function (element, index, list) {
         list[index].avatar = common.cloudinary.prepare(element.avatar, 135);
-        var identifier = element.name;
-        list[index].url = req.protocol + '://' + conf.fqdn + '/room/' + identifier;
+        var data = urls(element, 'room', req.protocol, conf.fqdn);
+        list[index].url = data.url;
         list[index].join = (req.user)
-          ? req.protocol + '://' + conf.fqdn + '/!' + element.identifier
-          : req.protocol + '://' + conf.fqdn + '/room/join/' + identifier;
-        if (element.owner) {
-          list[index].owner.url = req.protocol + '://' + conf.fqdn + '/user/' +
-            ('' + element.owner.username).toLocaleLowerCase();
+          ? data.chat
+          : data.join;
+        if (element.owner_username) {
+          list[index].owner_url = urls({ username: element.owner_username }, 'user', req.protocol, conf.fqdn, 'url');
         }
       });
       var data = {

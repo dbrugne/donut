@@ -1,6 +1,5 @@
 'use strict';
 var express = require('express');
-var _ = require('underscore');
 var router = express.Router();
 var i18next = require('../../../shared/util/i18next');
 var bouncer = require('../middlewares/bouncer');
@@ -9,7 +8,7 @@ var conf = require('../../../config/index');
 
 router.param('user', require('../middlewares/user-param'));
 
-router.get('/user/:user', function (req, res) {
+router.get('/u/:user', function (req, res) {
   if (req.query.redirect && req.query.redirect === 'true') {
     bouncer.set(req, '/!#user/' + req.requestedUser.chat);
   }
@@ -26,27 +25,18 @@ router.get('/user/:user', function (req, res) {
     type: 'object'
   };
 
-  var rooms = req.requestedUser.roomsList;
-  _.each(rooms, function (element, index, list) {
-    var identifier = element.name;
-    list[index].url = req.protocol + '://' + conf.fqdn + '/room/' + identifier;
-    list[index].join = (req.user)
-      ? req.protocol + '://' + conf.fqdn + '/!' + element.identifier
-      : req.protocol + '://' + conf.fqdn + '/room/join/' + identifier;
-  });
-
   res.render('user_profile', {
     meta: meta,
     subtitle: req.requestedUser.username,
     _user: req.requestedUser,
-    rooms: rooms,
+    rooms: req.requestedUser.roomsList,
     poster: req.requestedUser.poster,
     color: req.requestedUser.color,
-    userDefaultAvatar: cd.roomAvatar('', conf.room.default.color, false, 50)
+    userDefaultAvatar: cd.userAvatar('', conf.room.default.color, false, 50)
   });
 });
 
-router.get('/user/discuss/:user', function (req, res) {
+router.get('/u/discuss/:user', function (req, res) {
   bouncer.set(req, req.requestedUser.chat);
   return res.redirect('/login');
 });

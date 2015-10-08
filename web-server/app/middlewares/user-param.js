@@ -3,8 +3,9 @@ var async = require('async');
 var _ = require('underscore');
 var User = require('../../../shared/models/user');
 var Room = require('../../../shared/models/room');
-var conf = require('../../../config/index');
 var logger = require('pomelo-logger').getLogger('web', __filename);
+var urls = require('../../../shared/util/url');
+var conf = require('../../../config/index');
 
 module.exports = function (req, res, next, username) {
   var data = {};
@@ -44,11 +45,10 @@ module.exports = function (req, res, next, username) {
       data.location = user.location;
       data.website = user.website;
 
-      // url
-      var ident = ('' + user.username).toLocaleLowerCase();
-      data.url = req.protocol + '://' + conf.fqdn + '/user/' + ident;
-      data.chat = req.protocol + '://' + conf.fqdn + '/!#u/' + ident;
-      data.discuss = req.protocol + '://' + conf.fqdn + '/user/discuss/' + ident;
+      var _urls = urls(user, 'user', req.protocol, conf.fqdn);
+      data.url = _urls.url;
+      data.chat = _urls.chat;
+      data.discuss = _urls.discuss;
 
       return callback(null, user);
     },
@@ -60,7 +60,7 @@ module.exports = function (req, res, next, username) {
           {op: {$in: [user._id]}},
           {users: {$in: [user._id]}}
         ]
-      }, 'name owner op avatar color description mode users')
+      }, 'name owner op avatar color description mode users group')
         .populate('group', 'name')
         .populate('owner', 'username');
       q.exec(function (err, rooms) {
@@ -77,18 +77,26 @@ module.exports = function (req, res, next, username) {
         _.each(rooms, function (dbroom) {
           var room = dbroom.toJSON();
           if (room.owner) {
-            room.owner.url = req.protocol + '://' + conf.fqdn + '/u/' + ('' + room.owner.username).toLocaleLowerCase();
+            room.owner.url = urls(room.owner, 'user', req.protocol, conf.fqdn, 'url');
           }
 
           room.avatar = dbroom._avatar(160);
           room.identifier = dbroom.getIdentifier();
-          room.url = (room.name)
-            ? req.protocol + '://' + conf.fqdn + '/room/' + room.name.toLocaleLowerCase()
-            : '';
+
           room.mode = dbroom.mode;
           room.users = (dbroom.users)
             ? dbroom.users.length
             : 0;
+
+          if (dbroom.group) {
+            room.group_name = dbroom.group.name;
+            room.group_id = dbroom.group.id;
+          }
+
+          var data = urls(room, 'room', req.protocol, conf.fqdn);
+          room.url = data.url;
+          room.chat = data.chat;
+          room.join = data.join;
 
           list.push(room);
         });

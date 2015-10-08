@@ -2,6 +2,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
 var template = require('../web/templates/rooms-cards.html');
+var urls = require('../../../shared/util/url');
 
 var SearchView = Backbone.View.extend({
 
@@ -11,18 +12,25 @@ var SearchView = Backbone.View.extend({
 
   render: function (data) {
     var rooms = [];
-    var protocol = window.location.protocol;
+    var protocol = window.location.protocol.replace(':', '');
     var fqdn = window.location.host;
-
+    var _urls = {};
     _.each(data.rooms, function (room) {
       room.avatar = common.cloudinary.prepare(room.avatar, 135);
+      if (room.is_group) {
+        _urls = urls(room, 'group', protocol, fqdn);
+        room.url = _urls.url;
+        room.chat = _urls.chat;
+        room.join = _urls.join;
+      } else {
+        _urls = urls(room, 'room', protocol, fqdn);
+        room.url = _urls.url;
+        room.chat = _urls.chat;
+        room.join = _urls.join;
+      }
 
-      var identifier = room.name;
-      room.url = protocol + '//' + fqdn + '/room/' + identifier;
-      room.join = protocol + '//' + fqdn + '/!' + room.identifier;
-      if (room.owner) {
-        room.owner.url = protocol + '//' + fqdn + '/user/' +
-          ('' + room.owner.username).toLocaleLowerCase();
+      if (room.owner_username) {
+        room.owner_url = urls({ username: room.owner_username }, 'user', protocol, fqdn, 'url');
       }
 
       rooms.push(room);

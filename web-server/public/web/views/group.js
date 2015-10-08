@@ -5,6 +5,7 @@ var ConfirmationView = require('./modal-confirmation');
 var client = require('../libs/client');
 var i18next = require('i18next-client');
 var app = require('../models/app');
+var urls = require('../../../../shared/util/url');
 
 var GroupView = Backbone.View.extend({
   template: require('../templates/group.html'),
@@ -52,11 +53,9 @@ var GroupView = Backbone.View.extend({
       room.avatar = common.cloudinary.prepare(room.avatar, 135);
       room.owner_id = room.owner.user_id;
       room.owner_username = room.owner.username;
-      if (room.group_id) {
-        room.join = '#' + room.group_name + '/' + room.name;
-      } else {
-        room.join = room.name;
-      }
+      room.group_id = group.group_id;
+      room.group_name = group.name;
+      room.join = urls(room, 'room', null, null, 'uri');
 
       if (room.mode === 'public' || isMember || isAdmin) {
         rooms.push(room);

@@ -1,7 +1,6 @@
 'use strict';
 var express = require('express');
 var router = express.Router();
-var _ = require('underscore');
 var i18next = require('../../../shared/util/i18next');
 var bouncer = require('../middlewares/bouncer');
 var cd = require('../../../shared/util/cloudinary');
@@ -9,7 +8,7 @@ var conf = require('../../../config/index');
 
 router.param('group', require('../middlewares/group-param'));
 
-router.get('/group/:group', function (req, res) {
+router.get('/g/:group', function (req, res) {
   if (req.query.redirect && req.query.redirect === 'true') {
     bouncer.set(req, req.group.chat);
   }
@@ -36,7 +35,7 @@ router.get('/group/:group', function (req, res) {
   });
 });
 
-router.get('/group/join/:group', function (req, res) {
+router.get('/g/join/:group', function (req, res) {
   bouncer.set(req, req.group.chat);
   res.redirect('/login');
 });
