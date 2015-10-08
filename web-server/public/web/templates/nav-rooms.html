@@ -12,9 +12,11 @@
 <% } %>
 <% if (item.group_id && item.group_id !== lastGroup) { %>
     <li class="group">
-        <a class="clean" href="#g/<%- item.group_name %>" data-group-id="<%- item.group_id %>">
-            #<%= item.group_name %>
-        </a>
+        <span class="flex-parent center grouped <% if (item.focused) { %> active <% } %>">
+            <a class="clean flex-child" href="#g/<%- item.group_name %>" data-group-id="<%- item.group_id %>">
+                #<%= item.group_name %>
+            </a>
+        </span>
     </li>
 <% } %>
 <%
