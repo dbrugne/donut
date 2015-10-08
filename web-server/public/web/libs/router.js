@@ -54,9 +54,6 @@ var DonutRouter = Backbone.Router.extend({
 
   focusGroup: function (name) {
     var model = groups.iwhere('name', name);
-    if (model) {
-      return this.focus(model);
-    }
 
     client.groupId(name, _.bind(function (response) {
       if (response.code === 404) {
