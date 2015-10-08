@@ -1,4 +1,10 @@
 module.exports = function (model, type, protocol, fqdn, what) {
+  if (protocol === null) {
+    protocol = window.location.protocol.replace(':', '');
+  }
+  if (fqdn === null) {
+    fqdn = window.location.host;
+  }
   var data = {};
   if (type === 'room') {
     var identifier = (!model.group_id)
