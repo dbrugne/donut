@@ -44,6 +44,10 @@ groupSchema.statics.findById = function (id) {
   });
 };
 
+groupSchema.methods.validPassword = function (password) {
+  return password === this.password;
+};
+
 groupSchema.methods.isMember = function (userId) {
   if (this.isOwner(userId)) {
     return true;

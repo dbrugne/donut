@@ -71,7 +71,7 @@
                        class="input-password form-control ml10 mr10 flex-child <% if (!password) { %> disabled <% } %>"
                        placeholder="<%= (password ? t('chat.form.room-form.common.mode.password-keep') : t('chat.form.room-form.common.mode.password-field') ) %>"
                        maxlength="255"
-                       value="<%= password %>"
+                       value="<%- password %>"
                        <% if (!password) { %> disabled <% } %>
                     />
                 <a href="#" class="mr10 icon icon-refresh random-password dc-text <% if (!password) { %> disabled <% } %>"></a>

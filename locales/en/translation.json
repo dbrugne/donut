@@ -804,7 +804,8 @@
         "group-name-already-exist": "Group __name__ already exists, <a href='__uri__'>would you like to join it</a>?",
         "invalid-rights": "You do not have access to do this."
       }
-    }
+    },
+    "members": "You are now a member of #__name__"
   },
   "group": {
     "administrator": "Administrators",

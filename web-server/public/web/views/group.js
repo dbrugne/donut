@@ -16,7 +16,8 @@ var GroupView = Backbone.View.extend({
   className: 'group',
 
   events: {
-    'click .request-allowance': 'onRequestAllowance'
+    'click .request-allowance': 'onRequestAllowance',
+    'click .send-password': 'onSendPassword'
   },
 
   initialize: function (options) {
@@ -84,6 +85,9 @@ var GroupView = Backbone.View.extend({
     this.$cards = this.$('.ctn-results .rooms.cards .list');
     this.$cards.html(htmlCards);
 
+    this.$passwordDiv = this.$('.password-div');
+    this.$requestAllowance = this.$('.request-allowance');
+
     this.initializeTooltips();
     return this;
   },
@@ -107,6 +111,21 @@ var GroupView = Backbone.View.extend({
           app.trigger('alert', 'info', i18next.t('chat.allowed.success'));
         }
       });
+    }, this));
+  },
+  onSendPassword: function (event) {
+    client.groupJoin(this.model.get('group_id'), this.$('.input-password').val(), _.bind(function (response) {
+      if (response.err) {
+        if (response.err === 'wrong-password') {
+          app.trigger('alert', 'error', i18next.t('chat.password.' + response.err));
+        } else {
+          app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+        }
+      } else if (response.success) {
+        this.$passwordDiv.hide();
+        this.$requestAllowance.hide();
+        app.trigger('alert', 'info', i18next.t('chat.members', {name: this.model.get('name')}));
+      }
     }, this));
   },
   initializeTooltips: function () {

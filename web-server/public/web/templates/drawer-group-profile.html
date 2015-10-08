@@ -47,7 +47,7 @@
 
 <div class="ctn-drawer">
     <div class="room block">
-        <% if (group.disclaimer) { %><p class="description mt20 mb20 left"><%= group.disclaimer %></p><% }; %>
+        <% if (group.disclaimer) { %><p class="description mt20 mb20 left"><%- group.disclaimer %></p><% }; %>
         <% if (group.website && group.website.href) { %><p class="website left"><i class="icon icon-fw icon-link dc-text"></i> <a class="colored dc-text" href="<%= group.website.href %>" target="_blank" title="<%= group.website.title %>"><%= group.website.title %></a></p><% }; %>
         <% if (group.created) { %><p class="created left"><i class="icon icon-fw icon-clock-o dc-text left"></i> <%= t('profile.group.createdat') %> <span class="ml5" data-time="<%= group.created %>"></span></p><% }; %>
         <p class="permalink left"><i class="icon icon-fw icon-link dc-text"></i> <a class="colored dc-text" href="<%= group.url %>" target="_blank"><%= t('profile.group.permalink') %></a></p>

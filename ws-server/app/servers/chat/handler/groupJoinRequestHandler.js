@@ -32,7 +32,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!group) {
-        return callback('room-not-found');
+        return callback('group-not-found');
       }
 
       if (group.isMember(user.id)) {

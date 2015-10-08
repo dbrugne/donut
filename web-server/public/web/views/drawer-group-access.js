@@ -63,6 +63,9 @@ var RoomAccessView = Backbone.View.extend({
     this.currentPassword = data.password;
     this.group_name = data.name;
 
+    if (data.disclaimer) {
+      data.disclaimer = _.escape(data.disclaimer);
+    }
     var html = this.template({
       group: data,
       password: data.password
