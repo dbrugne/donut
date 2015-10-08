@@ -4,6 +4,7 @@ var GroupModel = require('../../../shared/models/group');
 var RoomModel = require('../../../shared/models/room');
 var conf = require('../../../config/index');
 var logger = require('../../../shared/util/logger').getLogger('web', __filename);
+var urls = require('../../../shared/util/url');
 
 module.exports = function (req, res, next, groupname) {
   if (groupname === undefined || groupname === '') {
@@ -18,7 +19,6 @@ module.exports = function (req, res, next, groupname) {
   GroupModel.findByName(groupname)
     .populate('owner', 'username avatar color location website facebook')
     .populate('op', 'username avatar color location website facebook')
-    //.populate('members', 'username avatar color location website facebook')
     .exec(function (err, model) {
       if (err) {
         req.flash('error', err);
@@ -37,9 +37,10 @@ module.exports = function (req, res, next, groupname) {
         };
 
         // urls
-        group.url = req.protocol + '://' + conf.fqdn + '/group/' + group.name;
-        group.chat = req.protocol + '://' + conf.fqdn + '/!' + group.name;
-        group.join = req.protocol + '://' + conf.fqdn + '/group/join/' + group.name;
+        var data = urls(group, 'group', req.protocol);
+        group.url = data.url;
+        group.chat = data.chat;
+        group.join = data.join;
 
         // owner
         var ownerId;
@@ -51,7 +52,7 @@ module.exports = function (req, res, next, groupname) {
             avatar: model.owner._avatar(80),
             color: model.owner.color,
             url: (model.owner.username)
-              ? req.protocol + '://' + conf.fqdn + '/user/' + ('' + model.owner.username).toLocaleLowerCase()
+              ? urls(model.owner, 'user', req.protocol, 'url')
               : '',
             is_owner: true,
             is_op: false // could not be both
@@ -73,7 +74,7 @@ module.exports = function (req, res, next, groupname) {
               avatar: _model._avatar(80),
               color: _model.color,
               url: (_model.username)
-                ? req.protocol + '://' + conf.fqdn + '/user/' + ('' + _model.username).toLocaleLowerCase()
+                ? urls(_model, 'user', req.protocol, 'url')
                 : '',
               is_op: true,
               is_owner: false
@@ -84,33 +85,6 @@ module.exports = function (req, res, next, groupname) {
           });
           group.op = opList;
         }
-
-        // members
-        //if (model.members && model.members.length) {
-        //  var members = [];
-        //  _.each(model.members, function (_model) {
-        //    if (ownerId && ownerId === _model.id) {
-        //      return;
-        //    }
-        //    if (opIds && opIds.indexOf(_model.id) !== -1) {
-        //      return;
-        //    }
-        //
-        //    var user = {
-        //      id: _model.id,
-        //      username: _model.username,
-        //      avatar: _model._avatar(80),
-        //      color: _model.color,
-        //      url: (_model.username)
-        //        ? req.protocol + '://' + conf.fqdn + '/user/' + ('' + _model.username).toLocaleLowerCase()
-        //        : '',
-        //      isOp: false,
-        //      isOwner: false
-        //    };
-        //    members.push(user);
-        //  });
-        //  group.members = members;
-        //}
 
         group.membersCount = 1; // owner
         group.membersCount += (group.op)
@@ -141,19 +115,20 @@ module.exports = function (req, res, next, groupname) {
               name: r.name,
               users: (r.users)
                 ? r.users.length
-                : 0,
-              url: (r.name)
-                ? req.protocol + '://' + conf.fqdn + '/room/' + r.name.toLocaleLowerCase()
-                : '',
-              chat: req.protocol + '://' + conf.fqdn + '/!#' + group.name + '/' + r.name,
-              join: req.protocol + '://' + conf.fqdn + '/room/join/' + group.name + '/' + r.name
+                : 0
             };
+
+            var data = urls(r, 'room', req.protocol);
+            room.url = data.url;
+            room.chat = data.chat;
+            room.join = data.join;
 
             if (r.owner) {
               room.owner = {
                 user_id: r.owner.id,
                 username: r.owner.username,
-                is_owner: true
+                is_owner: true,
+                url: urls(r.owner, 'user', req.protocol, 'url')
               };
             }
 
