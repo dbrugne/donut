@@ -124,7 +124,7 @@ module.exports = {
     };
   },
 
-  mentionTemplate: _.template('<strong><% if (markup.type === \'room\') { %><a href="' + conf.url + '/room/<%= markup.title.replace(\'#\', \'\') %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'user\') { %><a href="' + conf.url + '/user/<%= markup.title.replace(\'@\', \'\') %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'url\') { %><a href="<%= markup.href %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'email\') { %><a href="mailto:<%= markup.href %>" style="<%= options.style %>"><%= markup.title %></a><% } %></strong>'),
+  mentionTemplate: _.template('<strong><% if (markup.type === \'room\') { %><a href="' + conf.url + '/r/<%= markup.title.replace(\'#\', \'\') %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'user\') { %><a href="' + conf.url + '/u/<%= markup.title.replace(\'@\', \'\') %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'url\') { %><a href="<%= markup.href %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'email\') { %><a href="mailto:<%= markup.href %>" style="<%= options.style %>"><%= markup.title %></a><% } %></strong>'),
 
   mentionize: function (string, options) {
     options.template = this.mentionTemplate;
