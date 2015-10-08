@@ -93,7 +93,11 @@
         </div>
         <div class="info">
             <div class="disclaimer fs18">
-                <%=group.disclaimer%>
+                <% if (!isMember) { %>
+                <%= group.disclaimer %>
+                <% } else { %>
+                <%= group.description %>
+                <% } %>
             </div>
         </div>
     </div>
