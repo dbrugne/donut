@@ -106,10 +106,8 @@ roomSchema.statics.findByIdentifier = function (identifier, callback) {
   }
 };
 
-roomSchema.methods.getIdentifier = function () {
-  return (!this.group)
-    ? '#' + this.name
-    : '#' + this.group.name + '/' + this.name;
+roomSchema.statics.findByGroup = function (groupId) {
+  return this.find({group: groupId});
 };
 
 roomSchema.statics.listByName = function (names) {
@@ -399,8 +397,10 @@ roomSchema.methods.getIdsByType = function (type) {
   return ids;
 };
 
-roomSchema.statics.findByGroup = function (groupId) {
-  return this.find({group: groupId});
+roomSchema.methods.getIdentifier = function () {
+  return (!this.group)
+    ? '#' + this.name
+    : '#' + this.group.name + '/' + this.name;
 };
 
 module.exports = mongoose.model('Room', roomSchema);
