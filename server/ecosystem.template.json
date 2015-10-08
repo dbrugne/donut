@@ -4,7 +4,7 @@
     "test": {
       "user": "donut",
       "host": "5.196.206.62",
-      "ref": "origin/master",
+      "ref": "origin/671-pm2",
       "repo": "git@github.com:dbrugne/donut.git",
       "path": "/home/donut/app",
       "post-deploy": "npm install && grunt pm2 --deployEnvironment test && grunt build --uglify true && pm2 startOrRestart ecosystem.json --env test",
