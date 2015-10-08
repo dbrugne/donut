@@ -119,7 +119,8 @@ var NotificationsView = Backbone.View.extend({
       username: (data.data.by_user)
         ? data.data.by_user.username
         : data.data.user.username,
-      message: msg
+      message: msg,
+      topic: (data.data.topic) ? data.data.topic : ''
     });
 
     message = message.replace(/<\/*span>/g, '');
@@ -154,7 +155,8 @@ var NotificationsView = Backbone.View.extend({
     n.message = i18next.t('chat.notifications.messages.' + n.type, {
       name: n.name,
       username: n.username,
-      message: message
+      message: message,
+      topic: (n.data.topic) ? n.data.topic : ''
     });
 
     if (n.type === 'roomjoinrequest') {
