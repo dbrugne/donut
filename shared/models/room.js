@@ -62,6 +62,19 @@ roomSchema.statics.findByName = function (name) {
   });
 };
 
+roomSchema.statics.findByNameAndGroup = function (name, groupId) {
+  var query = {
+    name: common.regexp.exact(name, 'i'),
+    deleted: {$ne: true}
+  };
+  if (groupId) {
+    query.group = {$in: groupId};
+  } else {
+    query.group = {$exists: false};
+  }
+  return this.findOne(query);
+};
+
 roomSchema.statics.findByIdentifier = function (identifier, callback) {
   var data = common.validate.uriExtract(identifier);
   if (!data) {

@@ -310,7 +310,16 @@ var MainView = Backbone.View.extend({
   openCreateRoom: function (event) {
     event.preventDefault();
     var name = $(event.currentTarget).data('name') || '';
-    var view = new DrawerRoomCreateView({ name: name });
+
+    var groupId = $(event.currentTarget).data('groupId');
+    var groupName = $(event.currentTarget).data('groupName');
+    var view;
+    if (groupId) {
+      view = new DrawerRoomCreateView({ name: name, group_id: groupId, group_name: groupName });
+    } else {
+      view = new DrawerRoomCreateView({ name: name });
+    }
+
     this.drawerView.setSize('450px').setView(view).open();
     view.focusField();
   },

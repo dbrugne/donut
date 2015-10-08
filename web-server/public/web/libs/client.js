@@ -382,12 +382,15 @@ var client = _.extend({
       this.applyRequestCallback('room:update', callback)
     );
   },
-  roomCreate: function (name, mode, password, callback) {
+  roomCreate: function (name, mode, password, groupId, callback) {
     var data = {
       room_name: name,
       mode: mode,
       password: password
     };
+    if (groupId) {
+      data.group_id = groupId;
+    }
     debug('io:out:room:create', data);
     pomelo.request(
       'chat.roomCreateHandler.call',

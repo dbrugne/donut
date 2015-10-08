@@ -18,6 +18,7 @@ var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
   var user = session.__currentUser__;
+  var group = session.__group__;
 
   async.waterfall([
 
@@ -30,6 +31,10 @@ handler.call = function (data, session, next) {
         return callback('name-wrong-format');
       }
 
+      if (data.room_name === conf.group.default.name) {
+        return callback('name-wrong-format');
+      }
+
       if (!data.mode) {
         return callback('params-mode');
       }
@@ -38,12 +43,15 @@ handler.call = function (data, session, next) {
         return callback('mode-wrong-format');
       }
 
+      if (data.group_id && !group) {
+        return callback('group-not-found');
+      }
+
       return callback(null);
     },
 
     function create (callback) {
-      // @todo : make it works with group rooms (#aaa/aaa)
-      var q = RoomModel.findByName(data.room_name);
+      var q = RoomModel.findByNameAndGroup(data.room_name, data.group_id);
       q.exec(function (err, room) {
         if (err) {
           return callback(err);
@@ -59,6 +67,9 @@ handler.call = function (data, session, next) {
         room.visibility = false; // not visible on home until admin change this value
         room.priority = 0;
         room.mode = data.mode;
+        if (data.group_id) {
+          room.group = group.id;
+        }
         if (data.mode === 'private' && data.password !== null) {
           room.password = data.password; // user.generateHash(data.password);
         }

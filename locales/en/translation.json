@@ -735,10 +735,11 @@
         },
         "create": {
           "label": "Create a donut",
-          "help": "Between 3 and 24 characters, only letters, numbers,  dashes (-) and underscores (_)",
+          "help": "Between 3 and 20 characters, only letters, numbers,  dashes (-) and underscores (_)",
           "placeholder": "Donut name",
           "submit": "Create",
-          "group": "Already owner of a community? Want to create a dedicated space for you users? You can <a href=\"#\" class=\"open-group-create\">create a group</a>"
+          "group": "Already owner of a community? Want to create a dedicated space for you users? You can <a href=\"#\" class=\"open-group-create\">create a group</a>",
+          "description": "You are about to create a donut in the global space, if you want to create a donut in a group you are a member of, go to the group page and click on \"Create a donut\""
         },
         "edit": {
           "othersettings": "Other settings",

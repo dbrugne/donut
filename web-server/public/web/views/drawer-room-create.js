@@ -17,10 +17,11 @@ var DrawerRoomCreateView = Backbone.View.extend({
   },
 
   initialize: function (options) {
-    this.render(options.name);
+    this.group_id = options.group_id;
+    this.render(options.name, options.group_id, options.group_name);
   },
-  render: function (name) {
-    var html = this.template({name: name});
+  render: function (name, groupId, groupName) {
+    var html = this.template({name: name, group_id: groupId, group_name: groupName});
     this.$el.html(html);
     this.$input = this.$el.find('input[name=input-create]');
     this.$errors = this.$el.find('.errors');
@@ -88,7 +89,7 @@ var DrawerRoomCreateView = Backbone.View.extend({
     var name = this.$input.val();
 
     this.$submit.addClass('loading');
-    client.roomCreate(name, mode, null, _.bind(function (response) {
+    client.roomCreate(name, mode, null, this.group_id, _.bind(function (response) {
       this.$submit.removeClass('loading');
       if (response.code !== 500 && response.success !== true) {
         // @todo : make it works with group rooms (#aaa/aaa)

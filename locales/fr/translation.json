@@ -735,10 +735,11 @@
         },
         "create": {
           "label": "Créez un donut",
-          "help": "Entre 3 et 24 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement",
+          "help": "Entre 3 et 20 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement",
           "placeholder": "Nom du donut",
           "submit": "Créer le donut",
-          "group": "Déjà propriétaire d'une communauté ? Vous voulez créer un espace dédié à vos utilisateurs ? Vous pouvez <a href=\"#\" class=\"open-group-create\">créer un groupe</a>."
+          "group": "Déjà propriétaire d'une communauté ? Vous voulez créer un espace dédié à vos utilisateurs ? Vous pouvez <a href=\"#\" class=\"open-group-create\">créer un groupe</a>.",
+          "description": "Vous êtes sur le point de créer un donut sur l'espace global, si vous voulez créer un donut dans un groupe auquel vous appartenez, aller sur la page du groupe et clicker sur \"Créer un Donut\""
         },
         "edit": {
           "othersettings": "Autres paramètres",

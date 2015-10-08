@@ -108,8 +108,8 @@
 
     <div class="flex-parent center mt100">
         <h2 class="vcentered"><%= t('global.donuts') %></h2>
-        <% if(isOwner || isAdmin) { %>
-            <span class="open-create-room btn btn-primary ml20 curp" data-group-id="<%=group.group_id%>"><%= t('actions.create') %></span>
+        <% if (isMember) { %>
+            <span class="open-create-room btn btn-primary ml20 curp" data-group-id="<%=group.group_id%>" data-group-name="<%=group.name%>"><%= t('actions.create') %></span>
         <% } %>
     </div>
     <div class="ctn-results mt30">
