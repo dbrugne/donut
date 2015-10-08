@@ -18,10 +18,11 @@ var DrawerRoomCreateView = Backbone.View.extend({
 
   initialize: function (options) {
     this.group_id = options.group_id;
-    this.render(options.name, options.group_id, options.group_name);
+    this.group_name = options.group_name;
+    this.render(options.name);
   },
-  render: function (name, groupId, groupName) {
-    var html = this.template({name: name, group_id: groupId, group_name: groupName});
+  render: function (name) {
+    var html = this.template({name: name, group_id: this.group_id, group_name: this.group_name});
     this.$el.html(html);
     this.$input = this.$el.find('input[name=input-create]');
     this.$errors = this.$el.find('.errors');
@@ -92,8 +93,12 @@ var DrawerRoomCreateView = Backbone.View.extend({
     client.roomCreate(name, mode, null, this.group_id, _.bind(function (response) {
       this.$submit.removeClass('loading');
       if (response.code !== 500 && response.success !== true) {
-        // @todo : make it works with group rooms (#aaa/aaa)
-        var uri = '#' + name;
+        var uri;
+        if (this.group_name) {
+          uri = this.group_name + '/' + name;
+        } else {
+          uri = name;
+        }
         var error = i18next.t('chat.form.errors.' +
           response.err, {name: name, uri: uri});
         return this.setError(error);
@@ -101,7 +106,11 @@ var DrawerRoomCreateView = Backbone.View.extend({
         return this.setError(i18next.t('global.unknownerror'));
       }
 
-      app.trigger('joinRoom', '#' + name);
+      if (this.group_name) {
+        app.trigger('joinRoom', '#' + this.group_name + '/' + name);
+      } else {
+        app.trigger('joinRoom', '#' + name);
+      }
       this.reset();
       this.trigger('close');
     }, this));
