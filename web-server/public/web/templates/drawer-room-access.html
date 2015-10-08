@@ -45,20 +45,21 @@
 
         <div class="membership-conditions mt10">
             <label for="conditions-area"><%= t('chat.form.room-form.mode.disclaimer.memberscondition') %></label>
-            <textarea id="conditions-area" maxlength="200" cols="55" rows="4" style="max-width: 408px"></textarea>
+            <textarea class="form-copntrol" id="conditions-area" maxlength="200" cols="55" rows="4"></textarea>
             <p class="help-block"><%= t('chat.form.room-form.edit.description.help') %> <span class="counter"><%= t('chat.form.common.edit.left', {count: 200}) %></span></p>
-            <input class="btn btn-success save-access save-conditions" type="submit" value="<%= t('global.save')%>" />
-        </div>
-        <% if (group !== false) { %>
-        <h2 class="block"><%= t('chat.blocked.allowgroupmember') %></h2>
-
-        <div class="field-password radio block">
-            <p><%= t('chat.form.room-form.mode.disclaimer.allowgroupmember') %></p>
-            <div class="password-block form-inline mt10 flex-parent baseline space-between">
-                <input type="checkbox" id="input-allowgroupmember-checkbox" name="input-allowgroupmember-checkbox" <% if (allow_group_member !== false) { %> checked <% } %> />
-                <label for="input-allowgroupmember-checkbox"><%= t('chat.blocked.allowgroupmember') %></label>
+            <div class="flex-parent jc-end mt10">
+                <input class="btn btn-success save-access save-conditions pull-right" type="submit" value="<%= t('global.save')%>" />
             </div>
         </div>
+
+        <% if (group !== false) { %>
+            <h2 class="block"><%= t('chat.blocked.allowgroupmember') %></h2>
+            <div class="field-password radio block">
+                <div class="password-block form-inline mt10 flex-parent baseline space-between">
+                    <input type="checkbox" id="input-allowgroupmember-checkbox" name="input-allowgroupmember-checkbox" <% if (allow_group_member !== false) { %> checked <% } %> />
+                    <label for="input-allowgroupmember-checkbox"><%= t('chat.form.room-form.mode.disclaimer.allowgroupmember') %></label>
+                </div>
+            </div>
         <% } %>
 
         <h2 class="block"><%= t('chat.blocked.password_placeholder') %></h2>
