@@ -48,7 +48,8 @@ handler.call = function (data, session, next) {
         description: group.description,
         disclaimer: group.disclaimer,
         created: group.created_at,
-        members: []
+        members: [],
+        has_password: (typeof group.password !== 'undefined' || group.password !== '')
       };
 
       // owner

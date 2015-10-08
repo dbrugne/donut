@@ -256,6 +256,15 @@ var client = _.extend({
       this.applyRequestCallback('group:delete', callback)
     );
   },
+  groupJoin: function (groupId, password, callback) {
+    var data = {group_id: groupId, password: password};
+    debug('io:out:group:join', data);
+    pomelo.request(
+      'chat.groupJoinHandler.call',
+      data,
+      this.applyRequestCallback('group:join', callback)
+    );
+  },
 
   // ROOM
   // ======================================================

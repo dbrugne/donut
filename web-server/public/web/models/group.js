@@ -32,7 +32,7 @@ var GroupModel = Backbone.Model.extend({
     return currentUser.isAdmin();
   },
   currentUserIsMember: function () {
-    return !!_.find(this.get('members'), function(member) {
+    return !!_.find(this.get('members'), function (member) {
       if (currentUser.get('user_id') === member.user_id) {
         return true; // found
       }
