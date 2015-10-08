@@ -10,7 +10,7 @@ router.param('user', require('../middlewares/user-param'));
 
 router.get('/u/:user', function (req, res) {
   if (req.query.redirect && req.query.redirect === 'true') {
-    bouncer.set(req, '/!#user/' + req.requestedUser.chat);
+    bouncer.set(req, '/!#u/' + req.requestedUser.chat);
   }
 
   var meta = {

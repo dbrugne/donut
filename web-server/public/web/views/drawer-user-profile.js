@@ -1,4 +1,3 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
@@ -6,6 +5,7 @@ var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 var date = require('../libs/date');
+var urls = require('../../../../shared/util/url');
 
 var DrawerUserProfileView = Backbone.View.extend({
   template: require('../templates/drawer-user-profile.html'),
@@ -53,8 +53,7 @@ var DrawerUserProfileView = Backbone.View.extend({
     user.avatar = common.cloudinary.prepare(user.avatar, 90);
 
     user.uri = '#u/' + user.username;
-
-    user.url = '/user/' + ('' + user.username).toLocaleLowerCase();
+    user.url = urls(user, 'user', null, null, 'url');
 
     this._rooms(user); // decorate user object with rooms_list
 

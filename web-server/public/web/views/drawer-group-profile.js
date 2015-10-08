@@ -5,6 +5,7 @@ var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 var date = require('../libs/date');
+var urls = require('../../../../shared/util/url');
 
 var DrawerGroupProfileView = Backbone.View.extend({
   template: require('../templates/drawer-group-profile.html'),
@@ -54,9 +55,8 @@ var DrawerGroupProfileView = Backbone.View.extend({
 
     group.avatar = common.cloudinary.prepare(group.avatar, 90);
 
-    group.uri = '#g/' + group.name;
-
-    group.url = 'group/' + group.name;
+    group.uri = urls(group, 'group', null, null, 'uri');
+    group.url = urls(group, 'group', null, null, 'url');
 
     _.each(group.members, function (element, key, list) {
       element.avatar = common.cloudinary.prepare(element.avatar, 34);

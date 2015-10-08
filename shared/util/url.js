@@ -20,7 +20,7 @@ module.exports = function (model, type, protocol, fqdn, what) {
   if (type === 'group') {
     data = {
       url: protocol + '://' + fqdn + '/g/' + model.name,
-      uri: '#' + model.name,
+      uri: '#g/' + model.name,
       chat: protocol + '://' + fqdn + '/!#g/' + model.name,
       join: protocol + '://' + fqdn + '/g/join/' + model.name
     };
@@ -30,7 +30,7 @@ module.exports = function (model, type, protocol, fqdn, what) {
       url: protocol + '://' + fqdn + '/u/' + model.username.toLocaleLowerCase(),
       uri: '#' + model.username,
       chat: protocol + '://' + fqdn + '/!#u/' + model.username,
-      discuss: protocol + '://' + fqdn + '/u/join/' + model.username
+      discuss: protocol + '://' + fqdn + '/u/discuss/' + model.username
     };
   }
 

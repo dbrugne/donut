@@ -5,6 +5,7 @@ var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 var date = require('../libs/date');
+var urls = require('../../../../shared/util/url');
 
 var DrawerRoomProfileView = Backbone.View.extend({
   template: require('../templates/drawer-room-profile.html'),
@@ -55,8 +56,7 @@ var DrawerRoomProfileView = Backbone.View.extend({
     room.avatar = common.cloudinary.prepare(room.avatar, 90);
 
     room.uri = room.identifier;
-
-    room.url = 'room/' + room.name.replace('#', '');
+    room.url = urls(room, 'room', null, null, 'url');
 
     _.each(room.users, function (element, key, list) {
       element.avatar = common.cloudinary.prepare(element.avatar, 34);
