@@ -3,6 +3,7 @@ var _ = require('underscore');
 var Room = require('../../../shared/models/room');
 var logger = require('pomelo-logger').getLogger('web', __filename);
 var urls = require('../../../shared/util/url');
+var conf = require('../../../config/index');
 
 module.exports = function (req, res, next, roomname) {
   if (roomname === undefined || roomname === '') {
@@ -50,7 +51,7 @@ module.exports = function (req, res, next, roomname) {
         }
 
         // urls
-        var data = urls(room, 'room', req.protocol);
+        var data = urls(room, 'room', req.protocol, conf.fqdn);
         room.url = data.url;
         room.chat = data.chat;
         room.join = data.join;
@@ -65,7 +66,7 @@ module.exports = function (req, res, next, roomname) {
             avatar: model.owner._avatar(80),
             color: model.owner.color,
             url: (model.owner.username)
-              ? urls(model.owner, 'user', req.protocol, 'url')
+              ? urls(model.owner, 'user', req.protocol, conf.fqdn, 'url')
               : '',
             isOwner: true,
             isOp: false // could not be both
@@ -87,7 +88,7 @@ module.exports = function (req, res, next, roomname) {
               avatar: _model._avatar(80),
               color: _model.color,
               url: (_model.username)
-                ? urls(_model, 'user', req.protocol, 'url')
+                ? urls(_model, 'user', req.protocol, conf.fqdn, 'url')
                 : '',
               isOp: true,
               isOwner: false
@@ -116,7 +117,7 @@ module.exports = function (req, res, next, roomname) {
               avatar: _model._avatar(80),
               color: _model.color,
               url: (_model.username)
-                ? urls(_model, 'user', req.protocol, 'url')
+                ? urls(_model, 'user', req.protocol, conf.fqdn, 'url')
                 : '',
               isOp: false,
               isOwner: false

@@ -38,13 +38,13 @@ router.get('/', [require('csurf')()], function (req, res) {
     function renderTemplate (featured, callback) {
       _.each(featured, function (element, index, list) {
         list[index].avatar = common.cloudinary.prepare(element.avatar, 135);
-        var data = urls(element, 'room', req.protocol);
+        var data = urls(element, 'room', req.protocol, conf.fqdn);
         list[index].url = data.url;
         list[index].join = (req.user)
           ? data.chat
           : data.join;
-        if (element.owner) {
-          list[index].owner.url = urls(element.owner, 'user', req.protocol, 'url');
+        if (element.owner_username) {
+          list[index].owner_url = urls({ username: element.owner_username }, 'user', req.protocol, conf.fqdn, 'url');
         }
       });
       var data = {

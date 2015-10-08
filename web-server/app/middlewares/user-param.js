@@ -5,6 +5,7 @@ var User = require('../../../shared/models/user');
 var Room = require('../../../shared/models/room');
 var logger = require('pomelo-logger').getLogger('web', __filename);
 var urls = require('../../../shared/util/url');
+var conf = require('../../../config/index');
 
 module.exports = function (req, res, next, username) {
   var data = {};
@@ -44,7 +45,7 @@ module.exports = function (req, res, next, username) {
       data.location = user.location;
       data.website = user.website;
 
-      var _urls = urls(user, 'user', req.protocol);
+      var _urls = urls(user, 'user', req.protocol, conf.fqdn);
       data.url = _urls.url;
       data.chat = _urls.chat;
       data.discuss = _urls.discuss;
@@ -76,7 +77,7 @@ module.exports = function (req, res, next, username) {
         _.each(rooms, function (dbroom) {
           var room = dbroom.toJSON();
           if (room.owner) {
-            room.owner.url = urls(room.owner, 'user', req.protocol, 'url');
+            room.owner.url = urls(room.owner, 'user', req.protocol, conf.fqdn, 'url');
           }
 
           room.avatar = dbroom._avatar(160);
@@ -92,7 +93,7 @@ module.exports = function (req, res, next, username) {
             room.group_id = dbroom.group.id;
           }
 
-          var data = urls(room, 'room', req.protocol);
+          var data = urls(room, 'room', req.protocol, conf.fqdn);
           room.url = data.url;
           room.chat = data.chat;
           room.join = data.join;

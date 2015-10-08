@@ -1,32 +1,30 @@
-var conf = require('../../config');
-
-module.exports = function (model, type, protocol, what) {
+module.exports = function (model, type, protocol, fqdn, what) {
   var data = {};
   if (type === 'room') {
     var identifier = (!model.group_id)
       ? model.name
       : model.group_name + '/' + model.name;
     data = {
-      url: protocol + '://' + conf.fqdn + '/r/' + identifier,
+      url: protocol + '://' + fqdn + '/r/' + identifier,
       uri: '#' + identifier,
-      chat: protocol + '://' + conf.fqdn + '/!#r/' + identifier,
-      join: protocol + '://' + conf.fqdn + '/r/join/' + identifier
+      chat: protocol + '://' + fqdn + '/!#r/' + identifier,
+      join: protocol + '://' + fqdn + '/r/join/' + identifier
     };
   }
   if (type === 'group') {
     data = {
-      url: protocol + '://' + conf.fqdn + '/g/' + model.name,
+      url: protocol + '://' + fqdn + '/g/' + model.name,
       uri: '#' + model.name,
-      chat: protocol + '://' + conf.fqdn + '/!#g/' + model.name,
-      join: protocol + '://' + conf.fqdn + '/g/join/' + model.name
+      chat: protocol + '://' + fqdn + '/!#g/' + model.name,
+      join: protocol + '://' + fqdn + '/g/join/' + model.name
     };
   }
   if (type === 'user') {
     data = {
-      url: protocol + '://' + conf.fqdn + '/u/' + model.username.toLocaleLowerCase(),
+      url: protocol + '://' + fqdn + '/u/' + model.username.toLocaleLowerCase(),
       uri: '#' + model.username,
-      chat: protocol + '://' + conf.fqdn + '/!#u/' + model.username,
-      discuss: protocol + '://' + conf.fqdn + '/u/join/' + model.username
+      chat: protocol + '://' + fqdn + '/!#u/' + model.username,
+      discuss: protocol + '://' + fqdn + '/u/join/' + model.username
     };
   }
 

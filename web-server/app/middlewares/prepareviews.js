@@ -12,7 +12,7 @@ module.exports = function () {
       res.locals.user = req.user.toObject(); // .toObject() avoid modification on original req.user object (like avatar)
       res.locals.user.avatar = req.user._avatar(80);
       if (req.user.username) {
-        res.locals.user.url = urls(req.user, 'user', req.protocol, 'url');
+        res.locals.user.url = urls(req.user, 'user', req.protocol, conf.fqdn, 'url');
       }
     } else {
       res.locals.user = false;

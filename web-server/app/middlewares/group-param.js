@@ -37,7 +37,7 @@ module.exports = function (req, res, next, groupname) {
         };
 
         // urls
-        var data = urls(group, 'group', req.protocol);
+        var data = urls(group, 'group', req.protocol, conf.fqdn);
         group.url = data.url;
         group.chat = data.chat;
         group.join = data.join;
@@ -52,7 +52,7 @@ module.exports = function (req, res, next, groupname) {
             avatar: model.owner._avatar(80),
             color: model.owner.color,
             url: (model.owner.username)
-              ? urls(model.owner, 'user', req.protocol, 'url')
+              ? urls(model.owner, 'user', req.protocol, conf.fqdn, 'url')
               : '',
             is_owner: true,
             is_op: false // could not be both
@@ -74,7 +74,7 @@ module.exports = function (req, res, next, groupname) {
               avatar: _model._avatar(80),
               color: _model.color,
               url: (_model.username)
-                ? urls(_model, 'user', req.protocol, 'url')
+                ? urls(_model, 'user', req.protocol, conf.fqdn, 'url')
                 : '',
               is_op: true,
               is_owner: false
@@ -118,7 +118,7 @@ module.exports = function (req, res, next, groupname) {
                 : 0
             };
 
-            var data = urls(r, 'room', req.protocol);
+            var data = urls(r, 'room', req.protocol, conf.fqdn);
             room.url = data.url;
             room.chat = data.chat;
             room.join = data.join;
@@ -128,7 +128,7 @@ module.exports = function (req, res, next, groupname) {
                 user_id: r.owner.id,
                 username: r.owner.username,
                 is_owner: true,
-                url: urls(r.owner, 'user', req.protocol, 'url')
+                url: urls(r.owner, 'user', req.protocol, conf.fqdn, 'url')
               };
             }
 
