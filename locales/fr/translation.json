@@ -661,7 +661,7 @@
               "size": "Sera automatiquement redimensionné au format __resized_width__x__resized_height__px."
             }
           },
-          "left": "<strong>__count__/strong> restant"
+          "left": "<strong>__count__</strong> restant"
         }
       },
       "group-form": {
