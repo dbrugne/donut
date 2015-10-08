@@ -460,7 +460,7 @@
         "roomrefuse": "Demande d'accès à <span>#__name__</span></br> refusée",
         "roomjoin": "<span>@__username__</span> rejoint <span>#__name__</span>",
         "roomjoinrequest": "<span>@__username__</span> souhaite rejoindre <span>#__name__</span>",
-        "roomtopic": "Nouveau sujet dans <span>#__name__</span>",
+        "roomtopic": "Nouveau sujet dans <span>#__name__</span>, __topic__",
         "roommessage": "Nouveaux messages dans <span>#__name__</span>",
         "usermention": "Vous êtes mentionné dans <span>#__name__</span>",
         "usermessage": "<span>@__username__</span>: __message__",
