@@ -44,7 +44,7 @@ module.exports = function (search, searchInUsers, searchInRooms, limit, skip, li
 
     function groupSearch (callback) {
       if (!searchInRooms) {
-        return callback(null, false);
+        return callback(null);
       }
 
       var criteria = {
@@ -69,7 +69,7 @@ module.exports = function (search, searchInUsers, searchInRooms, limit, skip, li
 
     function roomSearch (callback) {
       if (!searchInRooms) {
-        return callback(null, false);
+        return callback(null);
       }
 
       var criteria = {
