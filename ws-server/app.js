@@ -88,8 +88,8 @@ app.start();
 
 process.on('uncaughtException', function (err) {
   try {
-    logger.fatal('uncaught exception', err.stack);
+    logger.fatal('ws uncaughtException', err.stack);
   } catch (e) {
-    console.error('uncaught exception', err.stack);
+    console.error('ws uncaughtException (logger failed)', err.stack);
   }
 });
