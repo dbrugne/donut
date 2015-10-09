@@ -575,15 +575,6 @@ var client = _.extend({
       this.applyRequestCallback('room:allow', callback)
     );
   },
-  roomAllowGroup: function (roomId, callback) {
-    var data = {room_id: roomId};
-    debug('io:out:room:allow:group', data);
-    pomelo.request(
-      'chat.roomAllowHandler.group',
-      data,
-      this.applyRequestCallback('room:allow:group', callback)
-    );
-  },
   roomRefuse: function (roomId, userId, callback) {
     var data = {room_id: roomId, user_id: userId};
     debug('io:out:room:refuse', data);
@@ -600,15 +591,6 @@ var client = _.extend({
       'chat.roomDisallowHandler.call',
       data,
       this.applyRequestCallback('room:disallow', callback)
-    );
-  },
-  roomDisallowGroup: function (roomId, callback) {
-    var data = {room_id: roomId};
-    debug('io:out:room:disallow:group', data);
-    pomelo.request(
-      'chat.roomDisallowHandler.group',
-      data,
-      this.applyRequestCallback('room:disallow:group', callback)
     );
   },
   roomSetPrivate: function (roomId, callback) {

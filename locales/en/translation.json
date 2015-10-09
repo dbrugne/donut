@@ -553,6 +553,8 @@
       "labelsearch": "Allow users",
       "add": "Allow a user",
       "labelpending": "Pending users",
+      "user-request-access": "Allow users to request access",
+      "request-access": "Access request",
       "types": {
         "all": "All",
         "allowed": "Allowed",

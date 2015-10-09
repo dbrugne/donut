@@ -33,6 +33,7 @@ var RoomAccessView = Backbone.View.extend({
     'click .random-password': 'onRandomPassword',
     'click .change-mode': 'onChangeMode',
     'click #input-allowgroupmember-checkbox': 'onChangeGroupAllow',
+    'click #input-userrequest-checkbox': 'onChangeUsersRequest',
     'input #conditions-area': 'onTypeConditions'
   },
 
@@ -70,7 +71,8 @@ var RoomAccessView = Backbone.View.extend({
       mode: data.mode,
       password: data.password,
       group: data.group_id || false,
-      allow_group_member: data.allow_group_member || false
+      allow_group_member: data.allow_group_member || false,
+      allow_user_request: data.allow_user_request || false
     });
     this.$el.html(html);
 
@@ -80,6 +82,7 @@ var RoomAccessView = Backbone.View.extend({
     this.$dropdownMenu = this.$('.dropdown-menu');
     this.$toggleCheckbox = this.$('#input-password-checkbox');
     this.$checkboxGroupAllow = this.$('#input-allowgroupmember-checkbox');
+    this.$checkboxUserRequest = this.$('#input-userrequest-checkbox');
     this.$password = this.$('.input-password');
     this.$randomPassword = this.$('.random-password');
     this.$countConditions = this.$('.counter');
@@ -208,11 +211,22 @@ var RoomAccessView = Backbone.View.extend({
   },
   onChangeGroupAllow: function (event) {
     if (this.$checkboxGroupAllow.is(':checked')) {
-      client.roomAllowGroup(this.roomId, function (err) {
+      client.roomUpdate(this.roomId, { allow_group_member: true }, function (err) {
         return (err);
       });
     } else {
-      client.roomDisallowGroup(this.roomId, function (err) {
+      client.roomUpdate(this.roomId, { allow_group_member: false, add_users_to_allow: true }, function (err) {
+        return (err);
+      });
+    }
+  },
+  onChangeUsersRequest: function (event) {
+    if (this.$checkboxUserRequest.is(':checked')) {
+      client.roomUpdate(this.roomId, { allow_user_request: true }, function (err) {
+        return (err);
+      });
+    } else {
+      client.roomUpdate(this.roomId, { allow_user_request: false }, function (err) {
         return (err);
       });
     }

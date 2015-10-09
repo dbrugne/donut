@@ -51,6 +51,9 @@ handler.call = function (data, session, next) {
         read.owner_id = room.owner.id;
         read.owner_username = room.owner.username;
       }
+      if (room.mode !== 'public') {
+        read.allow_user_request = room.allow_user_request;
+      }
 
       return callback(null);
     },

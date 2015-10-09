@@ -37,6 +37,7 @@ var roomSchema = mongoose.Schema({
     created_at: {type: Date, default: Date.now}
   }],
   allow_group_member: {type: Boolean, default: true},
+  allow_user_request: {type: Boolean, default: true},
   allowed: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
   allowed_pending: [{
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},

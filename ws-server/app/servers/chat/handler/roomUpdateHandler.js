@@ -37,7 +37,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isOwner(user.id) && session.settings.admin !== true) {
-        return callback('no-op-owner-admin');
+        return callback('no-admin-owner');
       }
 
       return callback(null);
@@ -94,8 +94,8 @@ handler.call = function (data, session, next) {
             };
           }
         }
+        sanitized.website = website;
       }
-      sanitized.website = website;
 
       // color
       if (_.has(data.data, 'color')) {
@@ -168,6 +168,31 @@ handler.call = function (data, session, next) {
             }
           }
         }
+      }
+
+      if (_.has(data.data, 'allow_group_member')) {
+        if (!room.group) {
+          errors.group = 'group-not-found';
+        } else {
+          if (data.data.allow_group_member === true) {
+            sanitized.allow_group_member = true;
+          } else {
+            sanitized.allow_group_member = false;
+            if (data.data.add_users_to_allow) {
+              var allowed = room.getIdsByType('allowed');
+              _.each(room.getIdsByType('users'), function (u) {
+                if (_.indexOf(allowed, u) === -1) {
+                  allowed.push(u);
+                }
+              });
+              sanitized.allowed = allowed;
+            }
+          }
+        }
+      }
+
+      if (_.has(data.data, 'allow_user_request')) {
+        sanitized.allow_user_request = data.data.allow_user_request;
       }
 
       if (Object.keys(errors).length > 0) {

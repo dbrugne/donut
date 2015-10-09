@@ -20,3 +20,7 @@ grunt donut-groups
 ```
 db.getCollection('rooms').update({},{$set: {allowed_pending: []}},{"multi" : true});
 ```
+* Set attribute allow_user_request to tru on all private rooms 
+```
+db.rooms.update( { mode: { $ne: 'public' } }, { $set: { allow_user_request: true }}, {multi: true} )
+```
