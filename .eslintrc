@@ -4,6 +4,7 @@
     "describe": true,
     "it": true,
     "PROCESS.env.PORT": true,
-    "define": true
+    "define": true,
+    "cloudinary": true
   }
 }
