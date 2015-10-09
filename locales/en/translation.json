@@ -930,7 +930,7 @@
       "subject": "You were promoted to moderator in #__roomname__",
       "content": {
         "title": "You were promoted to moderator in #__roomname__",
-        "disclaimer": "Kudos! You are now a moderator in <strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
+        "disclaimer": "Kudos! You are now a moderator in ",
         "disclaimer2": "It's time to practice your new super powers.",
         "action": "…and all of that thanks to <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Go to chat"
@@ -950,7 +950,7 @@
       "content": {
         "title": "You were kicked out of #__roomname__ by @__username__",
         "disclaimer": "That can't be a big deal. The two of you just give a big hug and everything will be fine again!",
-        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Back to DONUT\">Back to DONUT</a>"
+        "button": "Go to chat"
       }
     },
     "roomban": {

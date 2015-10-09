@@ -157,12 +157,15 @@ emailer.roomDeop = function (to, data, callback) {
 };
 
 emailer.roomKick = function (to, data, callback) {
+  data.name = data.roomname;
+  var roomUrl = urls(data, 'room', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-kick.html', {
     username: data.username,
     roomname: data.roomname,
     reason: data.reason,
     title: i18next.t('email.roomkick.content.title', { roomname: data.roomname }),
-    subject: i18next.t('email.roomkick.subject', { roomname: data.roomname })
+    subject: i18next.t('email.roomkick.subject', { roomname: data.roomname }),
+    roomlink: { chat: roomUrl.chat }
   }, callback);
 };
 

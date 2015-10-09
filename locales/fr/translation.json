@@ -950,7 +950,7 @@
       "content": {
         "title": "Vous avez été expulsé de #__roomname__",
         "disclaimer": "Ca ne doit pas être si grave, faites-vous un gros câlin et on oublie ça!",
-        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
+        "button": "Accéder à la discussion"
       }
     },
     "roomban": {
