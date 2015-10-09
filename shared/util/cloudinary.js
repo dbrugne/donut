@@ -105,11 +105,10 @@ module.exports = {
 
   messageFile: function (element, size) {
     if (!element.path) {
-      return '';
+      return;
     }
 
     if (element.type === 'raw') {
-      console.warn(element);
       return {
         type: 'raw',
         filename: element.filename,
