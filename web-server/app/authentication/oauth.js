@@ -42,7 +42,7 @@ router.route('/oauth/get-token-from-session')
     };
 
     // We are sending the profile inside the token
-    var token = jwt.sign(profile, conf.oauth.secret, {expiresInMinutes: conf.oauth.expire});
+    var token = jwt.sign(profile, conf.oauth.secret, {expiresIn: conf.oauth.expire});
 
     res.json({token: token});
   });
@@ -108,7 +108,7 @@ router.route('/oauth/get-token-from-credentials')
         username: user.username,
         email: user.local.email
       };
-      response.token = jwt.sign(profile, conf.oauth.secret, {expiresInMinutes: conf.oauth.expire});
+      response.token = jwt.sign(profile, conf.oauth.secret, {expiresIn: conf.oauth.expire});
 
       res.json(response);
     });
@@ -175,7 +175,7 @@ router.route('/oauth/get-token-from-facebook')
       username: req.user.username,
       facebook_id: req.user.facebook.id
     };
-    response.token = jwt.sign(profile, conf.oauth.secret, {expiresInMinutes: conf.oauth.expire});
+    response.token = jwt.sign(profile, conf.oauth.secret, {expiresIn: conf.oauth.expire});
 
     res.json(response);
   }
@@ -356,7 +356,7 @@ router.route('/oauth/signup')
           username: user.username,
           email: user.local.email
         };
-        var token = jwt.sign(profile, conf.oauth.secret, {expiresInMinutes: conf.oauth.expire});
+        var token = jwt.sign(profile, conf.oauth.secret, {expiresIn: conf.oauth.expire});
         return callback(null, token);
       }
 

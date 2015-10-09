@@ -28,7 +28,7 @@ module.exports = {
   },
   oauth: {
     secret: 'QmFzZTY0DQoNCkJhc2U2NCBpcyBhIGdlbmVyaWMgdGVybSBmb3IgYSBudW1iZ',
-    expire: 5 * 60 // 5 hours, in minutes
+    expire: 6 * 60 * 60 // 6 hours, in seconds
   },
   email: {
     fake: 'donutmetest+__name__@gmail.com',
