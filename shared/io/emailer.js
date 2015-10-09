@@ -139,7 +139,7 @@ emailer.roomOp = function (to, data, callback) {
     roomlink: {
       url: roomUrl.url,
       chat: roomUrl.chat
-    },
+    }
   }, callback);
 };
 
