@@ -7,7 +7,7 @@
       "ref": "origin/671-pm2",
       "repo": "git@github.com:dbrugne/donut.git",
       "path": "/home/donut/app",
-      "post-deploy": "npm install && grunt pm2 --deployEnvironment test && grunt build --uglify true && pm2 startOrRestart ecosystem.json --env test",
+      "post-deploy": "npm update && grunt pm2 --deployEnvironment test && grunt build --uglify true && pm2 startOrRestart ecosystem.json --env test",
       "env": {
         "NODE_ENV": "test"
       }
@@ -18,7 +18,7 @@
       "ref": "origin/master",
       "repo": "git@github.com:dbrugne/donut.git",
       "path": "/home/donut/app",
-      "post-deploy": "npm install && grunt pm2 --deployEnvironment test && grunt build --uglify true && pm2 startOrRestart ecosystem.json --env production",
+      "post-deploy": "npm update && grunt pm2 --deployEnvironment test && grunt build --uglify true && pm2 startOrRestart ecosystem.json --env production",
       "env": {
         "NODE_ENV": "production"
       }
