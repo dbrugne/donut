@@ -980,6 +980,18 @@
         "button": "Accéder à la discussion"
       }
     },
+    "roomdevoice": {
+      "subject": "Vous êtes muet dans #__roomname__",
+      "content": {
+        "title": "Vous êtes muet dans #__roomname__",
+        "disclaimer": "Aïe, vous êtes désormais muet dans ",
+        "disclaimer2": "Ca ne concerne que ",
+        "disclaimer3": "Mais ne vous inquiétez pas, les modérateurs de ",
+        "disclaimer4": "ne devraient pas tarder à vous rendre la parole. Pendant ce temps, profitez-en pour aller vous chercher un petit donut et rejoindre une autre discussion !",
+        "action": "... et tout ça à cause de <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>.",
+        "button": "Retourner sur DONUT"
+      }
+    },
     "roomjoinrequest": {
       "subject": "Un utilisateur souhaite rejoindre #__roomname__",
       "content": {
@@ -1014,15 +1026,6 @@
         "disclaimer": "Vous pouvez rejoindre son donut sans plus tarder !",
         "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
-      }
-    },
-    "roomdevoice": {
-      "subject": "Vous êtes muet dans #__roomname__",
-      "content": {
-        "title": "Vous êtes muet dans #__roomname__",
-        "disclaimer": "Aïe, vous êtes désormais muet dans <strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>. Ca ne concerne que <strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>. Mais ne vous inquiétez pas, les modérateurs de <strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> ne devraient pas tarder à vous rendre la parole. Pendant ce temps, profitez-en pour aller vous chercher un petit donut et rejoindre une autre discussion !",
-        "action": "... et tout ça à cause de <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "Retourner sur DONUT"
       }
     },
     "usermessage": {

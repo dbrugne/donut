@@ -218,6 +218,9 @@ emailer.roomVoice = function (to, data, callback) {
 };
 
 emailer.roomDevoice = function (to, data, callback) {
+  data.name = data.roomname;
+  var roomUrl = urls(data, 'room', 'https', conf.fqdn);
+  var userUrl = urls(data, 'user', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-devoice.html', {
     username: data.username,
     roomname: data.roomname,
@@ -227,7 +230,9 @@ emailer.roomDevoice = function (to, data, callback) {
       fqdn: conf.fqdn,
       username: data.username
     }),
-    subject: i18next.t('email.roomdevoice.subject', { roomname: data.roomname })
+    subject: i18next.t('email.roomdevoice.subject', { roomname: data.roomname }),
+    userlink: { url: userUrl.url },
+    roomlink: { url: roomUrl.url }
   }, callback);
 };
 

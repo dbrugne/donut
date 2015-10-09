@@ -980,6 +980,18 @@
         "button": "Go to chat"
       }
     },
+    "roomdevoice": {
+      "subject": "You are mute in #__roomname__",
+      "content": {
+        "title": "You are mute in #__roomname__",
+        "disclaimer": "You have been muted in ",
+        "disclaimer2": "This only applies to ",
+        "disclaimer3": "Don't worry, the moderators of ",
+        "disclaimer4": "should unmute you very shortly. Meanwhile pick a donut and join another discussion!",
+        "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "Back to DONUT"
+      }
+    },
     "roomjoinrequest": {
       "subject": "An user want to join #__roomname__",
       "content": {
@@ -1014,15 +1026,6 @@
         "disclaimer": "You can join his room right now!",
         "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
-      }
-    },
-    "roomdevoice": {
-      "subject": "You are mute in #__roomname__",
-      "content": {
-        "title": "You are mute in #__roomname__",
-        "disclaimer": "You have been muted in <strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>. This only applies to <strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>. Don't worry, the moderators of <strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> should unmute you very shortly. Meanwhile pick a donut and join another discussion!",
-        "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "Back to DONUT"
       }
     },
     "usermessage": {
