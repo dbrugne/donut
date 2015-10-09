@@ -4,7 +4,7 @@
         <td align="center">
             <div style="line-height: 30px;">
                 <span style="font-family: Arial, Helvetica, sans-serif; font-size: 17px; color: #34495e;">
-                    <%= t('email.roomdeban.content.disclaimer', { roomname: roomname, fqdn: fqdn }) %><br/>
+                    <%= t('email.roomdeban.content.disclaimer') %><strong><a href="<%= roomlink.url %>" target="_blank" style="color:#FC2063; text-decoration:none;">#<%= roomname %></a></strong>.<br>
                     <%= t('email.roomdeban.content.disclaimer2') %><br/>
                 </span>
             </div>
@@ -18,7 +18,7 @@
                 <table border="0" cellpadding="0" cellspacing="0" class="emailButton" style="-webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; background-color:#EE2763;">
                     <tr>
                         <td align="center" valign="middle" class="emailButtonContent" style="padding-top:10px; padding-right:30px; padding-bottom:10px; padding-left:30px;">
-                            <%= t('email.roomdeban.content.button', { roomname: roomname, fqdn: fqdn }) %>
+                            <a href="<%= roomlink.chat %>" target="_blank" style="color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;" alt="<%= t('email.roomdeban.content.button') %>"><%= t('email.roomdeban.content.button') %></a>
                         </td>
                     </tr>
                 </table>

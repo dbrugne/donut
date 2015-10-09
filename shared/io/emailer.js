@@ -180,6 +180,8 @@ emailer.roomBan = function (to, data, callback) {
 };
 
 emailer.roomDeban = function (to, data, callback) {
+  data.name = data.roomname;
+  var roomUrl = urls(data, 'room', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-deban.html', {
     username: data.username,
     roomname: data.roomname,
@@ -189,7 +191,14 @@ emailer.roomDeban = function (to, data, callback) {
       fqdn: conf.fqdn,
       username: data.username
     }),
-    subject: i18next.t('email.roomdeban.subject', { roomname: data.roomname })
+    subject: i18next.t('email.roomdeban.subject', { roomname: data.roomname }),
+    userlink: {
+      url: userUrl.url
+    },
+    roomlink: {
+      url: roomUrl.url,
+      chat: roomUrl.chat
+    }
   }, callback);
 };
 
