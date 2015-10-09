@@ -120,7 +120,6 @@ var DonutRouter = Backbone.Router.extend({
       // Not already open
       this.nextFocus = '@' + username;
       onetoones.join(username);
-      onetoones.trigger('redraw-block');
     } else {
       this.focus(model);
     }

@@ -41,6 +41,7 @@ var OnetoonesCollection = Backbone.Collection.extend({
     this.listenTo(app, 'refreshOnesList', this.onRefreshList);
   },
   join: function (username) {
+    var that = this;
     client.userId(username, function (response) {
       if (response.err && response !== 500) {
         return app.trigger('alert', 'error', i18next.t('chat.users.usernotexist'));
@@ -56,6 +57,7 @@ var OnetoonesCollection = Backbone.Collection.extend({
         } else if (response.code === 500) {
           return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
         }
+        that.trigger('redraw-block');
       });
     });
   },
