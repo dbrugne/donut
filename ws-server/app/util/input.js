@@ -2,6 +2,7 @@
 var async = require('async');
 var _ = require('underscore');
 var RoomModel = require('../../../shared/models/room');
+var GroupModel = require('../../../shared/models/group');
 var UserModel = require('../../../shared/models/user');
 var linkify = require('linkifyjs');
 var parser = require('@dbrugne/donut-common/server').markup.parser(linkify);
@@ -77,6 +78,17 @@ module.exports.mentions = function (string, callback) {
           return u.username;
         }));
         UserModel.listByUsername(_users).exec(cb);
+      },
+
+      function (cb) {
+        if (!markups.rooms.length) {
+          return cb(null);
+        }
+
+        var _groups = _.uniq(_.map(markups.rooms, function (r) {
+          return r.name;
+        }));
+        GroupModel.listByName(_groups).exec(cb);
       }
 
     ], function (err, results) {
@@ -101,6 +113,16 @@ module.exports.mentions = function (string, callback) {
           return;
         }
         markups.users[ index ].id = model.id;
+      });
+      // group
+      _.each(markups.rooms, function (markup, index) {
+        var model = _.find(results[ 2 ], function (m) {
+          return (markup.name.toLocaleLowerCase() === m.name.toLocaleLowerCase());
+        });
+        if (!model) {
+          return;
+        }
+        markups.rooms[ index ].id = model.id;
       });
 
       return fn(null, markups);

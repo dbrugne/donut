@@ -44,6 +44,17 @@ groupSchema.statics.findById = function (id) {
   });
 };
 
+groupSchema.statics.listByName = function (names) {
+  var criteria = {
+    deleted: false,
+    $or: []
+  };
+  _.each(names, function (n) {
+    criteria['$or'].push({name: common.regexp.exact(n)});
+  });
+  return this.find(criteria, '_id name');
+};
+
 groupSchema.methods.validPassword = function (password) {
   return password === this.password;
 };

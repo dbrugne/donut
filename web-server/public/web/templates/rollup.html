@@ -20,7 +20,11 @@
                             <i class="icon icon-star img-circle dc-back dc-text-contrast"></i>
                         <% } %>
                     </span>
+                    <% if (result.is_group) { %>
+                    <span class="name value"><%= result.identifier %>/</span>
+                    <% } else { %>
                     <span class="name value"><%= result.identifier %></span>
+                    <% } %>
                     <% } else if (type === 'commands') { %>
                     <div class="cmd-left-td">
                         <span class="name value">/<%= result.name %></span>

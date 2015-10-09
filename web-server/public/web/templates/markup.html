@@ -14,4 +14,8 @@
 <a class="email" href="<%= markup.href %>" style="<%= options.style %>">
 <%= markup.title %>
 </a>
+<% } else if (markup.type === 'group') { %>
+<a class="mention open-group-profile" data-group-id="<%= markup.id %>" href="<%= markup.href %>" style="<%= options.style %>">
+    <%= markup.title %>
+</a>
 <% } %>
