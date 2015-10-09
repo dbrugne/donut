@@ -8,7 +8,7 @@ var roomAvatarDefault = 'room-avatar-default.png';
 var userAvatarDefault = 'user-avatar-default.png';
 var posterDefault = 'poster-default.png';
 
-function _url (data, width, height) {
+function imageUrl (data, width, height) {
   var identifier = data.identifier;
   var background = data.color || '#ffffff';
   var facebook = data.facebook;
@@ -69,7 +69,7 @@ module.exports = {
   cloudinary: cloudinary,
 
   roomAvatar: function (identifier, color, size) {
-    return _url({
+    return imageUrl({
       default: roomAvatarDefault,
       identifier: identifier,
       color: color,
@@ -78,7 +78,7 @@ module.exports = {
   },
 
   userAvatar: function (identifier, color, facebook, size) {
-    return _url({
+    return imageUrl({
       default: userAvatarDefault,
       identifier: identifier,
       color: color,
@@ -92,7 +92,7 @@ module.exports = {
       return '';
     }
 
-    return _url({
+    return imageUrl({
       default: posterDefault,
       identifier: identifier,
       color: color,
@@ -103,16 +103,27 @@ module.exports = {
     }, 430, 1100);
   },
 
-  messageImage: function (path, size) {
-    if (!path) {
+  messageFile: function (element, size) {
+    if (!element.path) {
       return '';
     }
 
-    return _url({
-      identifier: path,
-      gravity: 'center',
-      crop: '__crop__'
-    }, size, size);
+    if (element.type === 'raw') {
+      console.warn(element);
+      return {
+        type: 'raw',
+        filename: element.filename,
+        url: cloudinary.url(element.path, {secure: true, resource_type: 'raw'})
+      };
+    } else {
+      return {
+        type: 'image',
+        url: imageUrl({
+          identifier: element.path,
+          gravity: 'center',
+          crop: '__crop__'
+        }, size, size)
+      };
+    }
   }
-
 };

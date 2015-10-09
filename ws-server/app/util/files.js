@@ -4,7 +4,9 @@ var _ = require('underscore');
 var allowedFields = [
   'path',
   'public_id',
-  'version'
+  'version',
+  'filename',
+  'type' // 'image', 'raw'
 ];
 
 /**
@@ -13,13 +15,13 @@ var allowedFields = [
  *
  * @param value
  */
-module.exports.filter = function (images) {
-  if (!images || !images.length) {
+module.exports.filter = function (files) {
+  if (!files || !files.length) {
     return null;
   }
 
   var filtered = [];
-  _.each(images, function (i) {
+  _.each(files, function (i) {
     var _i = {};
     _.each(allowedFields, function (key) {
       if (i[key]) {

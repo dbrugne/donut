@@ -12,13 +12,19 @@
         <% } %>
         <% if (data.images) { %>
         <div class="images">
-            <% _.each(data.images, function(i) { %>
+            <% _.each(data.files, function(f) { %>
+            <% if (f.type !== 'raw') { %>
             <a class="image"
-               data-toggle="image-popover"
-               data-placement="top"
                target="_blank"
-               href="<%=i.url%>"
-               style="background-image: url(<%= i.thumbnail %>);"></a>
+               href="<%=f.url%>"
+               style="background-image: url(<%= f.thumbnail %>);"></a>
+            <% } else { %>
+            <a class="file"
+               target="_blank"
+               href="<%=f.url%>"
+               title="<%= f.filename %>"
+               style="background-image: url(/images/file-placeholder.png);"></a>
+            <% } %>
             <% }); %>
             <hr>
         </div>

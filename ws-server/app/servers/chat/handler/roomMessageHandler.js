@@ -5,7 +5,7 @@ var async = require('async');
 var _ = require('underscore');
 var roomEmitter = require('../../../util/roomEmitter');
 var inputUtil = require('../../../util/input');
-var imagesUtil = require('../../../util/images');
+var filesUtil = require('../../../util/files');
 var keenio = require('../../../../../shared/io/keenio');
 var Notifications = require('../../../components/notifications');
 
@@ -56,7 +56,7 @@ handler.call = function (data, session, next) {
       var message = inputUtil.filter(data.message, 512);
 
       // images filtering
-      var images = imagesUtil.filter(data.images);
+      var images = filesUtil.filter(data.images);
 
       if (!message && !images) {
         return callback('message-wrong-format');

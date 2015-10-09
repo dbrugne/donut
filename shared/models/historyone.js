@@ -115,7 +115,7 @@ historySchema.methods.toClientJSON = function (userViewed) {
     data.images = _.map(data.images, function (element, key, value) {
       // @important: use .path to obtain URL with file extension and avoid CORS
       // errors
-      return cloudinary.messageImage(element.path);
+      return cloudinary.messageFile(element.path);
     });
   }
 

@@ -844,7 +844,7 @@
                     .text-edited { font-size: .9rem; color: #0480be; }
                   }
                   .images {
-                    .image {
+                    .image, .file {
                       .pull-left;
                       display: block;
                       position: relative;
@@ -977,7 +977,7 @@
           } // #chat #center .discussion .content .events .scrollable
         } // #chat #center .discussion .content .events
         .input { padding-top: 5px; margin-right: 25px; padding-bottom: 10px; position: relative;
-          .add-image, .add-smiley {
+          .add-image, .add-file, .add-smiley {
             cursor: pointer;
           }
           .text-container { padding-bottom: 10px; position:relative;
@@ -1005,7 +1005,10 @@
                   display: block;
                   color: @cl-subtext30;
                 }
-                .images { margin-top: 5px; }
+                .images.add-image { margin-top: 5px; }
+                .images {
+                  font-size: 2rem;
+                }
               }
               .mentions { padding: 0; font-size: 13px; }
               .mentions-autocomplete-list {

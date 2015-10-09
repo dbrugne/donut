@@ -12,11 +12,14 @@ var InputImagesView = Backbone.View.extend({
 
   events: {
     'click .add-image': 'onAddImage',
+    'click .add-file': 'onAddFile',
     'click .remove-image': 'onRemoveImage'
   },
 
   initialize: function (options) {
-    this.images = {}; // should be initialized with {} on .initialize(), else all the view instances will share the same object (#110)
+    // should be initialized with {} on .initialize(), else all the view
+    // instances will share the same object (#110)
+    this.images = {};
     this.$preview = this.$('.preview');
   },
 
@@ -35,47 +38,64 @@ var InputImagesView = Backbone.View.extend({
       return {
         public_id: i.public_id,
         version: i.version,
-        path: i.path
+        path: i.path,
+        type: i.resource_type,
+        filename: i.original_filename
       };
     });
   },
 
   onAddImage: function (event) {
+    this.openCloudinaryWidget(event, 'image');
+  },
+  onAddFile: function (event) {
+    this.openCloudinaryWidget(event);
+  },
+  openCloudinaryWidget: function (event, type) {
     event.preventDefault();
 
     // @doc: http://cloudinary.com/documentation/upload_widget#setup
     var options = {
       theme: 'white',
       upload_preset: 'discussion',
-      sources: ['local', 'url', 'camera'], // ['local', 'url', 'camera']
+      sources: ['local'], // ['local', 'url', 'camera']
       multiple: true,
-      client_allowed_formats: ['png', 'gif', 'jpeg'],
+      client_allowed_formats: null,
       max_file_size: 20000000, // 20Mo
-      max_files: 5,
-      thumbnail_transformation: {width: 80, height: 80, crop: 'fill'}
+      max_files: 5
     };
+
+    if (type === 'image') {
+      options.sources.push('camera');
+      options.sources.push('url');
+      options.thumbnail_transformation = {width: 80, height: 80, crop: 'fill'};
+    }
 
     var that = this;
     cloudinary.openUploadWidget(options, function (err, result) {
-      if (err) {
-        if (err.message && err.message === 'User closed widget') {
-          return;
+        if (err) {
+          if (err.message && err.message === 'User closed widget') {
+            return;
+          }
+          debug('cloudinary error: ', err);
         }
-        debug('cloudinary error: ', err);
-      }
-      if (!result) {
-        return debug('cloudinary result is empty!');
-      }
+        if (!result) {
+          return debug('cloudinary result is empty!');
+        }
 
-      _.each(result, function (uploaded) {
-        // render preview
-        that.$preview.find('.add-image').before(that.template({data: uploaded}));
-        // add to collection
-        that.images[uploaded.public_id] = uploaded;
-        // show preview
-        that.showPreview();
-      });
-    }
+        _.each(result, function (uploaded) {
+          console.log(uploaded);
+          // render preview
+          if (!uploaded.thumbnail_url) {
+            uploaded.thumbnail_url = '/images/file-placeholder.png';
+          }
+          that.$preview.find('.add-image').before(that.template({data: uploaded}));
+          // add to collection
+          that.images[uploaded.public_id] = uploaded;
+          // show preview
+          that.showPreview();
+        });
+      }
     );
   },
   onRemoveImage: function (event) {
@@ -98,8 +118,6 @@ var InputImagesView = Backbone.View.extend({
   hidePreview: function () {
     this.$preview.hide();
   }
-
 });
-
 
 module.exports = InputImagesView;

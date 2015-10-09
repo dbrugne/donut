@@ -197,18 +197,19 @@ exports.prototype._data = function (event) {
     }
   }
 
-  // images
+  // files
   if (data.data.images) {
-    var images = [];
-    _.each(data.data.images, function (i) {
-      images.push({
-        url: common.cloudinary.prepare(i, 1500, 'limit'),
-        thumbnail: common.cloudinary.prepare(i, 100, 'fill')
-      });
+    var files = [];
+    _.each(data.data.images, function (f) {
+      if (f.type !== 'raw') {
+        f.url = common.cloudinary.prepare(f.url, 1500, 'limit');
+        f.thumbnail = common.cloudinary.prepare(f.url, 100, 'fill');
+      }
+      files.push(f);
     });
 
-    if (images && images.length > 0) {
-      data.data.images = images;
+    if (files && files.length > 0) {
+      data.data.files = files;
     }
   }
 

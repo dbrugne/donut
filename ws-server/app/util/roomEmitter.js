@@ -43,7 +43,7 @@ module.exports = function (app, user, room, eventName, eventData, callback) {
       eventData.images = _.map(eventData.images, function (element, key, value) {
         // @important: use .path to obtain URL with file extension and avoid
         // CORS errors
-        return cloudinary.messageImage(element.path);
+        return cloudinary.messageFile(element);
       });
     }
 
