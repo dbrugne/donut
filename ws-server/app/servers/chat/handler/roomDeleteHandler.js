@@ -2,6 +2,7 @@
 var errors = require('../../../util/errors');
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var async = require('async');
+var GroupModel = require('../../../../../shared/models/group');
 
 var Handler = function (app) {
   this.app = app;
@@ -39,6 +40,25 @@ handler.call = function (data, session, next) {
       }
 
       return callback(null);
+    },
+
+    function checkDefaultGroupRoom (callback) {
+      if (!room.group) {
+        return callback(null);
+      }
+
+      var groupId = (room.group._id) ? room.group._id : room.group;
+      GroupModel.findById(groupId).exec(function (err, model) {
+        if (err) {
+          return callback(err);
+        } else if (!model) {
+          return callback('group-not-found');
+        } else if (model.default.toString() === room.id) { // Room is the group default room
+          return callback('not-allowed');
+        }
+
+        return callback(null);
+      });
     },
 
     function kick (callback) {

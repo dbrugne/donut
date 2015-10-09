@@ -1,4 +1,3 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
@@ -6,6 +5,7 @@ var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 var date = require('../libs/date');
+var urls = require('../../../../shared/util/url');
 
 var DrawerUserProfileView = Backbone.View.extend({
   template: require('../templates/drawer-user-profile.html'),
@@ -15,7 +15,7 @@ var DrawerUserProfileView = Backbone.View.extend({
   events: {},
 
   initialize: function (options) {
-    this.user_id = options.user_id;
+    this.userId = options.user_id;
 
     this.listenTo(app, 'userDeban', this.onUserBanChange);
     this.listenTo(app, 'userBan', this.onUserBanChange);
@@ -25,10 +25,11 @@ var DrawerUserProfileView = Backbone.View.extend({
 
     if (options.data) {
       this.onResponse(options.data);
+      return;
     }
 
     var that = this;
-    client.userRead(this.user_id, null, function (data) {
+    client.userRead(this.userId, function (data) {
       if (data.err === 'user-not-found') {
         return;
       }
@@ -51,7 +52,8 @@ var DrawerUserProfileView = Backbone.View.extend({
 
     user.avatar = common.cloudinary.prepare(user.avatar, 90);
 
-    user.url = '/user/' + ('' + user.username).toLocaleLowerCase();
+    user.uri = '#u/' + user.username;
+    user.url = urls(user, 'user', null, null, 'url');
 
     this._rooms(user); // decorate user object with rooms_list
 
@@ -125,7 +127,7 @@ var DrawerUserProfileView = Backbone.View.extend({
   },
   onUserBanChange: function () {
     this.render();
-    client.userRead(this.user_id, null, _.bind(function (data) {
+    client.userRead(this.userId, null, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }

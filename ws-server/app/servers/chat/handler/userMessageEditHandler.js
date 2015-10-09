@@ -85,6 +85,17 @@ handler.call = function (data, session, next) {
       });
     },
 
+    function persistOnBoth (message, callback) {
+      user.updateActivity(withUser._id, function (err) {
+        if (err) {
+          return callback(err, message);
+        }
+        withUser.updateActivity(user._id, function (err) {
+          return callback(err, message);
+        });
+      });
+    },
+
     function prepareEvent (message, callback) {
       var eventToSend = {
         from_user_id: user._id,

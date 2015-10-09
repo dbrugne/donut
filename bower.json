@@ -1,7 +1,0 @@
-{
-  "name": "donut",
-  "version": "1.0",
-  "dependencies": {
-    "html.sortable": "latest"
-  }
-}

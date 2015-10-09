@@ -6,9 +6,7 @@ var bouncer = require('../middlewares/bouncer');
 var cd = require('../../../shared/util/cloudinary');
 var conf = require('../../../config/index');
 
-router.param('room', require('../middlewares/room-param'));
-
-router.get('/room/:room', function (req, res) {
+var callback = function (req, res) {
   if (req.query.redirect && req.query.redirect === 'true') {
     bouncer.set(req, req.room.chat);
   }
@@ -35,9 +33,13 @@ router.get('/room/:room', function (req, res) {
     userDefaultAvatar: cd.userAvatar('', conf.room.default.color, false, 50),
     mode: req.room.mode
   });
-});
+};
 
-router.get('/room/join/:room', function (req, res) {
+router.param('room', require('../middlewares/room-param'));
+router.get('/r/:group/:room', callback);
+router.get('/r/:room', callback);
+
+router.get('/r/join/:room', function (req, res) {
   bouncer.set(req, req.room.chat);
   res.redirect('/login');
 });

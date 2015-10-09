@@ -1,4 +1,3 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var client = require('../libs/client');
@@ -34,6 +33,5 @@ var SearchView = Backbone.View.extend({
   }
 
 });
-
 
 module.exports = SearchView;

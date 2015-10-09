@@ -83,7 +83,7 @@ handler.call = function (data, session, next) {
           if (wasPending) {
             Room.update(
               {_id: { $in: [room.id] }},
-              {$pull: {allowed_pending: user.id},
+              {$pull: {allowed_pending: {user: user.id}},
               $addToSet: {users: user.id}}, function (err) {
                 return callback(err, eventData);
               }
@@ -178,7 +178,7 @@ handler.refuse = function (data, session, next) {
     function persist (eventData, callback) {
       Room.update(
         {_id: { $in: [room.id] }},
-        {$pull: {allowed_pending: user.id}}, function (err) {
+        {$pull: {allowed_pending: {user: user.id}}}, function (err) {
           return callback(err, eventData);
         }
       );

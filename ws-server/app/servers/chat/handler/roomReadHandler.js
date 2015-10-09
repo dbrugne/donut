@@ -2,6 +2,7 @@
 var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
+var RoomModel = require('../../../../../shared/models/room');
 
 var Handler = function (app) {
   this.app = app;
@@ -18,6 +19,7 @@ handler.call = function (data, session, next) {
   var room = session.__room__;
 
   var read = {};
+  var what = data.what;
 
   async.waterfall([
 
@@ -33,74 +35,55 @@ handler.call = function (data, session, next) {
       return callback(null);
     },
 
-    function prepare (callback) {
-      var users = [];
-      var alreadyIn = [];
-
-      // owner
-      var owner = {};
-      if (room.owner) {
-        owner = {
-          user_id: room.owner.id,
-          username: room.owner.username,
-          avatar: room.owner._avatar(),
-          color: room.owner.color,
-          is_owner: true
-        };
-        users.push(owner);
-      }
-
-      // op
-      if (room.op && room.op.length > 0) {
-        _.each(room.op, function (op) {
-          var el = {
-            user_id: op.id,
-            username: op.username,
-            avatar: op._avatar(),
-            color: op.color,
-            is_op: true
-          };
-          users.push(el);
-          alreadyIn.push(el.user_id);
-        });
-      }
-
-      // users
-      if (room.users && room.users.length > 0) {
-        _.each(room.users, function (u) {
-          if (u.id === owner.user_id || alreadyIn.indexOf(u.id) !== -1) {
-            return;
-          }
-          var el = {
-            user_id: u.id,
-            username: u.username,
-            avatar: u._avatar(),
-            color: u.color
-          };
-          users.push(el);
-          alreadyIn.push(el.user_id);
-        });
-      }
-
+    function basic (callback) {
       read = {
-        name: room.name,
-        id: room.id,
         room_id: room.id,
-        owner: owner,
-        users: users,
-        avatar: room._avatar(),
-        poster: room._poster(),
-        color: room.color,
-        website: room.website,
-        topic: room.topic,
-        description: room.description,
-        created: room.created_at,
+        identifier: room.getIdentifier(),
+        name: room.name,
         mode: room.mode
       };
-
-      if (room.isOwner(user.id) || session.settings.admin === true) {
-        read.password = room.password;
+      if (room.group) {
+        read.group_id = room.group.id;
+        read.group_name = room.group.name;
+        read.allow_group_member = room.allow_group_member;
       }
+      if (room.owner) {
+        read.owner_id = room.owner.id;
+        read.owner_username = room.owner.username;
+      }
+      if (room.mode !== 'public') {
+        read.allow_user_request = room.allow_user_request;
+      }
+
+      return callback(null);
+    },
+
+    function more (callback) {
+      if (what.more !== true) {
+        return callback(null);
+      }
+
+      read.avatar = room._avatar();
+      read.poster = room._poster();
+      read.color = room.color;
+      read.website = room.website;
+      read.topic = room.topic;
+      read.description = room.description;
+      read.disclaimer = room.disclaimer;
+      read.created = room.created_at;
+
+      return callback(null);
+    },
+
+    function admin (callback) {
+      if (what.admin !== true) {
+        return callback(null);
+      }
+      if (session.settings.admin !== true && !room.isOwner(user.id)) {
+        return callback(null);
+      }
+
+      read.password = room.password;
 
       if (session.settings.admin === true) {
         read.visibility = room.visibility || false;
@@ -108,6 +91,72 @@ handler.call = function (data, session, next) {
       }
 
       return callback(null);
+    },
+
+    function users (callback) {
+      if (what.users !== true) {
+        return callback(null);
+      }
+
+      RoomModel.populate(room, [
+        { path: 'op', select: 'username avatar color facebook' },
+        { path: 'users', select: 'username avatar color facebook' },
+        { path: 'bans.user', select: 'username avatar color facebook' },
+        { path: 'devoices.user', select: 'username avatar color facebook' }
+      ], function (err) {
+        if (err) {
+          return callback(err);
+        }
+
+        var decorate = function (u) {
+          return {
+            user_id: u.id,
+            username: u.username,
+            avatar: u._avatar(),
+            color: u.color
+          };
+        };
+
+        var max = 42;
+        read.users = [];
+        read.users_count = room.users.length;
+        read.users_more = false;
+
+        var alreadyIn = [];
+
+        if (room.owner) {
+          var owner = decorate(room.owner);
+          owner.is_owner = true;
+          alreadyIn.push(room.owner.id);
+          read.users.push(owner);
+        }
+
+        _.each(room.op, function (u) {
+          var op = decorate(u);
+          op.is_op = true;
+          alreadyIn.push(u.id);
+          read.users.push(op);
+        });
+
+        // pad list to 'max' users
+        _.find(room.users, function (u) {
+          if (alreadyIn.indexOf(u.id) !== -1) {
+            return; // continue iteration
+          }
+          if (read.users.length === max) {
+            read.users_more = true;
+            return true; // stop iteration
+          }
+
+          read.users.push(decorate(u));
+
+          if (read.users.length > max) {
+            return true; // stop iteration
+          }
+        });
+
+        return callback(null);
+      });
     }
 
   ], function (err) {

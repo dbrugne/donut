@@ -13,8 +13,14 @@
                     <span class="username value">@<%= result.username  %></span><i class="icon icon-dot-circle-o <%= result.status %>" title="<%= result.status %>"></i>
                     <span class="bio"><%= result.bio  %></span>
                     <% } else if (type === 'rooms') { %>
-                    <img class="avatar_ctn" src="<%= result.avatarUrl %>">
-                    <span class="name value"><%= result.name %></span>
+                    <% var _color = result.color ? result.color.replace('#','').toLowerCase() : 'default' %>
+                    <span class="relative dc-i-<%=_color%>">
+                        <img class="avatar_ctn" src="<%= result.avatarUrl %>">
+                        <% if (result.is_group) { %>
+                            <i class="icon icon-star img-circle dc-back dc-text-contrast"></i>
+                        <% } %>
+                    </span>
+                    <span class="name value"><%= result.identifier %></span>
                     <% } else if (type === 'commands') { %>
                     <div class="cmd-left-td">
                         <span class="name value">/<%= result.name %></span>

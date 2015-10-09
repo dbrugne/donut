@@ -31,7 +31,7 @@ var userSchema = mongoose.Schema({
     name: String
   },
   preferences: mongoose.Schema.Types.Mixed,
-  onetoones: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
+  onetoones: [{type: mongoose.Schema.ObjectId, ref: 'User'}], // @todo yfuks remove after prod migration
   ones: [{
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
     lastactivity_at: {type: Date, default: Date.now}
@@ -46,13 +46,11 @@ var userSchema = mongoose.Schema({
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
     banned_at: {type: Date, default: Date.now}
   }],
-  positions: {type: String},
   created_at: {type: Date, default: Date.now},
   lastlogin_at: {type: Date},
   online: Boolean,
   lastonline_at: {type: Date},
   lastoffline_at: {type: Date}
-
 });
 
 /**
@@ -206,8 +204,8 @@ userSchema.statics.findByUid = function (uid) {
  * @param callback
  */
 userSchema.statics.findRoomUsersHavingPreference = function (room, preferenceName, userId, callback) {
-  var keyNothing = 'preferences.room:notif:nothing:__what__'.replace('__what__', room.name);
-  var keyTopic = 'preferences.room:notif:__preference__:__what__'.replace('__preference__', preferenceName).replace('__what__', room.name);
+  var keyNothing = 'preferences.room:notif:nothing:__what__'.replace('__what__', room.id);
+  var keyTopic = 'preferences.room:notif:__preference__:__what__'.replace('__preference__', preferenceName).replace('__what__', room.id);
 
   var criteria = {
     _id: {
@@ -487,5 +485,32 @@ userSchema.methods.posterId = function () {
   var id = data[1].substr(0, data[1].lastIndexOf('.'));
   return id;
 };
+userSchema.methods.findOnetoone = function (userId) {
+  if (!this.ones || !this.ones.length) {
+    return;
+  }
 
+  return _.find(this.ones, function (onetoone) {
+    if (onetoone.user._id) {
+       // populated
+      return (onetoone.user.id === userId);
+    } else {
+      return (onetoone.user.toString() === userId);
+    }
+  });
+};
+userSchema.methods.isOnetoone = function (userId) {
+  var doc = this.findOnetoone(userId);
+  return (typeof doc !== 'undefined');
+};
+userSchema.methods.updateActivity = function (userId, callback) {
+  if (this.isOnetoone(userId.toString())) {
+    this.constructor.update(
+       {_id: this._id, 'ones.user': userId},
+       {$set: {'ones.$.lastactivity_at': new Date()}}, callback);
+  } else {
+    var oneuser = {user: userId, lastactivity_at: new Date()};
+    this.update({$addToSet: {ones: oneuser}}, callback);
+  }
+};
 module.exports = mongoose.model('User', userSchema);

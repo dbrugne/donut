@@ -1,5 +1,5 @@
-<div class="side roomside dc-back <% if (!poster) { %>poster-empty<% } else { %> poster-full <% } %>" style="<% if (typeof poster !== 'undefined') { %>background-image: url(<%= poster %>);<% }; %>">
-    <div class="blur dc-back" style="<% if (typeof posterblured !== 'undefined') { %>background-image: url(<%= posterblured %>);<% }; %>">
+<div class="side roomside dc-back <% if (!data.poster) { %>poster-empty<% } else { %> poster-full <% } %>" style="<% if (typeof data.poster !== 'undefined') { %>background-image: url(<%= data.poster %>);<% }; %>">
+    <div class="blur dc-back" style="<% if (typeof data.posterblured !== 'undefined') { %>background-image: url(<%= data.posterblured %>);<% }; %>">
         <div class="users hidden-sm hidden-xs">
             <div class="scrollable"></div>
         </div>
@@ -8,32 +8,36 @@
 <div class="content">
     <div class="visible-xs visible-sm">
         <div class="mini-header room">
-            <div class="avatar open-room-profile" data-room-id="<%= room_id %>">
-                <img class="dc-border-lighter" src="<%= avatar %>" alt="<%= name %> avatar">
+            <div class="avatar open-room-profile" data-room-id="<%= data.room_id %>">
+                <img class="dc-border-lighter" src="<%= data.avatar %>" alt="<%= data.name %> avatar">
             </div>
-            <span class="name open-room-profile dc-text-contrast" data-room-id="<%= room_id %>">
-                <%= name %>
-                <span class="room-profile private" data-toggle="tooltip" data-placement="right" title="<%= t('global.private-donut') %>"> </span>
+            <span class="name open-room-profile dc-text-contrast" data-room-id="<%= data.room_id %>">
+                <%= data.identifier %>
+                <span class="room-profile label label-default label-sm" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + data.mode) %>">
+                    <%= t('global.mode.title.' + data.mode) %>
+                </span>
             </span>
             <div class="info mt5"><%= dropdown %></div>
         </div>
     </div>
     <div class="header room">
         <div class="overlay-ctn hidden-xs hidden-sm">
-            <img class="avatar open-room-profile" data-room-id="<%= room_id %>" src="<%= avatar %>" alt="<%= name %> avatar">
-            <div class="overlay open-room-profile" data-room-id="<%= room_id %>" ></div>
-            <span class="overlay-text open-room-profile" data-room-id="<%= room_id %>" ><%= t('chat.actions.see') %></span>
+            <img class="avatar open-room-profile" data-room-id="<%= data.room_id %>" src="<%= data.avatar %>" alt="<%= data.identifier %> avatar">
+            <div class="overlay open-room-profile" data-room-id="<%= data.room_id %>" ></div>
+            <span class="overlay-text open-room-profile" data-room-id="<%= data.room_id %>" ><%= t('chat.actions.see') %></span>
         </div>
         <div class="info hidden-xs hidden-sm">
-            <div class="name open-room-profile" data-room-id="<%= room_id %>">
-                <%= name %>
-                <span class="room-profile private" data-toggle="tooltip" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
+            <div class="name open-room-profile" data-room-id="<%= data.room_id %>">
+                <%= data.identifier %>
+                <span class="room-profile label label-default label-sm" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + data.mode) %>">
+                    <%= t('global.mode.title.' + data.mode) %>
+                </span>
             </div>
 
             <%= dropdown %>
 
-            <% if (owner && owner.username) { %>
-            <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= owner.id %>">@<%= owner.username %></a></span>
+            <% if (data.owner_id) { %>
+            <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= data.owner_id %>">@<%= data.owner_username %></a></span>
             <% } %>
             <div class="share hidden-xs hidden-sm">
                 <%= t('chat.share.label') %>

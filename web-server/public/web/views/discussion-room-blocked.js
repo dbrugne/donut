@@ -1,4 +1,5 @@
 var $ = require('jquery');
+var _ = require('underscore');
 var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
 var i18next = require('i18next-client');
@@ -6,6 +7,7 @@ var date = require('../libs/date');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../models/app');
 var client = require('../libs/client');
+var ConfirmationView = require('./modal-confirmation');
 
 var RoomBlockedView = Backbone.View.extend({
   tagName: 'div',
@@ -31,10 +33,6 @@ var RoomBlockedView = Backbone.View.extend({
   render: function () {
     var data = this.model.toJSON();
 
-    // owner
-    var owner = this.model.get('owner').toJSON();
-    data.owner = owner;
-
     // banned_at
     if (data.banned_at) {
       data.banned_at = date.longDate(data.banned_at);
@@ -42,6 +40,11 @@ var RoomBlockedView = Backbone.View.extend({
 
     // avatar
     data.avatar = common.cloudinary.prepare(data.avatar, 150);
+
+    // disclaimer
+    if (data.disclaimer) {
+      data.disclaimer = _.escape(data.disclaimer);
+    }
 
     // id
     data.room_id = this.model.get('id');
@@ -52,7 +55,8 @@ var RoomBlockedView = Backbone.View.extend({
     });
 
     // render
-    var html = this.template(data);
+    var html = this.template({data: data});
+    this.$el.attr('data-identifier', this.model.get('identifier'));
     this.$el.html(html);
     this.$error = this.$('.error');
     this.$el.hide();
@@ -81,17 +85,19 @@ var RoomBlockedView = Backbone.View.extend({
   onRequestAllowance: function (event) {
     event.preventDefault();
 
-    client.roomJoinRequest(this.model.get('id'), function (response) {
-      if (response.err) {
-        if (response.err === 'allow-pending') {
-          app.trigger('alert', 'error', i18next.t('chat.allowed.error.' + response.err));
+    ConfirmationView.open({message: 'request-allowance', area: true, room_name: this.model.get('name')}, _.bind(function (message) {
+      client.roomJoinRequest(this.model.get('id'), message, function (response) {
+        if (response.err) {
+          if (response.err === 'allow-pending' || response.err === 'message-wrong-format') {
+            app.trigger('alert', 'error', i18next.t('chat.allowed.error.' + response.err));
+          } else {
+            app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+          }
         } else {
-          app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+          app.trigger('alert', 'info', i18next.t('chat.allowed.success'));
         }
-      } else {
-        app.trigger('alert', 'info', i18next.t('chat.allowed.success'));
-      }
-    });
+      });
+    }, this));
   },
   onValidPassword: function (event) {
     var that = this;
@@ -101,7 +107,7 @@ var RoomBlockedView = Backbone.View.extend({
     }
 
     var password = $(event.currentTarget).closest('.password-form').find('.input-password').val();
-    client.roomJoin(this.model.get('id'), this.model.get('name'), password, function (response) {
+    client.roomJoin(this.model.get('id'), password, function (response) {
       if (!response.err) {
         return;
       }
@@ -115,13 +121,12 @@ var RoomBlockedView = Backbone.View.extend({
     });
   },
   onRejoin: function (event) {
-    client.roomJoin(this.model.get('id'), null, null, function (response) {
+    client.roomJoin(this.model.get('id'), null, function (response) {
       if (response.err) {
         app.trigger('alert', 'error', i18next.t('global.unknownerror'));
       }
     });
   },
-
   onCloseRoom: function (event) {
     event.preventDefault();
     client.roomLeaveBlock(this.model.get('id'));

@@ -2,12 +2,20 @@
 .curp { cursor:pointer; }
 
 // Default colors
-.dc-default, .dc-i-default {
+.dc-default {
   .dc-text { color: @cl-first; }
   .dc-back { background-color: @cl-first; }
   .dc-back-darker { background-color: darken(@cl-first, 10%); }
   .dc-text-contrast { .color-text(@cl-first); }
   .dc-border { border-color: @cl-first; }
+}
+
+.dc-i-default {
+  .dc-text { color: @cl-first !important; }
+  .dc-back { background-color: @cl-first !important; }
+  .dc-back-darker { background-color: darken(@cl-first, 10%) !important; }
+  .dc-text-contrast { .color-text(@cl-first) !important; }
+  .dc-border { border-color: @cl-first !important; }
 }
 
 /*******************************************************************************
@@ -50,7 +58,7 @@
 //.cl-green_sea             { color: @cl-green_sea !important ;}
 //.cl-emerald               { color: @cl-emerald !important ;}
 //.cl-nephritis             { color: @cl-nephritis !important ;}
-//.cl-peter_river           { color: @cl-peter_river !important ;}
+.cl-peter_river           { color: @cl-peter_river !important ;}
 //.cl-belize_hole           { color: @cl-belize_hole !important ;}
 //.cl-amethyst              { color: @cl-amethyst !important ;}
 //.cl-wisteria              { color: @cl-wisteria !important ;}
@@ -163,17 +171,32 @@
   &.icon-deop             { color: @cl-subtext40; }
 }
 
-.room-profile { min-height:2rem; min-width:2rem;
-  &.private::after { .icon-lock; font-size: 1.2rem; margin: auto; padding-left: 3px; }
-  //&.public::after { .icon-public; }
+.label {
+  &.label-sm { padding: .3rem 1rem .3rem; font-size: 1.0rem; font-weight:normal; line-height: 1.4rem; }
+  &.label-default { .label-variant(@cl-subtext20); }
+  &.label-primary { .label-variant(@cl-first); }
+
+  &.label-group { position: absolute; top: 0; left: 0; margin: -5px;
+    &::before { .icon-star; font-size: 1rem; margin-right: 2px; }
+  }
+  &.label-mode { .label-default; position: absolute; color: #FFFFFF; top: 0; left: 0; margin: -5px; }
 }
+
+.room-profile { min-height:2rem; min-width:2rem; display: inline-block; margin: auto 0 auto 10px; }
 
 .modal-backdrop { &.in { opacity: 0.5; } } // fix less .opacity() bug, web-server/public/vendor/bootstrap/less/modals.less:72
 
 html { height: 100%;   background: #f9f9f9; }
 body { .ft-opensans; font-size: 14px; overflow-x: hidden;
-  a { color: @cl-text; }
-  a:hover { color: @cl-text; }
+  a { color: @cl-text; text-decoration: none;
+    &:hover { color: @cl-text; text-decoration: underline; }
+    &.inverse { text-decoration: underline;
+      &:hover { text-decoration: none; }
+    }
+    &.clean { text-decoration: none;
+      &:hover { text-decoration: none; }
+    }
+  }
 }
 
 [data-toggle="contactform"] {
@@ -191,7 +214,10 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   }
 }
 
-.btn .btn-success { .button-variant(@cl-clouds; @cl-emerald; @cl-green_sea); }
+.btn {
+  &.btn-success { .button-variant(@cl-clouds; @cl-emerald; @cl-green_sea); }
+  &.btn-primary { .button-variant(@cl-clouds; @cl-first; @cl-first-dark-10); }
+}
 
 .button { padding: 10px 15px; .ft-raleway; text-transform: uppercase; .border-radius(25px); background-color: @cl-first; border: 0; color: #fff; text-decoration:none; text-align: center; .display-flex; align-items: baseline;
   &:hover { text-decoration: none; background-color: lighten(@cl-first, 10%); }
@@ -385,15 +411,18 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   &.center { align-items: center; }
   &.baseline { align-items: baseline; }
   &.flex-end { align-items: flex-end; }
-  &.space-betxeen { justify-content: space-between; }
+
   &.jc-center { justify-content: center; }
   &.jc-end { justify-content: flex-end; }
+
+  .centered { margin: auto; }
+  .vcentered { margin: auto 0; }
+  .hcentered { margin: 0 auto; }
 }
 .flex-child {
   .flex(1);
   &.flex-child-3 { .flex(3); }
   &.alone { .flex(0 1 100%); }
-  &.centered { margin: auto; }
 }
 
 .flex-start { align-self: flex-start; }
@@ -430,3 +459,5 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
 [aria-expanded="true"] .icon {
   .icon { .opacity(1); }
 }}
+
+.bordered-left { border-left: 5px solid @cl-subtext15; padding-left: 10px; }

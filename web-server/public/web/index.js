@@ -1,7 +1,6 @@
 // jQuery
 var $ = require('jquery');
-global.jQuery = $; // expose jQuery globally, needed for some beside plugins
-require('../vendor/html.sortable/dist/html.sortable.min');
+global.jQuery = $; // expose jQuery globally, needed for some beside plugins // @todo dbr still userfull without sortable ?
 require('../javascripts/jquery.insertatcaret');
 require('../javascripts/jquery.maxlength');
 require('../javascripts/jquery.smilify');
@@ -12,6 +11,7 @@ require('bootstrap/js/dropdown');
 require('bootstrap/js/modal');
 require('bootstrap/js/tooltip');
 require('bootstrap/js/popover');
+require('bootstrap/js/collapse');
 
 // contact form
 $('[data-toggle="contactform"]').contactform({});

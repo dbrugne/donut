@@ -12,8 +12,32 @@
         <nav id="color" class="navbar navbar-default navbar-fixed-top dc-back">
             <div class="container">
                 <div id="navbar">
-                    <a class="navbar-brand-a hidden-xs hidden-sm" href="/!#"><img class="logo" src="/images/logo-bordered-small.png" alt="<%= t('title.chat') %>"> <span class="beta dc-text-contrast">alpha</span></a>
+                    <a class="navbar-brand-a hidden-xs hidden-sm" href="/!#"><img class="logo" src="/images/logo-bordered-small.png" alt="<%= t('title.chat') %>"></a>
 
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="icontop help">
+                            <span id="block-current-user">
+                                <img class="mr5" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
+                                <span class="mr5 dc-text-contrast">@<%- user.username %></span>
+                                <span class="connection"> <i class="icon icon-circle status"></i></span>
+                                <a href="#" class="dropdown-toggle toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    <i class="icon icon-chevron-down dc-text-contrast hover"></i>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li class="arrow-up"></li>
+                                    <li><a href="/!#room/help"><%= t('chat.help') %></a></li>
+                                    <li><a href="/faq" target="_blank"><%= t('page.faq.title') %></a></li>
+                                    <li><a data-toggle="contactform"><%= t('page.contact.title') %></a></li>
+                                    <li><a href="/eutc" target="_blank"><%= t('page.eutc.title') %></a></li>
+                                    <li><a href="/legals" target="_blank"><%=t('landing.legals')%></a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li class="dropdown-header"><%= t('global.switchlanguage') %></li>
+                                    <li class="colored"><a href="" data-language="fr" class="switch">Français</a></li>
+                                    <li class="colored"><a href="" data-language="en" class="switch">English</a></li>
+                                </ul>
+                            </span>
+                        </li>
+                    </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="icontop">
                             <a href="/!#" class="toggle dc-text-contrast">
@@ -60,28 +84,6 @@
                                 <i class="icon icon-volume-up dc-text-contrast hover"></i>
                             </a>
                         </li>
-                        <li class="icontop help">
-                            <span id="block-current-user">
-                                <img class="mr5 dc-border-darker" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
-                                <span class="mr5 dc-text-contrast">@<%- user.username %></span>
-                                <span class="connection mr5"> <i class="icon icon-circle status"></i></span>
-                                <a href="#" class="dropdown-toggle toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    <i class="icon icon-menu dc-text-contrast hover"></i>
-                                </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li class="arrow-up"></li>
-                                    <li><a href="/!#room/help"><%= t('chat.help') %></a></li>
-                                    <li><a href="/faq" target="_blank"><%= t('page.faq.title') %></a></li>
-                                    <li><a data-toggle="contactform"><%= t('page.contact.title') %></a></li>
-                                    <li><a href="/eutc" target="_blank"><%= t('page.eutc.title') %></a></li>
-                                    <li><a href="/legals" target="_blank"><%=t('landing.legals')%></a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li class="dropdown-header"><%= t('global.switchlanguage') %></li>
-                                    <li class="colored"><a href="" data-language="fr" class="switch">Français</a></li>
-                                    <li class="colored"><a href="" data-language="en" class="switch">English</a></li>
-                                </ul>
-                            </span>
-                        </li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
@@ -89,9 +91,16 @@
         <div class="row">
             <div id="left">
                 <ul class="page-sidebar-menu">
-                    <li id="block-discussions">
-                        <ul class="list">
-                            <!--discussions content-->
+                    <li id="ones">
+                        <div class="title">ONE TO ONES</div>
+                        <ul class="list"><!--ones--></ul>
+                        <div class="separator"><hr></div>
+                    </li>
+                    <li id="rooms">
+                        <div class="title">ROOMS</div>
+                        <ul class="list"><!--rooms--></ul>
+                        <ul class="empty">
+                            <li>No room opened, you can <a class="go-to-search dc-text" href="#">search</a> or <a class="open-create-room dc-text" href="#">create</a> one.</li>
                         </ul>
                     </li>
                 </ul>
@@ -104,7 +113,20 @@
                         </div>
                     </div>
                 </div>
-                <div id="home" class="flex-parent column"><!--home content--></div>
+                <div id="home" class="flex-parent column">
+                    <div class="left">
+                        <div class="search">
+                            <input type="text" placeholder="<%= t('chat.search.placeholder') %>">
+                            <i class="icon icon-search"></i>
+                        </div>
+                        <div class="ctn-results">
+                            <div class="rooms cards"><!--room list--></div>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="users"><!--user list--></div>
+                    </div>
+                </div>
             </div><!-- /#center -->
         </div><!-- /.row -->
     </div><!-- /#chat -->
@@ -154,6 +176,10 @@
                     <div class="question"><%= t('chat.confirmation.sure') %></div>
                     <div class="input">
                         <input type="text" class="form-control" placeholder="<%= t('chat.confirmation.placeholder') %>">
+                    </div>
+                    <div class="big-input">
+                        <label class="big-input-label" for="big-input-textarea"><%= t('chat.confirmation.label') %></label>
+                        <textarea id="big-input-textarea" class="form-control" rows="5" maxlength="200" placeholder="<%= t('chat.confirmation.placeholderarea') %>"></textarea>
                     </div>
                     <div class="buttons">
                         <button type="button" class="cancel" data-dismiss="modal"><i class="icon icon-times"></i> <%= t('chat.confirmation.cancel') %></button>

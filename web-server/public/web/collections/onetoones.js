@@ -1,12 +1,19 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var client = require('../libs/client');
+var app = require('../models/app');
 var currentUser = require('../models/current-user');
 var OneToOneModel = require('../models/onetoone');
 var i18next = require('i18next-client');
-var app = require('../models/app');
 
 var OnetoonesCollection = Backbone.Collection.extend({
+  comparator: function (a, b) {
+    if (a.get('last') > b.get('last')) {
+      return -1;
+    } else {
+      return 1;
+    }
+  },
   iwhere: function (key, val) { // insensitive case search
     var matches = this.filter(function (item) {
       return item.get(key).toLocaleLowerCase() === val.toLocaleLowerCase();
@@ -31,59 +38,60 @@ var OnetoonesCollection = Backbone.Collection.extend({
     this.listenTo(client, 'user:deban', this.onDeban);
     this.listenTo(client, 'user:message:edit', this.onMessageEdited);
     this.listenTo(client, 'user:typing', this.onTyping);
+    this.listenTo(app, 'refreshOnesList', this.onRefreshList);
   },
   join: function (username) {
-    // we ask to server to open this one to one
-    client.userJoin(username, function (response) {
+    client.userId(username, function (response) {
       if (response.err && response !== 500) {
         return app.trigger('alert', 'error', i18next.t('chat.users.usernotexist'));
       } else if (response.code === 500) {
         return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
       }
+      if (!response.user_id) {
+        return;
+      }
+      client.userJoin(response.user_id, function (response) {
+        if (response.err && response !== 500) {
+          return app.trigger('alert', 'error', i18next.t('chat.users.usernotexist'));
+        } else if (response.code === 500) {
+          return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+        }
+      });
     });
   },
   onJoin: function (data) {
     // server ask to client to open this one to one in IHM
     this.addModel(data);
   },
-  addModel: function (user) {
-    // server confirm that we was joined to the one to one and give us some data on user
-    // prepare model data
-    var oneData = {
-      user_id: user.user_id,
-      username: user.username,
-      avatar: user.avatar,
-      poster: user.poster,
-      color: user.color,
-      location: user.location,
-      website: user.website,
-      onlined: user.onlined,
-      status: user.status,
-      banned: user.banned,
-      i_am_banned: user.i_am_banned,
-      unviewed: user.unviewed
-    };
+  addModel: function (data) {
+    data.last = (data.lastactivity_at)
+      ? new Date(data.lastactivity_at).getTime()
+      : '';
+    delete data.lastactivity_at;
 
-    // update model
-    var isNew = (this.get(user.user_id) === undefined);
+    data.identifier = '@' + data.username;
+
+    data.uri = '#u/' + data.username;
+
+    var isNew = (this.get(data.user_id) === undefined);
     var model;
     if (!isNew) {
       // already exist in IHM (maybe reconnecting)
-      model = this.get(user.user_id);
-      model.set(oneData);
+      model = this.get(data.user_id);
+      model.set(data);
     } else {
-      // add in IHM
-      oneData.id = user.user_id;
-      oneData.key = this._key(oneData.user_id, currentUser.get('user_id'));
-      model = new OneToOneModel(oneData);
-    }
-
-    if (isNew) {
-      // now the view exists (created by mainView)
+      // add in IHM (by mainView)
+      data.id = data.user_id;
+      data.key = this._key(data.user_id, currentUser.get('user_id'));
+      model = new OneToOneModel(data);
       this.add(model);
     }
 
     return model;
+  },
+  onRefreshList: function () {
+    this.sort();
+    app.trigger('redraw-block');
   },
   getModelFromEvent: function (event, autoCreate) {
     var key;

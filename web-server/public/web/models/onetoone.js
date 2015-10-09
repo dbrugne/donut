@@ -41,6 +41,9 @@ var OneToOneModel = Backbone.Model.extend({
       model.set('unviewed', true);
     }
 
+    this.set('last', Date.now());
+    app.trigger('refreshOnesList');
+
     app.trigger('unviewedMessage', model, this);
     this.trigger('freshEvent', model);
   },
@@ -116,7 +119,7 @@ var OneToOneModel = Backbone.Model.extend({
     this.trigger('viewed', data);
   },
   sendMessage: function (message, images) {
-    client.userMessage(this.get('user_id'), null, message, images);
+    client.userMessage(this.get('user_id'), message, images);
   },
   resetNew: function () {
     if (this.isThereNew()) { // avoid redraw if nothing to change

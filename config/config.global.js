@@ -13,6 +13,11 @@ module.exports = {
       color: '#fc2063'
     }
   },
+  group: {
+    default: {
+      name: 'welcome'
+    }
+  },
   mongo: {
     'url': ''
   },

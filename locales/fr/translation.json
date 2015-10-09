@@ -107,6 +107,7 @@
   },
   "baseline": "vous avez des choses à (vous) dire !",
   "actions": {
+    "clickhere": "cliquez ici",
     "login": "connexion",
     "tologin": "connecter",
     "logout": "déconnexion",
@@ -125,6 +126,8 @@
     "muted": "son désactivé"
   },
   "global": {
+    "donuts": "Donuts",
+    "group": "group",
     "admin": "(administrateur)",
     "default": "défaut",
     "or": "ou",
@@ -154,7 +157,19 @@
     },
     "switchlanguage": "Langue",
     "unknownerror": "Erreur inconnue, veuillez réessayer",
-    "private-donut": "Donut privé: seuls les utilisateurs autorisés peuvent rejoindre, participer et accéder à l'historique."
+    "mode": {
+      "title": {
+        "members": "membres",
+        "invites": "invités",
+        "members-invites": "membres & invités",
+        "public": "public"
+      },
+      "description": {
+        "invites": "Ce donut est privé, accessible uniquement sur invitation",
+        "members-invites": "Ce donut est privé, accessible uniquement aux membres de cette de communauté et sur invitation",
+        "public": "Ce donut est public, accessible à tout utilisateur"
+      }
+    }
   },
   "login": {
     "withfacebook": "avec Facebook",
@@ -224,6 +239,9 @@
     "logout": "Déconnexion"
   },
   "profile": {
+    "common": {
+      "editlink": "Editer"
+    },
     "room": {
       "ownerops": "Les habitués",
       "now": "En ce moment",
@@ -233,7 +251,15 @@
         "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. <a href=\"/\">DONUT.me</a> vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
       },
       "permalink": "Permalien de ce profil",
+      "editusers": "Gérer les utilisateurs",
+      "createdat": "créé le"
+    },
+    "group": {
+      "ownerops": "Les habitués",
+      "nouser": "Pas d'utilisateur dans ce groupe",
+      "permalink": "Permalien de ce profil",
       "editlink": "Editer",
+      "profilelink": "Profil de ",
       "editusers": "Gérer les utilisateurs",
       "createdat": "créé le"
     },
@@ -244,7 +270,6 @@
         "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. <a href=\"/\">DONUT.me</a> vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
       },
       "permalink": "Permalien de ce profil",
-      "editlink": "Editer",
       "signuped": "inscrit le",
       "onlined": "connecté il y a __time__",
       "edit": "Editer"
@@ -367,7 +392,8 @@
     "allowed": {
       "success": "La demande d'accès a bien été envoyée",
       "error" : {
-        "allow-pending": "Une demande d'accès a déjà été envoyée"
+        "allow-pending": "Une demande d'accès a déjà été envoyée",
+        "message-wrong-format": "Le message ne doit pas faire plus de 200 caractères"
       }
     },
     "password": {
@@ -378,6 +404,8 @@
     "confirmation": {
       "sure": "Vous confirmez que vous voulez faire cela ?",
       "placeholder": "Expliquez pourquoi, visible dans le donut (optionnel)",
+      "placeholderarea": "200 caractères maximum",
+      "label": "Expliquez pourquoi (optionnel)",
       "cancel": "Non, j'annule",
       "confirm": "Oui, je confirme",
       "message": {
@@ -385,7 +413,9 @@
         "refuseuser": "Vous allez refuser l'accès à @__username__",
         "acceptuser": "Vous allez autoriser l'accès à @__username__",
         "disallowuser": "Vous allez supprimer l'accès à @__username__",
-        "invite": "Vous allez autoriser l'accès à @__username__. Une notification va lui être adressée pour l'inviter à rejoindre #__name__."
+        "invite": "Vous allez autoriser l'accès à @__username__. Une notification va lui être adressée pour l'inviter à rejoindre #__name__.",
+        "requestallowance": "Vous allez envoyer une demande d'accés pour #__name__. Le créateur du donut aura accès à votre vrais nom et addresse mail.",
+        "requestallowancegroup": "Vous allez envoyer une demande d'accés pour #__name__. Le créateur du groupe aura accès à votre vrais nom et addresse mail."
       }
     },
     "commands": {
@@ -464,7 +494,11 @@
         "roommessage": "Nouveaux messages dans <span>#__name__</span>",
         "usermention": "Vous êtes mentionné dans <span>#__name__</span>",
         "usermessage": "<span>@__username__</span>: __message__",
-        "roominvite": "<span>@__username__</span> vous invite à rejoindre <span>#__name__</span>"
+        "roominvite": "<span>@__username__</span> vous invite à rejoindre <span>#__name__</span>",
+        "groupjoinrequest": "<span>@__username__</span> souhaite rejoindre <span>#__name__</span>",
+        "groupallowed": "Vous êtes autorisé à rejoindre <span>#__name__</span>",
+        "groupinvite": "<span>@__username__</span> vous invite à rejoindre <span>#__name__</span>",
+        "grouprefuse": "Demande d'accès au groupe <span>#__name__</span></br> refusée"
       },
       "userban": " est bloqué à la demande de",
       "userdeban": " n'est plus bloqué à la demande de"
@@ -477,7 +511,7 @@
       "loading": "Chargement de l'historique ...",
       "top": "aller tout en haut",
       "bottom": "aller tout en bas",
-      "currently": "C'est ici que tout commence... Vous êtes au tout début de la conversation <span class=\"name dc-text open-room-profile\" data-room-id=\"__roomid__\">__roomname__</span>, donut créé par <span class=\"owner dc-text open-user-profile\" data-user-id=\"__ownerid__\">@__owner__</span> le <span class=\"date\">__created_at__</span>",
+      "currently": "C'est ici que tout commence... Vous êtes au tout début de la conversation <span class=\"name dc-text open-room-profile\" data-room-id=\"__room_id__\">__identifier__</span>, donut créé par <span class=\"owner dc-text open-user-profile\" data-user-id=\"__owner_id__\">@__owner_username__</span> le <span class=\"date\">__created_at__</span>",
       "hasPassword": "Votre donut est privé. Paramétrez les modalités d'accès en cliquant sur \"Gérer les accès\"",
       "onestart": "Cette conversation est privée. Seuls vous et votre interlocuteur pouvez y avoir accès.",
       "edit": "Editer le profil",
@@ -487,9 +521,11 @@
     "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions (<a href='/signup'>créer un compte</a> ou <a href='/login'>se connecter</a>)",
     "closeapp": "Etes-vous sur de vouloir quitter ?",
     "closemessage": "Etes-vous sur de vouloir fermer l'onglet ?",
-    "kickmessage": "Vous venez d'être expulsé de __name__",
-    "banmessage": "Vous venez d'être banni de __name__",
-    "disallowmessage": "Vous ne faites plus partie de la liste des gens autorisés dans __name__",
+    "alert": {
+      "kick": "Vous venez d'être expulsé de __name__",
+      "ban": "Vous venez d'être banni de __name__",
+      "allowed": "Vous ne faites plus partie de la liste des gens autorisés dans __name__"
+    },
     "roomnotexists": "Le donut __name__ n'existe pas, <a class='open-create-room' data-name='__name__'>souhaitez-vous le créer </a> ?",
     "reason": "(motif : \"__reason__\")",
     "deletemessage": "Le donut __name__ vient d'être supprimé",
@@ -507,7 +543,8 @@
         "op": "Modérateurs",
         "allowed": "Utilisateurs autorisés",
         "ban": "Bannis",
-        "devoice": "Muets"
+        "devoice": "Muets",
+        "members": "Membres"
       },
       "usernotexist": "Cette utilisateur n'existe pas."
     },
@@ -516,6 +553,8 @@
       "labelsearch": "Autoriser des utilisateurs",
       "add": "Autoriser un utilisateur",
       "labelpending": "Utilisateurs en attente d'autorisation",
+      "user-request-access": "Permettre aux utilisateurs à demander une invitation",
+      "request-access": "Demande d'accès",
       "types": {
         "all": "Tous",
         "allowed": "Autorisés",
@@ -528,21 +567,24 @@
       "description": "Venez me rejoindre sur DONUT.me le nouveau site de chat. J'y discute sur __name__."
     },
     "welcome": {
-      "private": {
-        "room": [
-          "Bienvenue dans <a class=\"open-room-profile\" data-room-id=\"__room_id__\"><strong>__name__</strong></a>. La conversation est privée. Seuls les utilisateurs autorisés par <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a> pourront rejoindre ce donut. Les utilisateurs qui ont rejoint le donut peuvent y participer et accéder à son historique.",
-          "Postez un message pour amorcer la conversation."
-        ]
-      },
-      "public": {
-        "room": [
-          "Bienvenue dans <a class=\"open-room-profile\" data-room-id=\"__room_id__\"><strong>__name__</strong></a>. La conversation est publique donc accessible à tous de même que l'historique. Vous pouvez partager le lien avec vos amis.",
-          "Postez un message pour amorcer la conversation."
-        ]
-      },
+      "members-invites": [
+        "<p>Bienvenue!</p>",
+        "<p>La conversation est privée. Seuls les membres de la communauté <a class=\"open-group-profile curp\" data-group-id=\"__group_id__\"><strong>#__group_name__</strong></a> ainsi utilisateurs autorisés par <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a> peuvent rejoindre ce donut, y participer et accéder à son historique.</p>",
+        "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
+      ],
+      "invites": [
+        "<p>Bienvenue!</p>",
+        "<p>La conversation est privée. Seuls les utilisateurs autorisés par <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a> peuvent rejoindre ce donut, y participer et accéder à son historique.</p>",
+        "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
+      ],
+      "public": [
+        "<p>Bienvenue !</p>",
+        "<p>Cette conversation est publique donc accessible à tous de même que l'historique. Vous pouvez partager le lien avec vos amis.</p>",
+        "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
+      ],
       "onetoone": [
-        "Si <strong>@__username__</strong> n'est pas en ligne les nouveaux messages lui seront remis à sa prochaine connexion",
-        "Postez un message pour amorcer la conversation."
+        "<p><strong>@__username__</strong> n'est pas en ligne, les nouveaux messages lui seront remis à sa prochaine connexion</p>",
+        "<p>Postez un message pour amorcer la conversation.</p>"
       ]
     },
     "connection": {
@@ -574,15 +616,15 @@
       "typing_plural": "sont en train de taper"
     },
     "blocked": {
-      "allowed": "Ce donut est privé. Seuls les utilisateurs que vous autorisez pourront rejoindre, participer et accéder à l'historique.",
+      "allowed": "Ce donut est privé. Seuls les utilisateurs autorisés peuvent rejoindre, participer et accéder à l'historique.",
       "ask-for-access": "Pour demander un accès, <a href=\"#\" class=\"ask-for-allowance\"><strong>cliquer ici</strong></a>.",
-      "rejoin-donut": "<a class=\"rejoin curp\"><strong>cliquez ici</strong></a> pour le rejoindre à nouveau.",
+      "rejoin": " pour le rejoindre à nouveau.",
       "allowed_button": "Demander l'accès",
       "password": "Ou vous pouvez le rejoindre directement si vous connaissez le mot de passe :",
       "password_placeholder": "Mot de passe",
       "password_button": "Rejoindre",
       "banned": "Vous avez été banni de ce donut le __at__",
-      "banned_reason": "pour la raison suivante : ",
+      "reason": "pour la raison suivante : ",
       "kicked": "Vous avez été expulsé de ce donut.",
       "kicked_button": "Rejoindre",
       "changemode": "Passer en mode privé",
@@ -590,7 +632,9 @@
       "disclaimer-public": "Ce donut est public. N'importe quel utilisateur pourra y accéder.",
       "disclaimer-password": "Vous avez également choisi de mettre un mot de passe. Les utilisateurs avec le mot de passe pourront y entrer sans avoir besoin d'être invités au préalable.",
       "disclaimer-changing": "Vous pouvez passer ce donut en mode privé. Alors, seuls les utilisateurs que vous autoriserez pourront rejoindre, participer et accéder à l'historique. L'accès se fera par invitation et/ou par mot de passe. Les membres actuels de donut public resteront autorisés dans ce donut une fois qu'il sera devenu privé. Attention, cette action est irréversible.",
-      "close": "Fermer ce donut"
+      "disclaimer-group": "Tous les membres du groupe peuvent créer un donut dans ce groupe est en gerer l'accès. Ils peuvent également rejoindre les donuts privés qui autorisent les membres du groupe. Les donuts publics de ce groupe sont accessibles par tous les utilisateurs du site.",
+      "close": "Fermer ce donut",
+      "allowgroupmember": "Autoriser les membres du groupe à rejoindre ce donut"
     },
     "form": {
       "common": {
@@ -619,7 +663,53 @@
               "size": "Sera automatiquement redimensionné au format __resized_width__x__resized_height__px."
             }
           },
-          "left": "<strong>%left</strong> restant"
+          "left": "<strong>__count__</strong> restant"
+        }
+      },
+      "group-form": {
+        "create": {
+          "label": "Créez un groupe",
+          "help": "Un groupe est un espace regroupant vos donut et permettant à votre communauté de devenir membre et d'accèder à un groupe de donuts.",
+          "help-name": "Entre 3 et 20 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement.<br>Attention le nom du groupe ne sera plus modifiable.",
+          "placeholder": "Nom du groupe",
+          "submit": "Créer le groupe"
+        },
+        "edit": {
+          "description": {
+            "label": "Description",
+            "placeholder": "Décrivez le groupe en quelques mots",
+            "help": "Facultatif"
+          },
+          "disclaimer": {
+            "label": "Disclaimer",
+            "placeholder": "Disclaimer",
+            "help": "Facultatif"
+          },
+          "visibility": {
+            "label": "Visibilité (administrateur)",
+            "true": "Le donut est visible sur la homepage",
+            "false": "Le donut <strong>n'est pas</strong> visible sur la homepage"
+          },
+          "priority": {
+            "label": "Priorité (administrateur)",
+            "placeholder": "",
+            "help": "Nombre, plus est grand, plus est prioritaire"
+          },
+          "group": {
+            "delete": {
+              "link": "Vous pouvez également supprimer ce groupe <a class='open-group-delete' data-group-id=\"__id__\">en cliquant ici</a>.",
+              "title": "Supprimer",
+              "info": [
+                "Vous êtes sur le point de supprimer ce groupe, cette opération est immédiate et irréversible.<br><br>",
+                "Veuillez confirmer la suppression en saissant le nom du groupe (<strong>__name__</strong>) puis en cliquant sur supprimer :"
+              ],
+              "placeholder": "Saisir le nom du groupe",
+              "success": "groupe supprimé !",
+              "error": {
+                "permanent": "Il n'est pas possible de supprimer un group 'permanent'"
+              }
+            }
+          }
         }
       },
       "room-form": {
@@ -639,14 +729,19 @@
           "disclaimer": {
             "public": "Tout utilisateur peut rejoindre, participer et accéder à l'historique. Vous disposez d'outils de modération.",
             "private": "Seuls les utilisateurs que vous autorisez pourront rejoindre, participer et accéder à l'historique. Vous disposez d'outils de modération.",
-            "password": "Vous pouvez également mettre un mot de passe. Les utilisateurs ayant le mot de passe pourront rejoindre le donut sans avoir besoin d'être invités au préalable."
+            "password": "Vous pouvez également mettre un mot de passe. Les utilisateurs ayant le mot de passe pourront rejoindre le donut sans avoir besoin d'être invités au préalable.",
+            "group-password": "Vous pouvez également mettre un mot de passe. Les utilisateurs ayant le mot de passe pourront rejoindre le groupe sans avoir besoin d'être invités au préalable.",
+            "allowgroupmember": "Vous pouvez autoriser les membres du groupe à rejoindre ce donut.",
+            "memberscondition": "Conditions d'entrée ou procédure"
           }
         },
         "create": {
           "label": "Créez un donut",
-          "help": "Entre 3 et 24 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement",
+          "help": "Entre 3 et 20 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement",
           "placeholder": "Nom du donut",
-          "submit": "Créer le donut"
+          "submit": "Créer le donut",
+          "group": "Déjà propriétaire d'une communauté ? Vous voulez créer un espace dédié à vos utilisateurs ? Vous pouvez <a href=\"#\" class=\"open-group-create\">créer un groupe</a>.",
+          "description": "Vous êtes sur le point de créer un donut sur l'espace global, si vous voulez créer un donut dans un groupe auquel vous appartenez, aller sur la page du groupe et clicker sur \"Créer un Donut\""
         },
         "edit": {
           "othersettings": "Autres paramètres",
@@ -709,9 +804,18 @@
         "mode-wrong-format": "Vous devez séléctionner un mode pour ce donut",
         "invalid-password": "Le mot de passe doit être compris entre 4 et 255 caractères",
         "room-already-exist": "Le donut __name__ existe déjà, <a href='#__uri__'>voulez-vous le rejoindre</a> ?",
-        "invalid-rights": "Vous n'avez pas les droits pour faire cela."
+        "group-name-already-exist": "Le groupe __name__ existe déjà, <a href='#__uri__'>voulez-vous le rejoindre</a> ?",
+        "invalid-rights": "Vous n'avez pas les droits pour faire cela.",
+        "not-allowed": "Vous ne pouvez pas supprimer ce donut"
       }
-    }
+    },
+    "members": "Vous êtes maintenant membre du groupe #__name__"
+  },
+  "group": {
+    "administrator": "Administrateurs",
+    "users": "Utilisateurs",
+    "invite": "Inviter",
+    "ask-membership": "Demander l'accès"
   },
   "account": {
     "error": {
@@ -781,7 +885,7 @@
     "global": {
       "content": {
         "team": "L'équipe DONUT.me",
-        "ps": "P.S.: pour ne plus recevoir ce type de notifications veuillez décocher les options de notifications dans les préférences de votre compte sur <a href=\"https://__fqdn__\">__fqdn__</a>, pour toute question nous sommes à votre écoute sur <a href=\"https://__fqdn__/!#room/help\">#help</a>"
+        "ps": "P.S.: pour ne plus recevoir ce type de notifications veuillez décocher les options de notifications dans les préférences de votre compte sur <a href=\"https://__fqdn__\">__fqdn__</a>, pour toute question nous sommes à votre écoute sur <a href=\"https://__fqdn__/!#donut/help\">#help</a>"
       }
     },
     "common": {
@@ -826,10 +930,10 @@
       "subject": "Vous avez été promu modérateur de #__roomname__",
       "content": {
         "title": "Vous avez été promu modérateur de #__roomname__",
-        "disclaimer": "Félicitations ! Vous êtes désormais modérateur de <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
+        "disclaimer": "Félicitations ! Vous êtes désormais modérateur de ",
         "disclaimer2": "Il est temps d'aller exercer vos nouveaux super pouvoirs",
-        "action": "…et tout ça grâce à <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
+        "action": "…et tout ça grâce à <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "Accéder à la discussion"
       }
     },
     "roomdeop": {
@@ -837,7 +941,7 @@
       "content": {
         "title": "Vous n'êtes plus modérateur de #__roomname__",
         "disclaimer": "Aïe! La bonne nouvelle, vous allez avoir un peu plus de temps à consacrer à votre propre donut:)",
-        "action": "…et tout ça grâce à <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "action": "…et tout ça grâce à <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Retourner sur DONUT"
       }
     },
@@ -846,7 +950,7 @@
       "content": {
         "title": "Vous avez été expulsé de #__roomname__",
         "disclaimer": "Ca ne doit pas être si grave, faites-vous un gros câlin et on oublie ça!",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
+        "button": "Accéder à la discussion"
       }
     },
     "roomban": {
@@ -861,10 +965,10 @@
       "subject": "Vous n'êtes plus banni de #__roomname__",
       "content": {
         "title": "Vous n'êtes plus banni de #__roomname__",
-        "disclaimer": "Vous n'êtes plus banni de <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>.",
+        "disclaimer": "Vous n'êtes plus banni de ",
         "disclaimer2": "On dirait bien que tout s'est arrangé !",
-        "action": "…et tout ça grâce à <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
+        "action": "…et tout ça grâce à <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "Accéder à la discussion"
       }
     },
     "roomvoice": {
@@ -872,8 +976,8 @@
       "content": {
         "title": "Vous avez retrouvé la parole dans #__roomname__",
         "disclaimer": "On dirait bien que tout s'est arrangé !",
-        "action": "... et tout ça grâce à <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
+        "action": "... et tout ça grâce à <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
     },
     "roomjoinrequest": {
@@ -881,8 +985,8 @@
       "content": {
         "title": "@__username__ demande à rejoindre #__roomname__",
         "disclaimer": "On dirait que votre donut est populaire !",
-        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-acces\">Accéder à la discussion</a>"
+        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-acces\">Accéder à la discussion</a>"
       }
     },
     "roomallow": {
@@ -890,8 +994,8 @@
       "content": {
         "title": "@__username__ vous autorise à rejoindre #__roomname__",
         "disclaimer": "Vous pouvez maintenant profiter de ce donut !",
-        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
+        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
       }
     },
     "roomrefuse": {
@@ -899,8 +1003,8 @@
       "content": {
         "title": "@__username__ a refusé votre demande de rejoindre #__roomname__",
         "disclaimer": "Ne vous inquiétez pas vous pouvez toujours refaire une demande plus tard !",
-        "action": "<strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
+        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
       }
     },
     "roominvite": {
@@ -908,15 +1012,16 @@
       "content": {
         "title": "@__username__ vous invite à rejoindre #__roomname__",
         "disclaimer": "Vous pouvez rejoindre son donut sans plus tarder !",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
+        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
       }
     },
     "roomdevoice": {
       "subject": "Vous êtes muet dans #__roomname__",
       "content": {
         "title": "Vous êtes muet dans #__roomname__",
-        "disclaimer": "Aïe, vous êtes désormais muet dans <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>. Ca ne concerne que <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>. Mais ne vous inquiétez pas, les modérateurs de <strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> ne devraient pas tarder à vous rendre la parole. Pendant ce temps, profitez-en pour aller vous chercher un petit donut et rejoindre une autre discussion !",
-        "action": "... et tout ça à cause de <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "disclaimer": "Aïe, vous êtes désormais muet dans <strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>. Ca ne concerne que <strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>. Mais ne vous inquiétez pas, les modérateurs de <strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong> ne devraient pas tarder à vous rendre la parole. Pendant ce temps, profitez-en pour aller vous chercher un petit donut et rejoindre une autre discussion !",
+        "action": "... et tout ça à cause de <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Retourner sur DONUT"
       }
     },
@@ -924,7 +1029,7 @@
       "subject": "Nouveau message privé de @__username__",
       "content": {
         "title": "Nouveau message privé de @__username__",
-        "disclaimer": "Vous avez un nouveau message privé de la part de <strong><a href=\"https://__fqdn__/user/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">@__username__</a></strong>",
+        "disclaimer": "Vous avez un nouveau message privé de la part de <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">@__username__</a></strong>",
         "button": "Accéder à la discussion"
       }
     },
@@ -932,8 +1037,8 @@
       "subject": "Nouveaux messages dans #__roomname__",
       "content": {
         "title": "Nouveaux messages dans #__roomname__",
-        "inroom": "<strong><a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
+        "inroom": "<strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
     },
     "roomjoin": {
@@ -941,7 +1046,7 @@
       "content": {
         "title": "@__username__ a rejoint #__roomname__",
         "disclaimer": "Et un de plus ! Allons l'accueillir comme il se doit :).",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
+        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
     },
     "roomtopic": {
@@ -950,7 +1055,7 @@
         "title": "@__username__ a défini un nouveau sujet dans #__roomname__",
         "topic": "Nouveau sujet : \"__topic__\"",
         "disclaimer": "Vous avez sûrement plein de choses choses à dire sur le sujet !",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
+        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
     },
     "usermention": {
@@ -958,11 +1063,47 @@
       "content": {
         "title": "@__username__ vous a mentionné dans #__roomname__",
         "disclaimer": "C'est toujours sympa quelqu'un qui pense à vous ! Pensez à lui répondre.",
-        "button": "<a href=\"https://__fqdn__/room/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
+        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
     },
     "contact": {
       "subject": "[DONUT] Nouveau formulaire de contact"
+    },
+    "groupjoinrequest": {
+      "subject": "Un utilisateur veut rejoindre #__groupname__",
+      "content": {
+        "title": "@__username__ demande l'accès à #__groupname__",
+        "disclaimer": "On dirait que votre groupe est parti pour aller loin !",
+        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder au groupe</a>"
+      }
+    },
+    "groupallow": {
+      "subject": "Un utilisateur a accepté votre demande de rejoindre #__groupname__",
+      "content": {
+        "title": "@__username__ vous autorise à rejoindre #__groupname__",
+        "disclaimer": "Vous pouvez maintenant profiter de ce groupe !",
+        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder au groupe</a>"
+      }
+    },
+    "groupinvite": {
+      "subject": "@__username__ vous invite à rejoindre #__groupname__",
+      "content": {
+        "title": "@__username__ vous invite à rejoindre #__groupname__",
+        "disclaimer": "Vous pouvez rejoindre son groupe sans plus tarder !",
+        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder au groupe</a>"
+      }
+    },
+    "grouprefuse": {
+      "subject": "Un utilisateur a refusé votre demande de rejoindre #__groupname__",
+      "content": {
+        "title": "@__username__ a refusé votre demande de rejoindre #__groupname__",
+        "disclaimer": "Ne vous inquiétez pas vous pouvez toujours refaire une demande plus tard !",
+        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder au groupe</a>"
+      }
     }
   },
   "welcome": {
@@ -1012,7 +1153,7 @@
     "notif": {
       "title": "Notifications",
       "help": {
-        "user": "DONUT cherche à limiter intelligemment le nombre de notifications que nous vous envoyons. Toutefois si vous trouvez que vous en recevez trop ou pas assez, n’hésitez pas à nous le dire <a data-toggle='contactform'>par email</a> ou sur le <a href='#room/help'>#help</a>"
+        "user": "DONUT cherche à limiter intelligemment le nombre de notifications que nous vous envoyons. Toutefois si vous trouvez que vous en recevez trop ou pas assez, n’hésitez pas à nous le dire <a data-toggle='contactform'>par email</a> ou sur le <a href='#donut/help'>#help</a>"
       },
       "nothing": {
         "label": "Ne recevoir aucune notification pour ce donut",

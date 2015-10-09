@@ -12,19 +12,23 @@ var _ = require('underscore');
 module.exports = function (app, user, users, fn) {
   var single = false;
   if (!_.isArray(users)) {
-    users = [ users ];
+    users = [users];
     single = true;
   }
 
   async.waterfall([
 
     function status (callback) {
-      app.statusService.getStatusByUids(_.map(users, 'id'), callback);
+      app.statusService.getStatusByUids(_.map(users, function (user) {
+        return user.user.id;
+      }), callback);
     },
 
     function prepare (statuses, callback) {
       var data = [];
-      _.each(users, function (u, index, list) {
+      _.each(users, function (obj, index, list) {
+        var u = obj.user;
+
         if (!u.username) {
           return;
         }
@@ -39,10 +43,11 @@ module.exports = function (app, user, users, fn) {
           website: u.website,
           banned: user.isBanned(u.id), // for ban/deban menu
           i_am_banned: u.isBanned(user.id), // for input enable/disable
-          unviewed: user.hasUnviewedOneMessage(u)
+          unviewed: user.hasUnviewedOneMessage(u),
+          lastactivity_at: obj.lastactivity_at
         };
 
-        if (statuses[ u.id ] === true) {
+        if (statuses[u.id] === true) {
           one.status = 'online';
           one.onlined = u.lastonline_at;
         } else {
@@ -58,7 +63,7 @@ module.exports = function (app, user, users, fn) {
       }
 
       if (single) {
-        return callback(null, data[ 0 ]);
+        return callback(null, data[0]);
       } else {
         return callback(null, data);
       }

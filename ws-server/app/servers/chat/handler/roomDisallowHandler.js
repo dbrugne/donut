@@ -41,6 +41,10 @@ handler.call = function (data, session, next) {
         return callback('room-not-found');
       }
 
+      if (!user) {
+        return callback('user-not-found');
+      }
+
       if (!room.isOwner(currentUser.id) && session.settings.admin !== true) {
         return callback('no-admin-owner');
       }

@@ -1,0 +1,20 @@
+<% _.each(list, function(item) { %>
+<li>
+    <span class="item center flex-parent <% if (item.focused) { %> active <% } %> <% if (item.blocked) { %> blocked <% } %>">
+        <a class="clean avatar-ctn hidden-xs hidden-sm" href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
+            <img src="<%= item.avatar %>" class="avatar" alt="<%= item.identifier %> avatar">
+        </a>
+        <a class="clean name-ctn hidden-xs hidden-sm" href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
+            <span class="name"><span>@</span><%= item.username %></span>
+        </a>
+
+        <% if (item.newuser === true || item.newmention === true || item.unviewed === true) { %>
+            <span class="icon icon-circle unread cl-peter_river fs10"></span>
+        <% } %>
+
+        <a href="#" class="ml5 close-discussion hidden-xs hidden-sm" data-type="<%= item.type %>" data-identifier="<%= item.user_id %>">
+            <i class="icon hover icon-times" title="<%= t('global.close') %>"></i>
+        </a>
+    </span>
+</li>
+<% }); %>

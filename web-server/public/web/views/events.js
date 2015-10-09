@@ -74,21 +74,15 @@ module.exports = Backbone.View.extend({
   render: function () {
     // render view
     var modelJson = this.model.toJSON();
-    if (modelJson.owner) {
-      modelJson.owner = modelJson.owner.toJSON();
-    }
-    var created_at = (this.model.get('created_at'))
+    modelJson.created_at = (this.model.get('created_at'))
       ? date.dateTime(this.model.get('created_at'))
       : '';
-    var created_time = (this.model.get('created_at'))
+    modelJson.created_time = (this.model.get('created_at'))
       ? date.shortTimeSeconds(this.model.get('created_at'))
       : '';
     var html = this.template({
       model: modelJson,
-      created_at: created_at,
-      created_time: created_time,
-      isOwner: (this.model.get('type') === 'room' && this.model.currentUserIsOwner()),
-      time: Date.now()
+      isOwner: (this.model.get('type') === 'room' && this.model.currentUserIsOwner())
     });
     this.$el.append(html);
 
@@ -253,13 +247,9 @@ module.exports = Backbone.View.extend({
     this.eventsHistoryView.requestHistory(scrollTo);
   },
   onMessageMenuShow: function (event) {
-    var ownerUserId = '';
-    if (this.model.get('owner')) {
-      ownerUserId = this.model.get('owner').get('user_id');
-    }
     var $event = $(event.currentTarget).closest('.block.message');
     var userId = $event.closest('[data-user-id]').data('userId');
-    var isMessageOwner = (ownerUserId === userId);
+    var isMessageOwner = (userId && this.model.get('owner_id') === userId);
 
     var isEditable = this.eventsEditView.isEditable($event);
 

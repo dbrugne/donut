@@ -2,7 +2,10 @@ var logger = require('../../../shared/util/logger').getLogger('donut');
 
 var errors = {
   // WRONG PARAMS (400)
+  'params-group-id': 400,         // group_id params not set
+  'params-group-name': 400,
   'params-room-id': 400,          // room_id params not set
+  'params-room-identifier': 400,
   'params-room-id-name': 400,     // room_id and name params not set
   'params-user-id': 400,          // user_id params not set
   'params-id': 400,               // id params not set
@@ -14,8 +17,10 @@ var errors = {
   'params-data': 400,             // data params not set
   'params-mode': 400,             // mode params not set
   'params-message': 400,          // message params not set or not good
+  'params-password': 400,         // password params not set
   'wrong-format': 400,            // params are not well formatted
   'name-wrong-format': 400,       // name params are not well formatted
+  'group-name-wrong-format': 400, // group name params are not well formatted
   'mode-wrong-format': 400,       // mode params are not well formatted
   'message-wrong-format': 400,    // message params are not well formatted
   'params': 400,                  // == GENERAL TAG ==
@@ -41,7 +46,8 @@ var errors = {
   'not-allowed': 403,             // == GENERAL TAG ==
 
   // NOT FOUND ERROR (404)
-  'current-user-not-found': 404,
+  'group-not-found': 404,         // Group not found
+  'current-user-not-found': 404,  // Current user not found
   'room-not-found': 404,          // Room not found
   'user-not-found': 404,          // User not found
   'event-not-found': 404,         // Event not found
@@ -51,6 +57,7 @@ var errors = {
   // CONFLICT (409)
   'mail-already-exist': 409,      // Mail already used by an other user
   'room-already-exist': 409,      // room already used by an other user
+  'group-name-already-exist': 409,// group already used or group name already used by an other room
   'same-mail': 409,               // Same mail as before
   'same-preferences': 409,        // Same preferences as before
 

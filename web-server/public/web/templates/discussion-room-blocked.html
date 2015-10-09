@@ -3,25 +3,26 @@
         <div class="header room">
             <div class="margin-top: auto">
                 <div class="error alert alert-danger"></div>
-                <img class="avatar border-shadow open-room-profile mb20" data-room-id="<%= room_id %>" src="<%= avatar %>" alt="<%= name %> avatar">
-                <div>
-                    <span class="name open-room-profile" data-room-id="<%= room_id %>"><%= name %></span>
-                    <% if (mode === 'private') { %>
-                        <span class="room-profile private" data-toggle="tooltip" data-placement="top" title="<%= t('global.private-donut') %>"> </span>
-                    <% } %>
+                <img class="avatar border-shadow open-room-profile mb20" data-room-id="<%= data.room_id %>" src="<%= data.avatar %>" alt="<%= data.identifier %> avatar">
+                <div class="flex-parent center jc-center">
+                    <span class="name open-room-profile" data-room-id="<%= data.room_id %>"><%= data.identifier %></span>
+                    <span class="room-profile label label-default label-sm" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + data.mode) %>">
+                        <%= t('global.mode.title.' + data.mode) %>
+                    </span>
                 </div>
 
-                <% if (owner && owner.username) { %>
-                <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= owner.id %>">@<%= owner.username %></a></span>
+                <% if (data.owner_id) { %>
+                    <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= data.owner_id %>">@<%= data.owner_username %></a></span>
                 <% } %>
 
-                <% if (mode === 'private' && blocked !== 'banned' && blocked !== 'kicked') { %>
-                    <% if (hasPassword) { %>
-                        <div class="password-form mt5 fs15">
+                <% if (data.mode === 'private' && data.blocked !== 'banned' && data.blocked !== 'kicked') { %>
+                    <% if (data.hasPassword) { %>
+                        <div class="password-form mt15 fs15">
                             <%= t('chat.blocked.allowed') %>
-                            <%= t('chat.blocked.ask-for-access') %>
-                            <br/>
-                            <%= t('chat.blocked.password') %>
+                            <% if(data.allow_user_request) { %>
+                                <%= t('chat.blocked.ask-for-access') %>
+                            <% } %>
+                            <div class="mt15"><%= t('chat.blocked.password') %></div>
                             <div class="form-inline mt15">
                                 <input class="input-password form-control " type="text" placeholder="<%= t('chat.blocked.password_placeholder') %>">
                                 <button class="valid-password btn btn-success"><%= t('chat.blocked.password_button') %></button>
@@ -30,23 +31,28 @@
                     <% } else { %>
                         <div class="mt15 mb5 fs15">
                             <%= t('chat.blocked.allowed') %>
-                            <%= t('chat.blocked.ask-for-access') %>
+                            <% if(data.allow_user_request) { %>
+                                <%= t('chat.blocked.ask-for-access') %>
+                            <% } %>
                         </div>
                     <% } %>
-                <% } else if (blocked === 'banned') { %>
+                <% if (data.disclaimer) { %>
+                <p class="disclaimer fs20"><%= data.disclaimer %></p>
+                <% } %>
+                <% } else if (data.blocked === 'banned') { %>
                     <div class="mt15 fs15">
-                        <% if (typeof banned_at !== 'undefined') { print(t('chat.blocked.banned', { at: banned_at })); } %>
-                        <% if (typeof banned_reason !== 'undefined') { %>
+                        <% if (data.banned_at) { print(t('chat.blocked.banned', { at: data.banned_at })); } %>
+                        <% if (data.reason) { %>
                         <p class="reason">
-                            <span class="title"><%= t('chat.blocked.banned_reason') %></span>
-                            <span class="reason"><i class="icon icon-quote"></i><%= banned_reason %></span>
+                            <span class="title"><%= t('chat.blocked.reason') %></span>
+                            <span class="reason"><i class="icon icon-quote"></i><%= data.reason %></span>
                         </p>
                         <% } %>
                     </div>
                 <% } else { %>
                     <div class="mt15 fs15">
                         <%= t('chat.blocked.kicked') %>
-                        <%= t('chat.blocked.rejoin-donut') %>
+                        <a class="rejoin curp"><strong><%= t('actions.clickhere') %></strong></a> <%= t('chat.blocked.rejoin') %>
                     </div>
                 <% } %>
                 <a href="#" class="close-room"><strong><%= t('chat.blocked.close') %></strong></a>

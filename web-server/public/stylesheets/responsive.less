@@ -81,9 +81,6 @@
             }
             &.is-banned .avatar::after { font-size: 30px; top: 0; left: 4px; line-height: 30px; }
             .name, .username { font-size: 16px !important; font-weight: bold; float: none; position: relative; margin: auto !important; padding: 0; display: flex; flex-flow: row nowrap; align-items: center; }
-            .room-profile {
-              &::after { font-size: 1rem;  }
-            }
             &.room .avatar img { .border-radius(50%); }
             .info {
 
@@ -212,6 +209,7 @@
       .avatar { background-size: 110%; float: left; margin-left: 10px; margin-right: 20px; }
       .ctn { .flex(1); margin-right: 10px; position: relative; overflow: hidden;
         .name { float: left; white-space: nowrap; }
+        .room-profile { float: right; margin-right: 15px; margin-top: 10px; }
         a.dc-text { float:right; position: absolute; bottom: 10px; .ft-raleway-medium; font-size: 1.7rem; white-space: nowrap; right:20px; }
       }
     }

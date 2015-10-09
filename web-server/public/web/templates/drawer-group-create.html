@@ -1,0 +1,28 @@
+<div class="relative">     <span class="close icon icon-times"></span> </div>
+
+<div class="title">
+    <%= t('chat.form.group-form.create.label') %>
+</div>
+
+<div class="ctn-drawer">
+    <div class="errors block"></div>
+
+    <div class="block">
+        <p class="help-block"><%= t('chat.form.group-form.create.help') %></p>
+    </div>
+
+    <div class="block">
+        <div class="field flex-parent jc-center">
+            <span class="hash dc-text colorize">#</span>
+            <input type="text" name="input-create" class="big-input dc-border flex-child colorize-border" placeholder="<%= t('chat.form.group-form.create.placeholder') %>" maxlength="24" value="<%= name %>" />
+        </div>
+    </div>
+
+    <div class="block">
+        <p class="help-block"><%= t('chat.form.group-form.create.help-name') %></p>
+    </div>
+
+    <div class="block flex-parent jc-center center">
+        <button class="submit btn btn-success" type="button"><%= t('chat.form.group-form.create.submit') %></button>
+    </div>
+</div>

@@ -6,6 +6,7 @@ var _ = require('underscore');
 var conf = require('../../../config/index');
 var sm = require('sitemap');
 var Room = require('../../../shared/models/room');
+var Group = require('../../../shared/models/group');
 var User = require('../../../shared/models/room');
 
 router.get('/robots.txt', function (req, res) {
@@ -48,7 +49,21 @@ router.get('/sitemap.xml', function (req, res) {
         }
 
         _.each(rooms, function (r) {
-          sitemap.add({url: '/room/' + r.name.toLocaleLowerCase()});
+          sitemap.add({url: '/r/' + r.getIdentifier().replace('#', '')});
+        });
+
+        return callback(null, sitemap);
+      });
+    },
+
+    function groups (sitemap, callback) {
+      Group.find({deleted: {$ne: true}}, 'name', function (err, groups) {
+        if (err) {
+          return callback(err);
+        }
+
+        _.each(groups, function (r) {
+          sitemap.add({url: '/g/' + r.getIdentifier().replace('#', '')});
         });
 
         return callback(null, sitemap);
@@ -68,7 +83,7 @@ router.get('/sitemap.xml', function (req, res) {
 
         _.each(users, function (u) {
           sitemap.add({
-            url: '/user/' + u.username.toLocaleLowerCase(),
+            url: '/u/' + u.username.toLocaleLowerCase(),
             changefreq: 'daily',
             priority: 0.6
           });

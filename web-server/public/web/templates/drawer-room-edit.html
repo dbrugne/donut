@@ -1,8 +1,8 @@
 <div class="relative">     <span class="close icon icon-times"></span> </div>
 
 <div class="title">
-    <%= t('profile.room.editlink') %>
-    <%= room.name %>
+    <%= t('profile.common.editlink') %>
+    <%= room.identifier %>
 </div>
 
 <div class="ctn-drawer">
@@ -62,7 +62,7 @@
     </form>
     <div class="footer block">
         <p class="delete">
-            <i class="icon icon-trash"></i> <%= t('chat.form.room-form.edit.room.delete.link', {id: room.id}) %>
+            <i class="icon icon-trash"></i> <%= t('chat.form.room-form.edit.room.delete.link', {id: room.room_id}) %>
         </p>
     </div>
 </div>

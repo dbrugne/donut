@@ -1,4 +1,3 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
@@ -18,10 +17,12 @@ var DrawerRoomCreateView = Backbone.View.extend({
   },
 
   initialize: function (options) {
+    this.group_id = options.group_id;
+    this.group_name = options.group_name;
     this.render(options.name);
   },
   render: function (name) {
-    var html = this.template({name: name.replace('#', '')});
+    var html = this.template({name: name, group_id: this.group_id, group_name: this.group_name});
     this.$el.html(html);
     this.$input = this.$el.find('input[name=input-create]');
     this.$errors = this.$el.find('.errors');
@@ -63,7 +64,7 @@ var DrawerRoomCreateView = Backbone.View.extend({
     }
   },
   _valid: function () {
-    var name = '#' + this.$input.val();
+    var name = this.$input.val();
     var mode = this._getMode();
     return common.validate.name(name) && common.validate.mode(mode);
   },
@@ -86,13 +87,18 @@ var DrawerRoomCreateView = Backbone.View.extend({
     }
     var mode = this._getMode();
 
-    var name = '#' + this.$input.val();
+    var name = this.$input.val();
 
     this.$submit.addClass('loading');
-    client.roomCreate(name, mode, null, _.bind(function (response) {
+    client.roomCreate(name, mode, null, this.group_id, _.bind(function (response) {
       this.$submit.removeClass('loading');
       if (response.code !== 500 && response.success !== true) {
-        var uri = 'room/' + name.replace('#', '');
+        var uri;
+        if (this.group_name) {
+          uri = this.group_name + '/' + name;
+        } else {
+          uri = name;
+        }
         var error = i18next.t('chat.form.errors.' +
           response.err, {name: name, uri: uri});
         return this.setError(error);
@@ -100,7 +106,11 @@ var DrawerRoomCreateView = Backbone.View.extend({
         return this.setError(i18next.t('global.unknownerror'));
       }
 
-      app.trigger('focusRoom', name);
+      if (this.group_name) {
+        app.trigger('joinRoom', '#' + this.group_name + '/' + name);
+      } else {
+        app.trigger('joinRoom', '#' + name);
+      }
       this.reset();
       this.trigger('close');
     }, this));
@@ -111,6 +121,4 @@ var DrawerRoomCreateView = Backbone.View.extend({
     });
   }
 });
-
-
 module.exports = DrawerRoomCreateView;

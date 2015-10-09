@@ -93,6 +93,14 @@ handler.call = function (data, session, next) {
       });
     },
 
+    function persist (sentEvent, mentions, callback) {
+      // Update topic and activity date
+      room.lastactivity_at = Date.now();
+      room.save(function (err) {
+        return callback(err, sentEvent, mentions);
+      });
+    },
+
     function mentionNotification (sentEvent, mentions, callback) {
       if (!mentions || !mentions.length) {
         return callback(null, sentEvent);

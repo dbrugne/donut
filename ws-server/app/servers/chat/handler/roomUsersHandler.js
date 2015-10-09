@@ -167,6 +167,15 @@ handler.call = function (data, session, next) {
           isOwner: room.isOwner(u.id),
           isPending: room.isAllowedPending(u.id)
         };
+        if (data.attributes.type === 'allowedPending') {
+          var pend = room.getAllowPendingByUid(u._id.toString());
+          userData.date = pend.created_at;
+          userData.name = (u.name) ? u.name : u.facebook.name;
+          userData.mail = (u.local.email) ? u.local.email : u.facebook.email;
+          if (pend.message) {
+            userData.message = pend.message;
+          }
+        }
         return userData;
       });
       var ids = _.map(users, 'user_id');

@@ -18,15 +18,20 @@ var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
   var user = session.__currentUser__;
+  var group = session.__group__;
 
   async.waterfall([
 
     function check (callback) {
-      if (!data.name) {
+      if (!data.room_name) {
         return callback('params-name');
       }
 
-      if (!common.validate.name(data.name)) {
+      if (!common.validate.name(data.room_name)) {
+        return callback('name-wrong-format');
+      }
+
+      if (data.room_name === conf.group.default.name) {
         return callback('name-wrong-format');
       }
 
@@ -38,11 +43,15 @@ handler.call = function (data, session, next) {
         return callback('mode-wrong-format');
       }
 
+      if (data.group_id && !group) {
+        return callback('group-not-found');
+      }
+
       return callback(null);
     },
 
     function create (callback) {
-      var q = RoomModel.findByName(data.name);
+      var q = RoomModel.findByNameAndGroup(data.room_name, data.group_id);
       q.exec(function (err, room) {
         if (err) {
           return callback(err);
@@ -52,14 +61,20 @@ handler.call = function (data, session, next) {
         }
 
         room = RoomModel.getNewRoom();
-        room.name = data.name;
+        room.name = data.room_name;
         room.owner = user.id;
         room.color = conf.room.default.color;
         room.visibility = false; // not visible on home until admin change this value
         room.priority = 0;
         room.mode = data.mode;
-        if (data.mode === 'private' && data.password !== null) {
-          room.password = data.password; // user.generateHash(data.password);
+        if (data.group_id) {
+          room.group = group.id;
+        }
+        if (data.mode === 'private') {
+          room.allow_user_request = true; // always set this option to true on private room creation
+          if (data.password !== null) {
+            room.password = data.password; // user.generateHash(data.password);
+          }
         }
 
         room.save(function (err) {
@@ -69,8 +84,8 @@ handler.call = function (data, session, next) {
     },
 
     function setPreferencesOnOwner (room, callback) {
-      user.set('preferences.room:notif:roomjoin:' + room.name, true);
-      user.set('preferences.room:notif:roomtopic:' + room.name, true);
+      user.set('preferences.room:notif:roomjoin:' + room.id, true);
+      user.set('preferences.room:notif:roomtopic:' + room.id, true);
       user.save(function (err) {
         return callback(err, room);
       });

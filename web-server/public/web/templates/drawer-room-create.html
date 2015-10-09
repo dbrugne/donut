@@ -1,4 +1,6 @@
-<div class="relative">     <span class="close icon icon-times"></span> </div>
+<div class="relative">
+    <span class="close icon icon-times"></span>
+</div>
 
 <div class="title">
     <%= t('chat.form.room-form.create.label') %>
@@ -9,7 +11,7 @@
 
     <div class="block">
         <div class="field flex-parent jc-center">
-            <span class="hash dc-text colorize">#</span>
+            <span class="hash dc-text colorize">#<% if (group_name) { %><%- group_name %>/<% } %></span>
             <input type="text" name="input-create" class="big-input dc-border flex-child colorize-border" placeholder="<%= t('chat.form.room-form.create.placeholder') %>" maxlength="24" value="<%= name %>" />
         </div>
     </div>
@@ -17,6 +19,12 @@
     <div class="block">
         <p class="help-block"><%= t('chat.form.room-form.create.help') %></p>
     </div>
+
+    <% if (!group_id) { %>
+    <div class="block">
+        <p class="description"><%= t('chat.form.room-form.create.description') %></p>
+    </div>
+    <% } %>
 
     <div class="block">
         <label><%= t('chat.form.room-form.common.join-mode-label') %></label>
@@ -39,4 +47,9 @@
     <div class="block flex-parent jc-center center">
         <button class="submit btn btn-success" type="button"><%= t('chat.form.room-form.create.submit') %></button>
     </div>
+    <% if (!group_id) { %>
+    <div class="block">
+        <p class="help-block"><%= t('chat.form.room-form.create.group') %></p>
+    </div>
+    <% } %>
 </div>

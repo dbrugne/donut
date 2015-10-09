@@ -3,12 +3,14 @@ var _ = require('underscore');
 var mongoose = require('../io/mongoose');
 var common = require('@dbrugne/donut-common/server');
 var cloudinary = require('../util/cloudinary');
+var GroupModel = require('./group');
 
-var MAX_PASSWORD_TRIES = 5;
-var MAX_PASSWORD_TIME = 60 * 1000; // 1mn
+var MAX_PASSWORD_TRIES = 5; // @todo sp : move in conf file
+var MAX_PASSWORD_TIME = 60 * 1000; // 1mn // @todo sp : move in conf file
 
 var roomSchema = mongoose.Schema({
   name: String,
+  group: {type: mongoose.Schema.ObjectId, ref: 'Group'},
   permanent: Boolean,
   deleted: {type: Boolean, default: false},
   visibility: {type: Boolean, default: false},
@@ -28,22 +30,30 @@ var roomSchema = mongoose.Schema({
   }],
   mode: {type: String, default: 'public'},
   password: String,
+  password_indication: String,
   password_tries: [{
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
     count: Number,
     created_at: {type: Date, default: Date.now}
   }],
+  allow_group_member: {type: Boolean, default: true},
+  allow_user_request: {type: Boolean, default: true},
   allowed: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
-  allowed_pending: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
+  allowed_pending: [{
+    user: {type: mongoose.Schema.ObjectId, ref: 'User'},
+    message: String,
+    created_at: {type: Date, default: Date.now}
+  }],
   avatar: String,
   poster: String,
   color: String,
   topic: String,
   description: String,
+  disclaimer: String,
   website: mongoose.Schema.Types.Mixed,
   created_at: {type: Date, default: Date.now},
-  lastjoin_at: {type: Date}
-
+  lastjoin_at: {type: Date},
+  lastactivity_at: {type: Date}
 });
 
 roomSchema.statics.findByName = function (name) {
@@ -51,6 +61,67 @@ roomSchema.statics.findByName = function (name) {
     name: common.regexp.exact(name, 'i'),
     deleted: {$ne: true}
   });
+};
+
+roomSchema.statics.findByNameAndGroup = function (name, groupId) {
+  var query = {
+    name: common.regexp.exact(name, 'i'),
+    deleted: {$ne: true}
+  };
+  if (groupId) {
+    query.group = {$in: groupId};
+  } else {
+    query.group = {$exists: false};
+  }
+  return this.findOne(query);
+};
+
+roomSchema.statics.findByIdentifier = function (identifier, callback) {
+  var data = common.validate.uriExtract(identifier);
+  if (!data) {
+    return callback('invalid-identifier');
+  }
+
+  var that = this;
+  var populate = function (err, room) {
+    if (err) {
+      return callback(err);
+    }
+    if (!room) {
+      return callback(null);
+    }
+    that.populate(room, [
+      {path: 'owner', select: 'username avatar color facebook'},
+      {path: 'group', select: 'name members'}
+    ], callback);
+  };
+
+  if (!data.group) {
+    // non-group rooms only
+    this.findOne({
+      name: common.regexp.exact(data.room, 'i'),
+      deleted: {$ne: true},
+      group: {$exists: false}
+    }, populate);
+  } else {
+    GroupModel.findByName(data.group).exec(function (err, group) {
+      if (err) {
+        return callback(err);
+      }
+      if (!group) {
+        return callback(null);
+      }
+      that.findOne({
+        group: group._id,
+        name: common.regexp.exact(data.room, 'i'),
+        deleted: {$ne: true}
+      }, populate);
+    });
+  }
+};
+
+roomSchema.statics.findByGroup = function (groupId) {
+  return this.find({group: groupId});
 };
 
 roomSchema.statics.listByName = function (names) {
@@ -169,12 +240,18 @@ roomSchema.methods.isAllowed = function (userId) {
   var subDocument = _.find(this.allowed, function (allowed) {
     return (allowed.toString() === userId);
   });
-  return (typeof subDocument !== 'undefined');
+
+  // check if it's a group member
+  if (typeof subDocument === 'undefined' && this.group && this.allow_group_member) {
+    return (this.group.isMember(userId));
+  } else {
+    return (typeof subDocument !== 'undefined');
+  }
 };
 
 roomSchema.methods.isAllowedPending = function (userId) {
   var subDocument = _.find(this.allowed_pending, function (u) {
-    return (u.toString() === userId);
+    return (u.user.toString() === userId);
   });
   return (typeof subDocument !== 'undefined');
 };
@@ -230,7 +307,34 @@ roomSchema.methods.cleanupPasswordTries = function () {
   });
 };
 
-roomSchema.methods.isUserBlocked = function (userId, password) {
+roomSchema.methods.isGoodPassword = function (userId, password) {
+  // remove expired subdocs on model synchronously and in database asynchronously
+  this.cleanupPasswordTries();
+  var tries = this.isInPasswordTries(userId);
+  if (tries && tries.count > MAX_PASSWORD_TRIES) {
+    return 'spam-password';
+  }
+  if (this.validPassword(password)) {
+    return true;
+  }
+  if (tries) {
+    tries.count ++;
+  } else {
+    this.password_tries.push({
+      user: userId,
+      count: 1
+    });
+  }
+  // persistence will happen later
+  this.save(function (err) {
+    if (err) {
+      logger.error(err);
+    }
+  });
+  return 'wrong-password';
+};
+
+roomSchema.methods.isUserBlocked = function (userId) {
   if (this.isOwner(userId)) {
     return false;
   }
@@ -240,40 +344,25 @@ roomSchema.methods.isUserBlocked = function (userId, password) {
   if (this.mode === 'public') {
     return false;
   }
-  if (this.isIn(userId)) {
-    return false;
-  }
   if (this.isAllowed(userId)) {
     return false;
   }
-  if (this.password && (password || password === '')) {
-    // remove expired subdocs on model synchronously and in database asynchronously
-    this.cleanupPasswordTries();
-    var tries = this.isInPasswordTries(userId);
-    if (tries && tries.count > MAX_PASSWORD_TRIES) {
-      return 'spam-password';
-    }
-    if (this.validPassword(password)) {
-      return false;
-    }
-    if (tries) {
-      tries.count ++;
-    } else {
-      this.password_tries.push({
-        user: userId,
-        count: 1
-      });
-    }
-    // persistence will happen later
-    this.save(function (err) {
-      if (err) {
-        logger.error(err);
-      }
-    });
-    return 'wrong-password';
-  }
 
   return 'notallowed';
+};
+
+roomSchema.methods.getAllowPendingByUid = function (userId) {
+  if (!this.allowed_pending) {
+    return;
+  }
+
+  return _.find(this.allowed_pending, function (doc) {
+    if (doc.user._id) {
+      return (doc.user.id === userId);
+    } else {
+      return (doc.user.toString() === userId);
+    }
+  });
 };
 
 roomSchema.methods.getIdsByType = function (type) {
@@ -301,7 +390,7 @@ roomSchema.methods.getIdsByType = function (type) {
     });
   } else if (type === 'allowedPending') {
     _.each(this.allowed_pending, function (u) {
-      ids.push(u.toString());
+      ids.push(u.user.toString());
     });
   } else if (type === 'regular') {
     var that = this;
@@ -320,6 +409,12 @@ roomSchema.methods.getIdsByType = function (type) {
     });
   }
   return ids;
+};
+
+roomSchema.methods.getIdentifier = function () {
+  return (!this.group)
+    ? '#' + this.name
+    : '#' + this.group.name + '/' + this.name;
 };
 
 module.exports = mongoose.model('Room', roomSchema);

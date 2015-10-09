@@ -15,6 +15,7 @@ var roomTopic = require('./types/roomTopicType');
 var roomMessage = require('./types/roomMessageType');
 var roomJoin = require('./types/roomJoinType');
 var userMention = require('./types/userMentionType');
+var groupRequest = require('./types/groupRequestType');
 
 module.exports = function (app, options) {
   return new Facade(app, options);
@@ -88,6 +89,13 @@ Facade.prototype.getType = function (type) {
       typeConstructor = roomRequest;
       break;
 
+    case 'groupjoinrequest':
+    case 'groupallowed':
+    case 'grouprefuse':
+    case 'groupinvite':
+      typeConstructor = groupRequest;
+      break;
+
     default:
       logger.warn('Unknown notification type: ' + type);
       return null;
@@ -147,6 +155,28 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
           .populate({
             path: 'data.room',
             model: 'Room',
+            select: 'avatar color name'})
+          .exec(function (err, notification) {
+            if (err) {
+              return fn(err);
+            }
+            if (!notification) {
+              return fn(null);
+            }
+
+            n = notification;
+            notifications.push(n);
+            return fn(null);
+          });
+      } else if (n.type === 'groupjoinrequest' || n.type === 'grouprefuse' || n.type === 'groupallowed' || n.type === 'groupinvite') {
+        NotificationModel.findOne({_id: n._id})
+          .populate({
+            path: 'data.by_user',
+            model: 'User',
+            select: 'facebook username local avatar color'})
+          .populate({
+            path: 'data.group',
+            model: 'Group',
             select: 'avatar color name'})
           .exec(function (err, notification) {
             if (err) {
@@ -267,6 +297,11 @@ Facade.prototype.retrieveScheduledNotifications = function (callback) {
   q.populate({
     path: 'data.room',
     model: 'Room',
+    select: 'avatar color name'
+  });
+  q.populate({
+    path: 'data.group',
+    model: 'Group',
     select: 'avatar color name'
   });
   q.exec(function (err, results) {

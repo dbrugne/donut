@@ -22,13 +22,11 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     // show spinner as temp content
     this.render();
 
-    // ask for data
-    var that = this;
-    client.roomRead(this.roomId, null, function (data) {
+    client.roomRead(this.roomId, null, _.bind(function (data) {
       if (!data.err) {
-        that.onResponse(data);
+        this.onResponse(data);
       }
-    });
+    }, this));
 
     // on room:delete callback
     this.listenTo(client, 'room:delete', this.onDelete);
@@ -46,7 +44,7 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     return this;
   },
   onResponse: function (room) {
-    if (room.owner.user_id !== currentUser.get('user_id') && !currentUser.isAdmin()) {
+    if (room.owner_id !== currentUser.get('user_id') && !currentUser.isAdmin()) {
       return;
     }
 
@@ -64,7 +62,11 @@ var DrawerRoomDeleteView = Backbone.View.extend({
       return this.setError(i18next.t('chat.form.errors.name-wrong-format'));
     }
 
-    client.roomDelete(this.roomId);
+    client.roomDelete(this.roomId, _.bind(function (response) {
+      if (response.err) {
+        return this.setError(i18next.t('chat.form.errors.' + response.err));
+      }
+    }, this));
   },
   onDelete: function (data) {
     if (!data.name || data.name.toLocaleLowerCase() !== this.roomNameConfirmation) {
@@ -101,7 +103,7 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     }
   },
   _valid: function () {
-    var name = '#' + this.$input.val();
+    var name = this.$input.val();
     var pattern = new RegExp('^' + this.roomNameConfirmation + '$', 'i');
     return pattern.test(name);
   },

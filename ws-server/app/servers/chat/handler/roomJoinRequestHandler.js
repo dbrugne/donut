@@ -27,6 +27,10 @@ handler.call = function (data, session, next) {
         return callback('params-room-id');
       }
 
+      if (data.message && data.message.length > 200) {
+        return callback('message-wrong-format');
+      }
+
       if (!room) {
         return callback('room-not-found');
       }
@@ -59,9 +63,13 @@ handler.call = function (data, session, next) {
     },
 
     function persist (eventData, callback) {
+      var pendingModel = {user: user._id};
+      if (data.message) {
+        pendingModel.message = data.message;
+      }
       Room.update(
         {_id: { $in: [room.id] }},
-        {$addToSet: {allowed_pending: user._id}}, function (err) {
+        {$addToSet: {allowed_pending: pendingModel}}, function (err) {
           return callback(err, eventData);
         }
       );

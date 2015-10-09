@@ -32,7 +32,8 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
 
   // welcome event data
   var welcomeEvent = {
-    notifications: {}
+    notifications: {},
+    blocked: []
   };
 
   var that = this;
@@ -41,10 +42,10 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
 
     function retrieveUser (callback) {
       User.findById(uid)
-        .populate('onetoones')
+        .populate('ones.user')
         .populate('blocked')
         .exec(function (err, user) {
-          if (err) {
+          if (err || !user) {
             return callback('Unable to find user: ' + err, null);
           }
 
@@ -53,10 +54,6 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
             username: user.username,
             avatar: user._avatar()
           };
-
-          if (user.positions) {
-            welcomeEvent.user.positions = JSON.parse(user.positions);
-          }
 
           if (user.admin === true) {
             welcomeEvent.user.admin = true;
@@ -73,11 +70,11 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
     },
 
     function populateOnes (user, callback) {
-      if (user.onetoones.length < 1) {
+      if (user.ones.length < 1) {
         return callback(null, user);
       }
 
-      oneDataHelper(that.app, user, user.onetoones, function (err, ones) {
+      oneDataHelper(that.app, user, user.ones, function (err, ones) {
         if (err) {
           return callback(err, user);
         }
@@ -90,6 +87,7 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
     function populateRooms (user, callback) {
       Room.findByUser(user.id)
         .populate('owner', 'username avatar color facebook')
+        .populate('group', 'name')
         .exec(function (err, rooms) {
           if (err) {
             return callback(err);
@@ -129,34 +127,34 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
     },
 
     function populateBlocked (user, callback) {
-      var roomsBlocked = [];
+      if (!user.blocked || !user.blocked.length) {
+        return callback(null, user);
+      }
 
-      async.forEach(user.blocked, function (room, fn) {
-        User.populate(room, {'path': 'owner'}, function (err, owner) {
+      Room.find({_id: {$in: user.blocked}})
+        .populate('owner', 'username avatar color facebook')
+        .populate('group', 'name')
+        .exec(function (err, rooms) {
           if (err) {
             return callback(err);
           }
 
-          roomDataHelper(user, room, function (err, r) {
-            if (err) {
-              fn(err);
-            }
-            roomsBlocked.push(r);
-            fn(null);
+          if (!rooms.length) {
+            return callback(null, user);
+          }
+
+          async.forEach(rooms, function (room, fn) {
+            roomDataHelper(user, room, function (err, r) {
+              if (err) {
+                fn(err);
+              }
+              welcomeEvent.blocked.push(r);
+              fn(null);
+            });
+          }, function (err) {
+            return callback(err, user);
           });
         });
-      }, function (err) {
-        if (err) {
-          return callback(err);
-        }
-
-        if (!roomsBlocked.length) {
-          return callback(null, user);
-        }
-
-        welcomeEvent.blocked = roomsBlocked;
-        return callback(null, user);
-      });
     },
 
     function featured (user, callback) {

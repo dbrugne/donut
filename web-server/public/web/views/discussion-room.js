@@ -69,8 +69,6 @@ var RoomView = Backbone.View.extend({
     var data = this.model.toJSON();
 
     // owner
-    var owner = this.model.get('owner').toJSON();
-    data.owner = owner;
     data.isOwner = this.model.currentUserIsOwner();
     data.isOp = this.model.currentUserIsOp();
     data.isAdmin = this.model.currentUserIsAdmin();
@@ -91,7 +89,7 @@ var RoomView = Backbone.View.extend({
     data.mode = this.model.get('mode');
 
     // share widget
-    var share = 'share-room-' + this.model.get('name').replace('#', '').toLocaleLowerCase();
+    var share = 'share-room-' + this.model.get('id')
     this.share = {
       class: share,
       selector: '.' + share
@@ -99,12 +97,16 @@ var RoomView = Backbone.View.extend({
     data.share = this.share.class;
 
     // dropdown
-    data.dropdown = require('../templates/dropdown-room-actions.html')({
+    var dropdown = require('../templates/dropdown-room-actions.html')({
       data: data
     });
 
     // render
-    var html = this.template(data);
+    var html = this.template({
+      data: data,
+      dropdown: dropdown
+    });
+    this.$el.attr('data-identifier', this.model.get('identifier'));
     this.$el.html(html);
     this.$el.hide();
 
@@ -168,7 +170,7 @@ var RoomView = Backbone.View.extend({
     }
     var that = this;
     confirmationView.open({}, function () {
-      client.roomOp(that.model.get('id'), userId, null, function (err) {
+      client.roomOp(that.model.get('id'), userId, function (err) {
         if (err) {
           return;
         }
@@ -186,7 +188,7 @@ var RoomView = Backbone.View.extend({
     }
     var that = this;
     confirmationView.open({}, function () {
-      client.roomDeop(that.model.get('id'), userId, null, function (err) {
+      client.roomDeop(that.model.get('id'), userId, function (err) {
         if (err) {
           return;
         }
@@ -204,7 +206,7 @@ var RoomView = Backbone.View.extend({
     }
     var that = this;
     confirmationView.open({input: true}, function (reason) {
-      client.roomKick(that.model.get('id'), userId, null, reason);
+      client.roomKick(that.model.get('id'), userId, reason);
     });
   },
   banUser: function (event) {
@@ -218,7 +220,7 @@ var RoomView = Backbone.View.extend({
     }
     var that = this;
     confirmationView.open({input: true}, function (reason) {
-      client.roomBan(that.model.get('id'), userId, null, reason);
+      client.roomBan(that.model.get('id'), userId, reason);
     });
   },
   voiceUser: function (event) {
@@ -230,7 +232,7 @@ var RoomView = Backbone.View.extend({
     if (!userId) {
       return;
     }
-    client.roomVoice(this.model.get('id'), userId, null);
+    client.roomVoice(this.model.get('id'), userId);
   },
   devoiceUser: function (event) {
     event.preventDefault();
@@ -243,7 +245,7 @@ var RoomView = Backbone.View.extend({
     }
     var that = this;
     confirmationView.open({input: true}, function (reason) {
-      client.roomDevoice(that.model.get('id'), userId, null, reason);
+      client.roomDevoice(that.model.get('id'), userId, reason);
     });
   },
 

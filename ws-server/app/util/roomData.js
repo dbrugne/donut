@@ -10,21 +10,31 @@ module.exports = function (user, room, fn) {
 
   var data = {
     name: room.name,
-    id: room.id,
+    identifier: room.getIdentifier(),
+    room_id: room.id,
     mode: room.mode,
     hasPassword: !!room.password,
-    owner: {},
     blocked: false,
     avatar: room._avatar(),
     color: room.color,
     users_number: room.numberOfUsers(),
-    created_at: room.created_at
+    created_at: room.created_at,
+    lastactivity_at: room.lastactivity_at
   };
+  if (room.group) {
+    data.group_id = room.group.id;
+    data.group_name = room.group.name;
+    data.allow_group_member = room.allow_group_member;
+  }
   if (room.owner) {
-    data.owner = {
-      user_id: room.owner.id,
-      username: room.owner.username
-    };
+    data.owner_id = room.owner.id;
+    data.owner_username = room.owner.username;
+  }
+  if (room.disclaimer) {
+    data.disclaimer = room.disclaimer;
+  }
+  if (room.mode !== 'public') {
+    data.allow_user_request = room.allow_user_request;
   }
 
   // kicked user
@@ -39,7 +49,7 @@ module.exports = function (user, room, fn) {
     data.banned_at = doc.banned_at;
     data.blocked = 'banned';
     if (doc.reason) {
-      data.banned_reason = doc.reason;
+      data.reason = doc.reason;
     }
   }
 

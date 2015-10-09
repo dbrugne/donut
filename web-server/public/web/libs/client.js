@@ -23,6 +23,7 @@ var client = _.extend({
       'admin:message',
       // donut
       'welcome',
+      'group:updated',
       'room:join',
       'room:request',
       'room:leave',
@@ -141,15 +142,146 @@ var client = _.extend({
     );
   },
 
+  // GROUP
+  // ======================================================
+
+  groupId: function (identifier, callback) {
+    var data = {identifier: identifier};
+    debug('io:out:group:id', data);
+    pomelo.request(
+      'chat.groupIdHandler.call',
+      data,
+      this.applyRequestCallback('group:id', callback)
+    );
+  },
+  groupRead: function (groupId, what, callback) {
+    var data = {};
+    if (groupId) {
+      data.group_id = groupId;
+    } else {
+      return;
+    }
+
+    if (what) {
+      data.what = what;
+    } else {
+      data.what = {
+        users: true,
+        admin: true,
+        rooms: true
+      };
+    }
+
+    debug('io:out:group:read', data);
+    pomelo.request(
+      'chat.groupReadHandler.call',
+      data,
+      this.applyRequestCallback('group:read', callback)
+    );
+  },
+  groupJoinRequest: function (groupId, message, callback) {
+    var data = {group_id: groupId};
+    if (message) {
+      data.message = message;
+    }
+    debug('io:out:group:join:request', data);
+    pomelo.request(
+      'chat.groupJoinRequestHandler.call',
+      data,
+      this.applyRequestCallback('group:join:request', callback)
+    );
+  },
+  groupAllow: function (groupId, userId, callback) {
+    var data = {group_id: groupId, user_id: userId};
+    debug('io:out:group:allow', data);
+    pomelo.request(
+      'chat.groupAllowHandler.call',
+      data,
+      this.applyRequestCallback('group:allow', callback)
+    );
+  },
+  groupUsers: function (groupId, attributes, callback) {
+    var data = {group_id: groupId, attributes: attributes};
+    debug('io:out:group:users', data);
+    pomelo.request(
+      'chat.groupUsersHandler.call',
+      data,
+      this.applyRequestCallback('group:users', callback)
+    );
+  },
+  groupDisallow: function (groupId, userId, callback) {
+    var data = {group_id: groupId, user_id: userId};
+    debug('io:out:group:disallow', data);
+    pomelo.request(
+      'chat.groupDisallowHandler.call',
+      data,
+      this.applyRequestCallback('group:disallow', callback)
+    );
+  },
+  groupRefuse: function (groupId, userId, callback) {
+    var data = {group_id: groupId, user_id: userId};
+    debug('io:out:group:refuse', data);
+    pomelo.request(
+      'chat.groupAllowHandler.refuse',
+      data,
+      this.applyRequestCallback('group:refuse', callback)
+    );
+  },
+
+  groupCreate: function (groupName, callback) {
+    var data = { group_name: groupName };
+    debug('io:out:group:create', data);
+    pomelo.request(
+      'chat.groupCreateHandler.call',
+      data,
+      this.applyRequestCallback('group:create', callback)
+    );
+  },
+
+  groupUpdate: function (groupId, fields, callback) {
+    var data = {group_id: groupId, data: fields};
+    debug('io:out:group:update', data);
+    pomelo.request(
+      'chat.groupUpdateHandler.call',
+      data,
+      this.applyRequestCallback('group:update', callback)
+    );
+  },
+  groupDelete: function (groupId, callback) {
+    var data = {group_id: groupId};
+    debug('io:out:group:delete', data);
+    pomelo.request(
+      'chat.groupDeleteHandler.call',
+      data,
+      this.applyRequestCallback('group:delete', callback)
+    );
+  },
+  groupJoin: function (groupId, password, callback) {
+    var data = {group_id: groupId, password: password};
+    debug('io:out:group:join', data);
+    pomelo.request(
+      'chat.groupJoinHandler.call',
+      data,
+      this.applyRequestCallback('group:join', callback)
+    );
+  },
+
   // ROOM
   // ======================================================
 
-  roomJoin: function (roomId, roomName, password, callback) {
+  roomId: function (identifier, callback) {
+    var data = {identifier: identifier};
+    debug('io:out:room:id', data);
+    pomelo.request(
+      'chat.roomIdHandler.call',
+      data,
+      this.applyRequestCallback('room:id', callback)
+    );
+  },
+  roomJoin: function (roomId, password, callback) {
     var data = {};
     if (roomId) {
       data.room_id = roomId;
-    } else if (roomName) {
-      data.name = roomName;
     } else {
       return;
     }
@@ -207,14 +339,22 @@ var client = _.extend({
       this.applyRequestCallback('room:topic', callback)
     );
   },
-  roomRead: function (roomId, roomName, callback) {
+  roomRead: function (roomId, what, callback) {
     var data = {};
     if (roomId) {
       data.room_id = roomId;
-    } else if (roomName) {
-      data.name = roomName;
     } else {
       return;
+    }
+
+    if (what) {
+      data.what = what;
+    } else {
+      data.what = {
+        more: false,
+        users: false,
+        admin: false
+      };
     }
 
     debug('io:out:room:read', data);
@@ -242,12 +382,15 @@ var client = _.extend({
       this.applyRequestCallback('room:update', callback)
     );
   },
-  roomCreate: function (name, mode, password, callback) {
+  roomCreate: function (name, mode, password, groupId, callback) {
     var data = {
-      name: name,
+      room_name: name,
       mode: mode,
       password: password
     };
+    if (groupId) {
+      data.group_id = groupId;
+    }
     debug('io:out:room:create', data);
     pomelo.request(
       'chat.roomCreateHandler.call',
@@ -273,12 +416,10 @@ var client = _.extend({
       this.applyRequestCallback('room:history', callback)
     );
   },
-  roomOp: function (roomId, userId, username, callback) {
+  roomOp: function (roomId, userId, callback) {
     var data = {room_id: roomId};
     if (userId) {
       data.user_id = userId;
-    } else if (username) {
-      data.username = username;
     } else {
       return;
     }
@@ -290,12 +431,10 @@ var client = _.extend({
       this.applyRequestCallback('room:op', callback)
     );
   },
-  roomDeop: function (roomId, userId, username, callback) {
+  roomDeop: function (roomId, userId, callback) {
     var data = {room_id: roomId};
     if (userId) {
       data.user_id = userId;
-    } else if (username) {
-      data.username = username;
     } else {
       return;
     }
@@ -307,12 +446,10 @@ var client = _.extend({
       this.applyRequestCallback('room:deop', callback)
     );
   },
-  roomVoice: function (roomId, userId, username, callback) {
+  roomVoice: function (roomId, userId, callback) {
     var data = {room_id: roomId};
     if (userId) {
       data.user_id = userId;
-    } else if (username) {
-      data.username = username;
     } else {
       return;
     }
@@ -324,12 +461,10 @@ var client = _.extend({
       this.applyRequestCallback('room:voice', callback)
     );
   },
-  roomDevoice: function (roomId, userId, username, reason, callback) {
+  roomDevoice: function (roomId, userId, reason, callback) {
     var data = {room_id: roomId};
     if (userId) {
       data.user_id = userId;
-    } else if (username) {
-      data.username = username;
     } else {
       return;
     }
@@ -343,12 +478,10 @@ var client = _.extend({
       this.applyRequestCallback('room:devoice', callback)
     );
   },
-  roomKick: function (roomId, userId, username, reason, callback) {
+  roomKick: function (roomId, userId, reason, callback) {
     var data = {room_id: roomId};
     if (userId) {
       data.user_id = userId;
-    } else if (username) {
-      data.username = username;
     } else {
       return;
     }
@@ -362,12 +495,10 @@ var client = _.extend({
       this.applyRequestCallback('room:kick', callback)
     );
   },
-  roomBan: function (roomId, userId, username, reason, callback) {
+  roomBan: function (roomId, userId, reason, callback) {
     var data = {room_id: roomId};
     if (userId) {
       data.user_id = userId;
-    } else if (username) {
-      data.username = username;
     } else {
       return;
     }
@@ -381,12 +512,10 @@ var client = _.extend({
       this.applyRequestCallback('room:ban', callback)
     );
   },
-  roomDeban: function (roomId, userId, username, callback) {
+  roomDeban: function (roomId, userId, callback) {
     var data = {room_id: roomId};
     if (userId) {
       data.user_id = userId;
-    } else if (username) {
-      data.username = username;
     } else {
       return;
     }
@@ -425,8 +554,11 @@ var client = _.extend({
     debug('io:out:room:typing', data);
     pomelo.notify('chat.roomTypingHandler.call', data);
   },
-  roomJoinRequest: function (roomId, callback) {
+  roomJoinRequest: function (roomId, message, callback) {
     var data = {room_id: roomId};
+    if (message) {
+      data.message = message;
+    }
     debug('io:out:room:join:request', data);
     pomelo.request(
       'chat.roomJoinRequestHandler.call',
@@ -474,8 +606,17 @@ var client = _.extend({
   // ONETOONE
   // ======================================================
 
-  userJoin: function (username, callback) {
+  userId: function (username, callback) {
     var data = {username: username};
+    debug('io:out:user:id', data);
+    pomelo.request(
+      'chat.userIdHandler.call',
+      data,
+      this.applyRequestCallback('user:id', callback)
+    );
+  },
+  userJoin: function (userId, callback) {
+    var data = {user_id: userId};
     debug('io:out:user:join', data);
     pomelo.request(
       'chat.userJoinHandler.call',
@@ -488,12 +629,10 @@ var client = _.extend({
     pomelo.notify('chat.userLeaveHandler.call', data);
     debug('io:out:user:leave', data);
   },
-  userBan: function (userId, username, callback) {
+  userBan: function (userId, callback) {
     var data;
     if (userId) {
       data = {user_id: userId};
-    } else if (username) {
-      data = {username: username};
     } else {
       return;
     }
@@ -504,12 +643,10 @@ var client = _.extend({
       this.applyRequestCallback('user:ban', callback)
     );
   },
-  userDeban: function (userId, username, callback) {
+  userDeban: function (userId, callback) {
     var data;
     if (userId) {
       data = {user_id: userId};
-    } else if (username) {
-      data = {username: username};
     } else {
       return;
     }
@@ -520,7 +657,7 @@ var client = _.extend({
       this.applyRequestCallback('user:deban', callback)
     );
   },
-  userMessage: function (userId, username, message, images, special, callback) {
+  userMessage: function (userId, message, images, special, callback) {
     var data = {
       message: message,
       images: images
@@ -530,8 +667,6 @@ var client = _.extend({
     }
     if (userId) {
       data.user_id = userId;
-    } else if (username) {
-      data.username = username;
     } else {
       return;
     }
@@ -551,12 +686,10 @@ var client = _.extend({
       this.applyRequestCallback('user:message:edit', callback)
     );
   },
-  userRead: function (userId, username, callback) {
+  userRead: function (userId, callback) {
     var data = {};
     if (userId) {
       data.user_id = userId;
-    } else if (username) {
-      data.username = username;
     } else {
       return;
     }
@@ -601,7 +734,9 @@ var client = _.extend({
   // ======================================================
 
   userPreferencesRead: function (roomId, callback) {
-    var data = (roomId) ? {room_id: roomId} : {};
+    var data = (roomId)
+      ? {room_id: roomId}
+      : {};
     debug('io:out:user:preferences:read', data);
     pomelo.request(
       'chat.preferencesReadHandler.call',

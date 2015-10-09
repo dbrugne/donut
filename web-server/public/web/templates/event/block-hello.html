@@ -1,7 +1,25 @@
 <div class="hello block">
     <div class="event">
-        <div class="text">
-            <i class="icon icon-hello"></i> <%= t('chat.welcome.' + mode + '.room', {name: name, room_id: data.room_id, owner: owner, owner_id: owner_id}) %>
+        <div class="text bordered-left">
+            <%
+            if (mode === 'members-invites') {
+                print(t('chat.welcome.members-invites', {
+                    group_name: group_name,
+                    group_id: group_id,
+                    owner: owner_username,
+                    owner_id: owner_id
+                }))
+            }
+            if (mode === 'invites') {
+                print(t('chat.welcome.invites', {
+                    owner: owner_username,
+                    owner_id: owner_id
+                }))
+            }
+            if (mode === 'public') {
+                print(t('chat.welcome.public'))
+            }
+            %>
         </div>
     </div>
 </div>

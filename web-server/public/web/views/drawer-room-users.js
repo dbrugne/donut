@@ -51,7 +51,7 @@ var DrawerRoomUsersView = Backbone.View.extend({
       this.types = _.without(this.types, 'ban', 'devoice');
     }
 
-    this.$el.html(this.template({room: this.model.toJSON(), owner: this.model.get('owner').toJSON(), type: this.types}));
+    this.$el.html(this.template({room: this.model.toJSON(), type: this.types}));
     this.numberUsers = this.$('.number');
     this.search = this.$('input[type=text]');
     this.pagination = this.$('.paginate');

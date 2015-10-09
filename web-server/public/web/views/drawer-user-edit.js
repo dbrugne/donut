@@ -1,4 +1,3 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
@@ -13,7 +12,8 @@ var DrawerUserEditView = Backbone.View.extend({
   id: 'user-edit',
 
   events: {
-    'submit form.user-form': 'onSubmit'
+    'submit form.user-form': 'onSubmit',
+    'input #userBio': 'onTypingBio'
   },
 
   initialize: function (options) {
@@ -50,10 +50,11 @@ var DrawerUserEditView = Backbone.View.extend({
     this.$el.html(html);
 
     // description
-    this.$('#userBio').maxlength({
-      counterContainer: this.$('#userBio').siblings('.help-block').find('.counter'),
-      text: i18next.t('chat.form.common.edit.left')
-    });
+    if (user.bio) {
+      this.$('.counter').html(i18next.t('chat.form.common.edit.left', {count: 200 - user.bio}));
+    } else {
+      this.$('.counter').html(i18next.t('chat.form.common.edit.left', {count: 200}));
+    }
 
     // website
     this.$website = this.$('input[name=website]');
@@ -159,6 +160,10 @@ var DrawerUserEditView = Backbone.View.extend({
     return true;
   },
 
+  onTypingBio: function (event) {
+    this.$('.counter').html(i18next.t('chat.form.common.edit.left', {count: 200 - this.$('#userBio').val().length}));
+  },
+
   editError: function (dataErrors) {
     var message = '';
     _.each(dataErrors.err, function (error) {
@@ -167,6 +172,5 @@ var DrawerUserEditView = Backbone.View.extend({
     this.$('chat.form.errors').html(message).show();
   }
 });
-
 
 module.exports = DrawerUserEditView;

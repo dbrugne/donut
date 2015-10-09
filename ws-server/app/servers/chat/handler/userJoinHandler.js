@@ -22,8 +22,8 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.username) {
-        return callback('params-username');
+      if (!data.user_id) {
+        return callback('params-user-id');
       }
 
       if (!withUser) {
@@ -34,12 +34,11 @@ handler.call = function (data, session, next) {
     },
 
     function welcome (callback) {
-      oneDataHelper(that.app, user, withUser, callback);
+      oneDataHelper(that.app, user, { user: withUser, lastactivity_at: new Date() }, callback);
     },
 
     function persist (oneData, callback) {
-      // persist on current user
-      user.update({$addToSet: { onetoones: withUser._id }}, function (err) {
+      user.updateActivity(withUser._id, function (err) {
         return callback(err, oneData);
       });
     },

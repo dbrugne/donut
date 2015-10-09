@@ -33,7 +33,8 @@ var WelcomeModalView = Backbone.View.extend({
     var rooms = [];
     _.each(welcome.featured, function (room) {
       room.avatar = common.cloudinary.prepare(room.avatar, 135);
-      room.join = '/!#room/' + room.name.replace('#', '');
+      room.join = room.identifier;
+
       rooms.push(room);
     });
 
