@@ -86,7 +86,7 @@ module.exports.mentions = function (string, callback) {
 
       _.each(markups.rooms, function (markup, index) {
         var model = _.find(results[ 0 ], function (m) {
-          return ('#' + markup.name.toLocaleLowerCase() === m.name.toLocaleLowerCase());
+          return (markup.name.toLocaleLowerCase() === m.name.toLocaleLowerCase());
         });
         if (!model) {
           return;
