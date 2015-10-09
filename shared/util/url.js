@@ -13,7 +13,7 @@ module.exports = function (model, type, protocol, fqdn, what) {
     data = {
       url: protocol + '://' + fqdn + '/r/' + identifier,
       uri: '#' + identifier,
-      chat: protocol + '://' + fqdn + '/!#r/' + identifier,
+      chat: protocol + '://' + fqdn + '/!#' + identifier,
       join: protocol + '://' + fqdn + '/r/join/' + identifier
     };
   }

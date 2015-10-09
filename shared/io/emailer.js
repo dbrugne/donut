@@ -6,6 +6,7 @@ var underscoreTemplate = require('../util/underscore-template');
 var i18next = require('../util/i18next');
 var conf = require('../../config/index');
 var mailgunTransport = require('nodemailer-mailgun-transport');
+var urls = require('../util/url');
 
 var emailer = {};
 module.exports = emailer;
@@ -120,6 +121,9 @@ emailer.emailChanged = function (to, callback) {
 };
 
 emailer.roomOp = function (to, data, callback) {
+  data.name = data.roomname;
+  var roomUrl = urls(data, 'room', 'https', conf.fqdn);
+  var userUrl = urls(data, 'user', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-op.html', {
     username: data.username,
     roomname: data.roomname,
@@ -128,7 +132,14 @@ emailer.roomOp = function (to, data, callback) {
       fqdn: conf.fqdn,
       username: data.username
     }),
-    subject: i18next.t('email.roomop.subject', { roomname: data.roomname })
+    subject: i18next.t('email.roomop.subject', { roomname: data.roomname }),
+    userlink: {
+      url: userUrl.url
+    },
+    roomlink: {
+      url: roomUrl.url,
+      chat: roomUrl.chat
+    },
   }, callback);
 };
 
