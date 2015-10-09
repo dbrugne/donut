@@ -803,7 +803,8 @@
         "invalid-password": "Le mot de passe doit être compris entre 4 et 255 caractères",
         "room-already-exist": "Le donut __name__ existe déjà, <a href='#__uri__'>voulez-vous le rejoindre</a> ?",
         "group-name-already-exist": "Le groupe __name__ existe déjà, <a href='#__uri__'>voulez-vous le rejoindre</a> ?",
-        "invalid-rights": "Vous n'avez pas les droits pour faire cela."
+        "invalid-rights": "Vous n'avez pas les droits pour faire cela.",
+        "not-allowed": "Vous ne pouvez pas supprimer ce donut"
       }
     },
     "members": "Vous êtes maintenant membre du groupe #__name__"

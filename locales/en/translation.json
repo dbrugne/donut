@@ -803,7 +803,8 @@
         "invalid-password": "The password must be 4 and 255 characters",
         "room-already-exist": "Donut __name__ already exists, <a href='__uri__'>would you like to join it</a>?",
         "group-name-already-exist": "Group __name__ already exists, <a href='__uri__'>would you like to join it</a>?",
-        "invalid-rights": "You do not have access to do this."
+        "invalid-rights": "You do not have access to do this.",
+        "not-allowed": "You can't delete this donut"
       }
     },
     "members": "You are now a member of #__name__"

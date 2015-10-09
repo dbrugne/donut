@@ -62,7 +62,11 @@ var DrawerRoomDeleteView = Backbone.View.extend({
       return this.setError(i18next.t('chat.form.errors.name-wrong-format'));
     }
 
-    client.roomDelete(this.roomId);
+    client.roomDelete(this.roomId, _.bind(function (response) {
+      if (response.err) {
+        return this.setError(i18next.t('chat.form.errors.' + response.err));
+      }
+    }, this));
   },
   onDelete: function (data) {
     if (!data.name || data.name.toLocaleLowerCase() !== this.roomNameConfirmation) {
