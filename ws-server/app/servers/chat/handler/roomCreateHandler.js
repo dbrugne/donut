@@ -70,8 +70,11 @@ handler.call = function (data, session, next) {
         if (data.group_id) {
           room.group = group.id;
         }
-        if (data.mode === 'private' && data.password !== null) {
-          room.password = data.password; // user.generateHash(data.password);
+        if (data.mode === 'private') {
+          room.allow_user_request = true; // always set this option to true on private room creation
+          if (data.password !== null) {
+            room.password = data.password; // user.generateHash(data.password);
+          }
         }
 
         room.save(function (err) {
