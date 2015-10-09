@@ -195,8 +195,6 @@ var DonutRouter = Backbone.Router.extend({
     if (this.nextFocus === model.get('identifier')) {
       this.focus(model); // implicit redraw-block
       this.thisDiscussionShouldBeFocusedOnSuccess = null;
-    } else {
-      collection.trigger('redraw-block');
     }
   }
 });
