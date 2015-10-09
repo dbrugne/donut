@@ -15,6 +15,9 @@ module.exports = Backbone.View.extend({
   initialize: function (options) {
     this.listenTo(app, 'redraw-block', this.render);
     this.listenTo(onetoones, 'redraw-block', this.render);
+
+    this.listenTo(app, 'nav-active', this.highlightFocused);
+
     this.listenTo(onetoones, 'change:avatar', this.render);
     this.$list = this.$('.list');
   },
@@ -39,5 +42,17 @@ module.exports = Backbone.View.extend({
   },
   redraw: function () {
     return this.render();
+  },
+  highlightFocused: function () {
+    console.log('highlightFocused one');
+    this.$list.find('.active').each(function (item) {
+      $(this).removeClass('active');
+    });
+    var that = this;
+    _.find(onetoones.models, function (one) {
+      if (one.get('focused') === true) {
+        that.$list.find('[data-one-id="' + one.get('id') + '"]').addClass('active');
+      }
+    });
   }
 });

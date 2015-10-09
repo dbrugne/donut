@@ -70,6 +70,7 @@ var DonutRouter = Backbone.Router.extend({
         if (!response.err) {
           model = groups.addModel(response);
           this.focus(model);
+          app.trigger('nav-active-group', response.group_id);
         }
       }, this));
     }, this));
@@ -86,7 +87,6 @@ var DonutRouter = Backbone.Router.extend({
   },
 
   focusRoom: function (identifier) {
-    console.warn('identifier', identifier);
     var model = rooms.iwhere('identifier', identifier);
     if (typeof model !== 'undefined') {
       model.resetNew();
@@ -109,6 +109,7 @@ var DonutRouter = Backbone.Router.extend({
         } else if (response.code === 500) {
           return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
         }
+        rooms.trigger('redraw-block');
       }, this));
     });
   },
@@ -119,6 +120,7 @@ var DonutRouter = Backbone.Router.extend({
       // Not already open
       this.nextFocus = '@' + username;
       onetoones.join(username);
+      onetoones.trigger('redraw-block');
     } else {
       this.focus(model);
     }
@@ -180,8 +182,7 @@ var DonutRouter = Backbone.Router.extend({
     }
 
     // nav
-    onetoones.trigger('redraw-block');
-    rooms.trigger('redraw-block');
+    app.trigger('nav-active');
 
     // Update URL (always!) and page title
     app.trigger('setTitle', model.get('identifier'));
