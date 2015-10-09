@@ -35,10 +35,12 @@ module.exports = function (grunt) {
     var env = grunt.option('deployEnvironment') || grunt.config('deployEnvironment');
     var pomeloMaster = require('../ws-server/config/master');
     var pomeloServers = require('../ws-server/config/servers');
-    var pm2Template = require('../server/ecosystem.template');
+    var ecosystem = {
+      apps: []
+    };
 
     // add web
-    pm2Template.apps.push({
+    ecosystem.apps.push({
       name: 'web',
       script: 'app.js',
       env: {
@@ -60,7 +62,7 @@ module.exports = function (grunt) {
     args.push('id=' + pomeloMaster[ env ].id);
     args.push('host=' + pomeloMaster[ env ].host);
     args.push('port=' + pomeloMaster[ env ].port);
-    pm2Template.apps.push({
+    ecosystem.apps.push({
       name: 'master',
       script: 'app.js',
       env: {
@@ -88,7 +90,7 @@ module.exports = function (grunt) {
           }
           args.push(key + '=' + value);
         });
-        pm2Template.apps.push({
+        ecosystem.apps.push({
           name: server.id,
           script: 'app.js',
           env: {
@@ -100,7 +102,7 @@ module.exports = function (grunt) {
       });
     });
 
-    fs.writeFileSync('./ecosystem.json', JSON.stringify(pm2Template), { flag: 'w+' });
+    fs.writeFileSync('./ecosystem.json', JSON.stringify(ecosystem), { flag: 'w+' });
     grunt.log.ok('./ecosystem.json written for env=' + env);
   });
   grunt.registerTask('pm2', [ 'prompt:deployEnvironment', 'generate-pm2-configuration' ]);
