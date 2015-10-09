@@ -133,9 +133,7 @@ emailer.roomOp = function (to, data, callback) {
       username: data.username
     }),
     subject: i18next.t('email.roomop.subject', { roomname: data.roomname }),
-    userlink: {
-      url: userUrl.url
-    },
+    userlink: { url: userUrl.url },
     roomlink: {
       url: roomUrl.url,
       chat: roomUrl.chat
@@ -193,9 +191,7 @@ emailer.roomDeban = function (to, data, callback) {
       username: data.username
     }),
     subject: i18next.t('email.roomdeban.subject', { roomname: data.roomname }),
-    userlink: {
-      url: userUrl.url
-    },
+    userlink: { url: userUrl.url },
     roomlink: {
       url: roomUrl.url,
       chat: roomUrl.chat
@@ -204,6 +200,9 @@ emailer.roomDeban = function (to, data, callback) {
 };
 
 emailer.roomVoice = function (to, data, callback) {
+  data.name = data.roomname;
+  var roomUrl = urls(data, 'room', 'https', conf.fqdn);
+  var userUrl = urls(data, 'user', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-voice.html', {
     username: data.username,
     roomname: data.roomname,
@@ -212,7 +211,9 @@ emailer.roomVoice = function (to, data, callback) {
       fqdn: conf.fqdn,
       username: data.username
     }),
-    subject: i18next.t('email.roomvoice.subject', { roomname: data.roomname })
+    subject: i18next.t('email.roomvoice.subject', { roomname: data.roomname }),
+    userlink: { url: userUrl.url },
+    roomlink: { chat: roomUrl.chat }
   }, callback);
 };
 
