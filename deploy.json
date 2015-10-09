@@ -6,7 +6,7 @@
       "ref": "origin/test",
       "repo": "git@github.com:dbrugne/donut.git",
       "path": "/home/donut/app",
-      "post-deploy": "npm update && grunt pm2 --deployEnvironment test && grunt build --uglify true && pm2 startOrRestart ecosystem.json --env test",
+      "post-deploy": "npm update && grunt pm2 --deployEnvironment test && grunt build && pm2 startOrRestart ecosystem.json --env test",
       "env": {
         "NODE_ENV": "test"
       }
