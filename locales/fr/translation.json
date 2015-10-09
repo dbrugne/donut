@@ -522,7 +522,7 @@
     "closeapp": "Etes-vous sur de vouloir quitter ?",
     "closemessage": "Etes-vous sur de vouloir fermer l'onglet ?",
     "alert": {
-      "kicked": "Vous venez d'être expulsé de __name__",
+      "kick": "Vous venez d'être expulsé de __name__",
       "ban": "Vous venez d'être banni de __name__",
       "allowed": "Vous ne faites plus partie de la liste des gens autorisés dans __name__"
     },
@@ -616,7 +616,7 @@
       "typing_plural": "sont en train de taper"
     },
     "blocked": {
-      "allowed": "Ce donut est privé. Seuls les utilisateurs que vous autorisez pourront rejoindre, participer et accéder à l'historique.",
+      "allowed": "Ce donut est privé. Seuls les utilisateurs autorisés peuvent rejoindre, participer et accéder à l'historique.",
       "ask-for-access": "Pour demander un accès, <a href=\"#\" class=\"ask-for-allowance\"><strong>cliquer ici</strong></a>.",
       "rejoin": " pour le rejoindre à nouveau.",
       "allowed_button": "Demander l'accès",

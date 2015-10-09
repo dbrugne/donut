@@ -33,6 +33,9 @@ module.exports = function (user, room, fn) {
   if (room.disclaimer) {
     data.disclaimer = room.disclaimer;
   }
+  if (room.mode !== 'public') {
+    data.allow_user_request = room.allow_user_request;
+  }
 
   // kicked user
   if (room.mode === 'private' && room.isAllowed(user.id) && !room.isIn(user.id)) {

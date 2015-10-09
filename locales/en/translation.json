@@ -522,7 +522,7 @@
     "closeapp": "Are you sure you want to leave ?",
     "closemessage": "Are you sure you want to leave?",
     "alert": {
-      "kicked": "You have been kicked out of __name__",
+      "kick": "You have been kicked out of __name__",
       "ban": "You have been banned from __name__",
       "allowed": "You are not allowed anymore in __name__"
     },
