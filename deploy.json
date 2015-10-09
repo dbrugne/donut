@@ -1,0 +1,26 @@
+{
+  "deploy": {
+    "test": {
+      "user": "donut",
+      "host": "5.196.206.62",
+      "ref": "origin/test",
+      "repo": "git@github.com:dbrugne/donut.git",
+      "path": "/home/donut/app",
+      "post-deploy": "npm update && grunt pm2 --deployEnvironment test && grunt build && pm2 startOrRestart ecosystem.json --env test",
+      "env": {
+        "NODE_ENV": "test"
+      }
+    },
+    "production": {
+      "user": "donut",
+      "host": "5.196.206.61",
+      "ref": "origin/production",
+      "repo": "git@github.com:dbrugne/donut.git",
+      "path": "/home/donut/app",
+      "post-deploy": "npm update && grunt pm2 --deployEnvironment test && grunt build --uglify true && pm2 startOrRestart ecosystem.json --env production",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
+  }
+}

@@ -5,15 +5,14 @@ DONUT is a node.js/backbonejs based chatroom platform. Usage is inspired of IRC 
 
 ## Pre-requisites
 **Server**
-* node.js
-* MongoDB
+* node.js (4.x) and npm (3.x)
+* MongoDB (3.x)
 * Redis
 * nginx
 
 **Global NPM packages** *(generally installed as root)*
-* bower
 * grunt-cli
-* pm2 (hosted deployment only)
+* pm2
 
 Be sure you have correct DNS address, e.g.:
 ```
@@ -107,74 +106,33 @@ http {
 }
 ```
 
-## Installation
-
-Clone and install dependencies (as donut):
-```
-$ sudo su - donut
-$ mkdir /home/donut/app
-$ cd /home/donut/app
-$ git clone git@github.com:dbrugne/donut.git ./
-$ npm install
-$ bower install
-$ grunt jst
-$ grunt requirejs
-```
-
-To inject a fresh copy of the production database:
-```
-grunt grunt donut-pull-database
-```
-
 ### Local running
 
-Be sure that:
-- shared/config/config.development.js is up to date
-- DNS records and nginx are well configured and running
-- NODE_ENV is 'development'
+First deployment:
 
-Run with:
 ```
-node ws-server/app.js
-node web-server/app.js
+grunt donut-pull-database
+grunt pm2 --deployEnvironment development
+pm2 delete all && pm2 startOrReload ecosystem.json 
 ```
 
-### Hosted running (production, test)
-Run Donut app (as donut):
-Source: https://github.com/unitech/pm2#a1
+Restarting:
+
 ```
-$ sudo su - donut
-$ vi /home/donut/web.json
+pm2 reload all
 ```
-```json
-{
-  "name" : "web",
-  "script" : "./app.js",
-  "cwd" : "/home/donut/app/web-server",
-  "exec_mode"  : "fork_mode",
-    "env": {
-        "NODE_ENV": "test",
-        "DEBUG": "donut:*"
-    }
-}
+
+### Hosted running (test, production)
+
+First deployment (be sure remote SSH user has you SSH public key):
+
 ```
+pm2 deploy deploy.conf <env> setup
+pm2 deploy deploy.conf <env> update 
 ```
-$ vi /home/donut/ws.json
+
+Next deployments:
+
 ```
-```json
-{
-  "name" : "ws",
-  "script" : "./app.js",
-  "cwd" : "/home/donut/app/ws-server",
-  "exec_mode"  : "fork_mode",
-    "env": {
-        "NODE_ENV": "test",
-        "DEBUG": "donut:*"
-    }
-}
-```
-```
-$ pm2 start /home/donut/web.json
-$ pm2 start /home/donut/ws.json
-$ pm2 save
+pm2 deploy deploy.conf <env> update 
 ```
