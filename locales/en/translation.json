@@ -992,6 +992,14 @@
         "button": "Back to DONUT"
       }
     },
+    "roomjoin": {
+      "subject": "@__username__ joined #__roomname__",
+      "content": {
+        "title": "@__username__ joined #__roomname__",
+        "disclaimer": "This is one more! Let's go welcome this marvelous person the right way :).",
+        "button": "Go to chat"
+      }
+    },
     "roomjoinrequest": {
       "subject": "An user want to join #__roomname__",
       "content": {
@@ -1041,14 +1049,6 @@
       "content": {
         "title": "New messages in #__roomname__",
         "inroom": "<strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
-      }
-    },
-    "roomjoin": {
-      "subject": "@__username__ joined #__roomname__",
-      "content": {
-        "title": "@__username__ joined #__roomname__",
-        "disclaimer": "This is one more! Let's go welcome this marvelous person the right way :).",
         "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
       }
     },

@@ -244,6 +244,8 @@ emailer.contactForm = function (data, callback) {
 };
 
 emailer.roomJoin = function (to, from, room, callback) {
+  var data = { name: room };
+  var roomUrl = urls(data, 'room', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-join.html', {
     username: from,
     roomname: room,
@@ -254,7 +256,8 @@ emailer.roomJoin = function (to, from, room, callback) {
     subject: i18next.t('email.roomjoin.subject', {
       username: from,
       roomname: room
-    })
+    }),
+    roomlink: { chat: roomUrl.chat }
   }, callback);
 };
 

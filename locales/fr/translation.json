@@ -992,6 +992,14 @@
         "button": "Retourner sur DONUT"
       }
     },
+    "roomjoin": {
+      "subject": "@__username__ a rejoint #__roomname__",
+      "content": {
+        "title": "@__username__ a rejoint #__roomname__",
+        "disclaimer": "Et un de plus ! Allons l'accueillir comme il se doit :).",
+        "button": "Accéder à la discussion"
+      }
+    },
     "roomjoinrequest": {
       "subject": "Un utilisateur souhaite rejoindre #__roomname__",
       "content": {
@@ -1041,14 +1049,6 @@
       "content": {
         "title": "Nouveaux messages dans #__roomname__",
         "inroom": "<strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
-      }
-    },
-    "roomjoin": {
-      "subject": "@__username__ a rejoint #__roomname__",
-      "content": {
-        "title": "@__username__ a rejoint #__roomname__",
-        "disclaimer": "Et un de plus ! Allons l'accueillir comme il se doit :).",
         "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
     },
