@@ -1,5 +1,4 @@
 var Backbone = require('backbone');
-var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../models/app');
 var EventsView = require('./events');

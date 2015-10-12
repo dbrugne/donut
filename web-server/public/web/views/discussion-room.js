@@ -9,7 +9,6 @@ var InputView = require('./input');
 var confirmationView = require('./modal-confirmation');
 var TopicView = require('./room-topic');
 var UsersView = require('./room-users');
-var date = require('../libs/date');
 
 var RoomView = Backbone.View.extend({
   tagName: 'div',
@@ -135,9 +134,6 @@ var RoomView = Backbone.View.extend({
         this.onFirstFocus();
       }
       this.hasBeenFocused = true;
-
-      // refocus an offline one after few times
-      date.from('fromnow', this.$('.ago span'));
     } else {
       this.$el.hide();
     }
