@@ -185,7 +185,7 @@ var InputCommandsView = Backbone.View.extend({
     message: /(.+)/,
     messageNotMandatory: /(.*)/,
     helpCommand: /(^[a-z]+)/i,
-    name: /^(#[-a-z0-9_]{3,24})/i,
+    name: /^(#[-a-z0-9_]{3,20})(\/)?([-a-z0-9_]{3,20})?/i,
     username: /^@([-a-z0-9_\.]+)/i,
     usernameName: /^([@#][-a-z0-9_\.]+)/i,
     usernameNameMsg: /^([@#][-a-z0-9_\.]+)\s+(.+)/i,
@@ -197,7 +197,18 @@ var InputCommandsView = Backbone.View.extend({
       return this.errorCommand('join', 'parameters');
     }
 
-    app.trigger('joinRoom', parameters[1]);
+    var identifier;
+    if (parameters[1] && parameters[2] && parameters[3]) {
+      // room in group (#donut/help)
+      identifier = parameters[1] + parameters[2] + parameters[3];
+    } else if (parameters[1] && parameters[2]) {
+      // group (#donut/)
+      return this.errorCommand('join', 'invalidroom');
+    } else {
+      // room not in group (#donut)
+      identifier = parameters[1];
+    }
+    app.trigger('joinRoom', identifier);
   },
   leave: function (paramString, parameters) {
     if (!paramString) {
@@ -209,7 +220,21 @@ var InputCommandsView = Backbone.View.extend({
       return this.errorCommand('leave', 'parameters');
     }
 
-    var model = rooms.getByName(parameters[1].replace('#', ''));
+    var identifier;
+    var model;
+    if (parameters[1] && parameters[2] && parameters[3]) {
+      // room in group (#donut/help)
+      identifier = parameters[3];
+      model = rooms.getByNameAndGroup(identifier, parameters[1].replace('#', ''));
+    } else if (parameters[1] && parameters[2]) {
+      // group (#donut/)
+      return this.errorCommand('join', 'invalidroom');
+    } else {
+      // room not in group (#donut)
+      identifier = parameters[1];
+      model = rooms.getByNameAndGroup(identifier.replace('#', ''), null);
+    }
+
     if (!model) {
       return;
     }

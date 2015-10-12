@@ -54,6 +54,17 @@ var RoomsCollection = Backbone.Collection.extend({
     return this.findWhere({name: name});
   },
 
+  getByNameAndGroup: function (name, group) {
+    if (!group) {
+      var models = this.where({name: name});
+      return _.find(models, function (m) {
+        return (typeof m.get('group_name') === 'undefined');
+      });
+    } else {
+      return this.findWhere({name: name, group_name: group});
+    }
+  },
+
   initialize: function () {
     this.listenTo(client, 'room:in', this.onIn);
     this.listenTo(client, 'room:out', this.onOut);
