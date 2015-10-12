@@ -1077,7 +1077,7 @@
         "title": "@__username__ demande l'accès à #__groupname__",
         "disclaimer": "On dirait que votre groupe est parti pour aller loin !",
         "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder au groupe</a>"
+        "button": "Accéder au groupe"
       }
     },
     "groupallow": {
@@ -1086,7 +1086,7 @@
         "title": "@__username__ vous autorise à rejoindre #__groupname__",
         "disclaimer": "Vous pouvez maintenant profiter de ce groupe !",
         "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder au groupe</a>"
+        "button": "Accéder au groupe"
       }
     },
     "groupinvite": {
@@ -1095,7 +1095,7 @@
         "title": "@__username__ vous invite à rejoindre #__groupname__",
         "disclaimer": "Vous pouvez rejoindre son groupe sans plus tarder !",
         "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder au groupe</a>"
+        "button": "Accéder au groupe"
       }
     },
     "grouprefuse": {
@@ -1104,7 +1104,7 @@
         "title": "@__username__ a refusé votre demande de rejoindre #__groupname__",
         "disclaimer": "Ne vous inquiétez pas vous pouvez toujours refaire une demande plus tard !",
         "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder au groupe</a>"
+        "button": "Accéder au groupe"
       }
     }
   },

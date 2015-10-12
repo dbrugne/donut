@@ -15,7 +15,7 @@ var Notification = function (facade) {
 };
 
 /**
- * Checks conditions and create roomrequest notification
+ * Checks conditions and create grouprequest notification
  *
  * @param user (User|String)
  * @param group (Group|String)

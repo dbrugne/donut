@@ -1077,7 +1077,7 @@
         "title": "@__username__ ask for allowance in #__groupname__",
         "disclaimer": "Looks like your donut have great success!",
         "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to group</a>"
+        "button": "Go to group"
       }
     },
     "groupallow": {
@@ -1086,7 +1086,7 @@
         "title": "@__username__ allow you to join #__groupname__",
         "disclaimer": "You can now enjoy this group !",
         "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to group</a>"
+        "button": "Go to group"
       }
     },
     "groupinvite": {
@@ -1095,7 +1095,7 @@
         "title": "@__username__ invites you to join #__groupname__",
         "disclaimer": "You can join his group right now!",
         "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to group</a>"
+        "button": "Go to group"
       }
     },
     "grouprefuse": {
@@ -1104,7 +1104,7 @@
         "title": "@__username__ refuse your request to join #__groupname__",
         "disclaimer": "Don't worry you can make another request to join this group later !",
         "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/!#g/__groupname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to group</a>"
+        "button": "Go to group"
       }
     }
   },
