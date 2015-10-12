@@ -1,7 +1,6 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var i18next = require('i18next-client');
 var donutDebug = require('../libs/donut-debug');
 var app = require('../models/app');
 var client = require('../libs/client');
