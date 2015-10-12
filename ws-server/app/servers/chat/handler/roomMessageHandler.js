@@ -55,20 +55,20 @@ handler.call = function (data, session, next) {
       // text filtering
       var message = inputUtil.filter(data.message, 512);
 
-      // images filtering
-      var images = filesUtil.filter(data.images);
+      // files filtering
+      var files = filesUtil.filter(data.files);
 
-      if (!message && !images) {
+      if (!message && !files) {
         return callback('message-wrong-format');
       }
 
       // mentions
       inputUtil.mentions(message, function (err, message, markups) {
-        return callback(err, message, images, markups.users);
+        return callback(err, message, files, markups.users);
       });
     },
 
-    function broadcast (message, images, mentions, callback) {
+    function broadcast (message, files, mentions, callback) {
       var event = {
         user_id: user.id,
         username: user.username,
@@ -77,8 +77,8 @@ handler.call = function (data, session, next) {
       if (message) {
         event.message = message;
       }
-      if (images && images.length) {
-        event.images = images;
+      if (files && files.length) {
+        event.files = files;
       }
       if (data.special) {
         event.special = data.special;
@@ -148,7 +148,7 @@ handler.call = function (data, session, next) {
         },
         message: {
           length: (event.message && event.message.length) ? event.message.length : 0,
-          images: (event.images && event.images.length) ? event.images.length : 0
+          images: (event.files && event.files.length) ? event.files.length : 0
         }
       };
       keenio.addEvent('room_message', messageEvent, function (err, res) {

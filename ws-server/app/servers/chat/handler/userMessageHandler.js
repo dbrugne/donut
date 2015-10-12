@@ -61,20 +61,20 @@ handler.call = function (data, session, next) {
       // text filtering
       var message = inputUtil.filter(data.message, 512);
 
-      // images filtering
-      var images = filesUtil.filter(data.images);
+      // files filtering
+      var files = filesUtil.filter(data.files);
 
-      if (!message && !images) {
+      if (!message && !files) {
         return callback('params-message');
       }
 
       // mentions
       inputUtil.mentions(message, function (err, message) {
-        return callback(err, message, images);
+        return callback(err, message, files);
       });
     },
 
-    function historizeAndEmit (message, images, callback) {
+    function historizeAndEmit (message, files, callback) {
       var event = {
         from_user_id: user.id,
         from_username: user.username,
@@ -87,8 +87,8 @@ handler.call = function (data, session, next) {
       if (message) {
         event.message = message;
       }
-      if (images && images.length) {
-        event.images = images;
+      if (files && files.length) {
+        event.files = files;
       }
       if (data.special) {
         event.special = data.special;
@@ -125,8 +125,8 @@ handler.call = function (data, session, next) {
           length: (event.message && event.message.length)
             ? event.message.length
             : 0,
-          images: (event.images && event.images.length)
-            ? event.images.length
+          images: (event.files && event.files.length)
+            ? event.files.length
             : 0
         }
       };

@@ -334,8 +334,8 @@ var RoomModel = Backbone.Model.extend({
       });
     });
   },
-  sendMessage: function (message, images) {
-    client.roomMessage(this.get('id'), message, images);
+  sendMessage: function (message, files) {
+    client.roomMessage(this.get('id'), message, files);
   },
   resetNew: function () {
     if (this.isThereNew()) { // avoid redraw if nothing to change

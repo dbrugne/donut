@@ -10,13 +10,13 @@
         <% if (data.message) { %>
         <div class="text"><%= data.message %><% if (edited) { %><span class="text-edited">&nbsp;(<%= t('chat.message.edition.edited') %>)</span><% } %></div>
         <% } %>
-        <% if (data.images) { %>
+        <% if (data.files) { %>
         <div class="images">
             <% _.each(data.files, function(f) { %>
             <% if (f.type !== 'raw') { %>
             <a class="image"
                target="_blank"
-               href="<%=f.url%>"
+               href="<%=f.href%>"
                style="background-image: url(<%= f.thumbnail %>);"></a>
             <% } else { %>
             <a class="file"

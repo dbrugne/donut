@@ -28,9 +28,9 @@ module.exports = function (app, onetoone, eventName, eventData, callback) {
     eventData.id = model.id;
 
     // @hack
-    // images
-    if (eventData.images && eventData.images.length > 0) {
-      eventData.images = _.map(eventData.images, function (element, key, value) {
+    // files
+    if (eventData.files && eventData.files.length > 0) {
+      eventData.files = _.map(eventData.files, function (element, key, value) {
         // @important: use .path to obtain URL with file extension and avoid
         // CORS errors
         return cloudinary.messageFile(element);

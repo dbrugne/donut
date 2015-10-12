@@ -4,22 +4,33 @@
 ```
 grunt migration-room-hash
 ```
+
 * Migrate onetoones to the new format:
 ```
 grunt migration-onetoones
 ```
+
+* Migrate history*.data.images=>.files
+```
+db.getCollection('history-room').update({'data.images': {$exists: true }}, {$rename: {'data.images': 'data.files'}}, {multi:true})
+db.getCollection('history-one').update({'data.images': {$exists: true }}, {$rename: {'data.images': 'data.files'}}, {multi:true})
+```
+
 * Remove position in user model (Branch 477/610)
 ```
 db.getCollection('users').update({}, {$unset: {positions: 1}}, {multi: true});
 ```
+
 * Create some groups (for dev only)
 ```
 grunt donut-groups
 ```
+
 * Remove all old allowed_pending
 ```
 db.getCollection('rooms').update({},{$set: {allowed_pending: []}},{"multi" : true});
 ```
+
 * Set attribute allow_user_request to tru on all private rooms 
 ```
 db.rooms.update( { mode: { $ne: 'public' } }, { $set: { allow_user_request: true }}, {multi: true} )

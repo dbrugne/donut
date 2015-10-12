@@ -307,11 +307,11 @@ var client = _.extend({
     pomelo.notify('chat.roomLeaveBlockHandler.call', data);
     debug('io:out:room:leave:block', data);
   },
-  roomMessage: function (roomId, message, images, special, callback) {
+  roomMessage: function (roomId, message, files, special, callback) {
     var data = {
       room_id: roomId,
       message: message,
-      images: images,
+      files: files,
       special: special
     };
     debug('io:out:room:message', data);
@@ -657,10 +657,10 @@ var client = _.extend({
       this.applyRequestCallback('user:deban', callback)
     );
   },
-  userMessage: function (userId, message, images, special, callback) {
+  userMessage: function (userId, message, files, special, callback) {
     var data = {
       message: message,
-      images: images
+      files: files
     };
     if (special) {
       data.special = special;

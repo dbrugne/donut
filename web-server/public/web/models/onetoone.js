@@ -118,8 +118,8 @@ var OneToOneModel = Backbone.Model.extend({
     this.resetNew();
     this.trigger('viewed', data);
   },
-  sendMessage: function (message, images) {
-    client.userMessage(this.get('user_id'), message, images);
+  sendMessage: function (message, files) {
+    client.userMessage(this.get('user_id'), message, files);
   },
   resetNew: function () {
     if (this.isThereNew()) { // avoid redraw if nothing to change

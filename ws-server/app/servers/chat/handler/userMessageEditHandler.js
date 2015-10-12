@@ -33,7 +33,7 @@ handler.call = function (data, session, next) {
         return callback('params-events');
       }
 
-      if (!data.message && !event.data.images) {
+      if (!data.files && !event.data.files) {
         return callback('params');
       }
 

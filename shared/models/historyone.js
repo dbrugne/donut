@@ -110,12 +110,12 @@ historySchema.methods.toClientJSON = function (userViewed) {
     e.edited = this.edited;
   }
 
-  // images
-  if (data.images && data.images.length > 0) {
-    data.images = _.map(data.images, function (element, key, value) {
+  // files
+  if (data.files && data.files.length) {
+    data.files = _.map(data.files, function (element, key, value) {
       // @important: use .path to obtain URL with file extension and avoid CORS
       // errors
-      return cloudinary.messageFile(element.path);
+      return cloudinary.messageFile(element);
     });
   }
 

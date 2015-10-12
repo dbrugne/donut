@@ -198,11 +198,11 @@ exports.prototype._data = function (event) {
   }
 
   // files
-  if (data.data.images) {
+  if (data.data.files) {
     var files = [];
-    _.each(data.data.images, function (f) {
+    _.each(data.data.files, function (f) {
       if (f.type !== 'raw') {
-        f.url = common.cloudinary.prepare(f.url, 1500, 'limit');
+        f.href = common.cloudinary.prepare(f.url, 1500, 'limit');
         f.thumbnail = common.cloudinary.prepare(f.url, 100, 'fill');
       }
       files.push(f);
