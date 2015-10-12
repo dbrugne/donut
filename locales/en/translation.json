@@ -932,7 +932,7 @@
         "title": "You were promoted to moderator in #__roomname__",
         "disclaimer": "Kudos! You are now a moderator in ",
         "disclaimer2": "It's time to practice your new super powers.",
-        "action": "…and all of that thanks to <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "action": "…and all of that thanks to ",
         "button": "Go to chat"
       }
     },
@@ -941,7 +941,7 @@
       "content": {
         "title": "You are no longer a moderator of #__roomname__",
         "disclaimer": "This is sad news... But the good news is you will have more time to focus on your very own donut:)",
-        "action": "…and all of that thanks to <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "action": "…and all of that thanks to ",
         "button": "Return to DONUT"
       }
     },
@@ -967,7 +967,7 @@
         "title": "You are no longer banned from #__roomname__",
         "disclaimer": "You are no longer banned from ",
         "disclaimer2": "It looks like all is well that ends well!",
-        "action": "…and all of that thanks to <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "action": "…and all of that thanks to ",
         "button": "Go to chat"
       }
     },
@@ -975,8 +975,8 @@
       "subject": "You are unmute in #__roomname__",
       "content": {
         "title": "You are unmute in #__roomname__",
-        "disclaimer": "You are unmute in <strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>... as requested by <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong> Now can write as much as you want. Enjoy !",
-        "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "disclaimer": "Now can write as much as you want. Enjoy !",
+        "action": "... and all of that thanks to ",
         "button": "Go to chat"
       }
     },
@@ -988,7 +988,7 @@
         "disclaimer2": "This only applies to ",
         "disclaimer3": "Don't worry, the moderators of ",
         "disclaimer4": "should unmute you very shortly. Meanwhile pick a donut and join another discussion!",
-        "action": "... and all of that thanks to <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "action": "... and all of that thanks to ",
         "button": "Back to DONUT"
       }
     },
@@ -1005,7 +1005,6 @@
       "content": {
         "title": "@__username__ ask for allowance in #__roomname__",
         "disclaimer": "Looks like your donut have great success!",
-        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Go to chat"
       }
     },
@@ -1014,7 +1013,6 @@
       "content": {
         "title": "@__username__ allow you to join #__roomname__",
         "disclaimer": "You can now enjoy this donut !",
-        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Go to chat"
       }
     },
@@ -1023,7 +1021,6 @@
       "content": {
         "title": "@__username__ refuse your request to join #__roomname__",
         "disclaimer": "Don't worry you can make another request to join this donut later !",
-        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Go to chat"
       }
     },
@@ -1032,7 +1029,6 @@
       "content": {
         "title": "@__username__ invites you to join #__roomname__",
         "disclaimer": "You can join his room right now!",
-        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Go to chat"
       }
     },
@@ -1076,7 +1072,6 @@
       "content": {
         "title": "@__username__ ask for allowance in #__groupname__",
         "disclaimer": "Looks like your donut have great success!",
-        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Go to group"
       }
     },
@@ -1085,7 +1080,6 @@
       "content": {
         "title": "@__username__ allow you to join #__groupname__",
         "disclaimer": "You can now enjoy this group !",
-        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Go to group"
       }
     },
@@ -1094,7 +1088,6 @@
       "content": {
         "title": "@__username__ invites you to join #__groupname__",
         "disclaimer": "You can join his group right now!",
-        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Go to group"
       }
     },
@@ -1103,7 +1096,6 @@
       "content": {
         "title": "@__username__ refuse your request to join #__groupname__",
         "disclaimer": "Don't worry you can make another request to join this group later !",
-        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Go to group"
       }
     }
@@ -1137,12 +1129,12 @@
       "test": "try"
     },
     "exit": {
-      "title": "Confirmation output",
-      "label-true": "Ask me a confirmation before exiting the application",
-      "label-false": "No confirmation when I leave application"
+      "title": "Exit confirmation",
+      "label-true": "Request confirmation before I leave DONUT",
+      "label-false": "No confirmation when I leave DONUT"
     },
     "welcome": {
-      "title": "Pop-up window",
+      "title": "Welcome pop-up",
       "label-true": "Display welcome pop-up I log in",
       "label-false": "Never display welcome pop-up"
     },
