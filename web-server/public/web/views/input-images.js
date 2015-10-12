@@ -40,7 +40,12 @@ var InputImagesView = Backbone.View.extend({
         version: i.version,
         path: i.path,
         type: i.resource_type,
-        filename: i.original_filename
+        filename: i.original_filename,
+        size: i.bytes >= 1000000
+          ? (i.bytes / 1000000).toFixed(2) + ' Mb'
+          : i.bytes >= 1000
+          ? (i.bytes / 1000).toFixed(2) + ' Kb'
+          : i.bytes + ' b.'
       };
     });
   },
@@ -62,17 +67,18 @@ var InputImagesView = Backbone.View.extend({
       multiple: true,
       client_allowed_formats: null,
       max_file_size: 20000000, // 20Mo
-      max_files: 5
+      max_files: 5,
+      thumbnail_transformation: {width: 80, height: 80, crop: 'fill'}
     };
 
     if (type === 'image') {
       options.sources.push('camera');
       options.sources.push('url');
-      options.thumbnail_transformation = {width: 80, height: 80, crop: 'fill'};
     }
 
     var that = this;
-    cloudinary.openUploadWidget(options, function (err, result) {
+    cloudinary.openUploadWidget(options,
+      function (err, result) {
         if (err) {
           if (err.message && err.message === 'User closed widget') {
             return;

@@ -112,7 +112,8 @@ module.exports = {
       return {
         type: 'raw',
         filename: element.filename,
-        url: cloudinary.url(element.path, {secure: true, resource_type: 'raw'})
+        url: cloudinary.url(element.path, {secure: true, resource_type: 'raw'}),
+        size: element.size ? element.size : null
       };
     } else {
       return {

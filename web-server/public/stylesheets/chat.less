@@ -785,8 +785,16 @@
                     .text-edited { font-size: .9rem; color: #0480be; }
                   }
                   .images {
-                    .image, .file {
-                      .pull-left;
+                    .file-ctn {
+                      .file { border: 1px solid @cl-subtext10; float:left; .display-flex; width: 100px; height: 100px; margin: 2px; background-size: contain; color:@cl-text;
+                        &:hover { text-decoration: none; }
+                        i { margin:auto; font-size: 4rem; }
+                      }
+                      .filename { color: @cl-detail; font-size: 1.6rem; font-style: normal; font-weight: 600; line-height: 1.6rem; }
+                      .filesize { color: @cl-subtext30 }
+                    }
+                    .image {
+                      float:left;
                       display: block;
                       position: relative;
                       width: 100px;
@@ -1015,6 +1023,8 @@
             padding-top: 2px;
             display: none;
             .image {
+              background-size: contain;
+              background-position: center center;
               display: inline-block;
               vertical-align: top;
               position: relative;

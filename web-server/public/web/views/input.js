@@ -68,7 +68,6 @@ var DiscussionInputView = Backbone.View.extend({
     }));
 
     this.$editable = this.$('.editable');
-    this.$preview = this.$('.preview');
     this.$rollup = this.$('.rollup-container');
 
     if (!this.model.isInputActive()) {

@@ -6,6 +6,7 @@ var allowedFields = [
   'public_id',
   'version',
   'filename',
+  'size',
   'type' // 'image', 'raw'
 ];
 
