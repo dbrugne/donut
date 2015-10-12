@@ -69,9 +69,15 @@
             </div>
             <div class="back dc-back dc-text-contrast">
                 <div class="ctn">
+                    <% if(card.is_group) { %>
+                    <p class="name dc-text-contrast open-group-profile" data-dismiss="modal" data-group-id="<%= card.group_id %>">
+                        <a class="dc-text-contrast flex-parent column" href="<%= card.url %>"><%= card.identifier %></a>
+                    </p>
+                    <% } else { %>
                     <p class="name dc-text-contrast open-room-profile" data-dismiss="modal" data-room-id="<%= card.room_id %>">
                         <a class="dc-text-contrast flex-parent column" href="<%= card.url %>"><%= card.identifier %></a>
                     </p>
+                    <% } %>
                     <% if (card.owner_id) { %>
                         <p class="owner"><%= t('global.by') %> <a href="<%=card.owner_url%>" class="open-user-profile dc-text-contrast" data-user-id="<%= card.owner_id %>">@<%= card.owner_username %></a></p>
                     <% } %>
