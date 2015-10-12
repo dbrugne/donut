@@ -52,6 +52,19 @@ module.exports.mentions = function (string, callback) {
   }
 
   parser(string, function (markups, fn) {
+    /**
+     * parser send object with markups example:
+     * { links: [],
+     *  users: [],
+     *  rooms:
+     *  [ { key: '___donut_markup_0___',
+     *  match: '#testgroup/donut',
+     *  name: 'donut' } ],
+     *  groups: [],
+     *  emails: [],
+     *  all: [ { key: '___donut_markup_0___', value: '#testgroup/donut' } ] }
+     */
+
     if (!markups.rooms.length && !markups.users.length && !markups.groups.length) {
       return fn(null, markups);
     }
@@ -63,10 +76,19 @@ module.exports.mentions = function (string, callback) {
           return cb(null);
         }
 
-        var _rooms = _.uniq(_.map(markups.rooms, function (r) {
-          return r.name;
-        }));
-        RoomModel.listByName(_rooms).exec(cb);
+        var _rooms = [];
+        async.each(markups.rooms, function (r, fn) {
+          RoomModel.findByIdentifier(r.match, function (err, model) {
+            if (err) {
+              return fn(err);
+            } else {
+              _rooms.push(model);
+              return fn(null);
+            }
+          });
+        }, function (err) {
+          return cb(err, _rooms);
+        });
       },
 
       function (cb) {
@@ -98,7 +120,13 @@ module.exports.mentions = function (string, callback) {
 
       _.each(markups.rooms, function (markup, index) {
         var model = _.find(results[ 0 ], function (m) {
-          return (markup.name.toLocaleLowerCase() === m.name.toLocaleLowerCase());
+          if (typeof m === 'undefined') {
+            return false;
+          }
+          var mMarkup = (m.group && m.group.name)
+            ? '#' + m.group.name + '/' + m.name
+            : '#' + m.name;
+          return (markup.match.toLocaleLowerCase() === mMarkup.toLocaleLowerCase());
         });
         if (!model) {
           return;

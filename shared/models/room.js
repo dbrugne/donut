@@ -124,17 +124,6 @@ roomSchema.statics.findByGroup = function (groupId) {
   return this.find({group: groupId});
 };
 
-roomSchema.statics.listByName = function (names) {
-  var criteria = {
-    deleted: false,
-    $or: []
-  };
-  _.each(names, function (n) {
-    criteria['$or'].push({name: common.regexp.exact(n)});
-  });
-  return this.find(criteria, '_id name');
-};
-
 roomSchema.statics.findByUser = function (userId) {
   return this.find({users: {$in: [userId]}, deleted: {$ne: true}});
 };
