@@ -1129,12 +1129,12 @@
       "test": "try"
     },
     "exit": {
-      "title": "Confirmation output",
-      "label-true": "Ask me a confirmation before exiting the application",
-      "label-false": "No confirmation when I leave application"
+      "title": "Exit confirmation",
+      "label-true": "Request confirmation before I leave DONUT",
+      "label-false": "No confirmation when I leave DONUT"
     },
     "welcome": {
-      "title": "Pop-up window",
+      "title": "Welcome pop-up",
       "label-true": "Display welcome pop-up I log in",
       "label-false": "Never display welcome pop-up"
     },
