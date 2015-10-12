@@ -1,7 +1,6 @@
 var async = require('async');
 var UserModel = require('../shared/models/user');
 var RoomModel = require('../shared/models/room');
-var GroupModel = require('../shared/models/group');
 var HistoryOneModel = require('../shared/models/historyone');
 var HistoryRoomModel = require('../shared/models/historyroom');
 var PomeloBridge = require('../ws-server/app/components/bridge').Bridge;
@@ -28,16 +27,6 @@ module.exports = function (grunt) {
             type: 'input',
             message: 'Choose a "to" username (the one who is the subject of the action, receives the message...)',
             default: 'yangs'
-          } ]
-        }
-      },
-      notifGroupName: {
-        options: {
-          questions: [ {
-            config: 'notifGroupName',
-            type: 'input',
-            message: 'Choose a "group" name',
-            default: 'myGroup'
           } ]
         }
       },
@@ -68,13 +57,11 @@ module.exports = function (grunt) {
     var usernameFrom = grunt.config('notifUsernameFrom') || 'david';
     var usernameTo = grunt.config('notifUsernameTo') || 'yangs';
     var roomName = grunt.config('notifRoomName') || 'donut';
-    var groupName = grunt.config('notifGroupName') || 'myGroup';
     var message = grunt.config('notifMessage') || '';
 
     var userFrom = null;
     var userTo = null;
     var room = null;
-    var group = null;
 
     var configuration = grunt.config('pomelo');
     var bridge = PomeloBridge({
@@ -121,19 +108,6 @@ module.exports = function (grunt) {
             return callback('Unable to retrieve room: ' + roomName);
           }
           room = r;
-          return callback(null);
-        });
-      },
-
-      function retrieveGroup (callback) {
-        GroupModel.findByName(groupName).exec(function (err, g) {
-          if (err) {
-            return callback('Error while retrieving group ' + groupName + ': ' + err);
-          }
-          if (!g) {
-            return callback('Unable to retrieve group: ' + groupName);
-          }
-          group = g;
           return callback(null);
         });
       },
@@ -211,41 +185,6 @@ module.exports = function (grunt) {
               grunt.log.ok(item.notification + 'Type done');
               return fn(null);
             });
-          });
-        }, callback);
-      },
-
-      function groupRequestTypes (callback) {
-        async.each([
-          { notification: 'groupallowed' },
-          { notification: 'grouprefuse' },
-          { notification: 'groupjoinrequest' },
-          { notification: 'groupinvite' }
-        ], function (item, fn) {
-          var event = {
-            name: group.name,
-            id: group.id,
-            user_id: userTo.id,
-            username: userTo.username,
-            avatar: userTo._avatar(),
-            by_user_id: userFrom.id,
-            by_username: userFrom.username,
-            by_avatar: userFrom._avatar(),
-            time: new Date()
-          };
-          var data = {
-            type: item.notification,
-            user: userTo.id,
-            group: group.id,
-            history: event
-          };
-          bridge.notify('chat', 'createNotificationTask.createNotification', data, function (err) {
-            if (err) {
-              return fn(err);
-            }
-
-            grunt.log.ok(item.notification + 'Type done');
-            return fn(null);
           });
         }, callback);
       },
@@ -423,7 +362,6 @@ module.exports = function (grunt) {
     'load-pomelo-configuration',
     'prompt:notifUsernameFrom',
     'prompt:notifUsernameTo',
-    'prompt:notifGroupName',
     'prompt:notifRoomName',
     'prompt:notifMessage',
     'donut-create-test-notifications'

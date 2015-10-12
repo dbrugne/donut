@@ -932,7 +932,7 @@
         "title": "Vous avez été promu modérateur de #__roomname__",
         "disclaimer": "Félicitations ! Vous êtes désormais modérateur de ",
         "disclaimer2": "Il est temps d'aller exercer vos nouveaux super pouvoirs",
-        "action": "…et tout ça grâce à <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "action": "…et tout ça grâce à ",
         "button": "Accéder à la discussion"
       }
     },
@@ -941,7 +941,7 @@
       "content": {
         "title": "Vous n'êtes plus modérateur de #__roomname__",
         "disclaimer": "Aïe! La bonne nouvelle, vous allez avoir un peu plus de temps à consacrer à votre propre donut:)",
-        "action": "…et tout ça grâce à <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "action": "…et tout ça grâce à ",
         "button": "Retourner sur DONUT"
       }
     },
@@ -967,7 +967,7 @@
         "title": "Vous n'êtes plus banni de #__roomname__",
         "disclaimer": "Vous n'êtes plus banni de ",
         "disclaimer2": "On dirait bien que tout s'est arrangé !",
-        "action": "…et tout ça grâce à <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "action": "…et tout ça grâce à ",
         "button": "Accéder à la discussion"
       }
     },
@@ -976,7 +976,7 @@
       "content": {
         "title": "Vous avez retrouvé la parole dans #__roomname__",
         "disclaimer": "On dirait bien que tout s'est arrangé !",
-        "action": "... et tout ça grâce à <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
+        "action": "... et tout ça grâce à ",
         "button": "Accéder à la discussion"
       }
     },
@@ -988,7 +988,7 @@
         "disclaimer2": "Ca ne concerne que ",
         "disclaimer3": "Mais ne vous inquiétez pas, les modérateurs de ",
         "disclaimer4": "ne devraient pas tarder à vous rendre la parole. Pendant ce temps, profitez-en pour aller vous chercher un petit donut et rejoindre une autre discussion !",
-        "action": "... et tout ça à cause de <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>.",
+        "action": "... et tout ça à cause de ",
         "button": "Retourner sur DONUT"
       }
     },
@@ -1005,7 +1005,6 @@
       "content": {
         "title": "@__username__ demande à rejoindre #__roomname__",
         "disclaimer": "On dirait que votre donut est populaire !",
-        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Accéder à la discussion"
       }
     },
@@ -1014,7 +1013,6 @@
       "content": {
         "title": "@__username__ vous autorise à rejoindre #__roomname__",
         "disclaimer": "Vous pouvez maintenant profiter de ce donut !",
-        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Accéder à la discussion"
       }
     },
@@ -1023,7 +1021,6 @@
       "content": {
         "title": "@__username__ a refusé votre demande de rejoindre #__roomname__",
         "disclaimer": "Ne vous inquiétez pas vous pouvez toujours refaire une demande plus tard !",
-        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Accéder à la discussion"
       }
     },
@@ -1032,7 +1029,6 @@
       "content": {
         "title": "@__username__ vous invite à rejoindre #__roomname__",
         "disclaimer": "Vous pouvez rejoindre son donut sans plus tarder !",
-        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Accéder à la discussion"
       }
     },
@@ -1076,7 +1072,6 @@
       "content": {
         "title": "@__username__ demande l'accès à #__groupname__",
         "disclaimer": "On dirait que votre groupe est parti pour aller loin !",
-        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Accéder au groupe"
       }
     },
@@ -1085,7 +1080,6 @@
       "content": {
         "title": "@__username__ vous autorise à rejoindre #__groupname__",
         "disclaimer": "Vous pouvez maintenant profiter de ce groupe !",
-        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Accéder au groupe"
       }
     },
@@ -1094,7 +1088,6 @@
       "content": {
         "title": "@__username__ vous invite à rejoindre #__groupname__",
         "disclaimer": "Vous pouvez rejoindre son groupe sans plus tarder !",
-        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Accéder au groupe"
       }
     },
@@ -1103,7 +1096,6 @@
       "content": {
         "title": "@__username__ a refusé votre demande de rejoindre #__groupname__",
         "disclaimer": "Ne vous inquiétez pas vous pouvez toujours refaire une demande plus tard !",
-        "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
         "button": "Accéder au groupe"
       }
     }
