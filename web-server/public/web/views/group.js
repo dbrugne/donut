@@ -71,7 +71,6 @@ var GroupView = Backbone.View.extend({
       group: group,
       op: op,
       members: members,
-      members_count: group.members_count,
       members_more: group.members_more
     });
     var htmlCards = this.templateCards({

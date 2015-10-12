@@ -17,7 +17,7 @@
             </div>
                 <div class="flex-parent center mt20">
                     <div class="title dc-text-contrast flex-child">
-                        <%= t('group.users') %> ( <%= members_count - 1 %> )
+                        <%= t('group.users') %> ( <%= members.length %> )
                     </div>
                     <% if (isOwner || isAdmin) { %>
                     <input type="button" class="flex-end btn btn-primary centered mr20 open-group-access" data-group-id="<%= group.group_id %>" value="<%= t('group.invite') %>" />
