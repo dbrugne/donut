@@ -9,7 +9,7 @@ require('bootstrap/js/popover');
 require('../javascripts/jquery.socialify');
 require('../javascripts/jquery.contactform');
 var common = require('@dbrugne/donut-common/browser');
-
+var i18next = require('i18next-client');
 var SearchView = require('./search');
 
 // Contact form
