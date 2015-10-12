@@ -1,11 +1,11 @@
 'use strict';
-var errors = require('../../../util/errors');
+var errors = require('../errors');
 var async = require('async');
-var GroupModel = require('../../../../../shared/models/group');
-var RoomModel = require('../../../../../shared/models/room');
-var UserModel = require('../../../../../shared/models/user');
-var HistoryRoomModel = require('../../../../../shared/models/historyroom');
-var HistoryOneModel = require('../../../../../shared/models/historyone');
+var GroupModel = require('../../../../shared/models/group');
+var RoomModel = require('../../../../shared/models/room');
+var UserModel = require('../../../../shared/models/user');
+var HistoryRoomModel = require('../../../../shared/models/historyroom');
+var HistoryOneModel = require('../../../../shared/models/historyone');
 var common = require('@dbrugne/donut-common/server');
 
 var Filter = function () {

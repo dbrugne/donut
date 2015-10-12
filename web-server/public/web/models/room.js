@@ -286,12 +286,12 @@ var RoomModel = Backbone.Model.extend({
     this._onStatus('offline', data);
   },
   history: function (since, callback) {
-    client.roomHistory(this.get('id'), since, 100, function (data) {
+    client.roomHistory(this.get('room_id'), since, 100, function (data) {
       return callback(data);
     });
   },
   viewedElements: function (elements) {
-    client.roomViewed(this.get('id'), elements);
+    client.roomViewed(this.get('room_id'), elements);
   },
   onViewed: function (data) {
     this.resetNew();

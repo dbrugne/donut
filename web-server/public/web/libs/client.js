@@ -412,7 +412,7 @@ var client = _.extend({
     var data = {room_id: roomId, since: since, limit: limit};
     debug('io:out:room:history', data);
     pomelo.request(
-      'chat.roomHistoryHandler.call',
+      'history.roomHandler.call',
       data,
       this.applyRequestCallback('room:history', callback)
     );
@@ -715,7 +715,7 @@ var client = _.extend({
     var data = {user_id: userId, since: since, limit: limit};
     debug('io:out:user:history', data);
     pomelo.request(
-      'chat.userHistoryHandler.call',
+      'history.userHandler.call',
       data,
       this.applyRequestCallback('user:history', callback)
     );

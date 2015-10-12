@@ -7,8 +7,8 @@ var dispatcher = require('./app/util/dispatcher');
 var connector = require('./app/connector/sioconnector');
 var globalChannel = require('pomelo-globalchannel-plugin');
 var status = require('pomelo-status-plugin');
-var loggerFilter = require('./app/util/logger-filter');
-var parametersFilter = require('./app/servers/chat/filter/parameters');
+var loggerFilter = require('./app/util/filter/logger');
+var parametersFilter = require('./app/util/filter/parameters');
 var pomeloBridge = require('./app/components/bridge');
 
 /**
@@ -46,25 +46,25 @@ app.configure('production|test|development', 'connector', function () {
   app.before(pomelo.toobusy());
   app.filter(loggerFilter());
 
-  app.set('connectorConfig',
-    {
-      connector: connector,
-      options: socketIoOptions
-    });
+  app.set('connectorConfig', {
+    connector: connector,
+    options: socketIoOptions
+  });
 });
 
-var chatRoute = function (session, msg, app, cb) {
-  var chatServers = app.getServersByType('chat');
-  if (!chatServers || chatServers.length === 0) {
-    return cb(new Error('can not find chat servers.'));
-  }
-
-  var res = dispatcher.dispatch(session.uid, chatServers);
-  cb(null, res.id);
-};
 app.configure('production|test|development', 'chat', function () {
   // route configures
-  app.route('chat', chatRoute);
+  app.route('chat', dispatcher('chat'));
+
+  // filters
+  app.before(pomelo.toobusy());
+  app.filter(pomelo.timeout());
+  app.filter(loggerFilter());
+  app.filter(parametersFilter());
+});
+app.configure('production|test|development', 'history', function () {
+  // route configures
+  app.route('history', dispatcher('history'));
 
   // filters
   app.before(pomelo.toobusy());

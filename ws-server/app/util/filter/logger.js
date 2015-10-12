@@ -2,7 +2,7 @@
 /**
  * Log connector/chat requests with time used for each request.
  */
-var logger = require('../../../shared/util/logger').getLogger('donut');
+var logger = require('../../../../shared/util/logger').getLogger('donut');
 var _ = require('underscore');
 
 module.exports = function () {
