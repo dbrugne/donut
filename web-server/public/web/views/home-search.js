@@ -27,7 +27,7 @@ var SearchView = Backbone.View.extend({
     }
 
     this.lastSearch = s;
-    client.search(s, true, true, 100, 0, false, _.bind(function (data) {
+    client.search(s, true, true, false, 100, 0, false, _.bind(function (data) {
       this.trigger('searchResults', data);
     }, this));
   }

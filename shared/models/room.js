@@ -121,7 +121,7 @@ roomSchema.statics.findByIdentifier = function (identifier, callback) {
 };
 
 roomSchema.statics.findByGroup = function (groupId) {
-  return this.find({group: groupId});
+  return this.find({group: groupId, deleted: {$ne: true}});
 };
 
 roomSchema.statics.findByUser = function (userId) {

@@ -13,7 +13,7 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
-  if (!data.search) {
+  if (!data.search && !data.with_group) {
     return next(null, {});
   }
 
@@ -23,13 +23,15 @@ handler.call = function (data, session, next) {
     return next(null, {});
   }
 
+  var withGroups = (data.with_group && data.rooms) ? data.with_group : false;
+
   var lightSearch = (data.light && data.light === true);
 
   var limit = (data.limit) ? data.limit : 150;
 
   var skip = (data.skip) ? data.skip : 0;
 
-  search(data.search, searchInUsers, searchInRooms, limit, skip, lightSearch, function (err, results) {
+  search(data.search, searchInUsers, searchInRooms, withGroups, limit, skip, lightSearch, function (err, results) {
     if (err) {
       logger('[search] ' + err);
       return next(null, {code: 500, err: 'internal'});

@@ -194,19 +194,33 @@ var InputRollupView = Backbone.View.extend({
     var that = this;
 
     if (prefix === '#') {
-      client.search(search, true, false, 15, 0, false, function (data) {
-        _.each(data.rooms.list, function (d) {
-          d.avatarUrl = common.cloudinary.prepare(d.avatar);
+      if (input.indexOf('/') === -1) {
+        client.search(search, true, false, false, 15, 0, false, function (data) {
+          _.each(data.rooms.list, function (d) {
+            d.avatarUrl = common.cloudinary.prepare(d.avatar);
+          });
+          that.$rollup.html(that.template({
+            type: 'rooms',
+            results: data.rooms.list
+          }));
         });
-        that.$rollup.html(that.template({
-          type: 'rooms',
-          results: data.rooms.list
-        }));
-      });
+      } else {
+        var roomSearch = search.split('/')[1] ? search.split('/')[1] : '';
+        client.search(roomSearch, true, false, search.split('/')[0], 15, 0, false, function (data) {
+          console.log(data);
+          _.each(data.rooms.list, function (d) {
+            d.avatarUrl = common.cloudinary.prepare(d.avatar);
+          });
+          that.$rollup.html(that.template({
+            type: 'rooms',
+            results: data.rooms.list
+          }));
+        });
+      }
     }
 
     if (prefix === '@') {
-      client.search(search, false, true, 15, 0, false, function (data) {
+      client.search(search, false, true, false, 15, 0, false, function (data) {
         _.each(data.users.list, function (d) {
           d.avatarUrl = common.cloudinary.prepare(d.avatar);
         });
@@ -233,7 +247,11 @@ var InputRollupView = Backbone.View.extend({
         return;
       }
 
-      this._computeNewValue(this.$rollup.find('li.active .value').html() + ' ');
+      if (this.$rollup.find('li.active .value').html().slice(-1) !== '/') {
+        this._computeNewValue(this.$rollup.find('li.active .value').html() + ' ');
+      } else {
+        this._computeNewValue(this.$rollup.find('li.active .value').html());
+      }
     }
 
     this.$rollup.html('');
@@ -254,7 +272,11 @@ var InputRollupView = Backbone.View.extend({
       return;
     }
 
-    this._computeNewValue(li.find('.value').html() + ' ');
+    if (li.find('.value').html().slice(-1) !== '/') {
+      this._computeNewValue(li.find('.value').html() + ' ');
+    } else {
+      this._computeNewValue(li.find('.value').html());
+    }
     this._closeRollup();
     this.moveCursorToEnd();
   },

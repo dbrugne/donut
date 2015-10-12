@@ -24,12 +24,13 @@ var common = require('@dbrugne/donut-common/server');
  * @param search
  * @param searchInUsers
  * @param searchInRooms
+ * @param searchWithGroups
  * @param limit
  * @param skip
  * @param lightSearch
  * @param callback
  */
-module.exports = function (search, searchInUsers, searchInRooms, limit, skip, lightSearch, callback) {
+module.exports = function (search, searchInUsers, searchInRooms, searchWithGroups, limit, skip, lightSearch, callback) {
   // remove diacritic, @ and #
   search = search.replace(/([@#])/g, '');
   search = diacritics(search);
@@ -43,7 +44,7 @@ module.exports = function (search, searchInUsers, searchInRooms, limit, skip, li
   async.waterfall([
 
     function groupSearch (callback) {
-      if (!searchInRooms) {
+      if (!searchInRooms || searchWithGroups) {
         return callback(null);
       }
 
@@ -67,7 +68,21 @@ module.exports = function (search, searchInUsers, searchInRooms, limit, skip, li
       });
     },
 
-    function roomSearch (callback) {
+    function getGroupId (callback) {
+      if (!searchWithGroups) {
+        return callback(null, null);
+      }
+
+      Group.findByName(searchWithGroups).exec(function (err, model) {
+        if (err || !model) {
+          return callback(err, null);
+        }
+
+        return callback(null, model._id);
+      });
+    },
+
+    function roomSearch (groupId, callback) {
       if (!searchInRooms) {
         return callback(null);
       }
@@ -76,6 +91,10 @@ module.exports = function (search, searchInUsers, searchInRooms, limit, skip, li
         name: _regexp,
         deleted: { $ne: true }
       };
+
+      if (groupId) {
+        criteria.group = {$eq: groupId};
+      }
 
       var q;
       if (!lightSearch) {

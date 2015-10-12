@@ -9,6 +9,7 @@ router.get('/rest/search', function (req, res) {
     req.query.q,            // querry
     false,                  // users ?
     true,                   // rooms
+    false,                  // rooms with a group
     req.query.limit || 50,  // limit
     req.query.skip || 0,    // skip
     false,                  // lightsearch
