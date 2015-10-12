@@ -90,11 +90,6 @@ var InputImagesView = Backbone.View.extend({
         }
 
         _.each(result, function (uploaded) {
-          console.log(uploaded);
-          // render preview
-          if (!uploaded.thumbnail_url) {
-            uploaded.thumbnail_url = '/images/file-placeholder.png';
-          }
           that.$preview.find('.add-image').before(that.template({data: uploaded}));
           // add to collection
           that.images[uploaded.public_id] = uploaded;
