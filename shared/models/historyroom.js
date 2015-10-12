@@ -1,5 +1,4 @@
 'use strict';
-var logger = require('../util/logger').getLogger('history', __filename);
 var _ = require('underscore');
 var async = require('async');
 var mongoose = require('../io/mongoose');
@@ -125,65 +124,6 @@ historySchema.methods.toClientJSON = function (userViewed) {
   }
 
   return e;
-};
-
-historySchema.statics.retrieve = function () {
-  var that = this;
-  /**
-   * @param roomId
-   * @param userId
-   * @param what criteria Object: since (timestamp)
-   * @param fn
-   */
-  return function (roomId, userId, what, fn) {
-    what = what || {};
-    var criteria = {
-      room: roomId
-    };
-
-    // Since (timestamp, from present to past direction)
-    if (what.since) {
-      criteria.time = {};
-      criteria.time.$lt = new Date(what.since);
-    }
-
-    // limit
-    var howMany = what.limit || 100;
-    var limit = howMany + 1;
-
-    var q = that.find(criteria)
-      .sort({ time: 'desc' }) // important for timeline logic but also optimize
-                              // rendering on frontend
-      .limit(limit)
-      .populate('room', 'name')
-      .populate('user', 'username avatar color facebook')
-      .populate('by_user', 'username avatar color facebook');
-
-    var start = Date.now();
-    q.exec(function (err, entries) {
-      if (err) {
-        return fn('Error while retrieving room history: ' + err);
-      }
-
-      var duration = Date.now() - start;
-      logger.debug('History requested in ' + duration + 'ms');
-
-      var more = (entries.length > howMany);
-      if (more) {
-        entries.pop();
-      } // remove last
-
-      var history = [];
-      _.each(entries, function (model) {
-        history.push(model.toClientJSON(userId));
-      });
-
-      return fn(null, {
-        history: history,
-        more: more
-      });
-    });
-  };
 };
 
 /**

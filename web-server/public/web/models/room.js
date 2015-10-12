@@ -285,8 +285,8 @@ var RoomModel = Backbone.Model.extend({
   onUserOffline: function (data) {
     this._onStatus('offline', data);
   },
-  history: function (since, callback) {
-    client.roomHistory(this.get('room_id'), since, 100, function (data) {
+  history: function (start, end, callback) {
+    client.roomHistory(this.get('room_id'), start, end, 100, function (data) {
       return callback(data);
     });
   },

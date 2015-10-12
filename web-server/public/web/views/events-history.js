@@ -31,14 +31,13 @@ module.exports = Backbone.View.extend({
     }
 
     // since
-    var first = this.$realtime
-      .find('.block').first();
-    var since = (!first || first.length < 1)
+    var first = this.$realtime.find('.block[id]').first();
+    var end = (!first || !first.length)
       ? null
-      : first.data('time');
+      : first.attr('id');
 
     var that = this;
-    this.model.history(since, function (data) {
+    this.model.history(null, end, function (data) {
       data.history.reverse();
       that.trigger('addBatchEvents', {
         history: data.history,

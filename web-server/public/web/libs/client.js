@@ -408,15 +408,6 @@ var client = _.extend({
       this.applyRequestCallback('room:delete', callback)
     );
   },
-  roomHistory: function (roomId, since, limit, callback) {
-    var data = {room_id: roomId, since: since, limit: limit};
-    debug('io:out:room:history', data);
-    pomelo.request(
-      'history.roomHandler.call',
-      data,
-      this.applyRequestCallback('room:history', callback)
-    );
-  },
   roomOp: function (roomId, userId, callback) {
     var data = {room_id: roomId};
     if (userId) {
@@ -711,15 +702,6 @@ var client = _.extend({
       this.applyRequestCallback('user:update', callback)
     );
   },
-  userHistory: function (userId, since, limit, callback) {
-    var data = {user_id: userId, since: since, limit: limit};
-    debug('io:out:user:history', data);
-    pomelo.request(
-      'history.userHandler.call',
-      data,
-      this.applyRequestCallback('user:history', callback)
-    );
-  },
   userViewed: function (userId, events) {
     var data = {user_id: userId, events: events};
     pomelo.notify('chat.userViewedHandler.call', data);
@@ -729,6 +711,34 @@ var client = _.extend({
     var data = {user_id: userId};
     debug('io:out:user:typing', data);
     pomelo.notify('chat.userTypingHandler.call', data);
+  },
+
+  // HISTORY
+  // ======================================================
+
+  roomHistory: function (roomId, start, end, limit, callback) {
+    this._history({
+      room_id: roomId,
+      start: start,
+      end: end,
+      limit: limit
+    }, callback);
+  },
+  userHistory: function (userId, start, end, limit, callback) {
+    this._history({
+      user_id: userId,
+      start: start,
+      end: end,
+      limit: limit
+    }, callback);
+  },
+  _history: function (data, callback) {
+    debug('io:out:history', data);
+    pomelo.request(
+      'history.historyHandler.call',
+      data,
+      this.applyRequestCallback('history', callback)
+    );
   },
 
   // PREFERENCES
