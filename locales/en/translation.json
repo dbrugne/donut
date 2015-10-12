@@ -1006,7 +1006,7 @@
         "title": "@__username__ ask for allowance in #__roomname__",
         "disclaimer": "Looks like your donut have great success!",
         "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
+        "button": "Go to chat"
       }
     },
     "roomallow": {
@@ -1015,7 +1015,7 @@
         "title": "@__username__ allow you to join #__roomname__",
         "disclaimer": "You can now enjoy this donut !",
         "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
+        "button": "Go to chat"
       }
     },
     "roomrefuse": {
@@ -1024,7 +1024,7 @@
         "title": "@__username__ refuse your request to join #__roomname__",
         "disclaimer": "Don't worry you can make another request to join this donut later !",
         "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
+        "button": "Go to chat"
       }
     },
     "roominvite": {
@@ -1033,23 +1033,7 @@
         "title": "@__username__ invites you to join #__roomname__",
         "disclaimer": "You can join his room right now!",
         "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Go to chat</a>"
-      }
-    },
-    "usermessage": {
-      "subject": "New private message from @__username__",
-      "content": {
-        "title": "New private message from @__username__",
-        "disclaimer": "You have a new private message from <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">@__username__</a></strong>",
         "button": "Go to chat"
-      }
-    },
-    "roommessage": {
-      "subject": "New messages in #__roomname__",
-      "content": {
-        "title": "New messages in #__roomname__",
-        "inroom": "<strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
       }
     },
     "roomtopic": {
@@ -1058,7 +1042,7 @@
         "title": "@__username__ has defined a new topic in #__roomname__",
         "topic": "<strong>New topic : \"__topic__\"</strong>",
         "disclaimer": "You must a thousand things to say about it!",
-        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
+        "button": "Go to chat"
       }
     },
     "usermention": {
@@ -1066,7 +1050,22 @@
       "content": {
         "title": "@__username__ mentionned you in #__roomname__",
         "disclaimer": "It's always cool to have people thinking about you! Think about replying.",
-        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Go to chat\">Go to chat</a>"
+        "button": "Go to chat"
+      }
+    },
+    "usermessage": {
+      "subject": "New private message from @__username__",
+      "content": {
+        "title": "New private message from @__username__",
+        "disclaimer": "You have a new private message from ",
+        "button": "Go to chat"
+      }
+    },
+    "roommessage": {
+      "subject": "New messages in #__roomname__",
+      "content": {
+        "title": "New messages in #__roomname__",
+        "button": "Go to chat"
       }
     },
     "contact": {

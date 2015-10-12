@@ -1006,7 +1006,7 @@
         "title": "@__username__ demande à rejoindre #__roomname__",
         "disclaimer": "On dirait que votre donut est populaire !",
         "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-acces\">Accéder à la discussion</a>"
+        "button": "Accéder à la discussion"
       }
     },
     "roomallow": {
@@ -1015,7 +1015,7 @@
         "title": "@__username__ vous autorise à rejoindre #__roomname__",
         "disclaimer": "Vous pouvez maintenant profiter de ce donut !",
         "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
+        "button": "Accéder à la discussion"
       }
     },
     "roomrefuse": {
@@ -1024,7 +1024,7 @@
         "title": "@__username__ a refusé votre demande de rejoindre #__roomname__",
         "disclaimer": "Ne vous inquiétez pas vous pouvez toujours refaire une demande plus tard !",
         "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
+        "button": "Accéder à la discussion"
       }
     },
     "roominvite": {
@@ -1033,23 +1033,7 @@
         "title": "@__username__ vous invite à rejoindre #__roomname__",
         "disclaimer": "Vous pouvez rejoindre son donut sans plus tarder !",
         "action": "<strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FFFFFF; text-decoration:none;\">@__username__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"discussion-access\">Accéder à la discussion</a>"
-      }
-    },
-    "usermessage": {
-      "subject": "Nouveau message privé de @__username__",
-      "content": {
-        "title": "Nouveau message privé de @__username__",
-        "disclaimer": "Vous avez un nouveau message privé de la part de <strong><a href=\"https://__fqdn__/u/__username__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">@__username__</a></strong>",
         "button": "Accéder à la discussion"
-      }
-    },
-    "roommessage": {
-      "subject": "Nouveaux messages dans #__roomname__",
-      "content": {
-        "title": "Nouveaux messages dans #__roomname__",
-        "inroom": "<strong><a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FC2063; text-decoration:none;\">#__roomname__</a></strong>",
-        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
       }
     },
     "roomtopic": {
@@ -1058,7 +1042,7 @@
         "title": "@__username__ a défini un nouveau sujet dans #__roomname__",
         "topic": "Nouveau sujet : \"__topic__\"",
         "disclaimer": "Vous avez sûrement plein de choses choses à dire sur le sujet !",
-        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
+        "button": "Accéder à la discussion"
       }
     },
     "usermention": {
@@ -1066,7 +1050,22 @@
       "content": {
         "title": "@__username__ vous a mentionné dans #__roomname__",
         "disclaimer": "C'est toujours sympa quelqu'un qui pense à vous ! Pensez à lui répondre.",
-        "button": "<a href=\"https://__fqdn__/r/__roomname__\" target=\"_blank\" style=\"color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;\" alt=\"Accéder à la discussion\">Accéder à la discussion</a>"
+        "button": "Accéder à la discussion"
+      }
+    },
+    "usermessage": {
+      "subject": "Nouveau message privé de @__username__",
+      "content": {
+        "title": "Nouveau message privé de @__username__",
+        "disclaimer": "Vous avez un nouveau message privé de la part de ",
+        "button": "Accéder à la discussion"
+      }
+    },
+    "roommessage": {
+      "subject": "Nouveaux messages dans #__roomname__",
+      "content": {
+        "title": "Nouveaux messages dans #__roomname__",
+        "button": "Accéder à la discussion"
       }
     },
     "contact": {
