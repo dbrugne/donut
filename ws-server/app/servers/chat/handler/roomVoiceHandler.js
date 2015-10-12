@@ -38,7 +38,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
-        return callback('no-op-owner-admin');
+        return callback('not-op-owner-admin');
       }
 
       if (!devoicedUser) {

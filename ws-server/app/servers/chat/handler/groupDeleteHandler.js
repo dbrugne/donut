@@ -33,7 +33,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!group.isOwner(user.id) && session.settings.admin !== true) {
-        return callback('no-admin-owner');
+        return callback('not-admin-owner');
       }
 
       if (group.permanent === true) {

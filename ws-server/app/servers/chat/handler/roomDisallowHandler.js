@@ -46,7 +46,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isOwner(currentUser.id) && session.settings.admin !== true) {
-        return callback('no-admin-owner');
+        return callback('not-admin-owner');
       }
 
       if (room.isOwner(user)) {
@@ -54,7 +54,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isAllowed(user.id)) {
-        return callback('no-allow');
+        return callback('not-allowed');
       }
 
       return callback(null);

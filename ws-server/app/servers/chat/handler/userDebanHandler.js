@@ -32,7 +32,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!user.isBanned(bannedUser.id)) {
-        return callback('no-banned');
+        return callback('not-banned');
       }
 
       return callback(null);

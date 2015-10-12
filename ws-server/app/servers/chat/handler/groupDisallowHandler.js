@@ -42,7 +42,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!group.isOwner(currentUser.id) && session.settings.admin !== true) {
-        return callback('no-admin-owner');
+        return callback('not-admin-owner');
       }
 
       if (group.isOwner(user)) {
@@ -50,7 +50,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!group.isMember(user.id)) {
-        return callback('no-allow');
+        return callback('not-allowed');
       }
 
       return callback(null);

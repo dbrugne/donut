@@ -40,7 +40,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
-        return callback('no-op-owner-admin');
+        return callback('not-op-owner-admin');
       }
 
       if (!kickedUser) {
@@ -52,7 +52,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isIn(kickedUser.id)) {
-        return callback('no-in');
+        return callback('not-in');
       }
 
       return callback(null);

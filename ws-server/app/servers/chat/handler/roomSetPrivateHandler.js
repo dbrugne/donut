@@ -31,7 +31,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isOwner(currentUser.id) && session.settings.admin !== true) {
-        return callback('no-op-owner-admin');
+        return callback('not-op-owner-admin');
       }
 
       if (room.mode === 'private') {

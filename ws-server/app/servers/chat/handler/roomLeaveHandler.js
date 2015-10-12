@@ -32,7 +32,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isIn(user.id)) {
-        return callback('no-in');
+        return callback('not-in');
       }
 
       return callback(null);

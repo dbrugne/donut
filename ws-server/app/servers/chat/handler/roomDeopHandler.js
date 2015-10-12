@@ -37,7 +37,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
-        return callback('no-op-owner-admin');
+        return callback('not-op-owner-admin');
       }
 
       if (!opedUser) {
@@ -45,11 +45,11 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isOp(opedUser.id)) {
-        return callback('no-op');
+        return callback('not-op');
       }
 
       if (!room.isIn(opedUser.id)) {
-        return callback('no-in');
+        return callback('not-in');
       }
 
       return callback(null);

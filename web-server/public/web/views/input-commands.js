@@ -317,7 +317,7 @@ var InputCommandsView = Backbone.View.extend({
           if (data.err && data.err === 'banned') {
             return that.errorCommand(what, 'already-blocked');
           }
-          if (data.err && data.err === 'no-banned') {
+          if (data.err && data.err === 'not-banned') {
             return that.errorCommand(what, 'already-unblocked');
           }
           if (data.err && data.code !== 500) {
