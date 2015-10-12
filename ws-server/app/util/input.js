@@ -52,7 +52,7 @@ module.exports.mentions = function (string, callback) {
   }
 
   parser(string, function (markups, fn) {
-    if (!markups.rooms.length && !markups.users.length) {
+    if (!markups.rooms.length && !markups.users.length && !markups.groups.length) {
       return fn(null, markups);
     }
 
@@ -81,12 +81,12 @@ module.exports.mentions = function (string, callback) {
       },
 
       function (cb) {
-        if (!markups.rooms.length) {
+        if (!markups.groups.length) {
           return cb(null);
         }
 
-        var _groups = _.uniq(_.map(markups.rooms, function (r) {
-          return r.name;
+        var _groups = _.uniq(_.map(markups.groups, function (r) {
+          return r.group_name;
         }));
         GroupModel.listByName(_groups).exec(cb);
       }
@@ -115,14 +115,14 @@ module.exports.mentions = function (string, callback) {
         markups.users[ index ].id = model.id;
       });
       // group
-      _.each(markups.rooms, function (markup, index) {
+      _.each(markups.groups, function (markup, index) {
         var model = _.find(results[ 2 ], function (m) {
-          return (markup.name.toLocaleLowerCase() === m.name.toLocaleLowerCase());
+          return (markup.group_name.toLocaleLowerCase() === m.name.toLocaleLowerCase());
         });
         if (!model) {
           return;
         }
-        markups.rooms[ index ].id = model.id;
+        markups.groups[ index ].id = model.id;
       });
 
       return fn(null, markups);
