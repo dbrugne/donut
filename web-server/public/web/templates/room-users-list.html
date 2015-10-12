@@ -12,62 +12,78 @@
                 <span class="avatar open-user-profile" data-user-id="<%= user.user_id %>" style="background-image: url(<%= user.avatar %>)" title="<% if (user.is_op === true) { %><%= t('chat.op.is') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.is') %><% }; %>"></span>
                 <span class="username open-user-profile dc-text-contrast" data-user-id="<%= user.user_id %>" title="<%= t('global.'+user.status) %>">@<%= user.username %> <i class="icon icon-dot-circle-o <%= user.status %>" title="online"></i></span>
 
-                <% if (isAdmin === true || (!user.is_owner && (isOp === true || isOwner === true))) { %>
                 <span class="dropdown user-list">
                     <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                         <i class="icon icon-chevron-down dc-text-contrast"></i>
                     </button>
                     <ul class="dropdown-menu" role="menu">
+
+                        <!--VIEW USER PROFILE-->
                         <li role="presentation">
                             <a role="menuitem" tabindex="-1" class="open-user-profile" data-user-id="<%= user.user_id %>"><i class="icon icon-user"></i><p> <%= t('global.viewprofile') %></p></a>
                         </li>
-                        <% if (!user.is_owner || isAdmin === true) { %>
-                            <% if (!user.is_owner && user.is_op === true) { %>
-                            <li role="presentation">
-                                <a role="menuitem" tabindex="-1" class="deop deop-user" data-user-id="<%= user.user_id %>">
-                                    <span class="icon-stack">
-                                        <i class="icon icon-op icon-stack-1x"></i>
-                                        <i class="icon icon-ban icon-stack-2x text-danger"></i>
-                                    </span>
-                                    <p><%= t('chat.deop.infobox') %></p>
-                                </a>
-                            </li>
-                            <% } else if (!user.is_owner) { %>
-                            <li role="presentation">
-                                <a role="menuitem" tabindex="-1" class="op op-user" data-user-id="<%= user.user_id %>">
-                                    <i class="icon icon-op"></i><p> <%= t('chat.op.infobox') %></p>
-                                </a>
-                            </li>
+
+                        <!--DISCUSS-->
+                        <li role="presentation">
+                            <% if (user.status == 'online') { %>
+                                <a href="<%= user.uri %>"><i class="icon icon-user"></i> <%= t('actions.discuss') %></a>
+                            <% } else { %>
+                                <a href="<%= user.uri %>"><i class="icon icon-user"></i> <%= t('global.offline') %></a>
                             <% }; %>
-                        <% }; %>
-                        <% if (!user.is_owner) { %>
-                        <% if (!user.is_devoice) { %>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" class="devoice devoice-user" data-user-id="<%= user.user_id %>">
-                                <i class="icon icon-microphone-slash"></i><p> <%= t('chat.devoice.infobox') %></p>
-                            </a>
                         </li>
-                        <% } else { %>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" class="voice voice-user" data-user-id="<%= user.user_id %>">
-                                <i class="icon icon-microphone"></i><p> <%= t('chat.voice.infobox') %></p>
-                            </a>
-                        </li>
-                        <% } %>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" class="kick kick-user" data-user-id="<%= user.user_id %>">
-                                <i class="icon icon-kick"></i><p> <%= t('chat.kick.infobox') %></p>
-                            </a>
-                        </li>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" class="ban ban-user" data-user-id="<%= user.user_id %>">
-                                <i class="icon icon-ban"></i><p> <%= t('chat.ban.infobox') %></p>
-                            </a>
-                        </li>
+
+                        <% if (isAdmin === true || isOwner === true || isOp === true) { %>
+
+                        <!--OP / DEOP-->
+                            <% if (!user.is_owner || isAdmin === true) { %>
+                                <% if (user.is_op === true) { %>
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" class="deop deop-user" data-user-id="<%= user.user_id %>">
+                                        <span class="icon-stack">
+                                            <i class="icon icon-op icon-stack-1x"></i>
+                                            <i class="icon icon-ban icon-stack-2x text-danger"></i>
+                                        </span>
+                                        <p><%= t('chat.deop.infobox') %></p>
+                                    </a>
+                                </li>
+                                <% } else { %>
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" class="op op-user" data-user-id="<%= user.user_id %>">
+                                        <i class="icon icon-op"></i><p> <%= t('chat.op.infobox') %></p>
+                                    </a>
+                                </li>
+                                <% }; %>
+                            <% }; %>
+
+                            <% if (!user.is_owner || isAdmin === true) { %>
+                                <% if (!user.is_devoice) { %>
+                                    <li role="presentation">
+                                        <a role="menuitem" tabindex="-1" class="devoice devoice-user" data-user-id="<%= user.user_id %>">
+                                            <i class="icon icon-microphone-slash"></i><p> <%= t('chat.devoice.infobox') %></p>
+                                        </a>
+                                    </li>
+                                <% } else { %>
+                                    <li role="presentation">
+                                        <a role="menuitem" tabindex="-1" class="voice voice-user" data-user-id="<%= user.user_id %>">
+                                            <i class="icon icon-microphone"></i><p> <%= t('chat.voice.infobox') %></p>
+                                        </a>
+                                    </li>
+                                <% } %>
+
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" class="kick kick-user" data-user-id="<%= user.user_id %>">
+                                        <i class="icon icon-kick"></i><p> <%= t('chat.kick.infobox') %></p>
+                                    </a>
+                                </li>
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" class="ban ban-user" data-user-id="<%= user.user_id %>">
+                                        <i class="icon icon-ban"></i><p> <%= t('chat.ban.infobox') %></p>
+                                    </a>
+                                </li>
+                            <% }; %>
                         <% }; %>
                     </ul>
                 </span>
-                <% }; %>
             </span>
         </div>
     </li>

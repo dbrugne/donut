@@ -3,7 +3,7 @@ var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
-
+var urls = require('../../../../shared/util/url');
 var debug = donutDebug('donut:room-users');
 
 var RoomUsersView = Backbone.View.extend({
@@ -36,6 +36,7 @@ var RoomUsersView = Backbone.View.extend({
 
       // avatar
       u.avatar = common.cloudinary.prepare(u.avatar, 34);
+      u.uri = urls(u, 'user', null, null, 'uri');
 
       listJSON.push(u);
     });

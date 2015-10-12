@@ -28,7 +28,7 @@ module.exports = function (model, type, protocol, fqdn, what) {
   if (type === 'user') {
     data = {
       url: protocol + '://' + fqdn + '/u/' + model.username.toLocaleLowerCase(),
-      uri: '#' + model.username,
+      uri: '!#u/' + model.username,
       chat: protocol + '://' + fqdn + '/!#u/' + model.username,
       discuss: protocol + '://' + fqdn + '/u/discuss/' + model.username
     };
