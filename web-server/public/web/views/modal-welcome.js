@@ -4,6 +4,7 @@ var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
 var client = require('../libs/client');
+var urls = require('../../../../shared/util/url');
 
 var debug = donutDebug('donut:modal-welcome');
 
@@ -33,7 +34,9 @@ var WelcomeModalView = Backbone.View.extend({
     var rooms = [];
     _.each(welcome.featured, function (room) {
       room.avatar = common.cloudinary.prepare(room.avatar, 135);
-      room.join = room.identifier;
+      room.join = room.is_group
+        ? urls(room, 'group', null, null, 'uri')
+        : urls(room, 'room', null, null, 'uri');
 
       rooms.push(room);
     });

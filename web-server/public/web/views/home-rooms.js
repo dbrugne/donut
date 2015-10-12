@@ -1,6 +1,7 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
+var urls = require('../../../../shared/util/url');
 
 var RoomsView = Backbone.View.extend({
   template: require('../templates/rooms-cards.html'),
@@ -10,7 +11,9 @@ var RoomsView = Backbone.View.extend({
     var rooms = [];
     _.each(data.rooms.list, function (room) {
       room.avatar = common.cloudinary.prepare(room.avatar, 135);
-      room.join = room.identifier;
+      room.join = room.is_group
+        ? urls(room, 'group', null, null, 'uri')
+        : urls(room, 'room', null, null, 'uri');
       rooms.push(room);
     });
 
