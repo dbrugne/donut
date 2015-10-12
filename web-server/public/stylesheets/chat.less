@@ -637,65 +637,6 @@
           } // #chat #center .discussion .content .header.user
         }
         .events { /*border-top: 1px solid @cl-subtext10;*/ overflow-y: scroll; overflow-x: hidden; .flex(1); .scrollbar-grey; position: relative;
-          .go-to-top {
-            display: none;
-            position: absolute;
-            top: 117px;
-            right: 0;
-            padding: 4px 8px 6px;
-            background-color: @cl-background;
-            border: 1px solid @cl-subtext10;
-            border-right: 0;
-            border-top-color: @cl-background;
-            border-bottom-left-radius: 5px;
-            a {
-              color: @cl-subtext30;
-              cursor: pointer;
-              i {
-                font-size: 1.4em;
-                vertical-align: middle;
-              }
-              &:hover {
-                text-decoration: none;
-              }
-            }
-          }
-          .go-to-bottom {
-            display: none;
-            opacity: .5;
-            position: absolute;
-            bottom: 115px; right: 0;
-            padding: 8px;
-            background-color: @cl-background;
-            border: 1px solid @cl-subtext10;
-            border-right: 0;
-            border-top-left-radius: 5px;
-            border-bottom-left-radius: 5px;
-            a {
-              color: @cl-subtext30;
-              cursor: pointer;
-              i {
-                font-size: 1.4em;
-                vertical-align: middle;
-              }
-              &:hover {
-                text-decoration: none;
-              }
-              .unread {
-                display: none;
-              }
-            }
-            &.unread {
-              background-color: @cl-first;
-              a {
-                color: @cl-background;
-                .unread {
-                  display: inline;
-                }
-              }
-            }
-          }
-
           .scrollable { margin-right: 5px;
             .scrollable-content { position: relative;
               hr { border-color: @cl-subtext5; }

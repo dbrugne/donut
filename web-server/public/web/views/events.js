@@ -15,8 +15,6 @@ module.exports = Backbone.View.extend({
   template: require('../templates/events.html'),
 
   events: {
-    'click .go-to-top a': 'scrollTop',
-    'click .go-to-bottom a': 'scrollDown',
     'shown.bs.dropdown .actions': 'onMessageMenuShow'
   },
 
@@ -212,10 +210,6 @@ module.exports = Backbone.View.extend({
   },
   scrollDown: function () {
     this.$scrollable.scrollTop(this.$scrollableContent.outerHeight(true));
-  },
-  scrollTop: function () {
-    var targetTop = this.eventsHistoryView.getLoaderTop();
-    this.$scrollable.scrollTop(targetTop); // add a 8px margin
   },
 
   /** **************************************************************************************************************
