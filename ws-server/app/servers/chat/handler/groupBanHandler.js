@@ -3,7 +3,7 @@ var _ = require('underscore');
 var errors = require('../../../util/errors');
 var async = require('async');
 var Group = require('../../../../../shared/models/group');
-// var Notifications = require('../../../components/notifications');
+var Notifications = require('../../../components/notifications');
 
 var Handler = function (app) {
   this.app = app;
@@ -85,6 +85,12 @@ handler.call = function (data, session, next) {
       function broadcastToUser (eventData, callback) {
         that.app.globalChannelService.pushMessage('connector', 'group:ban', event, 'user:' + user.id, {}, function (reponse) {
           callback(null, eventData);
+        });
+      },
+
+      function notification (event, callback) {
+        Notifications(that.app).getType('groupban').create(user.id, group, event, function (err) {
+          return callback(err);
         });
       }
     ],

@@ -149,6 +149,13 @@ Notification.prototype.sendEmail = function (model, done) {
             groupname: group.name
           };
           break;
+        case 'groupban':
+          method = emailer.groupBan;
+          data = {
+            username: model.data.by_user.username,
+            groupname: group.name
+          };
+          break;
         default:
           return callback('groupResquestType.sendEmail unknown notification type: ' + model.type);
       }

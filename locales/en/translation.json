@@ -504,7 +504,8 @@
         "groupjoinrequest": "<span>@__username__</span> wants to join <span>#__name__</span>",
         "groupallowed": "You are now authorized to join <span>#__name__</span>",
         "groupinvite": "<span>@__username__</span> invites you to join <span>#__name__</span>",
-        "grouprefuse": "Your request to join <span>#__name__</span></br> has been refused"
+        "grouprefuse": "Your request to join <span>#__name__</span></br> has been refused",
+        "groupban": "You were banned from group <span>#__name__</span>"
       },
       "userban": " was blocked by",
       "userdeban": " is no longer blocked as requested by"

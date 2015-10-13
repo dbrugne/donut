@@ -504,7 +504,8 @@
         "groupjoinrequest": "<span>@__username__</span> souhaite rejoindre <span>#__name__</span>",
         "groupallowed": "Vous êtes autorisé à rejoindre <span>#__name__</span>",
         "groupinvite": "<span>@__username__</span> vous invite à rejoindre <span>#__name__</span>",
-        "grouprefuse": "Demande d'accès au groupe <span>#__name__</span></br> refusée"
+        "grouprefuse": "Demande d'accès au groupe <span>#__name__</span></br> refusée",
+        "groupban": "Vous êtes banni du groupe <span>#__name__</span>"
       },
       "userban": " est bloqué à la demande de",
       "userdeban": " n'est plus bloqué à la demande de"
@@ -1104,6 +1105,14 @@
         "title": "@__username__ a refusé votre demande de rejoindre #__groupname__",
         "disclaimer": "Ne vous inquiétez pas vous pouvez toujours refaire une demande plus tard !",
         "button": "Accéder au groupe"
+      }
+    },
+    "groupban": {
+      "subject": "Vous avez été banni du groupe #__groupname__",
+      "content": {
+        "title": "Vous avez été banni du groupe #__groupname__",
+        "disclaimer": "",
+        "button": "Retourner sur DONUT"
       }
     }
   },
