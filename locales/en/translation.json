@@ -414,6 +414,7 @@
         "refuseuser": "You are about to refuse @__username__",
         "acceptuser": "You are about to authorize @__username__",
         "disallowuser": "You are about to disallow @__username__",
+        "banuser": "You are about to ban user @__username__",
         "invite": "You are about to authorize @__username__. A notification will be sent to invite @__username__ to join #__name__.",
         "requestallowance": "You are about to request allowance for #__name__. Owner will see your real name and your email on your membership request.",
         "requestallowancegroup": "You are about to request allowance for #__name__. Owner will see your real name and your email on your membership request."

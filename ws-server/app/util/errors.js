@@ -26,13 +26,13 @@ var errors = {
   'params': 400,                  // == GENERAL TAG ==
 
   // NOT ALLOWED ERROR (403)
-  'not-op': 403,                   // User not op
-  'not-admin-owner': 403,          // User not admin or owner
-  'not-op-owner-admin': 403,       // User not op, owner and admin
+  'not-op': 403,                  // User not op
+  'not-admin-owner': 403,         // User not admin or owner
+  'not-op-owner-admin': 403,      // User not op, owner and admin
   'no-allow-pending': 403,        // User not in allowed pending list (private room)
-  'not-in': 403,                   // User not in the room
-  'wrong-user': 403,           // User not the right user to acces the data
-  'not-banned': 403,               // User is not banned from the room
+  'not-in': 403,                  // User not in the room
+  'wrong-user': 403,              // User not the right user to acces the data
+  'not-banned': 403,              // User is not banned from the room
   'banned': 403,                  // User is banned from the room or the 1&1
   'devoiced': 403,                // User is devoiced in the room
   'private': 403,                 // Room is private
