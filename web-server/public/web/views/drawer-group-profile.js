@@ -49,10 +49,8 @@ var DrawerGroupProfileView = Backbone.View.extend({
       return app.trigger('drawerClose');
     }
 
-    group.isOwner = (group.owner && group.owner.user_id === currentUser.get('user_id'));
-
+    group.isOwner = (group.owner_id === currentUser.get('user_id'));
     group.isAdmin = currentUser.isAdmin();
-
     group.avatar = common.cloudinary.prepare(group.avatar, 90);
 
     group.uri = urls(group, 'group', null, null, 'uri');
