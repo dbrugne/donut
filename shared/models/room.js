@@ -239,6 +239,10 @@ roomSchema.methods.isAllowed = function (userId) {
 };
 
 roomSchema.methods.isAllowedPending = function (userId) {
+  if (!this.allowed_pending || !this.allowed_pending.length) {
+    return false;
+  }
+
   var subDocument = _.find(this.allowed_pending, function (u) {
     return (u.user.toString() === userId);
   });
