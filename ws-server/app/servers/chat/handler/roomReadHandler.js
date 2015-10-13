@@ -3,6 +3,7 @@ var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
 var RoomModel = require('../../../../../shared/models/room');
+var GroupModel = require('../../../../../shared/models/group');
 
 var Handler = function (app) {
   this.app = app;
@@ -56,6 +57,30 @@ handler.call = function (data, session, next) {
       }
 
       return callback(null);
+    },
+
+    function canDelete (callback) {
+      if (room.permanent) {
+        read.can_delete = false;
+        return callback(null);
+      }
+      if (!room.group) {
+        read.can_delete = true;
+        return callback(null);
+      }
+
+      // check group default room
+      GroupModel.findById(room.group.id).exec(function (err, model) {
+        if (err) {
+          return callback(err);
+        }
+
+        if (!model.default) { // not default room in group, code robustness
+          read.can_delete = true;
+        }
+        read.can_delete = (model.default.toString() !== room.id);
+        return callback(null);
+      });
     },
 
     function more (callback) {

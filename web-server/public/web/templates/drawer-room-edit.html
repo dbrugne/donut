@@ -60,9 +60,11 @@
             <input class="btn btn-success" type="submit" value="<%= t('global.save') %>">
         </div>
     </form>
+    <% if (room.can_delete) { %>
     <div class="footer block">
         <p class="delete">
             <i class="icon icon-trash"></i> <%= t('chat.form.room-form.edit.room.delete.link', {id: room.room_id}) %>
         </p>
     </div>
+    <% } %>
 </div>
