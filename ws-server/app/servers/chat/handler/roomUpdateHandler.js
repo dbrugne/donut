@@ -109,19 +109,6 @@ handler.call = function (data, session, next) {
         }
       }
 
-      // mode
-      if (_.has(data.data, 'mode')) {
-        var mode = data.data.mode;
-        if (!common.validate.mode(mode)) {
-          errors.mode = 'invalid-mode';
-        } else {
-          if (sanitized.mode !== mode) {
-            // @todo implement state machine on room mode change
-            sanitized.mode = mode;
-          }
-        }
-      }
-
       // password
       if (room.mode === 'public') {
         if (_.has(data.data, 'password')) {
