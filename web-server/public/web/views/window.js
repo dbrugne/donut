@@ -29,7 +29,6 @@ var WindowView = Backbone.View.extend({
 
   initialize: function (options) {
     this.listenTo(app, 'desktopNotification', this.desktopNotify);
-    this.listenTo(app, 'playSound', this.play);
     this.listenTo(app, 'playSoundForce', this._play);
     this.listenTo(app, 'unviewedInOut', this.triggerInout);
     this.listenTo(app, 'unviewedMessage', this.triggerMessage);
@@ -216,31 +215,24 @@ var WindowView = Backbone.View.extend({
       return;
     }
 
-    // test if i mentioned (only for rooms)
-    var isMention = (event.getGenericType() !== 'message' && model.get('type') === 'room' && common.markup.isUserMentionned(currentUser.get('user_id'), event.get('data').message));
-
     // test if current discussion is focused
     var isFocused = (this.focused && model.get('focused'));
 
     // play sound (could be played for current focused discussion, but not for my own messages)
-    if (isMention) {
-      this.play(); // even if discussion is focused
-    } else if (!isFocused) {
-      this.play(); // only if not focused
-    }
-
     // badge and title only if discussion is not focused
     if (!isFocused) {
+      // test if is mentioned (only for rooms)
+      var isMention = (event.getGenericType() !== 'message' && model.get('type') === 'room' && common.markup.isUserMentionned(currentUser.get('user_id'), event.get('data').message));
+      this.play(); // only if not focused
+
       if (!isMention) {
         model.set('unviewed', true); // will trigger tab badge and title when rendering
       } else {
         model.set('newmention', true);
       }
 
-      // update tabs
+      // update tabs and update title
       app.trigger('redraw-block');
-
-      // update title
       this.renderTitle();
     }
 

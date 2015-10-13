@@ -26,7 +26,6 @@ module.exports = Backbone.View.extend({
     this.$empty = this.$('.empty');
   },
   render: function () {
-    console.log('render rooms');
     if (!rooms.models.length) {
       this.$list.empty();
       return this.$empty.show();
@@ -70,7 +69,7 @@ module.exports = Backbone.View.extend({
       }
     });
   },
-  highlightGroup: function(groupId) {
+  highlightGroup: function (groupId) {
     var that = this;
     _.find(rooms.models, function (room) {
       if (room.get('group_id') === groupId) {
