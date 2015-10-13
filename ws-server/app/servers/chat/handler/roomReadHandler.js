@@ -75,8 +75,9 @@ handler.call = function (data, session, next) {
           return callback(err);
         }
 
-        if (!model.default) { // not default room in group, code robustness
+        if (!model['default']) { // not default room in group, code robustness
           read.can_delete = true;
+          return callback(null);
         }
         read.can_delete = (model.default.toString() !== room.id);
         return callback(null);

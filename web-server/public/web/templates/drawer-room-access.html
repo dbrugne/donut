@@ -21,6 +21,22 @@
             <p><%= t('chat.blocked.disclaimer-private') %></p>
         </div>
 
+        <% if (group !== false) { %>
+        <div class="field-password radio block">
+            <div class="password-block form-inline mt10 flex-parent baseline space-between">
+                <input type="checkbox" id="input-allowgroupmember-checkbox" name="input-allowgroupmember-checkbox" <% if (allow_group_member !== false) { %> checked <% } %> />
+                <label for="input-allowgroupmember-checkbox"><%= t('chat.blocked.allowgroupmember') %></label>
+            </div>
+        </div>
+        <% } %>
+
+        <div class="field-password radio block">
+            <div class="password-block form-inline mt10 flex-parent baseline space-between">
+                <input type="checkbox" id="input-userrequest-checkbox" name="input-userrequest-checkbox" <% if (allow_user_request !== false) { %> checked <% } %> />
+                <label for="input-userrequest-checkbox"><%= t('chat.access.user-request-access') %></label>
+            </div>
+        </div>
+
         <div class="allow-pending block">
             <label><%= t('chat.access.labelpending') %></label>
             <div class="ctn"></div>
@@ -49,24 +65,6 @@
             <p class="help-block"><%= t('chat.form.room-form.edit.description.help') %> <span class="counter"><%= t('chat.form.common.edit.left', {count: 200}) %></span></p>
             <div class="flex-parent jc-end mt10">
                 <input class="btn btn-success save-access save-conditions pull-right" type="submit" value="<%= t('global.save')%>" />
-            </div>
-        </div>
-
-        <% if (group !== false) { %>
-            <h2 class="block"><%= t('chat.blocked.allowgroupmember') %></h2>
-            <div class="field-password radio block">
-                <div class="password-block form-inline mt10 flex-parent baseline space-between">
-                    <input type="checkbox" id="input-allowgroupmember-checkbox" name="input-allowgroupmember-checkbox" <% if (allow_group_member !== false) { %> checked <% } %> />
-                    <label for="input-allowgroupmember-checkbox"><%= t('chat.form.room-form.mode.disclaimer.allowgroupmember') %></label>
-                </div>
-            </div>
-        <% } %>
-
-        <h2 class="block"><%= t('chat.access.request-access') %></h2>
-        <div class="field-password radio block">
-            <div class="password-block form-inline mt10 flex-parent baseline space-between">
-                <input type="checkbox" id="input-userrequest-checkbox" name="input-userrequest-checkbox" <% if (allow_user_request !== false) { %> checked <% } %> />
-                <label for="input-userrequest-checkbox"><%= t('chat.access.user-request-access') %></label>
             </div>
         </div>
 
