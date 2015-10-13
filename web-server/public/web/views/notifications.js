@@ -120,7 +120,9 @@ var NotificationsView = Backbone.View.extend({
         ? data.data.by_user.username
         : data.data.user.username,
       message: msg,
-      topic: (data.data.topic) ? data.data.topic : ''
+      topic: (data.data.topic)
+        ? common.markup.toText(data.data.topic)
+        : ''
     });
 
     message = message.replace(/<\/*span>/g, '');
