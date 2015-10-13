@@ -105,7 +105,9 @@ var DonutRouter = Backbone.Router.extend({
         if (response.code === 404) {
           return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', { name: identifier }));
         } else if (response.code === 403) {
-          return rooms.addModel(response.room, response.err);
+          rooms.addModel(response.room, response.err);
+          rooms.trigger('redraw-block'); // also trigger a redraw when displaying a room blocked
+          return;
         } else if (response.code === 500) {
           return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
         }
