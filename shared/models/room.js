@@ -4,9 +4,7 @@ var mongoose = require('../io/mongoose');
 var common = require('@dbrugne/donut-common/server');
 var cloudinary = require('../util/cloudinary');
 var GroupModel = require('./group');
-
-var MAX_PASSWORD_TRIES = 5; // @todo sp : move in conf file
-var MAX_PASSWORD_TIME = 60 * 1000; // 1mn // @todo sp : move in conf file
+var conf = require('../../config/index');
 
 var roomSchema = mongoose.Schema({
   name: String,
@@ -239,6 +237,10 @@ roomSchema.methods.isAllowed = function (userId) {
 };
 
 roomSchema.methods.isAllowedPending = function (userId) {
+  if (!this.allowed_pending || !this.allowed_pending.length) {
+    return false;
+  }
+
   var subDocument = _.find(this.allowed_pending, function (u) {
     return (u.user.toString() === userId);
   });
@@ -283,7 +285,7 @@ roomSchema.methods.cleanupPasswordTries = function () {
     if (!doc) {
       return; // strange behavior of mongoose when removing subdocuments
     }
-    if ((Date.now() - new Date(doc.created_at)) > MAX_PASSWORD_TIME) {
+    if ((Date.now() - new Date(doc.created_at)) > conf.room.max_password_time) {
       doc.remove();
     }
   });
@@ -300,7 +302,7 @@ roomSchema.methods.isGoodPassword = function (userId, password) {
   // remove expired subdocs on model synchronously and in database asynchronously
   this.cleanupPasswordTries();
   var tries = this.isInPasswordTries(userId);
-  if (tries && tries.count > MAX_PASSWORD_TRIES) {
+  if (tries && tries.count > conf.room.max_password_tries) {
     return 'spam-password';
   }
   if (this.validPassword(password)) {

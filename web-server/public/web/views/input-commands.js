@@ -188,7 +188,7 @@ var InputCommandsView = Backbone.View.extend({
     name: /^(#[-a-z0-9_]{3,20})(\/)?([-a-z0-9_]{3,20})?/i,
     username: /^@([-a-z0-9_\.]+)/i,
     usernameName: /^([@#][-a-z0-9_\.]+)/i,
-    usernameNameMsg: /^([@#][-a-z0-9_\.]+)\s+(.+)/i,
+    usernameNameMsg: /^([@#][-a-z0-9_\.]{3,20})?(\/[-a-z0-9_]{3,20})?\s+(.+)/i,
     twoNumber: /(-?[0-9]+)(\s+(-?[0-9]+))?/
   },
 
@@ -357,9 +357,9 @@ var InputCommandsView = Backbone.View.extend({
     });
   },
   msg: function (paramString, parameters) {
-    var message = (!parameters) ? paramString : parameters[2];
+    var message = (!parameters) ? paramString : parameters[3];
 
-    if (message && /^@/.test(message)) {
+    if (message && /^@/.test(message) && !parameters[2]) {
       message = message.replace(/\s+/, '');
       app.trigger('joinOnetoone', message.replace(/^@/, ''));
       return;
@@ -371,7 +371,11 @@ var InputCommandsView = Backbone.View.extend({
     if (!parameters) {
       model = this.model;
     } else if (/^#/.test(parameters[1])) {
-      model = rooms.getByName(parameters[1].replace('#', ''));
+      if (parameters[2]) {
+        model = rooms.getByNameAndGroup(parameters[2].replace('/', ''), parameters[1].replace('#', ''));
+      } else {
+        model = rooms.getByNameAndGroup(parameters[1].replace('#', ''), null);
+      }
     } else if (/^@/.test(parameters[1])) {
       client.userId(parameters[1].replace('@', ''), function (response) {
         if (!response.user_id) {
