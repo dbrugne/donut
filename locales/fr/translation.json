@@ -374,6 +374,9 @@
     "deban": {
       "infobox": "Autoriser à nouveau l'utilisateur à rejoindre le donut"
     },
+    "deban-group": {
+      "infobox": "Autoriser à nouveau l'utilisateur à rejoindre le groupe"
+    },
     "banuser": {
       "infobox": "Bloquer cet utilisateur",
       "banned-too": "Cet utilisateur vous a bloqué"
@@ -414,7 +417,8 @@
         "refuseuser": "Vous allez refuser l'accès à @__username__",
         "acceptuser": "Vous allez autoriser l'accès à @__username__",
         "disallowuser": "Vous allez supprimer l'accès à @__username__",
-        "banuser": "Vous allez bannir l'utilisateur @__username__",
+        "ban-group-user": "Vous allez bannir l'utilisateur @__username__ de ce groupe",
+        "deban-group-user": "Vous allez débannir l'utilisateur @__username__ de ce groupe",
         "invite": "Vous allez autoriser l'accès à @__username__. Une notification va lui être adressée pour l'inviter à rejoindre #__name__.",
         "requestallowance": "Vous allez envoyer une demande d'accés pour #__name__. Le créateur du donut aura accès à votre vrais nom et addresse mail.",
         "requestallowancegroup": "Vous allez envoyer une demande d'accés pour #__name__. Le créateur du groupe aura accès à votre vrais nom et addresse mail."

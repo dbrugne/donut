@@ -25,6 +25,7 @@ var client = _.extend({
       'welcome',
       'group:updated',
       'group:ban',
+      'group:deban',
       'room:join',
       'room:request',
       'room:leave',
@@ -209,6 +210,15 @@ var client = _.extend({
       'chat.groupBanHandler.call',
       data,
       this.applyRequestCallback('group:ban', callback)
+    );
+  },
+  groupDeban: function (groupId, userId, callback) {
+    var data = {group_id: groupId, user_id: userId};
+    debug('io:out:group:deban', data);
+    pomelo.request(
+      'chat.groupBanHandler.deban',
+      data,
+      this.applyRequestCallback('group:deban', callback)
     );
   },
   groupUsers: function (groupId, attributes, callback) {

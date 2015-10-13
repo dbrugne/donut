@@ -208,7 +208,7 @@ var RoomAccessView = Backbone.View.extend({
 
     if (userId && userName) {
       ConfirmationView.open({
-        message: 'banuser',
+        message: 'ban-group-user',
         username: userName,
         room_name: this.group_name
       }, _.bind(function () {
