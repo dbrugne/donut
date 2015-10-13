@@ -748,7 +748,8 @@
           "description": {
             "label": "Description",
             "placeholder": "Décrivez le donut en quelques mots",
-            "help": "Facultatif"
+            "help": "Facultatif",
+            "conditions": "La phrase suivante sera affichée lorsqu'un utilisateur demandera un accès"
           },
           "visibility": {
             "label": "Visibilité (administrateur)",

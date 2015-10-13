@@ -748,7 +748,8 @@
           "description": {
             "label": "Description",
             "placeholder": "Describe the donut in a few words",
-            "help": "Optional"
+            "help": "Optional",
+            "conditions": "This sentence will be displayed to any user requesting access"
           },
           "visibility": {
             "label": "Visibility (admin only)",
