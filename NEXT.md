@@ -35,3 +35,11 @@ db.getCollection('rooms').update({},{$set: {allowed_pending: []}},{"multi" : tru
 ```
 db.rooms.update( { mode: { $ne: 'public' } }, { $set: { allow_user_request: true }}, {multi: true} )
 ```
+
+* Add history-room index for new history
+```
+db[ 'history-room' ].ensureIndex({
+  'room': 1,
+  '_id': -1
+});
+```
