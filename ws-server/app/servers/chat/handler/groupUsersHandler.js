@@ -25,7 +25,8 @@ handler.call = function (data, session, next) {
     'members',          // members + owner
     'pending',          // members_pending
     'op',               // op + owner
-    'regular'           // members (not op/owner)
+    'regular',          // members (not op/owner)
+    'banned'            // banned members
   ];
 
   var searchTypesThatNeedPower = ['pending'];

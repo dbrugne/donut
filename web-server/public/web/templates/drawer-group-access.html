@@ -18,7 +18,7 @@
         <div class="paginate flex-parent block"></div>
     </div>
 
-    <div class="search block">
+    <div class="search block search-user">
         <div class="flex-child flex-parent relative">
             <input type="text" id="input-search" placeholder="<%= t('chat.actions.searchuser') %>" class="form-control flex-child" />
             <i class="icon icon-search"></i>
@@ -30,6 +30,22 @@
 
     <div class="allowed block">
         <label><%= t('chat.users.type.members') %></label>
+        <div class="ctn"></div>
+        <div class="paginate flex-parent block"></div>
+    </div>
+
+    <div class="search block search-ban">
+        <div class="flex-child flex-parent relative">
+            <input type="text" id="input-search-ban" placeholder="<%= t('chat.actions.banuser') %>" class="form-control flex-child" />
+            <i class="icon icon-search"></i>
+            <div class="dropdown">
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1"></ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="banned block">
+        <label><%= t('chat.users.type.ban') %></label>
         <div class="ctn"></div>
         <div class="paginate flex-parent block"></div>
     </div>

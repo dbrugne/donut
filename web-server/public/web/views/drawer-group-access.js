@@ -21,14 +21,19 @@ var RoomAccessView = Backbone.View.extend({
 
   timeBufferBeforeSearch: 1000,
 
-  timeout: 0,
+  timeout: {
+    user: 0,
+    ban: 0
+  },
 
   events: {
-    'keyup input[type=text]': 'onSearch',
+    'keyup #input-search': 'onSearchUser',
+    'click .search-user i.icon-search': 'onSearchUser',
+    'keyup #input-search-ban': 'onSearchBan',
+    'click .search-ban i.icon-search': 'onSearchBan',
     'click input.save-access': 'onSubmit',
     'click input.save-conditions': 'onSubmitConditions',
-    'click i.icon-search': 'onSearch',
-    'click .dropdown-menu>li': 'onAllowUser',
+    'click .search-user .dropdown-menu>li': 'onAllowUser',
     'change [type="checkbox"]': 'onChoosePassword',
     'click .random-password': 'onRandomPassword',
     'keyup #conditions-area': 'onTypeConditions'
@@ -48,7 +53,7 @@ var RoomAccessView = Backbone.View.extend({
   reload: function () {
     var what = {
       more: true,
-      users: false,
+      users: true,
       admin: true
     };
     client.groupRead(this.groupId, what, _.bind(function (data) {
@@ -58,6 +63,7 @@ var RoomAccessView = Backbone.View.extend({
     }, this));
   },
   onResponse: function (data) {
+    this.model = data;
     this.listenTo(app, 'redraw-tables', this.renderTables);
 
     this.currentPassword = data.password;
@@ -73,9 +79,13 @@ var RoomAccessView = Backbone.View.extend({
     this.$el.html(html);
 
     this.$errors = this.$('.errors');
-    this.$search = this.$('input[type=text]');
-    this.$dropdown = this.$('.dropdown');
-    this.$dropdownMenu = this.$('.dropdown-menu');
+
+    this.$search = this.$('#input-search');
+    this.$dropdown = this.$('.search-user .dropdown');
+
+    this.$searchBan = this.$('#input-search-ban');
+    this.$dropdownBan = this.$('.search-ban .dropdown');
+
     this.$toggleCheckbox = this.$('#input-password-checkbox');
     this.$checkboxGroupAllow = this.$('#input-allowgroupmember-checkbox');
     this.$password = this.$('.input-password');
@@ -96,6 +106,10 @@ var RoomAccessView = Backbone.View.extend({
       el: this.$('.allowed'),
       group_id: this.groupId
     });
+    this.tableBanned = new TableView({
+      el: this.$('.banned'),
+      group_id: this.groupId
+    });
     this.renderTables();
 
     this.initializeTooltips();
@@ -103,22 +117,40 @@ var RoomAccessView = Backbone.View.extend({
   renderTables: function () {
     this.tablePending.render('pending');
     this.tableAllowed.render('allowed');
+    this.tableBanned.render('banned');
   },
   renderPendingTable: function () {
     this.tablePending.render('pending');
   },
-  renderDropDown: function () {
-    this.$dropdown.addClass('open');
-    this.$dropdownMenu.html(require('../templates/spinner.html'));
+  renderDropDown: function (val, dropdown, type) {
+    dropdown.addClass('open');
+    var dropdownMenu = dropdown.find('.dropdown-menu');
+    dropdownMenu.html(require('../templates/spinner.html'));
 
     var that = this;
-    client.search(this.$search.val(), false, true, false, 15, 0, false, function (data) {
-      _.each(data.users.list, function (element, index, list) {
-        list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 20);
+    if (type === 'user') {
+      client.search(val, false, true, false, 15, 0, false, function (data) {
+        _.each(data.users.list, function (element, index, list) {
+          list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 20);
+        });
+
+        dropdownMenu.html(that.dropdownTemplate({users: data.users.list}));
+      });
+    } else if (type === 'ban') {
+      var members = [];
+      var reg = new RegExp(val, 'i');
+      _.each(this.model.members, function (element) {
+        if (!reg.test(element.username) || element.is_owner === true) {
+          return;
+        }
+
+        var el = _.clone(element);
+        el.avatarUrl = common.cloudinary.prepare(el.avatar, 20);
+        members.push(el);
       });
 
-      that.$dropdownMenu.html(that.dropdownTemplate({users: data.users.list}));
-    });
+      dropdownMenu.html(that.dropdownTemplate({users: members}));
+    }
   },
   _remove: function () {
     if (this.tablePending) {
@@ -127,25 +159,36 @@ var RoomAccessView = Backbone.View.extend({
     if (this.tableAllowed) {
       this.tableAllowed.remove();
     }
+    if (this.tableBanned) {
+      this.tableBanned.remove();
+    }
     this.remove();
   },
-  onSearch: function (event) {
+  onSearchUser: function (event) {
+    this.onSearch(event, 'user', this.$search, this.$dropdown);
+  },
+  onSearchBan: function (event) {
+    this.onSearch(event, 'ban', this.$searchBan, this.$dropdownBan);
+  },
+  onSearch: function (event, type, search, dropdown) {
     event.preventDefault();
+    var val = search.val();
 
-    clearTimeout(this.timeout);
+    clearTimeout(this.timeout[type]);
 
-    if (this.$search.val() === '') {
-      this.$dropdown.removeClass('open');
+    if (val === '') {
+      dropdown.removeClass('open');
       return;
     }
+
     var key = keyboard._getLastKeyCode(event);
     if (event.type === 'click' || key.key === keyboard.RETURN) { // instant search when user click on icon or press enter
-      this.renderDropDown();
+      this.renderDropDown(val, dropdown, type);
       return;
     }
 
-    this.timeout = setTimeout(_.bind(function () {
-      this.renderDropDown();
+    this.timeout[type] = setTimeout(_.bind(function () {
+      this.renderDropDown(val, dropdown, type);
     }, this), this.timeBufferBeforeSearch);
   },
   onAllowUser: function (event) {
@@ -155,7 +198,11 @@ var RoomAccessView = Backbone.View.extend({
     var userName = $(event.currentTarget).data('username');
 
     if (userId && userName) {
-      ConfirmationView.open({message: 'invite', username: userName, room_name: this.group_name}, _.bind(function () {
+      ConfirmationView.open({
+        message: 'invite',
+        username: userName,
+        room_name: this.group_name
+      }, _.bind(function () {
         client.groupAllow(this.groupId, userId, _.bind(function () {
           // this.renderTables();
         }, this));

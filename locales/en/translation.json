@@ -301,6 +301,7 @@
     "actions": {
       "search": "Search",
       "searchuser": "Invite a user",
+      "banuser": "Ban a user",
       "create": "create",
       "adonut": "a donut",
       "account": "my account",

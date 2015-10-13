@@ -35,7 +35,12 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
   render: function (type) {
     var searchAttributes = {
-      type: (type === 'pending' ? 'pending' : 'members'),
+      type: (type === 'pending'
+        ? 'pending'
+        : type === 'allowed'
+          ? 'members'
+          : 'banned'
+      ),
       selector: {start: (this.page - 1) * this.paginate, length: this.paginate}
     };
 
