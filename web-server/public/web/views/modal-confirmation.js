@@ -25,9 +25,12 @@ var ConfirmationModalView = Backbone.View.extend({
   render: function () {
     this.$inputBlock = this.$('.input');
     this.$input = this.$inputBlock.find('input[type="text"]');
+    this.$inputPass = this.$('input[type="password"]');
     this.$bigInputArea = this.$('#big-input-textarea');
     this.$biginput = this.$('.big-input');
     this.$message = this.$('.message');
+    this.$password = this.$('.password');
+    this.$confirmMessage = this.$('.question');
 
     // Configure modal
     this.$el.modal({
@@ -45,8 +48,10 @@ var ConfirmationModalView = Backbone.View.extend({
       if (this.confirmed) {
         if (this.$input.val()) {
           this.confirmCallback(this.$input.val());
-        } else {
+        } else if (this.$bigInputArea.val()) {
           this.confirmCallback(this.$bigInputArea.val());
+        } else {
+          this.confirmCallback(this.$inputPass.val());
         }
       } else if (_.isFunction(this.cancelCallback)) {
         this.cancelCallback(); // cancel
@@ -60,9 +65,12 @@ var ConfirmationModalView = Backbone.View.extend({
   },
   _reset: function () {
     this.$inputBlock.show();
+    this.$confirmMessage.show();
+    this.$password.val('');
     this.$input.val('');
     this.$bigInputArea.val('');
     this.$message.text('');
+    this.$inputPass.val('');
     this.confirmCallback = null;
     this.cancelCallback = null;
     this.options = null;
@@ -87,6 +95,15 @@ var ConfirmationModalView = Backbone.View.extend({
       this.$inputBlock.hide();
     }
 
+    // password
+    if (this.options.password) {
+      this.$password.show();
+      this.$confirmMessage.hide();
+    } else {
+      this.$password.hide();
+    }
+
+    // area field
     if (this.options.area) {
       this.$biginput.show();
     } else {
@@ -115,6 +132,8 @@ var ConfirmationModalView = Backbone.View.extend({
         this.$message.text(i18next.t('chat.confirmation.message.requestallowance', {name: this.options.room_name}));
       } else if (this.options.message === 'request-allowance-group') {
         this.$message.text(i18next.t('chat.confirmation.message.requestallowancegroup', {name: this.options.group_name.replace('#', '')}));
+      } else if (this.options.message === 'request-allowance-password') {
+        this.$message.text(i18next.t('group.blocked'));
       }
     }
     // bind 'enter' only when showing popin

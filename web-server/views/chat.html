@@ -181,6 +181,10 @@
                         <label class="big-input-label" for="big-input-textarea"><%= t('chat.confirmation.label') %></label>
                         <textarea id="big-input-textarea" class="form-control" rows="5" maxlength="200" placeholder="<%= t('chat.confirmation.placeholderarea') %>"></textarea>
                     </div>
+                    <div class="password mb20">
+                        <label for="input-password"><%= t('group.blocked') %></label>
+                        <input id="input-password" class="form-control" type="password" placeholder="<%= t('chat.blocked.password_placeholder') %>">
+                    </div>
                     <div class="buttons">
                         <button type="button" class="cancel" data-dismiss="modal"><i class="icon icon-times"></i> <%= t('chat.confirmation.cancel') %></button>
                         <button type="button" class="confirm"><i class="icon icon-check"></i> <%= t('chat.confirmation.confirm') %></button>

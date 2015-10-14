@@ -43,3 +43,29 @@ db[ 'history-room' ].ensureIndex({
   '_id': -1
 });
 ```
+
+* Remove old/useless history-room index
+```
+db[ 'history-room' ].dropIndex({
+  'room': 1,
+  'time': -1
+});
+```
+
+* Add onetoone index for new history
+```
+db[ 'history-one' ].ensureIndex({
+  'from': 1,
+  'to': 1,
+  '_id': -1
+});
+```
+
+* Remove old/useless onetoone index
+```
+db[ 'history-one' ].dropIndex({
+  'from': 1,
+  'to': 1,
+  'time': -1
+});
+```

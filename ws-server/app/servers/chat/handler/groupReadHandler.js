@@ -49,7 +49,7 @@ handler.call = function (data, session, next) {
         disclaimer: group.disclaimer,
         created: group.created_at,
         members: [],
-        has_password: (typeof group.password !== 'undefined' || group.password !== '')
+        has_password: (!!group.password)
       };
 
       // owner

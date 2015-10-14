@@ -100,7 +100,13 @@ var GroupView = Backbone.View.extend({
     }
   },
   onRequestAllowance: function (event) {
-    ConfirmationView.open({message: 'request-allowance-group', area: true, group_name: this.model.get('name')}, _.bind(function (message) {
+    var options = {
+      message: 'request-allowance-group',
+      area: true,
+      group_name: this.model.get('name')
+    };
+
+    ConfirmationView.open(options, _.bind(function (message) {
       client.groupJoinRequest(this.model.get('group_id'), message, function (response) {
         if (response.err) {
           if (response.err === 'allow-pending' || response.err === 'message-wrong-format') {
@@ -115,18 +121,24 @@ var GroupView = Backbone.View.extend({
     }, this));
   },
   onSendPassword: function (event) {
-    client.groupJoin(this.model.get('group_id'), this.$('.input-password').val(), _.bind(function (response) {
-      if (response.err) {
-        if (response.err === 'wrong-password') {
-          app.trigger('alert', 'error', i18next.t('chat.password.' + response.err));
-        } else {
-          app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+    var options = {
+      password: true
+    };
+
+    ConfirmationView.open(options, _.bind(function (password) {
+      client.groupJoin(this.model.get('group_id'), password, _.bind(function (response) {
+        if (response.err) {
+          if (response.err === 'wrong-password') {
+            app.trigger('alert', 'error', i18next.t('chat.password.' + response.err));
+          } else {
+            app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+          }
+        } else if (response.success) {
+          this.$passwordDiv.hide();
+          this.$requestAllowance.hide();
+          app.trigger('alert', 'info', i18next.t('chat.members', {name: this.model.get('name')}));
         }
-      } else if (response.success) {
-        this.$passwordDiv.hide();
-        this.$requestAllowance.hide();
-        app.trigger('alert', 'info', i18next.t('chat.members', {name: this.model.get('name')}));
-      }
+      }, this));
     }, this));
   },
   initializeTooltips: function () {

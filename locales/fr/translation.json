@@ -824,7 +824,8 @@
     "administrator": "Administrateurs",
     "users": "Utilisateurs",
     "invite": "Inviter",
-    "ask-membership": "Demander l'accès"
+    "ask-membership": "Demander l'accès",
+    "blocked": "Ce groupe est bloqué par un mot de passe, pour y accéder nous vous invitons à le taper"
   },
   "account": {
     "error": {
