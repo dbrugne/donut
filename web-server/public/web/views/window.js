@@ -80,6 +80,11 @@ var WindowView = Backbone.View.extend({
       });
     }
 
+    if (!thereIsNew) {
+      clearInterval(this.titleBlinker);
+      return;
+    }
+
     if (thereIsNew) {
       title += i18next.t('chat.unread.title') + ' ';
     }
@@ -89,11 +94,6 @@ var WindowView = Backbone.View.extend({
       title += ' | ' + this.title;
     }
     document.title = title;
-
-    if (!thereIsNew) {
-      clearInterval(this.titleBlinker);
-      return;
-    }
 
     // now make it blink
     var odd = title;
@@ -232,7 +232,7 @@ var WindowView = Backbone.View.extend({
       }
 
       // update tabs and update title
-      app.trigger('redraw-block');
+      app.trigger('refreshRoomsList');
       this.renderTitle();
     }
 

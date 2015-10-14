@@ -142,9 +142,7 @@ var RoomModel = Backbone.Model.extend({
     if (currentUser.get('user_id') !== model.get('data').user_id) {
       model.set('unviewed', true);
     }
-
     this.set('last', Date.now());
-    app.trigger('refreshRoomsList');
 
     app.trigger('unviewedMessage', model, this);
     this.trigger('freshEvent', model);
@@ -289,9 +287,6 @@ var RoomModel = Backbone.Model.extend({
     client.roomHistory(this.get('room_id'), start, end, 100, function (data) {
       return callback(data);
     });
-  },
-  viewedElements: function (elements) {
-    client.roomViewed(this.get('room_id'), elements);
   },
   onViewed: function (data) {
     this.resetNew();

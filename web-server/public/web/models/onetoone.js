@@ -42,7 +42,6 @@ var OneToOneModel = Backbone.Model.extend({
     }
 
     this.set('last', Date.now());
-    app.trigger('refreshOnesList');
 
     app.trigger('unviewedMessage', model, this);
     this.trigger('freshEvent', model);
@@ -110,9 +109,6 @@ var OneToOneModel = Backbone.Model.extend({
     client.userHistory(this.get('user_id'), start, end, 100, function (data) {
       return callback(data);
     });
-  },
-  viewedElements: function (elements) {
-    client.userViewed(this.get('user_id'), elements);
   },
   onViewed: function (data) {
     this.resetNew();
