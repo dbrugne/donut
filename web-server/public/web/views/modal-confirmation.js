@@ -71,18 +71,20 @@ var ConfirmationModalView = Backbone.View.extend({
     $(document).off('keypress');
   },
   open: function (options, confirmCallback, cancelCallback) {
-    if (!this.isRendered)
+    if (!this.isRendered) {
       this.render();
+    }
 
     this.options = options || {};
     this.confirmCallback = confirmCallback;
     this.cancelCallback = cancelCallback || _.noop;
 
     // input field
-    if (this.options.input)
+    if (this.options.input) {
       this.$inputBlock.show();
-    else
+    } else {
       this.$inputBlock.hide();
+    }
 
     if (this.options.area) {
       this.$biginput.show();
@@ -110,7 +112,7 @@ var ConfirmationModalView = Backbone.View.extend({
     // bind 'enter' only when showing popin
     var that = this;
     $(document).keypress(function (e) {
-      if (e.which == 13) {
+      if (e.which === 13) {
         that.onConfirm(e);
       }
     });
@@ -125,6 +127,5 @@ var ConfirmationModalView = Backbone.View.extend({
   }
 
 });
-
 
 module.exports = new ConfirmationModalView();
