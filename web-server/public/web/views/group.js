@@ -6,6 +6,7 @@ var client = require('../libs/client');
 var i18next = require('i18next-client');
 var app = require('../models/app');
 var urls = require('../../../../shared/util/url');
+var date = require('../libs/date');
 
 var GroupView = Backbone.View.extend({
   template: require('../templates/group.html'),
@@ -32,6 +33,7 @@ var GroupView = Backbone.View.extend({
     var isMember = this.model.currentUserIsMember();
     var isOwner = this.model.currentUserIsOwner();
     var isAdmin = this.model.currentUserIsAdmin();
+    var bannedObject = this.model.currentUserIsBanned();
 
     // prepare avatars for members & op
     _.each(group.members, function (u) {
@@ -64,15 +66,21 @@ var GroupView = Backbone.View.extend({
     if (group.disclaimer) {
       group.disclaimer = _.escape(group.disclaimer);
     }
-    var html = this.template({
+    var data = {
       isMember: isMember,
       isOwner: isOwner,
       isAdmin: isAdmin,
+      isBanned: !!bannedObject,
       group: group,
       op: op,
       members: members,
       members_more: group.members_more
-    });
+    };
+    if (!!bannedObject) {
+      data.banned_at = date.longDate(bannedObject.banned_at);
+    }
+
+    var html = this.template(data);
     var htmlCards = this.templateCards({
       rooms: rooms,
       title: false,

@@ -119,6 +119,8 @@ handler.call = function (data, session, next) {
         });
       }
 
+      read.bans = group.bans;
+
       return callback(null);
     },
 

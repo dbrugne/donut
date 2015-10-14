@@ -31,6 +31,11 @@ var GroupModel = Backbone.Model.extend({
   currentUserIsAdmin: function () {
     return currentUser.isAdmin();
   },
+  currentUserIsBanned: function () {
+    return (this.get('bans') && _.find(this.get('bans'), function (bannedUser) {
+      return bannedUser.user === currentUser.get('user_id');
+    }));
+  },
   currentUserIsMember: function () {
     return !!_.find(this.get('members'), function (member) {
       if (currentUser.get('user_id') === member.user_id) {

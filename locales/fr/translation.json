@@ -633,6 +633,7 @@
       "password_placeholder": "Mot de passe",
       "password_button": "Rejoindre",
       "banned": "Vous avez été banni de ce donut le __at__",
+      "groupbanned": "Vous avez été banni de ce groupe le __at__",
       "reason": "pour la raison suivante : ",
       "kicked": "Vous avez été expulsé de ce donut.",
       "kicked_button": "Rejoindre",

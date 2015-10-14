@@ -85,7 +85,7 @@
                 </ul>
             </div>
             
-            <% if (!isMember) { %>
+            <% if (!isMember && !isBanned) { %>
                 <span class="curp btn btn-primary pull-right request-allowance"><%= t('group.ask-membership') %></span>
                 <div class="clearfix"></div>
             <% } %>
@@ -94,11 +94,16 @@
         <div class="info">
             <div class="disclaimer fs18">
                 <% if (!isMember) { %>
-                <%= group.disclaimer %>
+                    <%= group.disclaimer %>
                 <% } else { %>
-                <%= group.description %>
+                    <%= group.description %>
                 <% } %>
             </div>
+            <% if(isBanned) { %>
+                <div class="mt20">
+                    <%= t('chat.blocked.groupbanned', {at: banned_at}) %>
+                </div>
+            <% } %>
         </div>
         <% if (group.has_password && !isMember) { %>
         <span class="curp btn btn-primary send-password pull-right password-div"><%= t('actions.join') %></span>
