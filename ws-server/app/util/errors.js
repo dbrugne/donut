@@ -33,7 +33,7 @@ var errors = {
   'not-in': 403,                  // User not in the room
   'wrong-user': 403,              // User not the right user to acces the data
   'not-banned': 403,              // User is not banned from the room
-  'banned': 403,                  // User is banned from the room or the 1&1
+  'banned': 403,                  // User is banned from the room or the 1&1 or the group
   'devoiced': 403,                // User is devoiced in the room
   'private': 403,                 // Room is private
   'permanent': 403,               // Room is permanent can\'t set private

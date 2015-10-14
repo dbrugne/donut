@@ -2,8 +2,11 @@
 var _ = require('underscore');
 var errors = require('../../../util/errors');
 var async = require('async');
-var Group = require('../../../../../shared/models/group');
+var GroupModel = require('../../../../../shared/models/group');
+var RoomModel = require('../../../../../shared/models/room');
+var roomEmitter = require('../../../util/roomEmitter');
 var Notifications = require('../../../components/notifications');
+var inputUtil = require('../../../util/input');
 
 var Handler = function (app) {
   this.app = app;
@@ -22,7 +25,11 @@ handler.call = function (data, session, next) {
 
   var that = this;
 
+  var rooms = [];
   var event = {};
+  var reason = (data.reason)
+    ? inputUtil.filter(data.reason, 512)
+    : false;
 
   async.waterfall(
     [
@@ -43,31 +50,23 @@ handler.call = function (data, session, next) {
           return callback('not-admin-owner');
         }
 
+        if (group.isBanned(user.id)) {
+          return callback('banned');
+        }
+
         return callback(null);
       },
 
-      function createEvent (callback) {
-        event = {
-          by_user_id: currentUser._id,
-          by_username: currentUser.username,
-          by_avatar: currentUser._avatar(),
-          user_id: user._id,
-          username: user.username,
-          avatar: user._avatar(),
-          group_id: group.id
-        };
-        callback(null, event);
-      },
-
-      function persistOnGroup (eventData, callback) {
+      function persistOnGroup (callback) {
         var banUser = {
           user: user._id,
-          banned_at: Date.now()
+          banned_at: new Date()
         };
-        if (data.reason) {
-          banUser.reason = data.reason;
+        if (reason) {
+          banUser.reason = reason;
         }
-        Group.update(
+
+        GroupModel.update(
           {_id: {$in: [group.id]}},
           {
             $addToSet: {bans: banUser},
@@ -77,14 +76,124 @@ handler.call = function (data, session, next) {
               members_pending: {user: user._id}
             }
           }, function (err) {
-            return callback(err, eventData);
+            return callback(err, banUser);
           }
         );
       },
 
-      function broadcastToUser (eventData, callback) {
+      function computeRoomsToProcess (banEvent, callback) {
+        RoomModel.findByGroup(group._id)
+          .exec(function (err, dbrooms) {
+            if (err) {
+              return callback(err);
+            }
+            rooms = dbrooms;
+            return callback(err, banEvent);
+          });
+      },
+
+      function persistOnRooms (banEvent, callback) {
+        event = {
+          by_user_id: currentUser._id,
+          by_username: currentUser.username,
+          by_avatar: currentUser._avatar(),
+          user_id: user._id,
+          username: user.username,
+          avatar: user._avatar(),
+          group_id: group.id,
+          banned_at: banEvent.banned_at
+        };
+
+        RoomModel.update(
+          {group: group._id},
+          {
+            $pull: {
+              users: user._id,
+              op: user._id,
+              allowed: user._id,
+              devoices: {user: user._id},
+              allowed_pending: {user: user._id}
+            }
+          },
+          {multi: true},
+          function (err) {
+            return callback(err, banEvent);
+          });
+      },
+
+      function broadcast (banEvent, callback) {
+        event = {
+          by_user_id: currentUser.id,
+          by_username: currentUser.username,
+          by_avatar: currentUser._avatar(),
+          user_id: user.id,
+          username: user.username,
+          avatar: user._avatar(),
+          banned_at: banEvent.banned_at
+        };
+
+        if (reason) {
+          event.reason = reason;
+        }
+
+        var parallels = [];
+        _.each(rooms, function (room) {
+          parallels.push(function (fn) {
+            roomEmitter(that.app, user, room, 'room:ban', event, function (err) {
+              if (err) {
+                return fn(room.id + ': ' + err);
+              }
+
+              return fn(null);
+            });
+          });
+        });
+        async.parallel(parallels, function (err, results) {
+          if (err) {
+            return callback('Error while dispatching room:ban for group:ban [' + group.id + '] : ' + err);
+          }
+
+          return callback(null, event);
+        });
+      },
+
+      function broadcastToUser (sentEvent, callback) {
         that.app.globalChannelService.pushMessage('connector', 'group:ban', event, 'user:' + user.id, {}, function (reponse) {
-          callback(null, eventData);
+          return callback(null, sentEvent);
+        });
+      },
+
+      function unsubscribeClients (sentEvent, callback) {
+        // search for all the user sessions (any frontends)
+        that.app.statusService.getSidsByUid(user.id, function (err, sids) {
+          if (err) {
+            return callback('Error while retrieving user status: ' + err);
+          }
+
+          if (!sids || sids.length < 1) {
+            return callback(null, event); // the targeted user could be offline at this time
+          }
+
+          var parallels = [];
+          _.each(sids, function (sid) {
+            _.each(rooms, function (room) {
+              parallels.push(function (fn) {
+                that.app.globalChannelService.leave(room.name, user.id, sid, function (err) {
+                  if (err) {
+                    return fn(sid + ': ' + err);
+                  }
+                  return fn(null);
+                });
+              });
+            });
+          });
+          async.parallel(parallels, function (err, results) {
+            if (err) {
+              return callback('Error while unsubscribing user ' + user.id + ' : ' + err);
+            }
+
+            return callback(null, event);
+          });
         });
       },
 
