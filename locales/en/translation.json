@@ -814,7 +814,8 @@
     "administrator": "Administrators",
     "users": "Users",
     "invite": "Invite",
-    "ask-membership": "Ask for membership"
+    "ask-membership": "Ask for membership",
+    "blocked": "This group is blocked by a password, to join we invite you to type it"
   },
   "account": {
     "error": {
