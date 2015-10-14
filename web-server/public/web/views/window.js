@@ -80,11 +80,6 @@ var WindowView = Backbone.View.extend({
       });
     }
 
-    if (!thereIsNew) {
-      clearInterval(this.titleBlinker);
-      return;
-    }
-
     if (thereIsNew) {
       title += i18next.t('chat.unread.title') + ' ';
     }
@@ -95,6 +90,10 @@ var WindowView = Backbone.View.extend({
     }
     document.title = title;
 
+    if (!thereIsNew) {
+      clearInterval(this.titleBlinker);
+      return;
+    }
     // now make it blink
     var odd = title;
     var even = this.defaultTitle;
