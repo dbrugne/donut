@@ -2,7 +2,7 @@
 
 <div class="title">
     <%= t('chat.form.room-form.edit.room.delete.title') %>
-    #<%= room.name %>
+    #<% if (room.group_name) { %><%- room.group_name %>/<% } %><%= room.name %>
 </div>
 
 <div class="ctn-drawer">
@@ -14,7 +14,7 @@
 
     <div class="block">
         <div class="field flex-parent jc-center">
-            <span class="hash dc-text colorize">#</span>
+            <span class="hash dc-text colorize">#<% if (room.group_name) { %><%- room.group_name %>/<% } %></span>
             <input type="text" name="input-delete" class="big-input dc-border flex-child colorize-border" placeholder="<%= t('chat.form.room-form.edit.room.delete.placeholder') %>" maxlength="24" />
         </div>
     </div>
