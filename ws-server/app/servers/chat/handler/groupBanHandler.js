@@ -100,9 +100,12 @@ handler.call = function (data, session, next) {
           user_id: user._id,
           username: user.username,
           avatar: user._avatar(),
-          group_id: group.id,
           banned_at: banEvent.banned_at
         };
+
+        if (reason) {
+          event.reason = reason;
+        }
 
         RoomModel.update(
           {group: group._id},
@@ -122,48 +125,27 @@ handler.call = function (data, session, next) {
       },
 
       function broadcast (banEvent, callback) {
-        event = {
-          by_user_id: currentUser.id,
-          by_username: currentUser.username,
-          by_avatar: currentUser._avatar(),
-          user_id: user.id,
-          username: user.username,
-          avatar: user._avatar(),
-          banned_at: banEvent.banned_at
-        };
-
-        if (reason) {
-          event.reason = reason;
-        }
-
-        var parallels = [];
-        _.each(rooms, function (room) {
-          parallels.push(function (fn) {
-            roomEmitter(that.app, user, room, 'room:ban', event, function (err) {
-              if (err) {
-                return fn(room.id + ': ' + err);
-              }
-
-              return fn(null);
-            });
+        async.each(rooms, function (r, callback) {
+          roomEmitter(that.app, user, r, 'room:groupban', _.clone(event), function (err) {
+            if (err) {
+              return callback(r.id + ': ' + err);
+            }
+            return callback(null);
           });
-        });
-        async.parallel(parallels, function (err, results) {
-          if (err) {
-            return callback('Error while dispatching room:ban for group:ban [' + group.id + '] : ' + err);
-          }
-
-          return callback(null, event);
+        }, function (err) {
+          return callback(err);
         });
       },
 
-      function broadcastToUser (sentEvent, callback) {
+      function broadcastToUser (callback) {
+        event.group_id = group.id;
+        event.group_name = '#' + group.name;
         that.app.globalChannelService.pushMessage('connector', 'group:ban', event, 'user:' + user.id, {}, function (reponse) {
-          return callback(null, sentEvent);
+          return callback(null);
         });
       },
 
-      function unsubscribeClients (sentEvent, callback) {
+      function unsubscribeClients (callback) {
         // search for all the user sessions (any frontends)
         that.app.statusService.getSidsByUid(user.id, function (err, sids) {
           if (err) {

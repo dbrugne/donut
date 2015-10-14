@@ -50,10 +50,9 @@ var RoomsCollection = Backbone.Collection.extend({
 
     return matches[0];
   },
-  getByName: function (name) {
-    return this.findWhere({name: name});
+  getByGroup: function (group_id) {
+    return this.findWhere({group_id: group_id});
   },
-
   getByNameAndGroup: function (name, group) {
     if (!group) {
       var models = this.where({name: name});
@@ -91,6 +90,7 @@ var RoomsCollection = Backbone.Collection.extend({
     this.listenTo(client, 'room:message:unspam', this.onMessageUnspam);
     this.listenTo(client, 'room:message:edit', this.onMessageEdited);
     this.listenTo(client, 'room:typing', this.onTyping);
+    this.listenTo(client, 'room:groupban', this.onGroupBan);
     this.listenTo(app, 'refreshRoomsList', this.onRefreshList);
   },
   onJoin: function (data) {
@@ -279,6 +279,14 @@ var RoomsCollection = Backbone.Collection.extend({
       }));
     }
 
+    // remove from allowed-pending
+    var ap = model.get('allowed_pending');
+    if (ap.length) {
+      model.set('allowed_pending', _.reject(ap, function (element) {
+        return (element === data.user_id);
+      }));
+    }
+
     model.users.sort();
     model.users.trigger('users-redraw');
 
@@ -402,6 +410,55 @@ var RoomsCollection = Backbone.Collection.extend({
     }
 
     model.trigger('typing', data);
+  },
+  onGroupBan: function (data) {
+    var model;
+    if (!data || !data.room_id || !(model = this.get(data.room_id))) {
+      return;
+    }
+
+    // if i'm the "targeted user" destroy the model/view
+    if (currentUser.get('user_id') === data.user_id) {
+      this.remove(model);
+      return;
+    }
+
+    // check that target is in model.users
+    var user = model.users.get(data.user_id);
+    if (!user) {
+      return;
+    }
+
+    // remove from this.users
+    model.users.remove(user);
+    model.set('users_number', model.get('users_number') - 1);
+
+    // remove from this.op
+    var ops = _.reject(model.get('op'), function (opUserId) {
+      return (opUserId === data.user_id);
+    });
+    model.set('op', ops);
+
+    // remove from this.op
+    var devoices = _.reject(model.get('devoices'), function (devoicedUser) {
+      return (devoicedUser.user === data.user_id);
+    });
+    model.set('devoices', devoices);
+
+    // remove from this.op
+    var allowedPendings = _.reject(model.get('allowed_pending'), function (allowedPendingUser) {
+      return (allowedPendingUser.user === data.user_id);
+    });
+    model.set('allowed_pending', allowedPendings);
+
+    model.users.sort();
+    model.users.trigger('users-redraw');
+
+    // trigger event
+    model.trigger('freshEvent', new EventModel({
+      type: 'room:groupban',
+      data: data
+    }));
   }
 });
 

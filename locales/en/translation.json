@@ -475,6 +475,7 @@
       "roomdeop": "  is no longer a moderator as requested by",
       "roomvoice": " is no longer mute as requested by ",
       "roomdevoice": " is now mute as requested by ",
+      "roomgroupban": " was banned from group by ",
       "in": "entered at",
       "out": "left at",
       "online": "is online,",
@@ -531,6 +532,7 @@
     "alert": {
       "kick": "You have been kicked out of __name__",
       "ban": "You have been banned from __name__",
+      "groupban": "You have been banned from group __name__",
       "allowed": "You are not allowed anymore in __name__"
     },
     "roomnotexists": "The donut __name__ does not exist yet, <a class='open-create-room' data-name='__name__'>would you like to create it</a>?",

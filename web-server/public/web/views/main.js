@@ -90,7 +90,7 @@ var MainView = Backbone.View.extend({
     this.listenTo(client, 'admin:message', this.onAdminMessage);
     this.listenTo(client, 'disconnect', this.onDisconnect);
     this.listenTo(groups, 'add', this.addView);
-    this.listenTo(groups, 'remove', this.addView);
+    this.listenTo(groups, 'remove', this.onRemoveGroupView);
     this.listenTo(rooms, 'add', this.addView);
     this.listenTo(rooms, 'remove', this.onRemoveDiscussion);
     this.listenTo(onetoones, 'add', this.addView);
@@ -551,6 +551,24 @@ var MainView = Backbone.View.extend({
     delete this.views[ model.get('id') ];
 
     collection.trigger('redraw-block');
+
+    // focus default (home)
+    if (wasFocused) {
+      Backbone.history.navigate('#', { trigger: true });
+    }
+  },
+
+  onRemoveGroupView: function (model, collection) {
+    var view = this.views[ model.get('id') ];
+    if (view === undefined) {
+      return debug('close group view error: unable to find view');
+    }
+    var wasFocused = model.get('focused');
+
+    view.removeView();
+    delete this.views[ model.get('id') ];
+
+    app.trigger('refreshRoomsList');
 
     // focus default (home)
     if (wasFocused) {

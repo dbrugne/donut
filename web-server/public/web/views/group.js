@@ -89,6 +89,9 @@ var GroupView = Backbone.View.extend({
     this.initializeTooltips();
     return this;
   },
+  removeView: function () {
+    this.remove();
+  },
   onFocusChange: function () {
     if (this.model.get('focused')) {
       this.$el.show();

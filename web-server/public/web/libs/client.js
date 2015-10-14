@@ -25,7 +25,7 @@ var client = _.extend({
       'welcome',
       'group:updated',
       'group:ban',
-      'group:deban',
+      'room:groupban',
       'room:join',
       'room:request',
       'room:leave',
