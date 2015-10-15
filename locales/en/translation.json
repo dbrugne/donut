@@ -1109,6 +1109,14 @@
         "disclaimer": "Don't worry you can make another request to join this group later !",
         "button": "Go to group"
       }
+    },
+    "groupban": {
+      "subject": "You have been banned grom group #__groupname__",
+      "content": {
+        "title": "You have been banned grom group #__groupname__",
+        "disclaimer": "",
+        "button": "Back to DONUT"
+      }
     }
   },
   "welcome": {
