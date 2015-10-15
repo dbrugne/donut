@@ -207,7 +207,11 @@ groupSchema.methods.getIdsByType = function (type) {
     });
   } else if (type === 'op') {
     _.each(this.op, function (u) {
-      ids.push(u.toString());
+      if (u._id) {
+        ids.push(u.id);
+      } else {
+        ids.push(u.toString());
+      }
     });
     if (this.owner._id) {
       ids.push(this.owner._id.toString());

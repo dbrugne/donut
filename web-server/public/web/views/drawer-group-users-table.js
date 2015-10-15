@@ -21,7 +21,6 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
 
   initialize: function (options) {
     this.model = options.model;
-    //this.listenTo(this.model, 'members-redraw', this.render);
 
     if (this.model.currentUserIsOwner() || this.model.currentUserIsOp() || this.model.currentUserIsAdmin()) {
       this.op = true;

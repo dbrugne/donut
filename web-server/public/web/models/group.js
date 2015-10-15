@@ -44,21 +44,25 @@ var GroupModel = Backbone.Model.extend({
     });
   },
   onOp: function (data) {
-    var user = _.find(this.members, function (item) {
-      return item.user_id === data.user_id;
+    _.find(this.get('members'), function (item) {
+      if (item.user_id === data.user_id) {
+        item.is_op = true;
+        return true;
+      }
     });
-    if (user) {
-      user.set({is_op: true});
-    }
+
+    this.trigger('members-redraw');
   },
   onDeop: function (data) {
     // user.get('is_op')
-    var user = _.find(this.members, function (item) {
-      return item.user_id === data.user_id;
+    _.find(this.get('members'), function (item) {
+      if (item.user_id === data.user_id) {
+        item.is_op = false;
+        return true;
+      }
     });
-    if (user) {
-      user.set({is_op: false});
-    }
+
+    this.trigger('members-redraw');
   }
 });
 
