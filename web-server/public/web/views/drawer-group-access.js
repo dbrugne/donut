@@ -8,6 +8,7 @@ var client = require('../libs/client');
 var ConfirmationView = require('./modal-confirmation');
 var TableView = require('./drawer-group-access-table');
 var i18next = require('i18next-client');
+var currentUser = require('../models/current-user');
 
 var RoomAccessView = Backbone.View.extend({
 
@@ -67,6 +68,13 @@ var RoomAccessView = Backbone.View.extend({
   },
   onResponse: function (data) {
     this.model = data;
+
+    data.isOwner = (data.owner_id === currentUser.get('user_id'));
+    data.isAdmin = currentUser.isAdmin();
+    data.isOp = !!_.find(data.members, function (item) {
+      return (item.user_id === currentUser.get('user_id') && item.is_op === true);
+    });
+
     this.listenTo(app, 'redraw-tables', this.renderTables);
 
     this.currentPassword = data.password;

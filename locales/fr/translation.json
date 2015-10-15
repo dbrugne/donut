@@ -506,7 +506,9 @@
         "groupallowed": "Vous êtes autorisé à rejoindre <span>#__name__</span>",
         "groupinvite": "<span>@__username__</span> vous invite à rejoindre <span>#__name__</span>",
         "grouprefuse": "Demande d'accès au groupe <span>#__name__</span></br> refusée",
-        "groupban": "Vous êtes banni du groupe <span>#__name__</span>"
+        "groupban": "Vous êtes banni du groupe <span>#__name__</span>",
+        "groupop": "Vous êtes maintenant modérateur du groupe <span>#__name__</span>",
+        "groupdeop": "Vous n'êtes plus modérateur du groupe <span>#__name__</span>"
       },
       "userban": " est bloqué à la demande de",
       "userdeban": " n'est plus bloqué à la demande de"
@@ -551,6 +553,8 @@
         "users": "Utilisateurs",
         "op": "Modérateurs",
         "allowed": "Utilisateurs autorisés",
+        "regular": "Utilisateurs autorisés",
+        "pending": "Utilisateurs en attente",
         "ban": "Bannis",
         "devoice": "Muets",
         "members": "Membres"
@@ -1115,6 +1119,25 @@
       "content": {
         "title": "Vous avez été banni du groupe #__groupname__",
         "disclaimer": "",
+        "button": "Retourner sur DONUT"
+      }
+    },
+    "groupop": {
+      "subject": "Vous avez été promu modérateur du groupe #__groupname__",
+      "content": {
+        "title": "Vous avez été promu modérateur du groupe #__groupname__",
+        "disclaimer": "Félicitations ! Vous êtes désormais modérateur de ",
+        "disclaimer2": "Il est temps d'aller exercer vos nouveaux super pouvoirs",
+        "action": "…et tout ça grâce à ",
+        "button": "Accéder à la discussion"
+      }
+    },
+    "groupdeop": {
+      "subject": "Vous n'êtes plus modérateur du groupe #__groupname__",
+      "content": {
+        "title": "Vous n'êtes plus modérateur du groupe #__groupname__",
+        "disclaimer": "Aïe! La bonne nouvelle, vous allez avoir un peu plus de temps à consacrer à votre propre donut:)",
+        "action": "…et tout ça grâce à ",
         "button": "Retourner sur DONUT"
       }
     }

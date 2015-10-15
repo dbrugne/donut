@@ -7,6 +7,7 @@ var i18next = require('i18next-client');
 var app = require('../models/app');
 var urls = require('../../../../shared/util/url');
 var date = require('../libs/date');
+var GroupUsersView = require('./group-users');
 
 var GroupView = Backbone.View.extend({
   template: require('../templates/group.html'),
@@ -28,25 +29,12 @@ var GroupView = Backbone.View.extend({
   },
   render: function () {
     var group = this.model.toJSON();
-    var op = [];
-    var members = [];
     var isMember = this.model.currentUserIsMember();
     var isOwner = this.model.currentUserIsOwner();
+    var isOp = this.model.currentUserIsOp();
     var isAdmin = this.model.currentUserIsAdmin();
     var bannedObject = this.model.currentUserIsBanned();
 
-    // prepare avatars for members & op
-    _.each(group.members, function (u) {
-      if (u.is_owner || u.is_op) {
-        u.avatar = common.cloudinary.prepare(u.avatar, 60);
-        op.push(u);
-      } else {
-        if (isMember || isAdmin) {
-          u.avatar = common.cloudinary.prepare(u.avatar, 34);
-          members.push(u);
-        }
-      }
-    });
     // prepare avatar for group
     group.avatarUrl = common.cloudinary.prepare(group.avatar, 160);
     // prepare room avatar & uri
@@ -68,15 +56,13 @@ var GroupView = Backbone.View.extend({
     }
     var data = {
       isMember: isMember,
+      isOp: isOp,
       isOwner: isOwner,
       isAdmin: isAdmin,
       isBanned: !!bannedObject,
-      group: group,
-      op: op,
-      members: members,
-      members_more: group.members_more
+      group: group
     };
-    if (!!bannedObject) {
+    if (bannedObject !== undefined) {
       data.banned_at = date.longDate(bannedObject.banned_at);
     }
 
@@ -94,10 +80,17 @@ var GroupView = Backbone.View.extend({
     this.$passwordDiv = this.$('.password-div');
     this.$requestAllowance = this.$('.request-allowance');
 
+    this.groupUsersView = new GroupUsersView({
+      el: this.$('.side .users'),
+      model: this.model,
+      collection: this.model.get('members')
+    });
+
     this.initializeTooltips();
     return this;
   },
   removeView: function () {
+    this.groupUsersView._remove();
     this.remove();
   },
   onFocusChange: function () {

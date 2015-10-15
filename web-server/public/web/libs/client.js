@@ -25,6 +25,8 @@ var client = _.extend({
       'welcome',
       'group:updated',
       'group:ban',
+      'group:op',
+      'group:deop',
       'room:groupban',
       'room:join',
       'room:request',
@@ -284,6 +286,36 @@ var client = _.extend({
       'chat.groupJoinHandler.call',
       data,
       this.applyRequestCallback('group:join', callback)
+    );
+  },
+  groupOp: function (roomId, userId, callback) {
+    var data = {group_id: roomId};
+    if (userId) {
+      data.user_id = userId;
+    } else {
+      return;
+    }
+
+    debug('io:out:group:op', data);
+    pomelo.request(
+      'chat.groupOpHandler.call',
+      data,
+      this.applyRequestCallback('group:op', callback)
+    );
+  },
+  groupDeop: function (roomId, userId, callback) {
+    var data = {group_id: roomId};
+    if (userId) {
+      data.user_id = userId;
+    } else {
+      return;
+    }
+
+    debug('io:out:group:deop', data);
+    pomelo.request(
+      'chat.groupDeopHandler.call',
+      data,
+      this.applyRequestCallback('group:deop', callback)
     );
   },
 

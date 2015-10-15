@@ -26,7 +26,9 @@ var GroupModel = Backbone.Model.extend({
     return (this.get('owner_id') === currentUser.get('user_id'));
   },
   currentUserIsOp: function () {
-    return (this.get('op') && this.get('op').indexOf(currentUser.get('user_id')) !== -1);
+    return !!_.find(this.get('members'), function (item) {
+      return (item.user_id === currentUser.get('user_id') && item.is_op === true);
+    });
   },
   currentUserIsAdmin: function () {
     return currentUser.isAdmin();
@@ -42,6 +44,27 @@ var GroupModel = Backbone.Model.extend({
         return true; // found
       }
     });
+  },
+  onOp: function (data) {
+    _.find(this.get('members'), function (item) {
+      if (item.user_id === data.user_id) {
+        item.is_op = true;
+        return true;
+      }
+    });
+
+    this.trigger('members-redraw');
+  },
+  onDeop: function (data) {
+    // user.get('is_op')
+    _.find(this.get('members'), function (item) {
+      if (item.user_id === data.user_id) {
+        item.is_op = false;
+        return true;
+      }
+    });
+
+    this.trigger('members-redraw');
   }
 });
 

@@ -40,7 +40,7 @@ handler.call = function (data, session, next) {
         return callback('group-not-found');
       }
 
-      if (!group.isOwner(currentUser.id) && session.settings.admin !== true) {
+      if (!group.isOwner(currentUser.id) && !group.isOp(currentUser.id) && session.settings.admin !== true) {
         return callback('not-admin-owner');
       }
 
@@ -134,7 +134,7 @@ handler.refuse = function (data, session, next) {
         return callback('group-not-found');
       }
 
-      if (!group.isOwner(currentUser.id) && session.settings.admin !== true) {
+      if (!group.isOwner(currentUser.id) && !group.isOp(currentUser.id) && session.settings.admin !== true) {
         return callback('not-admin-owner');
       }
 

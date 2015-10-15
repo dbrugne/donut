@@ -29,7 +29,7 @@ handler.call = function (data, session, next) {
     'banned'            // banned members
   ];
 
-  var searchTypesThatNeedPower = ['pending'];
+  var searchTypesThatNeedPower = [];
 
   /**
    * @param group_id (@mandatory)

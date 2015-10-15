@@ -26,6 +26,8 @@ var GroupsCollection = Backbone.Collection.extend({
   initialize: function () {
     this.listenTo(client, 'group:updated', this.onUpdated);
     this.listenTo(client, 'group:ban', this.onGroupBan);
+    this.listenTo(client, 'group:op', this.onOp);
+    this.listenTo(client, 'group:deop', this.onDeop);
   },
   addModel: function (data) {
     data.id = data.group_id;
@@ -73,6 +75,22 @@ var GroupsCollection = Backbone.Collection.extend({
     }
     app.trigger('alert', 'warning', message);
     app.trigger('refreshRoomsList'); // sort & redraw navigation
+  },
+  onOp: function (data) {
+    var model;
+    if (!data || !data.group_id || !(model = this.get(data.group_id))) {
+      return;
+    }
+
+    model.onOp(data); // need to refresh group users list
+  },
+  onDeop: function (data) {
+    var model;
+    if (!data || !data.group_id || !(model = this.get(data.group_id))) {
+      return;
+    }
+
+    model.onDeop(data); // need to refresh group users list
   }
 });
 

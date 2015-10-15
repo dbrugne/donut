@@ -7,7 +7,7 @@ var app = require('../models/app');
 var confirmationView = require('./modal-confirmation');
 var date = require('../libs/date');
 
-var DrawerRoomUsersTableView = Backbone.View.extend({
+var DrawerGroupUsersTableView = Backbone.View.extend({
   template: require('../templates/drawer-room-access-table.html'),
 
   paginationTemplate: require('../templates/pagination.html'),
@@ -165,4 +165,4 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
   }
 });
 
-module.exports = DrawerRoomUsersTableView;
+module.exports = DrawerGroupUsersTableView;
