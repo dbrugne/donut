@@ -132,6 +132,51 @@ exports.prototype.insertTop = function (events) {
   this.$el.prepend(html);
 };
 
+exports.prototype.replaceLastDisconnectBlock = function ($lastDisconnectBlock, $previousEventDiv, history) {
+  if (!history.length) {
+    $lastDisconnectBlock.replaceWith('');
+    return;
+  }
+
+  history = history.reverse();
+
+  var html = '';
+  var previous;
+  _.each(history, _.bind(function (event) {
+    event = new EventModel(event);
+
+    // try to render event (before)
+    var _html = this._renderEvent(event.get('type'), this._data(event));
+    if (!_html) {
+      return;
+    }
+
+    // new message block
+    if ((previous && this.block(event, previous)) || (!previous && event.get('data').user_id === $previousEventDiv.data('user_id'))) {
+      _html = require('../templates/event/block-user.html')({
+        user_id: event.get('data').user_id,
+        username: event.get('data').username,
+        avatar: common.cloudinary.prepare(event.get('data').avatar, 30)
+      }) + _html;
+    }
+
+    // new date block
+    if ((!previous && !date.isSameDay(event.get('time'), $previousEventDiv.data('time'))) ||
+      (previous && !date.isSameDay(event.get('time'), previous.get('time')))) {
+      _html = require('../templates/event/block-date.html')({
+        time: event.get('time'),
+        date: date.block(event.get('time'))
+      }) + _html;
+    }
+
+    previous = event;
+    html += _html;
+  }, this));
+
+  this.empty = false;
+  $lastDisconnectBlock.replaceWith(html);
+};
+
 exports.prototype.block = function (event, previous) {
   var messagesTypes = [ 'room:message', 'user:message' ];
   if (messagesTypes.indexOf(event.get('type')) === -1) {

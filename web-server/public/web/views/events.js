@@ -1,8 +1,10 @@
 var $ = require('jquery');
 var _ = require('underscore');
+var async = require('async');
 var Backbone = require('backbone');
 var app = require('../models/app');
 var date = require('../libs/date');
+var client = require('../libs/client');
 var EventsDateView = require('./events-date');
 var EventsViewedView = require('./events-viewed');
 var EventsHistoryView = require('./events-history');
@@ -267,5 +269,51 @@ module.exports = Backbone.View.extend({
       }
     });
     $(event.currentTarget).find('.dropdown-menu').html(html);
+  },
+  replaceDisconnectBlocks: function () {
+    var $lastEventDisconnect = this.$el.find('.realtime div.block.disconnect:last');
+    var that = this;
+
+    async.whilst(
+      function test () {
+        return $lastEventDisconnect.length;
+      },
+      function action (callback) {
+        var beforeLastDisconnectId = $lastEventDisconnect
+          .prevAll('div.block')
+          .not('.hello, .date')
+          .first()
+          .attr('id');
+
+        var afterLastDisconnectId = $lastEventDisconnect
+          .nextAll('div.block')
+          .not('.hello, .date')
+          .first()
+          .attr('id');
+
+        var $previousEvent = $lastEventDisconnect.prevAll('div.block').not('hello').first();
+
+        if (that.model.get('type') !== 'room') {
+          client.userHistory(that.model.get('id'), beforeLastDisconnectId, afterLastDisconnectId, null, function (event) {
+            if (!event.err) {
+              that.engine.replaceLastDisconnectBlock($lastEventDisconnect, $previousEvent, event.history);
+            }
+            $lastEventDisconnect = that.$el.find('.realtime div.block.disconnect:last');
+            return callback(null);
+          });
+        } else {
+          client.roomHistory(that.model.get('id'), beforeLastDisconnectId, afterLastDisconnectId, null, function (event) {
+            if (!event.err) {
+              that.engine.replaceLastDisconnectBlock($lastEventDisconnect, $previousEvent, event.history);
+            }
+            $lastEventDisconnect = that.$el.find('.realtime div.block.disconnect:last');
+            return callback(null);
+          });
+        }
+      },
+      function back (err) {
+        return err;
+      }
+    );
   }
 });
