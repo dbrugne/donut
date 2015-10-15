@@ -582,6 +582,11 @@
         "<p>Cette conversation est publique donc accessible à tous de même que l'historique. Vous pouvez partager le lien avec vos amis.</p>",
         "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
       ],
+      "private": [
+        "<p>Bienvenue !</p>",
+        "<p>Cette conversation est privée donc uniquement accessible aux utilisateurs autorisés de même que l'historique.</p>",
+        "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
+      ],
       "onetoone": [
         "<p><strong>@__username__</strong> n'est pas en ligne, les nouveaux messages lui seront remis à sa prochaine connexion</p>",
         "<p>Postez un message pour amorcer la conversation.</p>"
