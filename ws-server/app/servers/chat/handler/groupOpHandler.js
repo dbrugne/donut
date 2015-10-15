@@ -1,7 +1,7 @@
 'use strict';
 var errors = require('../../../util/errors');
 var async = require('async');
-//var Notifications = require('../../../components/notifications');
+var Notifications = require('../../../components/notifications');
 
 var Handler = function (app) {
   this.app = app;
@@ -18,6 +18,7 @@ handler.call = function (data, session, next) {
   var opedUser = session.__user__;
   var group = session.__group__;
 
+  var event = {};
   var that = this;
 
   async.waterfall([
@@ -65,7 +66,7 @@ handler.call = function (data, session, next) {
     },
 
     function broadcast (callback) {
-      var event = {
+      event = {
         by_user_id: user.id,
         by_username: user.username,
         by_avatar: user._avatar(),
@@ -79,11 +80,13 @@ handler.call = function (data, session, next) {
       that.app.globalChannelService.pushMessage('connector', 'group:op', event, 'user:' + user.id, {}, function (reponse) {
         return callback(null);
       });
+    },
+
+    function notification (callback) {
+      Notifications(that.app).getType('groupop').create(opedUser.id, group, event, function (err) {
+        return callback(err);
+      });
     }
-    //,
-    //function notification (sentEvent, callback) {
-    //  Notifications(that.app).getType('groupp').create(opedUser, group, sentEvent.id, callback);
-    //}
 
   ], function (err) {
     if (err) {

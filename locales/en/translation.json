@@ -506,7 +506,9 @@
         "groupallowed": "You are now authorized to join <span>#__name__</span>",
         "groupinvite": "<span>@__username__</span> invites you to join <span>#__name__</span>",
         "grouprefuse": "Your request to join <span>#__name__</span></br> has been refused",
-        "groupban": "You were banned from group <span>#__name__</span>"
+        "groupban": "You were banned from group <span>#__name__</span>",
+        "groupop": "You are moderator of group <span>#__name__</span>",
+        "groupdeop": "You are no longer moderator of group <span>#__name__</span>"
       },
       "userban": " was blocked by",
       "userdeban": " is no longer blocked as requested by"
@@ -1118,6 +1120,25 @@
         "title": "You have been banned grom group #__groupname__",
         "disclaimer": "",
         "button": "Back to DONUT"
+      }
+    },
+    "groupop": {
+      "subject": "You were promoted to moderator of group #__groupname__",
+      "content": {
+        "title": "You were promoted to moderator of group #__groupname__",
+        "disclaimer": "Kudos! You are now a moderator in ",
+        "disclaimer2": "It's time to practice your new super powers",
+        "action": "…and all of that thanks to ",
+        "button": "Go to chat"
+      }
+    },
+    "groupdeop": {
+      "subject": "You are no longer a moderator of group #__groupname__",
+      "content": {
+        "title": "You are no longer a moderator of group #__groupname__",
+        "disclaimer": "This is sad news... But the good news is you will have more time to focus on your very own donut:)",
+        "action": "…and all of that thanks to ",
+        "button": "Go to chat"
       }
     }
   },

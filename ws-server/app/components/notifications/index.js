@@ -94,6 +94,8 @@ Facade.prototype.getType = function (type) {
     case 'grouprefuse':
     case 'groupinvite':
     case 'groupban':
+    case 'groupop':
+    case 'groupdeop':
       typeConstructor = groupRequest;
       break;
 
@@ -169,7 +171,7 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
             notifications.push(n);
             return fn(null);
           });
-      } else if (_.indexOf(['groupjoinrequest', 'grouprefuse', 'groupallowed', 'groupinvite', 'groupban', 'groupdeban'], n.type) !== -1) {
+      } else if (_.indexOf(['groupjoinrequest', 'grouprefuse', 'groupallowed', 'groupinvite', 'groupban', 'groupdeban', 'groupop', 'groupdeop'], n.type) !== -1) {
         NotificationModel.findOne({_id: n._id})
           .populate({
             path: 'data.by_user',

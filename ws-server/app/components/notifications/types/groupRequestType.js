@@ -156,6 +156,20 @@ Notification.prototype.sendEmail = function (model, done) {
             groupname: group.name
           };
           break;
+        case 'groupop':
+          method = emailer.groupOp;
+          data = {
+            username: model.data.by_user.username,
+            groupname: group.name
+          };
+          break;
+        case 'groupdeop':
+          method = emailer.groupDeop;
+          data = {
+            username: model.data.by_user.username,
+            groupname: group.name
+          };
+          break;
         default:
           return callback('groupResquestType.sendEmail unknown notification type: ' + model.type);
       }
