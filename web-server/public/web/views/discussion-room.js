@@ -17,6 +17,8 @@ var RoomView = Backbone.View.extend({
 
   hasBeenFocused: false,
 
+  reconnect: false,
+
   template: require('../templates/discussion-room.html'),
 
   events: {
@@ -133,14 +135,23 @@ var RoomView = Backbone.View.extend({
       if (!this.hasBeenFocused) {
         this.onFirstFocus();
       }
+
+      if (this.reconnect) {
+        this.onFirstFocusAfterReconnect();
+      }
+      this.reconnect = false;
       this.hasBeenFocused = true;
     } else {
       this.$el.hide();
     }
   },
   onFirstFocus: function () {
-    // @todo : on reconnect (only), remove all events in view before requesting history
     this.eventsView.requestHistory('bottom');
+    this.eventsView.scrollDown();
+    this.model.fetchUsers();
+  },
+  onFirstFocusAfterReconnect: function () {
+    this.eventsView.replaceDisconnectBlocks();
     this.eventsView.scrollDown();
     this.model.fetchUsers();
   },

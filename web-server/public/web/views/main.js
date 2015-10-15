@@ -196,11 +196,10 @@ var MainView = Backbone.View.extend({
 
     // force data re-fetching on next focus
     _.each(this.views, function (view) {
-      view.hasBeenFocused = false;
-      // @todo : to cover completely this case we should:
-      //   - on short disconnection: request history for bottom of the
-      // discussion from last known event - on long disconnection: cleanup
-      // history and request normal history
+      view.reconnect = true;
+      if (view.eventsView) {
+        view.eventsView.$realtime.append('<div class="block disconnect"></div>');
+      }
     });
   },
 

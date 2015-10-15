@@ -41,8 +41,6 @@ Module.prototype.start = function (callback) {
 };
 
 Module.prototype.retrieveTask = function (route) {
-  // @todo : make it dynamically
-
   var tasks;
   var method;
   if (route.indexOf('adminNotifyTask') !== -1) {
