@@ -74,7 +74,7 @@ Filter.prototype.before = function (data, session, next) {
 
       RoomModel.findOne({ _id: data.room_id })
         .populate('owner', 'username avatar color facebook')
-        .populate('group', 'name members')
+        .populate('group', 'name members bans')
         .exec(callback);
     },
 
