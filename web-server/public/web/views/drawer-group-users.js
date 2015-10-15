@@ -20,7 +20,7 @@ var DrawerRoomUsersView = Backbone.View.extend({
 
   currentType: 'members',
 
-  types: ['members', 'op', 'pending', 'ban'],
+  types: ['members', 'op', 'ban'],
 
   events: {
     'change select': 'onChangeType',

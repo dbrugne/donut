@@ -26,7 +26,9 @@ var GroupModel = Backbone.Model.extend({
     return (this.get('owner_id') === currentUser.get('user_id'));
   },
   currentUserIsOp: function () {
-    return (this.get('op') && this.get('op').indexOf(currentUser.get('user_id')) !== -1);
+    return !!_.find(this.get('members'), function (item) {
+      return (item.user_id === currentUser.get('user_id') && item.is_op === true);
+    });
   },
   currentUserIsAdmin: function () {
     return currentUser.isAdmin();

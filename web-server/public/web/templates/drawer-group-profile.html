@@ -27,7 +27,7 @@
         <% if (group.created) { %><p class="created left"><i class="icon icon-fw icon-clock-o dc-text left"></i> <%= t('profile.group.createdat') %> <span class="ml5" data-time="<%= group.created %>"></span></p><% }; %>
         <p class="permalink left"><i class="icon icon-fw icon-link dc-text"></i> <a class="colored dc-text" href="<%= group.url %>" target="_blank"><%= t('profile.group.permalink') %></a></p>
         <% if (group.isOwner || group.isOp || group.isAdmin) { %><p class="left"><i class="icon icon-fw icon-users dc-text left"></i> <a class="colored open-group-users dc-text" data-group-id="<%= group.group_id %>"><%= t('profile.group.editusers') %></a></p><% }; %>
-        <% if (group.isOwner || group.isAdmin ) { %><p class="left dc-text"><i class="icon icon-fw icon-public"></i> <a role="menuitem" tabindex="-1" class="colored open-group-access dc-text" data-group-id="<%= group.group_id %>"><%= t('chat.access.link') %></a></p><% }; %>
+        <% if (group.isOwner || group.isOp || group.isAdmin ) { %><p class="left dc-text"><i class="icon icon-fw icon-public"></i> <a role="menuitem" tabindex="-1" class="colored open-group-access dc-text" data-group-id="<%= group.group_id %>"><%= t('chat.access.link') %></a></p><% }; %>
     </div>
 
     <div class="block flex-parent jc-center center">

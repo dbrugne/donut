@@ -41,7 +41,7 @@ handler.call = function (data, session, next) {
         return callback('user-not-found');
       }
 
-      if (!group.isOwner(currentUser.id) && session.settings.admin !== true) {
+      if (!group.isOwner(currentUser.id) && !group.isOp(currentUser.id) && session.settings.admin !== true) {
         return callback('not-admin-owner');
       }
 
