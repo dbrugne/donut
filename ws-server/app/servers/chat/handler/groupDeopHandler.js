@@ -2,6 +2,7 @@
 var errors = require('../../../util/errors');
 var async = require('async');
 var Notifications = require('../../../components/notifications');
+var RoomModel = require('../../../../../shared/models/room');
 
 var Handler = function (app) {
   this.app = app;
@@ -36,7 +37,7 @@ handler.call = function (data, session, next) {
         return callback('group-not-found');
       }
 
-      if (!group.isOwner(user.id) && session.settings.admin !== true) {
+      if (!group.isOwnerOrOp(user.id) && session.settings.admin !== true) {
         return callback('not-admin-owner');
       }
 
@@ -57,6 +58,26 @@ handler.call = function (data, session, next) {
 
     function persist (callback) {
       group.update({$pull: { op: opedUser._id }}, function (err) {
+        return callback(err);
+      });
+    },
+
+    function findDefaultRoom (callback) {
+      if (!group.default) {
+        return callback('default-room-not-found');
+      }
+
+      RoomModel.findOne({ _id: group.default }).exec(function(err, room) {
+        if (err) {
+          return callback('default-room-not-found');
+        }
+
+        return callback(null, room);
+      });
+    },
+
+    function removeUserFromDefault (room, callback) {
+      room.update({$pull: {op: opedUser._id}}, function (err) {
         return callback(err);
       });
     },

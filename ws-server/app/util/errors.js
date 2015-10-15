@@ -46,6 +46,7 @@ var errors = {
 
   // NOT FOUND ERROR (404)
   'group-not-found': 404,         // Group not found
+  'default-room-not-found': 404,  // Default room of group not found
   'current-user-not-found': 404,  // Current user not found
   'room-not-found': 404,          // Room not found
   'user-not-found': 404,          // User not found
