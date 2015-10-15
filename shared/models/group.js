@@ -210,7 +210,7 @@ groupSchema.methods.getIdsByType = function (type) {
   } else if (type === 'regular') {
     _.each(this.members, function (u) {
       if (!that.isOwnerOrOp(u.toString())) {
-        ids.push(u.toString());
+        ids.push(u.id);
       }
     });
   } else if (type === 'banned') {

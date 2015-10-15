@@ -82,6 +82,13 @@
                         </a>
                     </li>
                     <% }; %>
+                    <% if (isOp || isOwner || isAdmin ) { %>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" class="open-group-users" data-group-id="<%= group.group_id %>">
+                            <i class="icon icon-users"></i> <%= t('chat.users.link') %>
+                        </a>
+                    </li>
+                    <% }; %>
                 </ul>
             </div>
             

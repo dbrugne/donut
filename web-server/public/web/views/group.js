@@ -32,6 +32,7 @@ var GroupView = Backbone.View.extend({
     var members = [];
     var isMember = this.model.currentUserIsMember();
     var isOwner = this.model.currentUserIsOwner();
+    var isOp = this.model.currentUserIsOp();
     var isAdmin = this.model.currentUserIsAdmin();
     var bannedObject = this.model.currentUserIsBanned();
 
@@ -68,6 +69,7 @@ var GroupView = Backbone.View.extend({
     }
     var data = {
       isMember: isMember,
+      isOp: isOp,
       isOwner: isOwner,
       isAdmin: isAdmin,
       isBanned: !!bannedObject,

@@ -551,6 +551,8 @@
         "users": "Utilisateurs",
         "op": "Modérateurs",
         "allowed": "Utilisateurs autorisés",
+        "regular": "Utilisateurs autorisés",
+        "pending": "Utilisateurs en attente",
         "ban": "Bannis",
         "devoice": "Muets",
         "members": "Membres"
