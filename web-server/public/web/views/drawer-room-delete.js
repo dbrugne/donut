@@ -44,7 +44,7 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     return this;
   },
   onResponse: function (room) {
-    if (room.owner_id !== currentUser.get('user_id') && !currentUser.isAdmin()) {
+    if (room.group_owner !== currentUser.get('user_id') && room.owner_id !== currentUser.get('user_id') && !currentUser.isAdmin()) {
       return;
     }
 
