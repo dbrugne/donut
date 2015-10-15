@@ -43,6 +43,10 @@ handler.call = function (data, session, next) {
         return callback('allow-pending');
       }
 
+      if (group.isBanned(user.id)) {
+        return callback('not-allowed');
+      }
+
       return callback(null);
     },
 
