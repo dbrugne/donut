@@ -3,11 +3,10 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
-var currentUser = require('../models/current-user');
 var confirmationView = require('./modal-confirmation');
 
-var DrawerRoomUsersTableView = Backbone.View.extend({
-  template: require('../templates/drawer-room-users-table.html'),
+var DrawerGroupUsersTableView = Backbone.View.extend({
+  template: require('../templates/drawer-group-users-table.html'),
 
   op: false,
 
@@ -16,15 +15,13 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
   events: {
     'click .op': 'opUser',
     'click .deop': 'deopUser',
-    'click .kick': 'kickUser',
     'click .ban': 'banUser',
-    'click .deban': 'debanUser',
-    'click .voice': 'voiceUser',
-    'click .devoice': 'devoiceUser'
+    'click .deban': 'debanUser'
   },
 
   initialize: function (options) {
     this.model = options.model;
+    //this.listenTo(this.model, 'members-redraw', this.render);
 
     if (this.model.currentUserIsOwner() || this.model.currentUserIsOp() || this.model.currentUserIsAdmin()) {
       this.op = true;
@@ -46,7 +43,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
   },
   opUser: function (event) {
     event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
+    if (!this.op) {
       return false;
     }
 
@@ -57,7 +54,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({}, function () {
-      client.roomOp(that.model.get('id'), userId, function (err) {
+      client.groupOp(that.model.get('id'), userId, function (err) {
         if (err) {
           return;
         }
@@ -66,7 +63,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
   },
   deopUser: function (event) {
     event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
+    if (!this.op) {
       return false;
     }
 
@@ -77,94 +74,52 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({}, function () {
-      client.roomDeop(that.model.get('id'), userId, function (err) {
+      client.groupDeop(that.model.get('id'), userId, function (err) {
         if (err) {
           return;
         }
       });
     });
   },
-  kickUser: function (event) {
-    event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
-      return false;
-    }
-
-    var userId = $(event.currentTarget).data('userId');
-    if (!userId) {
-      return;
-    }
-
-    var that = this;
-    confirmationView.open({ input: true }, function (reason) {
-      client.roomKick(that.model.get('id'), userId, reason);
-    });
-  },
   banUser: function (event) {
     event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
+    if (!this.op) {
       return false;
     }
 
     var userId = $(event.currentTarget).data('userId');
-    if (!userId) {
+    var userName = $(event.currentTarget).data('username');
+    if (!userId || !userName) {
       return;
     }
 
-    var that = this;
-    confirmationView.open({ input: true }, function (reason) {
-      client.roomBan(that.model.get('id'), userId, reason);
-    });
+    confirmationView.open({
+      message: 'ban-group-user',
+      username: userName,
+      room_name: this.group_name
+    }, _.bind(function (reason) {
+      client.groupBan(this.groupId, userId, reason);
+    }, this));
   },
   debanUser: function (event) {
     event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
+    if (!this.op) {
       return false;
     }
 
     var userId = $(event.currentTarget).data('userId');
-    if (!userId) {
+    var userName = $(event.currentTarget).data('username');
+    if (!userId || !userName) {
       return;
     }
 
-    var that = this;
-    confirmationView.open({}, function () {
-      client.roomDeban(that.model.get('id'), userId);
-    });
+    confirmationView.open({
+      message: 'deban-group-user',
+      username: userName
+    }, _.bind(function () {
+      client.groupDeban(this.groupId, userId);
+    }, this));
   },
-  voiceUser: function (event) {
-    event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
-      return false;
-    }
-
-    var userId = $(event.currentTarget).data('userId');
-    if (!userId) {
-      return;
-    }
-
-    var that = this;
-    confirmationView.open({}, function () {
-      client.roomVoice(that.model.get('id'), userId);
-    });
-  },
-  devoiceUser: function (event) {
-    event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
-      return false;
-    }
-
-    var userId = $(event.currentTarget).data('userId');
-    if (!userId) {
-      return;
-    }
-
-    var that = this;
-    confirmationView.open({}, function () {
-      client.roomDevoice(that.model.get('id'), userId);
-    });
-  },
-
   initializeTooltips: function () {
     this.$el.find('[data-toggle="tooltip"]').tooltip({
       container: 'body'
@@ -172,4 +127,4 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
   }
 });
 
-module.exports = DrawerRoomUsersTableView;
+module.exports = DrawerGroupUsersTableView;

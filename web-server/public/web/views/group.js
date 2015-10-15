@@ -23,6 +23,7 @@ var GroupView = Backbone.View.extend({
   },
 
   initialize: function (options) {
+    this.listenTo(this.model, 'members-redraw', this.render);
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.render();
   },

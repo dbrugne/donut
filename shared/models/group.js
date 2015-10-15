@@ -61,6 +61,13 @@ groupSchema.methods.validPassword = function (password) {
   return password === this.password;
 };
 
+groupSchema.methods.isIn = function (userId) {
+  var subDocument = _.find(this.members, function (users) {
+    return (users.id === userId);
+  });
+  return (typeof subDocument !== 'undefined');
+};
+
 groupSchema.methods.isInBanned = function (userId) {
   if (!this.bans || !this.bans.length) {
     return;

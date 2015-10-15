@@ -42,6 +42,23 @@ var GroupModel = Backbone.Model.extend({
         return true; // found
       }
     });
+  },
+  onOp: function (data) {
+    var user = _.find(this.members, function (item) {
+      return item.user_id === data.user_id;
+    });
+    if (user) {
+      user.set({is_op: true});
+    }
+  },
+  onDeop: function (data) {
+    // user.get('is_op')
+    var user = _.find(this.members, function (item) {
+      return item.user_id === data.user_id;
+    });
+    if (user) {
+      user.set({is_op: false});
+    }
   }
 });
 

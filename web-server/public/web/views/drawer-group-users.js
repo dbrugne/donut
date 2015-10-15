@@ -1,5 +1,4 @@
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
 var client = require('../libs/client');
 var RoomUsersTableConfirmation = require('./drawer-group-users-table');
@@ -21,7 +20,7 @@ var DrawerRoomUsersView = Backbone.View.extend({
 
   currentType: 'members',
 
-  types: ['members', 'op', 'regular', 'pending', 'ban'],
+  types: ['members', 'op', 'pending', 'ban'],
 
   events: {
     'change select': 'onChangeType',
@@ -35,11 +34,8 @@ var DrawerRoomUsersView = Backbone.View.extend({
 
     this.listenTo(client, 'group:ban', this.render);
     this.listenTo(client, 'group:deban', this.render);
-    //this.listenTo(client, 'group:voice', this.render);
-    //this.listenTo(client, 'group:devoice', this.render);
-    //this.listenTo(client, 'group:kick', this.render);
-    //this.listenTo(client, 'group:op', this.render);
-    //this.listenTo(client, 'group:deop', this.render);
+    this.listenTo(client, 'group:op', this.render);
+    this.listenTo(client, 'group:deop', this.render);
 
     this.$el.html(this.template({group: this.model.toJSON(), type: this.types}));
     this.numberUsers = this.$('.number');
