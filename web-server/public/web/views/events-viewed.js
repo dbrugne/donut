@@ -17,7 +17,11 @@ module.exports = Backbone.View.extend({
   markVisibleAsViewed: function () {
     this.computeVisibleElements(_.bind(function (elements) {
       if (elements.length) {
-        client.roomViewed(this.model.get('room_id'), elements);
+        if (this.model.get('type') === 'room') {
+          client.roomViewed(this.model.get('room_id'), elements);
+        } else {
+          client.userViewed(this.model.get('user_id'), elements);
+        }
       }
     }, this));
   },
