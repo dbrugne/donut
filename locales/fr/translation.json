@@ -774,6 +774,9 @@
               }
             }
           }
+        },
+        "profile": {
+          "delete": "Supprimer ce donut"
         }
       },
       "user-form": {
