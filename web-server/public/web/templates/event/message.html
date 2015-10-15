@@ -19,17 +19,15 @@
                        href="<%=f.href%>"
                        style="background-image: url(<%= f.thumbnail %>);"></a>
                 <% } else { %>
-                    <div class="flex-parent file-ctn">
+                    <div class="file-ctn relative">
                         <a class="file"
                            target="_blank"
                            href="<%=f.url%>"
                            title="<%= f.filename %>">
                             <i class="icon icon-file"></i>
                         </a>
-                        <div class="ml10 mt30 flex-parent column">
-                            <span class="filename"><%=f.filename%></span>
-                            <h6><span class="filesize"><%=f.size%></span></h6>
-                        </div>
+                        <span class="filename"><%=f.filename%></span>
+                        <h6><span class="filesize"><%=f.size%></span></h6>
                     </div>
                 <% } %>
             <% }); %>
