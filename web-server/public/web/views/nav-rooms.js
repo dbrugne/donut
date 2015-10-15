@@ -45,9 +45,6 @@ module.exports = Backbone.View.extend({
     this.initializeCollapse();
     return this;
   },
-  redraw: function () {
-    return this.render();
-  },
   initializeCollapse: function () {
     this.$('[data-toggle="collapse"]').collapse();
   },

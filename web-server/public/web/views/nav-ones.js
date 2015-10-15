@@ -39,9 +39,6 @@ module.exports = Backbone.View.extend({
     this.$list.html(html);
     return this;
   },
-  redraw: function () {
-    return this.render();
-  },
   highlightFocused: function () {
     this.$list.find('.active').each(function (item) {
       $(this).removeClass('active');
