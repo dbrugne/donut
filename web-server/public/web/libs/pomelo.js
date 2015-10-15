@@ -40,9 +40,7 @@ var pomelo = _.extend({
 
     // in console: client.connect('chat.local', 3050)
     if (!host) {
-      host = 'ws.' + window.location.hostname; // host should be a subdomain of
-                                               // current hostname to be able
-                                               // to receive cookies
+      host = window.location.hostname;
     }
 
     var server = {

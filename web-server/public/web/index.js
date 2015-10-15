@@ -1,6 +1,6 @@
 // jQuery
 var $ = require('jquery');
-global.jQuery = $; // expose jQuery globally, needed for some beside plugins // @todo dbr still userfull without sortable ?
+global.jQuery = $; // expose jQuery globally, needed for some beside plugins
 require('../javascripts/jquery.insertatcaret');
 require('../javascripts/jquery.maxlength');
 require('../javascripts/jquery.smilify');

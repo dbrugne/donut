@@ -12,6 +12,8 @@ var OneToOnePanelView = Backbone.View.extend({
 
   hasBeenFocused: false,
 
+  reconnect: false,
+
   template: require('../templates/discussion-onetoone.html'),
 
   events: {
@@ -85,7 +87,12 @@ var OneToOnePanelView = Backbone.View.extend({
       if (!this.hasBeenFocused) {
         this.onFirstFocus();
       }
+
+      if (this.reconnect) {
+        this.onFirstFocusAfterReconnect();
+      }
       this.hasBeenFocused = true;
+      this.reconnect = false;
 
       // refocus an offline one after few times
       date.from('fromnow', this.$('.ago span'));
@@ -94,11 +101,13 @@ var OneToOnePanelView = Backbone.View.extend({
     }
   },
   onFirstFocus: function () {
-    // @todo : on reconnect (only), remove all events in view before requesting history
     this.eventsView.requestHistory('bottom');
     this.eventsView.scrollDown();
   },
-
+  onFirstFocusAfterReconnect: function () {
+    this.eventsView.replaceDisconnectBlocks();
+    this.eventsView.scrollDown();
+  },
   /**
    * Update user details methods
    */
