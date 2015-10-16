@@ -29,7 +29,6 @@ module.exports = function (app, rooms, eventName, eventData, callback) {
       data.name = room.name;
       data.room_id = room.id;
       data.room_name = room.name;
-      data.name = room.name;
       data.time = Date.now();
 
       // emit event to room users
