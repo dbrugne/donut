@@ -3,8 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var client = require('../libs/client');
 var app = require('../models/app');
-var RoomsView = require('./home-rooms');
-var UsersView = require('./home-users');
+var CardsView = require('./cards');
 var SearchView = require('./home-search');
 
 var HomeView = Backbone.View.extend({
@@ -14,15 +13,13 @@ var HomeView = Backbone.View.extend({
 
   initialize: function (options) {
     this.render();
-    this.roomsView = new RoomsView({
-      el: this.$('.rooms')
-    });
-    this.usersView = new UsersView({
-      el: this.$('.users')
-    });
     this.searchView = new SearchView({
       el: this.$('.search')
     });
+    this.cardsView = new CardsView({
+      el: this.$('.cards')
+    });
+
     this.listenTo(this.searchView, 'searchResults', this.onSearchResults);
     this.listenTo(this.searchView, 'emptySearch', this.request);
   },
@@ -41,17 +38,13 @@ var HomeView = Backbone.View.extend({
     app.trigger('changeColor');
   },
   onHome: function (data) {
-    // render both views even if no data to empty results list if no results
-    // or empty result
-    this.roomsView.render(data);
-    this.usersView.render(data);
+    this.cardsView.render(data);
     this.empty = false;
   },
   onSearchResults: function (data) {
     data.search = true;
     this.onHome(data);
   }
-
 });
 
 module.exports = HomeView;

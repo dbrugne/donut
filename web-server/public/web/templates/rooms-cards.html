@@ -1,12 +1,12 @@
 <% if (replace) { %>
-    <div class="list <% if (typeof(search) !== 'undefined' && search == true) { %>search<% } %>">
+    <div class="list <% if (typeof(search) !== 'undefined' && search === true) { %>search<% } %>">
         <% if (title) { %>
             <div class="title flex-child alone">
                 <% if (search == true) { %><%= t('chat.search.roomstitle') %><% } else { %><%= t('chat.home.roomstitle') %><% } %>
             </div>
         <% } %>
         <% if (rooms.length < 1) { %>
-            <div class="nothing mt20 mb20"><%= t('chat.search.noroom') %></div>
+            <div class="nothing mt20 mb20"><%= t('chat.search.noresults') %></div>
         <% } %>
 <% } %>
 

@@ -1,25 +1,38 @@
-.rooms.cards { margin-left: -1px; // for welcome popin
-  .list { .display-flex; .flex-flow(row wrap); .clearfix; overflow-y: auto; overflow-x: hidden; height: 100%; .scrollbar-white; }
-  .room { float:left; position: relative; width: 217px; height: 286px; margin-top: 10px; text-align: center;
-    .avatar { display: inline-block; margin: auto; width: 100px; height: 100px; background-position: center center; .border-shadow; background-size: 100%; }
-    .name { margin-top: 10px; font-size: 20px; }
-    .owner { font-size: 13px; }
-    .join { position: absolute; left: 10px; right: 10px; bottom: 30px; padding: 13px 20px; .border-radius(100px);
-      a { font-size: 1.2em;  white-space: nowrap; }
-    }
-    .cover {
-      .name, .owner { display:block; }
-    }
-    .back { display: none; width: 100%; height: 100%; .border-radius(25px);
-      .ctn { height: 100%; padding-bottom: 70px; .display-flex; .flex-flow(column nowrap);
-        .name { margin-top:0; padding-top:40px; }
-        .owner a:hover { opacity: 0.5; text-decoration: none; }
-        .description { max-height: 75px; overflow: hidden; text-align: justify; font-size: 13px; padding-left: 20px; padding-right: 20px; .flex(0 1 auto); margin:auto; }
+.cards { .display-flex; .flex-flow(row wrap); .scrollbar-grey-thin; overflow: auto; height:100%;
+  .card { .flex(1); margin: 20px; .border-radius(5px); min-width: 350px; min-height: 200px; box-shadow: 1px 1px 2px rgba(0,0,0,.65);
+    &.user {
+      //.design-1 {
+      //  .avatar-ctn { height: 90px; .border-radiuses(15px, 0, 0, 15px); border-bottom-width: 4px; border-bottom-style: solid;
+      //    .avatar { margin: 30px auto 0; width: 100px; border: 3px solid #fff; height: 100px; display: block; background-size: 100%; background-position: center center; }
+      //  }
+      //  .username, .location { width: 100%; display: block; text-align: center; padding: 35px 10px 5px; border-style: solid; border-width: 0 1px; text-overflow: ellipsis; overflow: hidden; }
+      //  .location { padding: 0 10px 5px; color: @cl-neutral; white-space: nowrap; height:22px; }
+      //  .action { .border-radiuses(0, 15px, 15px, 0); border-top-width: 2px; border-top-style: solid; padding: 10px;
+      //    a { margin: auto; text-transform: uppercase; font-weight: bold; }
+      //  }
+      //}
+      .design-2 {
+        .avatar { width:100px; height: 100px; display: block; background-size: 100%; background-position: center center; }
       }
     }
-  }
-  .room:hover {
-    .cover { display: none; }
-    .back { display: block; }
+    &.room {
+      .img-ctn { .border-radiuses(0, 0, 5px, 5px); justify-content: space-around; align-items: center; min-width: 60px; border-right-style: solid; border-right-width: 2px;
+        .avatar       { width: 50px; height: 50px; background-size: 50px; background-position: center center; border-width: 3px; border-style: solid; display:block; margin: auto;}
+        .avatar-group { width: 58px; height: 58px; background-size: contain; background-position: center center; display:block; margin: auto;
+          &::after { content: ""; background-image: url('@{img-path}/portrait.png'); width: 60px; height: 60px; background-size: 60px; z-index: 3; position: absolute; background-repeat: no-repeat; top: 0; left: 0; }
+        }
+        .room-profile { .border-radiuses(0, 0, 5px, 0); width: 100%; text-align: center; border-width: 3px; border-style: solid; margin: 0; padding: 5px; }
+      }
+      .content-ctn { padding: 20px 20px 10px; .flex(4);
+        .name { word-break: normal; overflow: hidden; text-overflow: ellipsis; font-size: 2rem;
+          .groupname { font-size:2.5rem; }
+          .groupname + .roomname { padding-left: 10px; }
+        }
+        .owner { font-size: 1.4rem; padding: 10px 0; }
+      }
+    }
+    &.group {
+
+    }
   }
 }

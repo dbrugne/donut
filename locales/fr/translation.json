@@ -329,8 +329,7 @@
     },
     "search": {
       "placeholder": "Recherchez un donut ou un utilisateur ici",
-      "noroom": "Aucun résultat de recherche",
-      "nouser": "Aucun résultat de recherche",
+      "noresults": "Aucun résultat de recherche",
       "roomstitle": "Voici les donuts correspondant à votre recherche, vous pouvez aussi en <a class='open-create-room'>créer un nouveau</a> :",
       "userstitle": "Utilisateurs correspondants"
     },
