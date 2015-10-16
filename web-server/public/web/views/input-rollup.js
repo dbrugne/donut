@@ -195,7 +195,7 @@ var InputRollupView = Backbone.View.extend({
 
     if (prefix === '#') {
       if (input.indexOf('/') === -1) {
-        client.search(search, true, false, false, 15, 0, false, function (data) {
+        client.search(search, true, false, false, 15, 0, false, false, function (data) {
           _.each(data.rooms.list, function (d) {
             d.avatarUrl = common.cloudinary.prepare(d.avatar);
           });
@@ -206,7 +206,7 @@ var InputRollupView = Backbone.View.extend({
         });
       } else {
         var roomSearch = search.split('/')[1] ? search.split('/')[1] : '';
-        client.search(roomSearch, true, false, search.split('/')[0], 15, 0, false, function (data) {
+        client.search(roomSearch, true, false, search.split('/')[0], 15, 0, false, true, function (data) {
           console.log(data);
           _.each(data.rooms.list, function (d) {
             d.avatarUrl = common.cloudinary.prepare(d.avatar);
@@ -220,7 +220,7 @@ var InputRollupView = Backbone.View.extend({
     }
 
     if (prefix === '@') {
-      client.search(search, false, true, false, 15, 0, false, function (data) {
+      client.search(search, false, true, false, 15, 0, false, false, function (data) {
         _.each(data.users.list, function (d) {
           d.avatarUrl = common.cloudinary.prepare(d.avatar);
         });

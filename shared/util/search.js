@@ -28,9 +28,10 @@ var common = require('@dbrugne/donut-common/server');
  * @param limit
  * @param skip
  * @param lightSearch
+ * @param privateGroupRooms
  * @param callback
  */
-module.exports = function (search, searchInUsers, searchInRooms, searchWithGroups, limit, skip, lightSearch, callback) {
+module.exports = function (search, searchInUsers, searchInRooms, searchWithGroups, limit, skip, lightSearch, privateGroupRooms, callback) {
   // remove diacritic, @ and #
   search = search.replace(/([@#])/g, '');
   search = diacritics(search);
@@ -118,7 +119,17 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
           return callback(err);
         }
 
-        rooms = dbrooms;
+        if (!privateGroupRooms) {
+          var tmpRooms = [];
+          _.each(dbrooms, function (r) {
+            if (!r.group || (r.group && r.mode === 'public')) {
+              tmpRooms.push(r);
+            }
+          });
+          rooms = tmpRooms;
+        } else {
+          rooms = dbrooms;
+        }
 
         return callback(null);
       });
