@@ -31,7 +31,7 @@ handler.call = function (data, session, next) {
         return callback('room-not-found');
       }
 
-      if (!room.isOwner(user.id) && session.settings.admin !== true) {
+      if (!room.group && !room.isOwner(user.id) && session.settings.admin !== true) {
         return callback('not-admin-owner');
       }
 
@@ -42,7 +42,7 @@ handler.call = function (data, session, next) {
       return callback(null);
     },
 
-    function checkDefaultGroupRoom (callback) {
+    function checkDefaultAndOwnerGroupRoom (callback) {
       if (!room.group) {
         return callback(null);
       }
@@ -57,6 +57,9 @@ handler.call = function (data, session, next) {
           return callback('not-allowed');
         }
 
+        if (!model.isOwner(user.id) && !room.isOwner(user.id) && session.settings.admin !== true) {
+          return callback('not-admin-owner-groupowner');
+        }
         return callback(null);
       });
     },
