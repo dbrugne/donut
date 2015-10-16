@@ -117,7 +117,7 @@ var client = _.extend({
       this.applyRequestCallback('home', callback)
     );
   },
-  search: function (search, rooms, users, withGroup, limit, skip, light, callback) {
+  search: function (search, rooms, users, withGroup, limit, skip, light, privateGroupRooms, callback) {
     var data = {
       search: search, // string to search for
       limit: limit || 100,
@@ -125,7 +125,8 @@ var client = _.extend({
       light: (light), // if the search should return a light version of results or not
       rooms: (rooms), // if we should search for rooms
       users: (users), // if we should search for users
-      with_group: (withGroup) // if we should search room in a group
+      with_group: (withGroup), // if we should search room in a specific group (string)
+      private_group_rooms: (privateGroupRooms) // if we should search in private room in group
     };
     debug('io:out:search', data);
     pomelo.request(

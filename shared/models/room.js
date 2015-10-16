@@ -90,7 +90,7 @@ roomSchema.statics.findByIdentifier = function (identifier, callback) {
     }
     that.populate(room, [
       {path: 'owner', select: 'username avatar color facebook'},
-      {path: 'group', select: 'name members'}
+      {path: 'group', select: 'name members owner'}
     ], callback);
   };
 

@@ -121,7 +121,7 @@ var RoomAccessView = Backbone.View.extend({
     this.$dropdownMenu.html(require('../templates/spinner.html'));
 
     var that = this;
-    client.search(this.$search.val(), false, true, false, 15, 0, false, function (data) {
+    client.search(this.$search.val(), false, true, false, 15, 0, false, false, function (data) {
       _.each(data.users.list, function (element, index, list) {
         list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 20);
       });
