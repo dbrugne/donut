@@ -31,7 +31,7 @@
         <% if (room.isOwner || room.isAdmin) { %><p class="edit left"><i class="icon icon-fw icon-pencil dc-text"></i> <a class="colored open-room-edit dc-text" data-room-id="<%= room.room_id %>"> <%= t('profile.common.editlink') %></a><p><% }; %>
         <% if (room.isOwner || room.isOp || room.isAdmin) { %><p class="left"><i class="icon icon-fw icon-users dc-text left"></i> <a class="colored open-room-users dc-text" data-room-id="<%= room.room_id %>"><%= t('profile.room.editusers') %></a></p><% }; %>
         <% if (room.isOwner || room.isAdmin ) { %><p class="left dc-text"><i class="icon icon-fw icon-public"></i> <a role="menuitem" tabindex="-1" class="colored open-room-access dc-text" data-room-id="<%= room.room_id %>"><%= t('chat.access.link') %></a></p><% }; %>
-        <% if (room.isGroupOwner || room.isAdmin) { %><p class="left dc-text"><i class="icon icon-fw icon-trash"></i> <a role="menuitem" tabindex="-1" class="colored open-room-delete dc-text" data-room-id="<%= room.room_id %>"><%= t('chat.form.room-form.profile.delete') %></a></p><% }; %>
+        <% if (room.isGroupOwner || room.isOwner || room.isAdmin) { %><p class="left dc-text"><i class="icon icon-fw icon-trash"></i> <a role="menuitem" tabindex="-1" class="colored open-room-delete dc-text" data-room-id="<%= room.room_id %>"><%= t('chat.form.room-form.profile.delete') %></a></p><% }; %>
     </div>
 
     <div class="block flex-parent jc-center center">
