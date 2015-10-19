@@ -151,11 +151,8 @@ var RoomsCollection = Backbone.Collection.extend({
     }
   },
   onRefreshList: function () {
-    var old = this;
     this.sort();
-    if (old !== this) {
-      app.trigger('redraw-block');
-    }
+    app.trigger('redraw-block');
   },
   onIn: function (data) {
     var model;
