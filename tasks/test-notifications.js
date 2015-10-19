@@ -1,6 +1,7 @@
 var async = require('async');
 var UserModel = require('../shared/models/user');
 var RoomModel = require('../shared/models/room');
+var GroupModel = require('../shared/models/group');
 var HistoryOneModel = require('../shared/models/historyone');
 var HistoryRoomModel = require('../shared/models/historyroom');
 var PomeloBridge = require('../ws-server/app/components/bridge').Bridge;
@@ -36,7 +37,27 @@ module.exports = function (grunt) {
             config: 'notifRoomName',
             type: 'input',
             message: 'Choose a "room" name',
+            default: 'Sport'
+          } ]
+        }
+      },
+      notifGroupName: {
+        options: {
+          questions: [ {
+            config: 'notifGroupName',
+            type: 'input',
+            message: 'Choose a "group" name',
             default: 'donut'
+          } ]
+        }
+      },
+      notifRoomGroupName: {
+        options: {
+          questions: [ {
+            config: 'notifRoomGroupName',
+            type: 'input',
+            'message': 'Choose a "room group" name',
+            default: ''
           } ]
         }
       },
@@ -56,12 +77,15 @@ module.exports = function (grunt) {
   grunt.registerTask('donut-create-test-notifications', function () {
     var usernameFrom = grunt.config('notifUsernameFrom') || 'david';
     var usernameTo = grunt.config('notifUsernameTo') || 'yangs';
-    var roomName = grunt.config('notifRoomName') || 'donut';
+    var roomName = grunt.config('notifRoomName') || 'Sport';
+    var groupName = grunt.config('notifGroupeName') || 'donut';
+    var roomGroupName = grunt.config('notifRoomGroupName') || '';
     var message = grunt.config('notifMessage') || '';
 
     var userFrom = null;
     var userTo = null;
     var room = null;
+    var group = null;
 
     var configuration = grunt.config('pomelo');
     var bridge = PomeloBridge({
@@ -99,17 +123,43 @@ module.exports = function (grunt) {
         });
       },
 
-      function retrieveRoom (callback) {
-        RoomModel.findByName(roomName).exec(function (err, r) { // @todo : make it works with group rooms (#aaa/aaa)
+      function retrieveGroup (callback) {
+        GroupModel.findByName(groupName).exec(function (err, g) {
           if (err) {
-            return callback('Error while retrieving room ' + roomName + ': ' + err);
+            return callback('Error while retrieving group ' + groupName + ': ' + err);
           }
-          if (!r) {
-            return callback('Unable to retrieve room: ' + roomName);
+          if (!g) {
+            return callback('Unable to retrieve group: ' + groupName);
           }
-          room = r;
+          group = g;
           return callback(null);
         });
+      },
+
+      function retrieveRoom (callback) {
+        if (group && roomGroupName) {
+          RoomModel.findByNameAndGroup(roomGroupName, group.id).exec(function (err, r) {
+            if (err) {
+              return callback('Error while retrieving room ' + roomGroupName + ': ' + err);
+            }
+            if (!r) {
+              return callback('Unable to retrieve room: ' + roomGroupName);
+            }
+            room = r;
+            return callback(null);
+          });
+        } else {
+          RoomModel.findByName(roomName).exec(function (err, r) {
+            if (err) {
+              return callback('Error while retrieving room ' + roomName + ': ' + err);
+            }
+            if (!r) {
+              return callback('Unable to retrieve room: ' + roomName);
+            }
+            room = r;
+            return callback(null);
+          });
+        }
       },
 
       function usermessageType (callback) {
@@ -140,6 +190,37 @@ module.exports = function (grunt) {
             }
 
             grunt.log.ok('usermessageType done');
+            return callback(null);
+          });
+        });
+      },
+
+      function roomTopicType (callback) {
+        var event = {
+          name: room.name,
+          id: room.id,
+          user_id: userFrom.id,
+          username: userFrom.username,
+          avatar: userFrom._avatar(),
+          topic: message,
+          time: new Date()
+        };
+        HistoryRoomModel.record()(room, 'room:topic', event, function (err, history) {
+          if (err) {
+            return callback(err);
+          }
+
+          var data = {
+            type: 'roomtopic',
+            room: room.id,
+            history: history.id
+          };
+          bridge.notify('chat', 'createNotificationTask.createNotification', data, function (err) {
+            if (err) {
+              return callback(err);
+            }
+
+            grunt.log.ok('roomtopicType done');
             return callback(null);
           });
         });
@@ -223,37 +304,6 @@ module.exports = function (grunt) {
         }, callback);
       },
 
-      function roomTopicType (callback) {
-        var event = {
-          name: room.name,
-          id: room.id,
-          user_id: userFrom.id,
-          username: userFrom.username,
-          avatar: userFrom._avatar(),
-          topic: message,
-          time: new Date()
-        };
-        HistoryRoomModel.record()(room, 'room:topic', event, function (err, history) {
-          if (err) {
-            return callback(err);
-          }
-
-          var data = {
-            type: 'roomtopic',
-            room: room.id,
-            history: history.id
-          };
-          bridge.notify('chat', 'createNotificationTask.createNotification', data, function (err) {
-            if (err) {
-              return callback(err);
-            }
-
-            grunt.log.ok('roomtopicType done');
-            return callback(null);
-          });
-        });
-      },
-
       function roomMessageType (callback) {
         var event = {
           name: room.name,
@@ -261,6 +311,7 @@ module.exports = function (grunt) {
           user_id: userFrom.id,
           username: userFrom.username,
           avatar: userFrom._avatar(),
+          to: userTo.id,
           message: message,
           time: new Date()
         };
@@ -363,6 +414,8 @@ module.exports = function (grunt) {
     'prompt:notifUsernameFrom',
     'prompt:notifUsernameTo',
     'prompt:notifRoomName',
+    'prompt:notifGroupName',
+    'prompt:notifRoomGroupName',
     'prompt:notifMessage',
     'donut-create-test-notifications'
   ]);

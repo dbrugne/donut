@@ -165,7 +165,9 @@ Notification.prototype.sendEmail = function (model, done) {
     utils.retrieveHistoryRoom(model.data.event.toString()),
 
     function send (history, callback) {
-      emailer.roomJoin(model.user.getEmail(), history.user.username, history.room.name, callback);
+      if (model.user.getEmail()) {
+        emailer.roomJoin(model.user.getEmail(), history.user.username, history.room.name, callback);
+      }
     },
 
     function persist (callback) {

@@ -143,7 +143,9 @@ Notification.prototype.sendEmail = function (model, done) {
       var topic = utils.mentionize(history.data.topic, {
         style: 'color: ' + conf.room.default.color + ';'
       });
-      emailer.roomTopic(model.user.getEmail(), history.user.username, history.room.name, topic, callback);
+      if (model.user.getEmail()) {
+        emailer.roomTopic(model.user.getEmail(), history.user.username, history.room.name, topic, callback);
+      }
     },
 
     function persist (callback) {

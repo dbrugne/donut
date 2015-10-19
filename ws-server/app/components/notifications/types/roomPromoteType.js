@@ -203,7 +203,9 @@ Notification.prototype.sendEmail = function (model, done) {
           return callback('roomPromoteType.sendEmail unknown notification type: ' + model.type);
       }
 
-      _.bind(method, emailer)(model.user.getEmail(), data, callback);
+      if (model.user.getEmail()) {
+        _.bind(method, emailer)(model.user.getEmail(), data, callback);
+      }
     },
 
     function persist (callback) {

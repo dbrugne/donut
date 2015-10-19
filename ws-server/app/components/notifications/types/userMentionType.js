@@ -193,7 +193,9 @@ Notification.prototype.sendEmail = function (model, done) {
         });
       });
 
-      emailer.userMention(model.user.getEmail(), messages, events[ 0 ][ 'data' ][ 'username' ], events[ 0 ][ 'data' ][ 'name' ], callback);
+      if (model.user.getEmail()) {
+        emailer.userMention(model.user.getEmail(), messages, events[0]['data']['username'], events[0]['data']['name'], callback);
+      }
     },
 
     function persist (callback) {

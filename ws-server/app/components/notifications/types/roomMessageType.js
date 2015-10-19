@@ -172,7 +172,9 @@ Notification.prototype.sendEmail = function (model, done) {
         });
       });
 
-      emailer.roomMessage(model.user.getEmail(), messages, events[ 0 ][ 'data' ][ 'name' ], common.cloudinary.prepare(events[ 0 ][ 'data' ][ 'room_avatar' ], 90), callback);
+      if (model.user.getEmail()) {
+        emailer.roomMessage(model.user.getEmail(), messages, events[0]['data']['name'], common.cloudinary.prepare(events[0]['data']['room_avatar'], 90), callback);
+      }
     },
 
     function persist (callback) {
