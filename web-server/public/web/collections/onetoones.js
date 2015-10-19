@@ -8,6 +8,16 @@ var i18next = require('i18next-client');
 
 var OnetoonesCollection = Backbone.Collection.extend({
   comparator: function (a, b) {
+    var aName = a.get('username');
+    var bName = b.get('username');
+
+    aName = aName.toLocaleLowerCase();
+    bName = bName.toLocaleLowerCase();
+
+    if (!a.get('last') && !b.get('last')) {
+      return (aName > bName) ? 1 : -1;
+    }
+
     if (a.get('last') > b.get('last')) {
       return -1;
     } else {
@@ -38,7 +48,6 @@ var OnetoonesCollection = Backbone.Collection.extend({
     this.listenTo(client, 'user:deban', this.onDeban);
     this.listenTo(client, 'user:message:edit', this.onMessageEdited);
     this.listenTo(client, 'user:typing', this.onTyping);
-    this.listenTo(app, 'refreshOnesList', this.onRefreshList);
   },
   join: function (username) {
     client.userId(username, function (response) {
@@ -62,7 +71,7 @@ var OnetoonesCollection = Backbone.Collection.extend({
   onJoin: function (data) {
     // server ask to client to open this one to one in IHM
     this.addModel(data);
-    this.trigger('redraw-block');
+    this.trigger('redrawNavigationOnes');
   },
   addModel: function (data) {
     data.last = (data.lastactivity_at)
@@ -89,10 +98,6 @@ var OnetoonesCollection = Backbone.Collection.extend({
     }
 
     return model;
-  },
-  onRefreshList: function () {
-    this.sort();
-    app.trigger('redraw-block');
   },
   getModelFromEvent: function (event, autoCreate) {
     var key;

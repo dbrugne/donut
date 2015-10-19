@@ -46,13 +46,14 @@ var errors = {
   'not-allowed': 403,                 // == GENERAL TAG ==
 
   // NOT FOUND ERROR (404)
-  'group-not-found': 404,             // Group not found
-  'current-user-not-found': 404,      // Current user not found
-  'room-not-found': 404,              // Room not found
-  'user-not-found': 404,              // User not found
-  'event-not-found': 404,             // Event not found
-  'notification-not-found': 404,      // Notification not found
-  'not-found': 404,                   // == GENERAL TAG ==
+  'group-not-found': 404,         // Group not found
+  'default-room-not-found': 404,  // Default room of group not found
+  'current-user-not-found': 404,  // Current user not found
+  'room-not-found': 404,          // Room not found
+  'user-not-found': 404,          // User not found
+  'event-not-found': 404,         // Event not found
+  'notification-not-found': 404,  // Notification not found
+  'not-found': 404,               // == GENERAL TAG ==
 
   // CONFLICT (409)
   'mail-already-exist': 409,          // Mail already used by an other user

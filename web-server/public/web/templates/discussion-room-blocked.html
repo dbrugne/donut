@@ -15,7 +15,7 @@
                     <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= data.owner_id %>">@<%= data.owner_username %></a></span>
                 <% } %>
 
-                <% if (data.mode === 'private' && data.blocked !== 'banned' && data.blocked !== 'kicked') { %>
+                <% if (data.mode === 'private' && data.blocked !== 'groupbanned' && data.blocked !== 'banned' && data.blocked !== 'kicked') { %>
                     <% if (data.hasPassword) { %>
                         <div class="password-form mt15 fs15">
                             <%= t('chat.blocked.allowed') %>
@@ -36,12 +36,12 @@
                             <% } %>
                         </div>
                     <% } %>
-                <% if (data.disclaimer) { %>
-                <p class="disclaimer fs20"><%= data.disclaimer %></p>
-                <% } %>
-                <% } else if (data.blocked === 'banned') { %>
+                    <% if (data.disclaimer) { %>
+                        <p class="disclaimer fs20"><%= data.disclaimer %></p>
+                    <% } %>
+                <% } else if (data.blocked === 'banned' || data.blocked === 'groupbanned') { %>
                     <div class="mt15 fs15">
-                        <% if (data.banned_at) { print(t('chat.blocked.banned', { at: data.banned_at })); } %>
+                        <% if (data.banned_at) { print(t('chat.blocked.' + data.blocked, { at: data.banned_at })); } %>
                         <% if (data.reason) { %>
                         <p class="reason">
                             <span class="title"><%= t('chat.blocked.reason') %></span>

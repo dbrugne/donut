@@ -8,7 +8,7 @@
             <span class="name"><span>@</span><%= item.username %></span>
         </a>
 
-        <% if (item.newuser === true || item.newmention === true || item.unviewed === true) { %>
+        <% if (item.unviewed === true) { %>
             <span class="icon icon-circle unread cl-peter_river fs10"></span>
         <% } %>
 
