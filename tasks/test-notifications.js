@@ -1,7 +1,6 @@
 var async = require('async');
 var UserModel = require('../shared/models/user');
 var RoomModel = require('../shared/models/room');
-var GroupModel = require('../shared/models/group');
 var HistoryOneModel = require('../shared/models/historyone');
 var HistoryRoomModel = require('../shared/models/historyroom');
 var PomeloBridge = require('../ws-server/app/components/bridge').Bridge;
@@ -17,7 +16,7 @@ module.exports = function (grunt) {
             config: 'notifUsernameFrom',
             type: 'input',
             message: 'Choose a "from"/"by" username (the one who made the action, sends the message...)',
-            default: 'david'
+            default: 'Sebabass'
           } ]
         }
       },
@@ -27,37 +26,17 @@ module.exports = function (grunt) {
             config: 'notifUsernameTo',
             type: 'input',
             message: 'Choose a "to" username (the one who is the subject of the action, receives the message...)',
-            default: 'yangs'
+            default: 'nadia'
           } ]
         }
       },
-      notifRoomName: {
+      notifIdentifier: {
         options: {
           questions: [ {
             config: 'notifRoomName',
             type: 'input',
             message: 'Choose a "room" name',
-            default: 'Sport'
-          } ]
-        }
-      },
-      notifGroupName: {
-        options: {
-          questions: [ {
-            config: 'notifGroupName',
-            type: 'input',
-            message: 'Choose a "group" name',
-            default: 'donut'
-          } ]
-        }
-      },
-      notifRoomGroupName: {
-        options: {
-          questions: [ {
-            config: 'notifRoomGroupName',
-            type: 'input',
-            'message': 'Choose a "room group" name',
-            default: ''
+            default: '#donut/donut'
           } ]
         }
       },
@@ -77,15 +56,12 @@ module.exports = function (grunt) {
   grunt.registerTask('donut-create-test-notifications', function () {
     var usernameFrom = grunt.config('notifUsernameFrom') || 'david';
     var usernameTo = grunt.config('notifUsernameTo') || 'yangs';
-    var roomName = grunt.config('notifRoomName') || 'Sport';
-    var groupName = grunt.config('notifGroupeName') || 'donut';
-    var roomGroupName = grunt.config('notifRoomGroupName') || '';
+    var identifier = grunt.config('notifIdentifier') || '#donut/donut';
     var message = grunt.config('notifMessage') || '';
 
     var userFrom = null;
     var userTo = null;
     var room = null;
-    var group = null;
 
     var configuration = grunt.config('pomelo');
     var bridge = PomeloBridge({
@@ -123,43 +99,17 @@ module.exports = function (grunt) {
         });
       },
 
-      function retrieveGroup (callback) {
-        GroupModel.findByName(groupName).exec(function (err, g) {
+      function retrieveRoom (callback) {
+        RoomModel.findByIdentifier(identifier, function (err, r) {
           if (err) {
-            return callback('Error while retrieving group ' + groupName + ': ' + err);
+            return callback('Error while retrieving room ' + identifier + ': ' + err);
           }
-          if (!g) {
-            return callback('Unable to retrieve group: ' + groupName);
+          if (!r) {
+            return callback('Unable to retrieve room: ' + identifier);
           }
-          group = g;
+          room = r;
           return callback(null);
         });
-      },
-
-      function retrieveRoom (callback) {
-        if (group && roomGroupName) {
-          RoomModel.findByNameAndGroup(roomGroupName, group.id).exec(function (err, r) {
-            if (err) {
-              return callback('Error while retrieving room ' + roomGroupName + ': ' + err);
-            }
-            if (!r) {
-              return callback('Unable to retrieve room: ' + roomGroupName);
-            }
-            room = r;
-            return callback(null);
-          });
-        } else {
-          RoomModel.findByName(roomName).exec(function (err, r) {
-            if (err) {
-              return callback('Error while retrieving room ' + roomName + ': ' + err);
-            }
-            if (!r) {
-              return callback('Unable to retrieve room: ' + roomName);
-            }
-            room = r;
-            return callback(null);
-          });
-        }
       },
 
       function usermessageType (callback) {
@@ -413,9 +363,7 @@ module.exports = function (grunt) {
     'load-pomelo-configuration',
     'prompt:notifUsernameFrom',
     'prompt:notifUsernameTo',
-    'prompt:notifRoomName',
-    'prompt:notifGroupName',
-    'prompt:notifRoomGroupName',
+    'prompt:notifIdentifier',
     'prompt:notifMessage',
     'donut-create-test-notifications'
   ]);
