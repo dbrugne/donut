@@ -35,3 +35,37 @@ db.getCollection('rooms').update({},{$set: {allowed_pending: []}},{"multi" : tru
 ```
 db.rooms.update( { mode: { $ne: 'public' } }, { $set: { allow_user_request: true }}, {multi: true} )
 ```
+
+* Add history-room index for new history
+```
+db[ 'history-room' ].ensureIndex({
+  'room': 1,
+  '_id': -1
+});
+```
+
+* Remove old/useless history-room index
+```
+db[ 'history-room' ].dropIndex({
+  'room': 1,
+  'time': -1
+});
+```
+
+* Add onetoone index for new history
+```
+db[ 'history-one' ].ensureIndex({
+  'from': 1,
+  'to': 1,
+  '_id': -1
+});
+```
+
+* Remove old/useless onetoone index
+```
+db[ 'history-one' ].dropIndex({
+  'from': 1,
+  'to': 1,
+  'time': -1
+});
+```

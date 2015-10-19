@@ -74,7 +74,7 @@ DisconnectRemote.prototype.online = function (uid, welcome, globalCallback) {
       var roomsToInform = _.map(welcome.rooms, function (room) {
         return {
           name: room.name,
-          id: room.id
+          id: (room.id) ? room.id : room.room_id
         };
       });
 

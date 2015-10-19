@@ -527,6 +527,7 @@
       "allowed": "You are not allowed anymore in __name__"
     },
     "roomnotexists": "The donut __name__ does not exist yet, <a class='open-create-room' data-name='__name__'>would you like to create it</a>?",
+    "groupnotexists": "The group __name__ does not exist yet, <a class='open-create-room' data-name='__name__'>would you like to create it</a>?",
     "reason": "(reason: \"__reason__\")",
     "deletemessage": "The donut __name__ has been deleted",
     "users": {
@@ -580,6 +581,11 @@
       "public": [
         "<p>Welcome !</p>",
         "<p>This public conversation and its history are accessible to anyone. Share the link with your friends!</p>",
+        "<p>Say 'hi' to engage in the discussion.</p>"
+      ],
+      "private": [
+        "<p>Welcome !</p>",
+        "<p>This is private conversation and its history are only accessible to allowed users.</p>",
         "<p>Say 'hi' to engage in the discussion.</p>"
       ],
       "onetoone": [
@@ -731,7 +737,6 @@
             "private": "Only users you authorize can join, participate and access history. Moderation tools available.",
             "password": "You can also set a password. Users with the password can join without prior invitation.",
             "group-password": "You can also set a password. Users with the password can join this group without prior invitation.",
-            "allowgroupmember": "You can allow group members to join this room.",
             "memberscondition": "Membership conditions or procedures"
           }
         },
@@ -775,6 +780,9 @@
               }
             }
           }
+        },
+        "profile": {
+          "delete": "Delete this donut"
         }
       },
       "user-form": {
@@ -815,7 +823,8 @@
     "administrator": "Administrators",
     "users": "Users",
     "invite": "Invite",
-    "ask-membership": "Ask for membership"
+    "ask-membership": "Ask for membership",
+    "blocked": "This group is blocked by a password, to join we invite you to type it"
   },
   "account": {
     "error": {

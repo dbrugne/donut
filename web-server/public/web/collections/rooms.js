@@ -12,11 +12,21 @@ var RoomsCollection = Backbone.Collection.extend({
     var aGroup = a.get('group_name');
     var bGroup = b.get('group_name');
 
+    var aName = a.get('name');
+    var bName = b.get('name');
+
+    aName = aName.toLocaleLowerCase();
+    bName = bName.toLocaleLowerCase();
+
     if (!aGroup && bGroup) {
       return 1;
     } else if (aGroup && !bGroup) {
       return -1;
     } else if (!aGroup && !bGroup) {
+      if (!a.get('last') && !b.get('last')) {
+        return (aName > bName) ? 1 : -1;
+      }
+
       if (a.get('last') > b.get('last')) {
         return -1;
       } else {
@@ -27,6 +37,10 @@ var RoomsCollection = Backbone.Collection.extend({
     aGroup = aGroup.toLocaleLowerCase();
     bGroup = bGroup.toLocaleLowerCase();
     if (aGroup === bGroup) {
+      if (!a.get('last') && !b.get('last')) {
+        return (aName > bName) ? 1 : -1;
+      }
+
       if (a.get('last') > b.get('last')) {
         return -1;
       } else {
@@ -137,8 +151,11 @@ var RoomsCollection = Backbone.Collection.extend({
     }
   },
   onRefreshList: function () {
+    var old = this;
     this.sort();
-    app.trigger('redraw-block');
+    if (old !== this) {
+      app.trigger('redraw-block');
+    }
   },
   onIn: function (data) {
     var model;

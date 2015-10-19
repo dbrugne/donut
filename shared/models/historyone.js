@@ -67,7 +67,7 @@ historySchema.statics.record = function () {
   };
 };
 
-// @todo : remove after migration
+// @todo yfuks remove after prod migration
 historySchema.statics.getLastMessage = function (fromUid, toUid, fn) {
   this.find({
     $or: [

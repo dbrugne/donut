@@ -16,10 +16,10 @@
                 </div>
             </div>
                 <div class="flex-parent center mt20">
+                    <% if (isOwner || isAdmin) { %>
                     <div class="title dc-text-contrast flex-child">
                         <%= t('group.users') %> ( <%= members.length %> )
                     </div>
-                    <% if (isOwner || isAdmin) { %>
                     <input type="button" class="flex-end btn btn-primary centered mr20 open-group-access" data-group-id="<%= group.group_id %>" value="<%= t('group.invite') %>" />
                     <% } %>
                 </div>
@@ -102,14 +102,13 @@
         </div>
         <% if (group.has_password && !isMember) { %>
         <span class="curp btn btn-primary send-password pull-right password-div"><%= t('actions.join') %></span>
-        <input type="password" class="input-password form-control ml10 mr10 pull-right password-div" placeholder="<%= t('chat.form.room-form.common.mode.password-field')%>" style="width: 180px">
         <% } %>
     </div>
 
     <div class="flex-parent center mt100">
-        <h2 class="vcentered"><%= t('global.donuts') %></h2>
         <% if (isMember) { %>
-            <span class="open-create-room btn btn-primary ml20 curp" data-group-id="<%=group.group_id%>" data-group-name="<%=group.name%>"><%= t('actions.create') %></span>
+        <h2 class="vcentered"><%= t('global.donuts') %></h2>
+        <span class="open-create-room btn btn-primary ml20 curp" data-group-id="<%=group.group_id%>" data-group-name="<%=group.name%>"><%= t('actions.create') %></span>
         <% } %>
     </div>
     <div class="ctn-results mt30">

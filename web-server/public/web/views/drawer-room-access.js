@@ -85,6 +85,7 @@ var RoomAccessView = Backbone.View.extend({
     this.$checkboxUserRequest = this.$('#input-userrequest-checkbox');
     this.$password = this.$('.input-password');
     this.$randomPassword = this.$('.random-password');
+    this.$savePassword = this.$('.save-password');
     this.$countConditions = this.$('.counter');
     this.$conditions = this.$('#conditions-area');
 
@@ -120,7 +121,7 @@ var RoomAccessView = Backbone.View.extend({
     this.$dropdownMenu.html(require('../templates/spinner.html'));
 
     var that = this;
-    client.search(this.$search.val(), false, true, false, 15, 0, false, function (data) {
+    client.search(this.$search.val(), false, true, false, 15, 0, false, false, function (data) {
       _.each(data.users.list, function (element, index, list) {
         list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 20);
       });
@@ -178,6 +179,7 @@ var RoomAccessView = Backbone.View.extend({
     // Display block on click
     if (this.$toggleCheckbox.is(':checked')) {
       this.$password.removeAttr('disabled').removeClass('disabled');
+      this.$savePassword.removeAttr('disabled').removeClass('disabled');
       this.$randomPassword.removeClass('disabled');
       if (this.$password.val() === '' && !this.currentPassword) {
         this.$password.val(common.misc.randomString());
@@ -186,6 +188,7 @@ var RoomAccessView = Backbone.View.extend({
       }
     } else {
       this.$password.attr('disabled', true).addClass('disabled');
+      this.$savePassword.attr('disabled', true).addClass('disabled');
       this.$password.val('');
       this.$randomPassword.addClass('disabled');
     }

@@ -17,7 +17,7 @@
       "ref": "origin/production",
       "repo": "git@github.com:dbrugne/donut.git",
       "path": "/home/donut/app",
-      "post-deploy": "npm update && grunt pm2 --deployEnvironment test && grunt build --uglify true && pm2 startOrRestart ecosystem.json --env production",
+      "post-deploy": "npm update && grunt pm2 --deployEnvironment production && grunt build --uglify true && pm2 startOrRestart ecosystem.json --env production",
       "env": {
         "NODE_ENV": "production"
       }

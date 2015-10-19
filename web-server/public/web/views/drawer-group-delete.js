@@ -22,7 +22,7 @@ var DrawerGroupDeleteView = Backbone.View.extend({
     // show spinner as temp content
     this.render();
 
-    client.groupRead(this.groupId, null, null, _.bind(function (data) {
+    client.groupRead(this.groupId, null, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }

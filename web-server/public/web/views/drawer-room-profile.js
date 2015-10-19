@@ -49,7 +49,9 @@ var DrawerRoomProfileView = Backbone.View.extend({
       return app.trigger('drawerClose');
     }
 
-    room.isOwner = (room.owner && room.owner.user_id === currentUser.get('user_id'));
+    room.isOwner = (room.owner_id === currentUser.get('user_id'));
+
+    room.isGroupOwner = (room.group_id && room.group_owner === currentUser.get('user_id'));
 
     room.isAdmin = currentUser.isAdmin();
 

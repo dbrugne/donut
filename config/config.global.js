@@ -11,11 +11,19 @@ module.exports = {
   room: {
     default: {
       color: '#fc2063'
+    },
+    password: {
+      max_password_tries: 5,
+      max_password_time: 60 * 1000 // 1 min
     }
   },
   group: {
     default: {
       name: 'welcome'
+    },
+    password: {
+      max_password_tries: 5,
+      max_password_time: 60 * 1000 // 1 min
     }
   },
   mongo: {

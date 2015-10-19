@@ -31,7 +31,9 @@ handler.call = function (data, session, next) {
 
   var skip = (data.skip) ? data.skip : 0;
 
-  search(data.search, searchInUsers, searchInRooms, withGroups, limit, skip, lightSearch, function (err, results) {
+  var withPrivateRoomsInGroup = (data.private_group_rooms && data.rooms);
+
+  search(data.search, searchInUsers, searchInRooms, withGroups, limit, skip, lightSearch, withPrivateRoomsInGroup, function (err, results) {
     if (err) {
       logger('[search] ' + err);
       return next(null, {code: 500, err: 'internal'});
