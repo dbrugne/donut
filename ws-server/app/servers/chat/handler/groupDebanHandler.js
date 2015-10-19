@@ -54,7 +54,7 @@ handler.call = function (data, session, next) {
         }
 
         var subDocument = _.find(group.bans, function (ban) {
-          if (ban.user.toString() === targetUser.id) {
+          if (ban.user.id === targetUser.id) {
             return true;
           }
         });
