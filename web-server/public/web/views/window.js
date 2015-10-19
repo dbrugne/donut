@@ -254,20 +254,6 @@ var WindowView = Backbone.View.extend({
         this.desktopNotificationsLimiters[key] = Date.now();
       }
     }
-
-//    // test type
-//    if (event.getGenericType() !== 'message' && event.get('type') !== 'room:topic') {
-//      return;
-//    }
-//    if (event.get('type') !== 'room:in') {
-//      return;
-//    }
-//    // test if i'm owner or op
-//    if (!model.currentUserIsOwner() && !model.currentUserIsOp()) {
-//      return;
-//    }
-//    // test if is mentioned (only for rooms)
-//    var isMention = (event.getGenericType() !== 'message' && model.get('type') === 'room' && common.markup.isUserMentionned(currentUser.get('user_id'), event.get('data').message));
   },
   play: function () {
     if (!currentUser.shouldPlaySound()) {
