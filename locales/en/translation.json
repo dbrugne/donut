@@ -527,6 +527,7 @@
       "allowed": "You are not allowed anymore in __name__"
     },
     "roomnotexists": "The donut __name__ does not exist yet, <a class='open-create-room' data-name='__name__'>would you like to create it</a>?",
+    "groupnotexists": "The group __name__ does not exist yet, <a class='open-create-room' data-name='__name__'>would you like to create it</a>?",
     "reason": "(reason: \"__reason__\")",
     "deletemessage": "The donut __name__ has been deleted",
     "users": {
