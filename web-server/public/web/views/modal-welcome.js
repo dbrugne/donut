@@ -5,13 +5,14 @@ var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
 var client = require('../libs/client');
 var urls = require('../../../../shared/util/url');
+var CardsView = require('./cards');
 
 var debug = donutDebug('donut:modal-welcome');
 
 var WelcomeModalView = Backbone.View.extend({
   el: $('#welcome'),
 
-  template: require('../templates/rooms-cards.html'),
+  template: require('../templates/cards.html'),
 
   events: {
     'hidden.bs.modal': 'onHide',
@@ -24,32 +25,17 @@ var WelcomeModalView = Backbone.View.extend({
     this.$el.modal({
       show: false
     });
+    this.cardsView = new CardsView({
+      el: this.$('.cards')
+    });
   },
   render: function (welcome) {
     if (!welcome || !welcome.featured || !welcome.featured.length) {
-      this.$('.modal-body .rooms').empty();
       return;
     }
 
-    var rooms = [];
-    _.each(welcome.featured, function (room) {
-      room.avatar = common.cloudinary.prepare(room.avatar, 135);
-      room.join = room.is_group
-        ? urls(room, 'group', null, null, 'uri')
-        : urls(room, 'room', null, null, 'uri');
+    this.cardsView.render({fill: false, cards: {list: welcome.featured}});
 
-      rooms.push(room);
-    });
-
-    var html = this.template({
-      title: false,
-      rooms: welcome.featured,
-      search: false,
-      more: false,
-      replace: true
-    });
-    this.$('.modal-body .rooms')
-      .html(html);
     return this;
   },
   show: function () {

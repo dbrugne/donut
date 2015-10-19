@@ -38,6 +38,7 @@ var HomeView = Backbone.View.extend({
     app.trigger('changeColor');
   },
   onHome: function (data) {
+    data.fill = true;
     this.cardsView.render(data);
     this.empty = false;
   },

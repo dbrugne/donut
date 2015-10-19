@@ -37,6 +37,7 @@ var CardsView = Backbone.View.extend({
     var html = this.template({
       cards: cards,
       title: true,
+      fill: data.fill || false,
       search: data.search,
       more: data.cards.more
     });
