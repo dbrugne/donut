@@ -8,6 +8,16 @@ var i18next = require('i18next-client');
 
 var OnetoonesCollection = Backbone.Collection.extend({
   comparator: function (a, b) {
+    var aName = a.get('username');
+    var bName = b.get('username');
+
+    aName = aName.toLocaleLowerCase();
+    bName = bName.toLocaleLowerCase();
+
+    if (!a.get('last') && !b.get('last')) {
+      return (aName > bName) ? 1 : -1;
+    }
+
     if (a.get('last') > b.get('last')) {
       return -1;
     } else {
