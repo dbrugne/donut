@@ -2,7 +2,6 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
-var client = require('../libs/client');
 
 module.exports = Backbone.View.extend({
   initialize: function (options) {
@@ -17,11 +16,7 @@ module.exports = Backbone.View.extend({
   markVisibleAsViewed: function () {
     this.computeVisibleElements(_.bind(function (elements) {
       if (elements.length) {
-        if (this.model.get('type') === 'room') {
-          client.roomViewed(this.model.get('room_id'), elements);
-        } else {
-          client.userViewed(this.model.get('user_id'), elements);
-        }
+        this.model.viewedElements(elements);
       }
     }, this));
   },

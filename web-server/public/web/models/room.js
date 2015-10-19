@@ -288,6 +288,9 @@ var RoomModel = Backbone.Model.extend({
       return callback(data);
     });
   },
+  viewedElements: function (elements) {
+    client.roomViewed(this.get('room_id'), elements);
+  },
   onViewed: function (data) {
     this.resetNew();
     this.trigger('viewed', data);

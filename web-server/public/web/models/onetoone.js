@@ -110,6 +110,9 @@ var OneToOneModel = Backbone.Model.extend({
       return callback(data);
     });
   },
+  viewedElements: function (elements) {
+    client.userViewed(this.get('user_id'), elements);
+  },
   onViewed: function (data) {
     this.resetNew();
     this.trigger('viewed', data);
