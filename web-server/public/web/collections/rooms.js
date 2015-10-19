@@ -105,7 +105,6 @@ var RoomsCollection = Backbone.Collection.extend({
     this.listenTo(client, 'room:message:unspam', this.onMessageUnspam);
     this.listenTo(client, 'room:message:edit', this.onMessageEdited);
     this.listenTo(client, 'room:typing', this.onTyping);
-    this.listenTo(app, 'refreshRoomsList', this.onRefreshList);
   },
   onJoin: function (data) {
     var model;
@@ -148,13 +147,6 @@ var RoomsCollection = Backbone.Collection.extend({
       // add in IHM (by mainView)
       model = new RoomModel(data);
       this.add(model);
-    }
-  },
-  onRefreshList: function () {
-    var old = this;
-    this.sort();
-    if (old !== this) {
-      app.trigger('redraw-block');
     }
   },
   onIn: function (data) {

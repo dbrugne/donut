@@ -37,9 +37,6 @@ module.exports = Backbone.Model.extend({
     this.set({ time: time });
     data.time = time; // non-server events (disconnected, reconnected)
 
-    var isNew = (this.get('new'));
-    this.set({ new: isNew });
-
     if (this.get('type') === 'user:message') {
       data.user_id = data.from_user_id;
       data.username = data.from_username;
@@ -48,25 +45,6 @@ module.exports = Backbone.Model.extend({
     }
 
     this.set({ data: data });
-  },
-
-  getGenericType: function () {
-    if (currentUser.get('user_id') === this.get('data').user_id &&
-      this.get('type') === 'room:in') {
-      return 'hello';
-    }
-    if (['room:message', 'user:message'].indexOf(this.get('type')) !== -1) {
-      return 'message';
-    } else if ([
-      'room:in',
-      'room:out',
-      'user:online',
-      'user:offline'
-    ].indexOf(this.get('type')) !== -1) {
-      return 'inout';
-    } else {
-      return 'standard';
-    }
   }
 
 });

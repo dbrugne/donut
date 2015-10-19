@@ -13,11 +13,9 @@ module.exports = Backbone.View.extend({
   events: {},
 
   initialize: function (options) {
-    this.listenTo(app, 'redraw-block', this.render);
-    this.listenTo(onetoones, 'redraw-block', this.render);
-
+    this.listenTo(app, 'redrawNavigation', this.render);
+    this.listenTo(app, 'redrawNavigationOnes', this.render);
     this.listenTo(app, 'nav-active', this.highlightFocused);
-
     this.listenTo(onetoones, 'change:avatar', this.render);
     this.$list = this.$('.list');
   },

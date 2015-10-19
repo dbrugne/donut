@@ -16,9 +16,8 @@ module.exports = Backbone.View.extend({
   },
 
   initialize: function (options) {
-    this.listenTo(app, 'redraw-block', this.render);
-    this.listenTo(rooms, 'redraw-block', this.render);
-
+    this.listenTo(app, 'redrawNavigation', this.render);
+    this.listenTo(app, 'redrawNavigationRooms', this.render);
     this.listenTo(app, 'nav-active', this.highlightFocused);
     this.listenTo(app, 'nav-active-group', this.highlightGroup);
 

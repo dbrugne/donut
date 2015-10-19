@@ -30,8 +30,7 @@ var WindowView = Backbone.View.extend({
   initialize: function (options) {
     this.listenTo(app, 'desktopNotification', this.desktopNotify);
     this.listenTo(app, 'playSoundForce', this._play);
-    this.listenTo(app, 'unviewedInOut', this.triggerInout);
-    this.listenTo(app, 'unviewedMessage', this.triggerMessage);
+    this.listenTo(app, 'newEvent', this.onNewEvent);
     this.listenTo(app, 'setTitle', this.setTitle);
 
     this.$window = $(window);
@@ -72,11 +71,11 @@ var WindowView = Backbone.View.extend({
 
     // determine if something 'new'
     var thereIsNew = rooms.some(function (d) { // first looks in rooms
-      return d.isThereNew();
+      return d.get('unviewed');
     });
     if (!thereIsNew) {
       thereIsNew = onetoones.some(function (d) { // then looks in onetoones
-        return d.isThereNew();
+        return d.get('unviewed');
       });
     }
 
@@ -118,7 +117,6 @@ var WindowView = Backbone.View.extend({
     var model = this._getFocusedModel();
     if (model) {
       model.trigger('windowRefocused'); // mark visible as read for focused discussion when window recover its focus
-      model.resetNew();
     }
 
     // reset limiters
@@ -169,93 +167,107 @@ var WindowView = Backbone.View.extend({
   },
 
   /** *************************************************
-   * Notifications
+   * New incoming event title, sound and badges
    ***************************************************/
 
-  triggerInout: function (event, model) {
-    if (event.get('type') !== 'room:in') {
+  onNewEvent: function (event, model) {
+    var data = event.get('data');
+    if (!data) {
       return;
     }
 
-    // test if not from me (currentUser)
-    if (event.get('data').username === currentUser.get('username')) {
+    // last event time
+    model.set('last', Date.now());
+
+    // ignore event from currentUser
+    var uid = data.from_user_id || data.user_id;
+    if (currentUser.get('user_id') === uid) {
       return;
     }
 
-    // test if i'm owner or op
-    if (!model.currentUserIsOwner() && !model.currentUserIsOp()) {
+    var collection = (model.get('type') === 'room')
+      ? rooms
+      : onetoones;
+
+    // badge (even if focused)
+    if (model.get('unviewed') !== true) {
+      model.set('unviewed', true);
+      collection.sort();
+      if (model.get('type') === 'room') {
+        app.trigger('redrawNavigationRooms');
+      } else {
+        app.trigger('redrawNavigationOnes');
+      }
+    }
+
+    // if current discussion is focused do nothing more
+    if (this.focused && model.get('focused')) {
       return;
     }
 
-    // play sound (even if discussion/window is focused or not)
+    // play sound
     this.play();
 
-    // test if current discussion is focused
-    var isFocused = (this.focused && model.get('focused'));
+    // blink title
+    this.renderTitle();
 
-    // badge and title only if discussion is not focused
-    if (!isFocused) {
-      model.set('newuser', true); // will trigger tab badge and title when rendering
-
-      // update tabs
-      app.trigger('redraw-block');
-
-      // update title
-      this.renderTitle();
-    }
-  },
-  triggerMessage: function (event, model) {
-    if (event.getGenericType() !== 'message' && event.get('type') !== 'room:topic') {
+    // if current window is focused do nothing more
+    if (this.focused) {
       return;
     }
 
-    // test if not from me (currentUser)
-    if (event.get('data').username === currentUser.get('username')) {
+    // desktop notification
+    var key = (model.get('type') === 'room')
+      ? 'room:' + model.get('username')
+      : 'one:' + model.get('username');
+    var last = this.desktopNotificationsLimiters[key];
+    if (last && (Date.now() - last) <= 60 * 1000) { // 1mn
       return;
     }
 
-    // test if current discussion is focused
-    var isFocused = (this.focused && model.get('focused'));
-
-    // play sound (could be played for current focused discussion, but not for my own messages)
-    // badge and title only if discussion is not focused
-    if (!isFocused) {
-      // test if is mentioned (only for rooms)
-      var isMention = (event.getGenericType() !== 'message' && model.get('type') === 'room' && common.markup.isUserMentionned(currentUser.get('user_id'), event.get('data').message));
-      this.play(); // only if not focused
-
-      if (!isMention) {
-        model.set('unviewed', true); // will trigger tab badge and title when rendering
-      } else {
-        model.set('newmention', true);
-      }
-
-      // update tabs and update title
-      app.trigger('refreshRoomsList');
-      this.renderTitle();
+    var title;
+    if (event.get('type') === 'room:topic') {
+      title = i18next.t('chat.notifications.messages.roomtopic', {
+        name: data.name,
+        topic: data.topic
+      });
+    } else if (event.get('type') === 'room:message') {
+      // same message as user:message
+      title = i18next.t('chat.notifications.messages.usermessage', {
+        username: data.username,
+        message: data.message
+      });
+    } else if (event.get('type') === 'user:message') {
+      title = i18next.t('chat.notifications.messages.usermessage', {
+        username: data.from_username,
+        message: data.message
+      });
+    } else {
+      return;
     }
 
-    // desktop notification (only for one to one and if windows is not focused
-    if (!this.focused) {
-      if (model.get('type') === 'onetoone') {
-        var data = event.get('data');
-        if (data) {
-          var key = 'usermessage:' + model.get('username');
-          var last = this.desktopNotificationsLimiters[key];
-          if (last && (Date.now() - last) <= 1 * 60 * 1000) {// 1mn
-            return;
-          }
-
-          var message = data.message || '';
-          var title = i18next.t('chat.notifications.messages.usermessage', {
-            username: data.from_username,
-            message: common.markup.toText(message)
-          });
-          this.desktopNotify(title.replace(/<\/*span>/g, ''), '');
-          this.desktopNotificationsLimiters[key] = Date.now();
-        }
+    if (title) {
+      title = common.markup.toText(title);
+      if (title) {
+        title = title.replace(/<\/*span>/g, '');
+        this.desktopNotify(title, '');
+        this.desktopNotificationsLimiters[key] = Date.now();
       }
     }
+
+//    // test type
+//    if (event.getGenericType() !== 'message' && event.get('type') !== 'room:topic') {
+//      return;
+//    }
+//    if (event.get('type') !== 'room:in') {
+//      return;
+//    }
+//    // test if i'm owner or op
+//    if (!model.currentUserIsOwner() && !model.currentUserIsOp()) {
+//      return;
+//    }
+//    // test if is mentioned (only for rooms)
+//    var isMention = (event.getGenericType() !== 'message' && model.get('type') === 'room' && common.markup.isUserMentionned(currentUser.get('user_id'), event.get('data').message));
   },
   play: function () {
     if (!currentUser.shouldPlaySound()) {

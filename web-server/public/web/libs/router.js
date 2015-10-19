@@ -46,8 +46,7 @@ var DonutRouter = Backbone.Router.extend({
 
   root: function () {
     this.unfocusAll();
-    onetoones.trigger('redraw-block');
-    rooms.trigger('redraw-block');
+    app.trigger('redrawNavigation');
     this.homeView.focus();
     Backbone.history.navigate('#'); // just change URI, not run route action
   },
@@ -89,7 +88,6 @@ var DonutRouter = Backbone.Router.extend({
   focusRoom: function (identifier) {
     var model = rooms.iwhere('identifier', identifier);
     if (typeof model !== 'undefined') {
-      model.resetNew();
       return this.focus(model);
     }
 
@@ -106,12 +104,12 @@ var DonutRouter = Backbone.Router.extend({
           return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', { name: identifier }));
         } else if (response.code === 403) {
           rooms.addModel(response.room, response.err);
-          rooms.trigger('redraw-block'); // also trigger a redraw when displaying a room blocked
+          app.trigger('redrawNavigationRooms'); // also trigger a redraw when displaying a room blocked
           return;
         } else if (response.code === 500) {
           return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
         }
-        rooms.trigger('redraw-block');
+        app.trigger('redrawNavigationRooms');
       }, this));
     });
   },
@@ -192,10 +190,9 @@ var DonutRouter = Backbone.Router.extend({
 
     app.trigger('drawerClose');
   },
-
   viewAdded: function (model, collection) {
     if (this.nextFocus === model.get('identifier')) {
-      this.focus(model); // implicit redraw-block
+      this.focus(model); // implicit navigation updating
       this.thisDiscussionShouldBeFocusedOnSuccess = null;
     }
   }
