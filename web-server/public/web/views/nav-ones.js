@@ -13,16 +13,13 @@ module.exports = Backbone.View.extend({
   events: {},
 
   initialize: function (options) {
-    this.listenTo(app, 'redraw-block', this.render);
-    this.listenTo(onetoones, 'redraw-block', this.render);
-
+    this.listenTo(app, 'redrawNavigation', this.render);
+    this.listenTo(app, 'redrawNavigationOnes', this.render);
     this.listenTo(app, 'nav-active', this.highlightFocused);
-
     this.listenTo(onetoones, 'change:avatar', this.render);
     this.$list = this.$('.list');
   },
   render: function () {
-    console.log('render onetoones');
     if (!onetoones.models.length) {
       this.$list.empty();
       return this.$el.hide();
@@ -39,9 +36,6 @@ module.exports = Backbone.View.extend({
     var html = this.template({list: data});
     this.$list.html(html);
     return this;
-  },
-  redraw: function () {
-    return this.render();
   },
   highlightFocused: function () {
     this.$list.find('.active').each(function (item) {

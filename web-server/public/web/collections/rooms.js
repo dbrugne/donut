@@ -105,7 +105,6 @@ var RoomsCollection = Backbone.Collection.extend({
     this.listenTo(client, 'room:message:edit', this.onMessageEdited);
     this.listenTo(client, 'room:typing', this.onTyping);
     this.listenTo(client, 'room:groupban', this.onGroupBan);
-    this.listenTo(app, 'refreshRoomsList', this.onRefreshList);
   },
   onJoin: function (data) {
     var model;
@@ -149,10 +148,6 @@ var RoomsCollection = Backbone.Collection.extend({
       model = new RoomModel(data);
       this.add(model);
     }
-  },
-  onRefreshList: function () {
-    this.sort();
-    app.trigger('redraw-block');
   },
   onIn: function (data) {
     var model;
@@ -289,14 +284,6 @@ var RoomsCollection = Backbone.Collection.extend({
     var devoices = model.get('devoices');
     if (devoices.length) {
       model.set('devoices', _.reject(devoices, function (element) {
-        return (element === data.user_id);
-      }));
-    }
-
-    // remove from allowed-pending
-    var ap = model.get('allowed_pending');
-    if (ap.length) {
-      model.set('allowed_pending', _.reject(ap, function (element) {
         return (element === data.user_id);
       }));
     }
