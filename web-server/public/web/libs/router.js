@@ -152,7 +152,7 @@ var DonutRouter = Backbone.Router.extend({
 
   focus: function (model) {
     // No opened discussion, display default
-    if (rooms.length < 1 && onetoones.length < 1) {
+    if (rooms.length < 1 && onetoones.length < 1 && groups.length < 1) {
       return this.focusHome();
     }
 
@@ -162,7 +162,10 @@ var DonutRouter = Backbone.Router.extend({
       if (typeof model === 'undefined') {
         model = onetoones.first();
         if (typeof model === 'undefined') {
-          return this.focusHome();
+          model = groups.first();
+          if (typeof model === 'undefined') {
+            return this.focusHome();
+          }
         }
       }
     }

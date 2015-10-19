@@ -25,10 +25,11 @@ handler.call = function (data, session, next) {
     'members',          // members + owner
     'pending',          // members_pending
     'op',               // op + owner
-    'regular'           // members (not op/owner)
+    'regular',          // members (not op/owner)
+    'banned'            // banned members
   ];
 
-  var searchTypesThatNeedPower = ['pending'];
+  var searchTypesThatNeedPower = ['banned', 'pending'];
 
   /**
    * @param group_id (@mandatory)
@@ -74,7 +75,7 @@ handler.call = function (data, session, next) {
       }
 
       if ((searchTypesThatNeedPower.indexOf(data.attributes.type) !== -1) &&
-        !group.isOwner(user.id) && !user.admin) {
+        !group.isOwnerOrOp(user.id) && !user.admin) {
         return callback('not-found');
       }
 

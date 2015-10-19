@@ -1,0 +1,47 @@
+<div class="scrollable">
+    <div class="title dc-text-contrast"><%= t('group.administrator') %></div>
+    <div class="list op">
+        <div class="ctn">
+            <div class="background"></div>
+            <% _.each(op, function(user) { %>
+                <div class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %><%= user.status %>">
+                    <span class="infos">
+                        <span class="avatar open-user-profile" data-user-id="<%= user.user_id %>" style="background-image: url(<%= user.avatar %>)" title="<% if (user.is_op === true) { %><%= t('chat.op.is') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.is') %><% }; %>"></span>
+                        <span class="username open-user-profile" data-user-id="<%= user.user_id %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></span>
+                    </span>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+    <div class="flex-parent center mt20">
+        <div class="title dc-text-contrast flex-child">
+            <%= t('group.users') %> ( <%= members.length %> )
+        </div>
+        <% if (isOwner || isAdmin) { %>
+        <input type="button" class="flex-end btn btn-primary centered mr20 open-group-access" data-group-id="<%= group_id %>" value="<%= t('group.invite') %>" />
+        <% } %>
+    </div>
+    <% if (members.length > 0) { %>
+    <div class="user-list block">
+        <div class="list">
+            <% _.each(members, function(user) { %>
+            <% var bgColor = txtColor = ''; %>
+            <% if (user.color) {
+            bgColor = "background-color: "+user.color;
+            txtColor = "color: "+user.color;
+            }; %>
+            <div class="item open-user-profile <% if (user.is_owner) { %>owner<% }; %> <% if (user.is_op) { %>op<% }; %>" data-bgcolor="<%= bgColor %>" data-type="room-users" data-txtcolor="<%= txtColor %>" data-user-id="<%= user.user_id %>" data-username="<%= user.username %>" data-toggle="tooltip" data-placement="left">
+                <div class="avatar" style="background-image:url(<%= user.avatar %>)"></div>
+            </div>
+            <% }); %>
+        </div>
+    </div>
+    <% if( members_more ) { %>
+    <div class="flex-parent center jc-center mt30">
+        <i class="icon icon-circle cl-neutral fs10 ml5"></i>
+        <i class="icon icon-circle cl-neutral fs10 ml5"></i>
+        <i class="icon icon-circle cl-neutral fs10 ml5"></i>
+    </div>
+    <% } %>
+    <% } %>
+</div>

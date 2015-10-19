@@ -7,7 +7,7 @@ var app = require('../models/app');
 var confirmationView = require('./modal-confirmation');
 var date = require('../libs/date');
 
-var DrawerRoomUsersTableView = Backbone.View.extend({
+var DrawerGroupUsersTableView = Backbone.View.extend({
   template: require('../templates/drawer-room-access-table.html'),
 
   paginationTemplate: require('../templates/pagination.html'),
@@ -20,6 +20,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
   events: {
     'click .accept-allow': 'onAllowUser',
+    'click .deban-group': 'onDebanGroupUser',
     'click .refuse-allow': 'onRefuseUser',
     'click .disallow': 'onDisallow',
     'click .pagination>li>a': 'onChangePage'
@@ -34,8 +35,14 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
   },
 
   render: function (type) {
+    this.type = type;
     var searchAttributes = {
-      type: (type === 'pending' ? 'pending' : 'members'),
+      type: (type === 'pending'
+        ? 'pending'
+        : type === 'allowed'
+          ? 'members'
+          : 'banned'
+      ),
       selector: {start: (this.page - 1) * this.paginate, length: this.paginate}
     };
 
@@ -59,7 +66,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
       element.message = _.escape(element.message);
     });
 
-    this.$ctn.html(this.template({users: data.users}));
+    this.$ctn.html(this.template({users: data.users, type: this.type}));
     this.pagination.html(this.paginationTemplate({
       currentPage: this.page,
       totalNbPages: Math.ceil(data.count / this.paginate),
@@ -77,6 +84,19 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
     if (userId && userName) {
       confirmationView.open({message: 'accept-user', username: userName}, _.bind(function () {
         client.groupAllow(this.groupId, userId, _.bind(function (data) {
+          app.trigger('redraw-tables');
+        }, this));
+      }, this));
+    }
+  },
+
+  onDebanGroupUser: function (event) {
+    var userId = $(event.currentTarget).data('user-id');
+    var userName = $(event.currentTarget).data('username');
+
+    if (userId && userName) {
+      confirmationView.open({message: 'deban-group-user', username: userName}, _.bind(function () {
+        client.groupDeban(this.groupId, userId, _.bind(function (data) {
           app.trigger('redraw-tables');
         }, this));
       }, this));
@@ -145,4 +165,4 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
   }
 });
 
-module.exports = DrawerRoomUsersTableView;
+module.exports = DrawerGroupUsersTableView;

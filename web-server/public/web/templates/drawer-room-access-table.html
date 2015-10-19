@@ -7,20 +7,26 @@
                 <a href="#" class="colored open-user-profile" data-user-id="<%= u.user_id %>">@<%= u.username %></a>
             </td>
             <td class="actions" style="text-align: right; width: 1px;">
-                <% if (u.isPending) { %>
-                    <div class="show-message" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>">
-                        <i class="icon icon-fw icon-pencil curp" data-toggle="popover" data-trigger="hover" title="@<%= u.username %>" data-html=true data-content="<%= ('<div>' + u.mail + '</div>' + ((u.name) ? '<div>' + u.name + '</div>' : '') + ((u.message) ? u.message : '') + '<div class=\'text-right mt-10\'>' + u.date + '</div>') %>" data-placement="top"></i>
+                <% if (type === 'banned') { %>
+                    <div class="deban-group" data-toggle="confirmation" data-action="deban-group-user" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>">
+                        <i class="icon icon-ban icon-deban curp" data-toggle="tooltip" data-placement="top" title="<%= t('chat.deban-group.infobox') %>"></i>
                     </div>
-                    <div class="accept-allow" data-toggle="confirmation" data-action="accept-allow-user" title="<%= t('global.accept') %>" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>">
-                        <i class="icon icon-fw icon-check curp" data-toggle="tooltip" data-placement="top" title="<%= t('chat.allow.infobox.accept') %>"></i>
-                    </div>
-                    <div class="refuse-allow" data-toggle="confirmation" data-action="refuse-allow-user" title="<%= t('global.refuse') %>" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>">
-                        <i class="icon icon-fw icon-times curp" data-toggle="tooltip" data-placement="top" title="<%= t('chat.allow.infobox.refuse') %>"></i>
-                    </div>
+                <% } else { %>
+                    <% if (u.isPending) { %>
+                        <div class="show-message" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>">
+                            <i class="icon icon-fw icon-pencil curp" data-toggle="popover" data-trigger="hover" title="@<%= u.username %>" data-html=true data-content="<%= ('<div>' + u.mail + '</div>' + ((u.name) ? '<div>' + u.name + '</div>' : '') + ((u.message) ? u.message : '') + '<div class=\'text-right mt-10\'>' + u.date + '</div>') %>" data-placement="top"></i>
+                        </div>
+                        <div class="accept-allow" data-toggle="confirmation" data-action="accept-allow-user" title="<%= t('global.accept') %>" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>">
+                            <i class="icon icon-fw icon-check curp" data-toggle="tooltip" data-placement="top" title="<%= t('chat.allow.infobox.accept') %>"></i>
+                        </div>
+                        <div class="refuse-allow" data-toggle="confirmation" data-action="refuse-allow-user" title="<%= t('global.refuse') %>" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>">
+                            <i class="icon icon-fw icon-times curp" data-toggle="tooltip" data-placement="top" title="<%= t('chat.allow.infobox.refuse') %>"></i>
+                        </div>
                     <% } else { %>
-                    <div class="disallow" data-toggle="confirmation" data-action="disallow-user" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>">
-                        <i class="icon icon-fw icon-times curp" data-toggle="tooltip" data-placement="top" title="<%= t('chat.disallow.infobox') %>"></i>
-                    </div>
+                        <div class="disallow" data-toggle="confirmation" data-action="disallow-user" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>">
+                            <i class="icon icon-fw icon-times curp" data-toggle="tooltip" data-placement="top" title="<%= t('chat.disallow.infobox') %>"></i>
+                        </div>
+                    <% } %>
                 <% } %>
             </td>
         </tr>

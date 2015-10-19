@@ -212,6 +212,26 @@ roomSchema.methods.isBanned = function (userId) {
   return (typeof doc !== 'undefined');
 };
 
+roomSchema.methods.isInGroupBanned = function (userId) {
+  if (!this.group || !this.group.bans || !this.group.bans.length) {
+    return;
+  }
+
+  return _.find(this.group.bans, function (ban) {
+    if (ban.user._id) {
+      // populated
+      return (ban.user.id === userId);
+    } else {
+      return (ban.user.toString() === userId);
+    }
+  });
+};
+
+roomSchema.methods.isGroupBanned = function (userId) {
+  var doc = this.isInGroupBanned(userId);
+  return (typeof doc !== 'undefined');
+};
+
 roomSchema.methods.isDevoice = function (userId) {
   if (!this.devoices || !this.devoices.length) {
     return false;
@@ -309,7 +329,7 @@ roomSchema.methods.isGoodPassword = function (userId, password) {
     return true;
   }
   if (tries) {
-    tries.count ++;
+    tries.count++;
   } else {
     this.password_tries.push({
       user: userId,
@@ -331,6 +351,9 @@ roomSchema.methods.isUserBlocked = function (userId) {
   }
   if (this.isBanned(userId)) {
     return 'banned';
+  }
+  if (this.isGroupBanned(userId)) {
+    return 'groupbanned';
   }
   if (this.mode === 'public') {
     return false;

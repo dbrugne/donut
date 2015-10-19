@@ -44,6 +44,10 @@ handler.call = function (data, session, next) {
 handler.blocked = function (user, room, blocked, next) {
   async.waterfall([
     function (callback) {
+      if (blocked === 'groupbanned') {
+        return callback(null);
+      }
+
       user.update({ $addToSet: {blocked: room.id} }, function (err) {
         return callback(err);
       });
@@ -57,39 +61,6 @@ handler.blocked = function (user, room, blocked, next) {
     }
 
     return next(null, {code: 403, err: blocked, room: data});
-  });
-};
-
-handler.joinPass = function (user, room, next) {
-  var that = this;
-  async.waterfall([
-    function persist (callback) {
-      room.lastjoin_at = Date.now();
-      room.users.addToSet(user._id);
-      room.allowed.addToSet(user._id);
-      room.save(function (err) {
-        return callback(err);
-      });
-    },
-
-    function removeBlocked (callback) {
-      user.update({$pull: {blocked: room._id}}, function (err) {
-        return callback(err);
-      });
-    },
-
-    function removeAllowedPending (callback) {
-      room.update({$pull: {allowed_pending: {user: user._id}}}, function (err) {
-        return callback(err);
-      });
-    }
-
-  ], function (err) {
-    if (err) {
-      return errors.getHandler('room:join', next)(err);
-    }
-
-    that.join(user, room, next);
   });
 };
 

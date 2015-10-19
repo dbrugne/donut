@@ -301,6 +301,7 @@
     "actions": {
       "search": "Chercher",
       "searchuser": "Inviter un utilisateur",
+      "banuser": "Bannir un utilisateur",
       "create": "créer",
       "adonut": "un donut",
       "account": "mon compte",
@@ -373,6 +374,9 @@
     "deban": {
       "infobox": "Autoriser à nouveau l'utilisateur à rejoindre le donut"
     },
+    "deban-group": {
+      "infobox": "Autoriser à nouveau l'utilisateur à rejoindre le groupe"
+    },
     "banuser": {
       "infobox": "Bloquer cet utilisateur",
       "banned-too": "Cet utilisateur vous a bloqué"
@@ -413,6 +417,8 @@
         "refuseuser": "Vous allez refuser l'accès à @__username__",
         "acceptuser": "Vous allez autoriser l'accès à @__username__",
         "disallowuser": "Vous allez supprimer l'accès à @__username__",
+        "ban-group-user": "Vous allez bannir l'utilisateur @__username__ de ce groupe",
+        "deban-group-user": "Vous allez débannir l'utilisateur @__username__ de ce groupe",
         "invite": "Vous allez autoriser l'accès à @__username__. Une notification va lui être adressée pour l'inviter à rejoindre #__name__.",
         "requestallowance": "Vous allez envoyer une demande d'accés pour #__name__. Le créateur du donut aura accès à votre vrais nom et addresse mail.",
         "requestallowancegroup": "Vous allez envoyer une demande d'accés pour #__name__. Le créateur du groupe aura accès à votre vrais nom et addresse mail."
@@ -469,6 +475,7 @@
       "roomdeop": " n'est plus modérateur à la demande de ",
       "roomvoice": " a retrouvé la parole à la demande de ",
       "roomdevoice": " est muet à la demande de ",
+      "roomgroupban": " a été banni du groupe à la demande de ",
       "in": "est entré à",
       "out": "est sorti à",
       "online": "est en ligne,",
@@ -498,7 +505,10 @@
         "groupjoinrequest": "<span>@__username__</span> souhaite rejoindre <span>#__name__</span>",
         "groupallowed": "Vous êtes autorisé à rejoindre <span>#__name__</span>",
         "groupinvite": "<span>@__username__</span> vous invite à rejoindre <span>#__name__</span>",
-        "grouprefuse": "Demande d'accès au groupe <span>#__name__</span></br> refusée"
+        "grouprefuse": "Demande d'accès au groupe <span>#__name__</span></br> refusée",
+        "groupban": "Vous êtes banni du groupe <span>#__name__</span>",
+        "groupop": "Vous êtes maintenant modérateur du groupe <span>#__name__</span>",
+        "groupdeop": "Vous n'êtes plus modérateur du groupe <span>#__name__</span>"
       },
       "userban": " est bloqué à la demande de",
       "userdeban": " n'est plus bloqué à la demande de"
@@ -524,6 +534,7 @@
     "alert": {
       "kick": "Vous venez d'être expulsé de __name__",
       "ban": "Vous venez d'être banni de __name__",
+      "groupban": "Vous venez d'être banni du groupe __name__",
       "allowed": "Vous ne faites plus partie de la liste des gens autorisés dans __name__"
     },
     "roomnotexists": "Le donut __name__ n'existe pas, <a class='open-create-room' data-name='__name__'>souhaitez-vous le créer </a> ?",
@@ -543,6 +554,8 @@
         "users": "Utilisateurs",
         "op": "Modérateurs",
         "allowed": "Utilisateurs autorisés",
+        "regular": "Utilisateurs autorisés",
+        "pending": "Utilisateurs en attente",
         "ban": "Bannis",
         "devoice": "Muets",
         "members": "Membres"
@@ -630,6 +643,7 @@
       "password_placeholder": "Mot de passe",
       "password_button": "Rejoindre",
       "banned": "Vous avez été banni de ce donut le __at__",
+      "groupbanned": "Vous avez été banni de ce groupe le __at__",
       "reason": "pour la raison suivante : ",
       "kicked": "Vous avez été expulsé de ce donut.",
       "kicked_button": "Rejoindre",
@@ -753,7 +767,8 @@
           "description": {
             "label": "Description",
             "placeholder": "Décrivez le donut en quelques mots",
-            "help": "Facultatif"
+            "help": "Facultatif",
+            "conditions": "La phrase suivante sera affichée lorsqu'un utilisateur demandera un accès"
           },
           "visibility": {
             "label": "Visibilité (administrateur)",
@@ -1107,6 +1122,33 @@
         "disclaimer": "Ne vous inquiétez pas vous pouvez toujours refaire une demande plus tard !",
         "button": "Accéder au groupe"
       }
+    },
+    "groupban": {
+      "subject": "Vous avez été banni du groupe #__groupname__",
+      "content": {
+        "title": "Vous avez été banni du groupe #__groupname__",
+        "disclaimer": "",
+        "button": "Retourner sur DONUT"
+      }
+    },
+    "groupop": {
+      "subject": "Vous avez été promu modérateur du groupe #__groupname__",
+      "content": {
+        "title": "Vous avez été promu modérateur du groupe #__groupname__",
+        "disclaimer": "Félicitations ! Vous êtes désormais modérateur de ",
+        "disclaimer2": "Il est temps d'aller exercer vos nouveaux super pouvoirs",
+        "action": "…et tout ça grâce à ",
+        "button": "Accéder à la discussion"
+      }
+    },
+    "groupdeop": {
+      "subject": "Vous n'êtes plus modérateur du groupe #__groupname__",
+      "content": {
+        "title": "Vous n'êtes plus modérateur du groupe #__groupname__",
+        "disclaimer": "Aïe! La bonne nouvelle, vous allez avoir un peu plus de temps à consacrer à votre propre donut:)",
+        "action": "…et tout ça grâce à ",
+        "button": "Retourner sur DONUT"
+      }
     }
   },
   "welcome": {
@@ -1116,7 +1158,7 @@
       "<p>Vous allez maintenant pouvoir discuter avec des gens sympas qui partagent vos centres d'intérêt. Choisissez le donut que vous aimez :</p>"
     ],
     "donotshowagain": "Ne plus afficher ce message à l'avenir",
-    "nothing": "Aucun de ceux-là n'est à mon goût, aller sur <strong>#donut</strong>"
+    "nothing": "Aucun de ceux-là n'est à mon goût, aller sur <strong>#donut/donut</strong>"
   },
   "contactform": {
     "title": "Contactez-nous",
