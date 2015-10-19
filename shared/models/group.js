@@ -17,6 +17,11 @@ var groupSchema = mongoose.Schema({
     message: String,
     created_at: {type: Date, default: Date.now}
   }],
+  bans: [{
+    user: {type: mongoose.Schema.ObjectId, ref: 'User'},
+    reason: String,
+    banned_at: {type: Date, default: Date.now}
+  }],
   password: String,
   password_indication: String,
   avatar: String,
@@ -54,6 +59,33 @@ groupSchema.statics.listByName = function (names) {
 
 groupSchema.methods.validPassword = function (password) {
   return password === this.password;
+};
+
+groupSchema.methods.isIn = function (userId) {
+  var subDocument = _.find(this.members, function (users) {
+    return (users.id === userId);
+  });
+  return (typeof subDocument !== 'undefined');
+};
+
+groupSchema.methods.isInBanned = function (userId) {
+  if (!this.bans || !this.bans.length) {
+    return;
+  }
+
+  return _.find(this.bans, function (ban) {
+    if (ban.user._id) {
+      // populated
+      return (ban.user.id === userId);
+    } else {
+      return (ban.user.toString() === userId);
+    }
+  });
+};
+
+groupSchema.methods.isBanned = function (userId) {
+  var doc = this.isInBanned(userId);
+  return (typeof doc !== 'undefined');
 };
 
 groupSchema.methods.isMember = function (userId) {
@@ -175,7 +207,11 @@ groupSchema.methods.getIdsByType = function (type) {
     });
   } else if (type === 'op') {
     _.each(this.op, function (u) {
-      ids.push(u.toString());
+      if (u._id) {
+        ids.push(u.id);
+      } else {
+        ids.push(u.toString());
+      }
     });
     if (this.owner._id) {
       ids.push(this.owner._id.toString());
@@ -185,8 +221,12 @@ groupSchema.methods.getIdsByType = function (type) {
   } else if (type === 'regular') {
     _.each(this.members, function (u) {
       if (!that.isOwnerOrOp(u.toString())) {
-        ids.push(u.toString());
+        ids.push(u.id);
       }
+    });
+  } else if (type === 'banned') {
+    _.each(this.bans, function (ban) {
+      ids.push(ban.user.id);
     });
   }
   return ids;

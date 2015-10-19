@@ -60,6 +60,7 @@ Filter.prototype.before = function (data, session, next) {
       GroupModel.findOne({ _id: data.group_id })
         .populate('owner', 'username avatar color facebook')
         .populate('op', 'username avatar color facebook')
+        .populate('bans.user', 'username avatar color facebook')
         .populate('members', 'username avatar color facebook')
         .exec(callback);
     },
@@ -74,7 +75,7 @@ Filter.prototype.before = function (data, session, next) {
 
       RoomModel.findOne({ _id: data.room_id })
         .populate('owner', 'username avatar color facebook')
-        .populate('group', 'name members owner')
+        .populate('group', 'name members bans owner')
         .exec(callback);
     },
 

@@ -8,6 +8,7 @@ var client = require('../libs/client');
 var ConfirmationView = require('./modal-confirmation');
 var TableView = require('./drawer-group-access-table');
 var i18next = require('i18next-client');
+var currentUser = require('../models/current-user');
 
 var RoomAccessView = Backbone.View.extend({
 
@@ -21,14 +22,24 @@ var RoomAccessView = Backbone.View.extend({
 
   timeBufferBeforeSearch: 1000,
 
-  timeout: 0,
+  timeout: {
+    user: 0,
+    ban: 0
+  },
 
   events: {
-    'keyup input[type=text]': 'onSearch',
+    'blur #input-search': 'resetDropdowns',
+    'keyup #input-search': 'onSearchUser',
+    'click .search-user i.icon-search': 'onSearchUser',
+    'click .search-user .dropdown-menu>li': 'onAllowUser',
+
+    'blur #input-search-ban': 'resetDropdowns',
+    'keyup #input-search-ban': 'onSearchBan',
+    'click .search-ban i.icon-search': 'onSearchBan',
+    'click .search-ban .dropdown-menu>li': 'onBanUser',
+
     'click input.save-access': 'onSubmit',
     'click input.save-conditions': 'onSubmitConditions',
-    'click i.icon-search': 'onSearch',
-    'click .dropdown-menu>li': 'onAllowUser',
     'change [type="checkbox"]': 'onChoosePassword',
     'click .random-password': 'onRandomPassword',
     'keyup #conditions-area': 'onTypeConditions'
@@ -37,7 +48,6 @@ var RoomAccessView = Backbone.View.extend({
   initialize: function (options) {
     this.groupId = options.group_id;
     this.render();
-
     this.reload();
   },
   render: function () {
@@ -48,7 +58,7 @@ var RoomAccessView = Backbone.View.extend({
   reload: function () {
     var what = {
       more: true,
-      users: false,
+      users: true,
       admin: true
     };
     client.groupRead(this.groupId, what, _.bind(function (data) {
@@ -58,6 +68,14 @@ var RoomAccessView = Backbone.View.extend({
     }, this));
   },
   onResponse: function (data) {
+    this.model = data;
+
+    data.isOwner = (data.owner_id === currentUser.get('user_id'));
+    data.isAdmin = currentUser.isAdmin();
+    data.isOp = !!_.find(data.members, function (item) {
+      return (item.user_id === currentUser.get('user_id') && item.is_op === true);
+    });
+
     this.listenTo(app, 'redraw-tables', this.renderTables);
 
     this.currentPassword = data.password;
@@ -73,9 +91,13 @@ var RoomAccessView = Backbone.View.extend({
     this.$el.html(html);
 
     this.$errors = this.$('.errors');
-    this.$search = this.$('input[type=text]');
-    this.$dropdown = this.$('.dropdown');
-    this.$dropdownMenu = this.$('.dropdown-menu');
+
+    this.$search = this.$('#input-search');
+    this.$dropdown = this.$('.search-user .dropdown');
+
+    this.$searchBan = this.$('#input-search-ban');
+    this.$dropdownBan = this.$('.search-ban .dropdown');
+
     this.$toggleCheckbox = this.$('#input-password-checkbox');
     this.$checkboxGroupAllow = this.$('#input-allowgroupmember-checkbox');
     this.$password = this.$('.input-password');
@@ -97,6 +119,10 @@ var RoomAccessView = Backbone.View.extend({
       el: this.$('.allowed'),
       group_id: this.groupId
     });
+    this.tableBanned = new TableView({
+      el: this.$('.banned'),
+      group_id: this.groupId
+    });
     this.renderTables();
 
     this.initializeTooltips();
@@ -104,21 +130,25 @@ var RoomAccessView = Backbone.View.extend({
   renderTables: function () {
     this.tablePending.render('pending');
     this.tableAllowed.render('allowed');
+    this.tableBanned.render('banned');
   },
   renderPendingTable: function () {
     this.tablePending.render('pending');
   },
-  renderDropDown: function () {
-    this.$dropdown.addClass('open');
-    this.$dropdownMenu.html(require('../templates/spinner.html'));
+  renderDropDown: function (val, dropdown) {
+    this.$dropdown.removeClass('open');
+    this.$dropdownBan.removeClass('open');
+
+    dropdown.addClass('open');
+    var dropdownMenu = dropdown.find('.dropdown-menu');
+    dropdownMenu.html(require('../templates/spinner.html'));
 
     var that = this;
-    client.search(this.$search.val(), false, true, false, 15, 0, false, false, function (data) {
+    client.search(val, false, true, false, 15, 0, false, false, function (data) {
       _.each(data.users.list, function (element, index, list) {
         list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 20);
       });
-
-      that.$dropdownMenu.html(that.dropdownTemplate({users: data.users.list}));
+      dropdownMenu.html(that.dropdownTemplate({users: data.users.list}));
     });
   },
   _remove: function () {
@@ -128,25 +158,48 @@ var RoomAccessView = Backbone.View.extend({
     if (this.tableAllowed) {
       this.tableAllowed.remove();
     }
+    if (this.tableBanned) {
+      this.tableBanned.remove();
+    }
     this.remove();
   },
-  onSearch: function (event) {
+  onSearchUser: function (event) {
+    var key = keyboard._getLastKeyCode(event);
+    if (key.key === keyboard.ESC && (this.$dropdown.hasClass('open') || this.$dropdownBan.hasClass('open'))) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.resetDropdowns();
+    }
+    this.onSearch(event, 'user', this.$search, this.$dropdown);
+  },
+  onSearchBan: function (event) {
+    var key = keyboard._getLastKeyCode(event);
+    if (key.key === keyboard.ESC && (this.$dropdown.hasClass('open') || this.$dropdownBan.hasClass('open'))) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.resetDropdowns();
+    }
+    this.onSearch(event, 'ban', this.$searchBan, this.$dropdownBan);
+  },
+  onSearch: function (event, type, search, dropdown) {
     event.preventDefault();
+    var val = search.val();
 
-    clearTimeout(this.timeout);
+    clearTimeout(this.timeout[type]);
 
-    if (this.$search.val() === '') {
-      this.$dropdown.removeClass('open');
+    if (val === '') {
+      dropdown.removeClass('open');
       return;
     }
+
     var key = keyboard._getLastKeyCode(event);
     if (event.type === 'click' || key.key === keyboard.RETURN) { // instant search when user click on icon or press enter
-      this.renderDropDown();
+      this.renderDropDown(val, dropdown);
       return;
     }
 
-    this.timeout = setTimeout(_.bind(function () {
-      this.renderDropDown();
+    this.timeout[type] = setTimeout(_.bind(function () {
+      this.renderDropDown(val, dropdown);
     }, this), this.timeBufferBeforeSearch);
   },
   onAllowUser: function (event) {
@@ -156,9 +209,14 @@ var RoomAccessView = Backbone.View.extend({
     var userName = $(event.currentTarget).data('username');
 
     if (userId && userName) {
-      ConfirmationView.open({message: 'invite', username: userName, room_name: this.group_name}, _.bind(function () {
+      ConfirmationView.open({
+        message: 'invite',
+        username: userName,
+        room_name: this.group_name
+      }, _.bind(function () {
         client.groupAllow(this.groupId, userId, _.bind(function () {
-          // this.renderTables();
+          this.tablePending.render('pending');
+          this.tableAllowed.render('allowed');
         }, this));
       }, this));
     }
@@ -166,6 +224,38 @@ var RoomAccessView = Backbone.View.extend({
     // Close dropdown
     this.$dropdown.removeClass('open');
     this.$search.val('');
+  },
+  onBanUser: function (event) {
+    event.preventDefault();
+
+    var userId = $(event.currentTarget).data('userId');
+    var userName = $(event.currentTarget).data('username');
+
+    if (userId && userName) {
+      ConfirmationView.open({
+        message: 'ban-group-user',
+        username: userName,
+        room_name: this.group_name
+      }, _.bind(function () {
+        client.groupBan(this.groupId, userId, _.bind(function () {
+          this.renderTables();
+          this.resetSearch();
+        }, this));
+      }, this));
+    }
+
+    // Close dropdown
+    this.$dropdown.removeClass('open');
+    this.$search.val('');
+  },
+  resetDropdowns: function () {
+    this.$dropdown.removeClass('open');
+    this.$dropdownBan.removeClass('open');
+  },
+  resetSearch: function () {
+    this.resetDropdowns();
+    this.$search.val('');
+    this.$searchBan.val('');
   },
   onChoosePassword: function (event) {
     // Display block on click

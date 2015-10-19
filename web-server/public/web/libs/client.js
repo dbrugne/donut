@@ -24,6 +24,10 @@ var client = _.extend({
       // donut
       'welcome',
       'group:updated',
+      'group:ban',
+      'group:op',
+      'group:deop',
+      'room:groupban',
       'room:join',
       'room:request',
       'room:leave',
@@ -202,6 +206,24 @@ var client = _.extend({
       this.applyRequestCallback('group:allow', callback)
     );
   },
+  groupBan: function (groupId, userId, callback) {
+    var data = {group_id: groupId, user_id: userId};
+    debug('io:out:group:ban', data);
+    pomelo.request(
+      'chat.groupBanHandler.call',
+      data,
+      this.applyRequestCallback('group:ban', callback)
+    );
+  },
+  groupDeban: function (groupId, userId, callback) {
+    var data = {group_id: groupId, user_id: userId};
+    debug('io:out:group:deban', data);
+    pomelo.request(
+      'chat.groupDebanHandler.call',
+      data,
+      this.applyRequestCallback('group:deban', callback)
+    );
+  },
   groupUsers: function (groupId, attributes, callback) {
     var data = {group_id: groupId, attributes: attributes};
     debug('io:out:group:users', data);
@@ -265,6 +287,36 @@ var client = _.extend({
       'chat.groupJoinHandler.call',
       data,
       this.applyRequestCallback('group:join', callback)
+    );
+  },
+  groupOp: function (roomId, userId, callback) {
+    var data = {group_id: roomId};
+    if (userId) {
+      data.user_id = userId;
+    } else {
+      return;
+    }
+
+    debug('io:out:group:op', data);
+    pomelo.request(
+      'chat.groupOpHandler.call',
+      data,
+      this.applyRequestCallback('group:op', callback)
+    );
+  },
+  groupDeop: function (roomId, userId, callback) {
+    var data = {group_id: roomId};
+    if (userId) {
+      data.user_id = userId;
+    } else {
+      return;
+    }
+
+    debug('io:out:group:deop', data);
+    pomelo.request(
+      'chat.groupDeopHandler.call',
+      data,
+      this.applyRequestCallback('group:deop', callback)
     );
   },
 

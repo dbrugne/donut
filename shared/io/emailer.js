@@ -424,3 +424,39 @@ emailer.groupRefuse = function (to, data, callback) {
     grouplink: { chat: groupUrl.chat }
   }, callback);
 };
+
+emailer.groupBan = function (to, data, callback) {
+  data.name = data.groupname;
+  var groupUrl = urls(data, 'group', 'https', conf.fqdn);
+  sendEmail(to, 'emails/group-ban.html', {
+    username: data.username,
+    groupname: data.groupname.replace('#', ''),
+    title: i18next.t('email.groupban.content.title', { groupname: data.groupname.replace('#', '')}),
+    subject: i18next.t('email.groupban.subject', { groupname: data.groupname.replace('#', '') }),
+    grouplink: { chat: groupUrl.chat }
+  }, callback);
+};
+
+emailer.groupOp = function (to, data, callback) {
+  data.name = data.groupname;
+  var groupUrl = urls(data, 'group', 'https', conf.fqdn);
+  sendEmail(to, 'emails/group-op.html', {
+    username: data.username,
+    groupname: data.groupname.replace('#', ''),
+    title: i18next.t('email.groupop.content.title', { groupname: data.groupname.replace('#', '')}),
+    subject: i18next.t('email.groupop.subject', { groupname: data.groupname.replace('#', '') }),
+    grouplink: { chat: groupUrl.chat, url: groupUrl.url }
+  }, callback);
+};
+
+emailer.groupDeop = function (to, data, callback) {
+  data.name = data.groupname;
+  var groupUrl = urls(data, 'group', 'https', conf.fqdn);
+  sendEmail(to, 'emails/group-deop.html', {
+    username: data.username,
+    groupname: data.groupname.replace('#', ''),
+    title: i18next.t('email.groupdeop.content.title', { groupname: data.groupname.replace('#', '')}),
+    subject: i18next.t('email.groupdeop.subject', { groupname: data.groupname.replace('#', '') }),
+    grouplink: { chat: groupUrl.chat, url: groupUrl.url }
+  }, callback);
+};

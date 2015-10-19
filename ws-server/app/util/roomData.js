@@ -54,6 +54,17 @@ module.exports = function (user, room, fn) {
     }
   }
 
+  // group banned user
+  if (room.group && room.isGroupBanned(user.id)) {
+    data.blocked = true;
+    var doc = room.isInGroupBanned(user.id);
+    data.banned_at = doc.banned_at;
+    data.blocked = 'groupbanned';
+    if (doc.reason) {
+      data.reason = doc.reason;
+    }
+  }
+
   // user can join
   if (!data.blocked) {
     data.op = room.op;
