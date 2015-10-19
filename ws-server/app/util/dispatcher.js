@@ -11,7 +11,7 @@ module.exports = function (type) {
   return function (session, msg, app, cb) {
     var servers = app.getServersByType(type);
     if (!servers || !servers.length) {
-      return cb(new Error('can not find servers of type ' + type));
+      return cb(new Error('can\'t find servers of type ' + type));
     }
 
     var res = dispatch(session.uid, servers);

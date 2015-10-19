@@ -9,7 +9,6 @@
  */
 var logger = require('../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var _ = require('underscore');
-var dispatcher = require('../../util/dispatcher');
 var adminNotifyTask = require('./tasks/adminNotifyTask');
 var createNotificationTask = require('./tasks/createNotificationTask');
 
@@ -138,15 +137,6 @@ Module.prototype.masterNotify = function (agent, request) {
 };
 
 /**
- * Find and return a server (randomly) in list
- *
- * @param list Array
- */
-Module.prototype.dispatch = function (list) {
-  return dispatcher.dispatch(Math.floor(Math.random() * 10), list);
-};
-
-/**
  * Bridge entry-point, could works as notify (without callback) or request handler
  *
  * @param agent
@@ -189,7 +179,8 @@ Module.prototype.clientHandler = function (agent, query, fn) {
       break;
     case 'connector':
     case 'chat':
-      var server = this.dispatch(agent.typeMap[query.target]);
+      var servers = agent.typeMap[query.target];
+      var server = servers[0];
       if (query.type === 'request') {
         agent.request(server.id, moduleId, query, callback);
       } else {
