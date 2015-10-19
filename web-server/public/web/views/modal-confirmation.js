@@ -20,7 +20,8 @@ var ConfirmationModalView = Backbone.View.extend({
 
   isRendered: false,
 
-  initialize: function (options) {},
+  initialize: function (options) {
+  },
   render: function () {
     this.$inputBlock = this.$('.input');
     this.$input = this.$inputBlock.find('input[type="text"]');
@@ -118,8 +119,15 @@ var ConfirmationModalView = Backbone.View.extend({
         this.$message.text(i18next.t('chat.confirmation.message.acceptuser', {username: this.options.username}));
       } else if (this.options.message === 'disallow-user') {
         this.$message.text(i18next.t('chat.confirmation.message.disallowuser', {username: this.options.username}));
+      } else if (this.options.message === 'ban-group-user') {
+        this.$message.text(i18next.t('chat.confirmation.message.ban-group-user', {username: this.options.username}));
+      } else if (this.options.message === 'deban-group-user') {
+        this.$message.text(i18next.t('chat.confirmation.message.deban-group-user', {username: this.options.username}));
       } else if (this.options.message === 'invite') {
-        this.$message.text(i18next.t('chat.confirmation.message.invite', {username: this.options.username, name: this.options.room_name}));
+        this.$message.text(i18next.t('chat.confirmation.message.invite', {
+          username: this.options.username,
+          name: this.options.room_name
+        }));
       } else if (this.options.message === 'request-allowance') {
         this.$message.text(i18next.t('chat.confirmation.message.requestallowance', {name: this.options.room_name}));
       } else if (this.options.message === 'request-allowance-group') {

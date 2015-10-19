@@ -1,0 +1,43 @@
+<div class="relative">     <span class="close icon icon-times"></span> </div>
+
+<div class="title">
+    <%= t('chat.users.link') %>
+    <%= '#' + group.name %>
+</div>
+
+<div class="ctn-drawer">
+    <div class="errors block"></div>
+
+    <div class="search block inline">
+        <label for="input-search"><%= t('chat.users.username') %></label>
+        <div class="blank flex-child"></div>
+        <div>
+            <input type="text" id="input-search" placeholder="<%= t('chat.users.search') %>" class="form-control flex-child" />
+            <i class="icon icon-search"></i>
+            <div class="dropdown">
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1"></ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="block inline mt5">
+        <label for="type-select"><%= t('chat.users.usertype') %></label>
+        <div class="blank flex-child"></div>
+        <div>
+            <select name="type" id="type-select" class="form-control">
+                <% _.each(type, function(type) { %>
+                <option value="<%= type %>"><%= t('chat.users.type.' + type) %></option>
+                <% }); %>
+            </select>
+        </div>
+    </div>
+
+    <div class="user-number block">
+        <span><strong class="number"></strong></span>
+        <span class="user-label"></span>
+    </div>
+
+    <div class="table-users block"></div>
+
+    <div class="paginate flex-parent block"></div>
+</div>
