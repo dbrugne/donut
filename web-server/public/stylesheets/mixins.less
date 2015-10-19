@@ -521,6 +521,7 @@
     .dc-text-contrast { .color-text(@color); }
     .dc-border { border-color: @color; }
     .dc-border-darker { border-color: darken(@color, 10%); }
+    .dc-gradient { background: linear-gradient(to bottom, rgba(red(@color), green(@color), blue(@color),0) 15%,rgba(red(@color), green(@color), blue(@color),0) 37%,rgba(red(@color), green(@color), blue(@color),1) 100%); }
   }
 
   .dc-i-@{code} {
@@ -533,6 +534,7 @@
     .dc-text-contrast { .color-text(@color) !important; }
     .dc-border { border-color: @color !important; }
     .dc-border-darker { border-color: darken(@color, 10%) !important; }
+    .dc-gradient { background: linear-gradient(to bottom, rgba(red(@color), green(@color), blue(@color),0) 15%,rgba(red(@color), green(@color), blue(@color),0) 37%,rgba(red(@color), green(@color), blue(@color),1) 100%)  !important; }
   }
 
   .color-loop (@index - 1);

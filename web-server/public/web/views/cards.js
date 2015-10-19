@@ -23,11 +23,11 @@ var CardsView = Backbone.View.extend({
           card.join = urls(card, 'room', null, null, 'uri');
           if (card.group_id) {
             card.group_url = urls(card, 'group', null, null, 'uri');
-            card.group_avatar = common.cloudinary.prepare(card.group_avatar, 135);
+            card.group_avatar = common.cloudinary.prepare(card.group_avatar, 200);
           }
           break;
         case 'group':
-          card.avatar = common.cloudinary.prepare(card.avatar, 135);
+          card.avatar = common.cloudinary.prepare(card.avatar, 200);
           card.join = urls(card, 'group', null, null, 'uri');
           break;
       }

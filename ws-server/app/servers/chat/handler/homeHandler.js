@@ -18,7 +18,9 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
-  var homeEvent = {};
+  var homeEvent = {
+    cards: {}
+  };
   var roomLimit = 100;
   var userLimit = 100;
 
@@ -120,7 +122,6 @@ handler.call = function (data, session, next) {
 
           users = _.sortBy(users, 'sort');
 
-          homeEvent.cards = {};
           if (users.length > userLimit) {
             users.pop();
             homeEvent.cards.more = true;
@@ -131,6 +132,7 @@ handler.call = function (data, session, next) {
           return callback(null);
         });
       },
+
       function computeResults (callback) {
         var _list = [];
         _.each(rooms, function (room) {
@@ -215,14 +217,13 @@ handler.call = function (data, session, next) {
           return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
         });
 
-        homeEvent.cards = {};
         if (_list.length > roomLimit) {
           _list.pop();
           homeEvent.cards.more = true;
         } else {
           homeEvent.cards.more = false;
         }
-        homeEvent.cards.list = _list;
+        homeEvent.cards.list = _.union(homeEvent.cards.list, _list);
 
         return callback(null);
       },
