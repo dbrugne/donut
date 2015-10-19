@@ -16,6 +16,31 @@ require('bootstrap/js/collapse');
 // contact form
 $('[data-toggle="contactform"]').contactform({});
 
+// client
+var getTokenFromSession = function (callback) {
+  $.ajax({
+    url: '/oauth/get-token-from-session',
+    type: 'GET',
+    dataType: 'json',
+    success: function (json) {
+      if (json.err) {
+        return callback(json.err);
+      }
+      return callback(null, json.token);
+    },
+    error: function (xhr, status, errorThrown) {
+      return callback(errorThrown);
+    }
+  });
+};
+var client = require('./libs/client');
+client.setup({
+  device: 'browser',
+  host: '//' + window.location.hostname,
+  retrieveToken: getTokenFromSession,
+  invalidToken: getTokenFromSession
+});
+
 // run
 require('./libs/router');
 var mainView = require('./views/main');

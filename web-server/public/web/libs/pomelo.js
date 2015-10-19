@@ -1,4 +1,3 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var donutDebug = require('./donut-debug');
@@ -23,28 +22,21 @@ var pomelo = _.extend({
   protocolHeaderLength: 5, // pomelo protocol message header size
                            // (https://github.com/NetEase/pomelo/wiki/Communication-Protocol)
 
-  initialize: function (options) {
-    this.settings = _.extend(options, {
-      //
-    });
+  setup: function (options) {
+    this.options = _.extend(options, this.options);
   },
 
   /**
    * Public API
    */
   connect: function (host, port) {
-    debug.start('sio_connect');
     if (this.isConnected()) {
       this.disconnect();
     }
 
     // in console: client.connect('chat.local', 3050)
-    if (!host) {
-      host = window.location.hostname;
-    }
-
     var server = {
-      host: host,
+      host: host || this.options.host,
       port: port || null
     };
     return this._connect(server);
@@ -94,45 +86,19 @@ var pomelo = _.extend({
    * Private API
    */
   _connect: function (server) {
-    debug.end('sio_connect');
-
-    var that = this;
-    this._requestToken(false, function (err, token) {
-      if (err) {
-        return that.trigger('error', err);
-      }
-
-      that._sio(server);
-    });
-  },
-  _requestToken: function (force, fn) {
-    if (this.token && !force) {
-      return fn(null, this.token);
+    if (this.token) {
+      return this._sio(server);
     }
 
-    debug.start('sio_token');
-    var that = this;
-    $.ajax({
-      url: '/oauth/get-token-from-session',
-      type: 'GET',
-      dataType: 'json',
-      success: function (json) {
-        if (json.err) {
-          return fn(json.err);
-        }
-
-        that.token = json.token;
-        debug.end('sio_token');
-        return fn(null, json.token);
-      },
-      error: function (xhr, status, errorThrown) {
-        debug.end('sio_token');
-        return fn(errorThrown);
+    this.options.retrieveToken(_.bind(function (err, token) {
+      if (err) {
+        return this.trigger('error', err);
       }
-    });
+      this.token = token;
+      this._sio(server);
+    }, this));
   },
   _sio: function (server) {
-    debug.start('sio_connect');
     // @doc: https://github.com/Automattic/engine.io-client#methods
     var options = {
       // multiplex: true,
@@ -143,10 +109,10 @@ var pomelo = _.extend({
       // autoConnect: true,
       forceNew: true, // http://stackoverflow.com/questions/24566847/socket-io-client-connect-disconnect
                       // allow me to connect() disconnect() from console
-      query: 'device=browser'
+      query: 'device=' + this.options.device
     };
 
-    this.current = '//' + server.host;
+    this.current = server.host;
     if (server.port) {
       this.current += ':' + server.port;
     }
@@ -157,21 +123,19 @@ var pomelo = _.extend({
     // triggered when server has confirmed user authentication
     this.socket.on('authenticated', function () {
       debug('authentication accepted');
-      debug.end('sio_connect');
       that.trigger('connect');
       that._requestWelcome();
     });
     this.socket.on('unauthorized', function (error) {
-      debug.end('sio_connect');
       debug('authentication rejected', error);
 
       // special case, reconnection with an expired token
       if (error.message === 'jwt expired') {
-        that._requestToken(true, function (err, token) {
+        that.options.invalidToken(function (err, token) {
           if (err) {
             return that.trigger('error', err);
           }
-
+          that.token = token;
           that._sio(server);
         });
       }
@@ -223,15 +187,12 @@ var pomelo = _.extend({
   },
   _requestWelcome: function () {
     var that = this;
-    debug.start('sio_entryHandler');
     this.request('connector.entryHandler.enter', {}, function (data) {
       if (data.error) {
         return debug('connector.entryHandler.enter returns error', data);
       }
 
       debug('welcome received');
-      debug.end('sio_entryHandler');
-
       that.trigger('welcome', data);
     });
   },
@@ -338,7 +299,5 @@ var pomelo = _.extend({
   }
 
 }, Backbone.Events);
-
-pomelo.initialize();
 
 module.exports = pomelo;

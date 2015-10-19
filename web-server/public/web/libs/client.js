@@ -6,6 +6,7 @@ var pomelo = require('./pomelo');
 var debug = donutDebug('donut:client');
 
 var client = _.extend({
+  options: {},
   initialize: function () {
     var events = [
       // connection/reconnection
@@ -69,6 +70,10 @@ var client = _.extend({
         this.trigger(event, data);
       }, this);
     }, this));
+  },
+  setup: function (options) {
+    this.options = _.extend(options, this.options);
+    pomelo.setup(options);
   },
 
   applyRequestCallback: function (key, callback) {
