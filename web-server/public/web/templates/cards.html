@@ -62,19 +62,19 @@
                 </div>
                 <div class="flex-child flex-parent column content-ctn">
                     <a href="<%= card.url %>" class="name open-room-profile" data-room-id="<%=card.room_id%>"><%= identifierHtml %></a>
+                    <div class="flex-child"></div>
                     <span class="owner">
                         <% if (card.owner_id) { %>
-                            <%= t('global.by') %> <a href="<%= card.owner_url %>">@<%= card.owner_username %></a>
+                            <%= t('global.by') %> <a class="dc-text" href="<%= card.owner_url %>">@<%= card.owner_username %></a>
                         <% } %>
                     </span>
-                    <div class="flex-child"></div>
                     <div class="actions flex-parent jc-center">
-                        <a class="btn btn-default mr5 flex-child" href="<%= card.join %>" data-dismiss="modal">
+                        <a class="clean flex-child" href="<%= card.join %>" data-dismiss="modal">
                             <%= t('actions.join') %>
                             <% if (card.users > 0) { %><%= card.users %><% } %>
                             <i class="icon icon-user-custom cl-warning"></i>
                         </a>
-                        <span class="btn btn-default curp flex-child open-room-profile" data-dismiss="modal" data-room-id="<%=card.room_id%>">
+                        <span class="curp flex-child open-room-profile" data-dismiss="modal" data-room-id="<%=card.room_id%>">
                             View profile
                         </span>
                     </div>
