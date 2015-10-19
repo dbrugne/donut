@@ -67,12 +67,6 @@ module.exports = Backbone.View.extend({
     });
   },
   highlightGroup: function (groupId) {
-    var that = this;
-    _.find(rooms.models, function (room) {
-      if (room.get('group_id') === groupId) {
-        that.$list.find('[data-type="group"][data-group-id="' + groupId + '"]').addClass('active');
-        return true;
-      }
-    });
+    this.$list.find('[data-type="group"][data-group-id="' + groupId + '"]').addClass('active');
   }
 });
