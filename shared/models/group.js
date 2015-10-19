@@ -226,7 +226,7 @@ groupSchema.methods.getIdsByType = function (type) {
     });
   } else if (type === 'banned') {
     _.each(this.bans, function (ban) {
-      ids.push(ban.user.toString());
+      ids.push(ban.user.id);
     });
   }
   return ids;

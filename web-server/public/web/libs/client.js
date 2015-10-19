@@ -219,7 +219,7 @@ var client = _.extend({
     var data = {group_id: groupId, user_id: userId};
     debug('io:out:group:deban', data);
     pomelo.request(
-      'chat.groupBanHandler.deban',
+      'chat.groupDebanHandler.call',
       data,
       this.applyRequestCallback('group:deban', callback)
     );

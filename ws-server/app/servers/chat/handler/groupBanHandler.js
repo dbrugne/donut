@@ -19,14 +19,18 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
-  var user = session.__user__;
-  var currentUser = session.__currentUser__;
+  var targetUser = session.__user__;
+  var user = session.__currentUser__;
   var group = session.__group__;
 
   var that = this;
 
   var rooms = [];
   var event = {};
+  var banUser = {
+    user: targetUser._id,
+    banned_at: new Date()
+  };
   var reason = (data.reason)
     ? inputUtil.filter(data.reason, 512)
     : false;
@@ -46,15 +50,15 @@ handler.call = function (data, session, next) {
           return callback('group-not-found');
         }
 
-        if (!group.isOwner(currentUser.id) && !group.isOp(currentUser.id) && session.settings.admin !== true) {
+        if (!group.isOwner(user.id) && !group.isOp(user.id) && session.settings.admin !== true) {
           return callback('not-admin-owner');
         }
 
-        if (group.isOwner(user.id)) {
+        if (group.isOwner(targetUser.id)) {
           return callback('owner');
         }
 
-        if (group.isBanned(user.id)) {
+        if (group.isBanned(targetUser.id)) {
           return callback('banned');
         }
 
@@ -62,49 +66,45 @@ handler.call = function (data, session, next) {
       },
 
       function persistOnGroup (callback) {
-        var banUser = {
-          user: user._id,
-          banned_at: new Date()
-        };
         if (reason) {
           banUser.reason = reason;
         }
 
         GroupModel.update(
-          {_id: {$in: [group.id]}},
+          {_id: group._id},
           {
             $addToSet: {bans: banUser},
             $pull: {
-              op: user._id,
-              members: user._id,
-              members_pending: {user: user._id}
+              op: targetUser._id,
+              members: targetUser._id,
+              members_pending: {user: targetUser._id}
             }
           }, function (err) {
-            return callback(err, banUser);
+            return callback(err);
           }
         );
       },
 
-      function computeRoomsToProcess (banEvent, callback) {
+      function computeRoomsToProcess (callback) {
         RoomModel.findByGroup(group._id)
           .exec(function (err, dbrooms) {
             if (err) {
               return callback(err);
             }
             rooms = dbrooms;
-            return callback(err, banEvent);
+            return callback(err);
           });
       },
 
-      function persistOnRooms (banEvent, callback) {
+      function persistOnRooms (callback) {
         event = {
-          by_user_id: currentUser._id,
-          by_username: currentUser.username,
-          by_avatar: currentUser._avatar(),
-          user_id: user._id,
-          username: user.username,
-          avatar: user._avatar(),
-          banned_at: banEvent.banned_at
+          by_user_id: user._id,
+          by_username: user.username,
+          by_avatar: user._avatar(),
+          user_id: targetUser._id,
+          username: targetUser.username,
+          avatar: targetUser._avatar(),
+          banned_at: banUser.banned_at
         };
 
         if (reason) {
@@ -115,22 +115,22 @@ handler.call = function (data, session, next) {
           {group: group._id},
           {
             $pull: {
-              users: user._id,
-              op: user._id,
-              allowed: user._id,
-              devoices: {user: user._id},
-              allowed_pending: {user: user._id}
+              users: targetUser._id,
+              op: targetUser._id,
+              allowed: targetUser._id,
+              devoices: {user: targetUser._id},
+              allowed_pending: {user: targetUser._id}
             }
           },
           {multi: true},
           function (err) {
-            return callback(err, banEvent);
+            return callback(err);
           });
       },
 
-      function broadcast (banEvent, callback) {
+      function broadcast (callback) {
         async.each(rooms, function (r, callback) {
-          roomEmitter(that.app, user, r, 'room:groupban', _.clone(event), function (err) {
+          roomEmitter(that.app, targetUser, r, 'room:groupban', _.clone(event), function (err) {
             if (err) {
               return callback(r.id + ': ' + err);
             }
@@ -144,14 +144,14 @@ handler.call = function (data, session, next) {
       function broadcastToUser (callback) {
         event.group_id = group.id;
         event.group_name = '#' + group.name;
-        that.app.globalChannelService.pushMessage('connector', 'group:ban', event, 'user:' + user.id, {}, function (reponse) {
+        that.app.globalChannelService.pushMessage('connector', 'group:ban', event, 'user:' + targetUser.id, {}, function (reponse) {
           return callback(null);
         });
       },
 
       function unsubscribeClients (callback) {
         // search for all the user sessions (any frontends)
-        that.app.statusService.getSidsByUid(user.id, function (err, sids) {
+        that.app.statusService.getSidsByUid(targetUser.id, function (err, sids) {
           if (err) {
             return callback('Error while retrieving user status: ' + err);
           }
@@ -164,7 +164,7 @@ handler.call = function (data, session, next) {
           _.each(sids, function (sid) {
             _.each(rooms, function (room) {
               parallels.push(function (fn) {
-                that.app.globalChannelService.leave(room.name, user.id, sid, function (err) {
+                that.app.globalChannelService.leave(room.name, targetUser.id, sid, function (err) {
                   if (err) {
                     return fn(sid + ': ' + err);
                   }
@@ -175,7 +175,7 @@ handler.call = function (data, session, next) {
           });
           async.parallel(parallels, function (err, results) {
             if (err) {
-              return callback('Error while unsubscribing user ' + user.id + ' : ' + err);
+              return callback('Error while unsubscribing user ' + targetUser.id + ' : ' + err);
             }
 
             return callback(null, event);
@@ -184,84 +184,8 @@ handler.call = function (data, session, next) {
       },
 
       function notification (event, callback) {
-        Notifications(that.app).getType('groupban').create(user.id, group, event, function (err) {
+        Notifications(that.app).getType('groupban').create(targetUser.id, group, event, function (err) {
           return callback(err);
-        });
-      }
-    ],
-    function (err) {
-      if (err) {
-        return errors.getHandler('group:ban', next)(err);
-      }
-
-      return next(null, {success: true});
-    }
-  );
-};
-
-handler.deban = function (data, session, next) {
-  var user = session.__user__;
-  var currentUser = session.__currentUser__;
-  var group = session.__group__;
-
-  var that = this;
-
-  var event = {};
-
-  async.waterfall(
-    [
-      function check (callback) {
-        if (!data.group_id) {
-          return callback('params-group-id');
-        }
-
-        if (!data.user_id) {
-          return callback('params-user-id');
-        }
-
-        if (!group) {
-          return callback('group-not-found');
-        }
-
-        if (!group.isOwner(currentUser.id) && !group.isOp(currentUser.id) && session.settings.admin !== true) {
-          return callback('not-admin-owner');
-        }
-
-        return callback(null);
-      },
-
-      function createEvent (callback) {
-        if (!group.bans || !group.bans.length) {
-          return callback('not-banned');
-        }
-
-        if (!group.isBanned(user.id)) {
-          return callback('not-banned');
-        }
-
-        var subDocument = _.find(group.bans, function (ban) {
-          if (ban.user.toString() === user.id) {
-            return true;
-          }
-        });
-        group.bans.id(subDocument._id).remove();
-        group.save(function (err) {
-          return callback(err);
-        });
-      },
-
-      function broadcast (callback) {
-        event = {
-          by_user_id: currentUser.id,
-          by_username: currentUser.username,
-          by_avatar: currentUser._avatar(),
-          user_id: user.id,
-          username: user.username,
-          avatar: user._avatar()
-        };
-
-        that.app.globalChannelService.pushMessage('connector', 'group:deban', event, 'user:' + user.id, {}, function (reponse) {
-          callback(null);
         });
       }
     ],

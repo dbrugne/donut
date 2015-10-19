@@ -288,7 +288,7 @@ var RoomsCollection = Backbone.Collection.extend({
     });
     model.set('op', ops);
 
-    // remove from this.devoices
+    // remove from devoices
     var devoices = model.get('devoices');
     if (devoices.length) {
       model.set('devoices', _.reject(devoices, function (element) {
@@ -456,17 +456,17 @@ var RoomsCollection = Backbone.Collection.extend({
     });
     model.set('op', ops);
 
-    // remove from this.op
+    // remove from devoices
     var devoices = _.reject(model.get('devoices'), function (devoicedUser) {
       return (devoicedUser.user === data.user_id);
     });
     model.set('devoices', devoices);
 
-    // remove from this.op
-    var allowedPendings = _.reject(model.get('allowed_pending'), function (allowedPendingUser) {
-      return (allowedPendingUser.user === data.user_id);
-    });
-    model.set('allowed_pending', allowedPendings);
+    // // remove from allowed_pending
+    // var allowedPendings = _.reject(model.get('allowed_pending'), function (allowedPendingUser) {
+    //   return (allowedPendingUser.user === data.user_id);
+    // });
+    // model.set('allowed_pending', allowedPendings);
 
     model.users.sort();
     model.users.trigger('users-redraw');

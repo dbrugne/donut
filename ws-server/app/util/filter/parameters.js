@@ -60,6 +60,7 @@ Filter.prototype.before = function (data, session, next) {
       GroupModel.findOne({ _id: data.group_id })
         .populate('owner', 'username avatar color facebook')
         .populate('op', 'username avatar color facebook')
+        .populate('bans.user', 'username avatar color facebook')
         .populate('members', 'username avatar color facebook')
         .exec(callback);
     },
