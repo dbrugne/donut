@@ -174,7 +174,7 @@ var MainView = Backbone.View.extend({
     });
 
     // only one time for each welcome event
-    app.trigger('redraw-block');
+    app.trigger('redrawNavigation');
 
     // Notifications
     if (data.notifications) {
@@ -557,7 +557,7 @@ var MainView = Backbone.View.extend({
 
     return false; // stop propagation
   },
-  onRemoveDiscussion: function (model, collection) {
+  onRemoveDiscussion: function (model) {
     var view = this.views[ model.get('id') ];
     if (view === undefined) {
       return debug('close discussion error: unable to find view');
@@ -567,7 +567,11 @@ var MainView = Backbone.View.extend({
     view.removeView();
     delete this.views[ model.get('id') ];
 
-    collection.trigger('redraw-block');
+    if (model.get('type') === 'room') {
+      app.trigger('redrawNavigationRooms');
+    } else {
+      app.trigger('redrawNavigationOnes');
+    }
 
     // focus default (home)
     if (wasFocused) {
