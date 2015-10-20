@@ -53,10 +53,11 @@
         <div class="flex-parent center mt100">
             <h2 class="vcentered"><%= t('global.donuts') %></h2>
         </div>
-        <div class="ctn-results mt30">
-            <div class="rooms cards">
-                <% _.each(group.rooms, function(room) { print(partial('room', {room: room})); }); %>
-            </div>
-        </div>
+
+        <p class="flex-parent flex-row-wrap mt30">
+            <% _.each(group.rooms, function(room) { %>
+                <a class="mr10 mb10 fs20" href="<%=room.url%>">#<%=room.name%></a>
+            <% }); %>
+        </p>
     </div>
 </div>
