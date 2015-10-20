@@ -33,6 +33,3 @@ module.exports = function (model, type, what) {
   }
   return data;
 };
-
-// @todo yls remove join & bouncer
-// @todo yls check usage of uri
