@@ -216,7 +216,7 @@ emailer.roomVoice = function (to, data, callback) {
 };
 
 emailer.roomDevoice = function (to, data, callback) {
-  data.name = data.roomname.relace('#', '');
+  data.name = data.roomname.replace('#', '');
   var roomUrl = urls(data, 'room', 'https', conf.fqdn);
   var userUrl = urls(data, 'user', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-devoice.html', {
