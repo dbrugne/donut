@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
-var template = require('../web/templates/rooms-cards.html');
+var template = require('../web/templates/cards.html');
 var urls = require('../../../shared/util/url');
 
 var SearchView = Backbone.View.extend({
@@ -11,43 +11,43 @@ var SearchView = Backbone.View.extend({
   },
 
   render: function (data) {
-    var rooms = [];
-    var protocol = window.location.protocol.replace(':', '');
-    var fqdn = window.location.host;
-    var _urls = {};
-    _.each(data.rooms, function (room) {
-      room.avatar = common.cloudinary.prepare(room.avatar, 135);
-      if (room.is_group) {
-        _urls = urls(room, 'group');
-        room.url = protocol + '://' + fqdn + _urls.url;
-        room.chat = _urls.chat;
-        room.join = _urls.join;
-      } else {
-        _urls = urls(room, 'room');
-        room.url = protocol + '://' + fqdn + _urls.url;
-        room.chat = _urls.chat;
-        room.join = _urls.join;
+    var cards = [];
+    _.each(data.cards, function (card) {
+      switch (card.type) {
+        case 'user':
+          card.avatar = common.cloudinary.prepare(card.avatar, 135);
+          card.join = urls(card, 'user', 'chat');
+          card.owner_url = urls(card, 'user', 'chat');
+          break;
+        case 'room':
+          card.avatar = common.cloudinary.prepare(card.avatar, 135);
+          card.join = urls(card, 'room', 'chat');
+          if (card.group_id) {
+            card.group_url = urls(card, 'group', 'uri');
+            card.group_avatar = common.cloudinary.prepare(card.group_avatar, 200);
+          }
+          break;
+        case 'group':
+          card.avatar = common.cloudinary.prepare(card.avatar, 200);
+          card.join = urls(card, 'group', 'chat');
+          break;
       }
-
-      if (room.owner_username) {
-        room.owner_url = protocol + '://' + fqdn + urls({ username: room.owner_username }, 'user', 'url');
-      }
-
-      rooms.push(room);
+      cards.push(card);
     });
 
     var html = template({
-      rooms: data.rooms,
+      cards: cards,
       title: false,
-      search: data.search,
-      more: data.more,
-      replace: data.replace
+      fill: true,
+      search: false,
+      more: data.more
     });
 
     if (data.replace) {
       this.$el.html(html);
     } else {
-      this.$el.find('.list').append(html);
+      this.$el.find('.card.empty').remove();  // remove last empty cards
+      this.$el.append(html);
     }
 
     if (data.more) {

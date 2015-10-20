@@ -36,27 +36,37 @@ router.get('/', [require('csurf')()], function (req, res) {
     },
 
     function renderTemplate (featured, callback) {
-      _.each(featured, function (element, index, list) {
-        list[index].avatar = common.cloudinary.prepare(element.avatar, 135);
-        var data = urls(element, 'room', req.protocol, conf.fqdn);
-        list[index].url = data.url;
-        list[index].join = (req.user)
-          ? data.chat
-          : data.join;
-        if (element.owner_username) {
-          list[index].owner_url = urls({ username: element.owner_username }, 'user', req.protocol, conf.fqdn, 'url');
-        }
-      });
       var data = {
+        cards: [],
         title: false,
-        rooms: featured,
-        replace: true,
+        fill: true,
         search: false,
         more: false
       };
-      renderer.render('../public/web/templates/rooms-cards.html', data, callback);
+      _.each(featured, function (card) {
+        switch (card.type) {
+          case 'user':
+            card.avatar = common.cloudinary.prepare(card.avatar, 135);
+            card.join = urls(card, 'user', 'chat');
+            card.owner_url = urls(card, 'user', 'chat');
+            break;
+          case 'room':
+            card.avatar = common.cloudinary.prepare(card.avatar, 135);
+            card.join = urls(card, 'room', 'chat');
+            if (card.group_id) {
+              card.group_url = urls(card, 'group', 'uri');
+              card.group_avatar = common.cloudinary.prepare(card.group_avatar, 200);
+            }
+            break;
+          case 'group':
+            card.avatar = common.cloudinary.prepare(card.avatar, 200);
+            card.join = urls(card, 'group', 'chat');
+            break;
+        }
+        data.cards.push(card);
+      });
+      renderer.render('../public/web/templates/cards.html', data, callback);
     }
-
   ], function (err, html) {
     if (err) {
       console.error(err.stack);
@@ -68,7 +78,7 @@ router.get('/', [require('csurf')()], function (req, res) {
       meta: meta,
       title: false,
       search: false,
-      roomsHtml: html,
+      cardsHtml: html,
       more: false
     });
   });

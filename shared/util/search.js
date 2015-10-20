@@ -51,22 +51,22 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
 
       var criteria = {
         name: _regexp,
-        deleted: { $ne: true }
+        deleted: {$ne: true}
       };
 
       Group.find(criteria, 'name owner disclaimer avatar color members op')
-      .skip(skip)
-      .limit(limit)
-      .populate('owner', 'username')
-      .exec(function (err, dbgroups) {
-        if (err) {
-          return callback(err);
-        }
+        .skip(skip)
+        .limit(limit)
+        .populate('owner', 'username')
+        .exec(function (err, dbgroups) {
+          if (err) {
+            return callback(err);
+          }
 
-        groups = dbgroups;
+          groups = dbgroups;
 
-        return callback(null);
-      });
+          return callback(null);
+        });
     },
 
     function getGroupId (callback) {
@@ -90,7 +90,7 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
 
       var criteria = {
         name: _regexp,
-        deleted: { $ne: true }
+        deleted: {$ne: true}
       };
 
       if (groupId) {
@@ -137,7 +137,9 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
 
     function computeResults (callback) {
       _.each(rooms, function (room) {
-        var count = (room.users) ? room.users.length : 0;
+        var count = (room.users)
+          ? room.users.length
+          : 0;
 
         var r = {
           is_group: false,
@@ -264,9 +266,14 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
 
     // @todo yls prioriser entre rooms / users / groups
 
+    console.log('skip ' + skip);
+    console.log('limit ' + limit);
+    console.log(roomResults.length);
+    console.log(userResults.length);
+
     var searchResults = {
       cards: {
-        list: _.union(roomResults, userResults).slice(skip, limit) || {},
+        list: _.union(roomResults, userResults) || {},
         more: (roomResults.length + userResults.length > skip + limit)
       }
     };

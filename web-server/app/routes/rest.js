@@ -13,6 +13,7 @@ router.get('/rest/search', function (req, res) {
     req.query.limit || 50,  // limit
     req.query.skip || 0,    // skip
     false,                  // lightsearch
+    false,                  // privateGroupRooms
     function (err, results) {
       if (err) {
         logger.debug('rest/search error: ' + err);
