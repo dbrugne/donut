@@ -35,9 +35,4 @@ router.get('/g/:group', function (req, res) {
   });
 });
 
-router.get('/g/join/:group', function (req, res) {
-  bouncer.set(req, req.group.chat);
-  res.redirect('/login');
-});
-
 module.exports = router;

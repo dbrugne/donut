@@ -36,9 +36,4 @@ router.get('/u/:user', function (req, res) {
   });
 });
 
-router.get('/u/discuss/:user', function (req, res) {
-  bouncer.set(req, req.requestedUser.chat);
-  return res.redirect('/login');
-});
-
 module.exports = router;

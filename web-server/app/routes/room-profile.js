@@ -39,9 +39,4 @@ router.param('room', require('../middlewares/room-param'));
 router.get('/r/:group/:room', callback);
 router.get('/r/:room', callback);
 
-router.get('/r/join/:room', function (req, res) {
-  bouncer.set(req, req.room.chat);
-  res.redirect('/login');
-});
-
 module.exports = router;
