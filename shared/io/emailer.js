@@ -8,6 +8,7 @@ var conf = require('../../config/index');
 var mailgunTransport = require('nodemailer-mailgun-transport');
 var urls = require('../util/url');
 
+var protocol = 'https'; // @todo retrieve that a better way...
 var emailer = {};
 module.exports = emailer;
 
@@ -122,48 +123,44 @@ emailer.emailChanged = function (to, callback) {
 
 emailer.roomOp = function (to, data, callback) {
   data.name = data.roomname;
-  var roomUrl = urls(data, 'room', 'https', conf.fqdn);
-  var userUrl = urls(data, 'user', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-op.html', {
     username: data.username,
     roomname: data.roomname,
-    title: i18next.t('email.roomop.content.title', { roomname: data.roomname }),
+    title: i18next.t('email.roomop.content.title', {roomname: data.roomname}),
     email_heading_action: {
       action: i18next.t('email.roomop.content.action'),
-      userlink: { url: userUrl.url }
+      userlink: {url: protocol + '://' + conf.fqdn + urls(data, 'user', 'url')}
     },
-    subject: i18next.t('email.roomop.subject', { roomname: data.roomname }),
+    subject: i18next.t('email.roomop.subject', {roomname: data.roomname}),
     roomlink: {
-      url: roomUrl.url,
-      chat: roomUrl.chat
+      url: protocol + '://' + conf.fqdn + urls(data, 'room', 'url'),
+      chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')
     }
   }, callback);
 };
 
 emailer.roomDeop = function (to, data, callback) {
-  var userUrl = urls(data, 'user', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-deop.html', {
     username: data.username,
     roomname: data.roomname,
-    title: i18next.t('email.roomdeop.content.title', { roomname: data.roomname }),
+    title: i18next.t('email.roomdeop.content.title', {roomname: data.roomname}),
     email_heading_action: {
       action: i18next.t('email.roomdeop.content.action'),
-      userlink: { url: userUrl.url }
+      userlink: {url: protocol + '://' + conf.fqdn + urls(data, 'user', 'url')}
     },
-    subject: i18next.t('email.roomdeop.subject', { roomname: data.roomname })
+    subject: i18next.t('email.roomdeop.subject', {roomname: data.roomname})
   }, callback);
 };
 
 emailer.roomKick = function (to, data, callback) {
   data.name = data.roomname;
-  var roomUrl = urls(data, 'room', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-kick.html', {
     username: data.username,
     roomname: data.roomname,
     reason: data.reason,
-    title: i18next.t('email.roomkick.content.title', { roomname: data.roomname }),
-    subject: i18next.t('email.roomkick.subject', { roomname: data.roomname }),
-    roomlink: { chat: roomUrl.chat }
+    title: i18next.t('email.roomkick.content.title', {roomname: data.roomname}),
+    subject: i18next.t('email.roomkick.subject', {roomname: data.roomname}),
+    roomlink: {chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')}
   }, callback);
 };
 
@@ -172,64 +169,58 @@ emailer.roomBan = function (to, data, callback) {
     username: data.username,
     roomname: data.roomname,
     reason: data.reason,
-    title: i18next.t('email.roomban.content.title', { roomname: data.roomname }),
-    subject: i18next.t('email.roomban.subject', { roomname: data.roomname })
+    title: i18next.t('email.roomban.content.title', {roomname: data.roomname}),
+    subject: i18next.t('email.roomban.subject', {roomname: data.roomname})
   }, callback);
 };
 
 emailer.roomDeban = function (to, data, callback) {
   data.name = data.roomname;
-  var roomUrl = urls(data, 'room', 'https', conf.fqdn);
-  var userUrl = urls(data, 'user', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-deban.html', {
     username: data.username,
     roomname: data.roomname,
     reason: data.reason,
-    title: i18next.t('email.roomdeban.content.title', { roomname: data.roomname }),
+    title: i18next.t('email.roomdeban.content.title', {roomname: data.roomname}),
     email_heading_action: {
       action: i18next.t('email.roomdeban.content.action'),
-      userlink: { url: userUrl.url }
+      userlink: {url: protocol + '://' + conf.fqdn + urls(data, 'user', 'url')}
     },
-    subject: i18next.t('email.roomdeban.subject', { roomname: data.roomname }),
+    subject: i18next.t('email.roomdeban.subject', {roomname: data.roomname}),
     roomlink: {
-      url: roomUrl.url,
-      chat: roomUrl.chat
+      url: protocol + '://' + conf.fqdn + urls(data, 'room', 'url'),
+      chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')
     }
   }, callback);
 };
 
 emailer.roomVoice = function (to, data, callback) {
   data.name = data.roomname;
-  var roomUrl = urls(data, 'room', 'https', conf.fqdn);
-  var userUrl = urls(data, 'user', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-voice.html', {
     username: data.username,
     roomname: data.roomname,
-    title: i18next.t('email.roomvoice.content.title', { roomname: data.roomname }),
+    title: i18next.t('email.roomvoice.content.title', {roomname: data.roomname}),
     email_heading_action: {
       action: i18next.t('email.roomvoice.content.action'),
-      userlink: { url: userUrl.url }
+      userlink: {url: protocol + '://' + conf.fqdn + urls(data, 'user', 'url')}
     },
-    subject: i18next.t('email.roomvoice.subject', { roomname: data.roomname }),
-    roomlink: { chat: roomUrl.chat }
+    subject: i18next.t('email.roomvoice.subject', {roomname: data.roomname}),
+    roomlink: {chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')}
   }, callback);
 };
 
 emailer.roomDevoice = function (to, data, callback) {
   data.name = data.roomname;
-  var roomUrl = urls(data, 'room', 'https', conf.fqdn);
-  var userUrl = urls(data, 'user', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-devoice.html', {
     username: data.username,
     roomname: data.roomname,
     reason: data.reason,
-    title: i18next.t('email.roomdevoice.content.title', { roomname: data.roomname }),
+    title: i18next.t('email.roomdevoice.content.title', {roomname: data.roomname}),
     email_heading_action: {
       action: i18next.t('email.roomdevoice.content.action'),
-      userlink: { url: userUrl.url }
+      userlink: {url: protocol + '://' + conf.fqdn + urls(data, 'user', 'url')}
     },
-    subject: i18next.t('email.roomdevoice.subject', { roomname: data.roomname }),
-    roomlink: { url: roomUrl.url }
+    subject: i18next.t('email.roomdevoice.subject', {roomname: data.roomname}),
+    roomlink: {url: protocol + '://' + conf.fqdn + urls(data, 'room', 'url')}
   }, callback);
 };
 
@@ -241,8 +232,7 @@ emailer.contactForm = function (data, callback) {
 };
 
 emailer.roomJoin = function (to, from, room, callback) {
-  var data = { name: room };
-  var roomUrl = urls(data, 'room', 'https', conf.fqdn);
+  var data = {name: room};
   sendEmail(to, 'emails/room-join.html', {
     username: from,
     roomname: room,
@@ -254,61 +244,71 @@ emailer.roomJoin = function (to, from, room, callback) {
       username: from,
       roomname: room
     }),
-    roomlink: { chat: roomUrl.chat }
+    roomlink: {chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')}
   }, callback);
 };
 
 emailer.roomJoinRequest = function (to, data, callback) {
   data.name = data.roomname;
-  var roomUrl = urls(data, 'room', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-join-request.html', {
     username: data.username,
     roomname: data.roomname,
-    title: i18next.t('email.roomjoinrequest.content.title', { roomname: data.roomname, username: data.username }),
-    subject: i18next.t('email.roomjoinrequest.subject', { roomname: data.roomname }),
-    roomlink: { chat: roomUrl.chat }
+    title: i18next.t('email.roomjoinrequest.content.title', {
+      roomname: data.roomname,
+      username: data.username
+    }),
+    subject: i18next.t('email.roomjoinrequest.subject', {roomname: data.roomname}),
+    roomlink: {chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')}
   }, callback);
 };
 
 emailer.roomAllow = function (to, data, callback) {
   data.name = data.roomname;
-  var roomUrl = urls(data, 'room', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-allow.html', {
     username: data.username,
     roomname: data.roomname,
-    title: i18next.t('email.roomallow.content.title', { roomname: data.roomname, username: data.username }),
-    subject: i18next.t('email.roomallow.subject', { roomname: data.roomname }),
-    roomlink: { chat: roomUrl.chat }
+    title: i18next.t('email.roomallow.content.title', {
+      roomname: data.roomname,
+      username: data.username
+    }),
+    subject: i18next.t('email.roomallow.subject', {roomname: data.roomname}),
+    roomlink: {chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')}
   }, callback);
 };
 
 emailer.roomRefuse = function (to, data, callback) {
   data.name = data.roomname;
-  var roomUrl = urls(data, 'room', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-refuse.html', {
     username: data.username,
     roomname: data.roomname,
-    title: i18next.t('email.roomrefuse.content.title', { roomname: data.roomname, username: data.username }),
-    subject: i18next.t('email.roomrefuse.subject', { roomname: data.roomname }),
-    roomlink: { chat: roomUrl.chat }
+    title: i18next.t('email.roomrefuse.content.title', {
+      roomname: data.roomname,
+      username: data.username
+    }),
+    subject: i18next.t('email.roomrefuse.subject', {roomname: data.roomname}),
+    roomlink: {chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')}
   }, callback);
 };
 
 emailer.roomInvite = function (to, data, callback) {
   data.name = data.roomname;
-  var roomUrl = urls(data, 'room', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-invite.html', {
     username: data.username,
     roomname: data.roomname,
-    title: i18next.t('email.roominvite.content.title', { roomname: data.roomname, username: data.username }),
-    subject: i18next.t('email.roominvite.subject', { roomname: data.roomname, username: data.username }),
-    roomlink: { chat: roomUrl.chat }
+    title: i18next.t('email.roominvite.content.title', {
+      roomname: data.roomname,
+      username: data.username
+    }),
+    subject: i18next.t('email.roominvite.subject', {
+      roomname: data.roomname,
+      username: data.username
+    }),
+    roomlink: {chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')}
   }, callback);
 };
 
 emailer.roomTopic = function (to, from, room, topic, callback) {
-  var data = { name: room };
-  var roomUrl = urls(data, 'room', 'https', conf.fqdn);
+  var data = {name: room};
   sendEmail(to, 'emails/room-topic.html', {
     username: from,
     roomname: room,
@@ -323,13 +323,12 @@ emailer.roomTopic = function (to, from, room, topic, callback) {
       username: from,
       roomname: room
     }),
-    roomlink: { chat: roomUrl.chat }
+    roomlink: {chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')}
   }, callback);
 };
 
 emailer.userMention = function (to, events, from, room, callback) {
-  var data = { name: room };
-  var roomUrl = urls(data, 'room', 'https', conf.fqdn);
+  var data = {name: room};
   sendEmail(to, 'emails/user-mention.html', {
     events: events,
     username: from,
@@ -342,121 +341,136 @@ emailer.userMention = function (to, events, from, room, callback) {
       username: from,
       roomname: room
     }),
-    roomlink: { chat: roomUrl.chat }
+    roomlink: {chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')}
   }, callback);
 };
 
 emailer.userMessage = function (to, username, events, callback) {
-  var data = { username: username };
-  var userUrl = urls(data, 'user', 'https', conf.fqdn);
+  var data = {username: username};
   sendEmail(to, 'emails/user-message.html', {
     events: events,
     username: username,
-    title: i18next.t('email.usermessage.content.title', { username: username }),
-    subject: i18next.t('email.usermessage.subject', { username: username }),
+    title: i18next.t('email.usermessage.content.title', {username: username}),
+    subject: i18next.t('email.usermessage.subject', {username: username}),
     userlink: {
-      chat: userUrl.chat,
-      url: userUrl.url
+      chat: protocol + '://' + conf.fqdn + urls(data, 'user', 'chat'),
+      url: protocol + '://' + conf.fqdn + urls(data, 'user', 'url')
     }
   }, callback);
 };
 
 emailer.roomMessage = function (to, events, roomName, roomAvatar, callback) {
-  var data = { name: roomName };
-  var roomUrl = urls(data, 'room', 'https', conf.fqdn);
+  var data = {name: roomName};
   sendEmail(to, 'emails/room-message.html', {
     events: events,
     roomname: roomName,
     roomavatar: roomAvatar,
-    title: i18next.t('email.roommessage.content.title', { roomname: roomName }),
-    subject: i18next.t('email.roommessage.subject', { roomname: roomName }),
+    title: i18next.t('email.roommessage.content.title', {roomname: roomName}),
+    subject: i18next.t('email.roommessage.subject', {roomname: roomName}),
     roomlink: {
-      url: roomUrl.url,
-      chat: roomUrl.chat
+      url: protocol + '://' + conf.fqdn + urls(data, 'room', 'url'),
+      chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')
     }
   }, callback);
 };
 
 emailer.groupJoinRequest = function (to, data, callback) {
   data.name = data.groupname;
-  var groupUrl = urls(data, 'group', 'https', conf.fqdn);
   sendEmail(to, 'emails/group-join-request.html', {
     username: data.username,
     groupname: data.groupname.replace('#', ''),
-    title: i18next.t('email.groupjoinrequest.content.title', { groupname: data.groupname.replace('#', ''), username: data.username }),
-    subject: i18next.t('email.groupjoinrequest.subject', { groupname: data.groupname.replace('#', '') }),
-    grouplink: { chat: groupUrl.chat }
+    title: i18next.t('email.groupjoinrequest.content.title', {
+      groupname: data.groupname.replace('#', ''),
+      username: data.username
+    }),
+    subject: i18next.t('email.groupjoinrequest.subject', {groupname: data.groupname.replace('#', '')}),
+    grouplink: {chat: protocol + '://' + conf.fqdn + urls(data, 'group', 'chat')}
   }, callback);
 };
 
 emailer.groupAllow = function (to, data, callback) {
   data.name = data.groupname;
-  var groupUrl = urls(data, 'group', 'https', conf.fqdn);
   sendEmail(to, 'emails/group-allow.html', {
     username: data.username,
     groupname: data.groupname.replace('#', ''),
-    title: i18next.t('email.groupallow.content.title', { groupname: data.groupname, username: data.username }),
-    subject: i18next.t('email.allow.subject', { groupname: data.groupname }),
-    grouplink: { chat: groupUrl.chat }
+    title: i18next.t('email.groupallow.content.title', {
+      groupname: data.groupname,
+      username: data.username
+    }),
+    subject: i18next.t('email.allow.subject', {groupname: data.groupname}),
+    grouplink: {chat: protocol + '://' + conf.fqdn + urls(data, 'group', 'chat')}
   }, callback);
 };
 
 emailer.groupInvite = function (to, data, callback) {
   data.name = data.groupname;
-  var groupUrl = urls(data, 'group', 'https', conf.fqdn);
   sendEmail(to, 'emails/group-invite.html', {
     username: data.username,
     groupname: data.groupname.replace('#', ''),
-    title: i18next.t('email.groupinvite.content.title', { groupname: data.groupname, username: data.username }),
-    subject: i18next.t('email.groupinvite.subject', { groupname: data.groupname, username: data.username }),
-    grouplink: { chat: groupUrl.chat }
+    title: i18next.t('email.groupinvite.content.title', {
+      groupname: data.groupname,
+      username: data.username
+    }),
+    subject: i18next.t('email.groupinvite.subject', {
+      groupname: data.groupname,
+      username: data.username
+    }),
+    grouplink: {chat: protocol + '://' + conf.fqdn + urls(data, 'group', 'chat')}
   }, callback);
 };
 
 emailer.groupRefuse = function (to, data, callback) {
   data.name = data.groupname;
-  var groupUrl = urls(data, 'group', 'https', conf.fqdn);
   sendEmail(to, 'emails/group-refuse.html', {
     username: data.username,
     groupname: data.groupname.replace('#', ''),
-    title: i18next.t('email.grouprefuse.content.title', { groupname: data.groupname, username: data.username }),
-    subject: i18next.t('email.grouprefuse.subject', { groupname: data.groupname, username: data.username }),
-    grouplink: { chat: groupUrl.chat }
+    title: i18next.t('email.grouprefuse.content.title', {
+      groupname: data.groupname,
+      username: data.username
+    }),
+    subject: i18next.t('email.grouprefuse.subject', {
+      groupname: data.groupname,
+      username: data.username
+    }),
+    grouplink: {chat: protocol + '://' + conf.fqdn + urls(data, 'group', 'chat')}
   }, callback);
 };
 
 emailer.groupBan = function (to, data, callback) {
   data.name = data.groupname;
-  var groupUrl = urls(data, 'group', 'https', conf.fqdn);
   sendEmail(to, 'emails/group-ban.html', {
     username: data.username,
     groupname: data.groupname.replace('#', ''),
-    title: i18next.t('email.groupban.content.title', { groupname: data.groupname.replace('#', '')}),
-    subject: i18next.t('email.groupban.subject', { groupname: data.groupname.replace('#', '') }),
-    grouplink: { chat: groupUrl.chat }
+    title: i18next.t('email.groupban.content.title', {groupname: data.groupname.replace('#', '')}),
+    subject: i18next.t('email.groupban.subject', {groupname: data.groupname.replace('#', '')}),
+    grouplink: {chat: protocol + '://' + conf.fqdn + urls(data, 'group', 'chat')}
   }, callback);
 };
 
 emailer.groupOp = function (to, data, callback) {
   data.name = data.groupname;
-  var groupUrl = urls(data, 'group', 'https', conf.fqdn);
   sendEmail(to, 'emails/group-op.html', {
     username: data.username,
     groupname: data.groupname.replace('#', ''),
-    title: i18next.t('email.groupop.content.title', { groupname: data.groupname.replace('#', '')}),
-    subject: i18next.t('email.groupop.subject', { groupname: data.groupname.replace('#', '') }),
-    grouplink: { chat: groupUrl.chat, url: groupUrl.url }
+    title: i18next.t('email.groupop.content.title', {groupname: data.groupname.replace('#', '')}),
+    subject: i18next.t('email.groupop.subject', {groupname: data.groupname.replace('#', '')}),
+    grouplink: {
+      chat: protocol + '://' + conf.fqdn + urls(data, 'group', 'chat'),
+      url: protocol + '://' + conf.fqdn + urls(data, 'group', 'url')
+    }
   }, callback);
 };
 
 emailer.groupDeop = function (to, data, callback) {
   data.name = data.groupname;
-  var groupUrl = urls(data, 'group', 'https', conf.fqdn);
   sendEmail(to, 'emails/group-deop.html', {
     username: data.username,
     groupname: data.groupname.replace('#', ''),
-    title: i18next.t('email.groupdeop.content.title', { groupname: data.groupname.replace('#', '')}),
-    subject: i18next.t('email.groupdeop.subject', { groupname: data.groupname.replace('#', '') }),
-    grouplink: { chat: groupUrl.chat, url: groupUrl.url }
+    title: i18next.t('email.groupdeop.content.title', {groupname: data.groupname.replace('#', '')}),
+    subject: i18next.t('email.groupdeop.subject', {groupname: data.groupname.replace('#', '')}),
+    grouplink: {
+      chat: protocol + '://' + conf.fqdn + urls(data, 'group', 'chat'),
+      url: protocol + '://' + conf.fqdn + urls(data, 'group', 'url')
+    }
   }, callback);
 };

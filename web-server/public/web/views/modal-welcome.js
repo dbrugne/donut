@@ -1,10 +1,7 @@
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
-var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
 var client = require('../libs/client');
-var urls = require('../../../../shared/util/url');
 var CardsView = require('./cards');
 
 var debug = donutDebug('donut:modal-welcome');

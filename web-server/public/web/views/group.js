@@ -45,7 +45,7 @@ var GroupView = Backbone.View.extend({
       room.owner_username = room.owner.username;
       room.group_id = group.group_id;
       room.group_name = group.name;
-      room.join = urls(room, 'room', null, null, 'uri');
+      room.join = urls(room, 'room', 'uri');
 
       if (isMember || isAdmin) {
         rooms.push(room);

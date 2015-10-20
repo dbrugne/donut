@@ -18,19 +18,19 @@ var SearchView = Backbone.View.extend({
     _.each(data.rooms, function (room) {
       room.avatar = common.cloudinary.prepare(room.avatar, 135);
       if (room.is_group) {
-        _urls = urls(room, 'group', protocol, fqdn);
-        room.url = _urls.url;
+        _urls = urls(room, 'group');
+        room.url = protocol + '://' + fqdn + _urls.url;
         room.chat = _urls.chat;
         room.join = _urls.join;
       } else {
-        _urls = urls(room, 'room', protocol, fqdn);
-        room.url = _urls.url;
+        _urls = urls(room, 'room');
+        room.url = protocol + '://' + fqdn + _urls.url;
         room.chat = _urls.chat;
         room.join = _urls.join;
       }
 
       if (room.owner_username) {
-        room.owner_url = urls({ username: room.owner_username }, 'user', protocol, fqdn, 'url');
+        room.owner_url = protocol + '://' + fqdn + urls({ username: room.owner_username }, 'user', 'url');
       }
 
       rooms.push(room);
