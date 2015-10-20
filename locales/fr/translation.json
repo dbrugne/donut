@@ -951,9 +951,9 @@
       }
     },
     "roomop": {
-      "subject": "Vous avez été promu modérateur de #__roomname__",
+      "subject": "Vous avez été promu modérateur de __roomname__",
       "content": {
-        "title": "Vous avez été promu modérateur de #__roomname__",
+        "title": "Vous avez été promu modérateur de __roomname__",
         "disclaimer": "Félicitations ! Vous êtes désormais modérateur de ",
         "disclaimer2": "Il est temps d'aller exercer vos nouveaux super pouvoirs",
         "action": "…et tout ça grâce à ",
@@ -961,34 +961,34 @@
       }
     },
     "roomdeop": {
-      "subject": "Vous n'êtes plus modérateur de #__roomname__",
+      "subject": "Vous n'êtes plus modérateur de __roomname__",
       "content": {
-        "title": "Vous n'êtes plus modérateur de #__roomname__",
+        "title": "Vous n'êtes plus modérateur de __roomname__",
         "disclaimer": "Aïe! La bonne nouvelle, vous allez avoir un peu plus de temps à consacrer à votre propre donut:)",
         "action": "…et tout ça grâce à ",
         "button": "Retourner sur DONUT"
       }
     },
     "roomkick": {
-      "subject": "Vous avez été expulsé de #__roomname__",
+      "subject": "Vous avez été expulsé de __roomname__",
       "content": {
-        "title": "Vous avez été expulsé de #__roomname__",
+        "title": "Vous avez été expulsé de __roomname__",
         "disclaimer": "Ca ne doit pas être si grave, faites-vous un gros câlin et on oublie ça!",
         "button": "Accéder à la discussion"
       }
     },
     "roomban": {
-      "subject": "Vous avez été banni de #__roomname__",
+      "subject": "Vous avez été banni de __roomname__",
       "content": {
-        "title": "Vous avez été banni de #__roomname__",
+        "title": "Vous avez été banni de __roomname__",
         "disclaimer": "On dirait bien que vous n'étiez pas faits l'un pour l'autre.<br/>Vous savez ce qu'on dit : \"un donut de perdu, dix de retrouvés !\".",
         "button": "Retourner sur DONUT"
       }
     },
     "roomdeban": {
-      "subject": "Vous n'êtes plus banni de #__roomname__",
+      "subject": "Vous n'êtes plus banni de __roomname__",
       "content": {
-        "title": "Vous n'êtes plus banni de #__roomname__",
+        "title": "Vous n'êtes plus banni de __roomname__",
         "disclaimer": "Vous n'êtes plus banni de ",
         "disclaimer2": "On dirait bien que tout s'est arrangé !",
         "action": "…et tout ça grâce à ",
@@ -996,18 +996,18 @@
       }
     },
     "roomvoice": {
-      "subject": "Vous avez retrouvé la parole dans #__roomname__",
+      "subject": "Vous avez retrouvé la parole dans __roomname__",
       "content": {
-        "title": "Vous avez retrouvé la parole dans #__roomname__",
+        "title": "Vous avez retrouvé la parole dans __roomname__",
         "disclaimer": "On dirait bien que tout s'est arrangé !",
         "action": "... et tout ça grâce à ",
         "button": "Accéder à la discussion"
       }
     },
     "roomdevoice": {
-      "subject": "Vous êtes muet dans #__roomname__",
+      "subject": "Vous êtes muet dans __roomname__",
       "content": {
-        "title": "Vous êtes muet dans #__roomname__",
+        "title": "Vous êtes muet dans __roomname__",
         "disclaimer": "Aïe, vous êtes désormais muet dans ",
         "disclaimer2": "Ca ne concerne que ",
         "disclaimer3": "Mais ne vous inquiétez pas, les modérateurs de ",
@@ -1017,58 +1017,58 @@
       }
     },
     "roomjoin": {
-      "subject": "@__username__ a rejoint #__roomname__",
+      "subject": "@__username__ a rejoint __roomname__",
       "content": {
-        "title": "@__username__ a rejoint #__roomname__",
+        "title": "@__username__ a rejoint __roomname__",
         "disclaimer": "Et un de plus ! Allons l'accueillir comme il se doit :).",
         "button": "Accéder à la discussion"
       }
     },
     "roomjoinrequest": {
-      "subject": "Un utilisateur souhaite rejoindre #__roomname__",
+      "subject": "Un utilisateur souhaite rejoindre __roomname__",
       "content": {
-        "title": "@__username__ demande à rejoindre #__roomname__",
+        "title": "@__username__ demande à rejoindre __roomname__",
         "disclaimer": "On dirait que votre donut est populaire !",
         "button": "Accéder à la discussion"
       }
     },
     "roomallow": {
-      "subject": "Un utilisateur a accepté votre demande de rejoindre #__roomname__",
+      "subject": "Un utilisateur a accepté votre demande de rejoindre __roomname__",
       "content": {
-        "title": "@__username__ vous autorise à rejoindre #__roomname__",
+        "title": "@__username__ vous autorise à rejoindre __roomname__",
         "disclaimer": "Vous pouvez maintenant profiter de ce donut !",
         "button": "Accéder à la discussion"
       }
     },
     "roomrefuse": {
-      "subject": "Un utilisateur a refusé votre demande de rejoindre #__roomname__",
+      "subject": "Un utilisateur a refusé votre demande de rejoindre __roomname__",
       "content": {
-        "title": "@__username__ a refusé votre demande de rejoindre #__roomname__",
+        "title": "@__username__ a refusé votre demande de rejoindre __roomname__",
         "disclaimer": "Ne vous inquiétez pas vous pouvez toujours refaire une demande plus tard !",
         "button": "Accéder à la discussion"
       }
     },
     "roominvite": {
-      "subject": "@__username__ vous invite à rejoindre #__roomname__",
+      "subject": "@__username__ vous invite à rejoindre __roomname__",
       "content": {
-        "title": "@__username__ vous invite à rejoindre #__roomname__",
+        "title": "@__username__ vous invite à rejoindre __roomname__",
         "disclaimer": "Vous pouvez rejoindre son donut sans plus tarder !",
         "button": "Accéder à la discussion"
       }
     },
     "roomtopic": {
-      "subject": "Nouveau sujet dans #__roomname__",
+      "subject": "Nouveau sujet dans __roomname__",
       "content": {
-        "title": "@__username__ a défini un nouveau sujet dans #__roomname__",
+        "title": "@__username__ a défini un nouveau sujet dans __roomname__",
         "topic": "Nouveau sujet : \"__topic__\"",
         "disclaimer": "Vous avez sûrement plein de choses choses à dire sur le sujet !",
         "button": "Accéder à la discussion"
       }
     },
     "usermention": {
-      "subject": "@__username__ vous a mentionné dans #__roomname__",
+      "subject": "@__username__ vous a mentionné dans __roomname__",
       "content": {
-        "title": "@__username__ vous a mentionné dans #__roomname__",
+        "title": "@__username__ vous a mentionné dans __roomname__",
         "disclaimer": "C'est toujours sympa quelqu'un qui pense à vous ! Pensez à lui répondre.",
         "button": "Accéder à la discussion"
       }
@@ -1082,9 +1082,9 @@
       }
     },
     "roommessage": {
-      "subject": "Nouveaux messages dans #__roomname__",
+      "subject": "Nouveaux messages dans __roomname__",
       "content": {
-        "title": "Nouveaux messages dans #__roomname__",
+        "title": "Nouveaux messages dans __roomname__",
         "button": "Accéder à la discussion"
       }
     },
@@ -1094,7 +1094,7 @@
     "groupjoinrequest": {
       "subject": "Un utilisateur veut rejoindre #__groupname__",
       "content": {
-        "title": "@__username__ demande l'accès à #__groupname__",
+        "title": "@__username__ demande l'accès à __groupname__",
         "disclaimer": "On dirait que votre groupe est parti pour aller loin !",
         "button": "Accéder au groupe"
       }

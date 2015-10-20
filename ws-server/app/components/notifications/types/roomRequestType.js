@@ -101,7 +101,7 @@ Notification.prototype.sendToBrowser = function (model, user, room, event, done)
       },
       room: {
         id: room.id,
-        name: room.name,
+        name: room.getIdentifier(),
         avatar: room._avatar()
       }
     }
@@ -125,28 +125,28 @@ Notification.prototype.sendEmail = function (model, done) {
           method = emailer.roomJoinRequest;
           data = {
             username: model.data.by_user.username,
-            roomname: room.name
+            roomname: room.getIdentifier(),
           };
           break;
         case 'roomallowed':
           method = emailer.roomAllow;
           data = {
             username: model.data.by_user.username,
-            roomname: room.name
+            roomname: room.getIdentifier(),
           };
           break;
         case 'roomrefuse':
           method = emailer.roomRefuse;
           data = {
             username: model.data.by_user.username,
-            roomname: room.name
+            roomname: room.getIdentifier(),
           };
           break;
         case 'roominvite':
           method = emailer.roomInvite;
           data = {
             username: model.data.by_user.username,
-            roomname: room.name
+            roomname: room.getIdentifier(),
           };
           break;
         default:

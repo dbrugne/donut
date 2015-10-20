@@ -35,7 +35,7 @@ Notification.prototype.create = function (room, history, done) {
         time: {
           $gte: new Date((Date.now() - 1000 * conf.notifications.types.roommessage.creation))
         },
-        'data.name': roomModel.name
+        'data.room': roomModel._id
       };
       NotificationModel.findOne(criteria).count(function (err, count) {
         if (err) {
@@ -86,7 +86,7 @@ Notification.prototype.create = function (room, history, done) {
 
         var model = NotificationModel.getNewModel(that.type, user._id, {
           event: historyModel._id,
-          name: roomModel.name
+          room: roomModel._id
         });
 
         model.to_browser = false; // will not be displayed in browser on next
@@ -173,7 +173,7 @@ Notification.prototype.sendEmail = function (model, done) {
       });
 
       if (model.user.getEmail()) {
-        emailer.roomMessage(model.user.getEmail(), messages, events[0]['data']['name'], common.cloudinary.prepare(events[0]['data']['room_avatar'], 90), callback);
+        emailer.roomMessage(model.user.getEmail(), messages, model.data.room.getIdentifier(), common.cloudinary.prepare(events[0]['data']['room_avatar'], 90), callback);
       }
     },
 

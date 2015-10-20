@@ -83,7 +83,8 @@ Notification.prototype.create = function (user, room, history, done) {
 
     function save (userModel, roomModel, historyModel, status, callback) {
       var model = NotificationModel.getNewModel(that.type, userModel._id, {
-        event: historyModel._id
+        event: historyModel._id,
+        room: roomModel._id
       });
       model.to_browser = true;
       model.to_email = (!userModel.getEmail()
@@ -194,7 +195,7 @@ Notification.prototype.sendEmail = function (model, done) {
       });
 
       if (model.user.getEmail()) {
-        emailer.userMention(model.user.getEmail(), messages, events[0]['data']['username'], events[0]['data']['name'], callback);
+        emailer.userMention(model.user.getEmail(), messages, events[0]['data']['username'], model.data.room.getIdentifier(), callback);
       }
     },
 

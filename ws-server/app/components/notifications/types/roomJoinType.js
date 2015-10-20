@@ -34,7 +34,7 @@ Notification.prototype.create = function (room, history, done) {
         time: {
           $gte: new Date((Date.now() - 1000 * conf.notifications.types.roomjoin.creation))
         },
-        'data.name': roomModel.name,
+        'data.room': roomModel.room,
         'data.user': historyModel.user._id
       };
       NotificationModel.findOne(criteria).count(function (err, count) {
@@ -79,7 +79,7 @@ Notification.prototype.create = function (room, history, done) {
       _.each(users, function (user) {
         var model = NotificationModel.getNewModel(that.type, user._id, {
           event: historyModel._id,
-          name: roomModel.name
+          room: roomModel._id
         });
 
         model.to_browser = true;
@@ -166,7 +166,7 @@ Notification.prototype.sendEmail = function (model, done) {
 
     function send (history, callback) {
       if (model.user.getEmail()) {
-        emailer.roomJoin(model.user.getEmail(), history.user.username, history.room.name, callback);
+        emailer.roomJoin(model.user.getEmail(), history.user.username, model.data.room.getIdentifier(), callback);
       }
     },
 
