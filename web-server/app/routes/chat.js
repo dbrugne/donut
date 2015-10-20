@@ -7,7 +7,6 @@ var colors = require('../../../config/colors');
 var hello = require('../../../shared/util/hello-dolly');
 
 router.get('/!', function (req, res) {
-  console.log('router chat');
   // Is user authenticated
   if (!req.isAuthenticated()) {
     // set Flash message (display on profile page or landing page depending
