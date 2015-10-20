@@ -16,7 +16,7 @@ module.exports = function (grunt) {
             config: 'notifUsernameFrom',
             type: 'input',
             message: 'Choose a "from"/"by" username (the one who made the action, sends the message...)',
-            default: 'Sebabass'
+            default: 'yangs'
           } ]
         }
       },
@@ -26,7 +26,7 @@ module.exports = function (grunt) {
             config: 'notifUsernameTo',
             type: 'input',
             message: 'Choose a "to" username (the one who is the subject of the action, receives the message...)',
-            default: 'nadia'
+            default: 'david'
           } ]
         }
       },
@@ -36,7 +36,7 @@ module.exports = function (grunt) {
             config: 'notifRoomName',
             type: 'input',
             message: 'Choose a "room" name',
-            default: '#sebGroup/roomGr'
+            default: '#donut/donut'
           } ]
         }
       },
@@ -54,9 +54,9 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('donut-create-test-notifications', function () {
-    var usernameFrom = grunt.config('notifUsernameFrom') || 'david';
-    var usernameTo = grunt.config('notifUsernameTo') || 'yangs';
-    var identifier = grunt.config('notifIdentifier') || '#sebGroup/roomGr';
+    var usernameFrom = grunt.config('notifUsernameFrom') || 'yangs';
+    var usernameTo = grunt.config('notifUsernameTo') || 'david';
+    var identifier = grunt.config('notifIdentifier') || '#donut/donut';
     var message = grunt.config('notifMessage') || '';
 
     var userFrom = null;

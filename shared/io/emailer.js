@@ -121,7 +121,7 @@ emailer.emailChanged = function (to, callback) {
 };
 
 emailer.roomOp = function (to, data, callback) {
-  data.name = data.roomname;
+  data.name = data.roomname.replace('#', '');
   var roomUrl = urls(data, 'room', 'https', conf.fqdn);
   var userUrl = urls(data, 'user', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-op.html', {
@@ -155,7 +155,7 @@ emailer.roomDeop = function (to, data, callback) {
 };
 
 emailer.roomKick = function (to, data, callback) {
-  data.name = data.roomname;
+  data.name = data.roomname.replace('#', '');
   var roomUrl = urls(data, 'room', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-kick.html', {
     username: data.username,
@@ -178,7 +178,7 @@ emailer.roomBan = function (to, data, callback) {
 };
 
 emailer.roomDeban = function (to, data, callback) {
-  data.name = data.roomname;
+  data.name = data.roomname.replace('#', '');
   var roomUrl = urls(data, 'room', 'https', conf.fqdn);
   var userUrl = urls(data, 'user', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-deban.html', {
@@ -199,7 +199,7 @@ emailer.roomDeban = function (to, data, callback) {
 };
 
 emailer.roomVoice = function (to, data, callback) {
-  data.name = data.roomname;
+  data.name = data.roomname.replace('#', '');
   var roomUrl = urls(data, 'room', 'https', conf.fqdn);
   var userUrl = urls(data, 'user', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-voice.html', {
@@ -216,7 +216,7 @@ emailer.roomVoice = function (to, data, callback) {
 };
 
 emailer.roomDevoice = function (to, data, callback) {
-  data.name = data.roomname;
+  data.name = data.roomname.relace('#', '');
   var roomUrl = urls(data, 'room', 'https', conf.fqdn);
   var userUrl = urls(data, 'user', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-devoice.html', {
@@ -241,7 +241,7 @@ emailer.contactForm = function (data, callback) {
 };
 
 emailer.roomJoin = function (to, from, room, callback) {
-  var data = { name: room };
+  var data = { name: room.replace('#', '') };
   var roomUrl = urls(data, 'room', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-join.html', {
     username: from,
@@ -259,7 +259,7 @@ emailer.roomJoin = function (to, from, room, callback) {
 };
 
 emailer.roomJoinRequest = function (to, data, callback) {
-  data.name = data.roomname;
+  data.name = data.roomname.replace('#', '');
   var roomUrl = urls(data, 'room', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-join-request.html', {
     username: data.username,
@@ -271,7 +271,7 @@ emailer.roomJoinRequest = function (to, data, callback) {
 };
 
 emailer.roomAllow = function (to, data, callback) {
-  data.name = data.roomname;
+  data.name = data.roomname.replace('#', '');
   var roomUrl = urls(data, 'room', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-allow.html', {
     username: data.username,
@@ -283,7 +283,7 @@ emailer.roomAllow = function (to, data, callback) {
 };
 
 emailer.roomRefuse = function (to, data, callback) {
-  data.name = data.roomname;
+  data.name = data.roomname.replace('#', '');
   var roomUrl = urls(data, 'room', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-refuse.html', {
     username: data.username,
@@ -295,7 +295,7 @@ emailer.roomRefuse = function (to, data, callback) {
 };
 
 emailer.roomInvite = function (to, data, callback) {
-  data.name = data.roomname;
+  data.name = data.roomname.replace('#', '');
   var roomUrl = urls(data, 'room', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-invite.html', {
     username: data.username,
@@ -307,7 +307,7 @@ emailer.roomInvite = function (to, data, callback) {
 };
 
 emailer.roomTopic = function (to, from, room, topic, callback) {
-  var data = { name: room };
+  var data = { name: room.replace('#', '') };
   var roomUrl = urls(data, 'room', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-topic.html', {
     username: from,
@@ -328,7 +328,7 @@ emailer.roomTopic = function (to, from, room, topic, callback) {
 };
 
 emailer.userMention = function (to, events, from, room, callback) {
-  var data = { name: room };
+  var data = { name: room.replace('#', '') };
   var roomUrl = urls(data, 'room', 'https', conf.fqdn);
   sendEmail(to, 'emails/user-mention.html', {
     events: events,
@@ -362,7 +362,7 @@ emailer.userMessage = function (to, username, events, callback) {
 };
 
 emailer.roomMessage = function (to, events, roomName, roomAvatar, callback) {
-  var data = { name: roomName };
+  var data = { name: roomName.replace('#', '') };
   var roomUrl = urls(data, 'room', 'https', conf.fqdn);
   sendEmail(to, 'emails/room-message.html', {
     events: events,
