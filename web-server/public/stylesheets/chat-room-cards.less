@@ -22,11 +22,14 @@
           .location { padding: 10px 20px 10px; position: absolute; top: 60px; left: 110px; }
         }
         .actions { background-color: @cl-subtext5;
-          a, span { text-align: center; padding:5px; position:relative;
-            &:hover { background-color: @cl-subtext10; }
+          .first, .last { text-align: center; padding:5px; position:relative;
+            &:hover { background-color: @cl-subtext10;
+              &.empty { background-color: @cl-subtext5; }
+            }
           }
-          span { .border-radiuses(0, 5px, 0, 0); }
-          a::after { content:""; border-right:1px solid @cl-subtext20; position:absolute; right:0; height:50%; width:1px; }
+          .last { .border-radiuses(0, 5px, 0, 0); }
+          .first::after { content:""; border-right:1px solid @cl-subtext20; position:absolute; right:0; height:50%; width:1px; }
+          .first.empty::after {border-color:transparent}
         }
       }
     }
@@ -42,10 +45,14 @@
         .owner { padding: 10px 20px 10px; position: absolute; top: 60px; left: 0; }
       }
       .actions { background-color: @cl-subtext5;
-        a, span { text-align: center; padding:5px; position:relative;
-          &:hover { background-color: @cl-subtext10; }
+        .first, .last { text-align: center; padding:5px; position:relative;
+          &:hover { background-color: @cl-subtext10;
+            &.empty { background-color: @cl-subtext5; }
+          }
         }
-        a::after { content:""; border-right:1px solid @cl-subtext20; position:absolute; right:0; height:50%; width:1px; }
+        .last { .border-radiuses(0, 5px, 0, 0); }
+        .first::after { content:""; border-right:1px solid @cl-subtext20; position:absolute; right:0; height:50%; width:1px; }
+        .first.empty::after {border-color:transparent}
       }
     }
     &.card-group {
@@ -61,10 +68,14 @@
         }
         .owner { font-size: 1.4rem;    padding: 10px 20px 10px; text-align: right; }
         .actions {
-          a, span { text-align: center; padding:8px; position:relative;
-            &:hover { background-color: @cl-subtext5; }
+          .first, .last { text-align: center; padding:8px; position:relative;
+            &:hover { background-color: @cl-subtext10;
+              &.empty { background-color: @cl-subtext5; }
+            }
           }
-          a::after { content:""; border-right:1px solid @cl-subtext20; position:absolute; right:0; height:50%; width:1px; }
+          .last { .border-radiuses(0, 5px, 0, 0); }
+          .first::after { content:""; border-right:1px solid @cl-subtext20; position:absolute; right:0; height:50%; width:1px; }
+          .first.empty::after {border-color:transparent}
         }
       }
     }

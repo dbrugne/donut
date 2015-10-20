@@ -126,6 +126,7 @@
     "muted": "sound off"
   },
   "global": {
+    "view-profile": "View profile",
     "donuts": "Donuts",
     "group": "group",
     "admin": "(admin only)",

@@ -47,12 +47,12 @@ router.get('/', [require('csurf')()], function (req, res) {
         switch (card.type) {
           case 'user':
             card.avatar = common.cloudinary.prepare(card.avatar, 135);
-            card.join = urls(card, 'user', 'chat');
+            card.url = urls(card, 'user', 'chat');
             card.owner_url = urls(card, 'user', 'chat');
             break;
           case 'room':
             card.avatar = common.cloudinary.prepare(card.avatar, 135);
-            card.join = urls(card, 'room', 'chat');
+            card.url = urls(card, 'room', 'chat');
             if (card.group_id) {
               card.group_url = urls(card, 'group', 'uri');
               card.group_avatar = common.cloudinary.prepare(card.group_avatar, 200);
@@ -60,7 +60,7 @@ router.get('/', [require('csurf')()], function (req, res) {
             break;
           case 'group':
             card.avatar = common.cloudinary.prepare(card.avatar, 200);
-            card.join = urls(card, 'group', 'chat');
+            card.url = urls(card, 'group', 'chat');
             break;
         }
         data.cards.push(card);
