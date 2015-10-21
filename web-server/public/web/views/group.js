@@ -24,6 +24,7 @@ var GroupView = Backbone.View.extend({
 
   initialize: function (options) {
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
+    this.listenTo(this.model, 'redraw', this.render);
     this.render();
   },
   render: function () {

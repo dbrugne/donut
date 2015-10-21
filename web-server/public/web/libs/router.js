@@ -70,6 +70,7 @@ var DonutRouter = Backbone.Router.extend({
         if (!response.err) {
           model = groups.addModel(response);
           this.focus(model);
+          model.trigger('redraw');
           app.trigger('nav-active-group', response.group_id);
         }
       }, this));
