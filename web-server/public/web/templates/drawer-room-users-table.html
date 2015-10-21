@@ -24,52 +24,54 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li class="arrow-right"></li>
-                        <% if(!u.isOp) { %>
+                        <% if(!u.isBanned) { %>
+                            <% if(!u.isOp) { %>
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" class="op op-user" data-toggle="confirmation" data-action="op-user" data-user-id="<%= u.user_id %>" >
+                                        <i class="icon icon-fw icon-op"></i><p> <%= t('chat.op.infobox') %></p>
+                                    </a>
+                                </li>
+                            <% } else { %>
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" class="deop deop-user" data-toggle="confirmation" data-action="deop-user" data-user-id="<%= u.user_id %>">
+                                        <i class="icon icon-fw icon-op cl-neutral"></i>
+                                        <p><%= t('chat.deop.infobox') %></p>
+                                    </a>
+                                </li>
+                            <% } %>
                             <li role="presentation">
-                                <a role="menuitem" tabindex="-1" class="op op-user" data-toggle="confirmation" data-action="op-user" data-user-id="<%= u.user_id %>" >
-                                    <i class="icon icon-fw icon-op"></i><p> <%= t('chat.op.infobox') %></p>
+                                <a role="menuitem" tabindex="-1" class="kick kick-user" data-user-id="<%= u.user_id %>">
+                                    <i class="icon icon-fw icon-kick"></i>
+                                    <p><%= t('chat.kick.infobox') %></p>
                                 </a>
                             </li>
-                        <% } else { %>
                             <li role="presentation">
-                                <a role="menuitem" tabindex="-1" class="deop deop-user" data-toggle="confirmation" data-action="deop-user" data-user-id="<%= u.user_id %>">
-                                    <i class="icon icon-fw icon-op cl-neutral"></i>
-                                    <p><%= t('chat.deop.infobox') %></p>
-                                </a>
-                            </li>
-                        <% } %>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" class="kick kick-user" data-user-id="<%= u.user_id %>">
-                                <i class="icon icon-fw icon-kick"></i>
-                                <p><%= t('chat.kick.infobox') %></p>
-                            </a>
-                        </li>
-                        <li role="presentation">
-                            <% if(!u.isBanned) { %>
                                 <a class="ban" data-toggle="confirmation" data-action="ban-user" title="<%= t('chat.ban.infobox') %>" data-user-id="<%= u.user_id %>">
                                     <i class="icon icon-fw icon-ban" data-toggle="tooltip" data-placement="top" title="<%= t('chat.ban.infobox') %>"></i>
                                     <p><%= t('chat.ban.infobox') %></p>
                                 </a>
-                            <% } else { %>
+                            </li>
+                            <li role="presentation">
+                                <% if(u.isDevoiced) { %>
+                                    <a class="voice" data-toggle="confirmation" data-action="voice-user" title="<%= t('chat.voice.infobox') %>" data-user-id="<%= u.user_id %>">
+                                        <i class="icon icon-fw icon-microphone" data-toggle="tooltip" data-placement="top" title="<%= t('chat.voice.infobox') %>"></i>
+                                        <p><%= t('chat.voice.infobox') %></p>
+                                    </a>
+                                    <% } else { %>
+                                    <a class="devoice" data-toggle="confirmation" data-action="devoice-user" title="<%= t('chat.devoice.infobox') %>" data-user-id="<%= u.user_id %>">
+                                        <i class="icon icon-fw icon-microphone-slash" data-toggle="tooltip" data-placement="top" title="<%= t('chat.devoice.infobox') %>"></i>
+                                        <p><%= t('chat.devoice.infobox') %></p>
+                                    </a>
+                                <% } %>
+                            </li>
+                        <% } else { %>
+                            <li role="presentation">
                                 <a class="deban" data-toggle="confirmation" data-action="deban-user" title="<%= t('chat.deban.infobox') %>" data-user-id="<%= u.user_id %>">
                                     <i class="icon icon-fw icon-ban icon-deban" data-toggle="tooltip" data-placement="top" title="<%= t('chat.deban.infobox') %>"></i>
                                     <p><%= t('chat.deban.infobox') %></p>
                                 </a>
-                            <% } %>
-                        </li>
-                        <li role="presentation">
-                            <% if(u.isDevoiced) { %>
-                                <a class="voice" data-toggle="confirmation" data-action="voice-user" title="<%= t('chat.voice.infobox') %>" data-user-id="<%= u.user_id %>">
-                                    <i class="icon icon-fw icon-microphone" data-toggle="tooltip" data-placement="top" title="<%= t('chat.voice.infobox') %>"></i>
-                                    <p><%= t('chat.voice.infobox') %></p>
-                                </a>
-                                <% } else { %>
-                                <a class="devoice" data-toggle="confirmation" data-action="devoice-user" title="<%= t('chat.devoice.infobox') %>" data-user-id="<%= u.user_id %>">
-                                    <i class="icon icon-fw icon-microphone-slash" data-toggle="tooltip" data-placement="top" title="<%= t('chat.devoice.infobox') %>"></i>
-                                    <p><%= t('chat.devoice.infobox') %></p>
-                                </a>
-                            <% } %>
-                        </li>
+                            </li>
+                        <% } %>
                     </ul>
                 </span>
             <% }; %>

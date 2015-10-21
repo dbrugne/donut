@@ -137,7 +137,7 @@ var RoomsCollection = Backbone.Collection.extend({
     data.uri = data.identifier;
 
     // update model
-    var isNew = (this.get(data.room_id) === undefined);
+    var isNew = (!this.get(data.room_id));
     var model;
     if (!isNew) {
       // already exist in IHM (maybe reconnecting)
@@ -148,6 +148,7 @@ var RoomsCollection = Backbone.Collection.extend({
       model = new RoomModel(data);
       this.add(model);
     }
+    app.trigger('redrawNavigationRooms');
   },
   onIn: function (data) {
     var model;
