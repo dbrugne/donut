@@ -22,21 +22,12 @@ var RoomAccessView = Backbone.View.extend({
 
   timeBufferBeforeSearch: 1000,
 
-  timeout: {
-    user: 0,
-    ban: 0
-  },
+  timeout: 0,
 
   events: {
-    'blur #input-search': 'resetDropdowns',
     'keyup #input-search': 'onSearchUser',
     'click .search-user i.icon-search': 'onSearchUser',
     'click .search-user .dropdown-menu>li': 'onAllowUser',
-
-    'blur #input-search-ban': 'resetDropdowns',
-    'keyup #input-search-ban': 'onSearchBan',
-    'click .search-ban i.icon-search': 'onSearchBan',
-    'click .search-ban .dropdown-menu>li': 'onBanUser',
 
     'click input.save-access': 'onSubmit',
     'click input.save-conditions': 'onSubmitConditions',
@@ -95,9 +86,6 @@ var RoomAccessView = Backbone.View.extend({
     this.$search = this.$('#input-search');
     this.$dropdown = this.$('.search-user .dropdown');
 
-    this.$searchBan = this.$('#input-search-ban');
-    this.$dropdownBan = this.$('.search-ban .dropdown');
-
     this.$toggleCheckbox = this.$('#input-password-checkbox');
     this.$checkboxGroupAllow = this.$('#input-allowgroupmember-checkbox');
     this.$password = this.$('.input-password');
@@ -119,10 +107,6 @@ var RoomAccessView = Backbone.View.extend({
       el: this.$('.allowed'),
       group_id: this.groupId
     });
-    this.tableBanned = new TableView({
-      el: this.$('.banned'),
-      group_id: this.groupId
-    });
     this.renderTables();
 
     this.initializeTooltips();
@@ -130,14 +114,12 @@ var RoomAccessView = Backbone.View.extend({
   renderTables: function () {
     this.tablePending.render('pending');
     this.tableAllowed.render('allowed');
-    this.tableBanned.render('banned');
   },
   renderPendingTable: function () {
     this.tablePending.render('pending');
   },
   renderDropDown: function (val, dropdown) {
     this.$dropdown.removeClass('open');
-    this.$dropdownBan.removeClass('open');
 
     dropdown.addClass('open');
     var dropdownMenu = dropdown.find('.dropdown-menu');
@@ -158,48 +140,33 @@ var RoomAccessView = Backbone.View.extend({
     if (this.tableAllowed) {
       this.tableAllowed.remove();
     }
-    if (this.tableBanned) {
-      this.tableBanned.remove();
-    }
     this.remove();
   },
   onSearchUser: function (event) {
-    var key = keyboard._getLastKeyCode(event);
-    if (key.key === keyboard.ESC && (this.$dropdown.hasClass('open') || this.$dropdownBan.hasClass('open'))) {
-      event.preventDefault();
-      event.stopPropagation();
-      this.resetDropdowns();
-    }
-    this.onSearch(event, 'user', this.$search, this.$dropdown);
-  },
-  onSearchBan: function (event) {
-    var key = keyboard._getLastKeyCode(event);
-    if (key.key === keyboard.ESC && (this.$dropdown.hasClass('open') || this.$dropdownBan.hasClass('open'))) {
-      event.preventDefault();
-      event.stopPropagation();
-      this.resetDropdowns();
-    }
-    this.onSearch(event, 'ban', this.$searchBan, this.$dropdownBan);
-  },
-  onSearch: function (event, type, search, dropdown) {
     event.preventDefault();
-    var val = search.val();
+    var key = keyboard._getLastKeyCode(event);
+    if (key.key === keyboard.ESC && this.$dropdown.hasClass('open')) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.resetDropdown();
+    }
 
-    clearTimeout(this.timeout[type]);
+    var val = this.$search.val();
+
+    clearTimeout(this.timeout);
 
     if (val === '') {
-      dropdown.removeClass('open');
+      this.$dropdown.removeClass('open');
       return;
     }
 
-    var key = keyboard._getLastKeyCode(event);
     if (event.type === 'click' || key.key === keyboard.RETURN) { // instant search when user click on icon or press enter
-      this.renderDropDown(val, dropdown);
+      this.renderDropDown(val, this.$dropdown);
       return;
     }
 
-    this.timeout[type] = setTimeout(_.bind(function () {
-      this.renderDropDown(val, dropdown);
+    this.timeout = setTimeout(_.bind(function () {
+      this.renderDropDown(val, this.$dropdown);
     }, this), this.timeBufferBeforeSearch);
   },
   onAllowUser: function (event) {
@@ -225,37 +192,8 @@ var RoomAccessView = Backbone.View.extend({
     this.$dropdown.removeClass('open');
     this.$search.val('');
   },
-  onBanUser: function (event) {
-    event.preventDefault();
-
-    var userId = $(event.currentTarget).data('userId');
-    var userName = $(event.currentTarget).data('username');
-
-    if (userId && userName) {
-      ConfirmationView.open({
-        message: 'ban-group-user',
-        username: userName,
-        room_name: this.group_name
-      }, _.bind(function () {
-        client.groupBan(this.groupId, userId, _.bind(function () {
-          this.renderTables();
-          this.resetSearch();
-        }, this));
-      }, this));
-    }
-
-    // Close dropdown
+  resetDropdown: function () {
     this.$dropdown.removeClass('open');
-    this.$search.val('');
-  },
-  resetDropdowns: function () {
-    this.$dropdown.removeClass('open');
-    this.$dropdownBan.removeClass('open');
-  },
-  resetSearch: function () {
-    this.resetDropdowns();
-    this.$search.val('');
-    this.$searchBan.val('');
   },
   onChoosePassword: function (event) {
     // Display block on click
