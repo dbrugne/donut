@@ -47,7 +47,13 @@ handler.call = function (data, session, next) {
             return callback('Error while retrieving home rooms: ' + err);
           }
 
-          rooms = dbrooms;
+          var tmpRooms = [];
+          _.each(dbrooms, function (r) { // remove private rooms in group
+            if (!r.group || (r.group && r.mode === 'public')) {
+              tmpRooms.push(r);
+            }
+          });
+          rooms = tmpRooms;
 
           return callback(null);
         });

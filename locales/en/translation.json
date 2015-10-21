@@ -952,9 +952,9 @@
       }
     },
     "roomop": {
-      "subject": "You were promoted to moderator in #__roomname__",
+      "subject": "You were promoted to moderator in __roomname__",
       "content": {
-        "title": "You were promoted to moderator in #__roomname__",
+        "title": "You were promoted to moderator in __roomname__",
         "disclaimer": "Kudos! You are now a moderator in ",
         "disclaimer2": "It's time to practice your new super powers.",
         "action": "…and all of that thanks to ",
@@ -962,34 +962,34 @@
       }
     },
     "roomdeop": {
-      "subject": "You are no longer a moderator of #__roomname__",
+      "subject": "You are no longer a moderator of __roomname__",
       "content": {
-        "title": "You are no longer a moderator of #__roomname__",
+        "title": "You are no longer a moderator of __roomname__",
         "disclaimer": "This is sad news... But the good news is you will have more time to focus on your very own donut:)",
         "action": "…and all of that thanks to ",
         "button": "Return to DONUT"
       }
     },
     "roomkick": {
-      "subject": "You were kicked out of #__roomname__",
+      "subject": "You were kicked out of __roomname__",
       "content": {
-        "title": "You were kicked out of #__roomname__ by @__username__",
+        "title": "You were kicked out of __roomname__ by @__username__",
         "disclaimer": "That can't be a big deal. The two of you just give a big hug and everything will be fine again!",
         "button": "Go to chat"
       }
     },
     "roomban": {
-      "subject": "You were banned from #__roomname__",
+      "subject": "You were banned from __roomname__",
       "content": {
-        "title": "You were banned from #__roomname__ by @__username__",
+        "title": "You were banned from __roomname__ by @__username__",
         "disclaimer": "It looks like you were not meant to be together...<br/>But you'll be fine, one lost ten found. Just pick another donut!",
         "button": "Return to DONUT"
       }
     },
     "roomdeban": {
-      "subject": "You are no longer banned from #__roomname__",
+      "subject": "You are no longer banned from __roomname__",
       "content": {
-        "title": "You are no longer banned from #__roomname__",
+        "title": "You are no longer banned from __roomname__",
         "disclaimer": "You are no longer banned from ",
         "disclaimer2": "It looks like all is well that ends well!",
         "action": "…and all of that thanks to ",
@@ -997,18 +997,18 @@
       }
     },
     "roomvoice": {
-      "subject": "You are unmute in #__roomname__",
+      "subject": "You are unmute in __roomname__",
       "content": {
-        "title": "You are unmute in #__roomname__",
+        "title": "You are unmute in __roomname__",
         "disclaimer": "Now can write as much as you want. Enjoy !",
         "action": "... and all of that thanks to ",
         "button": "Go to chat"
       }
     },
     "roomdevoice": {
-      "subject": "You are mute in #__roomname__",
+      "subject": "You are mute in __roomname__",
       "content": {
-        "title": "You are mute in #__roomname__",
+        "title": "You are mute in __roomname__",
         "disclaimer": "You have been muted in ",
         "disclaimer2": "This only applies to ",
         "disclaimer3": "Don't worry, the moderators of ",
@@ -1018,58 +1018,58 @@
       }
     },
     "roomjoin": {
-      "subject": "@__username__ joined #__roomname__",
+      "subject": "@__username__ joined __roomname__",
       "content": {
-        "title": "@__username__ joined #__roomname__",
+        "title": "@__username__ joined __roomname__",
         "disclaimer": "This is one more! Let's go welcome this marvelous person the right way :).",
         "button": "Go to chat"
       }
     },
     "roomjoinrequest": {
-      "subject": "An user want to join #__roomname__",
+      "subject": "An user want to join __roomname__",
       "content": {
-        "title": "@__username__ ask for allowance in #__roomname__",
+        "title": "@__username__ ask for allowance in __roomname__",
         "disclaimer": "Looks like your donut have great success!",
         "button": "Go to chat"
       }
     },
     "roomallow": {
-      "subject": "An user accept your request to join #__roomname__",
+      "subject": "An user accept your request to join __roomname__",
       "content": {
-        "title": "@__username__ allow you to join #__roomname__",
+        "title": "@__username__ allow you to join __roomname__",
         "disclaimer": "You can now enjoy this donut !",
         "button": "Go to chat"
       }
     },
     "roomrefuse": {
-      "subject": "An user refuse your request to join #__roomname__",
+      "subject": "An user refuse your request to join __roomname__",
       "content": {
-        "title": "@__username__ refuse your request to join #__roomname__",
+        "title": "@__username__ refuse your request to join __roomname__",
         "disclaimer": "Don't worry you can make another request to join this donut later !",
         "button": "Go to chat"
       }
     },
     "roominvite": {
-      "subject": "An user invites you to join #__roomname__",
+      "subject": "An user invites you to join __roomname__",
       "content": {
-        "title": "@__username__ invites you to join #__roomname__",
+        "title": "@__username__ invites you to join __roomname__",
         "disclaimer": "You can join his room right now!",
         "button": "Go to chat"
       }
     },
     "roomtopic": {
-      "subject": "New topic in #__roomname__",
+      "subject": "New topic in __roomname__",
       "content": {
-        "title": "@__username__ has defined a new topic in #__roomname__",
+        "title": "@__username__ has defined a new topic in __roomname__",
         "topic": "<strong>New topic : \"__topic__\"</strong>",
         "disclaimer": "You must a thousand things to say about it!",
         "button": "Go to chat"
       }
     },
     "usermention": {
-      "subject": "New mention: @__username__ mentionned you in #__roomname__",
+      "subject": "New mention: @__username__ mentionned you in __roomname__",
       "content": {
-        "title": "@__username__ mentionned you in #__roomname__",
+        "title": "@__username__ mentionned you in __roomname__",
         "disclaimer": "It's always cool to have people thinking about you! Think about replying.",
         "button": "Go to chat"
       }
@@ -1083,9 +1083,9 @@
       }
     },
     "roommessage": {
-      "subject": "New messages in #__roomname__",
+      "subject": "New messages in __roomname__",
       "content": {
-        "title": "New messages in #__roomname__",
+        "title": "New messages in __roomname__",
         "button": "Go to chat"
       }
     },

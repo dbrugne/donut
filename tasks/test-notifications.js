@@ -16,7 +16,7 @@ module.exports = function (grunt) {
             config: 'notifUsernameFrom',
             type: 'input',
             message: 'Choose a "from"/"by" username (the one who made the action, sends the message...)',
-            default: 'david'
+            default: 'yangs'
           } ]
         }
       },
@@ -26,17 +26,17 @@ module.exports = function (grunt) {
             config: 'notifUsernameTo',
             type: 'input',
             message: 'Choose a "to" username (the one who is the subject of the action, receives the message...)',
-            default: 'yangs'
+            default: 'david'
           } ]
         }
       },
-      notifRoomName: {
+      notifIdentifier: {
         options: {
           questions: [ {
             config: 'notifRoomName',
             type: 'input',
             message: 'Choose a "room" name',
-            default: 'donut'
+            default: '#donut/donut'
           } ]
         }
       },
@@ -54,9 +54,9 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('donut-create-test-notifications', function () {
-    var usernameFrom = grunt.config('notifUsernameFrom') || 'david';
-    var usernameTo = grunt.config('notifUsernameTo') || 'yangs';
-    var roomName = grunt.config('notifRoomName') || 'donut';
+    var usernameFrom = grunt.config('notifUsernameFrom') || 'yangs';
+    var usernameTo = grunt.config('notifUsernameTo') || 'david';
+    var identifier = grunt.config('notifIdentifier') || '#donut/donut';
     var message = grunt.config('notifMessage') || '';
 
     var userFrom = null;
@@ -100,12 +100,12 @@ module.exports = function (grunt) {
       },
 
       function retrieveRoom (callback) {
-        RoomModel.findByName(roomName).exec(function (err, r) { // @todo : make it works with group rooms (#aaa/aaa)
+        RoomModel.findByIdentifier(identifier, function (err, r) {
           if (err) {
-            return callback('Error while retrieving room ' + roomName + ': ' + err);
+            return callback('Error while retrieving room ' + identifier + ': ' + err);
           }
           if (!r) {
-            return callback('Unable to retrieve room: ' + roomName);
+            return callback('Unable to retrieve room: ' + identifier);
           }
           room = r;
           return callback(null);
@@ -140,6 +140,37 @@ module.exports = function (grunt) {
             }
 
             grunt.log.ok('usermessageType done');
+            return callback(null);
+          });
+        });
+      },
+
+      function roomTopicType (callback) {
+        var event = {
+          name: room.name,
+          id: room.id,
+          user_id: userFrom.id,
+          username: userFrom.username,
+          avatar: userFrom._avatar(),
+          topic: message,
+          time: new Date()
+        };
+        HistoryRoomModel.record()(room, 'room:topic', event, function (err, history) {
+          if (err) {
+            return callback(err);
+          }
+
+          var data = {
+            type: 'roomtopic',
+            room: room.id,
+            history: history.id
+          };
+          bridge.notify('chat', 'createNotificationTask.createNotification', data, function (err) {
+            if (err) {
+              return callback(err);
+            }
+
+            grunt.log.ok('roomtopicType done');
             return callback(null);
           });
         });
@@ -223,37 +254,6 @@ module.exports = function (grunt) {
         }, callback);
       },
 
-      function roomTopicType (callback) {
-        var event = {
-          name: room.name,
-          id: room.id,
-          user_id: userFrom.id,
-          username: userFrom.username,
-          avatar: userFrom._avatar(),
-          topic: message,
-          time: new Date()
-        };
-        HistoryRoomModel.record()(room, 'room:topic', event, function (err, history) {
-          if (err) {
-            return callback(err);
-          }
-
-          var data = {
-            type: 'roomtopic',
-            room: room.id,
-            history: history.id
-          };
-          bridge.notify('chat', 'createNotificationTask.createNotification', data, function (err) {
-            if (err) {
-              return callback(err);
-            }
-
-            grunt.log.ok('roomtopicType done');
-            return callback(null);
-          });
-        });
-      },
-
       function roomMessageType (callback) {
         var event = {
           name: room.name,
@@ -261,6 +261,7 @@ module.exports = function (grunt) {
           user_id: userFrom.id,
           username: userFrom.username,
           avatar: userFrom._avatar(),
+          to: userTo.id,
           message: message,
           time: new Date()
         };
@@ -362,7 +363,7 @@ module.exports = function (grunt) {
     'load-pomelo-configuration',
     'prompt:notifUsernameFrom',
     'prompt:notifUsernameTo',
-    'prompt:notifRoomName',
+    'prompt:notifIdentifier',
     'prompt:notifMessage',
     'donut-create-test-notifications'
   ]);

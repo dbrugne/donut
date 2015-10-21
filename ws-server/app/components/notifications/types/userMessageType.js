@@ -169,7 +169,9 @@ Notification.prototype.sendEmail = function (model, done) {
         });
       });
 
-      emailer.userMessage(model.user.getEmail(), events[ 0 ].data.from_username, messages, callback);
+      if (model.user.getEmail()) {
+        emailer.userMessage(model.user.getEmail(), events[0].data.from_username, messages, callback);
+      }
     },
 
     function persist (callback) {

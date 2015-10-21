@@ -3,6 +3,7 @@ var logger = require('../../../../../shared/util/logger').getLogger('donut', __f
 var _ = require('underscore');
 var async = require('async');
 var UserModel = require('../../../../../shared/models/user');
+var RoomModel = require('../../../../../shared/models/room');
 var NotificationModel = require('../../../../../shared/models/notification');
 var emailer = require('../../../../../shared/io/emailer');
 var utils = require('./../utils');
@@ -53,7 +54,7 @@ Notification.prototype.create = function (room, history, done) {
       _.each(users, function (user) {
         var model = NotificationModel.getNewModel(that.type, user._id, {
           event: historyModel._id,
-          name: roomModel.name
+          room: roomModel._id
         });
 
         model.to_browser = true;
@@ -143,7 +144,9 @@ Notification.prototype.sendEmail = function (model, done) {
       var topic = utils.mentionize(history.data.topic, {
         style: 'color: ' + conf.room.default.color + ';'
       });
-      emailer.roomTopic(model.user.getEmail(), history.user.username, history.room.name, topic, callback);
+      if (model.user.getEmail()) {
+        emailer.roomTopic(model.user.getEmail(), history.user.username, model.data.room.getIdentifier(), topic, callback);
+      }
     },
 
     function persist (callback) {

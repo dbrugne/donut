@@ -426,9 +426,21 @@ roomSchema.methods.getIdsByType = function (type) {
 };
 
 roomSchema.methods.getIdentifier = function () {
-  return (!this.group)
-    ? '#' + this.name
-    : '#' + this.group.name + '/' + this.name;
+  if (!this.group) {
+    return '#' + this.name;
+  }
+  if (this.group.name) {
+    return  '#' + this.group.name + '/' + this.name;
+  }
+
+  // hydrate group for room model with group not already populated (e.g. : notifications)
+  this.constructor.populate(this, {
+    path: 'group',
+    model: 'Group',
+    select: 'name'
+  }, function (err, doc) {
+
+  });
 };
 
 module.exports = mongoose.model('Room', roomSchema);

@@ -62,7 +62,7 @@ Notification.prototype.create = function (user, room, history, done) {
     },
 
     function save (userModel, roomModel, historyModel, status, callback) {
-      var model = NotificationModel.getNewModel(that.type, userModel._id, { event: historyModel._id });
+      var model = NotificationModel.getNewModel(that.type, userModel._id, { event: historyModel._id, room: roomModel._id });
       model.to_browser = true;
       model.to_email = (!userModel.getEmail()
         ? false
@@ -118,7 +118,7 @@ Notification.prototype.sendToBrowser = function (model, user, room, history, don
       },
       room: {
         id: room.id,
-        name: room.name,
+        name: room.getIdentifier(),
         avatar: room._avatar()
       }
     }
@@ -142,21 +142,21 @@ Notification.prototype.sendEmail = function (model, done) {
           method = emailer.roomOp;
           data = {
             username: history.by_user.username,
-            roomname: history.room.name
+            roomname: model.data.room.getIdentifier()
           };
           break;
         case 'roomdeop':
           method = emailer.roomDeop;
           data = {
             username: history.by_user.username,
-            roomname: history.room.name
+            roomname: model.data.room.getIdentifier()
           };
           break;
         case 'roomkick':
           method = emailer.roomKick;
           data = {
             username: history.by_user.username,
-            roomname: history.room.name,
+            roomname: model.data.room.getIdentifier(),
             reason: (history.data && history.data.reason
               ? history.data.reason
               : null)
@@ -166,7 +166,7 @@ Notification.prototype.sendEmail = function (model, done) {
           method = emailer.roomBan;
           data = {
             username: history.by_user.username,
-            roomname: history.room.name,
+            roomname: model.data.room.getIdentifier(),
             reason: (history.data && history.data.reason
               ? history.data.reason
               : null)
@@ -176,14 +176,14 @@ Notification.prototype.sendEmail = function (model, done) {
           method = emailer.roomDeban;
           data = {
             username: history.by_user.username,
-            roomname: history.room.name
+            roomname: model.data.room.getIdentifier()
           };
           break;
         case 'roomvoice':
           method = emailer.roomVoice;
           data = {
             username: history.by_user.username,
-            roomname: history.room.name,
+            roomname: model.data.room.getIdentifier(),
             reason: (history.data && history.data.reason
               ? history.data.reason
               : null)
@@ -193,7 +193,7 @@ Notification.prototype.sendEmail = function (model, done) {
           method = emailer.roomDevoice;
           data = {
             username: history.by_user.username,
-            roomname: history.room.name,
+            roomname: model.data.room.getIdentifier(),
             reason: (history.data && history.data.reason
               ? history.data.reason
               : null)
@@ -203,7 +203,9 @@ Notification.prototype.sendEmail = function (model, done) {
           return callback('roomPromoteType.sendEmail unknown notification type: ' + model.type);
       }
 
-      _.bind(method, emailer)(model.user.getEmail(), data, callback);
+      if (model.user.getEmail()) {
+        _.bind(method, emailer)(model.user.getEmail(), data, callback);
+      }
     },
 
     function persist (callback) {

@@ -4,6 +4,7 @@ var _ = require('underscore');
 var NotificationModel = require('../../../../shared/models/notification');
 var HistoryOne = require('../../../../shared/models/historyone');
 var HistoryRoom = require('../../../../shared/models/historyroom');
+var RoomModel = require('../../../../shared/models/room');
 var conf = require('../../../../config');
 var async = require('async');
 
@@ -300,7 +301,7 @@ Facade.prototype.retrieveScheduledNotifications = function (callback) {
   q.populate({
     path: 'data.room',
     model: 'Room',
-    select: 'avatar color name'
+    select: 'avatar color name group'
   });
   q.populate({
     path: 'data.group',
@@ -312,7 +313,35 @@ Facade.prototype.retrieveScheduledNotifications = function (callback) {
       callback(err);
     }
 
-    callback(null, results);
+
+    // hydrate room groups (mongoose seems unable to populate populated document)
+    var rooms = [];
+    var roomsIds = [];
+    _.each(results, function (n) {
+      if (n.data.room) {
+        if (roomsIds.indexOf(n.data.room.id) !== -1) {
+          return;
+        }
+        rooms.push(n.data.room);
+        roomsIds.push(n.data.room.id);
+      }
+    });
+
+    if (!rooms.length) {
+      return callback(null, results);
+    }
+
+    RoomModel.populate(rooms, {
+      path: 'group',
+      model: 'Group',
+      select: 'name'
+    }, function (err, docs) {
+      if (err) {
+        callback(err);
+      }
+
+      callback(null, results);
+    });
   });
 };
 
