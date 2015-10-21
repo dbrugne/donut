@@ -397,7 +397,11 @@ roomSchema.methods.getIdsByType = function (type) {
     _.each(this.op, function (u) {
       ids.push(u.toString());
     });
-    ids.push(this.owner.toString());
+    if (this.owner._id) {
+      ids.push(this.owner.id);
+    } else {
+      ids.push(this.owner.toString());
+    }
   } else if (type === 'allowed') {
     _.each(this.allowed, function (u) {
       ids.push(u.toString());
