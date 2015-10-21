@@ -65,6 +65,22 @@ var GroupModel = Backbone.Model.extend({
     });
 
     this.trigger('members-redraw');
+  },
+  onAllow: function (data) {
+    data.is_op = false;
+    var members = this.get('members');
+    members.push(data);
+    this.set('members', members);
+
+    this.trigger('redraw');
+  },
+  onDisallow: function (data) {
+    var members = _.reject(this.get('members'), function (m) {
+      return (m.user_id === data.user_id);
+    });
+    this.set('members', members);
+
+    this.trigger('redraw');
   }
 });
 

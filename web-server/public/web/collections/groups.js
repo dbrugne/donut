@@ -28,6 +28,8 @@ var GroupsCollection = Backbone.Collection.extend({
     this.listenTo(client, 'group:ban', this.onGroupBan);
     this.listenTo(client, 'group:op', this.onOp);
     this.listenTo(client, 'group:deop', this.onDeop);
+    this.listenTo(client, 'group:allow', this.onAllow);
+    this.listenTo(client, 'group:disallow', this.onDisallow);
   },
   addModel: function (data) {
     data.id = data.group_id;
@@ -57,6 +59,22 @@ var GroupsCollection = Backbone.Collection.extend({
     }
 
     model.onUpdated(data);
+  },
+  onAllow: function (data) {
+    var model;
+    if (!data || !data.group_id || !(model = this.get(data.group_id))) {
+      return;
+    }
+
+    model.onAllow(data);
+  },
+  onDisallow: function (data) {
+    var model;
+    if (!data || !data.group_id || !(model = this.get(data.group_id))) {
+      return;
+    }
+
+    model.onDisallow(data);
   },
   onGroupBan: function (data) {
     data.id = data.group_id;

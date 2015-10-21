@@ -64,7 +64,8 @@ handler.call = function (data, session, next) {
         user_id: user.id,
         username: user.username,
         avatar: user._avatar(),
-        reason: 'Disallow'
+        reason: 'Disallow',
+        group_id: group.id
       };
       callback(null, event);
     },

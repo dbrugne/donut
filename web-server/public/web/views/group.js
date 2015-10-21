@@ -142,9 +142,7 @@ var GroupView = Backbone.View.extend({
             app.trigger('alert', 'error', i18next.t('global.unknownerror'));
           }
         } else if (response.success) {
-          this.$passwordDiv.hide();
-          this.$requestAllowance.hide();
-          app.trigger('alert', 'info', i18next.t('chat.members', {name: this.model.get('name')}));
+          app.trigger('joinGroup', this.model.get('name'));
         }
       }, this));
     }, this));
