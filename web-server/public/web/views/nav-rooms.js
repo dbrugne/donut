@@ -25,6 +25,7 @@ module.exports = Backbone.View.extend({
     this.$empty = this.$('.empty');
   },
   render: function () {
+    //console.log('render rooms');
     if (!rooms.models.length) {
       this.$list.empty();
       return this.$empty.show();

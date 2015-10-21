@@ -179,25 +179,27 @@ var WindowView = Backbone.View.extend({
     // last event time
     model.set('last', Date.now());
 
-    // ignore event from currentUser
-    var uid = data.from_user_id || data.user_id;
-    if (currentUser.get('user_id') === uid) {
-      return;
-    }
-
     var collection = (model.get('type') === 'room')
       ? rooms
       : onetoones;
 
-    // badge (even if focused)
-    if (model.get('unviewed') !== true) {
+    var uid = data.from_user_id || data.user_id;
+
+    // badge (even if focused), only if user sending the message is not currentUser
+    if (model.get('unviewed') !== true && currentUser.get('user_id') !== uid) {
       model.set('unviewed', true);
-      collection.sort();
-      if (model.get('type') === 'room') {
-        app.trigger('redrawNavigationRooms');
-      } else {
-        app.trigger('redrawNavigationOnes');
-      }
+    }
+
+    collection.sort();
+    if (model.get('type') === 'room') {
+      app.trigger('redrawNavigationRooms');
+    } else {
+      app.trigger('redrawNavigationOnes');
+    }
+
+    // ignore event from currentUser
+    if (currentUser.get('user_id') === uid) {
+      return;
     }
 
     // if current discussion is focused do nothing more
