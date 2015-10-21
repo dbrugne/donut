@@ -357,7 +357,7 @@
             .avatar { width: 22px; height: 22px; display: inline; }
           }
           .name-ctn { .display-flex; .flex(1); margin: auto 0;
-            .name, .username { .ft-opensans; display: inline-block; width: 138px; overflow: hidden; text-overflow: ellipsis; margin: 2px 0; font-weight: bold;
+            .name, .username { .ft-opensans; display: inline-block; width: 138px; overflow: hidden; text-overflow: ellipsis; margin: 2px 0;
               > span { font-size: 13px; }
             }
           }
@@ -375,6 +375,7 @@
         &.active .item, &.active:hover .item, &.active:focus .item { background-color: @cl-background; }
       }
     }
+    #ones li .item .name { font-weight:bold; }
   }
 
   #center { height: 100%; z-index: 5; margin-left: @size-left; font-size: 12px; background-color: @cl-subtext0; background-image: url('@{img-path}/logo-onecolor-gr.svg'); background-repeat: no-repeat; background-position: center center; background-size: 60%;
