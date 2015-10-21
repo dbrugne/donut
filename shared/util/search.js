@@ -266,11 +266,6 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
 
     // @todo yls prioriser entre rooms / users / groups
 
-    console.log('skip ' + skip);
-    console.log('limit ' + limit);
-    console.log(roomResults.length);
-    console.log(userResults.length);
-
     var searchResults = {
       cards: {
         list: _.union(roomResults, userResults) || {},

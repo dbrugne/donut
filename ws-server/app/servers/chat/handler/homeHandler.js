@@ -86,7 +86,7 @@ handler.call = function (data, session, next) {
         if (session.settings.device === 'mobile') {
           return callback(null);
         }
-        
+
         var q = User.find({username: {$ne: null}}, 'username avatar color facebook location');
         q.sort({'lastonline_at': -1, 'lastoffline_at': -1})
           .limit(userLimit + 1);
@@ -106,7 +106,7 @@ handler.call = function (data, session, next) {
         if (session.settings.device === 'mobile') {
           return callback(null);
         }
-        
+
         var list = [];
         _.each(users, function (u, index) {
           list.push({
@@ -267,13 +267,14 @@ handler.call = function (data, session, next) {
           } else {
             homeEvent.cards.more = false;
           }
-          
+
           homeEvent.cards.list = featured;
 
           return callback(null);
         });
       }
-    ], function (err) {
+    ],
+    function (err) {
       if (err) {
         return errors.getHandler('home', next)(err);
       }
