@@ -59,7 +59,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
       element.message = _.escape(element.message);
     });
 
-    this.$ctn.html(this.template({users: data.users}));
+    this.$ctn.html(this.template({users: data.users, type: ''}));
     this.pagination.html(this.paginationTemplate({
       currentPage: this.page,
       totalNbPages: Math.ceil(data.count / this.paginate),

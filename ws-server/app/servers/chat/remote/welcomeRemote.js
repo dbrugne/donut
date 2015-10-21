@@ -27,10 +27,9 @@ var WelcomeRemote = function (app) {
  * @param {String} frontendId
  * @param {Function} globalCallback
  */
-WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) {
+WelcomeRemote.prototype.getMessage = function (uid, frontendId, data, globalCallback) {
   var start = Date.now();
 
-  // welcome event data
   var welcomeEvent = {
     notifications: {},
     blocked: []
@@ -158,7 +157,7 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, globalCallback) 
     },
 
     function featured (user, callback) {
-      if (!(user.preferences && user.preferences[ 'browser:welcome' ] === true)) {
+      if (data.device === 'mobile' && !(user.preferences && user.preferences[ 'browser:welcome' ] === true)) {
         return callback(null, user);
       }
 

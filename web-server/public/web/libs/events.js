@@ -153,7 +153,7 @@ exports.prototype.replaceLastDisconnectBlock = function ($lastDisconnectBlock, $
     }
 
     // new message block
-    if ((previous && this.block(event, previous)) || (!previous && event.get('data').user_id === $previousEventDiv.data('user_id'))) {
+    if ((previous && this.block(event, previous)) || (!previous && event.get('data').user_id !== $previousEventDiv.data('userId'))) {
       _html = require('../templates/event/block-user.html')({
         user_id: event.get('data').user_id,
         username: event.get('data').username,
@@ -209,6 +209,7 @@ exports.prototype._data = function (event) {
   if (this.discussion.get('type') === 'room') {
     data.identifier = this.discussion.get('identifier');
     data.mode = this.discussion.get('mode');
+    data.allow_user_request = this.discussion.get('allow_user_request');
     data.group_name = this.discussion.get('group_name');
     data.group_id = this.discussion.get('group_id');
     data.owner_username = this.discussion.get('owner_username');

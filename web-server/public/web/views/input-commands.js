@@ -71,7 +71,7 @@ var InputCommandsView = Backbone.View.extend({
       alias: 'j',
       parameters: 'name',
       access: 'everywhere',
-      help: '#donut',
+      help: '#donut/#community',
       description: 'chat.commands.join'
     },
     leave: {
@@ -203,7 +203,8 @@ var InputCommandsView = Backbone.View.extend({
       identifier = parameters[1] + parameters[2] + parameters[3];
     } else if (parameters[1] && parameters[2]) {
       // group (#donut/)
-      return this.errorCommand('join', 'invalidroom');
+      identifier = parameters[1].replace('#', '');
+      return app.trigger('joinGroup', identifier);
     } else {
       // room not in group (#donut)
       identifier = parameters[1];

@@ -48,7 +48,7 @@ var GroupView = Backbone.View.extend({
       room.join = urls(room, 'room', 'uri');
       room.type = 'room';
 
-      if (isMember || isAdmin) {
+      if (room.mode === 'public' || isMember || isAdmin) {
         rooms.push(room);
       }
     });
