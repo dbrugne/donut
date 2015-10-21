@@ -1,5 +1,4 @@
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
 var currentUser = require('../models/current-user');
@@ -13,8 +12,9 @@ var CurrentUserView = Backbone.View.extend({
     this.listenTo(this.model, 'change', this.render);
   },
   render: function () {
-    if (!currentUser.get('user_id'))
-      return this; // nothing to render if welcome wasn't received
+    if (!currentUser.get('user_id')) {
+      return this;
+    } // nothing to render if welcome wasn't received
 
     var data = currentUser.toJSON();
 
@@ -22,10 +22,17 @@ var CurrentUserView = Backbone.View.extend({
 
     var html = this.template(data);
     this.$el.html(html);
+
+    this.initializeTooltips();
+
     return this;
+  },
+
+  initializeTooltips: function () {
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
   }
-
 });
-
 
 module.exports = CurrentUserView;

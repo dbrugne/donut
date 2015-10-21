@@ -92,13 +92,13 @@
             <div id="left">
                 <ul class="page-sidebar-menu">
                     <li id="ones">
-                        <div class="title">ONE TO ONES</div>
-                        <ul class="list"><!--ones--></ul>
+                        <a class="title" href=".collapse-ones" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-ones"><%= t('global.onetoones') %></a>
+                        <ul class="list collapse-ones collapse in"><!--ones--></ul>
                         <div class="separator"><hr></div>
                     </li>
                     <li id="rooms">
-                        <div class="title">ROOMS</div>
-                        <ul class="list"><!--rooms--></ul>
+                        <a class="title" href=".collapse-rooms" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-rooms"><%= t('global.donuts') %></a>
+                        <ul class="list collapse-rooms collapse in"><!--rooms--></ul>
                         <ul class="empty">
                             <li>No room opened, you can <a class="go-to-search dc-text" href="#">search</a> or <a class="open-create-room dc-text" href="#">create</a> one.</li>
                         </ul>

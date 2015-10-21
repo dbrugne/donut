@@ -127,6 +127,7 @@
   },
   "global": {
     "view-profile": "View profile",
+    "onetoones": "one to ones",
     "donuts": "Donuts",
     "group": "group",
     "admin": "(admin only)",

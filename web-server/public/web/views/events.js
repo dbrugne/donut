@@ -90,9 +90,6 @@ module.exports = Backbone.View.extend({
     this.$scrollableContent = this.$scrollable.find('.scrollable-content');
     this.$realtime = this.$scrollableContent.find('.realtime');
 
-    this.$goToTop = this.$('.go-to-top');
-    this.$goToBottom = this.$('.go-to-bottom');
-
     this.$scrollable.on('scroll', _.bind(function () {
       this.onScroll();
     }, this));
@@ -142,26 +139,6 @@ module.exports = Backbone.View.extend({
     this.eventsDateView.scroll({
       currentScrollPosition: currentScrollPosition
     });
-
-    // toggle the "go to top and bottom" links
-    if (bottom > 100) { // content should be longer than 100px of viewport to avoid link display for
-      // few pixels
-      if (currentScrollPosition < 30) {
-        this.$goToTop.hide();
-      } else {
-        this.$goToTop.show();
-      }
-      // possible performance issue
-      if (currentScrollPosition >= (bottom - 10)) {
-        this.$goToBottom.hide().removeClass('unread');
-      } else {
-        this.$goToBottom.show();
-      }
-    } else {
-      // nothing to scroll, hide links
-      this.$goToBottom.hide().removeClass('unread');
-      this.$goToTop.hide();
-    }
 
     var that = this;
 
@@ -232,8 +209,6 @@ module.exports = Backbone.View.extend({
     // scrollDown
     if (needToScrollDown && !this.eventsEditView.messageUnderEdition) {
       this.scrollDown();
-    } else {
-      this.$goToBottom.show().addClass('unread');
     }
   },
   addBatchEvents: function (events) {
