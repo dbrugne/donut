@@ -129,7 +129,7 @@
     "view-profile": "View profile",
     "onetoones": "one to ones",
     "donuts": "Donuts",
-    "group": "group",
+    "group": "community",
     "admin": "(admin only)",
     "default": "default",
     "or": "or",
@@ -258,7 +258,7 @@
     },
     "group": {
       "ownerops": "The regulars",
-      "nouser": "No user in this group",
+      "nouser": "No user in this community",
       "permalink": "Permalink of this profile",
       "editlink": "Edit",
       "profilelink": "Profile of ",
@@ -348,7 +348,8 @@
       "users": "User's list of this Donut"
     },
     "owner": {
-      "is": "This user is the creator of this donut."
+      "is": "This user is the creator of this donut.",
+      "isgroup": "This user is the creator of this community"
     },
     "allow": {
       "infobox": {
@@ -361,6 +362,7 @@
     },
     "op": {
       "is": "This user is the moderator of this donut.",
+      "isgroup": "This user is the moderator of this community",
       "infobox": "Make moderator"
     },
     "deop": {
@@ -376,7 +378,7 @@
       "infobox": "Unban user"
     },
     "deban-group": {
-      "infobox": "Allow again this user to join the group"
+      "infobox": "Allow again this user to join the community"
     },
     "banuser": {
       "infobox": "Block this user",
@@ -418,8 +420,8 @@
         "refuseuser": "You are about to refuse @__username__",
         "acceptuser": "You are about to authorize @__username__",
         "disallowuser": "You are about to disallow @__username__",
-        "ban-group-user": "You are about to ban user @__username__ from this group",
-        "deban-group-user": "You are about to deban user @__username__ from this group",
+        "ban-group-user": "You are about to ban user @__username__ from this community",
+        "deban-group-user": "You are about to deban user @__username__ from this community",
         "invite": "You are about to authorize @__username__. A notification will be sent to invite @__username__ to join #__name__.",
         "requestallowance": "You are about to request allowance for #__name__. Owner will see your real name and your email on your membership request.",
         "requestallowancegroup": "You are about to request allowance for #__name__. Owner will see your real name and your email on your membership request."
@@ -476,7 +478,7 @@
       "roomdeop": "  is no longer a moderator as requested by",
       "roomvoice": " is no longer mute as requested by ",
       "roomdevoice": " is now mute as requested by ",
-      "roomgroupban": " was banned from group by ",
+      "roomgroupban": " was banned from community by ",
       "in": "entered at",
       "out": "left at",
       "online": "is online,",
@@ -507,9 +509,9 @@
         "groupallowed": "You are now authorized to join <span>#__name__</span>",
         "groupinvite": "<span>@__username__</span> invites you to join <span>#__name__</span>",
         "grouprefuse": "Your request to join <span>#__name__</span></br> has been refused",
-        "groupban": "You were banned from group <span>#__name__</span>",
-        "groupop": "You are moderator of group <span>#__name__</span>",
-        "groupdeop": "You are no longer moderator of group <span>#__name__</span>"
+        "groupban": "You were banned from community <span>#__name__</span>",
+        "groupop": "You are moderator of community <span>#__name__</span>",
+        "groupdeop": "You are no longer moderator of community <span>#__name__</span>"
       },
       "userban": " was blocked by",
       "userdeban": " is no longer blocked as requested by"
@@ -535,11 +537,11 @@
     "alert": {
       "kick": "You have been kicked out of __name__",
       "ban": "You have been banned from __name__",
-      "groupban": "You have been banned from group __name__",
+      "groupban": "You have been banned from community __name__",
       "allowed": "You are not allowed anymore in __name__"
     },
     "roomnotexists": "The donut __name__ does not exist yet, <a class='open-create-room' data-name='__name__'>would you like to create it</a>?",
-    "groupnotexists": "The group __name__ does not exist yet, <a class='open-create-room' data-name='__name__'>would you like to create it</a>?",
+    "groupnotexists": "The community __name__ does not exist yet, <a class='open-create-room' data-name='__name__'>would you like to create it</a>?",
     "reason": "(reason: \"__reason__\")",
     "deletemessage": "The donut __name__ has been deleted",
     "users": {
@@ -641,10 +643,11 @@
       "rejoin": " to get back in.",
       "allowed_button": "Request access",
       "password": "Or you can join directly if you know the password:",
+      "message-display": "Display a message",
       "password_placeholder": "Password",
       "password_button": "Join",
       "banned": "You were banned from this donut on __at__",
-      "groupbanned": "You were banned from this group on __at__",
+      "groupbanned": "You were banned from this community on __at__",
       "reason": "for the following reason: ",
       "kicked": "You have been kicked out from this donut.",
       "kicked_button": "Join",
@@ -653,9 +656,9 @@
       "disclaimer-public": "This donut is public. Any user can access it.",
       "disclaimer-password": "You have also chosen to put a password. Users with the password can enter without having to be asked first.",
       "disclaimer-changing": "You can switch this donut to private mode. Then, only users you authorize will be able to join, participate and access history. Access will be based on invitation and/or password. The current members of this public donut will remain members once this donut switched to private. Caution, this action cannot be undone.",
-      "disclaimer-group": "All members of this group can create a donut in this group and manage it. They can also join private room that allow group members. Public donut of this group can be joined by everyone on the platform.",
+      "disclaimer-group": "All members of this community can create a donut in this community and manage it. They can also join private room that allow community members. Public donut of this community can be joined by everyone on the platform.",
       "close": "Close this donut",
-      "allowgroupmember": "Allow group members to join this donut"
+      "allowgroupmember": "Allow community members to join this donut"
     },
     "form": {
       "common": {
@@ -689,16 +692,16 @@
       },
       "group-form": {
         "create": {
-          "label": "Create a group",
-          "help": "A group is a place grouping your donut and allowing your community to become a member and access a group of donuts.",
-          "help-name": "Between 3 and 20 characters, only letters, numbers,  dashes (-) and underscores (_).<br>Caution the group name will no longer be editable.",
+          "label": "Create a community",
+          "help": "A community is a place grouping your donut and allowing your community to become a member and access a group of donuts.",
+          "help-name": "Between 3 and 20 characters, only letters, numbers,  dashes (-) and underscores (_).<br>Caution the community name will no longer be editable.",
           "placeholder": "Group name",
           "submit": "Create"
         },
         "edit": {
           "description": {
             "label": "Description",
-            "placeholder": "Describe the group in a few words",
+            "placeholder": "Describe the community in a few words",
             "help": "Optional"
           },
           "disclaimer": {
@@ -718,16 +721,16 @@
           },
           "group": {
             "delete": {
-              "link": "To delete this group <a class='open-group-delete' data-group-id=\"__id__\"> click here</a>.",
+              "link": "To delete this community <a class='open-group-delete' data-group-id=\"__id__\"> click here</a>.",
               "title": "Delete",
               "info": [
-                "You are about to delete this group. This action is immediate and cannot be undone.<br><br>",
-                "To confirm deletion please enter group name (<strong>__name__</strong>) and then click the button:"
+                "You are about to delete this community. This action is immediate and cannot be undone.<br><br>",
+                "To confirm deletion please enter community name (<strong>__name__</strong>) and then click the button:"
               ],
-              "placeholder": "Enter the group name",
-              "success": "group deleted!",
+              "placeholder": "Enter the community name",
+              "success": "community deleted!",
               "error": {
-                "permanent": "It is not possible to delete a 'permanent' group"
+                "permanent": "It is not possible to delete a 'permanent' community"
               }
             }
           }
@@ -751,7 +754,7 @@
             "public": "Any user can join, participate and access history. Moderation tools available.",
             "private": "Only users you authorize can join, participate and access history. Moderation tools available.",
             "password": "You can also set a password. Users with the password can join without prior invitation.",
-            "group-password": "You can also set a password. Users with the password can join this group without prior invitation.",
+            "group-password": "You can also set a password. Users with the password can join this community without prior invitation.",
             "memberscondition": "Membership conditions or procedures"
           }
         },
@@ -760,8 +763,8 @@
           "help": "Between 3 and 20 characters, only letters, numbers,  dashes (-) and underscores (_)",
           "placeholder": "Donut name",
           "submit": "Create",
-          "group": "Already owner of a community? Want to create a dedicated space for you users? You can <a href=\"#\" class=\"open-group-create\">create a group</a>",
-          "description": "You are about to create a donut in the global space, if you want to create a donut in a group you are a member of, go to the group page and click on \"Create a donut\""
+          "group": "Already owner of a community? Want to create a dedicated space for you users? You can <a href=\"#\" class=\"open-group-create\">create a community</a>",
+          "description": "You are about to create a donut in the global space, if you want to create a donut in a community you are a member of, go to the community page and click on \"Create a donut\""
         },
         "edit": {
           "othersettings": "Other settings",
@@ -840,7 +843,7 @@
     "users": "Users",
     "invite": "Invite",
     "ask-membership": "Ask for membership",
-    "blocked": "This group is blocked by a password, to join we invite you to type it"
+    "blocked": "This community is blocked by a password, to join we invite you to type it"
   },
   "account": {
     "error": {
@@ -1097,45 +1100,45 @@
       "content": {
         "title": "@__username__ ask for allowance in #__groupname__",
         "disclaimer": "Looks like your donut have great success!",
-        "button": "Go to group"
+        "button": "Go to community"
       }
     },
     "groupallow": {
       "subject": "An user accept your request to join #__groupname__",
       "content": {
         "title": "@__username__ allow you to join #__groupname__",
-        "disclaimer": "You can now enjoy this group !",
-        "button": "Go to group"
+        "disclaimer": "You can now enjoy this community !",
+        "button": "Go to community"
       }
     },
     "groupinvite": {
       "subject": "An user invites you to join #__groupname__",
       "content": {
         "title": "@__username__ invites you to join #__groupname__",
-        "disclaimer": "You can join his group right now!",
-        "button": "Go to group"
+        "disclaimer": "You can join his community right now!",
+        "button": "Go to community"
       }
     },
     "grouprefuse": {
       "subject": "An user refuse your request to join #__groupname__",
       "content": {
         "title": "@__username__ refuse your request to join #__groupname__",
-        "disclaimer": "Don't worry you can make another request to join this group later !",
-        "button": "Go to group"
+        "disclaimer": "Don't worry you can make another request to join this community later !",
+        "button": "Go to community"
       }
     },
     "groupban": {
-      "subject": "You have been banned grom group #__groupname__",
+      "subject": "You have been banned of community #__groupname__",
       "content": {
-        "title": "You have been banned grom group #__groupname__",
+        "title": "You have been banned of community #__groupname__",
         "disclaimer": "",
         "button": "Back to DONUT"
       }
     },
     "groupop": {
-      "subject": "You were promoted to moderator of group #__groupname__",
+      "subject": "You were promoted to moderator of community #__groupname__",
       "content": {
-        "title": "You were promoted to moderator of group #__groupname__",
+        "title": "You were promoted to moderator of community #__groupname__",
         "disclaimer": "Kudos! You are now a moderator in ",
         "disclaimer2": "It's time to practice your new super powers",
         "action": "…and all of that thanks to ",
@@ -1143,9 +1146,9 @@
       }
     },
     "groupdeop": {
-      "subject": "You are no longer a moderator of group #__groupname__",
+      "subject": "You are no longer a moderator of community #__groupname__",
       "content": {
-        "title": "You are no longer a moderator of group #__groupname__",
+        "title": "You are no longer a moderator of community #__groupname__",
         "disclaimer": "This is sad news... But the good news is you will have more time to focus on your very own donut:)",
         "action": "…and all of that thanks to ",
         "button": "Go to chat"

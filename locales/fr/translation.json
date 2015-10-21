@@ -129,7 +129,7 @@
     "view-profile": "Voir le profil",
     "onetoones": "tête-à-tête",
     "donuts": "Donuts",
-    "group": "group",
+    "group": "communauté",
     "admin": "(administrateur)",
     "default": "défaut",
     "or": "ou",
@@ -258,7 +258,7 @@
     },
     "group": {
       "ownerops": "Les habitués",
-      "nouser": "Pas d'utilisateur dans ce groupe",
+      "nouser": "Pas d'utilisateur dans cette communauté",
       "permalink": "Permalien de ce profil",
       "editlink": "Editer",
       "profilelink": "Profil de ",
@@ -348,10 +348,12 @@
       "users": "Liste des utilisateurs de ce donut"
     },
     "owner": {
-      "is": "Cet utilisateur est le propriétaire de ce donut"
+      "is": "Cet utilisateur est le créateur de ce donut",
+      "isgroup": "Cet utilisateur est le créateur de cette communauté"
     },
     "op": {
       "is": "Cet utilisateur est modérateur de ce donut",
+      "isgroup": "Cet utilisateur est modérateur de cette communauté",
       "infobox": "Faire modérateur"
     },
     "allow": {
@@ -373,10 +375,10 @@
       "infobox": "Expulser et bannir"
     },
     "deban": {
-      "infobox": "Autoriser à nouveau l'utilisateur à rejoindre le donut"
+      "infobox": "Autoriser à nouveau l'utilisateur à rejoindre la communauté"
     },
     "deban-group": {
-      "infobox": "Autoriser à nouveau l'utilisateur à rejoindre le groupe"
+      "infobox": "Autoriser à nouveau l'utilisateur à rejoindre la communauté"
     },
     "banuser": {
       "infobox": "Bloquer cet utilisateur",
@@ -418,11 +420,11 @@
         "refuseuser": "Vous allez refuser l'accès à @__username__",
         "acceptuser": "Vous allez autoriser l'accès à @__username__",
         "disallowuser": "Vous allez supprimer l'accès à @__username__",
-        "ban-group-user": "Vous allez bannir l'utilisateur @__username__ de ce groupe",
-        "deban-group-user": "Vous allez débannir l'utilisateur @__username__ de ce groupe",
+        "ban-group-user": "Vous allez bannir l'utilisateur @__username__ de cette communauté",
+        "deban-group-user": "Vous allez débannir l'utilisateur @__username__ de cette communauté",
         "invite": "Vous allez autoriser l'accès à @__username__. Une notification va lui être adressée pour l'inviter à rejoindre #__name__.",
         "requestallowance": "Vous allez envoyer une demande d'accés pour #__name__. Le créateur du donut aura accès à votre vrais nom et addresse mail.",
-        "requestallowancegroup": "Vous allez envoyer une demande d'accés pour #__name__. Le créateur du groupe aura accès à votre vrais nom et addresse mail."
+        "requestallowancegroup": "Vous allez envoyer une demande d'accés pour #__name__. Le créateur de la communauté aura accès à votre vrais nom et addresse mail."
       }
     },
     "commands": {
@@ -476,7 +478,7 @@
       "roomdeop": " n'est plus modérateur à la demande de ",
       "roomvoice": " a retrouvé la parole à la demande de ",
       "roomdevoice": " est muet à la demande de ",
-      "roomgroupban": " a été banni du groupe à la demande de ",
+      "roomgroupban": " a été banni de la communauté à la demande de ",
       "in": "est entré à",
       "out": "est sorti à",
       "online": "est en ligne,",
@@ -506,10 +508,10 @@
         "groupjoinrequest": "<span>@__username__</span> souhaite rejoindre <span>#__name__</span>",
         "groupallowed": "Vous êtes autorisé à rejoindre <span>#__name__</span>",
         "groupinvite": "<span>@__username__</span> vous invite à rejoindre <span>#__name__</span>",
-        "grouprefuse": "Demande d'accès au groupe <span>#__name__</span></br> refusée",
-        "groupban": "Vous êtes banni du groupe <span>#__name__</span>",
-        "groupop": "Vous êtes maintenant modérateur du groupe <span>#__name__</span>",
-        "groupdeop": "Vous n'êtes plus modérateur du groupe <span>#__name__</span>"
+        "grouprefuse": "Demande d'accès à la communauté <span>#__name__</span></br> refusée",
+        "groupban": "Vous êtes banni de la communauté <span>#__name__</span>",
+        "groupop": "Vous êtes maintenant modérateur de la communauté <span>#__name__</span>",
+        "groupdeop": "Vous n'êtes plus modérateur de la communauté <span>#__name__</span>"
       },
       "userban": " est bloqué à la demande de",
       "userdeban": " n'est plus bloqué à la demande de"
@@ -535,11 +537,11 @@
     "alert": {
       "kick": "Vous venez d'être expulsé de __name__",
       "ban": "Vous venez d'être banni de __name__",
-      "groupban": "Vous venez d'être banni du groupe __name__",
+      "groupban": "Vous venez d'être banni de la communauté __name__",
       "allowed": "Vous ne faites plus partie de la liste des gens autorisés dans __name__"
     },
     "roomnotexists": "Le donut __name__ n'existe pas, <a class='open-create-room' data-name='__name__'>souhaitez-vous le créer </a> ?",
-    "groupnotexists": "Le groupe __name__ n'existe pas, <a class='open-create-room' data-name='__name__'>souhaitez-vous le créer </a> ?",
+    "groupnotexists": "La communauté __name__ n'existe pas, <a class='open-create-room' data-name='__name__'>souhaitez-vous la créer </a> ?",
     "reason": "(motif : \"__reason__\")",
     "deletemessage": "Le donut __name__ vient d'être supprimé",
     "users": {
@@ -641,10 +643,11 @@
       "rejoin": " pour le rejoindre à nouveau.",
       "allowed_button": "Demander l'accès",
       "password": "Ou vous pouvez le rejoindre directement si vous connaissez le mot de passe :",
+      "message-display": "Message à afficher",
       "password_placeholder": "Mot de passe",
       "password_button": "Rejoindre",
       "banned": "Vous avez été banni de ce donut le __at__",
-      "groupbanned": "Vous avez été banni de ce groupe le __at__",
+      "groupbanned": "Vous avez été banni de cette communauté le __at__",
       "reason": "pour la raison suivante : ",
       "kicked": "Vous avez été expulsé de ce donut.",
       "kicked_button": "Rejoindre",
@@ -653,9 +656,9 @@
       "disclaimer-public": "Ce donut est public. N'importe quel utilisateur pourra y accéder.",
       "disclaimer-password": "Vous avez également choisi de mettre un mot de passe. Les utilisateurs avec le mot de passe pourront y entrer sans avoir besoin d'être invités au préalable.",
       "disclaimer-changing": "Vous pouvez passer ce donut en mode privé. Alors, seuls les utilisateurs que vous autoriserez pourront rejoindre, participer et accéder à l'historique. L'accès se fera par invitation et/ou par mot de passe. Les membres actuels de donut public resteront autorisés dans ce donut une fois qu'il sera devenu privé. Attention, cette action est irréversible.",
-      "disclaimer-group": "Tous les membres du groupe peuvent créer un donut dans ce groupe est en gerer l'accès. Ils peuvent également rejoindre les donuts privés qui autorisent les membres du groupe. Les donuts publics de ce groupe sont accessibles par tous les utilisateurs du site.",
+      "disclaimer-group": "Tous les membres de cette communauté peuvent créer un donut dans cette communauté est en gerer l'accès. Ils peuvent également rejoindre les donuts privés qui autorisent les membres de cette communauté. Les donuts publics de cette communauté sont accessibles par tous les utilisateurs du site.",
       "close": "Fermer ce donut",
-      "allowgroupmember": "Autoriser les membres du groupe à rejoindre ce donut"
+      "allowgroupmember": "Autoriser les membres de cette communauté à rejoindre ce donut"
     },
     "form": {
       "common": {
@@ -689,16 +692,16 @@
       },
       "group-form": {
         "create": {
-          "label": "Créez un groupe",
-          "help": "Un groupe est un espace regroupant vos donut et permettant à votre communauté de devenir membre et d'accèder à un groupe de donuts.",
-          "help-name": "Entre 3 et 20 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement.<br>Attention le nom du groupe ne sera plus modifiable.",
-          "placeholder": "Nom du groupe",
-          "submit": "Créer le groupe"
+          "label": "Créez une communauté",
+          "help": "Une communauté est un espace regroupant vos donut et permettant à votre communauté de devenir membre et d'accèder à un groupe de donuts.",
+          "help-name": "Entre 3 et 20 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement.<br>Attention le nom de la communauté ne sera plus modifiable.",
+          "placeholder": "Nom de la communauté",
+          "submit": "Créer la communauté"
         },
         "edit": {
           "description": {
             "label": "Description",
-            "placeholder": "Décrivez le groupe en quelques mots",
+            "placeholder": "Décrivez la communauté en quelques mots",
             "help": "Facultatif"
           },
           "disclaimer": {
@@ -718,16 +721,16 @@
           },
           "group": {
             "delete": {
-              "link": "Vous pouvez également supprimer ce groupe <a class='open-group-delete' data-group-id=\"__id__\">en cliquant ici</a>.",
+              "link": "Vous pouvez également supprimer cette communauté <a class='open-group-delete' data-group-id=\"__id__\">en cliquant ici</a>.",
               "title": "Supprimer",
               "info": [
-                "Vous êtes sur le point de supprimer ce groupe, cette opération est immédiate et irréversible.<br><br>",
-                "Veuillez confirmer la suppression en saissant le nom du groupe (<strong>__name__</strong>) puis en cliquant sur supprimer :"
+                "Vous êtes sur le point de supprimer cette communauté, cette opération est immédiate et irréversible.<br><br>",
+                "Veuillez confirmer la suppression en saisissant le nom de la communauté (<strong>__name__</strong>) puis en cliquant sur supprimer :"
               ],
-              "placeholder": "Saisir le nom du groupe",
-              "success": "groupe supprimé !",
+              "placeholder": "Saisir le nom de la communauté",
+              "success": "Communauté supprimé !",
               "error": {
-                "permanent": "Il n'est pas possible de supprimer un group 'permanent'"
+                "permanent": "Il n'est pas possible de supprimer une communauté 'permanent'"
               }
             }
           }
@@ -751,7 +754,7 @@
             "public": "Tout utilisateur peut rejoindre, participer et accéder à l'historique. Vous disposez d'outils de modération.",
             "private": "Seuls les utilisateurs que vous autorisez pourront rejoindre, participer et accéder à l'historique. Vous disposez d'outils de modération.",
             "password": "Vous pouvez également mettre un mot de passe. Les utilisateurs ayant le mot de passe pourront rejoindre le donut sans avoir besoin d'être invités au préalable.",
-            "group-password": "Vous pouvez également mettre un mot de passe. Les utilisateurs ayant le mot de passe pourront rejoindre le groupe sans avoir besoin d'être invités au préalable.",
+            "group-password": "Vous pouvez également mettre un mot de passe. Les utilisateurs ayant le mot de passe pourront rejoindre la communauté sans avoir besoin d'être invités au préalable.",
             "memberscondition": "Conditions d'entrée ou procédure"
           }
         },
@@ -760,8 +763,8 @@
           "help": "Entre 3 et 20 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement",
           "placeholder": "Nom du donut",
           "submit": "Créer le donut",
-          "group": "Déjà propriétaire d'une communauté ? Vous voulez créer un espace dédié à vos utilisateurs ? Vous pouvez <a href=\"#\" class=\"open-group-create\">créer un groupe</a>.",
-          "description": "Vous êtes sur le point de créer un donut sur l'espace global, si vous voulez créer un donut dans un groupe auquel vous appartenez, aller sur la page du groupe et clicker sur \"Créer un Donut\""
+          "group": "Déjà propriétaire d'une communauté ? Vous voulez créer un espace dédié à vos utilisateurs ? Vous pouvez <a href=\"#\" class=\"open-group-create\">créer une communauté</a>.",
+          "description": "Vous êtes sur le point de créer un donut sur l'espace global, si vous voulez créer un donut dans une communauté auquel vous appartenez, aller sur la page de cette communauté et clicker sur \"Créer un Donut\""
         },
         "edit": {
           "othersettings": "Autres paramètres",
@@ -787,7 +790,7 @@
               "title": "Supprimer",
               "info": [
                 "Vous êtes sur le point de supprimer ce donut, cette opération est immédiate et irréversible.<br><br>",
-                "Veuillez confirmer la suppression en saissant le nom du donut (<strong>__name__</strong>) puis en cliquant sur supprimer :"
+                "Veuillez confirmer la suppression en saisissant le nom du donut (<strong>__name__</strong>) puis en cliquant sur supprimer :"
               ],
               "placeholder": "Saisir le nom du donut",
               "success": "donut supprimé !",
@@ -828,19 +831,19 @@
         "mode-wrong-format": "Vous devez séléctionner un mode pour ce donut",
         "invalid-password": "Le mot de passe doit être compris entre 4 et 255 caractères",
         "room-already-exist": "Le donut __name__ existe déjà, <a href='#__uri__'>voulez-vous le rejoindre</a> ?",
-        "group-name-already-exist": "Le groupe __name__ existe déjà, <a href='#__uri__'>voulez-vous le rejoindre</a> ?",
+        "group-name-already-exist": "La communauté __name__ existe déjà, <a href='#__uri__'>voulez-vous la rejoindre</a> ?",
         "invalid-rights": "Vous n'avez pas les droits pour faire cela.",
         "not-allowed": "Vous ne pouvez pas supprimer ce donut"
       }
     },
-    "members": "Vous êtes maintenant membre du groupe #__name__"
+    "members": "Vous êtes maintenant membre de la communauté #__name__"
   },
   "group": {
     "administrator": "Administrateurs",
     "users": "Utilisateurs",
     "invite": "Inviter",
     "ask-membership": "Demander l'accès",
-    "blocked": "Ce groupe est bloqué par un mot de passe, pour y accéder nous vous invitons à le taper"
+    "blocked": "Cette communauté est bloqué par un mot de passe, pour y accéder nous vous invitons à le taper"
   },
   "account": {
     "error": {
@@ -1096,24 +1099,24 @@
       "subject": "Un utilisateur veut rejoindre #__groupname__",
       "content": {
         "title": "@__username__ demande l'accès à __groupname__",
-        "disclaimer": "On dirait que votre groupe est parti pour aller loin !",
-        "button": "Accéder au groupe"
+        "disclaimer": "On dirait que votre communauté est parti pour aller loin !",
+        "button": "Accéder à la communauté"
       }
     },
     "groupallow": {
       "subject": "Un utilisateur a accepté votre demande de rejoindre #__groupname__",
       "content": {
         "title": "@__username__ vous autorise à rejoindre #__groupname__",
-        "disclaimer": "Vous pouvez maintenant profiter de ce groupe !",
-        "button": "Accéder au groupe"
+        "disclaimer": "Vous pouvez maintenant profiter de cette communauté !",
+        "button": "Accéder à la communauté"
       }
     },
     "groupinvite": {
       "subject": "@__username__ vous invite à rejoindre #__groupname__",
       "content": {
         "title": "@__username__ vous invite à rejoindre #__groupname__",
-        "disclaimer": "Vous pouvez rejoindre son groupe sans plus tarder !",
-        "button": "Accéder au groupe"
+        "disclaimer": "Vous pouvez rejoindre sa communauté sans plus tarder !",
+        "button": "Accéder à la communauté"
       }
     },
     "grouprefuse": {
@@ -1121,21 +1124,21 @@
       "content": {
         "title": "@__username__ a refusé votre demande de rejoindre #__groupname__",
         "disclaimer": "Ne vous inquiétez pas vous pouvez toujours refaire une demande plus tard !",
-        "button": "Accéder au groupe"
+        "button": "Accéder à la communauté"
       }
     },
     "groupban": {
-      "subject": "Vous avez été banni du groupe #__groupname__",
+      "subject": "Vous avez été banni de la communauté #__groupname__",
       "content": {
-        "title": "Vous avez été banni du groupe #__groupname__",
+        "title": "Vous avez été banni de la communauté #__groupname__",
         "disclaimer": "",
         "button": "Retourner sur DONUT"
       }
     },
     "groupop": {
-      "subject": "Vous avez été promu modérateur du groupe #__groupname__",
+      "subject": "Vous avez été promu modérateur de la communauté #__groupname__",
       "content": {
-        "title": "Vous avez été promu modérateur du groupe #__groupname__",
+        "title": "Vous avez été promu modérateur de la communauté #__groupname__",
         "disclaimer": "Félicitations ! Vous êtes désormais modérateur de ",
         "disclaimer2": "Il est temps d'aller exercer vos nouveaux super pouvoirs",
         "action": "…et tout ça grâce à ",
@@ -1143,9 +1146,9 @@
       }
     },
     "groupdeop": {
-      "subject": "Vous n'êtes plus modérateur du groupe #__groupname__",
+      "subject": "Vous n'êtes plus modérateur de la communauté #__groupname__",
       "content": {
-        "title": "Vous n'êtes plus modérateur du groupe #__groupname__",
+        "title": "Vous n'êtes plus modérateur de la communauté #__groupname__",
         "disclaimer": "Aïe! La bonne nouvelle, vous allez avoir un peu plus de temps à consacrer à votre propre donut:)",
         "action": "…et tout ça grâce à ",
         "button": "Retourner sur DONUT"
