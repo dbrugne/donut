@@ -38,6 +38,7 @@ handler.enter = function (msg, session, next) {
   }
 
   var uid = session.__session__.__socket__.socket.decoded_token.id;
+  var device = session.__session__.__socket__.socket.handshake.query.device;
 
   logger.trace('entry request for ' + uid + '@' + session.frontendId + ' sessionId: ' + session.id);
 
@@ -93,6 +94,7 @@ handler.enter = function (msg, session, next) {
         session,
         uid,
         session.frontendId,
+        {device: device},
         callback
       );
     },
@@ -107,6 +109,7 @@ handler.enter = function (msg, session, next) {
 
       // add session unique ID (tracking)
       session.set('uuid', uuid.v1());
+      session.set('device', device);
 
       // add username, avatar, color and admin flag on session
       session.set('username', welcome.user.username);

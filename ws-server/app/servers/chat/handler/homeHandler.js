@@ -19,7 +19,9 @@ var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
   var homeEvent = {};
-  var roomLimit = 100;
+  var roomLimit = (session.settings.device === 'mobile')
+    ? 10
+    : 100;
   var userLimit = 200;
 
   var rooms = [];
@@ -27,6 +29,7 @@ handler.call = function (data, session, next) {
 
   var that = this;
 
+  // @todo : fix this horrible mess!
   async.waterfall([
 
     function roomsFetch (callback) {
@@ -161,7 +164,7 @@ handler.call = function (data, session, next) {
 
       homeEvent.rooms = {};
       if (_list.length > roomLimit) {
-        _list.pop();
+        _list = _list.slice(0, (roomLimit - 1));
         homeEvent.rooms.more = true;
       } else {
         homeEvent.rooms.more = false;
@@ -172,6 +175,10 @@ handler.call = function (data, session, next) {
     },
 
     function usersList (callback) {
+      if (session.settings.device === 'mobile') {
+        return callback(null, null);
+      }
+
       var q = User.find({username: {$ne: null}}, 'username avatar color facebook');
       q.sort({'lastonline_at': -1, 'lastoffline_at': -1})
         .limit(userLimit + 1);
@@ -197,6 +204,10 @@ handler.call = function (data, session, next) {
     },
 
     function status (users, callback) {
+      if (session.settings.device === 'mobile') {
+        return callback(null);
+      }
+
       var uids = _.map(users, function (u) {
         return u.user_id;
       });
@@ -243,6 +254,13 @@ handler.call = function (data, session, next) {
             featured.push(item);
           }
         });
+
+        if (featured.length > roomLimit) {
+          featured = featured.slice(0, (roomLimit));
+          homeEvent.rooms.more = true;
+        } else {
+          homeEvent.rooms.more = false;
+        }
         homeEvent.rooms.list = featured;
 
         return callback(null);
