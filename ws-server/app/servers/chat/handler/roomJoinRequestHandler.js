@@ -47,6 +47,10 @@ handler.call = function (data, session, next) {
         return callback('allow-pending');
       }
 
+      if (!room.allow_user_request) {
+        return callback('not-allowed');
+      }
+
       return callback(null);
     },
 
