@@ -153,7 +153,7 @@ exports.prototype.replaceLastDisconnectBlock = function ($lastDisconnectBlock, $
     }
 
     // new message block
-    if ((previous && this.block(event, previous)) || (!previous && event.get('data').user_id === $previousEventDiv.data('user_id'))) {
+    if ((previous && this.block(event, previous)) || (!previous && event.get('data').user_id !== $previousEventDiv.data('userId'))) {
       _html = require('../templates/event/block-user.html')({
         user_id: event.get('data').user_id,
         username: event.get('data').username,
