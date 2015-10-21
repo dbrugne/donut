@@ -2,25 +2,28 @@
     <div class="event">
         <div class="text bordered-left">
             <%
-            if (mode === 'members-invites') {
-                print(t('chat.welcome.members-invites', {
-                    group_name: group_name,
-                    group_id: group_id,
-                    owner: owner_username,
-                    owner_id: owner_id
-                }))
+            if (mode === 'public') {
+                print(t('chat.welcome.public'))
             }
-            if (mode === 'invites') {
+            else if (group_id) {
+                if (allow_user_request === true) {
+                    print(t('chat.welcome.members-invites', {
+                        group_name: group_name,
+                        group_id: group_id,
+                        owner: owner_username,
+                        owner_id: owner_id
+                    }))
+                } else {
+                    print(t('chat.welcome.invites', {
+                        owner: owner_username,
+                        owner_id: owner_id
+                    }))
+                }
+            } else {
                 print(t('chat.welcome.invites', {
                     owner: owner_username,
                     owner_id: owner_id
                 }))
-            }
-            if (mode === 'public') {
-                print(t('chat.welcome.public'))
-            }
-            if (mode === 'private') {
-                print(t('chat.welcome.private'))
             }
             %>
         </div>
