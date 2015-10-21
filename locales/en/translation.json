@@ -126,6 +126,7 @@
     "muted": "sound off"
   },
   "global": {
+    "onetoones": "one to ones",
     "donuts": "Donuts",
     "group": "group",
     "admin": "(admin only)",

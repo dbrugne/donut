@@ -119,7 +119,18 @@ handler.call = function (data, session, next) {
         });
       }
 
-      read.bans = group.bans;
+      read.bans = [];
+      if (group.bans && group.bans.length > 0) {
+        _.each(group.bans, function (ban) {
+          var el = {
+            user_id: ban.user.id,
+            username: ban.user.username,
+            avatar: ban.user._avatar(),
+            color: ban.user.color
+          };
+          read.bans.push(el);
+        });
+      }
 
       return callback(null);
     },

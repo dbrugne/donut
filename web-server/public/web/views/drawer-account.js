@@ -19,7 +19,7 @@ var DrawerUserEditView = Backbone.View.extend({
 
     // ask for data
     var that = this;
-    client.userRead(currentUser.get('user_id'), null, function (data) {
+    client.userRead(currentUser.get('user_id'), function (data) {
       if (data.err) {
         return;
       }

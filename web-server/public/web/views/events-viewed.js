@@ -2,6 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../models/app');
+var windowView = require('./window');
 
 module.exports = Backbone.View.extend({
   initialize: function (options) {
@@ -14,6 +15,9 @@ module.exports = Backbone.View.extend({
     return this;
   },
   markVisibleAsViewed: function () {
+    if (!windowView.focused) {
+      return;
+    }
     this.computeVisibleElements(_.bind(function (elements) {
       if (elements.length) {
         this.model.viewedElements(elements);

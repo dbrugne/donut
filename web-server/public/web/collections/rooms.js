@@ -105,7 +105,6 @@ var RoomsCollection = Backbone.Collection.extend({
     this.listenTo(client, 'room:message:edit', this.onMessageEdited);
     this.listenTo(client, 'room:typing', this.onTyping);
     this.listenTo(client, 'room:groupban', this.onGroupBan);
-    this.listenTo(app, 'refreshRoomsList', this.onRefreshList);
   },
   onJoin: function (data) {
     var model;
@@ -148,13 +147,6 @@ var RoomsCollection = Backbone.Collection.extend({
       // add in IHM (by mainView)
       model = new RoomModel(data);
       this.add(model);
-    }
-  },
-  onRefreshList: function () {
-    var old = this;
-    this.sort();
-    if (old !== this) {
-      app.trigger('redraw-block');
     }
   },
   onIn: function (data) {
@@ -288,18 +280,10 @@ var RoomsCollection = Backbone.Collection.extend({
     });
     model.set('op', ops);
 
-    // remove from this.devoices
+    // remove from devoices
     var devoices = model.get('devoices');
     if (devoices.length) {
       model.set('devoices', _.reject(devoices, function (element) {
-        return (element === data.user_id);
-      }));
-    }
-
-    // remove from allowed-pending
-    var ap = model.get('allowed_pending');
-    if (ap.length) {
-      model.set('allowed_pending', _.reject(ap, function (element) {
         return (element === data.user_id);
       }));
     }
@@ -456,17 +440,17 @@ var RoomsCollection = Backbone.Collection.extend({
     });
     model.set('op', ops);
 
-    // remove from this.op
+    // remove from devoices
     var devoices = _.reject(model.get('devoices'), function (devoicedUser) {
       return (devoicedUser.user === data.user_id);
     });
     model.set('devoices', devoices);
 
-    // remove from this.op
-    var allowedPendings = _.reject(model.get('allowed_pending'), function (allowedPendingUser) {
-      return (allowedPendingUser.user === data.user_id);
-    });
-    model.set('allowed_pending', allowedPendings);
+    // // remove from allowed_pending
+    // var allowedPendings = _.reject(model.get('allowed_pending'), function (allowedPendingUser) {
+    //   return (allowedPendingUser.user === data.user_id);
+    // });
+    // model.set('allowed_pending', allowedPendings);
 
     model.users.sort();
     model.users.trigger('users-redraw');

@@ -34,17 +34,11 @@ var OneToOneModel = Backbone.Model.extend({
   onMessage: function (data) {
     var model = new EventModel({
       type: 'user:message',
+      unviewed: (currentUser.get('user_id') !== data.from_user_id),
       data: data
     });
 
-    if (currentUser.get('user_id') !== model.get('data').from_user_id) {
-      model.set('unviewed', true);
-    }
-
-    this.set('last', Date.now());
-    app.trigger('refreshOnesList');
-
-    app.trigger('unviewedMessage', model, this);
+    app.trigger('newEvent', model, this);
     this.trigger('freshEvent', model);
   },
   onUserOnline: function (data) {
@@ -114,21 +108,15 @@ var OneToOneModel = Backbone.Model.extend({
   viewedElements: function (elements) {
     client.userViewed(this.get('user_id'), elements);
   },
-  onViewed: function (data) {
-    this.resetNew();
-    this.trigger('viewed', data);
-  },
   sendMessage: function (message, files) {
     client.userMessage(this.get('user_id'), message, files);
   },
-  resetNew: function () {
-    if (this.isThereNew()) { // avoid redraw if nothing to change
+  onViewed: function (data) {
+    if (this.get('unviewed') === true) {
       this.set('unviewed', false);
-      app.trigger('redraw-block');
+      app.trigger('redrawNavigationOnes');
     }
-  },
-  isThereNew: function () {
-    return !!(this.get('unviewed'));
+    this.trigger('viewed', data);
   },
   isInputActive: function () {
     return !(this.get('i_am_banned') === true);

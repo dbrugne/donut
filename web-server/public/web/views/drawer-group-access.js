@@ -28,10 +28,12 @@ var RoomAccessView = Backbone.View.extend({
   },
 
   events: {
+    'blur #input-search': 'resetDropdowns',
     'keyup #input-search': 'onSearchUser',
     'click .search-user i.icon-search': 'onSearchUser',
     'click .search-user .dropdown-menu>li': 'onAllowUser',
 
+    'blur #input-search-ban': 'resetDropdowns',
     'keyup #input-search-ban': 'onSearchBan',
     'click .search-ban i.icon-search': 'onSearchBan',
     'click .search-ban .dropdown-menu>li': 'onBanUser',
@@ -46,7 +48,6 @@ var RoomAccessView = Backbone.View.extend({
   initialize: function (options) {
     this.groupId = options.group_id;
     this.render();
-
     this.reload();
   },
   render: function () {
@@ -135,12 +136,15 @@ var RoomAccessView = Backbone.View.extend({
     this.tablePending.render('pending');
   },
   renderDropDown: function (val, dropdown) {
+    this.$dropdown.removeClass('open');
+    this.$dropdownBan.removeClass('open');
+
     dropdown.addClass('open');
     var dropdownMenu = dropdown.find('.dropdown-menu');
     dropdownMenu.html(require('../templates/spinner.html'));
 
     var that = this;
-    client.search(this.$search.val(), false, true, false, 15, 0, false, false, function (data) {
+    client.search(val, false, true, false, 15, 0, false, false, function (data) {
       _.each(data.users.list, function (element, index, list) {
         list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 20);
       });
@@ -160,9 +164,21 @@ var RoomAccessView = Backbone.View.extend({
     this.remove();
   },
   onSearchUser: function (event) {
+    var key = keyboard._getLastKeyCode(event);
+    if (key.key === keyboard.ESC && (this.$dropdown.hasClass('open') || this.$dropdownBan.hasClass('open'))) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.resetDropdowns();
+    }
     this.onSearch(event, 'user', this.$search, this.$dropdown);
   },
   onSearchBan: function (event) {
+    var key = keyboard._getLastKeyCode(event);
+    if (key.key === keyboard.ESC && (this.$dropdown.hasClass('open') || this.$dropdownBan.hasClass('open'))) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.resetDropdowns();
+    }
     this.onSearch(event, 'ban', this.$searchBan, this.$dropdownBan);
   },
   onSearch: function (event, type, search, dropdown) {
@@ -232,10 +248,13 @@ var RoomAccessView = Backbone.View.extend({
     this.$dropdown.removeClass('open');
     this.$search.val('');
   },
-  resetSearch: function () {
+  resetDropdowns: function () {
     this.$dropdown.removeClass('open');
-    this.$search.val('');
     this.$dropdownBan.removeClass('open');
+  },
+  resetSearch: function () {
+    this.resetDropdowns();
+    this.$search.val('');
     this.$searchBan.val('');
   },
   onChoosePassword: function (event) {

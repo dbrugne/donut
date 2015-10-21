@@ -215,7 +215,8 @@ exports.prototype._data = function (event) {
     data.owner_id = this.discussion.get('owner_id');
   }
 
-  // spammed & edited
+  // unviewed & spammed & edited
+  data.unviewed = (event.get('unviewed') === true);
   data.spammed = (event.get('spammed') === true);
   data.edited = (event.get('edited') === true);
 
@@ -263,9 +264,6 @@ exports.prototype._data = function (event) {
   var time = event.get('time');
   data.data.dateshort = date.shortTime(time);
   data.data.datefull = date.longDateTime(time);
-
-  // rendering attributes
-  data.unviewed = !!event.get('unviewed');
 
   return data;
 };

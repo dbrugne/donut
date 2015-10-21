@@ -43,7 +43,7 @@ if (item.group_id && item.group_id === lastGroup) {
                 <span class="name"><span>#</span><%= item.name %></span>
             <% } %>
         </a>
-        <% if (item.newuser === true || item.newmention === true || item.unviewed === true) { %>
+        <% if (item.unviewed === true) { %>
             <span class="icon icon-circle unread cl-peter_river fs10"></span>
         <% } %>
         <a href="#" class="close-discussion hidden-xs hidden-sm" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>"></a>

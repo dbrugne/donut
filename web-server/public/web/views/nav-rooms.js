@@ -16,9 +16,8 @@ module.exports = Backbone.View.extend({
   },
 
   initialize: function (options) {
-    this.listenTo(app, 'redraw-block', this.render);
-    this.listenTo(rooms, 'redraw-block', this.render);
-
+    this.listenTo(app, 'redrawNavigation', this.render);
+    this.listenTo(app, 'redrawNavigationRooms', this.render);
     this.listenTo(app, 'nav-active', this.highlightFocused);
     this.listenTo(app, 'nav-active-group', this.highlightGroup);
 
@@ -26,7 +25,7 @@ module.exports = Backbone.View.extend({
     this.$empty = this.$('.empty');
   },
   render: function () {
-    console.log('render rooms');
+    //console.log('render rooms');
     if (!rooms.models.length) {
       this.$list.empty();
       return this.$empty.show();
@@ -45,9 +44,6 @@ module.exports = Backbone.View.extend({
 
     this.initializeCollapse();
     return this;
-  },
-  redraw: function () {
-    return this.render();
   },
   initializeCollapse: function () {
     this.$('[data-toggle="collapse"]').collapse();
@@ -70,13 +66,7 @@ module.exports = Backbone.View.extend({
       }
     });
   },
-  highlightGroup: function(groupId) {
-    var that = this;
-    _.find(rooms.models, function (room) {
-      if (room.get('group_id') === groupId) {
-        that.$list.find('[data-type="group"][data-group-id="' + groupId + '"]').addClass('active');
-        return true;
-      }
-    });
+  highlightGroup: function (groupId) {
+    this.$list.find('[data-type="group"][data-group-id="' + groupId + '"]').addClass('active');
   }
 });

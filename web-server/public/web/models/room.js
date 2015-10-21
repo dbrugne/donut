@@ -21,8 +21,6 @@ var RoomModel = Backbone.Model.extend({
       type: 'room',
       focused: false,
       unviewed: false,
-      newmention: false,
-      newuser: false,
       blocked: false
     };
   },
@@ -96,9 +94,11 @@ var RoomModel = Backbone.Model.extend({
 
     var model = new EventModel({
       type: 'room:in',
+      unviewed: (currentUser.get('user_id') !== data.user_id),
       data: data
     });
-    app.trigger('unviewedInOut', model, this);
+
+    app.trigger('newEvent', model, this);
     this.trigger('freshEvent', model);
   },
   onOut: function (data) {
@@ -116,37 +116,27 @@ var RoomModel = Backbone.Model.extend({
       type: 'room:out',
       data: data
     });
-    app.trigger('unviewedInOut', model, this);
     this.trigger('freshEvent', model);
   },
   onTopic: function (data) {
     this.set('topic', data.topic);
     var model = new EventModel({
       type: 'room:topic',
+      unviewed: (currentUser.get('user_id') !== data.user_id),
       data: data
     });
 
-    if (currentUser.get('user_id') !== model.get('data').user_id) {
-      model.set('unviewed', true);
-    }
-
-    app.trigger('unviewedMessage', model, this);
+    app.trigger('newEvent', model, this);
     this.trigger('freshEvent', model);
   },
   onMessage: function (data) {
     var model = new EventModel({
       type: 'room:message',
+      unviewed: (currentUser.get('user_id') !== data.user_id),
       data: data
     });
 
-    if (currentUser.get('user_id') !== model.get('data').user_id) {
-      model.set('unviewed', true);
-    }
-
-    this.set('last', Date.now());
-    app.trigger('refreshRoomsList');
-
-    app.trigger('unviewedMessage', model, this);
+    app.trigger('newEvent', model, this);
     this.trigger('freshEvent', model);
   },
   onOp: function (data) {
@@ -290,13 +280,6 @@ var RoomModel = Backbone.Model.extend({
       return callback(data);
     });
   },
-  viewedElements: function (elements) {
-    client.roomViewed(this.get('room_id'), elements);
-  },
-  onViewed: function (data) {
-    this.resetNew();
-    this.trigger('viewed', data);
-  },
   fetchUsers: function (callback) {
     var that = this;
     client.roomUsers(this.get('id'), {
@@ -337,16 +320,15 @@ var RoomModel = Backbone.Model.extend({
   sendMessage: function (message, files) {
     client.roomMessage(this.get('id'), message, files);
   },
-  resetNew: function () {
-    if (this.isThereNew()) { // avoid redraw if nothing to change
-      this.set('unviewed', false);
-      this.set('newmention', false);
-      this.set('newuser', false);
-      app.trigger('redraw-block');
-    }
+  viewedElements: function (elements) {
+    client.roomViewed(this.get('room_id'), elements);
   },
-  isThereNew: function () {
-    return !!(this.get('unviewed') || this.get('newmention') || this.get('newuser'));
+  onViewed: function (data) {
+    if (this.get('unviewed')) {
+      this.set('unviewed', false);
+      app.trigger('redrawNavigationRooms');
+    }
+    this.trigger('viewed', data);
   },
   isInputActive: function () {
     return !(this.userIsDevoiced(currentUser.get('user_id')));
