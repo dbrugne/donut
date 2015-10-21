@@ -158,7 +158,7 @@ var NotificationsView = Backbone.View.extend({
       name: n.name,
       username: n.username,
       message: message,
-      topic: (n.data.topic) ? n.data.topic : ''
+      topic: (n.data.topic) ? common.markup.toText(n.data.topic) : ''
     });
 
     if (n.type === 'roomjoinrequest') {
