@@ -51,22 +51,22 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
 
       var criteria = {
         name: _regexp,
-        deleted: { $ne: true }
+        deleted: {$ne: true}
       };
 
       Group.find(criteria, 'name owner disclaimer avatar color members op')
-      .skip(skip)
-      .limit(limit)
-      .populate('owner', 'username')
-      .exec(function (err, dbgroups) {
-        if (err) {
-          return callback(err);
-        }
+        .skip(skip)
+        .limit(limit)
+        .populate('owner', 'username')
+        .exec(function (err, dbgroups) {
+          if (err) {
+            return callback(err);
+          }
 
-        groups = dbgroups;
+          groups = dbgroups;
 
-        return callback(null);
-      });
+          return callback(null);
+        });
     },
 
     function getGroupId (callback) {
@@ -90,7 +90,7 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
 
       var criteria = {
         name: _regexp,
-        deleted: { $ne: true }
+        deleted: {$ne: true}
       };
 
       if (groupId) {
@@ -105,14 +105,14 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
           .skip(skip)
           .limit(limit)
           .populate('owner', 'username')
-          .populate('group', 'name');
+          .populate('group', 'name avatar color');
       } else {
         q = Room
           .find(criteria, 'name group avatar color lastjoin_at mode')
           .sort({'lastjoin_at': -1})
           .skip(skip)
           .limit(limit)
-          .populate('group', 'name');
+          .populate('group', 'name avatar color');
       }
       q.exec(function (err, dbrooms) {
         if (err) {
@@ -137,10 +137,13 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
 
     function computeResults (callback) {
       _.each(rooms, function (room) {
-        var count = (room.users) ? room.users.length : 0;
+        var count = (room.users)
+          ? room.users.length
+          : 0;
 
         var r = {
           is_group: false,
+          type: 'room',
           room_id: room.id,
           name: room.name,
           identifier: room.getIdentifier(),
@@ -153,6 +156,7 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
         if (room.group) {
           r.group_id = room.group.id;
           r.group_name = room.group.name;
+          r.group_avatar = room.group._avatar();
         }
 
         if (!lightSearch) {
@@ -173,6 +177,7 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
 
         var _data = {
           is_group: true,
+          type: 'group',
           name: group.name,
           identifier: group.getIdentifier(),
           group_id: group.id,
@@ -193,9 +198,19 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
 
       // sort (users, lastjoin_at, name)
       roomResults.sort(function (a, b) {
+        if (a.priority !== b.priority) {
+          return b.priority - a.priority;
+        }
+
         if (a.users !== b.users) {
           // b - a == descending
           return (b.users - a.users);
+        }
+
+        if (a.avatar && !b.avatar) {
+          return -1;
+        } else if (!a.avatar && b.avatar) {
+          return 1;
         }
 
         if (!a.is_group && !b.is_group && a.lastjoin_at !== b.lastjoin_at) {
@@ -228,8 +243,10 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
 
         _.each(users, function (user) {
           var r = {
+            type: 'user',
             user_id: user.id,
             username: user.username,
+            location: user.location,
             avatar: user._avatar(),
             color: user.color,
             bio: user.bio
@@ -247,35 +264,14 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
       return callback(err);
     }
 
-    var searchResults = {};
-    if (roomResults !== false) {
-      if (roomResults.length > limit) {
-        roomResults.pop();
-        searchResults.rooms = {
-          list: roomResults,
-          more: true
-        };
-      } else {
-        searchResults.rooms = {
-          list: roomResults,
-          more: false
-        };
+    // @todo yls prioriser entre rooms / users / groups
+
+    var searchResults = {
+      cards: {
+        list: _.union(roomResults, userResults) || {},
+        more: (roomResults.length + userResults.length > skip + limit)
       }
-    }
-    if (userResults !== false) {
-      if (userResults.length > limit) {
-        userResults.pop();
-        searchResults.users = {
-          list: userResults,
-          more: true
-        };
-      } else {
-        searchResults.users = {
-          list: userResults,
-          more: false
-        };
-      }
-    }
+    };
 
     return callback(null, searchResults);
   });

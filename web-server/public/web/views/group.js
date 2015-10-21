@@ -8,11 +8,10 @@ var app = require('../models/app');
 var urls = require('../../../../shared/util/url');
 var date = require('../libs/date');
 var GroupUsersView = require('./group-users');
+var CardsView = require('./cards');
 
 var GroupView = Backbone.View.extend({
   template: require('../templates/group.html'),
-
-  templateCards: require('../templates/rooms-cards.html'),
 
   tagName: 'div',
 
@@ -45,7 +44,9 @@ var GroupView = Backbone.View.extend({
       room.owner_username = room.owner.username;
       room.group_id = group.group_id;
       room.group_name = group.name;
-      room.join = urls(room, 'room', null, null, 'uri');
+      room.identifier = '#' + room.name;
+      room.join = urls(room, 'room', 'uri');
+      room.type = 'room';
 
       if (room.mode === 'public' || isMember || isAdmin) {
         rooms.push(room);
@@ -67,15 +68,19 @@ var GroupView = Backbone.View.extend({
     }
 
     var html = this.template(data);
-    var htmlCards = this.templateCards({
-      rooms: rooms,
-      title: false,
-      more: false,
-      replace: false
-    });
     this.$el.html(html);
-    this.$cards = this.$('.ctn-results .rooms.cards .list');
-    this.$cards.html(htmlCards);
+    this.cardsView = new CardsView({
+      el: this.$('.cards')
+    });
+    this.cardsView.render({
+      cards: {
+        list: rooms
+      },
+      title: false,
+      fill: true,
+      more: false,
+      search: false
+    });
 
     this.$passwordDiv = this.$('.password-div');
     this.$requestAllowance = this.$('.request-allowance');
@@ -91,6 +96,7 @@ var GroupView = Backbone.View.extend({
   },
   removeView: function () {
     this.groupUsersView._remove();
+    this.cardsView._remove();
     this.remove();
   },
   onFocusChange: function () {

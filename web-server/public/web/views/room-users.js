@@ -36,7 +36,7 @@ var RoomUsersView = Backbone.View.extend({
 
       // avatar
       u.avatar = common.cloudinary.prepare(u.avatar, 34);
-      u.uri = urls(u, 'user', null, null, 'uri');
+      u.uri = urls(u, 'user', 'uri');
 
       listJSON.push(u);
     });

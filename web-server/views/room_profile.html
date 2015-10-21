@@ -103,14 +103,14 @@
     </div>
     <div class="events">
         <div class="scrollable">
-            <input type="hidden" name="id" value="<%= room._id %>"><!-- petit curieux -->
+            <input type="hidden" name="id" value="<%= room._id %>">
 
             <p class="title"><%= t('profile.room.ownerops') %></p>
-            <div class="users cards">
-                <% if (room.owner) { %><%= partial('user', {_user: room.owner}) %><% } %>
-                <% _.each(room.op, function(_op) { print(partial('user', {_user: _op}));  }); %>
-                <div class="clearfix"></div>
-            </div>
+            <p class="flex-parent flex-row-wrap">
+                <% _.each(_.union([room.owner], room.op, room.users), function(u) { %>
+                    <a class="mr10 mb10 fs20" href="<%=u.url%>">@<%=u.username%></a>
+                <% }); %>
+            </p>
         </div>
     </div>
     <div class="input">

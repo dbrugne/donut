@@ -126,6 +126,7 @@
     "muted": "sound off"
   },
   "global": {
+    "view-profile": "View profile",
     "onetoones": "one to ones",
     "donuts": "Donuts",
     "group": "group",
@@ -331,8 +332,7 @@
     },
     "search": {
       "placeholder": "Search donut or user here",
-      "noroom": "No match found",
-      "nouser": "No match found",
+      "noresults": "No match found",
       "roomstitle": "Here are the donuts matching your request, you can also <a class='open-create-room'>create one</a> :",
       "userstitle": "Matching users"
     },

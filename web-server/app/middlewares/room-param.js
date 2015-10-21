@@ -51,8 +51,8 @@ module.exports = function (req, res, next, roomname) {
         }
 
         // urls
-        var data = urls(room, 'room', req.protocol, conf.fqdn);
-        room.url = data.url;
+        var data = urls(room, 'room');
+        room.url = req.protocol + '://' + conf.fqdn + data.url;
         room.chat = data.chat;
         room.join = data.join;
 
@@ -66,7 +66,7 @@ module.exports = function (req, res, next, roomname) {
             avatar: model.owner._avatar(80),
             color: model.owner.color,
             url: (model.owner.username)
-              ? urls(model.owner, 'user', req.protocol, conf.fqdn, 'url')
+              ? req.protocol + '://' + conf.fqdn + urls(model.owner, 'user', 'url')
               : '',
             isOwner: true,
             isOp: false // could not be both
@@ -88,7 +88,7 @@ module.exports = function (req, res, next, roomname) {
               avatar: _model._avatar(80),
               color: _model.color,
               url: (_model.username)
-                ? urls(_model, 'user', req.protocol, conf.fqdn, 'url')
+                ? req.protocol + '://' + conf.fqdn + urls(_model, 'user', 'url')
                 : '',
               isOp: true,
               isOwner: false
@@ -117,7 +117,7 @@ module.exports = function (req, res, next, roomname) {
               avatar: _model._avatar(80),
               color: _model.color,
               url: (_model.username)
-                ? urls(_model, 'user', req.protocol, conf.fqdn, 'url')
+                ? req.protocol + '://' + conf.fqdn + urls(_model, 'user', 'url')
                 : '',
               isOp: false,
               isOwner: false

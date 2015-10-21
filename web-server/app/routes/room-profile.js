@@ -35,13 +35,17 @@ var callback = function (req, res) {
   });
 };
 
-router.param('room', require('../middlewares/room-param'));
-router.get('/r/:group/:room', callback);
-router.get('/r/:room', callback);
-
-router.get('/r/join/:room', function (req, res) {
+var bouncerCallback = function(req, res) {
   bouncer.set(req, req.room.chat);
   res.redirect('/login');
-});
+};
+
+router.param('room', require('../middlewares/room-param'));
+
+router.get('/r/join/:room', bouncerCallback);
+router.get('/r/join/:group/:room', bouncerCallback);
+
+router.get('/r/:group/:room', callback);
+router.get('/r/:room', callback);
 
 module.exports = router;

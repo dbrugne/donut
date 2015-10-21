@@ -45,8 +45,8 @@ module.exports = function (req, res, next, username) {
       data.location = user.location;
       data.website = user.website;
 
-      var _urls = urls(user, 'user', req.protocol, conf.fqdn);
-      data.url = _urls.url;
+      var _urls = urls(user, 'user');
+      data.url = req.protocol + '://' + conf.fqdn + _urls.url;
       data.chat = _urls.chat;
       data.discuss = _urls.discuss;
 
@@ -77,7 +77,7 @@ module.exports = function (req, res, next, username) {
         _.each(rooms, function (dbroom) {
           var room = dbroom.toJSON();
           if (room.owner) {
-            room.owner.url = urls(room.owner, 'user', req.protocol, conf.fqdn, 'url');
+            room.owner.url = req.protocol + '://' + conf.fqdn + urls(room.owner, 'user', 'url');
           }
 
           room.avatar = dbroom._avatar(160);
@@ -93,8 +93,8 @@ module.exports = function (req, res, next, username) {
             room.group_id = dbroom.group.id;
           }
 
-          var data = urls(room, 'room', req.protocol, conf.fqdn);
-          room.url = data.url;
+          var data = urls(room, 'room');
+          room.url = req.protocol + '://' + conf.fqdn + data.url;
           room.chat = data.chat;
           room.join = data.join;
 

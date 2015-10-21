@@ -56,8 +56,8 @@ var DrawerGroupProfileView = Backbone.View.extend({
     });
     group.avatar = common.cloudinary.prepare(group.avatar, 90);
 
-    group.uri = urls(group, 'group', null, null, 'uri');
-    group.url = urls(group, 'group', null, null, 'url');
+    group.uri = urls(group, 'group', 'uri');
+    group.url = urls(group, 'group', 'url');
 
     _.each(group.members, function (element, key, list) {
       element.avatar = common.cloudinary.prepare(element.avatar, 34);

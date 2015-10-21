@@ -18,7 +18,7 @@ $('[data-toggle="contactform"]').contactform({});
 // Landing Page
 var $landing = $('#landing');
 if ($landing.length) {
-  var searchView = new SearchView({el: $landing.find('.ctn-results .results .rooms')});
+  var searchView = new SearchView({el: $landing.find('.results .cards')});
   var limit = 20; // default limit on landing page (1st load)
 
   var emailPattern = /[\w.+-]+@[\w.-]+\.[a-z]{2,4}/i;
@@ -28,14 +28,14 @@ if ($landing.length) {
     $.ajax('https://donut.local/rest/search?limit=' + limit + '&skip=' + skip + '&q=' + search, {
       success: function (response) {
         searchView.render({
-          rooms: (
-            response.rooms && response.rooms.list
-              ? response.rooms.list
+          cards: (
+            response.cards && response.cards.list
+              ? response.cards.list
               : []
           ),
           title: false,
           search: false,
-          more: (response.rooms && response.rooms.list && response.rooms.list.length === limit),
+          more: (response.cards && response.cards.list && response.cards.list.length === limit),
           replace: replace
         });
       }
@@ -45,7 +45,7 @@ if ($landing.length) {
   // Click load more button
   $landing.find('.load-more').click(function (e) {
     var search = $landing.find('#search-field').val();
-    var skip = $landing.find('.ctn-results .results .rooms .list .room').length || 0;
+    var skip = $landing.find('.results .cards .card').length || 0;
     searchFunction(search, skip, false);
   });
 

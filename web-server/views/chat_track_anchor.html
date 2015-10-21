@@ -2,17 +2,30 @@
 <body>
 <div>wait you are redirecting :)</div>
 <script>
-    (function() {
-        var to = window.location.protocol
-                +'//'+ window.location.host;
-        if ( window.location.href.indexOf('!#room/') !== -1
-             || window.location.href.indexOf('!#user/') !== -1) {
-            to += '/'+ window.location.hash.replace('#', '');
-            to += '?redirect=true';
+    (function () {
+        var to = window.location.protocol + '//' + window.location.host;
+        var regex = /(!#u\/[-a-z0-9\._]{3,15})|(!#g\/[-a-z0-9_]{3,20})|(!#[-a-z0-9_]{3,20}\/[-a-z0-9_]{3,20})|(!#[-a-z0-9_]{3,20})$/;
+        var matches = regex.exec(window.location.href);
+        if (regex.test(window.location.href)) {
+            if (typeof (matches[1]) !== 'undefined') { // capture user pattern
+                to += '/u/'+ window.location.hash.replace('#', '');
+                to += '?redirect=true';
+            } else if (typeof (matches[2]) !== 'undefined') { // capture group pattern
+                to += '/g/'+ window.location.hash.replace('#', '');
+                to += '?redirect=true';
+            } else if (typeof (matches[3]) !== 'undefined') { // capture room in group pattern
+                to += '/r/'+ window.location.hash.replace('#', '');
+                to += '?redirect=true';
+            } else if (typeof (matches[4]) !== 'undefined') { // capture room outside group pattern
+                to += '/r/'+ window.location.hash.replace('#', '');
+                to += '?redirect=true';
+            } else {
+                to += '/';
+            }
         } else {
             to += '/';
         }
-        console.log('now redirect to:'+to);
+        console.log('now redirect to:' + to);
         window.location.replace(to);
     })();
 </script>

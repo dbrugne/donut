@@ -52,11 +52,11 @@
 
             <% if (_user.hasRooms) { %>
             <p class="title"><%= t('profile.user.hisrooms') %></p>
-            <div class="ctn-results">
-                <div class="rooms cards">
-                    <% _.each(rooms, function(room) { print(partial('room', {room: room})); }); %>
-                </div>
-            </div>
+            <p class="flex-parent flex-row-wrap">
+                <% _.each(rooms, function(room) { %>
+                    <a class="mr10 mb10 fs20" href="<%=room.url%>"><%=room.identifier%></a>
+                <% }); %>
+            </p>
             <% } %>
         </div>
     </div>

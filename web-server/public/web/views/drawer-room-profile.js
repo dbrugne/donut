@@ -57,7 +57,7 @@ var DrawerRoomProfileView = Backbone.View.extend({
     room.avatar = common.cloudinary.prepare(room.avatar, 90);
 
     room.uri = room.identifier;
-    room.url = urls(room, 'room', null, null, 'url');
+    room.url = urls(room, 'room', 'url');
 
     _.each(room.users, function (element, key, list) {
       element.avatar = common.cloudinary.prepare(element.avatar, 34);
