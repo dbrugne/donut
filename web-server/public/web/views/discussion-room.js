@@ -141,6 +141,8 @@ var RoomView = Backbone.View.extend({
       }
       this.reconnect = false;
       this.hasBeenFocused = true;
+
+      this.eventsView.onScroll();
     } else {
       this.$el.hide();
     }

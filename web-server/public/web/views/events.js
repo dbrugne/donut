@@ -134,7 +134,6 @@ module.exports = Backbone.View.extend({
     this._scrollTimeoutCleanup();
 
     var currentScrollPosition = this.$scrollable.scrollTop();
-    var bottom = this._scrollBottomPosition();
 
     this.eventsDateView.scroll({
       currentScrollPosition: currentScrollPosition
