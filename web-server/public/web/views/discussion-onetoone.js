@@ -96,6 +96,7 @@ var OneToOnePanelView = Backbone.View.extend({
 
       // refocus an offline one after few times
       date.from('fromnow', this.$('.ago span'));
+      this.eventsView.onScroll();
     } else {
       this.$el.hide();
     }
