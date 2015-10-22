@@ -16,15 +16,11 @@
                     <% var _color = result.color ? result.color.replace('#','').toLowerCase() : 'default' %>
                     <span class="relative dc-i-<%=_color%>">
                         <img class="avatar_ctn" src="<%= result.avatarUrl %>">
-                        <% if (result.is_group) { %>
+                        <% if (result.type === 'group') { %>
                             <i class="icon icon-star img-circle dc-back dc-text-contrast"></i>
                         <% } %>
                     </span>
-                    <% if (result.is_group) { %>
                     <span class="name value"><%= result.identifier %>/</span>
-                    <% } else { %>
-                    <span class="name value"><%= result.identifier %></span>
-                    <% } %>
                     <% } else if (type === 'commands') { %>
                     <div class="cmd-left-td">
                         <span class="name value">/<%= result.name %></span>

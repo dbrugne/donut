@@ -142,7 +142,6 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
           : 0;
 
         var r = {
-          is_group: false,
           type: 'room',
           room_id: room.id,
           name: room.name,
@@ -176,7 +175,6 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
         var count = group.count();
 
         var _data = {
-          is_group: true,
           type: 'group',
           name: group.name,
           identifier: group.getIdentifier(),
@@ -213,7 +211,7 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
           return 1;
         }
 
-        if (!a.is_group && !b.is_group && a.lastjoin_at !== b.lastjoin_at) {
+        if (a.type !== 'group' && b.type !== 'group' && a.lastjoin_at !== b.lastjoin_at) {
           // b - a == descending
           return (b.lastjoin_at - a.lastjoin_at);
         }

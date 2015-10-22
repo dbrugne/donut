@@ -158,7 +158,6 @@ handler.call = function (data, session, next) {
             : 0;
 
           var _data = {
-            is_group: false, // @todo still required ?
             type: 'room',
             name: room.name,
             identifier: room.getIdentifier(),
@@ -191,7 +190,6 @@ handler.call = function (data, session, next) {
           var count = group.count();
 
           var _data = {
-            is_group: true, // @todo still required ?
             type: 'group',
             name: group.name,
             identifier: group.getIdentifier(),
@@ -227,7 +225,7 @@ handler.call = function (data, session, next) {
             return 1;
           }
 
-          if (!a.is_group && !b.is_group && a.lastjoin_at !== b.lastjoin_at) {
+          if (a.type !== 'group' && b.type !== 'group' && a.lastjoin_at !== b.lastjoin_at) {
             return (b.lastjoin_at - a.lastjoin_at);
           } // b - a == descending
 
