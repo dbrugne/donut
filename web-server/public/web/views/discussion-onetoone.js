@@ -49,7 +49,7 @@ var OneToOnePanelView = Backbone.View.extend({
     data.avatar = common.cloudinary.prepare(data.avatar, 100);
 
     // url
-    data.url = '/user/' + ('' + data.username).toLocaleLowerCase();
+    data.url = this.model.getUrl();
 
     // dropdown
     data.dropdown = require('../templates/dropdown-one-actions.html')({

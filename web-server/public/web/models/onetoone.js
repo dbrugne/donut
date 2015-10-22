@@ -28,6 +28,12 @@ var OneToOneModel = Backbone.Model.extend({
   getIdentifier: function () {
     return this.get('username');
   },
+  getUrl: function () {
+    return window.location.protocol +
+      '//' +
+      window.location.host +
+      '/u/' + this.get('username');
+  },
   leave: function () {
     client.userLeave(this.get('user_id'));
   },

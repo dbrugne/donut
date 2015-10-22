@@ -35,7 +35,7 @@ var GroupsCollection = Backbone.Collection.extend({
     data.id = data.group_id;
     data.identifier = '#' + data.name;
     data.uri = urls(data, 'group', 'uri');
-    data.url = urls(data, 'group', null, null, 'url');
+    data.url = urls(data, 'group', 'url');
 
     // update model
     var isNew = (typeof this.get(data.group_id) === 'undefined');
