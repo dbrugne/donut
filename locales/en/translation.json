@@ -161,14 +161,13 @@
     "unknownerror": "Unknown error, please retry later",
     "mode": {
       "title": {
-        "members": "members",
-        "invites": "invites",
-        "members-invites": "members & invites",
+        "private": "invites",
+        "private-invites": "members & invites",
         "public": "public"
       },
       "description": {
-        "invites": "This donut is private, for invites only",
-        "members-invites": "This donut is private, for members of this community and invites only",
+        "private": "This donut is private, for invites only",
+        "private-invites": "This donut is private, for members of this community and invites only",
         "public": "This donut is public, any user can join"
       }
     }

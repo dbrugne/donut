@@ -161,14 +161,13 @@
     "unknownerror": "Erreur inconnue, veuillez réessayer",
     "mode": {
       "title": {
-        "members": "membres",
-        "invites": "invités",
-        "members-invites": "membres & invités",
+        "private": "invités",
+        "private-invites": "membres & invités",
         "public": "public"
       },
       "description": {
-        "invites": "Ce donut est privé, accessible uniquement sur invitation",
-        "members-invites": "Ce donut est privé, accessible uniquement aux membres de cette de communauté et sur invitation",
+        "private": "Ce donut est privé, accessible uniquement sur invitation",
+        "private-invites": "Ce donut est privé, accessible uniquement aux membres de cette de communauté et sur invitation",
         "public": "Ce donut est public, accessible à tout utilisateur"
       }
     }

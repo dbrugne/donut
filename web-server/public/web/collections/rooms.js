@@ -312,8 +312,8 @@ var RoomsCollection = Backbone.Collection.extend({
     }
 
     if (currentUser.get('user_id') === data.user_id) {
-      client.roomJoin(data.room_id, null, _.bind(function (response) {
-        if (response.room.mode === 'private') {
+      client.roomJoin(data.room_id, null, _.bind(function () {
+        if (data.room_mode === 'private') {
           var isFocused = model.get('focused');
           var modelTmp = model.attributes;
           this.remove(model);

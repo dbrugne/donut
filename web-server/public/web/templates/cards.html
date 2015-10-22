@@ -216,8 +216,8 @@
                     <% } %>
                </span>
                 <div class="actions flex-parent jc-center">
-                    <span class="mode dc-text-contrast dc-back curp flex-child" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + card.mode) %>">
-                        <%= t('global.mode.title.' + card.mode) %>
+                    <span class="mode dc-text-contrast dc-back curp flex-child" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + card.mode  + (card.allow_user_request ? '-invites' : '')) %>">
+                        <%= t('global.mode.title.' + card.mode  + (card.allow_user_request ? '-invites' : '')) %>
                     </span>
                     <% if(card.join) { %>
                         <a class="first clean flex-child" href="<%= card.join %>" data-dismiss="modal">

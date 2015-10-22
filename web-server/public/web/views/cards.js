@@ -43,7 +43,16 @@ var CardsView = Backbone.View.extend({
     });
 
     this.$el.html(html);
+
+    this.initializeTooltips();
+
     return this;
+  },
+
+  initializeTooltips: function () {
+    this.$('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
   }
 
 });
