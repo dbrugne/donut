@@ -10,7 +10,8 @@ var EventModel = require('../models/event');
 var InputCommandsView = Backbone.View.extend({
   commandRegexp: /^\/([-a-z0-9]+)/i,
 
-  initialize: function (options) {},
+  initialize: function (options) {
+  },
 
   render: function () {
     return this;
@@ -71,7 +72,7 @@ var InputCommandsView = Backbone.View.extend({
       alias: 'j',
       parameters: 'name',
       access: 'everywhere',
-      help: '#donut/#community',
+      help: '#donut ' + i18next.t('global.or') + ' #community/donut',
       description: 'chat.commands.join'
     },
     leave: {
@@ -358,7 +359,9 @@ var InputCommandsView = Backbone.View.extend({
     });
   },
   msg: function (paramString, parameters) {
-    var message = (!parameters) ? paramString : parameters[3];
+    var message = (!parameters)
+      ? paramString
+      : parameters[3];
 
     if (message && /^@/.test(message) && !parameters[2]) {
       message = message.replace(/\s+/, '');
@@ -462,7 +465,7 @@ var InputCommandsView = Backbone.View.extend({
     client.ping(function (duration) {
       var model = new EventModel({
         type: 'ping',
-        data: { duration: duration }
+        data: {duration: duration}
       });
       that.model.trigger('freshEvent', model);
     });
@@ -489,7 +492,11 @@ var InputCommandsView = Backbone.View.extend({
     }
 
     var result = Math.floor(Math.random() * (max - min + 1) + min);
-    var message = i18next.t('chat.notifications.random', {result: result, min: min, max: max});
+    var message = i18next.t('chat.notifications.random', {
+      result: result,
+      min: min,
+      max: max
+    });
     if (this.model.get('type') === 'room') {
       client.roomMessage(this.model.get('id'), message, null, 'random');
     } else {
@@ -507,7 +514,9 @@ var InputCommandsView = Backbone.View.extend({
     }
 
     var data = {
-      help: (commandHelp) ? { cmd: commandHelp } : this.getCommands(this.model.get('type'))
+      help: (commandHelp)
+        ? {cmd: commandHelp}
+        : this.getCommands(this.model.get('type'))
     };
     var model = new EventModel({
       type: 'command:help',
