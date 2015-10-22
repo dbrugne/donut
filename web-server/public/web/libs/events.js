@@ -171,6 +171,7 @@ exports.prototype.replaceLastDisconnectBlock = function ($lastDisconnectBlock, $
     }
 
     previous = event;
+    this.bottomEvent = event;
     html += _html;
   }, this));
 
