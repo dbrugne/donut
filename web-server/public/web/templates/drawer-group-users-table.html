@@ -15,40 +15,49 @@
             </div>
         </td>
         <td class="actions" style="text-align: right; width: 1px;">
-            <% if(op && !u.isOwner) { %>
+            <!--ONLY USERS WITH RIGHTS CAN USE ACTIONS -> op = admin / owner / op -->
+            <% if(op) { %>
                 <span class="dropdown user-list">
                     <button class="dropdown-toggle flex-parent" data-toggle="dropdown" aria-expanded="true">
                         <i class="icon icon-chevron-down"></i>
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li class="arrow-right"></li>
-                        <% if(!u.isOp) { %>
+
+                        <% if(!u.isOwner || admin) { %>
+                            <!--OP / DEOP an active user-->
+                            <% if(!u.isBanned) { %>
+                                <% if(!u.isOp) { %>
+                                    <li role="presentation">
+                                        <a role="menuitem" tabindex="-1" class="op op-user" data-toggle="confirmation" data-action="op-user" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>" >
+                                            <i class="icon icon-fw icon-op"></i><p> <%= t('chat.op.infobox') %></p>
+                                        </a>
+                                    </li>
+                                <% } else { %>
+                                    <li role="presentation">
+                                        <a role="menuitem" tabindex="-1" class="deop deop-user" data-toggle="confirmation" data-action="deop-user" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>" >
+                                            <i class="icon icon-fw icon-op cl-neutral"></i>
+                                            <p><%= t('chat.deop.infobox') %></p>
+                                        </a>
+                                    </li>
+                                <% } %>
+                            <% } %>
+
+
                             <li role="presentation">
-                                <a role="menuitem" tabindex="-1" class="op op-user" data-toggle="confirmation" data-action="op-user" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>" >
-                                    <i class="icon icon-fw icon-op"></i><p> <%= t('chat.op.infobox') %></p>
-                                </a>
-                            </li>
-                        <% } else { %>
-                            <li role="presentation">
-                                <a role="menuitem" tabindex="-1" class="deop deop-user" data-toggle="confirmation" data-action="deop-user" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>" >
-                                    <i class="icon icon-fw icon-op cl-neutral"></i>
-                                    <p><%= t('chat.deop.infobox') %></p>
-                                </a>
+                                <% if(!u.isBanned) { %>
+                                    <a class="ban" data-toggle="confirmation" data-action="ban-user" title="<%= t('chat.ban.infobox') %>" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>" >
+                                        <i class="icon icon-fw icon-ban" data-toggle="tooltip" data-placement="top" title="<%= t('chat.ban.infobox') %>"></i>
+                                        <p><%= t('chat.ban.infobox') %></p>
+                                    </a>
+                                <% } else { %>
+                                    <a class="deban" data-toggle="confirmation" data-action="deban-user" title="<%= t('chat.deban.infobox') %>" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>" >
+                                        <i class="icon icon-fw icon-ban icon-deban" data-toggle="tooltip" data-placement="top" title="<%= t('chat.deban.infobox') %>"></i>
+                                        <p><%= t('chat.deban.infobox') %></p>
+                                    </a>
+                                <% } %>
                             </li>
                         <% } %>
-                        <li role="presentation">
-                            <% if(!u.isBanned) { %>
-                                <a class="ban" data-toggle="confirmation" data-action="ban-user" title="<%= t('chat.ban.infobox') %>" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>" >
-                                    <i class="icon icon-fw icon-ban" data-toggle="tooltip" data-placement="top" title="<%= t('chat.ban.infobox') %>"></i>
-                                    <p><%= t('chat.ban.infobox') %></p>
-                                </a>
-                            <% } else { %>
-                                <a class="deban" data-toggle="confirmation" data-action="deban-user" title="<%= t('chat.deban.infobox') %>" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>" >
-                                    <i class="icon icon-fw icon-ban icon-deban" data-toggle="tooltip" data-placement="top" title="<%= t('chat.deban.infobox') %>"></i>
-                                    <p><%= t('chat.deban.infobox') %></p>
-                                </a>
-                            <% } %>
-                        </li>
                     </ul>
                 </span>
             <% }; %>

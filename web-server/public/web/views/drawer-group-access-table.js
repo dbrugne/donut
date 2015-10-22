@@ -41,7 +41,7 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
         ? 'pending'
         : type === 'allowed'
           ? 'members'
-          : 'banned'
+          : 'bans'
       ),
       selector: {start: (this.page - 1) * this.paginate, length: this.paginate}
     };

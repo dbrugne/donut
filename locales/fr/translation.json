@@ -560,6 +560,7 @@
         "regular": "Utilisateurs autorisés",
         "pending": "Utilisateurs en attente",
         "ban": "Bannis",
+        "bans": "Bannis",
         "devoice": "Muets",
         "members": "Membres"
       },

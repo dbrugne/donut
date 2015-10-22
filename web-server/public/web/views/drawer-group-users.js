@@ -20,7 +20,7 @@ var DrawerRoomUsersView = Backbone.View.extend({
 
   currentType: 'members',
 
-  types: ['members', 'op', 'ban'],
+  types: ['members', 'op', 'bans'],
 
   events: {
     'change select': 'onChangeType',
@@ -48,6 +48,8 @@ var DrawerRoomUsersView = Backbone.View.extend({
       el: this.$('.table-users'),
       model: this.model
     });
+
+    this.listenTo(this.tableView, 'redraw', this.render);
 
     this.render();
   },

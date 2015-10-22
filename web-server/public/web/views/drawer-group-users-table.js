@@ -34,7 +34,7 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
       list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 20);
     });
 
-    this.$el.html(this.template({users: users, op: this.op}));
+    this.$el.html(this.template({users: users, op: this.op, admin: this.model.currentUserIsAdmin()}));
 
     this.initializeTooltips();
 
@@ -92,13 +92,15 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
       return;
     }
 
+    var that = this;
     confirmationView.open({
       message: 'ban-group-user',
-      username: userName,
-      room_name: this.group_name
-    }, _.bind(function (reason) {
-      client.groupBan(this.groupId, userId, reason);
-    }, this));
+      username: userName
+    }, function (reason) {
+      client.groupBan(that.model.get('id'), userId, reason, function() {
+        that.trigger('redraw');
+      });
+    });
   },
   debanUser: function (event) {
     event.preventDefault();
@@ -112,12 +114,15 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
       return;
     }
 
+    var that = this;
     confirmationView.open({
       message: 'deban-group-user',
       username: userName
-    }, _.bind(function () {
-      client.groupDeban(this.groupId, userId);
-    }, this));
+    }, function () {
+      client.groupDeban(that.model.get('id'), userId, function() {
+        that.trigger('redraw');
+      });
+    });
   },
   initializeTooltips: function () {
     this.$el.find('[data-toggle="tooltip"]').tooltip({

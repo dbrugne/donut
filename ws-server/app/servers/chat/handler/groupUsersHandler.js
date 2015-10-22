@@ -26,10 +26,10 @@ handler.call = function (data, session, next) {
     'pending',          // members_pending
     'op',               // op + owner
     'regular',          // members (not op/owner)
-    'banned'            // banned members
+    'bans'              // banned members
   ];
 
-  var searchTypesThatNeedPower = ['banned', 'pending'];
+  var searchTypesThatNeedPower = ['bans', 'pending'];
 
   /**
    * @param group_id (@mandatory)
@@ -148,7 +148,8 @@ handler.call = function (data, session, next) {
           avatar: u._avatar(),
           isOp: group.isOp(u.id),
           isOwner: group.isOwner(u.id),
-          isPending: group.isAllowedPending(u.id)
+          isPending: group.isAllowedPending(u.id),
+          isBanned: group.isBanned(u.id)
         };
         if (data.attributes.type === 'pending') {
           var pend = group.getAllowPendingByUid(u._id.toString());

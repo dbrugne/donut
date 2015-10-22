@@ -179,6 +179,10 @@ handler.call = function (data, session, next) {
             users: (r.users) ? r.users.length : 0
           };
 
+          if (r.mode !== 'public') {
+            room.allow_user_request = r.allow_user_request;
+          }
+
           if (r.owner) {
             room.owner = {
               user_id: r.owner.id,
