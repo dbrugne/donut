@@ -171,6 +171,25 @@
   -webkit-flex-flow: @value;
   flex-flow: @value;
 }
+.align-items(@value) {
+  -webkit-box-align: @value;
+  -moz-box-align: @value;
+  -ms-flex-align:@value;
+  -webkit-align-items: @value;
+  align-items: @value;
+}
+.align-self(@value) {
+  -ms-flex-item-align: @value;
+  -webkit-align-self: @value;
+  align-self: @value;
+}
+.justify-content(@value) {
+  -webkit-box-pack: @value;
+  -moz-box-pack: @value;
+  -ms-flex-pack: @value;
+  -webkit-justify-content: @value;
+  justify-content: @value;
+}
 .blink {
   animation: blink 1s steps(5, start) infinite;
   -webkit-animation: blink 1s steps(5, start) infinite;

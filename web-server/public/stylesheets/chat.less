@@ -423,7 +423,7 @@
             .overlay-text { width: 100px; top: 40px; }
           } // #chat #center .discussion .content .header.room .overlay-ctn
           .info {
-            .name { margin-top: 2px; font-size: 2.7rem; display: inline-flex; }
+            .name { margin-top: 2px; font-size: 2.7rem; .display-inline-flex; }
             #chat #center .discussion .content .header.room .info .name .owner { display: inline-block; font-size: 1.2em; }
             .dropdown { display: inline-block; position: relative;
               .dropdown-menu>li>a { color: @cl-subtext40; }
@@ -478,19 +478,19 @@
           .scrollable {overflow-y: auto; overflow-x: hidden; height: 100%; .scrollbar-white;}
           .title { font-size: 2rem; padding: 10px 0; margin: 0 20px; color:@cl-title; }
           .user-list { height: auto;
-            .list { .display-flex; .flex-flow(row wrap); justify-content: space-between;
+            .list { .display-flex; .flex-flow(row wrap); .justify-content(space-between);
               .item { width: auto; padding:0;
-                .infos { .display-flex; .flex-flow(column nowrap); align-items: center; }
+                .infos { .display-flex; .flex-flow(column nowrap); .align-items(center); }
                 .avatar { background-size: contain; width: 30px; height:30px; }
               }
             }
           }
           .list { position: relative; padding: 0 20px;
             &.op {
-              .ctn { position:relative; .display-flex; .flex-flow(row wrap); align-items: center; justify-content: flex-start;
+              .ctn { position:relative; .display-flex; .flex-flow(row wrap); .align-items(center);  .justify-content(flex-start);
                 .background { background-color: #FFF; .opacity(0.4); top:0; left:0; height:100%; width:100%; position: absolute; .border-radius(3px); }
                 .item { width: 94px; padding: 10px;
-                  .infos { .display-flex; .flex-flow(column nowrap); align-items: center; }
+                  .infos { .display-flex; .flex-flow(column nowrap); .align-items(center);  }
                   .avatar { background-size: contain; width: 50px; height:50px; }
                   &.owner .avatar::before { font-size: 2rem; left: 13px !important; top: -16px !important; }
                   &.op .avatar::before { font-size: 2rem; width: 12px; height: 17px; background-color: #FFF; }
@@ -508,7 +508,7 @@
     }
     .discussion { background-color: @cl-background; height: 100%;
       .content {
-        &.blocked { align-items: center; justify-content: center; position:relative;
+        &.blocked { .align-items(center);  .justify-content(center); position:relative;
           .header .info { padding:0; }
           .password-form { max-width: 555px; }
           .close-room { position: absolute; top: 20px; right: 20px; font-size: 1.4rem; }
@@ -1100,7 +1100,7 @@
 
   .date-ctn { padding: 0 12px 10px 0; position: absolute; width: 100%; background-color: white; z-index: 2; min-height: 22px }
 
-  #block-current-user { .display-flex; align-items: center; height: 40px;
+  #block-current-user { .display-flex; .align-items(center);  height: 40px;
     img { width: 28px; height: 28px; }
   }
 

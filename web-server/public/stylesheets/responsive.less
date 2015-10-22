@@ -75,18 +75,14 @@
       } // #chat #center #home .left
       .discussion {
         .content { margin-right: 0; position: initial;
-          .mini-header { position: absolute; z-index: 1030; left: 5px; .display-flex; .flex-flow(row nowrap); justify-content: center; align-items: center; height: 40px; top: 0;
+          .mini-header { position: absolute; z-index: 1030; left: 5px; .display-flex; .flex-flow(row nowrap); .justify-content(center); .align-items(center);  height: 40px; top: 0;
             .avatar { border: 2px solid rgba(167,167,167,0.2); width: 34px; height: 34px; z-index: 1031; cursor: pointer;margin: auto 5px auto 0;
               img { width:100%; }
             }
             &.is-banned .avatar::after { font-size: 30px; top: 0; left: 4px; line-height: 30px; }
-            .name, .username { font-size: 16px !important; font-weight: bold; float: none; position: relative; margin: auto !important; padding: 0; display: flex; flex-flow: row nowrap; align-items: center; }
+            .name, .username { font-size: 16px !important; font-weight: bold; float: none; position: relative; margin: auto !important; padding: 0; .display-flex; .flex-flow(row nowrap); .align-items(center);  }
             &.room .avatar img { .border-radius(50%); }
-            .info {
-
-              position: relative;
-              margin: auto !important;
-
+            .info { position: relative; margin: auto !important;
               .dropdown { display: inline-block; position: relative;
                 .dropdown-toggle { font-size: 20px; border: none; background-color: transparent; color: @cl-subtext20;
                   i { .opacity(0.5);
