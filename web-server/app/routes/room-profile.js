@@ -31,7 +31,8 @@ var callback = function (req, res) {
     posterBlured: req.room.posterBlured,
     color: req.room.color,
     userDefaultAvatar: cd.userAvatar('', conf.room.default.color, false, 50),
-    mode: req.room.mode
+    mode: req.room.mode,
+    allow_user_request: req.room.allow_user_request
   });
 };
 
