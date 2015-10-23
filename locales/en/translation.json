@@ -916,7 +916,8 @@
     "global": {
       "content": {
         "team": "The DONUT.me team",
-        "ps": "P.S.: To avoid receiving these notification types, please uncheck it from your notification options in your account preferences on <a href=\"https://__fqdn__\">__fqdn__</a>. For any question, we are available on <a href=\"https://__fqdn__/!#donut/help\">#help</a>"
+        "ps1": "P.S.: To avoid receiving these notification types, please uncheck it from your notification options in your account preferences on ",
+        "ps2": ". For any question, we are available on "
       }
     },
     "common": {

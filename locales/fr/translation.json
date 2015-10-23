@@ -916,7 +916,8 @@
     "global": {
       "content": {
         "team": "L'équipe DONUT.me",
-        "ps": "P.S.: pour ne plus recevoir ce type de notifications veuillez décocher les options de notifications dans les préférences de votre compte sur <a href=\"https://__fqdn__\">__fqdn__</a>, pour toute question nous sommes à votre écoute sur <a href=\"https://__fqdn__/!#donut/help\">#help</a>"
+        "ps1": "P.S.: pour ne plus recevoir ce type de notifications veuillez décocher les options de notifications dans les préférences de votre compte sur ",
+        "ps2": ", pour toute question nous sommes à votre écoute sur "
       }
     },
     "common": {
