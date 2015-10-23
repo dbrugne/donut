@@ -71,7 +71,7 @@ var OnetoonesCollection = Backbone.Collection.extend({
   onJoin: function (data) {
     // server ask to client to open this one to one in IHM
     this.addModel(data);
-    this.trigger('redrawNavigationOnes');
+    app.trigger('redrawNavigationOnes');
   },
   addModel: function (data) {
     data.last = (data.lastactivity_at)
