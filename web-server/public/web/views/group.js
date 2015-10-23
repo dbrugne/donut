@@ -74,7 +74,7 @@ var GroupView = Backbone.View.extend({
       el: this.$('.cards')
     });
     this.cardsView.render({
-      cards: {
+      rooms: {
         list: rooms
       },
       title: false,
