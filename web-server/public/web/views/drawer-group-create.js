@@ -5,6 +5,7 @@ var app = require('../models/app');
 var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
 var i18next = require('i18next-client');
+var urls = require('../../../../shared/util/url');
 
 var DrawerGroupCreateView = Backbone.View.extend({
   template: require('../templates/drawer-group-create.html'),
@@ -77,15 +78,14 @@ var DrawerGroupCreateView = Backbone.View.extend({
     client.groupCreate(name, _.bind(function (response) {
       this.$submit.removeClass('loading');
       if (response.code !== 500 && response.success !== true) {
-        var uri = 'group/' + name;
-        var error = i18next.t('chat.form.errors.' +
-          response.err, {name: name, uri: uri});
+        var uri = urls({name: name}, 'group', 'uri');
+        var error = i18next.t('chat.form.errors.' + response.err, {name: name, uri: uri});
         return this.setError(error);
       } else if (response.code === 500) {
         return this.setError(i18next.t('global.unknownerror'));
       }
 
-      app.trigger('joinRoom', '#' + name + '/welcome');
+      app.trigger('joinRoom', '#' + name + '/welcome'); // @todo put that in constant
       this.reset();
       this.trigger('close');
     }, this));

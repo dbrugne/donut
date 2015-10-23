@@ -830,8 +830,8 @@
         "name-wrong-format": "Le nom du donut est invalide",
         "mode-wrong-format": "Vous devez séléctionner un mode pour ce donut",
         "invalid-password": "Le mot de passe doit être compris entre 4 et 255 caractères",
-        "room-already-exist": "Le donut __name__ existe déjà, <a href='#__uri__'>voulez-vous le rejoindre</a> ?",
-        "group-name-already-exist": "La communauté __name__ existe déjà, <a href='#__uri__'>voulez-vous la rejoindre</a> ?",
+        "room-already-exist": "Le donut __name__ existe déjà, <a href='__uri__'>voulez-vous le rejoindre</a> ?",
+        "group-name-already-exist": "La communauté __name__ existe déjà, <a href='__uri__'>voulez-vous la rejoindre</a> ?",
         "invalid-rights": "Vous n'avez pas les droits pour faire cela.",
         "not-allowed": "Vous ne pouvez pas supprimer ce donut"
       }

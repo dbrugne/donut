@@ -1,7 +1,7 @@
 module.exports = function (model, type, what) {
   var data = {};
   if (type === 'room') {
-    var identifier = (!model.group_id)
+    var identifier = (!model.group_name)
       ? model.name
       : model.group_name + '/' + model.name;
     data = {
