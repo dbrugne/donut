@@ -153,6 +153,7 @@
     "permalink": "permalink",
     "search": "search",
     "by": "by",
+    "one": "one",
     "footer": {
       "before": "Would you like to",
       "after": "?"
@@ -837,7 +838,8 @@
         "not-allowed": "You can't delete this donut"
       }
     },
-    "members": "You are now a member of #__name__"
+    "members": "You are now a member of #__name__",
+    "noroomopened": "No donuts opened, you can"
   },
   "group": {
     "administrator": "Administrators",

@@ -100,7 +100,7 @@
                         <a class="title" href=".collapse-rooms" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-rooms"><%= t('global.donuts') %></a>
                         <ul class="list collapse-rooms collapse in"><!--rooms--></ul>
                         <ul class="empty">
-                            <li>No room opened, you can <a class="go-to-search dc-text" href="#">search</a> or <a class="open-create-room dc-text" href="#">create</a> one.</li>
+                            <li><%= t('chat.noroomopened') %> <a class="go-to-search dc-text" href="#"><%= t('chat.actions.search').toLowerCase() %></a> <%= t('global.or') %> <a class="open-create-room dc-text" href="#"><%= t('chat.actions.create') %></a> <%= t('global.one') %>.</li>
                         </ul>
                     </li>
                 </ul>

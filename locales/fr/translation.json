@@ -153,6 +153,7 @@
     "permalink": "permalien",
     "search": "Recherche",
     "by": "par",
+    "one": "un",
     "footer": {
       "before": "Vous souhaitez vous",
       "after": " ?"
@@ -837,7 +838,8 @@
         "not-allowed": "Vous ne pouvez pas supprimer ce donut"
       }
     },
-    "members": "Vous êtes maintenant membre de la communauté #__name__"
+    "members": "Vous êtes maintenant membre de la communauté #__name__",
+    "noroomopened": "Ancuns donut ouvert, vous pouvez en"
   },
   "group": {
     "administrator": "Administrateurs",
