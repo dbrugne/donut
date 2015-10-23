@@ -2,6 +2,7 @@
 var errors = require('../../../util/errors');
 var async = require('async');
 var RoomModel = require('../../../../../shared/models/room');
+var GroupModel = require('../../../../../shared/models/group');
 var conf = require('../../../../../config/index');
 var keenio = require('../../../../../shared/io/keenio');
 var common = require('@dbrugne/donut-common/server');
@@ -50,36 +51,50 @@ handler.call = function (data, session, next) {
       return callback(null);
     },
 
-    function create (callback) {
-      var q = RoomModel.findByNameAndGroup(data.room_name, data.group_id);
-      q.exec(function (err, room) {
+    function checkNameAvailability (callback) {
+      // check in groups name
+      GroupModel.findByName(data.room_name).exec(function (err, group) {
         if (err) {
           return callback(err);
-        }
-        if (room) {
-          return callback('room-already-exist');
+        } else if (group) {
+          return callback('group-name-already-exist');
         }
 
-        room = RoomModel.getNewRoom();
-        room.name = data.room_name;
-        room.owner = user.id;
-        room.color = conf.room.default.color;
-        room.visibility = false; // not visible on home until admin change this value
-        room.priority = 0;
-        room.mode = data.mode;
-        if (data.group_id) {
-          room.group = group.id;
-        }
-        if (data.mode === 'private') {
-          room.allow_user_request = true; // always set this option to true on private room creation
-          if (data.password !== null) {
-            room.password = data.password; // user.generateHash(data.password);
+        // check in room name in the same group or in the global space if room is global
+        var q = RoomModel.findByNameAndGroup(data.room_name, data.group_id);
+        q.exec(function (err, room) {
+          if (err) {
+            return callback(err);
           }
-        }
+          if (room) {
+            return callback('room-already-exist');
+          }
 
-        room.save(function (err) {
-          return callback(err, room);
+          return callback(null);
         });
+      });
+    },
+
+    function create (callback) {
+      var room = RoomModel.getNewRoom();
+      room.name = data.room_name;
+      room.owner = user.id;
+      room.color = conf.room.default.color;
+      room.visibility = false; // not visible on home until admin change this value
+      room.priority = 0;
+      room.mode = data.mode;
+      if (data.group_id) {
+        room.group = group.id;
+      }
+      if (data.mode === 'private') {
+        room.allow_user_request = true; // always set this option to true on private room creation
+        if (data.password !== null) {
+          room.password = data.password; // user.generateHash(data.password);
+        }
+      }
+
+      room.save(function (err) {
+        return callback(err, room);
       });
     },
 

@@ -57,8 +57,8 @@ var errors = {
 
   // CONFLICT (409)
   'mail-already-exist': 409,          // Mail already used by an other user
-  'room-already-exist': 409,          // room already used by an other user
-  'group-name-already-exist': 409,    // group already used or group name already used by an other room
+  'room-already-exist': 409,          // room name already used by an other room/group
+  'group-name-already-exist': 409,    // group name already used by an other group/room
   'same-mail': 409,                   // Same mail as before
   'same-preferences': 409,            // Same preferences as before
 
