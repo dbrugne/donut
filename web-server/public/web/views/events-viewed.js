@@ -29,7 +29,7 @@ module.exports = Backbone.View.extend({
     var topLimit = this.$scrollable.offset().top;
     var bottomLimit = topLimit + this.$scrollable.height();
 
-    var $items = this.$scrollableContent.find('.block.message.unviewed, .block.topic.unviewed');
+    var $items = this.$scrollableContent.find('.block.message.unviewed, .block.topic.unviewed, .block.inout.unviewed');
     if (!$items.length) {
       return;
     }
