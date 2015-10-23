@@ -110,6 +110,24 @@ handler.call = function (data, session, next) {
         }
       }
 
+      // A password is to update
+      if (_.has(data.data, 'password')) {
+        var password = data.data.password;
+        // Add password or change password
+        if (password !== null) {
+          // Change password
+          if (passwordPattern.test(password) && (password /* user.generateHash(password)*/ !== group.password || !_.has(group.toJSON(), 'password'))) {
+            sanitized.password = validator.escape(password); // user.generateHash(password);
+          }
+          // password is null, Remove password attr from document
+        } else {
+          // a password is set on the room, so remove it
+          if (_.has(group.toJSON(), 'password')) {
+            sanitized.password = undefined;
+          }
+        }
+      }
+
       if (session.settings.admin === true) {
         // visibility
         if (_.has(data.data, 'visibility')) {
@@ -127,24 +145,6 @@ handler.call = function (data, session, next) {
             var priority = data.data.priority;
             if (priority !== group.priority) {
               sanitized.priority = priority;
-            }
-          }
-        }
-
-        // A password is to update
-        if (_.has(data.data, 'password')) {
-          var password = data.data.password;
-          // Add password or change password
-          if (password !== null) {
-            // Change password
-            if (passwordPattern.test(password) && (password /* user.generateHash(password)*/ !== group.password || !_.has(group.toJSON(), 'password'))) {
-              sanitized.password = validator.escape(password); // user.generateHash(password);
-            }
-            // password is null, Remove password attr from document
-          } else {
-            // a password is set on the room, so remove it
-            if (_.has(group.toJSON(), 'password')) {
-              sanitized.password = undefined;
             }
           }
         }

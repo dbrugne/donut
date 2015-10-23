@@ -90,7 +90,6 @@ var RoomAccessView = Backbone.View.extend({
     this.$checkboxGroupAllow = this.$('#input-allowgroupmember-checkbox');
     this.$password = this.$('.input-password');
     this.$randomPassword = this.$('.random-password');
-    this.$savePassword = this.$('.save-access');
     this.$countConditions = this.$('.counter');
     this.$conditions = this.$('#conditions-area');
 
@@ -199,7 +198,6 @@ var RoomAccessView = Backbone.View.extend({
     // Display block on click
     if (this.$toggleCheckbox.is(':checked')) {
       this.$password.removeAttr('disabled').removeClass('disabled');
-      this.$savePassword.removeAttr('disabled').removeClass('disabled');
       this.$randomPassword.removeClass('disabled');
       if (this.$password.val() === '' && !this.currentPassword) {
         this.$password.val(common.misc.randomString());
@@ -208,7 +206,6 @@ var RoomAccessView = Backbone.View.extend({
       }
     } else {
       this.$password.attr('disabled', true).addClass('disabled');
-      this.$savePassword.attr('disabled', true).addClass('disabled');
       this.$password.val('');
       this.$randomPassword.addClass('disabled');
     }
@@ -257,7 +254,7 @@ var RoomAccessView = Backbone.View.extend({
     }, this));
   },
   isValidPassword: function () {
-    return (!this.$toggleCheckbox.is(':checked') || (this.$toggleCheckbox.is(':checked') && this.currentPassword && this.getPassword() === '') || (this.$toggleCheckbox.is(':checked') && this.passwordPattern.test(this.getPassword())));
+    return (!this.$toggleCheckbox.is(':checked') || (this.$toggleCheckbox.is(':checked') && this.passwordPattern.test(this.getPassword())));
   },
   getPassword: function () {
     if (this.$toggleCheckbox.is(':checked')) {
