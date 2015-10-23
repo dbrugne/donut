@@ -12,7 +12,7 @@ var WelcomeModalView = Backbone.View.extend({
   template: require('../templates/cards.html'),
 
   events: {
-    'hidden.bs.modal': 'onHide',
+    'hidden.bs.modal': 'onHidden',
     'click .nothing, .list .room .join': 'onClose'
   },
 
@@ -33,6 +33,10 @@ var WelcomeModalView = Backbone.View.extend({
 
     this.cardsView.render({fill: false, rooms: {list: welcome.featured}});
 
+    this.listenTo(this.cardsView, 'onJoin', function (event) {
+      this.hide();
+    });
+
     return this;
   },
   show: function () {
@@ -41,13 +45,16 @@ var WelcomeModalView = Backbone.View.extend({
   hide: function () {
     this.$el.modal('hide');
   },
-  onHide: function () {
+  onHidden: function () {
     // set welcome as false on user if checkbox is checked
     if (this.$("input[type='checkbox'].avoid").prop('checked') === true) {
       client.userPreferencesUpdate({'browser:welcome': false}, function (data) {
         debug('user preference saved: ', data);
       });
     }
+  },
+  onHide: function (event) {
+    console.log(event);
   },
   onClose: function (event) {
     this.hide();

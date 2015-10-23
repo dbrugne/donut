@@ -6,6 +6,10 @@ var urls = require('../../../../shared/util/url');
 var CardsView = Backbone.View.extend({
   template: require('../templates/cards.html'),
 
+  events: {
+    'click a.join': 'onJoin'
+  },
+
   initialize: function (options) {
 
   },
@@ -72,12 +76,16 @@ var CardsView = Backbone.View.extend({
     });
   },
 
-  cleanupEmpty: function() {
+  cleanupEmpty: function () {
     this.$('.card.empty').remove();
   },
 
   count: function () {
     return this.$('.card').length;
+  },
+
+  onJoin: function (event) {
+    this.trigger('onJoin', event);
   },
 
   _remove: function () {

@@ -220,7 +220,7 @@
                         <%= t('global.mode.title.' + card.mode  + (card.allow_user_request ? '-invites' : '')) %>
                     </span>
                     <% if(card.join) { %>
-                        <a class="first clean flex-child" href="<%= card.join %>" data-dismiss="modal">
+                        <a class="first clean flex-child join" href="<%= card.join %>">
                             <%= t('actions.join') %>
                             <% if (card.users > 0) { %><%= card.users %><% } %>
                             <i class="icon icon-user-custom cl-warning"></i>

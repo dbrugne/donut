@@ -150,7 +150,9 @@ var retriever = function (app, fn) {
             poster: room._poster(),
             color: room.color,
             description: room.description,
-            users: (room.users) ? room.users.length : 0,
+            users: (room.users)
+              ? room.users.length
+              : 0,
             onlines: 0,
             mode: room.mode,
             type: 'room'
@@ -163,6 +165,9 @@ var retriever = function (app, fn) {
           if (room.owner) {
             data.owner_id = room.owner.id;
             data.owner_username = room.owner.username;
+          }
+          if (room.mode === 'private') {
+            data.allow_user_request = room.allow_user_request;
           }
           roomsData.push(data);
         });
