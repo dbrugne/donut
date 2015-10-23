@@ -15,7 +15,7 @@
         <td class="actions" style="text-align: right; width: 1px;">
             <div class="flex-parent">
                 <!--ONLY USERS WITH RIGHTS CAN USE ACTIONS -> op = admin / owner / op -->
-                <% if((op && !u.isOwner) || admin) { %>
+                <% if((op && !u.isOwner)) { %>
                     <!--IF TARGET USER IS BANNED, ONLY ONE OPTION AVAILABLE: DEBAN-->
                     <% if(u.isBanned) { %>
                         <a class="deban" data-toggle="confirmation" data-action="deban-user" title="<%= t('chat.deban.infobox') %>" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>" >
