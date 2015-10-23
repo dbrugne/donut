@@ -240,7 +240,7 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
 
       var q = User.find(criteria, 'username avatar color facebook bio');
       q.sort({'lastonline_at': -1, 'lastoffline_at': -1})
-        .limit(limit + 1);
+        .limit(limit);
       q.exec(function (err, users) {
         if (err) {
           return callback(err);
@@ -274,15 +274,15 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
     var searchResults = {
       users: {
         list: userResults,
-        more: userResults.length > skip + limit
+        more: userResults.length >= limit
       },
       rooms: {
         list: roomResults,
-        more: roomResults.length > skip + limit
+        more: roomResults.length >= limit
       },
       groups: {
         list: groupResults,
-        more: groupResults.length > skip + limit
+        more: groupResults.length >= limit
       }
     };
 

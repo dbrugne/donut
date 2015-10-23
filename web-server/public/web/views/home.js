@@ -12,6 +12,10 @@ var HomeView = Backbone.View.extend({
 
   empty: true,
 
+  events: {
+    'click .load-more': 'onLoadMore'
+  },
+
   initialize: function (options) {
     this.render();
     this.searchView = new SearchView({
@@ -23,6 +27,7 @@ var HomeView = Backbone.View.extend({
     this.usersView = new UsersView({
       el: this.$('.users')
     });
+    this.$searchMore = this.$('.left .load-more');
 
     this.listenTo(this.searchView, 'searchResults', this.onSearchResults);
     this.listenTo(this.searchView, 'emptySearch', this.request);
@@ -50,6 +55,26 @@ var HomeView = Backbone.View.extend({
   onSearchResults: function (data) {
     data.search = true;
     this.onHome(data);
+    this.toggleMore(data);
+  },
+  toggleMore: function (data) {
+    var more =
+      (data.rooms
+        ? data.rooms.more
+        : false) ||
+      (data.groups
+        ? data.groups.more
+        : false);
+
+    if (more) {
+      this.$searchMore.removeClass('hidden');
+    } else {
+      this.$searchMore.addClass('hidden');
+    }
+  },
+  onLoadMore: function () {
+    this.cardsView.cleanupEmpty();
+    this.searchView.search(this.cardsView.count());
   }
 });
 

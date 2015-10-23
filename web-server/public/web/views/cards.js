@@ -21,16 +21,6 @@ var CardsView = Backbone.View.extend({
       data.users
         ? data.users.list
         : []);
-    var more =
-      (data.rooms
-        ? data.rooms.more
-        : false) ||
-      (data.groups
-        ? data.groups.more
-        : false) ||
-      (data.users
-        ? data.users.more
-        : false);
 
     _.each(list, function (card) {
       switch (card.type) {
@@ -59,11 +49,14 @@ var CardsView = Backbone.View.extend({
       cards: cards,
       title: true,
       fill: data.fill || false,
-      search: data.search,
-      more: more
+      search: data.search
     });
 
-    this.$el.html(html);
+    if (data.append) {
+      this.$el.append(html);
+    } else {
+      this.$el.html(html);
+    }
 
     this.initializeTooltips();
 
@@ -74,6 +67,14 @@ var CardsView = Backbone.View.extend({
     this.$('[data-toggle="tooltip"]').tooltip({
       container: 'body'
     });
+  },
+
+  cleanupEmpty: function() {
+    this.$('.card.empty').remove();
+  },
+
+  count: function () {
+    return this.$('.card').length;
   }
 
 });
