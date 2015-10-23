@@ -78,6 +78,10 @@ var CardsView = Backbone.View.extend({
 
   count: function () {
     return this.$('.card').length;
+  },
+
+  _remove: function () {
+    this.remove();
   }
 
 });
