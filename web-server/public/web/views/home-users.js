@@ -39,5 +39,4 @@ var UsersView = Backbone.View.extend({
   }
 });
 
-
 module.exports = UsersView;

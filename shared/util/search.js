@@ -18,6 +18,10 @@ var common = require('@dbrugne/donut-common/server');
  *   rooms: {
  *     list: [{}]
  *     more: Boolean
+ *   },
+ *   groups: {
+ *    list: [{}],
+ *    more: Boolean
  *   }
  * }
  *
@@ -40,17 +44,20 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
   var rooms = [];
   var groups = [];
   var roomResults = [];
+  var groupResults = [];
   var userResults = [];
 
   async.waterfall([
 
     function groupSearch (callback) {
-      if (!searchInRooms || searchWithGroups) {
+      if (!searchInRooms || !searchWithGroups) {
         return callback(null);
       }
 
       var criteria = {
-        name: _regexp,
+        name: searchWithGroups
+          ? common.regexp.contains(diacritics(searchWithGroups.replace(/([@#])/g, '')))
+          : _regexp,
         deleted: {$ne: true}
       };
 
@@ -191,7 +198,7 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
           _data.owner_username = group.owner.username;
         }
 
-        roomResults.push(_data);
+        groupResults.push(_data);
       });
 
       // sort (users, lastjoin_at, name)
@@ -265,9 +272,17 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
     // @todo yls prioriser entre rooms / users / groups
 
     var searchResults = {
-      cards: {
-        list: _.union(roomResults, userResults) || {},
-        more: (roomResults.length + userResults.length > skip + limit)
+      users: {
+        list: userResults,
+        more: userResults.length > skip + limit
+      },
+      rooms: {
+        list: roomResults,
+        more: roomResults.length > skip + limit
+      },
+      groups: {
+        list: groupResults,
+        more: groupResults.length > skip + limit
       }
     };
 

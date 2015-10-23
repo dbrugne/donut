@@ -11,7 +11,28 @@ var CardsView = Backbone.View.extend({
   },
   render: function (data) {
     var cards = [];
-    _.each(data.cards.list, function (card) {
+    var list = _.union(
+      data.rooms
+        ? data.rooms.list
+        : [],
+      data.groups
+        ? data.groups.list
+        : [],
+      data.users
+        ? data.users.list
+        : []);
+    var more =
+      (data.rooms
+        ? data.rooms.more
+        : false) ||
+      (data.groups
+        ? data.groups.more
+        : false) ||
+      (data.users
+        ? data.users.more
+        : false);
+
+    _.each(list, function (card) {
       switch (card.type) {
         case 'user':
           card.avatar = common.cloudinary.prepare(card.avatar, 135);
@@ -39,7 +60,7 @@ var CardsView = Backbone.View.extend({
       title: true,
       fill: data.fill || false,
       search: data.search,
-      more: data.cards.more
+      more: more
     });
 
     this.$el.html(html);

@@ -5,6 +5,7 @@ var client = require('../libs/client');
 var app = require('../models/app');
 var CardsView = require('./cards');
 var SearchView = require('./home-search');
+var UsersView = require('./home-users');
 
 var HomeView = Backbone.View.extend({
   el: $('#home'),
@@ -18,6 +19,9 @@ var HomeView = Backbone.View.extend({
     });
     this.cardsView = new CardsView({
       el: this.$('.cards')
+    });
+    this.usersView = new UsersView({
+      el: this.$('.users')
     });
 
     this.listenTo(this.searchView, 'searchResults', this.onSearchResults);
@@ -39,7 +43,8 @@ var HomeView = Backbone.View.extend({
   },
   onHome: function (data) {
     data.fill = true;
-    this.cardsView.render(data);
+    this.cardsView.render(_.omit(data, 'users'));
+    this.usersView.render(_.omit(data, ['rooms', 'groups']));
     this.empty = false;
   },
   onSearchResults: function (data) {
