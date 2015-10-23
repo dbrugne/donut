@@ -27,19 +27,22 @@ var CardsView = Backbone.View.extend({
         case 'user':
           card.avatar = common.cloudinary.prepare(card.avatar, 135);
           card.join = urls(card, 'user', 'uri');
+          card.url = urls(card, 'user', 'url');
           card.owner_url = urls(card, 'user', 'chat');
           break;
         case 'room':
           card.avatar = common.cloudinary.prepare(card.avatar, 135);
           card.join = urls(card, 'room', 'uri');
+          card.url = urls(card, 'room', 'url');
           if (card.group_id) {
-            card.group_url = urls(card, 'group', 'uri');
+            card.group_url = urls(card, 'group', 'chat');
             card.group_avatar = common.cloudinary.prepare(card.group_avatar, 200);
           }
           break;
         case 'group':
           card.avatar = common.cloudinary.prepare(card.avatar, 200);
           card.join = urls(card, 'group', 'uri');
+          card.url = urls(card, 'group', 'url');
           break;
       }
       cards.push(card);

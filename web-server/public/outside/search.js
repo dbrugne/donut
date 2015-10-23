@@ -17,11 +17,13 @@ var SearchView = Backbone.View.extend({
         case 'user':
           card.avatar = common.cloudinary.prepare(card.avatar, 135);
           card.join = urls(card, 'user', 'chat');
-          card.owner_url = urls(card, 'user', 'chat');
+          card.url = urls(card, 'user', 'url');
           break;
         case 'room':
           card.avatar = common.cloudinary.prepare(card.avatar, 135);
           card.join = urls(card, 'room', 'chat');
+          card.url = urls(card, 'room', 'url');
+          card.owner_url = urls({username: card.owner_username}, 'user', 'chat');
           if (card.group_id) {
             card.group_url = urls(card, 'group', 'uri');
             card.group_avatar = common.cloudinary.prepare(card.group_avatar, 200);
@@ -30,6 +32,8 @@ var SearchView = Backbone.View.extend({
         case 'group':
           card.avatar = common.cloudinary.prepare(card.avatar, 200);
           card.join = urls(card, 'group', 'chat');
+          card.url = urls(card, 'group', 'url');
+          card.owner_url = urls({username: card.owner_username}, 'user', 'chat');
           break;
       }
       cards.push(card);
