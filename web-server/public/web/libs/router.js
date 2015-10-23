@@ -111,7 +111,7 @@ var DonutRouter = Backbone.Router.extend({
         } else if (response.code === 500) {
           return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
         }
-        app.trigger('redrawNavigationRooms');
+        return app.trigger('redrawNavigationRooms');
       }, this));
     });
   },
