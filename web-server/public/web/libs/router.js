@@ -12,6 +12,7 @@ var DonutRouter = Backbone.Router.extend({
 
   routes: {
     '': 'root',
+    '_=_': 'root', // workaround for facebook redirect uri bug https://github.com/jaredhanson/passport-facebook/issues/12#issuecomment-5913711
     'u/:user': 'focusOne',
     'g/:group': 'focusGroup',
     ':group(/:room)': 'identifierRoom',
