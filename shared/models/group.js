@@ -235,7 +235,6 @@ groupSchema.methods.getIdsByType = function (type) {
 groupSchema.methods.count = function () {
   var count = 0;
   count += this.owner ? 1 : 0;
-  count += this.op ? this.op.length : 0;
   count += this.members ? this.members.length : 0;
   return count;
 };
