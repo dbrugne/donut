@@ -50,12 +50,12 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
   async.waterfall([
 
     function groupSearch (callback) {
-      if (!searchInRooms || !searchWithGroups) {
+      if (!searchInRooms) {
         return callback(null);
       }
 
       var criteria = {
-        name: searchWithGroups
+        name: search === ''
           ? common.regexp.contains(diacritics(searchWithGroups.replace(/([@#])/g, '')))
           : _regexp,
         deleted: {$ne: true}
