@@ -346,14 +346,14 @@ roomSchema.methods.isGoodPassword = function (userId, password) {
 };
 
 roomSchema.methods.isUserBlocked = function (userId, password) {
+  if (this.isGroupBanned(userId)) {
+    return 'groupbanned';
+  }
   if (this.isOwner(userId)) {
     return false;
   }
   if (this.isBanned(userId)) {
     return 'banned';
-  }
-  if (this.isGroupBanned(userId)) {
-    return 'groupbanned';
   }
   if (this.mode === 'public') {
     return false;

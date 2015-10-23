@@ -35,7 +35,7 @@ var GroupModel = Backbone.Model.extend({
   },
   currentUserIsBanned: function () {
     return (this.get('bans') && _.find(this.get('bans'), function (bannedUser) {
-      return bannedUser.user === currentUser.get('user_id');
+      return bannedUser.user_id === currentUser.get('user_id');
     }));
   },
   currentUserIsMember: function () {
