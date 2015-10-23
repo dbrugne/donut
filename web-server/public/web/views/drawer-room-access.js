@@ -40,7 +40,6 @@ var RoomAccessView = Backbone.View.extend({
   initialize: function (options) {
     this.roomId = options.room_id;
     this.render();
-
     this.reload();
   },
   render: function () {
@@ -85,7 +84,6 @@ var RoomAccessView = Backbone.View.extend({
     this.$checkboxUserRequest = this.$('#input-userrequest-checkbox');
     this.$password = this.$('.input-password');
     this.$randomPassword = this.$('.random-password');
-    this.$savePassword = this.$('.save-password');
     this.$countConditions = this.$('.counter');
     this.$conditions = this.$('#conditions-area');
 
@@ -175,11 +173,10 @@ var RoomAccessView = Backbone.View.extend({
     this.$dropdown.removeClass('open');
     this.$search.val('');
   },
+  // Chen the user clicks on the password checkbox
   onChoosePassword: function (event) {
-    // Display block on click
-    if (this.$toggleCheckbox.is(':checked')) {
+    if (this.$toggleCheckbox.is(':checked')) { // now checkbox is checked
       this.$password.removeAttr('disabled').removeClass('disabled');
-      this.$savePassword.removeAttr('disabled').removeClass('disabled');
       this.$randomPassword.removeClass('disabled');
       if (this.$password.val() === '' && !this.currentPassword) {
         this.$password.val(common.misc.randomString());
@@ -188,7 +185,6 @@ var RoomAccessView = Backbone.View.extend({
       }
     } else {
       this.$password.attr('disabled', true).addClass('disabled');
-      this.$savePassword.attr('disabled', true).addClass('disabled');
       this.$password.val('');
       this.$randomPassword.addClass('disabled');
     }
@@ -270,7 +266,7 @@ var RoomAccessView = Backbone.View.extend({
     this.$countConditions.html(i18next.t('chat.form.common.edit.left', {count: 200 - this.$conditions.val().length}));
   },
   isValidPassword: function () {
-    return (!this.$toggleCheckbox.is(':checked') || (this.$toggleCheckbox.is(':checked') && this.currentPassword && this.getPassword() === '') || (this.$toggleCheckbox.is(':checked') && this.passwordPattern.test(this.getPassword())));
+    return (!this.$toggleCheckbox.is(':checked') || (this.$toggleCheckbox.is(':checked') && this.passwordPattern.test(this.getPassword())));
   },
   getPassword: function () {
     if (this.$toggleCheckbox.is(':checked')) {
