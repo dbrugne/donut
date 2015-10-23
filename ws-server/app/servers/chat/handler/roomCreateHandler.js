@@ -75,6 +75,18 @@ handler.call = function (data, session, next) {
       });
     },
 
+    function checkUserIsMember (callback) {
+      if (!data.group_id) {
+        return callback(null);
+      }
+
+      if (group.isBanned(user.get('id'))) {
+        return callback('not-admin-owner-groupowner');
+      }
+
+      return callback(null);
+    },
+
     function create (callback) {
       var room = RoomModel.getNewRoom();
       room.name = data.room_name;
