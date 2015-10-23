@@ -48,6 +48,14 @@ handler.call = function (data, session, next) {
         return callback('group-not-found');
       }
 
+      if (data.group_id && group.isBanned(user.get('id'))) {
+        return callback('not-allowed');
+      }
+
+      if (data.group_id && !group.isMemberOrOwner(user.get('id')) ) {
+        return callback('not-admin-owner-groupowner');
+      }
+
       return callback(null);
     },
 
@@ -73,18 +81,6 @@ handler.call = function (data, session, next) {
           return callback(null);
         });
       });
-    },
-
-    function checkUserIsMember (callback) {
-      if (!data.group_id) {
-        return callback(null);
-      }
-
-      if (group.isBanned(user.get('id'))) {
-        return callback('not-admin-owner-groupowner');
-      }
-
-      return callback(null);
     },
 
     function create (callback) {

@@ -136,6 +136,10 @@ groupSchema.methods.isOp = function (userId) {
   return (typeof subDocument !== 'undefined');
 };
 
+groupSchema.methods.isMemberOrOwner = function (userId) {
+  return (this.isOwner(userId) || this.isMember(userId));
+};
+
 groupSchema.methods.isOwnerOrOp = function (userId) {
   return (this.isOwner(userId) || this.isOp(userId));
 };
