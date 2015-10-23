@@ -14,6 +14,8 @@ var RoomBlockedView = Backbone.View.extend({
 
   className: 'discussion',
 
+  passwordPattern: /(.{4,255})$/i,
+
   hasBeenFocused: false,
 
   template: require('../templates/discussion-room-blocked.html'),
@@ -107,6 +109,11 @@ var RoomBlockedView = Backbone.View.extend({
     }
 
     var password = $(event.currentTarget).closest('.password-form').find('.input-password').val();
+    if (!this.passwordPattern.test(password)) {
+      this.$error.show();
+      this.$error.text(i18next.t('chat.password.invalid-password'));
+      return;
+    }
     client.roomJoin(this.model.get('id'), password, function (response) {
       if (!response.err) {
         return;

@@ -33,7 +33,7 @@ handler.call = function (data, session, next) {
     this.joinPass(user, room, next);
   }
 
-  blocked = room.isUserBlocked(user.id);
+  blocked = room.isUserBlocked(user.id, data.password);
   if (blocked === false) {
     this.join(user, room, next);
   } else {

@@ -345,7 +345,7 @@ roomSchema.methods.isGoodPassword = function (userId, password) {
   return 'wrong-password';
 };
 
-roomSchema.methods.isUserBlocked = function (userId) {
+roomSchema.methods.isUserBlocked = function (userId, password) {
   if (this.isOwner(userId)) {
     return false;
   }
@@ -360,6 +360,9 @@ roomSchema.methods.isUserBlocked = function (userId) {
   }
   if (this.isAllowed(userId)) {
     return false;
+  }
+  if (password) {
+    return this.isGoodPassword(userId, password);
   }
 
   return 'notallowed';

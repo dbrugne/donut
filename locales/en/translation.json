@@ -404,7 +404,8 @@
     },
     "password": {
       "wrong-password": "Wrong password",
-      "spam-password": "You have made ​​too many tests ! Wait or made ​​a request for access",
+      "spam-password": "You have made ​​too many tests ! Wait or ask for an access​",
+      "invalid-password": "Invalid password",
       "error": "An error has occurred"
     },
     "confirmation": {

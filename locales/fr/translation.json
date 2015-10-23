@@ -403,8 +403,9 @@
       }
     },
     "password": {
-      "spam-password": "Vous avez fait trop d'essais! Patienter ou faite une demande d'accès",
+      "spam-password": "Vous avez fait trop d'essais! Patienter ou faites une demande d'accès",
       "wrong-password": "Mauvais mot de passe",
+      "invalid-password": "Mot de passe invalide",
       "error": "Une erreur est survenue"
     },
     "confirmation": {
