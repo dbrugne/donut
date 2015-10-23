@@ -82,6 +82,7 @@ var InputRollupView = Backbone.View.extend({
       if (data.key === keyboard.RETURN && !data.isShift && message.length !== 0) {
         this._closeRollup(event.target);
         this.moveCursorToEnd();
+        return;
       }
 
       // releasing UP / DOWN / TAB / LEFT / RIGHT : Do Nothing
@@ -196,23 +197,23 @@ var InputRollupView = Backbone.View.extend({
     if (prefix === '#') {
       if (input.indexOf('/') === -1) {
         client.search(search, true, false, false, 15, 0, false, false, function (data) {
-          _.each(data.cards.list, function (d) {
+          _.each(_.union(data.groups.list, data.rooms.list), function (d) {
             d.avatarUrl = common.cloudinary.prepare(d.avatar);
           });
           that.$rollup.html(that.template({
             type: 'rooms',
-            results: data.cards.list
+            results: _.union(data.groups.list, data.rooms.list)
           }));
         });
       } else {
         var roomSearch = search.split('/')[1] ? search.split('/')[1] : '';
         client.search(roomSearch, true, false, search.split('/')[0], 15, 0, false, true, function (data) {
-          _.each(data.cards.list, function (d) {
+          _.each(_.union(data.groups.list, data.rooms.list), function (d) {
             d.avatarUrl = common.cloudinary.prepare(d.avatar);
           });
           that.$rollup.html(that.template({
             type: 'rooms',
-            results: data.cards.list
+            results: _.union(data.groups.list, data.rooms.list)
           }));
         });
       }
@@ -220,12 +221,12 @@ var InputRollupView = Backbone.View.extend({
 
     if (prefix === '@') {
       client.search(search, false, true, false, 15, 0, false, false, function (data) {
-        _.each(data.cards.list, function (d) {
+        _.each(data.users.list, function (d) {
           d.avatarUrl = common.cloudinary.prepare(d.avatar);
         });
         that.$rollup.html(that.template({
           type: 'users',
-          results: data.cards.list
+          results: data.users.list
         }));
       });
     }

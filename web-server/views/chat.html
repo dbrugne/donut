@@ -114,15 +114,21 @@
                     </div>
                 </div>
                 <div id="home" class="flex-parent column">
-                    <div class="search">
-                        <input type="text" placeholder="<%= t('chat.search.placeholder') %>">
-                        <i class="icon icon-search"></i>
-                        <div class="search-results">
-                            <div class="title flex-child hidden"><!--Search title--></div>
-                            <div class="nothing mt20 mb20 hidden"><%= t('chat.search.noresults') %></div>
+                    <div class="left">
+                        <div class="search">
+                            <input type="text" placeholder="<%= t('chat.search.placeholder') %>">
+                            <i class="icon icon-search"></i>
+                            <div class="search-results">
+                                <div class="title flex-child hidden"><!--Search title--></div>
+                                <div class="nothing mt20 mb20 hidden"><%= t('chat.search.noresults') %></div>
+                            </div>
                         </div>
+                        <div class="cards"><!--cards list--></div>
+                        <button class="load-more button center-block mt20 mb20 hidden"><%= t('landing.loadmore') %></button>
                     </div>
-                    <div class="cards"><!--Cards list--></div>
+                    <div class="right">
+                        <div class="users"><!--user list--></div>
+                    </div>
                 </div>
             </div><!-- /#center -->
         </div><!-- /.row -->

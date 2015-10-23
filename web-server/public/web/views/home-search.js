@@ -4,7 +4,7 @@ var client = require('../libs/client');
 
 var SearchView = Backbone.View.extend({
   lastSearch: '',
-
+  limit: 100,
   events: {
     'keyup input[type=text]': 'onKeyup',
     'click i.icon-search': 'onKeyup'
@@ -20,18 +20,21 @@ var SearchView = Backbone.View.extend({
     event.preventDefault();
     this.search();
   },
-  search: function () {
+  search: function (skip) {
+    skip = skip || 0;
     var s = this.$search.val();
     if (!s || s.length < 1) {
       return this.trigger('emptySearch');
     }
 
     this.lastSearch = s;
-    client.search(s, true, true, false, 100, 0, false, false, _.bind(function (data) {
+    client.search(s, true, true, false, this.limit, skip, false, false, _.bind(function (data) {
+      if (skip > 0) {
+        data.append = true;
+      }
       this.trigger('searchResults', data);
     }, this));
   }
-
 });
 
 module.exports = SearchView;

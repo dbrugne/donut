@@ -127,10 +127,10 @@ var RoomAccessView = Backbone.View.extend({
 
     var that = this;
     client.search(val, false, true, false, 15, 0, false, false, function (data) {
-      _.each(data.cards.list, function (element, index, list) {
+      _.each(data.users.list, function (element, index, list) {
         list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 20);
       });
-      dropdownMenu.html(that.dropdownTemplate({users: data.cards.list}));
+      dropdownMenu.html(that.dropdownTemplate({users: data.users.list}));
     });
   },
   _remove: function () {

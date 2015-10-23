@@ -27,15 +27,29 @@ if ($landing.length) {
   var searchFunction = function (search, skip, replace) {
     $.ajax('https://donut.local/rest/search?limit=' + limit + '&skip=' + skip + '&q=' + search, {
       success: function (response) {
+        var list = _.union(
+          response.rooms
+            ? response.rooms.list
+            : [],
+          response.groups
+            ? response.groups.list
+            : [],
+          response.users
+            ? response.users.list
+            : []);
+        var more =
+          (response.rooms
+            ? response.rooms.more
+            : false) ||
+          (response.groups
+            ? response.groups.more
+            : false);
+
         searchView.render({
-          cards: (
-            response.cards && response.cards.list
-              ? response.cards.list
-              : []
-          ),
+          cards: list,
           title: false,
           search: false,
-          more: (response.cards && response.cards.list && response.cards.list.length === limit),
+          more: more,
           replace: replace
         });
       }

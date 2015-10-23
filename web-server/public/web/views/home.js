@@ -5,11 +5,16 @@ var client = require('../libs/client');
 var app = require('../models/app');
 var CardsView = require('./cards');
 var SearchView = require('./home-search');
+var UsersView = require('./home-users');
 
 var HomeView = Backbone.View.extend({
   el: $('#home'),
 
   empty: true,
+
+  events: {
+    'click .load-more': 'onLoadMore'
+  },
 
   initialize: function (options) {
     this.render();
@@ -19,6 +24,10 @@ var HomeView = Backbone.View.extend({
     this.cardsView = new CardsView({
       el: this.$('.cards')
     });
+    this.usersView = new UsersView({
+      el: this.$('.users')
+    });
+    this.$searchMore = this.$('.left .load-more');
 
     this.listenTo(this.searchView, 'searchResults', this.onSearchResults);
     this.listenTo(this.searchView, 'emptySearch', this.request);
@@ -39,12 +48,33 @@ var HomeView = Backbone.View.extend({
   },
   onHome: function (data) {
     data.fill = true;
-    this.cardsView.render(data);
+    this.cardsView.render(_.omit(data, 'users'));
+    this.usersView.render(_.omit(data, ['rooms', 'groups']));
     this.empty = false;
   },
   onSearchResults: function (data) {
     data.search = true;
     this.onHome(data);
+    this.toggleMore(data);
+  },
+  toggleMore: function (data) {
+    var more =
+      (data.rooms
+        ? data.rooms.more
+        : false) ||
+      (data.groups
+        ? data.groups.more
+        : false);
+
+    if (more) {
+      this.$searchMore.removeClass('hidden');
+    } else {
+      this.$searchMore.addClass('hidden');
+    }
+  },
+  onLoadMore: function () {
+    this.cardsView.cleanupEmpty();
+    this.searchView.search(this.cardsView.count());
   }
 });
 

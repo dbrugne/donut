@@ -194,18 +194,18 @@
         <div class="flex-parent flex-child relative design-room2 dc-border">
             <div class="flex-child flex-parent column">
                 <div class="flex-parent">
-                    <a class="user-avatar open-room-profile img-circle dc-border-darker" href="<%= card.url %>" data-room-id="<%=card.room_id%>" style="background-image:url(<%= card.avatar %>)"></a>
+                    <a class="user-avatar open-room-profile img-circle dc-border-darker" href="<%= card.join %>" data-room-id="<%=card.room_id%>" style="background-image:url(<%= card.avatar %>)"></a>
                 </div>
                 <span class="name flex-child flex-parent column">
                     <% if(card.group_id) { %>
                         <a href="<%= card.group_url %>" class="open-group-profile flex-child flex-parent center jc-center" data-group-id="<%=card.group_id%>">
                             <span class="groupname"><%= card.group_name %></span>
                         </a>
-                        <a href="<%= card.url %>" class="open-room-profile flex-child flex-parent center jc-center" data-room-id="<%=card.room_id%>">
+                        <a href="<%= card.join %>" class="open-room-profile flex-child flex-parent center jc-center" data-room-id="<%=card.room_id%>">
                             <span class="roomname">/<%= card.name %></span>
                         </a>
                     <% } else { %>
-                       <a href="<%= card.url %>" class="open-room-profile flex-child flex-parent center jc-center" data-room-id="<%=card.room_id%>">
+                       <a href="<%= card.join %>" class="open-room-profile flex-child flex-parent center jc-center" data-room-id="<%=card.room_id%>">
                            <span class="roomname"><%=card.identifier%></span>
                        </a>
                     <% } %>

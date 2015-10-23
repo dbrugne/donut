@@ -9,25 +9,29 @@
                 <% _.each(results, function(result, key) { %>
                 <li class="ctn_item <%= nb == 0 ? 'active' : '' %>" data-index="<%= nb %>">
                     <% if (type === 'users') { %>
-                    <img class="avatar_ctn" src="<%= result.avatarUrl %>">
-                    <span class="username value">@<%= result.username  %></span><i class="icon icon-dot-circle-o <%= result.status %>" title="<%= result.status %>"></i>
-                    <span class="bio"><%= result.bio  %></span>
-                    <% } else if (type === 'rooms') { %>
-                    <% var _color = result.color ? result.color.replace('#','').toLowerCase() : 'default' %>
-                    <span class="relative dc-i-<%=_color%>">
                         <img class="avatar_ctn" src="<%= result.avatarUrl %>">
+                        <span class="username value">@<%= result.username  %></span><i class="icon icon-dot-circle-o <%= result.status %>" title="<%= result.status %>"></i>
+                        <span class="bio"><%= result.bio  %></span>
+                    <% } else if (type === 'rooms') { %>
+                        <% var _color = result.color ? result.color.replace('#','').toLowerCase() : 'default' %>
+                        <span class="relative dc-i-<%=_color%>">
+                            <img class="avatar_ctn" src="<%= result.avatarUrl %>">
+                            <% if (result.type === 'group') { %>
+                                <i class="icon icon-star img-circle dc-back dc-text-contrast"></i>
+                            <% } %>
+                        </span>
                         <% if (result.type === 'group') { %>
-                            <i class="icon icon-star img-circle dc-back dc-text-contrast"></i>
+                            <span class="name value"><%= result.identifier %>/</span>
+                        <% } else { %>
+                            <span class="name value"><%= result.identifier %></span>
                         <% } %>
-                    </span>
-                    <span class="name value"><%= result.identifier %>/</span>
                     <% } else if (type === 'commands') { %>
-                    <div class="cmd-left-td">
-                        <span class="name value">/<%= result.name %></span>
-                        <span class="args"><%= t(result.help) %></span>
-                    </div>
-                    <div class="cmd-right-td"><span class="cmddesc"><span class="cmdtype"></span> <%= t(result.description) %></span>
-                    </div>
+                        <div class="cmd-left-td">
+                            <span class="name value">/<%= result.name %></span>
+                            <span class="args"><%= t(result.help) %></span>
+                        </div>
+                        <div class="cmd-right-td"><span class="cmddesc"><span class="cmdtype"></span> <%= t(result.description) %></span>
+                        </div>
                     <% }; %>
                 </li>
                 <% nb++; %>

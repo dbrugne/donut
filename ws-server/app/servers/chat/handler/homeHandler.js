@@ -19,7 +19,8 @@ var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
   var homeEvent = {
-    cards: {}
+    users: {},
+    rooms: {}
   };
   var roomLimit = (session.settings.device === 'mobile')
     ? 10
@@ -89,7 +90,7 @@ handler.call = function (data, session, next) {
 
         var q = User.find({username: {$ne: null}}, 'username avatar color facebook location');
         q.sort({'lastonline_at': -1, 'lastoffline_at': -1})
-          .limit(userLimit + 1);
+          .limit(userLimit);
 
         q.exec(function (err, dbusers) {
           if (err) {
@@ -141,11 +142,11 @@ handler.call = function (data, session, next) {
 
           if (users.length > userLimit) {
             users.pop();
-            homeEvent.cards.more = true;
+            homeEvent.users.more = true;
           } else {
-            homeEvent.cards.more = false;
+            homeEvent.users.more = false;
           }
-          homeEvent.cards.list = list;
+          homeEvent.users.list = list;
           return callback(null);
         });
       },
@@ -234,11 +235,11 @@ handler.call = function (data, session, next) {
 
         if (_list.length > roomLimit) {
           _list = _list.slice(0, (roomLimit - 1));
-          homeEvent.cards.more = true;
+          homeEvent.rooms.more = true;
         } else {
-          homeEvent.cards.more = false;
+          homeEvent.rooms.more = false;
         }
-        homeEvent.cards.list = _.union(homeEvent.cards.list, _list);
+        homeEvent.rooms.list = _list;
 
         return callback(null);
       },
@@ -253,7 +254,7 @@ handler.call = function (data, session, next) {
           var alreadyInNames = _.map(featured, function (r) {
             return r.identifier;
           });
-          _.each(homeEvent.cards.list, function (item) {
+          _.each(homeEvent.rooms.list, function (item) {
             if (alreadyInNames.indexOf(item.identifier) === -1) {
               featured.push(item);
             }
@@ -261,12 +262,12 @@ handler.call = function (data, session, next) {
 
           if (featured.length > roomLimit) {
             featured = featured.slice(0, (roomLimit));
-            homeEvent.cards.more = true;
+            homeEvent.rooms.more = true;
           } else {
-            homeEvent.cards.more = false;
+            homeEvent.rooms.more = false;
           }
 
-          homeEvent.cards.list = featured;
+          homeEvent.rooms.list = featured;
 
           return callback(null);
         });
