@@ -44,7 +44,7 @@ handler.call = function (data, session, next) {
         return callback('not-admin-owner');
       }
 
-      if (group.isMember(user.id)) {
+      if (group.isMember(targetUser.id)) {
         return callback('allowed');
       }
 
@@ -52,7 +52,7 @@ handler.call = function (data, session, next) {
     },
 
     function createEvent (callback) {
-      wasPending = group.isAllowedPending(user.id);
+      wasPending = group.isAllowedPending(targetUser.id);
 
       event = {
         by_user_id: user._id,
