@@ -159,7 +159,7 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
           .populate({
             path: 'data.room',
             model: 'Room',
-            select: 'avatar color name'})
+            select: 'avatar color name group'})
           .exec(function (err, notification) {
             if (err) {
               return fn(err);
@@ -214,7 +214,7 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
         HistoryRoom.findOne({_id: n.data.event.toString()})
           .populate('user', 'username avatar color facebook')
           .populate('by_user', 'username avatar color facebook')
-          .populate('room', 'avatar color name')
+          .populate('room', 'avatar color name group')
           .exec(function (err, event) {
             if (err) {
               return fn(err);

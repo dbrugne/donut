@@ -100,27 +100,27 @@ Notification.prototype.create = function (room, history, done) {
         notificationsToCreate.push(model);
       });
 
-      return callback(null, historyModel, notificationsToCreate);
+      return callback(null, roomModel, historyModel, notificationsToCreate);
     },
 
-    function create (historyModel, notificationsToCreate, callback) {
+    function create (roomModel, historyModel, notificationsToCreate, callback) {
       NotificationModel.bulkInsert(notificationsToCreate, function (err, createdNotifications) {
         if (err) {
           return callback(err);
         }
 
         logger.debug('roomJoinType.create ' + createdNotifications.length + ' notifications created');
-        return callback(null, historyModel, createdNotifications);
+        return callback(null, roomModel, historyModel, createdNotifications);
       });
     },
 
-    function sendToBrowser (historyModel, createdNotifications, callback) {
+    function sendToBrowser (roomModel, historyModel, createdNotifications, callback) {
       if (!createdNotifications.length) {
         return callback(null);
       }
 
       async.eachLimit(createdNotifications, 5, function (model, _callback) {
-        that.sendToBrowser(model, historyModel, _callback);
+        that.sendToBrowser(roomModel, model, historyModel, _callback);
       }, callback);
     }
 
@@ -133,7 +133,7 @@ Notification.prototype.create = function (room, history, done) {
   });
 };
 
-Notification.prototype.sendToBrowser = function (model, history, done) {
+Notification.prototype.sendToBrowser = function (room, model, history, done) {
   var event = {
     id: model.id,
     time: model.time,
@@ -147,7 +147,7 @@ Notification.prototype.sendToBrowser = function (model, history, done) {
       },
       room: {
         id: history.room.id,
-        name: history.room.name,
+        name: room.getIdentifier(),
         avatar: history.room._avatar()
       }
     }

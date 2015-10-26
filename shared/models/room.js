@@ -58,8 +58,17 @@ roomSchema.statics.findByName = function (name) {
   return this.findOne({
     name: common.regexp.exact(name, 'i'),
     deleted: {$ne: true}
-  });
+  }).populate('group', 'name');
 };
+
+roomSchema.statics.findById = function (id, callback) {
+  return this.findOne({
+    _id: id,
+    deleted: {$ne: true}
+  }).populate('group', 'name')
+    .exec(callback);
+};
+
 
 roomSchema.statics.findByNameAndGroup = function (name, groupId) {
   var query = {
@@ -439,15 +448,6 @@ roomSchema.methods.getIdentifier = function () {
   if (this.group.name) {
     return  '#' + this.group.name + '/' + this.name;
   }
-
-  // hydrate group for room model with group not already populated (e.g. : notifications)
-  this.constructor.populate(this, {
-    path: 'group',
-    model: 'Group',
-    select: 'name'
-  }, function (err, doc) {
-
-  });
 };
 
 module.exports = mongoose.model('Room', roomSchema);

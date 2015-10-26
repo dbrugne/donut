@@ -140,7 +140,7 @@ Notification.prototype.sendToBrowser = function (model, user, room, history, don
       },
       room: {
         id: room.id,
-        name: room.name,
+        name: room.getIdentifier(),
         avatar: room._avatar()
       },
       message: history.data.message

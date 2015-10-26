@@ -137,8 +137,7 @@ var NotificationsView = Backbone.View.extend({
     if (n.data.room) {
       n.avatar = common.cloudinary.prepare(n.data.room.avatar, 90);
       n.title = n.data.room.name;
-      n.name = n.data.room.name.replace('#', '');
-      // @todo : new room uri schema
+      n.name = n.data.room.name;
       n.href = '#' + n.name;
     } else if (n.data.group) {
       n.avatar = common.cloudinary.prepare(n.data.group.avatar, 90);

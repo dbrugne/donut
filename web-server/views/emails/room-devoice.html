@@ -7,9 +7,9 @@
                     <% if (typeof reason !== "undefined") { %>
                         <%= t('email.common.reason', { reason: reason }) %><br/>
                     <% } %>
-                    <%= t('email.roomdevoice.content.disclaimer') %><strong><a href="<%= roomlink.url %>" target="_blank" style="color:#FC2063; text-decoration:none;">#<%= roomname %></a></strong>.
-                    <%= t('email.roomdevoice.content.disclaimer2') %><strong><a href="<%= roomlink.url %>" target="_blank" style="color:#FC2063; text-decoration:none;">#<%= roomname %></a></strong>.
-                    <%= t('email.roomdevoice.content.disclaimer3') %><strong><a href="<%= roomlink.url %>" target="_blank" style="color:#FC2063; text-decoration:none;">#<%= roomname %></a></strong>
+                    <%= t('email.roomdevoice.content.disclaimer') %><strong><a href="<%= roomlink.url %>" target="_blank" style="color:#FC2063; text-decoration:none;"><%= roomname %></a></strong>.
+                    <%= t('email.roomdevoice.content.disclaimer2') %><strong><a href="<%= roomlink.url %>" target="_blank" style="color:#FC2063; text-decoration:none;"><%= roomname %></a></strong>.
+                    <%= t('email.roomdevoice.content.disclaimer3') %><strong><a href="<%= roomlink.url %>" target="_blank" style="color:#FC2063; text-decoration:none;"><%= roomname %></a></strong>
                     <%= t('email.roomdevoice.content.disclaimer4') %>.
                 </span>
             </div>
