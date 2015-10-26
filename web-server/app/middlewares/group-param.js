@@ -106,6 +106,10 @@ module.exports = function (req, res, next, groupname) {
 
           var sanitizedRooms = [];
           _.each(rooms, function (r) {
+            if (r.mode !== 'public' && ((req.user && !req.user.admin && !model.isMember(req.user._id.toString())) || !req.user)) {
+              return;
+            }
+
             var room = {
               id: r.id,
               room_id: r.id,

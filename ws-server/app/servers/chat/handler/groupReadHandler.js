@@ -167,6 +167,10 @@ handler.call = function (data, session, next) {
         }
         var sanitizedRooms = [];
         _.each(rooms, function (r) {
+          if (r.mode !== 'public' && !group.isMember(user.id) && session.settings.admin !== true) {
+            return;
+          }
+
           var room = {
             name: r.name,
             identifier: '#' + r.name,
