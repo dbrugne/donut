@@ -87,6 +87,8 @@ var GroupsCollection = Backbone.Collection.extend({
       return;
     }
 
+    model.onBan(data);
+
     this.remove(model);
     var message = i18next.t('chat.alert.groupban', {name: data.group_name});
     if (data.reason) {

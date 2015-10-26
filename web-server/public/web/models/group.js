@@ -53,7 +53,7 @@ var GroupModel = Backbone.Model.extend({
       }
     });
 
-    this.trigger('members-redraw');
+    this.trigger('members-redraw');  // required to redraw members list only, user has changed list
   },
   onDeop: function (data) {
     // user.get('is_op')
@@ -64,7 +64,7 @@ var GroupModel = Backbone.Model.extend({
       }
     });
 
-    this.trigger('members-redraw');
+    this.trigger('members-redraw');  // required to redraw members list only, user has changed list
   },
   onAllow: function (data) {
     data.is_op = false;
@@ -72,7 +72,7 @@ var GroupModel = Backbone.Model.extend({
     members.push(data);
     this.set('members', members);
 
-    this.trigger('redraw');
+    this.trigger('redraw'); // required to redraw all, as we now display private rooms
   },
   onDisallow: function (data) {
     var members = _.reject(this.get('members'), function (m) {
@@ -80,7 +80,21 @@ var GroupModel = Backbone.Model.extend({
     });
     this.set('members', members);
 
-    this.trigger('redraw');
+    this.trigger('redraw'); // required to redraw all, as we now hide private rooms
+  },
+  onBan: function (data) {
+    var ban = {
+      user: data.user_id,
+      banned_at: Date.now()
+    };
+    if (data.reason) {
+      ban.reason = data.reason;
+    }
+    var bans = this.get('bans');
+    bans.push(ban);
+    this.set('bans', bans);
+
+    this.trigger('members-redraw');  // required to redraw members list only, user has been, removed from list
   }
 });
 

@@ -3,7 +3,6 @@ var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
 var debug = donutDebug('donut:group-users');
-var app = require('../models/app');
 
 var GroupUsersView = Backbone.View.extend({
   template: require('../templates/group-users.html'),
@@ -24,7 +23,7 @@ var GroupUsersView = Backbone.View.extend({
     var members = [];
 
     // prepare avatars for members & op
-    _.each(this.collection, function (u) {
+    _.each(this.model.get('members'), function (u) {
       if (u.is_owner || u.is_op) {
         u.avatar = common.cloudinary.prepare(u.avatar, 60);
         op.push(u);

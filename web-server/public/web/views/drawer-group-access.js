@@ -10,7 +10,7 @@ var TableView = require('./drawer-group-access-table');
 var i18next = require('i18next-client');
 var currentUser = require('../models/current-user');
 
-var RoomAccessView = Backbone.View.extend({
+var GroupAccessView = Backbone.View.extend({
 
   template: require('../templates/drawer-group-access.html'),
 
@@ -139,6 +139,7 @@ var RoomAccessView = Backbone.View.extend({
     if (this.tableAllowed) {
       this.tableAllowed.remove();
     }
+    app.trigger('groupRedraw');
     this.remove();
   },
   onSearchUser: function (event) {
@@ -270,4 +271,4 @@ var RoomAccessView = Backbone.View.extend({
   }
 });
 
-module.exports = RoomAccessView;
+module.exports = GroupAccessView;

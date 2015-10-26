@@ -23,6 +23,8 @@ var GroupView = Backbone.View.extend({
   },
 
   initialize: function (options) {
+    this.listenTo(app, 'groupRedraw', this.redraw);
+
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(this.model, 'redraw', this.render);
     this.render();
@@ -83,13 +85,9 @@ var GroupView = Backbone.View.extend({
       search: false
     });
 
-    this.$passwordDiv = this.$('.password-div');
-    this.$requestAllowance = this.$('.request-allowance');
-
     this.groupUsersView = new GroupUsersView({
       el: this.$('.side .users'),
-      model: this.model,
-      collection: this.model.get('members')
+      model: this.model
     });
 
     this.initializeTooltips();
@@ -160,8 +158,10 @@ var GroupView = Backbone.View.extend({
         return '<div class="username" style="' + this.dataset.bgcolor + '">@' + this.dataset.username + '</div>';
       }
     });
+  },
+  redraw: function () {
+    console.log('redraw on drawer close');
   }
-
 });
 
 module.exports = GroupView;

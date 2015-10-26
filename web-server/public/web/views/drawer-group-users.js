@@ -1,5 +1,6 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
+var app = require('../models/app');
 var client = require('../libs/client');
 var RoomUsersTableConfirmation = require('./drawer-group-users-table');
 var keyboard = require('../libs/keyboard');
@@ -112,11 +113,17 @@ var DrawerRoomUsersView = Backbone.View.extend({
     }
     this.render();
   },
-
   initializeTooltips: function () {
     this.$el.find('[data-toggle="tooltip"]').tooltip({
       container: 'body'
     });
+  },
+  _remove: function () {
+    if (this.tableView) {
+      this.tableView.remove();
+    }
+    app.trigger('groupRedraw');
+    this.remove();
   }
 });
 
