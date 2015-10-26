@@ -15,8 +15,8 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
-  var user = session.__user__;
-  var currentUser = session.__currentUser__;
+  var targetUser = session.__user__;
+  var user = session.__currentUser__;
   var group = session.__group__;
 
   var that = this;
@@ -40,7 +40,7 @@ handler.call = function (data, session, next) {
         return callback('group-not-found');
       }
 
-      if (!group.isOwner(currentUser.id) && !group.isOp(currentUser.id) && session.settings.admin !== true) {
+      if (!group.isOwner(user.id) && !group.isOp(user.id) && session.settings.admin !== true) {
         return callback('not-admin-owner');
       }
 
@@ -55,32 +55,33 @@ handler.call = function (data, session, next) {
       wasPending = group.isAllowedPending(user.id);
 
       event = {
-        by_user_id: currentUser._id,
-        by_username: currentUser.username,
-        by_avatar: currentUser._avatar(),
-        user_id: user._id,
-        username: user.username,
-        avatar: user._avatar(),
+        by_user_id: user._id,
+        by_username: user.username,
+        by_avatar: user._avatar(),
+        user_id: targetUser._id,
+        username: targetUser.username,
+        avatar: targetUser._avatar(),
         group_id: group.id
       };
       callback(null, event);
     },
 
     function broadcastToUser (eventData, callback) {
-      that.app.globalChannelService.pushMessage('connector', 'group:allow', event, 'user:' + user.id, {}, function (reponse) {
+      that.app.globalChannelService.pushMessage('connector', 'group:allow', event, 'user:' + targetUser.id, {}, function (reponse) {
         callback(null, eventData);
       });
     },
 
     function persist (eventData, callback) {
       Group.update(
-        {_id: { $in: [group.id] }},
-        {$addToSet: {members: user.id}}, function (err) {
+        {_id: {$in: [group.id]}},
+        {$addToSet: {members: targetUser.id}},
+        function (err) {
           if (wasPending) {
             Group.update(
-              {_id: { $in: [group.id] }},
-              {$pull: {members_pending: {user: user.id}}}
-              , function (err) {
+              {_id: {$in: [group.id]}},
+              {$pull: {members_pending: {user: targetUser.id}}},
+              function (err) {
                 return callback(err, eventData);
               }
             );
@@ -93,11 +94,11 @@ handler.call = function (data, session, next) {
 
     function notification (event, callback) {
       if (!wasPending) {
-        Notifications(that.app).getType('groupinvite').create(user.id, group, event, function (err) {
+        Notifications(that.app).getType('groupinvite').create(targetUser.id, group, event, function (err) {
           return callback(err, event);
         });
       } else {
-        Notifications(that.app).getType('groupallowed').create(user.id, group, event, function (err) {
+        Notifications(that.app).getType('groupallowed').create(targetUser.id, group, event, function (err) {
           return callback(err, event);
         });
       }
@@ -113,8 +114,8 @@ handler.call = function (data, session, next) {
 };
 
 handler.refuse = function (data, session, next) {
-  var user = session.__user__;
-  var currentUser = session.__currentUser__;
+  var targetUser = session.__user__;
+  var user = session.__currentUser__;
   var group = session.__group__;
 
   var that = this;
@@ -134,15 +135,15 @@ handler.refuse = function (data, session, next) {
         return callback('group-not-found');
       }
 
-      if (!group.isOwner(currentUser.id) && !group.isOp(currentUser.id) && session.settings.admin !== true) {
+      if (!group.isOwner(user.id) && !group.isOp(user.id) && session.settings.admin !== true) {
         return callback('not-admin-owner');
       }
 
-      if (group.isMember(user.id)) {
+      if (group.isMember(targetUser.id)) {
         return callback('allowed');
       }
 
-      if (!group.isAllowedPending(user.id)) {
+      if (!group.isAllowedPending(targetUser.id)) {
         return callback('no-allow-pending');
       }
 
@@ -151,27 +152,28 @@ handler.refuse = function (data, session, next) {
 
     function broadcast (callback) {
       var event = {
-        by_user_id: currentUser.id,
-        by_username: currentUser.username,
-        by_avatar: currentUser._avatar(),
-        user_id: user.id,
-        username: user.username,
-        avatar: user._avatar()
+        by_user_id: user.id,
+        by_username: user.username,
+        by_avatar: user._avatar(),
+        user_id: targetUser.id,
+        username: targetUser.username,
+        avatar: targetUser._avatar()
       };
       callback(null, event);
     },
 
     function persist (eventData, callback) {
       Group.update(
-        {_id: { $in: [group.id] }},
-        {$pull: {members_pending: {user: user.id}}}, function (err) {
+        {_id: {$in: [group.id]}},
+        {$pull: {members_pending: {user: targetUser.id}}},
+        function (err) {
           return callback(err, eventData);
         }
       );
     },
 
     function notification (event, callback) {
-      Notifications(that.app).getType('grouprefuse').create(user.id, group, event, function (err) {
+      Notifications(that.app).getType('grouprefuse').create(targetUser.id, group, event, function (err) {
         return callback(err);
       });
     }

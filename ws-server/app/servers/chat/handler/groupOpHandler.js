@@ -16,7 +16,7 @@ var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
   var user = session.__currentUser__;
-  var opedUser = session.__user__;
+  var targetUser = session.__user__;
   var group = session.__group__;
 
   var event = {};
@@ -41,19 +41,19 @@ handler.call = function (data, session, next) {
         return callback('not-admin-owner');
       }
 
-      if (!opedUser) {
+      if (!targetUser) {
         return callback('user-not-found');
       }
 
-      if (!group.isIn(opedUser.id)) {
+      if (!group.isIn(targetUser.id)) {
         return callback('not-in');
       }
 
-      if (group.isOwner(opedUser.id)) {
+      if (group.isOwner(targetUser.id)) {
         return callback('owner');
       }
 
-      if (group.isOp(opedUser.id)) {
+      if (group.isOp(targetUser.id)) {
         return callback('oped');
       }
 
@@ -61,7 +61,7 @@ handler.call = function (data, session, next) {
     },
 
     function persist (callback) {
-      group.update({$addToSet: {op: opedUser._id}}, function (err) {
+      group.update({$addToSet: {op: targetUser._id}}, function (err) {
         return callback(err);
       });
     },
@@ -81,7 +81,7 @@ handler.call = function (data, session, next) {
     },
 
     function addUserToDefault (room, callback) {
-      room.update({$addToSet: {op: opedUser._id}}, function (err) {
+      room.update({$addToSet: {op: targetUser._id}}, function (err) {
         return callback(err);
       });
     },
@@ -91,20 +91,20 @@ handler.call = function (data, session, next) {
         by_user_id: user.id,
         by_username: user.username,
         by_avatar: user._avatar(),
-        user_id: opedUser.id,
-        username: opedUser.username,
-        avatar: opedUser._avatar(),
+        user_id: targetUser.id,
+        username: targetUser.username,
+        avatar: targetUser._avatar(),
         group_id: group.id,
         group_name: '#' + group.name
       };
 
-      that.app.globalChannelService.pushMessage('connector', 'group:op', event, 'user:' + user.id, {}, function (reponse) {
+      that.app.globalChannelService.pushMessage('connector', 'group:op', event, 'user:' + targetUser.id, {}, function (reponse) {
         return callback(null);
       });
     },
 
     function notification (callback) {
-      Notifications(that.app).getType('groupop').create(opedUser.id, group, event, function (err) {
+      Notifications(that.app).getType('groupop').create(targetUser.id, group, event, function (err) {
         return callback(err);
       });
     }
@@ -114,6 +114,6 @@ handler.call = function (data, session, next) {
       return errors.getHandler('group:op', next)(err);
     }
 
-    next(null, {});
+    next(null, {success: true});
   });
 };
