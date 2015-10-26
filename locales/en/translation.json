@@ -828,13 +828,12 @@
         "website-url": "Website must be a valid site URL.",
         "color-hexadecimal": "Color must be explained has hexadecimal (e.g.: #FF00AA).",
         "color-integer": "Priority must be explained has number (integer).",
-        "positions": "Positions must be an array.",
         "name-wrong-format": "Invalid name",
         "mode-wrong-format": "You must select a mode for this room",
         "invalid-password": "The password must be 4 and 255 characters",
         "room-already-exist": "Donut __name__ already exists, <a href='__uri__'>would you like to join it</a>?",
         "group-name-already-exist": "Group __name__ already exists, <a href='__uri__'>would you like to join it</a>?",
-        "invalid-rights": "You do not have access to do this.",
+        "not-admin-owner-groupowner": "You do not have access to do this.",
         "not-allowed": "You can't delete this donut"
       }
     },

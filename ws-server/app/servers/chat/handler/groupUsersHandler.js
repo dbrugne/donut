@@ -76,7 +76,7 @@ handler.call = function (data, session, next) {
 
       if ((searchTypesThatNeedPower.indexOf(data.attributes.type) !== -1) &&
         !group.isOwnerOrOp(user.id) && !user.admin) {
-        return callback('not-found');
+        return callback('not-admin-owner-groupowner');
       }
 
       return callback(null);
