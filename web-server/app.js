@@ -55,7 +55,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(bodyParser.json()); // for react-native fetch
 app.use(expressValidator()); // must be immediately after bodyParser()
 app.use(cookieParser());
 app.use(session);
