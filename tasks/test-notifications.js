@@ -33,7 +33,7 @@ module.exports = function (grunt) {
       notifIdentifier: {
         options: {
           questions: [ {
-            config: 'notifRoomName',
+            config: 'notifIdentifier',
             type: 'input',
             message: 'Choose a "room" name',
             default: '#donut/donut'
@@ -224,7 +224,8 @@ module.exports = function (grunt) {
         async.each([
           { notification: 'roomallowed' },
           { notification: 'roomrefuse' },
-          { notification: 'roomjoinrequest' }
+          { notification: 'roomjoinrequest' },
+          { notification: 'roominvite' }
         ], function (item, fn) {
           var event = {
             name: room.name,
