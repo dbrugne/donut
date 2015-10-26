@@ -169,7 +169,7 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
           r.description = room.description;
           r.topic = room.topic;
           r.users = count;
-          if (room.owner !== undefined) {
+          if (room.owner) {
             r.owner_id = room.owner.id;
             r.owner_username = room.owner.username;
           }
@@ -193,7 +193,7 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
           priority: group.priority || 0
         };
 
-        if (group.owner !== undefined) {
+        if (group.owner) {
           _data.owner_id = group.owner.id;
           _data.owner_username = group.owner.username;
         }
