@@ -95,6 +95,14 @@ var GroupModel = Backbone.Model.extend({
     this.set('bans', bans);
 
     this.trigger('members-redraw');  // required to redraw members list only, user has been, removed from list
+  },
+  onDeleteRoom: function (roomId) {
+    var rooms = _.reject(this.get('rooms'), function (r) {
+      return (r.id === roomId);
+    });
+    this.set('rooms', rooms);
+
+    this.trigger('redraw'); // required to redraw all, as we now remove the room
   }
 });
 

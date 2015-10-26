@@ -304,7 +304,15 @@ var MainView = Backbone.View.extend({
     }
   },
   roomRoomDeleted: function (data) {
-    app.trigger('focus');
+    if (data.was_focused) {
+      app.trigger('focus');
+    }
+
+    if (data.group_id) {
+      var model = groups.findWhere({id: data.group_id});
+      model.onDeleteRoom(data.room_id);
+    }
+
     if (data && data.reason) {
       app.trigger('alert', 'warning', data.reason);
     }

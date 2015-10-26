@@ -5,6 +5,7 @@ var i18next = require('i18next-client');
 var app = require('../models/app');
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');
+var groups = require('../collections/groups');
 
 var DrawerRoomDeleteView = Backbone.View.extend({
   template: require('../templates/drawer-room-delete.html'),
@@ -27,9 +28,6 @@ var DrawerRoomDeleteView = Backbone.View.extend({
         this.onResponse(data);
       }
     }, this));
-
-    // on room:delete callback
-    this.listenTo(client, 'room:delete', this.onDelete);
   },
   setError: function (error) {
     this.$errors.html(error).show();
@@ -54,6 +52,7 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     this.$el.html(html);
     this.$input = this.$el.find('input[name=input-delete]');
     this.$errors = this.$el.find('.errors');
+    this.groupId = room.group_id;
   },
   onSubmit: function (event) {
     event.preventDefault();
@@ -66,26 +65,12 @@ var DrawerRoomDeleteView = Backbone.View.extend({
       if (response.err) {
         return this.setError(i18next.t('chat.form.errors.' + response.err));
       }
+
+      app.trigger('alert', 'info', i18next.t('chat.form.room-form.edit.room.delete.success'));
+      this.trigger('close');
+      var model = groups.findWhere({id: this.groupId});
+      model.onDeleteRoom(this.roomId);
     }, this));
-  },
-  onDelete: function (data) {
-    if (!data.name || data.name.toLocaleLowerCase() !== this.roomNameConfirmation) {
-      return;
-    }
-
-    this.$el.find('.errors').hide();
-
-    if (!data.success) {
-      var message = '';
-      _.each(data.errors, function (error) {
-        message += error + '<br>';
-      });
-      this.$el.find('.errors').html(message).show();
-      return;
-    }
-
-    app.trigger('alert', 'info', i18next.t('edit.room.delete.success'));
-    this.trigger('close');
   },
   onKeyup: function (event) {
     this._cleanupState();

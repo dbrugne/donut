@@ -351,10 +351,19 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
+    var roomWasFocused = model.get('focused');
+    var groupId = model.get('group_id');
+    var roomId = model.get('id');
+
     this.remove(model);
 
     if (data.reason && data.reason === 'deleted') {
-      this.trigger('deleted', {reason: i18next.t('chat.deletemessage', {name: data.name})});
+      this.trigger('deleted', {
+        reason: i18next.t('chat.deletemessage', {name: data.name}),
+        was_focused: roomWasFocused,
+        group_id: groupId,
+        room_id: roomId
+      });
     }
   },
   onLeaveBlock: function (data) {
