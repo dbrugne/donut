@@ -168,9 +168,19 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
               return fn(null);
             }
 
-            n = notification;
-            notifications.push(n);
-            return fn(null);
+            NotificationModel.populate(notification, {
+              path: 'data.room.group',
+              model: 'Group',
+              select: 'name'
+            }, function (err, docs) {
+              if (err) {
+                callback(err);
+              }
+
+              n = notification;
+              notifications.push(n);
+              return fn(null);
+            });
           });
       } else if (_.indexOf(['groupjoinrequest', 'grouprefuse', 'groupallowed', 'groupinvite', 'groupban', 'groupdeban', 'groupop', 'groupdeop'], n.type) !== -1) {
         NotificationModel.findOne({_id: n._id})
@@ -223,9 +233,19 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
               return fn(null);
             }
 
-            n.data.event = event;
-            notifications.push(n);
-            return fn(null);
+            RoomModel.populate(event, {
+              path: 'room.group',
+              model: 'Group',
+              select: 'name'
+            }, function (err, docs) {
+              if (err) {
+                callback(err);
+              }
+
+              n.data.event = docs;
+              notifications.push(n);
+              return fn(null);
+            });
           });
       }
     }, function (err) {

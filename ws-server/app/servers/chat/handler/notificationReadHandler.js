@@ -69,6 +69,7 @@ handler.call = function (data, session, next) {
           if (notification.data.event.room) {
             d.data.room = notification.data.event.room;
             d.data.room.avatar = notification.data.event.room._avatar();
+            d.data.room.name = notification.data.event.room.getIdentifier();
           }
 
           if (notification.data.event && notification.data.event.data && notification.data.event.data.message) {
@@ -83,6 +84,7 @@ handler.call = function (data, session, next) {
           if (notification.data.room) {
             d.data.room = notification.data.room;
             d.data.room.avatar = notification.data.room._avatar();
+            d.data.room.name = notification.data.room.getIdentifier();
           } else if (notification.data.group) {
             d.data.group = notification.data.group;
             d.data.group.avatar = notification.data.group._avatar();
