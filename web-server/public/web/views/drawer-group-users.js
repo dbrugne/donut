@@ -122,7 +122,6 @@ var DrawerRoomUsersView = Backbone.View.extend({
     if (this.tableView) {
       this.tableView.remove();
     }
-    app.trigger('groupRedraw');
     this.remove();
   }
 });

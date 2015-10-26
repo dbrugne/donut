@@ -58,7 +58,8 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
     var that = this;
     confirmationView.open({}, function () {
       client.groupOp(that.model.get('id'), userId, function () {
-        that.trigger('redraw');
+        that.trigger('redraw'); // will render again drawer group users
+        that.model.refreshUsers();
       });
     });
   },
@@ -76,7 +77,8 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
     var that = this;
     confirmationView.open({}, function () {
       client.groupDeop(that.model.get('id'), userId, function () {
-        that.trigger('redraw');
+        that.trigger('redraw'); // will render again drawer group users
+        that.model.refreshUsers();
       });
     });
   },
@@ -99,6 +101,7 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
     }, function (reason) {
       client.groupBan(that.model.get('id'), userId, reason, function () {
         that.trigger('redraw');
+        that.model.refreshUsers();
       });
     });
   },
@@ -121,6 +124,7 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
     }, function () {
       client.groupDeban(that.model.get('id'), userId, function () {
         that.trigger('redraw');
+        that.model.refreshUsers();
       });
     });
   },

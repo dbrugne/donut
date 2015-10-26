@@ -23,9 +23,10 @@ var GroupView = Backbone.View.extend({
   },
 
   initialize: function (options) {
-    this.listenTo(app, 'groupRedraw', this.redraw);
-
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
+    this.listenTo(this.model, 'change:members', this.refreshUsers);
+    this.listenTo(this.model, 'change:op', this.refreshUsers);
+    this.listenTo(this.model, 'change:rooms', this.render);
     this.listenTo(this.model, 'redraw', this.render);
     this.render();
   },
@@ -156,8 +157,8 @@ var GroupView = Backbone.View.extend({
       }
     });
   },
-  redraw: function () {
-    console.log('redraw on drawer close');
+  refreshUsers: function () {
+    this.groupUsersView.render();
   }
 });
 

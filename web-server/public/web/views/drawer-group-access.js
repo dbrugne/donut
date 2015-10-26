@@ -139,7 +139,6 @@ var GroupAccessView = Backbone.View.extend({
     if (this.tableAllowed) {
       this.tableAllowed.remove();
     }
-    app.trigger('groupRedraw');
     this.remove();
   },
   onSearchUser: function (event) {
