@@ -128,7 +128,7 @@ Notification.prototype.sendEmail = function (model, done) {
             groupname: group.name
           };
           break;
-        case 'groupallow':
+        case 'groupallowed':
           method = emailer.groupAllow;
           data = {
             username: model.data.by_user.username,

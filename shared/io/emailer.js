@@ -397,7 +397,7 @@ emailer.groupAllow = function (to, data, callback) {
       groupname: data.groupname,
       username: data.username
     }),
-    subject: i18next.t('email.allow.subject', {groupname: data.groupname}),
+    subject: i18next.t('email.groupallow.subject', {groupname: data.groupname}),
     grouplink: {chat: protocol + '://' + conf.fqdn + urls(data, 'group', 'chat')}
   }, callback);
 };
