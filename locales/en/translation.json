@@ -170,7 +170,9 @@
       },
       "description": {
         "private": "This donut is private, for invites only",
-        "private-invites": "This donut is private, for members of this community and invites only",
+        "private-invites": "This donut is private, for invites only",
+        "private-invites-group": "This donut is private, for members of this community and invites only",
+        "private-group": "This donut is private, for members of this community and invites only",
         "public": "This donut is public, any user can join"
       }
     }

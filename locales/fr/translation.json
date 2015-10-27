@@ -170,7 +170,9 @@
       },
       "description": {
         "private": "Ce donut est privé, accessible uniquement sur invitation",
-        "private-invites": "Ce donut est privé, accessible uniquement aux membres de cette de communauté et sur invitation",
+        "private-invites": "Ce donut est privé, accessible uniquement sur invitation",
+        "private-invites-group": "Ce donut est privé, accessible uniquement aux membres de cette de communauté et sur invitation",
+        "private-group": "Ce donut est privé, accessible uniquement aux membres de cette de communauté et sur invitation",
         "public": "Ce donut est public, accessible à tout utilisateur"
       }
     }
