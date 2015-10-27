@@ -307,6 +307,23 @@ emailer.roomInvite = function (to, data, callback) {
   }, callback);
 };
 
+emailer.roomDelete = function (to, data, callback) {
+  data.name = data.roomname.replace('#', '');
+  sendEmail(to, 'emails/room-delete.html', {
+    username: data.username,
+    roomname: data.roomname,
+    title: i18next.t('email.roomdelete.content.title', {
+      roomname: data.roomname,
+      username: data.username
+    }),
+    subject: i18next.t('email.roomdelete.subject', {
+      roomname: data.roomname,
+      username: data.username
+    }),
+    fqdn: conf.fqdn
+  }, callback);
+};
+
 emailer.roomTopic = function (to, from, room, topic, callback) {
   var data = { name: room.replace('#', '') };
   sendEmail(to, 'emails/room-topic.html', {

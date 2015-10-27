@@ -172,6 +172,8 @@ var NotificationsView = Backbone.View.extend({
       var groupId = (n.data.group._id) ? n.data.group._id : n.data.group.id;
       n.html += 'data-group-id="' + groupId + '"';
       n.username = null;
+    } else if (n.type === 'roomdelete') {
+      n.href = '';
     }
 
     if (n.viewed === false) {

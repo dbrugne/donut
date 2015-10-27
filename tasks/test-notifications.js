@@ -225,7 +225,8 @@ module.exports = function (grunt) {
           { notification: 'roomallowed' },
           { notification: 'roomrefuse' },
           { notification: 'roomjoinrequest' },
-          { notification: 'roominvite' }
+          { notification: 'roominvite' },
+          { notification: 'roomdelete' }
         ], function (item, fn) {
           var event = {
             name: room.name,

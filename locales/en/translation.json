@@ -506,6 +506,7 @@
         "usermention": "You were mentionned in <span>__name__</span>",
         "usermessage": "<span>@__username__</span>: __message__",
         "roominvite": "<span>@__username__</span> invites you to join <span>__name__</span>",
+        "roomdelete": "<span>@__username__</span> delete your donut <span>__name__</span>",
         "groupjoinrequest": "<span>@__username__</span> wants to join <span>__name__</span>",
         "groupallowed": "You are now authorized to join <span>__name__</span>",
         "groupdisallow": "You are no more authorized in <span>__name__</span>",
@@ -1063,6 +1064,14 @@
         "title": "@__username__ invites you to join __roomname__",
         "disclaimer": "You can join his room right now!",
         "button": "Go to chat"
+      }
+    },
+    "roomdelete": {
+      "subject": "@__username__ delete your donut __roomname__",
+      "content": {
+        "title": "@__username__ delete your donut __roomname__",
+        "disclaimer": "Looks like your donut have may has been a problem dot not hesitate to talk with him!",
+        "button": "Return to DONUT"
       }
     },
     "roomtopic": {
