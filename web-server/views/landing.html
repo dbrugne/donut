@@ -34,7 +34,7 @@
                 <div class="logged mt25 flex-parent column">
                     <a class="profile flex-parent column" href="<%= user.url %>" target="_blank">
                         <img class="avatar" src="<%= user.avatar %>" alt="<%= user.username %> avatar">
-                        <% if (user.username) { %><p>@<%= user.username %></p><% } %>
+                        <% if (user.username) { %><p class="text-center">@<%= user.username %></p><% } %>
                     </a>
                     <p class="text-center"><%= t('logged.text') %></p>
                     <p class="actions flex-parent column jc-center center">

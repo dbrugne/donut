@@ -33,7 +33,7 @@ var isSupported = (function () {
    * successfully - then it is IE9+, if not - an exceptions is thrown.
    */
   try {
-    isSupported = !!(/* Safari, Chrome */window.Notification || /* Chrome & ff-html5notifications plugin */window.webkitNotifications || /* Firefox Mobile */navigator.mozNotification || /* IE9+ */(window.external && window.external.msIsSiteMode() !== undefined));
+    isSupported = !!(/* Safari, Chrome */window.Notification || /* Chrome & ff-html5notifications plugin */window.webkitNotifications || /* Firefox Mobile */navigator.mozNotification || /* IE9+ */(window.external && window.external.msIsSiteMode()));
   } catch (e) {
   }
   return isSupported;
