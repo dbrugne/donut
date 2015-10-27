@@ -37,30 +37,24 @@ var GroupAccessView = Backbone.View.extend({
   },
 
   initialize: function (options) {
-    this.groupId = options.group_id;
+    this.model = options.model;
+
     this.render();
-    this.reload();
   },
   render: function () {
-    // render spinner only
-    this.$el.html(require('../templates/spinner.html'));
-    return this;
-  },
-  reload: function () {
     var what = {
       more: true,
       users: true,
       admin: true
     };
-    client.groupRead(this.groupId, what, _.bind(function (data) {
+    client.groupRead(this.model.get('id'), what, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }
     }, this));
+    return this;
   },
   onResponse: function (data) {
-    this.model = data;
-
     data.isOwner = (data.owner_id === currentUser.get('user_id'));
     data.isAdmin = currentUser.isAdmin();
     data.isOp = !!_.find(data.members, function (item) {
@@ -100,11 +94,11 @@ var GroupAccessView = Backbone.View.extend({
 
     this.tablePending = new TableView({
       el: this.$('.allow-pending'),
-      group_id: this.groupId
+      group_id: this.model.get('group_id')
     });
     this.tableAllowed = new TableView({
       el: this.$('.allowed'),
-      group_id: this.groupId
+      group_id: this.model.get('group_id')
     });
     this.renderTables();
 
@@ -180,9 +174,10 @@ var GroupAccessView = Backbone.View.extend({
         username: userName,
         room_name: this.group_name
       }, _.bind(function () {
-        client.groupAllow(this.groupId, userId, _.bind(function () {
+        client.groupAllow(this.model.get('group_id'), userId, _.bind(function () {
           this.tablePending.render('pending');
           this.tableAllowed.render('allowed');
+          this.model.refreshUsers();
         }, this));
       }, this));
     }
@@ -233,7 +228,7 @@ var GroupAccessView = Backbone.View.extend({
       return this.setError(i18next.t('chat.form.errors.invalid-password'));
     }
 
-    client.groupUpdate(this.groupId, {password: this.getPassword()}, _.bind(function (data) {
+    client.groupUpdate(this.model.get('group_id'), {password: this.getPassword()}, _.bind(function (data) {
       if (data.err) {
         return this.setError(i18next.t('chat.form.errors.' + data.err));
       }
@@ -246,7 +241,7 @@ var GroupAccessView = Backbone.View.extend({
   onSubmitConditions: function (event) {
     this.reset();
 
-    client.groupUpdate(this.groupId, {disclaimer: this.$conditions.val()}, _.bind(function (data) {
+    client.groupUpdate(this.model.get('group_id'), {disclaimer: this.$conditions.val()}, _.bind(function (data) {
       if (data.err) {
         return this.setError(i18next.t('chat.form.errors.' + data.err));
       }

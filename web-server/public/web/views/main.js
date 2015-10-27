@@ -401,7 +401,13 @@ var MainView = Backbone.View.extend({
     if (!groupId) {
       return;
     }
-    var view = new DrawerGroupAccessView({group_id: groupId});
+
+    var model = groups.get(groupId);
+    if (!model) {
+      return;
+    }
+
+    var view = new DrawerGroupAccessView({model: model});
     this.drawerView.setSize('380px').setView(view).open();
   },
   openGroupProfile: function (data) {
