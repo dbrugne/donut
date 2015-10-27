@@ -33,10 +33,9 @@ var WelcomeModalView = Backbone.View.extend({
 
     this.cardsView.render({fill: false, rooms: {list: welcome.featured}});
 
-    this.listenTo(this.cardsView, 'onJoin', function (event) {
+    this.listenTo(this.cardsView, 'onClose', function (event) {
       this.hide();
     });
-
     return this;
   },
   show: function () {

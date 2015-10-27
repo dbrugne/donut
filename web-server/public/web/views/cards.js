@@ -7,7 +7,7 @@ var CardsView = Backbone.View.extend({
   template: require('../templates/cards.html'),
 
   events: {
-    'click a.join': 'onJoin'
+    'click a.join, .open-room-profile, .open-user-profile': 'onClose',
   },
 
   initialize: function (options) {
@@ -84,8 +84,8 @@ var CardsView = Backbone.View.extend({
     return this.$('.card').length;
   },
 
-  onJoin: function (event) {
-    this.trigger('onJoin', event);
+  onClose: function (event) {
+    this.trigger('onClose', event);
   },
 
   _remove: function () {
