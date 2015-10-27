@@ -87,7 +87,7 @@ handler.call = function (data, session, next) {
 
     function notification (event, callback) {
       Notifications(that.app).getType('groupdisallow').create(user.id, group, event, function (err) {
-        return callback(err, event);
+        return callback(err);
       });
     }
 

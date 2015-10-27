@@ -462,6 +462,17 @@ emailer.groupBan = function (to, data, callback) {
   }, callback);
 };
 
+emailer.groupDeban = function (to, data, callback) {
+  data.name = data.groupname;
+  sendEmail(to, 'emails/group-deban.html', {
+    username: data.username,
+    groupname: data.groupname.replace('#', ''),
+    title: i18next.t('email.groupdeban.content.title', {groupname: data.groupname.replace('#', '')}),
+    subject: i18next.t('email.groupdeban.subject', {groupname: data.groupname.replace('#', '')}),
+    grouplink: {chat: protocol + '://' + conf.fqdn + urls(data, 'group', 'chat')}
+  }, callback);
+};
+
 emailer.groupOp = function (to, data, callback) {
   data.name = data.groupname;
   sendEmail(to, 'emails/group-op.html', {

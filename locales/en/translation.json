@@ -512,6 +512,7 @@
         "groupinvite": "<span>@__username__</span> invites you to join <span>__name__</span>",
         "grouprefuse": "Your request to join <span>__name__</span></br> has been refused",
         "groupban": "You were banned from community <span>__name__</span>",
+        "groupdeban": "You are no longer banned from community <span>__name__</span>",
         "groupop": "You are moderator of community <span>__name__</span>",
         "groupdeop": "You are no longer moderator of community <span>__name__</span>"
       },
@@ -1145,6 +1146,14 @@
         "title": "You have been banned of community #__groupname__",
         "disclaimer": "",
         "button": "Back to DONUT"
+      }
+    },
+    "groupdeban": {
+      "subject": "You are no longer banned of community #__groupname__",
+      "content": {
+        "title": "You are no longer banned from community #__groupname__",
+        "disclaimer": "It looks like all is well that ends well!",
+        "button": "Go to community"
       }
     },
     "groupop": {

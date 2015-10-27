@@ -2,6 +2,7 @@
 var _ = require('underscore');
 var errors = require('../../../util/errors');
 var async = require('async');
+var Notifications = require('../../../components/notifications');
 
 var Handler = function (app) {
   this.app = app;
@@ -77,7 +78,14 @@ handler.call = function (data, session, next) {
         that.app.globalChannelService.pushMessage('connector', 'group:deban', event, 'user:' + targetUser.id, {}, function (reponse) {
           callback(null);
         });
+      },
+
+      function notification (callback) {
+        Notifications(that.app).getType('groupdeban').create(targetUser.id, group, event, function (err) {
+          return callback(err);
+        });
       }
+
     ],
     function (err) {
       if (err) {

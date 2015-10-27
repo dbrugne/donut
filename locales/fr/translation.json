@@ -512,6 +512,7 @@
         "groupinvite": "<span>@__username__</span> vous invite à rejoindre <span>__name__</span>",
         "grouprefuse": "Demande d'accès à la communauté <span>__name__</span></br> refusée",
         "groupban": "Vous êtes banni de la communauté <span>__name__</span>",
+        "groupdeban": "Vous n'êtes plus banni de la communauté <span>__name__</span>",
         "groupop": "Vous êtes maintenant modérateur de la communauté <span>__name__</span>",
         "groupdeop": "Vous n'êtes plus modérateur de la communauté <span>__name__</span>"
       },
@@ -1145,6 +1146,14 @@
         "title": "Vous avez été banni de la communauté #__groupname__",
         "disclaimer": "",
         "button": "Retourner sur DONUT"
+      }
+    },
+    "groupdeban": {
+      "subject": "Vous n'êtes plus banni de la communauté #__groupname__",
+      "content": {
+        "title": "Vous n'êtes plus banni de la communauté #__groupname__",
+        "disclaimer": "On dirait bien que tout s'est arrangé !",
+        "button": "Accéder à la communauté"
       }
     },
     "groupop": {

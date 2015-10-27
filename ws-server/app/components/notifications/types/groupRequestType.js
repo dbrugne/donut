@@ -163,6 +163,13 @@ Notification.prototype.sendEmail = function (model, done) {
             groupname: group.name
           };
           break;
+        case 'groupdeban':
+          method = emailer.groupDeban;
+          data = {
+            username: model.data.by_user.username,
+            groupname: group.name
+          };
+          break;
         case 'groupop':
           method = emailer.groupOp;
           data = {
