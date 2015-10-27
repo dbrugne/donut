@@ -2,6 +2,7 @@
 var errors = require('../../../util/errors');
 var async = require('async');
 var Group = require('../../../../../shared/models/group');
+var Notifications = require('../../../components/notifications');
 
 var Handler = function (app) {
   this.app = app;
@@ -80,9 +81,14 @@ handler.call = function (data, session, next) {
       Group.update(
         {_id: { $in: [group.id] }},
         {$pull: {members: user.id, op: user.id}}, function (err) {
-          return callback(err, eventData);
-        }
-      );
+        return callback(err, eventData);
+      });
+    },
+
+    function notification (event, callback) {
+      Notifications(that.app).getType('groupdisallow').create(user.id, group, event, function (err) {
+        return callback(err, event);
+      });
     }
 
   ], function (err) {

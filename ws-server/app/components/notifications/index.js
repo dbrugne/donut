@@ -92,6 +92,7 @@ Facade.prototype.getType = function (type) {
 
     case 'groupjoinrequest':
     case 'groupallowed':
+    case 'groupdisallow':
     case 'grouprefuse':
     case 'groupinvite':
     case 'groupban':
@@ -182,7 +183,7 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
               return fn(null);
             });
           });
-      } else if (_.indexOf(['groupjoinrequest', 'grouprefuse', 'groupallowed', 'groupinvite', 'groupban', 'groupdeban', 'groupop', 'groupdeop'], n.type) !== -1) {
+      } else if (_.indexOf(['groupjoinrequest', 'grouprefuse', 'groupallowed', 'groupinvite', 'groupban', 'groupdeban', 'groupop', 'groupdeop', 'groupdisallow'], n.type) !== -1) {
         NotificationModel.findOne({_id: n._id})
           .populate({
             path: 'data.by_user',
@@ -332,7 +333,6 @@ Facade.prototype.retrieveScheduledNotifications = function (callback) {
     if (err) {
       callback(err);
     }
-
 
     // hydrate room groups (mongoose seems unable to populate populated document)
     var rooms = [];

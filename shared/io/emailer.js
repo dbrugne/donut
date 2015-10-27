@@ -402,6 +402,21 @@ emailer.groupAllow = function (to, data, callback) {
   }, callback);
 };
 
+emailer.groupDisallow = function (to, data, callback) {
+  data.name = data.groupname;
+  console.log(to, data);
+  sendEmail(to, 'emails/group-disallow.html', {
+    username: data.username,
+    groupname: data.groupname.replace('#', ''),
+    title: i18next.t('email.groupdisallow.content.title', {
+      groupname: data.groupname,
+      username: data.username
+    }),
+    subject: i18next.t('email.groupdisallow.subject', {groupname: data.groupname}),
+    grouplink: {chat: protocol + '://' + conf.fqdn + urls(data, 'group', 'chat')}
+  }, callback);
+};
+
 emailer.groupInvite = function (to, data, callback) {
   data.name = data.groupname;
   sendEmail(to, 'emails/group-invite.html', {

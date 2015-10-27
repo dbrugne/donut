@@ -508,6 +508,7 @@
         "roominvite": "<span>@__username__</span> invites you to join <span>__name__</span>",
         "groupjoinrequest": "<span>@__username__</span> wants to join <span>__name__</span>",
         "groupallowed": "You are now authorized to join <span>__name__</span>",
+        "groupdisallow": "You are no more authorized in <span>__name__</span>",
         "groupinvite": "<span>@__username__</span> invites you to join <span>__name__</span>",
         "grouprefuse": "Your request to join <span>__name__</span></br> has been refused",
         "groupban": "You were banned from community <span>__name__</span>",
@@ -1111,6 +1112,14 @@
       "content": {
         "title": "@__username__ allow you to join #__groupname__",
         "disclaimer": "You can now enjoy this community !",
+        "button": "Go to community"
+      }
+    },
+    "groupdisallow": {
+      "subject": "An user remove you from #__groupname__ members",
+      "content": {
+        "title": "@__username__ remove you from allowed users in #__groupname__",
+        "disclaimer": "You can still make a membership request and rejoin this community!",
         "button": "Go to community"
       }
     },

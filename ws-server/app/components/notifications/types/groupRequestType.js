@@ -135,6 +135,13 @@ Notification.prototype.sendEmail = function (model, done) {
             groupname: group.name
           };
           break;
+        case 'groupdisallow':
+          method = emailer.groupDisallow;
+          data = {
+            username: model.data.by_user.username,
+            groupname: group.name
+          };
+          break;
         case 'groupinvite':
           method = emailer.groupInvite;
           data = {
