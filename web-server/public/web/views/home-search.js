@@ -3,6 +3,8 @@ var Backbone = require('backbone');
 var client = require('../libs/client');
 
 var SearchView = Backbone.View.extend({
+  timeout: 0,
+  timeBufferBeforeSearch: 500,
   lastSearch: '',
   limit: 100,
   events: {
@@ -18,7 +20,11 @@ var SearchView = Backbone.View.extend({
   },
   onKeyup: function (event) {
     event.preventDefault();
-    this.search();
+
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(_.bind(function () {
+      this.search();
+    }, this), this.timeBufferBeforeSearch);
   },
   search: function (skip) {
     skip = skip || 0;
