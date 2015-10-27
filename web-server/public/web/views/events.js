@@ -187,6 +187,7 @@ module.exports = Backbone.View.extend({
     return (this.$scrollable.scrollTop() >= bottom);
   },
   scrollDown: function () {
+    console.log('scrolldown to: ' + this.$scrollableContent.outerHeight(true));
     this.$scrollable.scrollTop(this.$scrollableContent.outerHeight(true));
   },
 
