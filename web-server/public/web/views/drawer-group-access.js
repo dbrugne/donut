@@ -94,11 +94,12 @@ var GroupAccessView = Backbone.View.extend({
 
     this.tablePending = new TableView({
       el: this.$('.allow-pending'),
-      group_id: this.model.get('group_id')
+      group_id: this.model.get('group_id'),
+      model: this.model
     });
     this.tableAllowed = new TableView({
       el: this.$('.allowed'),
-      group_id: this.model.get('group_id')
+      model: this.model
     });
     this.renderTables();
 
