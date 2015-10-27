@@ -158,52 +158,60 @@ handler.call = function (data, session, next) {
         return callback(null);
       }
 
-      RoomModel.findByGroup(group._id).populate({
-        path: 'owner',
-        select: 'username avatar color facebook'
-      }).exec(function (err, rooms) {
-        if (err) {
-          return callback(err);
-        }
-        var sanitizedRooms = [];
-        _.each(rooms, function (r) {
-          if (r.mode !== 'public' && !group.isMember(user.id) && session.settings.admin !== true) {
-            return;
+      RoomModel.findByGroup(group._id)
+        .populate({
+          path: 'owner',
+          select: 'username avatar color facebook'
+        })
+        .populate('allowed')
+        .exec(function (err, rooms) {
+          if (err) {
+            return callback(err);
           }
+          var sanitizedRooms = [];
+          _.each(rooms, function (r) {
+            var allowed = _.find(r.get('allowed'), function (u) {
+              return u.id === user.id;
+            });
+            if (r.mode !== 'public' && !group.isMember(user.id) && session.settings.admin !== true && !allowed) {
+              return;
+            }
 
-          var room = {
-            name: r.name,
-            identifier: '#' + r.name,
-            room_id: r.id,
-            id: r.id,
-            avatar: r._avatar(),
-            poster: r._poster(),
-            mode: r.mode,
-            color: r.color,
-            description: r.description,
-            users: (r.users) ? r.users.length : 0
-          };
-
-          if (r.mode !== 'public') {
-            room.allow_user_request = r.allow_user_request;
-          }
-
-          if (r.owner) {
-            room.owner = {
-              user_id: r.owner.id,
-              username: r.owner.username,
-              avatar: r.owner._avatar(),
-              color: r.owner.color,
-              is_owner: true
+            var room = {
+              name: r.name,
+              identifier: '#' + r.name,
+              room_id: r.id,
+              id: r.id,
+              avatar: r._avatar(),
+              poster: r._poster(),
+              mode: r.mode,
+              color: r.color,
+              description: r.description,
+              users: (r.users)
+                ? r.users.length
+                : 0
             };
-          }
 
-          sanitizedRooms.push(room);
+            if (r.mode !== 'public') {
+              room.allow_user_request = r.allow_user_request;
+            }
+
+            if (r.owner) {
+              room.owner = {
+                user_id: r.owner.id,
+                username: r.owner.username,
+                avatar: r.owner._avatar(),
+                color: r.owner.color,
+                is_owner: true
+              };
+            }
+
+            sanitizedRooms.push(room);
+          });
+
+          read.rooms = sanitizedRooms;
+          return callback(null);
         });
-
-        read.rooms = sanitizedRooms;
-        return callback(null);
-      });
     }
 
   ], function (err) {
