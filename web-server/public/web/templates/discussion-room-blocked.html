@@ -6,8 +6,8 @@
                 <img class="avatar border-shadow open-room-profile mb20" data-room-id="<%= data.room_id %>" src="<%= data.avatar %>" alt="<%= data.identifier %> avatar">
                 <div class="flex-parent center jc-center">
                     <span class="name open-room-profile" data-room-id="<%= data.room_id %>"><%= data.identifier %></span>
-                    <span class="room-profile label label-default label-sm" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + data.mode + (data.allow_user_request ? '-invites' : '')) %>">
-                        <%= t('global.mode.title.' + data.mode + (data.allow_user_request ? '-invites' : '')) %>
+                    <span class="room-profile label label-default label-sm" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + data.mode + (data.allow_user_request ? '-invites' : '') + (data.allow_group_member ? '-group' : '')) %>">
+                        <%= t('global.mode.title.' + data.mode + (data.allow_user_request ? '-invites' : '') + (data.allow_group_member ? '-group' : '')) %>
                     </span>
                 </div>
 

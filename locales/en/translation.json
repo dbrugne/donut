@@ -163,7 +163,9 @@
     "mode": {
       "title": {
         "private": "invites",
-        "private-invites": "members & invites",
+        "private-invites": "invites",
+        "private-invites-group": "members & invites",
+        "private-group": "members & invites",
         "public": "public"
       },
       "description": {
