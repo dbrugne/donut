@@ -97,7 +97,8 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
     var that = this;
     confirmationView.open({
       message: 'ban-group-user',
-      username: userName
+      username: userName,
+      input: true
     }, function (reason) {
       client.groupBan(that.model.get('id'), userId, reason, function () {
         that.trigger('redraw');

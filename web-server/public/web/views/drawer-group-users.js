@@ -2,7 +2,7 @@ var $ = require('jquery');
 var Backbone = require('backbone');
 var app = require('../models/app');
 var client = require('../libs/client');
-var RoomUsersTableConfirmation = require('./drawer-group-users-table');
+var GroupUsersTableConfirmation = require('./drawer-group-users-table');
 var keyboard = require('../libs/keyboard');
 var i18next = require('i18next-client');
 
@@ -45,7 +45,7 @@ var DrawerRoomUsersView = Backbone.View.extend({
     this.typeSelected = this.$('#type-select');
     this.$usersLabel = this.$('.user-label');
 
-    this.tableView = new RoomUsersTableConfirmation({
+    this.tableView = new GroupUsersTableConfirmation({
       el: this.$('.table-users'),
       model: this.model
     });
