@@ -276,10 +276,12 @@ var RoomsCollection = Backbone.Collection.extend({
     model.set('users_number', model.get('users_number') - 1);
 
     // remove from this.op
-    var ops = _.reject(model.get('op'), function (opUserId) {
-      return (opUserId === data.user_id);
-    });
-    model.set('op', ops);
+    if (what === 'ban') {
+      var ops = _.reject(model.get('op'), function (opUserId) {
+        return (opUserId === data.user_id);
+      });
+      model.set('op', ops);
+    }
 
     // remove from devoices
     var devoices = model.get('devoices');
