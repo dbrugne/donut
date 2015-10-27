@@ -88,7 +88,7 @@ var RoomAccessView = Backbone.View.extend({
     this.$conditions = this.$('#conditions-area');
 
     if (data.disclaimer) {
-      this.$conditions.html(data.disclaimer);
+      this.$conditions.html(_.escape(data.disclaimer));
       this.onTypeConditions();
     }
 

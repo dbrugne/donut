@@ -30,7 +30,7 @@ handler.call = function (data, session, next) {
   }
   if ((data.password || data.password === '') && room.password &&
     (room.isGoodPassword(user.id, data.password)) === true) {
-    this.joinPass(user, room, next);
+    return this.joinPass(user, room, next);
   }
 
   blocked = room.isUserBlocked(user.id, data.password);
