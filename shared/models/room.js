@@ -69,7 +69,6 @@ roomSchema.statics.findById = function (id, callback) {
     .exec(callback);
 };
 
-
 roomSchema.statics.findByNameAndGroup = function (name, groupId) {
   var query = {
     name: common.regexp.exact(name, 'i'),

@@ -34,7 +34,7 @@ handler.call = function (data, session, next) {
     },
 
     function createGroup (callback) {
-      RoomModel.findByName(data.group_name).exec(function (err, room) {
+      RoomModel.findByNameAndGroup(data.group_name, null).exec(function (err, room) {
         if (err) {
           return callback(err);
         }

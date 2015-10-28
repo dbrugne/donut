@@ -81,7 +81,12 @@ var DrawerGroupCreateView = Backbone.View.extend({
     client.groupCreate(name, _.bind(function (response) {
       this.$submit.removeClass('loading');
       if (response.code !== 500 && response.success !== true) {
-        var uri = urls({name: name}, 'group', 'uri');
+        var uri;
+        if (response.err === 'group-name-already-exist') {
+          uri = urls({name: name}, 'group', 'uri');
+        } else {
+          uri = urls({group_name: this.group_name, name: name}, 'room', 'uri');
+        }
         var error = i18next.t('chat.form.errors.' + response.err, {name: name, uri: uri, defaultValue: 'unknown'});
         return this.setError(error);
       } else if (response.code === 500) {
