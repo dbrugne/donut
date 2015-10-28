@@ -88,7 +88,7 @@ handler.call = function (data, session, next) {
 
     function persistOnRooms (eventData, callback) {
       RoomModel.update(
-        {group: group._id},
+        {group: group._id, mode: 'private', allow_group_member: true, allowed: {$nin: [targetUser._id]}},
         {
           $pull: {
             users: targetUser._id
