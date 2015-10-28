@@ -27,6 +27,6 @@ handler.call = function (data, session, next) {
       return errorHandler('room-not-found');
     }
 
-    return next(null, {identifier: model.name, room_id: model.id});
+    return next(null, {identifier: model.name, room_id: model.id, group: model.group});
   });
 };

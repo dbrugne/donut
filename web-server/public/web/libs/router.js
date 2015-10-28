@@ -96,14 +96,16 @@ var DonutRouter = Backbone.Router.extend({
 
     // not already open
     this.nextFocus = identifier;
-    client.roomId(identifier, function (response) {
-      if (response.code === 404) {
+    client.roomId(identifier, function (responseRoom) {
+      if (responseRoom.code === 404) {
         return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', { name: identifier }));
-      } else if (response.code === 500) {
+      } else if (responseRoom.code === 500) {
         return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
       }
-      client.roomJoin(response.room_id, null, _.bind(function (response) {
-        if (response.code === 404) {
+      client.roomJoin(responseRoom.room_id, null, _.bind(function (response) {
+        if (response.err === 'group-members-only') {
+          return app.trigger('alert', 'error', i18next.t('chat.groupmembersonly', { name: identifier, group_name: responseRoom.group.name }));
+        } else if (response.code === 404) {
           return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', { name: identifier }));
         } else if (response.code === 403) {
           rooms.addModel(response.room, response.err);

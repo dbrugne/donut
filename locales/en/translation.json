@@ -846,7 +846,8 @@
       }
     },
     "members": "You are now a member of #__name__",
-    "noroomopened": "No donuts opened, you can"
+    "noroomopened": "No donuts opened, you can",
+    "groupmembersonly": "__name__ is only for members from #__group_name__ community"
   },
   "group": {
     "administrator": "Administrators",

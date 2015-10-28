@@ -48,6 +48,10 @@ handler.blocked = function (user, room, blocked, next) {
         return callback(null);
       }
 
+      if (blocked === 'group-members-only') {
+        return callback(blocked);
+      }
+
       user.update({ $addToSet: {blocked: room.id} }, function (err) {
         return callback(err);
       });

@@ -369,6 +369,9 @@ roomSchema.methods.isUserBlocked = function (userId, password) {
   if (this.isAllowed(userId)) {
     return false;
   }
+  if (this.group && this.allow_group_member && !this.allow_user_request) {
+    return 'group-members-only';
+  }
   if (password) {
     return this.isGoodPassword(userId, password);
   }
