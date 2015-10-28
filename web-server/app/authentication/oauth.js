@@ -12,6 +12,7 @@ var expressValidator = require('express-validator');
 var keenio = require('../../../shared/io/keenio');
 var conf = require('../../../config/');
 var common = require('@dbrugne/donut-common/server');
+var noCache = require('../middlewares/nocache');
 
 // @source: https://github.com/auth0/socketio-jwt#example-usage
 
@@ -24,7 +25,7 @@ var common = require('@dbrugne/donut-common/server');
  * @response {token: String}
  */
 router.route('/oauth/get-token-from-session')
-  .get(function (req, res) {
+  .get([noCache], function (req, res) {
     if (!req.user) {
       return res.json({err: 'no valid cookie or session'});
     }
