@@ -105,6 +105,7 @@ var RoomsCollection = Backbone.Collection.extend({
     this.listenTo(client, 'room:message:edit', this.onMessageEdited);
     this.listenTo(client, 'room:typing', this.onTyping);
     this.listenTo(client, 'room:groupban', this.onGroupBan);
+    this.listenTo(client, 'room:groupdisallow', this.onGroupDisallow);
   },
   onJoin: function (data) {
     var model;
@@ -275,7 +276,7 @@ var RoomsCollection = Backbone.Collection.extend({
     model.users.remove(user);
     model.set('users_number', model.get('users_number') - 1);
 
-    // remove from this.op
+    // remove from this.op is ban
     if (what === 'ban') {
       var ops = _.reject(model.get('op'), function (opUserId) {
         return (opUserId === data.user_id);
@@ -283,12 +284,14 @@ var RoomsCollection = Backbone.Collection.extend({
       model.set('op', ops);
     }
 
-    // remove from devoices
-    var devoices = model.get('devoices');
-    if (devoices.length) {
-      model.set('devoices', _.reject(devoices, function (element) {
-        return (element === data.user_id);
-      }));
+    // remove from devoices is ban
+    if (what === 'ban') {
+      var devoices = model.get('devoices');
+      if (devoices.length) {
+        model.set('devoices', _.reject(devoices, function (element) {
+          return (element === data.user_id);
+        }));
+      }
     }
 
     model.users.sort();
@@ -470,6 +473,38 @@ var RoomsCollection = Backbone.Collection.extend({
     // trigger event
     model.trigger('freshEvent', new EventModel({
       type: 'room:groupban',
+      data: data
+    }));
+  },
+  onGroupDisallow: function (data) {
+    var model;
+    if (!data || !data.room_id || !(model = this.get(data.room_id))) {
+      return;
+    }
+
+    // if i'm the "targeted user" destroy the model/view
+    if (currentUser.get('user_id') === data.user_id) {
+      console.log(model);
+      this.remove(model);
+      return;
+    }
+
+    // check that target is in model.users
+    var user = model.users.get(data.user_id);
+    if (!user) {
+      return;
+    }
+
+    // remove from this.users
+    model.users.remove(user);
+    model.set('users_number', model.get('users_number') - 1);
+
+    model.users.sort();
+    model.users.trigger('users-redraw');
+
+    // trigger event
+    model.trigger('freshEvent', new EventModel({
+      type: 'room:groupdisallow',
       data: data
     }));
   }

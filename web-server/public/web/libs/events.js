@@ -23,6 +23,7 @@ var templates = {
   'room:devoice': require('../templates/event/promote.html'),
   'room:op': require('../templates/event/promote.html'),
   'room:groupban': require('../templates/event/group-promote.html'),
+  'room:groupdisallow': require('../templates/event/group-promote.html'),
   'user:ban': require('../templates/event/promote.html'),
   'user:deban': require('../templates/event/promote.html')
 };

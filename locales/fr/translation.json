@@ -484,6 +484,7 @@
       "roomvoice": " a retrouvé la parole à la demande de ",
       "roomdevoice": " est muet à la demande de ",
       "roomgroupban": " a été banni de la communauté à la demande de ",
+      "roomgroupdisallow": " n'est plus membre de la communauté à la demande de ",
       "in": "est entré à",
       "out": "est sorti à",
       "online": "est en ligne,",

@@ -484,6 +484,7 @@
       "roomvoice": " is no longer mute as requested by ",
       "roomdevoice": " is now mute as requested by ",
       "roomgroupban": " was banned from community by ",
+      "roomgroupdisallow": " is no longer member from community by ",
       "in": "entered at",
       "out": "left at",
       "online": "is online,",

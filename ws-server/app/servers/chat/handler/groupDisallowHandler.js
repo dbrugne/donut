@@ -1,8 +1,10 @@
 'use strict';
+var _ = require('underscore');
 var errors = require('../../../util/errors');
 var async = require('async');
 var GroupModel = require('../../../../../shared/models/group');
 var RoomModel = require('../../../../../shared/models/room');
+var roomEmitter = require('../../../util/roomEmitter');
 var Notifications = require('../../../components/notifications');
 
 var Handler = function (app) {
@@ -22,6 +24,7 @@ handler.call = function (data, session, next) {
 
   var that = this;
 
+  var rooms = [];
   var event = {};
 
   async.waterfall([
@@ -58,7 +61,26 @@ handler.call = function (data, session, next) {
       return callback(null);
     },
 
-    function broadcast (callback) {
+    function persistOnGroup (callback) {
+      GroupModel.update(
+        {_id: { $in: [group.id] }},
+        {$pull: {members: targetUser.id, op: targetUser.id}}, function (err) {
+          return callback(err);
+        });
+    },
+
+    function computeRoomsToProcess (callback) {
+      RoomModel.findByGroup(group._id)
+        .exec(function (err, dbrooms) {
+          if (err) {
+            return callback(err);
+          }
+          rooms = dbrooms;
+          return callback(err);
+        });
+    },
+
+    function persistOnRooms (callback) {
       event = {
         by_user_id: user.id,
         by_username: user.username,
@@ -66,27 +88,9 @@ handler.call = function (data, session, next) {
         user_id: targetUser.id,
         username: targetUser.username,
         avatar: targetUser._avatar(),
-        reason: 'Disallow',
-        group_id: group.id
+        reason: 'Disallow'
       };
-      callback(null, event);
-    },
 
-    function broadcastToUser (eventData, callback) {
-      that.app.globalChannelService.pushMessage('connector', 'group:disallow', event, 'user:' + targetUser.id, {}, function (reponse) {
-        callback(null, eventData);
-      });
-    },
-
-    function persistOnGroup (eventData, callback) {
-      GroupModel.update(
-        {_id: { $in: [group.id] }},
-        {$pull: {members: targetUser.id, op: targetUser.id}}, function (err) {
-        return callback(err, eventData);
-      });
-    },
-
-    function persistOnRooms (eventData, callback) {
       RoomModel.update(
         {group: group._id, mode: 'private', allow_group_member: true, allowed: {$nin: [targetUser._id]}},
         {
@@ -96,8 +100,32 @@ handler.call = function (data, session, next) {
         },
         {multi: true},
         function (err) {
-          return callback(err, eventData);
+          return callback(err);
         });
+    },
+
+    function broadcast (callback) {
+      async.each(rooms, function (r, callback) {
+        if (r.mode === 'private' && r.allow_group_member && !_.contains(r.allowed, targetUser._id)) {
+          roomEmitter(that.app, targetUser, r, 'room:groupdisallow', _.clone(event), function (err) {
+            if (err) {
+              return callback(r.id + ': ' + err);
+            }
+            return callback(null);
+          });
+        }
+      }, function (err) {
+        return callback(err);
+      });
+      callback(null, event);
+    },
+
+    function broadcastToUser (eventData, callback) {
+      event.group_id = group.id;
+      event.group_name = '#' + group.name;
+      that.app.globalChannelService.pushMessage('connector', 'group:disallow', event, 'user:' + targetUser.id, {}, function (reponse) {
+        callback(null, eventData);
+      });
     },
 
     function notification (event, callback) {
