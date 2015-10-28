@@ -167,7 +167,7 @@ var DrawerUserEditView = Backbone.View.extend({
   editError: function (dataErrors) {
     var message = '';
     _.each(dataErrors.err, function (error) {
-      message += i18next.t('chat.form.errors.' + error) + '<br>';
+      message += i18next.t('chat.form.errors.' + error, {defaultValue: 'unknown'}) + '<br>';
     });
     this.$('chat.form.errors').html(message).show();
   }

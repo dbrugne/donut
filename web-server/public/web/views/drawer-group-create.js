@@ -35,8 +35,11 @@ var DrawerGroupCreateView = Backbone.View.extend({
     this.$errors.html('').hide();
     this.$el.removeClass('has-error').removeClass('has-success').val('');
   },
-  setError: function (error) {
-    this.$errors.html(error).show();
+  setError: function (err) {
+    if (err === 'unknown') {
+      err = i18next.t('global.unknownerror');
+    }
+    this.$errors.html(err).show();
   },
   removeView: function () {
     this.drawerGroupCreateModeView.remove();
@@ -79,7 +82,7 @@ var DrawerGroupCreateView = Backbone.View.extend({
       this.$submit.removeClass('loading');
       if (response.code !== 500 && response.success !== true) {
         var uri = urls({name: name}, 'group', 'uri');
-        var error = i18next.t('chat.form.errors.' + response.err, {name: name, uri: uri});
+        var error = i18next.t('chat.form.errors.' + response.err, {name: name, uri: uri, defaultValue: 'unknown'});
         return this.setError(error);
       } else if (response.code === 500) {
         return this.setError(i18next.t('global.unknownerror'));

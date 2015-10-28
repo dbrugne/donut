@@ -37,8 +37,11 @@ var DrawerRoomCreateView = Backbone.View.extend({
     this.$errors.html('').hide();
     this.$el.removeClass('has-error').removeClass('has-success').val('');
   },
-  setError: function (error) {
-    this.$errors.html(error).show();
+  setError: function (err) {
+    if (err === 'unknown') {
+      err = i18next.t('global.unknownerror');
+    }
+    this.$errors.html(err).show();
   },
   removeView: function () {
     this.drawerRoomCreateModeView.remove();
@@ -100,7 +103,7 @@ var DrawerRoomCreateView = Backbone.View.extend({
         } else {
           uri = urls({group_name: this.group_name, name: name}, 'room', 'uri');
         }
-        var error = i18next.t('chat.form.errors.' + response.err, {name: name, uri: uri});
+        var error = i18next.t('chat.form.errors.' + response.err, {name: name, uri: uri, defaultValue: 'unknown'});
         return this.setError(error);
       } else if (response.code === 500) {
         return this.setError(i18next.t('global.unknownerror'));

@@ -29,8 +29,11 @@ var DrawerRoomDeleteView = Backbone.View.extend({
       }
     }, this));
   },
-  setError: function (error) {
-    this.$errors.html(error).show();
+  setError: function (err) {
+    if (err === 'unknown') {
+      err = i18next.t('global.unknownerror');
+    }
+    this.$errors.html(err).show();
   },
   reset: function () {
     this.$errors.html('').hide();
@@ -63,7 +66,7 @@ var DrawerRoomDeleteView = Backbone.View.extend({
 
     client.roomDelete(this.roomId, _.bind(function (response) {
       if (response.err) {
-        return this.setError(i18next.t('chat.form.errors.' + response.err));
+        return this.setError(i18next.t('chat.form.errors.' + response.err, {defaultValue: 'unknown'}));
       }
 
       app.trigger('alert', 'info', i18next.t('chat.form.room-form.edit.room.delete.success'));
