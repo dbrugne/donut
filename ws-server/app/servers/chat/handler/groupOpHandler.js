@@ -95,7 +95,8 @@ handler.call = function (data, session, next) {
         username: targetUser.username,
         avatar: targetUser._avatar(),
         group_id: group.id,
-        group_name: '#' + group.name
+        group_name: '#' + group.name,
+        room_id: group.default
       };
 
       that.app.globalChannelService.pushMessage('connector', 'group:op', event, 'user:' + targetUser.id, {}, function (reponse) {
