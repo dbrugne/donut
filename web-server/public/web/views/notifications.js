@@ -209,9 +209,11 @@ var NotificationsView = Backbone.View.extend({
       this.toggleReadMore();
     }, this));
 
-    this.markHasRead = setTimeout(_.bind(function () {
-      this.clearNotifications();
-    }, this), this.timeToMarkAsRead);
+    if (!this.countNotificationsInDropdown()) {
+      this.markHasRead = setTimeout(_.bind(function () {
+        this.clearNotifications();
+      }, this), this.timeToMarkAsRead);
+    }
   },
   onShown: function (event) {
     this.dropdownIsShown = false;
@@ -236,6 +238,7 @@ var NotificationsView = Backbone.View.extend({
 
     // Only call Client if at least something to tag as viewed
     if (ids.length === 0) {
+      this.setUnreadCount(0);
       return;
     }
 
