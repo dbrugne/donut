@@ -1130,9 +1130,9 @@
       }
     },
     "groupdisallow": {
-      "subject": "Vous ne faites plus partie des personnes autorisé dans #__groupname__",
+      "subject": "Vous ne faites plus partie des personnes autorisées dans #__groupname__",
       "content": {
-        "title": "@__username__ vous a supprimé des personnes autorisé dans #__groupname__",
+        "title": "@__username__ vous a supprimé des personnes autorisées dans #__groupname__",
         "disclaimer": "Vous pouvez toujours faire une demande d'accès pour rejoindre à nouveau cette communauté !",
         "button": "Accéder à la communauté"
       }

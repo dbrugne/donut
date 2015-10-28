@@ -421,7 +421,6 @@ emailer.groupAllow = function (to, data, callback) {
 
 emailer.groupDisallow = function (to, data, callback) {
   data.name = data.groupname;
-  console.log(to, data);
   sendEmail(to, 'emails/group-disallow.html', {
     username: data.username,
     groupname: data.groupname.replace('#', ''),
