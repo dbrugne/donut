@@ -728,14 +728,14 @@
                     }
                     &.out {
                       i {
-                        font-size: 1.8em;
+                        font-size: 1.6em;
                         color: @cl-error;
                         vertical-align: middle;
                       }
                     }
                     &.in {
                       i {
-                        font-size: 2em;
+                        font-size: 1.6em;
                         color: @cl-success;
                         vertical-align: middle;
                       }
@@ -855,13 +855,14 @@
                   }
                 }
                 .block.inout {
+                  &.unviewed::before { top: 16px; left: 29px; }
                   float: left;
                   border-top: 0;
                   padding-top: 5px;
                   .event {
                     display: inline-block;
                     margin: 0 4px 4px 0;
-                    padding: 4px 4px 0 4px;
+                    padding: 4px;
                     border: 2px solid transparent;
                     -webkit-border-radius: 10px;
                     -moz-border-radius: 10px;
@@ -869,7 +870,7 @@
                     .username { display: none; }
                     .avatar {
                       display: inline-block;
-                      margin-right: 0px;
+                      margin-right: 0;
                       width: 20px;
                       height: 20px;
                       background-position: center center;
