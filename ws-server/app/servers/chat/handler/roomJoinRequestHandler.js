@@ -74,9 +74,8 @@ handler.call = function (data, session, next) {
       Room.update(
         {_id: { $in: [room.id] }},
         {$addToSet: {allowed_pending: pendingModel}}, function (err) {
-          return callback(err, eventData);
-        }
-      );
+        return callback(err, eventData);
+      });
     },
 
     function notification (event, callback) {
