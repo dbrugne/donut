@@ -685,6 +685,15 @@
                       font-style: normal;
                     }
                   }
+
+                  &.promote {
+                    &.unviewed {
+                      &::before {
+                        top: 12px;
+                        left: 47px;
+                      }
+                    }
+                  }
                   &.date + .block { border-top: transparent; }
                   &.hello { padding-top: 10px; font-size: 1.5rem; line-height: 2rem;
                     i {
@@ -694,17 +703,21 @@
                     }
                     .event .text p { margin-bottom: 5px; }
                   }
-                  &.promote {
+                  &.promote, &.topic {
                     i {
+                      .icon-fw;
                       font-size: 1.2em;
                       color: @cl-text;
                       vertical-align: middle;
                       line-height: normal;
-                      margin-right: 5px;
                     }
-                  }
-                  &.topic {
-                    i { font-size: 1.2rem; margin-right: 5px; }
+                    .avatar { margin-right:5px; }
+                    &.unviewed {
+                      &::before {
+                        top: 12px;
+                        left: 48px;
+                      }
+                    }
                   }
                   .event {
                     .date {
