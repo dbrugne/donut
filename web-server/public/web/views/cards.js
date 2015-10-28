@@ -7,7 +7,7 @@ var CardsView = Backbone.View.extend({
   template: require('../templates/cards.html'),
 
   events: {
-    'click a.join, .open-room-profile, .open-user-profile': 'onClose',
+    'click a.join, .open-room-profile, .open-user-profile': 'onClose'
   },
 
   initialize: function (options) {
@@ -39,7 +39,7 @@ var CardsView = Backbone.View.extend({
           card.join = urls(card, 'room', 'uri');
           card.url = urls(card, 'room', 'url');
           if (card.group_id) {
-            card.group_url = urls(card, 'group', 'chat');
+            card.group_url = urls({name: card.group_name}, 'group', 'chat');
             card.group_avatar = common.cloudinary.prepare(card.group_avatar, 200);
           }
           break;

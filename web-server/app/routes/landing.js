@@ -56,7 +56,7 @@ router.get('/', [require('csurf')()], function (req, res) {
             card.url = urls(card, 'room', 'url');
             card.owner_url = urls({username: card.owner_username}, 'user', 'chat');
             if (card.group_id) {
-              card.group_url = urls(card, 'group', 'uri');
+              card.group_url = urls({name: card.group_name}, 'group', 'chat');
               card.group_avatar = common.cloudinary.prepare(card.group_avatar, 200);
             }
             break;
