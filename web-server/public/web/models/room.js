@@ -55,7 +55,7 @@ var RoomModel = Backbone.Model.extend({
       color: data.color,
       is_owner: is_owner,
       is_op: is_op,
-      is_devoice: this.userIsDevoiced(data.user_id),
+      is_devoice: this.userIsDevoiced(data.user_id) || data.isDevoiced,
       status: data.status
     });
     this.users.add(model, {sort: sort});

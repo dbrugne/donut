@@ -106,7 +106,8 @@ handler.join = function (user, room, next) {
       var event = {
         user_id: user.id,
         username: user.username,
-        avatar: user._avatar()
+        avatar: user._avatar(),
+        isDevoiced: room.isDevoice(user.id)
       };
 
       roomEmitter(that.app, user, room, 'room:in', event, callback);
