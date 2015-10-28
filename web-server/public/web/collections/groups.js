@@ -98,10 +98,6 @@ var GroupsCollection = Backbone.Collection.extend({
     app.trigger('refreshRoomsList'); // sort & redraw navigation
   },
   onOp: function (data) {
-    if (data && data.room_id) { // trigger room:op event for default group room
-      client.trigger('room:op', data);
-    }
-
     var model;
     if (!data || !data.group_id || !(model = this.get(data.group_id))) {
       return;
@@ -109,10 +105,6 @@ var GroupsCollection = Backbone.Collection.extend({
     model.onOp(data); // need to refresh group users list
   },
   onDeop: function (data) {
-    if (data && data.room_id) { // trigger room:deop event for default group room
-      client.trigger('room:deop', data);
-    }
-
     var model;
     if (!data || !data.group_id || !(model = this.get(data.group_id))) {
       return;

@@ -78,11 +78,11 @@ handler.call = function (data, session, next) {
 
     function removeUserFromDefault (room, callback) {
       room.update({$pull: {op: targetUser._id}}, function (err) {
-        return callback(err);
+        return callback(err, room);
       });
     },
 
-    function broadcast (callback) {
+    function broadcast (room, callback) {
       event = {
         by_user_id: user.id,
         by_username: user.username,
@@ -91,11 +91,17 @@ handler.call = function (data, session, next) {
         username: targetUser.username,
         avatar: targetUser._avatar(),
         group_id: group.id,
-        group_name: '#' + group.name,
-        room_id: group.default
+        group_name: '#' + group.name
       };
 
-      that.app.globalChannelService.pushMessage('connector', 'group:deop', event, 'user:' + targetUser.id, {}, function (reponse) {
+      that.app.globalChannelService.pushMessage('connector', 'group:deop', event, 'user:' + targetUser.id, {}, function (response) {
+        return callback(null, room);
+      });
+    },
+
+    function broadcastToDefaultRoom (room, callback) {
+      event.room_id = group.default;
+      that.app.globalChannelService.pushMessage('connector', 'room:deop', event, room.name, {}, function (response) {
         return callback(null);
       });
     },
