@@ -34,12 +34,20 @@ var forgot = function (req, res) {
     function (token, done) {
       User.findOne({'local.email': req.body.email}, function (err, user) {
         if (err) {
-          req.flash('error', i18next.t('global.unknownerror'));
-          return res.redirect('/forgot');
+          return res.render('account_forgot', {
+            meta: {title: i18next.t('title.default')},
+            email: req.body.email,
+            errors: [{msg: i18next.t('global.unknownerror')}],
+            token: req.csrfToken()
+          });
         }
         if (!user) {
-          req.flash('error', i18next.t('forgot.error.notexists'));
-          return res.redirect('/forgot');
+          return res.render('account_forgot', {
+            meta: {title: i18next.t('title.default')},
+            email: req.body.email,
+            errors: [{msg: i18next.t('forgot.error.notexists')}],
+            token: req.csrfToken()
+          });
         }
 
         user.local.resetToken = token;
