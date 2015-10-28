@@ -13,8 +13,8 @@
 
     <div class="roomname text-center block flex-parent column center">
         <%= room.identifier %>
-        <div class="room-profile label label-default label-sm" data-type="mode" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + room.mode + (room.allow_user_request ? '-invites' : '')) %>">
-            <%= t('global.mode.title.' + room.mode + (room.allow_user_request ? '-invites' : '')) %>
+        <div class="room-profile label label-default label-sm" data-type="mode" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + (room.mode === 'public' ? 'public' : 'private' + (room.allow_user_request ? '-invites' : '') + (room.allow_group_member ? '-group' : ''))) %>">
+            <%= t('global.mode.title.' + (room.mode === 'public' ? 'public' : 'private' + (room.allow_user_request ? '-invites' : '') + (room.allow_group_member ? '-group' : ''))) %>
         </div>
     </div>
     <div class="owner text-center">
