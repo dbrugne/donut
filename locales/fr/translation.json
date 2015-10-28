@@ -883,7 +883,7 @@
       "defined": "Mot de passe défini: ",
       "error": {
         "confirm": "Les deux mots de passe ne sont pas identiques.",
-        "length": "Le mot de passe doit faire entre 6 et 50 caractères de long.",
+        "length": "Le mot de passe doit faire entre 4 et 255 caractères de long.",
         "wrong": "Désolé, votre ancien mot de passe ne correspond pas"
       }
     },

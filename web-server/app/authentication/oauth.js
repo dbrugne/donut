@@ -271,7 +271,7 @@ router.route('/oauth/signup')
         if (!expressValidator.validator.isEmail(email)) {
           return callback('invalid-email');
         }
-        if (!expressValidator.validator.isLength(password, 6, 50)) {
+        if (!expressValidator.validator.isLength(password, 4, 255)) {
           return callback('invalid-password');
         }
         if (!expressValidator.validator.isUsername(username)) {
