@@ -841,7 +841,7 @@
         "room-already-exist": "Donut __name__ already exists, <a href='__uri__'>would you like to join it</a>?",
         "group-name-already-exist": "Group __name__ already exists, <a href='__uri__'>would you like to join it</a>?",
         "not-admin-owner-groupowner": "You do not have access to do this.",
-        "not-allowed": "You can't delete this donut"
+        "not-allowed": "You can't do this."
       }
     },
     "members": "You are now a member of #__name__",
