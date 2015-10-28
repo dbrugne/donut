@@ -47,7 +47,6 @@ handler.call = function (data, session, next) {
         read.group_id = room.group.id;
         read.group_name = room.group.name;
         read.group_owner = room.group.owner;
-        read.allow_group_member = room.allow_group_member;
       }
       if (room.owner) {
         read.owner_id = room.owner.id;
@@ -55,6 +54,7 @@ handler.call = function (data, session, next) {
       }
       if (room.mode !== 'public') {
         read.allow_user_request = room.allow_user_request;
+        read.allow_group_member = (room.group) ? room.allow_group_member : false;
       }
 
       return callback(null);

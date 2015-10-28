@@ -194,6 +194,7 @@ handler.call = function (data, session, next) {
 
             if (r.mode !== 'public') {
               room.allow_user_request = r.allow_user_request;
+              room.allow_group_member = r.allow_group_member;
             }
 
             if (r.owner) {
