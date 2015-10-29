@@ -324,6 +324,23 @@ emailer.roomDelete = function (to, data, callback) {
   }, callback);
 };
 
+emailer.roomCreate = function (to, data, callback) {
+  data.name = data.roomname.replace('#', '');
+  sendEmail(to, 'emails/room-create.html', {
+    username: data.username,
+    roomname: data.roomname,
+    title: i18next.t('email.roomcreate.content.title', {
+      roomname: data.roomname,
+      username: data.username
+    }),
+    subject: i18next.t('email.roomcreate.subject', {
+      roomname: data.roomname,
+      username: data.username
+    }),
+    roomlink: {chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')}
+  }, callback);
+};
+
 emailer.roomTopic = function (to, from, room, topic, callback) {
   var data = { name: room.replace('#', '') };
   sendEmail(to, 'emails/room-topic.html', {

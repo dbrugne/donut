@@ -512,6 +512,7 @@
         "usermessage": "<span>@__username__</span>: __message__",
         "roominvite": "<span>@__username__</span> vous invite à rejoindre <span>__name__</span>",
         "roomdelete": "<span>@__username__</span> à supprimé votre donut <span>__name__</span>",
+        "roomcreate": "<span>@__username__</span> à crée le donut <span>__name__</span>",
         "groupjoinrequest": "<span>@__username__</span> souhaite rejoindre <span>__name__</span>",
         "groupallowed": "Vous êtes autorisé à rejoindre <span>#__name__</span>",
         "groupdisallow": "Vous n'êtes plus autorisé dans <span>#__name__</span>",
@@ -1070,6 +1071,14 @@
       "content": {
         "title": "@__username__ vous invite à rejoindre __roomname__",
         "disclaimer": "Vous pouvez rejoindre son donut sans plus tarder !",
+        "button": "Accéder à la discussion"
+      }
+    },
+    "roomcreate": {
+      "subject": "@__username__ viens de créer le donut __roomname__",
+      "content": {
+        "title": "@__username__ viens de créer le donut __roomname__",
+        "disclaimer": "Votre communauté fait le plein de donut !",
         "button": "Accéder à la discussion"
       }
     },

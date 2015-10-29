@@ -88,6 +88,7 @@ Facade.prototype.getType = function (type) {
     case 'roomrefuse':
     case 'roominvite':
     case 'roomdelete':
+    case 'roomcreate':
       typeConstructor = roomRequest;
       break;
 
@@ -149,7 +150,7 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) { //
         return fn(null);
       }
 
-      if (n.type === 'roomrefuse' || n.type === 'roomallowed' || n.type === 'roomjoinrequest' || n.type === 'roominvite' || n.type === 'roomdelete') {
+      if (n.type === 'roomrefuse' || n.type === 'roomallowed' || n.type === 'roomjoinrequest' || n.type === 'roominvite' || n.type === 'roomdelete' || n.type === 'roomcreate') {
         NotificationModel.findOne({_id: n._id})
           .populate({
             path: 'data.user',

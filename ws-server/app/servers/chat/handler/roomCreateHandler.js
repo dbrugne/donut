@@ -6,6 +6,7 @@ var GroupModel = require('../../../../../shared/models/group');
 var conf = require('../../../../../config/index');
 var keenio = require('../../../../../shared/io/keenio');
 var common = require('@dbrugne/donut-common/server');
+var Notifications = require('../../../components/notifications');
 
 var Handler = function (app) {
   this.app = app;
@@ -20,6 +21,8 @@ var handler = Handler.prototype;
 handler.call = function (data, session, next) {
   var user = session.__currentUser__;
   var group = session.__group__;
+
+  var that = this;
 
   async.waterfall([
 
@@ -129,7 +132,28 @@ handler.call = function (data, session, next) {
           name: room.name
         }
       };
-      keenio.addEvent('room_creation', keenEvent, callback);
+      keenio.addEvent('room_creation', keenEvent, function () {
+        return callback(null, room);
+      });
+    },
+
+    function notification (room, callback) {
+      if (!group || (group && group.owner.id === user.id)) {
+        return callback(null);
+      }
+
+      var event = {
+        by_user_id: user._id,
+        by_username: user.username,
+        by_avatar: user._avatar(),
+        user_id: group.owner._id,
+        username: group.owner.username,
+        avatar: group.owner._avatar(),
+        name: room.name,
+        id: room.id,
+        room_id: room.id
+      };
+      Notifications(that.app).getType('roomcreate').create(group.owner.id, room, event, callback);
     }
 
   ], function (err) {
