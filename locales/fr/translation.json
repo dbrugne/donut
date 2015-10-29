@@ -1076,7 +1076,7 @@
       "subject": "@__username__ a supprimé le donut __roomname__",
       "content": {
         "title": "@__username__ a supprimé le donut __roomname__",
-        "disclaimer": "On dirais que votre donut a posé problème n'hésitez pas a en parler avec lui !",
+        "disclaimer": "On dirait que votre donut a posé problème, n'hésitez pas a en parler avec le gestionnaire !",
         "button": "Retourner sur DONUT"
       }
     },
