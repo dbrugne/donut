@@ -52,7 +52,7 @@ handler.call = function (data, session, next) {
         return callback('not-allowed');
       }
 
-      if (data.group_id && !group.isMemberOrOwner(user.get('id')) ) {
+      if (data.group_id && !group.isMemberOrOwner(user.get('id')) && session.settings.admin !== true) {
         return callback('not-admin-owner-groupowner');
       }
 
@@ -64,7 +64,7 @@ handler.call = function (data, session, next) {
       GroupModel.findByName(data.room_name).exec(function (err, group) {
         if (err) {
           return callback(err);
-        } else if (group) {
+        } else if (group && !data.group_id) {
           return callback('group-name-already-exist');
         }
 
