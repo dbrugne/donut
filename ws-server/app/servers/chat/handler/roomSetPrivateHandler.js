@@ -2,6 +2,7 @@
 var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
+var GroupModel = require('../../../../../shared/models/group');
 
 var Handler = function (app) {
   this.app = app;
@@ -41,11 +42,22 @@ handler.call = function (data, session, next) {
       if (room.permanent === true) {
         return callback('permanent');
       }
-
-      if (room.name === 'welcome') {
-        return callback('params-room-id');
-      }
       return callback(null);
+    },
+
+    function checkRoomDefault (callback) {
+      if (!room.group) {
+        return callback(null);
+      }
+      GroupModel.findById(room.group).exec(function (err, group) {
+        if (err) {
+          return callback(err);
+        }
+        if (group.default !== data.room_id) {
+          return callback("params-room-id");
+        }
+        return callback(null);
+      });
     },
 
     function persist (callback) {

@@ -25,6 +25,7 @@ module.exports = function (user, room, fn) {
     data.group_id = room.group.id;
     data.group_name = room.group.name;
     data.group_owner = room.group.owner;
+    data.group_default = room.group.default;
   }
   if (room.owner) {
     data.owner_id = room.owner.id;
