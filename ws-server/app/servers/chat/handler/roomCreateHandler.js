@@ -149,11 +149,9 @@ handler.call = function (data, session, next) {
         user_id: group.owner._id,
         username: group.owner.username,
         avatar: group.owner._avatar(),
-        name: room.name,
-        id: room.id,
         room_id: room.id
       };
-      Notifications(that.app).getType('roomcreate').create(group.owner.id, room, event, callback);
+      Notifications(that.app).getType('roomcreate').create(group.owner.id, room.id, event, callback);
     }
 
   ], function (err) {
