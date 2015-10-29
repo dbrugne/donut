@@ -75,7 +75,6 @@ var retriever = function (app, fn) {
               var name = key.replace('pomelo:globalchannel:channel:', '').replace(/:connector-server-[0-9]+/, '');
               roomsCount.push({name: name, count: value.length});
             });
-            roomsCount = _.sortBy(roomsCount, 'count').reverse(); // desc
             return callback(null, roomsCount);
           }
         });
@@ -91,7 +90,6 @@ var retriever = function (app, fn) {
           visibility: true,
           deleted: {$ne: true}
         }, 'name')
-          .sort({priority: 'desc'})
           .limit(CACHE_NUMBER * 2) // lot of prioritized rooms could be already
                                    // in Redis list
           .exec(function (err, result) {
@@ -155,7 +153,8 @@ var retriever = function (app, fn) {
               : 0,
             onlines: 0,
             mode: room.mode,
-            type: 'room'
+            type: 'room',
+            priority: room.priority
           };
           if (room.group) {
             data.group_id = room.group.id;
@@ -206,8 +205,7 @@ var retriever = function (app, fn) {
       },
 
       function sortList (roomsData, callback) {
-        roomsData = _.sortBy(roomsData, 'onlines')
-          .reverse(); // desc
+        roomsData = _.sortBy(roomsData, 'priority').reverse(); // desc
         return callback(null, roomsData);
       },
 
