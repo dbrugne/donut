@@ -464,12 +464,12 @@ var MainView = Backbone.View.extend({
       return;
     }
 
-    var model = rooms.get(roomId);
+    /** var model = rooms.get(roomId);
     if (!model) {
       return;
-    }
+    }*/
 
-    var view = new DrawerRoomUsersView({model: model});
+    var view = new DrawerRoomUsersView({room_id: roomId});
     this.drawerView.setSize('450px').setView(view).open();
   },
   openRoomAccess: function (event) {

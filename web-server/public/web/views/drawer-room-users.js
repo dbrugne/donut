@@ -5,6 +5,7 @@ var client = require('../libs/client');
 var RoomUsersTableConfirmation = require('./drawer-room-users-table');
 var keyboard = require('../libs/keyboard');
 var i18next = require('i18next-client');
+var currentUser = require('../models/current-user');
 
 var DrawerRoomUsersView = Backbone.View.extend({
   template: require('../templates/drawer-room-users.html'),
@@ -31,7 +32,7 @@ var DrawerRoomUsersView = Backbone.View.extend({
   },
 
   initialize: function (options) {
-    this.model = options.model;
+    this.roomId = options.room_id;
 
     this.listenTo(client, 'room:ban', this.render);
     this.listenTo(client, 'room:deban', this.render);
@@ -41,17 +42,35 @@ var DrawerRoomUsersView = Backbone.View.extend({
     this.listenTo(client, 'room:op', this.render);
     this.listenTo(client, 'room:deop', this.render);
 
-    var isOwner = this.model.currentUserIsOwner();
-    var isOp = this.model.currentUserIsOp();
-    var isAdmin = this.model.currentUserIsAdmin();
+    this.reload();
+  },
 
-    if (this.model.get('mode') !== 'private' || (!isOwner && !isAdmin && !isOp)) {
+  reload: function () {
+    var what = {
+      more: true,
+      users: false,
+      admin: true
+    };
+    client.roomRead(this.roomId, what, _.bind(function (data) {
+      if (!data.err) {
+        this.onResponse(data);
+      }
+    }, this));
+  },
+
+  onResponse: function (data) {
+    data.isOwner = currentUser.get('id') === data.owner_id;
+    data.isAdmin = currentUser.get('admin');
+    var user = _.find(data.users, currentUser.get('id'));
+    data.isOp = (!data.isOwner && !data.isAdmin) ? user.is_op : false;
+
+    if (data.mode !== 'private' || (!data.isOwner && !data.isAdmin && !data.isOp)) {
       this.types = _.without(this.types, 'allowed');
-    } if (!isOwner && !isAdmin && !isOp) {
+    } if (!data.isOwner && !data.isAdmin && !data.isOp) {
       this.types = _.without(this.types, 'ban', 'devoice');
     }
 
-    this.$el.html(this.template({room: this.model.toJSON(), type: this.types}));
+    this.$el.html(this.template({room: data, type: this.types}));
     this.numberUsers = this.$('.number');
     this.search = this.$('input[type=text]');
     this.pagination = this.$('.paginate');
@@ -60,11 +79,12 @@ var DrawerRoomUsersView = Backbone.View.extend({
 
     this.tableView = new RoomUsersTableConfirmation({
       el: this.$('.table-users'),
-      model: this.model
+      data: data
     });
 
-    this.render(null);
+    this.render();
   },
+
   render: function () {
     // ask for data
     var that = this;
@@ -73,12 +93,12 @@ var DrawerRoomUsersView = Backbone.View.extend({
       searchString: this.search.val(),
       selector: {start: (this.page - 1) * this.paginate, length: this.paginate}
     };
-    client.roomUsers(this.model.get('id'), searchAttributes, function (data) {
-      that.onResponse(data);
+    client.roomUsers(this.roomId, searchAttributes, function (data) {
+      that.onResponseUser(data);
     });
     return this;
   },
-  onResponse: function (data) {
+  onResponseUser: function (data) {
     this.tableView.render(data.users);
     this.numberUsers.text(data.count);
     this.$usersLabel.text(i18next.t('chat.users.users', {count: data.count}));

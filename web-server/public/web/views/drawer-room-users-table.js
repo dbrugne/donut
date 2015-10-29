@@ -24,9 +24,8 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
   },
 
   initialize: function (options) {
-    this.model = options.model;
-
-    if (this.model.currentUserIsOwner() || this.model.currentUserIsOp() || this.model.currentUserIsAdmin()) {
+    this.data = options.data;
+    if (this.data.isOwner || this.data.isOp || this.data.isAdmin) {
       this.op = true;
     }
   },
@@ -46,7 +45,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
   },
   opUser: function (event) {
     event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
+    if (!this.data.isOwner && !this.data.isOp && !this.data.isAdmin) {
       return false;
     }
 
@@ -57,7 +56,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({}, function () {
-      client.roomOp(that.model.get('id'), userId, function (err) {
+      client.roomOp(that.data.room_id, userId, function (err) {
         if (err) {
           return;
         }
@@ -66,7 +65,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
   },
   deopUser: function (event) {
     event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
+    if (!this.data.isOwner && !this.data.isOp && !this.data.isAdmin) {
       return false;
     }
 
@@ -77,7 +76,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({}, function () {
-      client.roomDeop(that.model.get('id'), userId, function (err) {
+      client.roomDeop(that.data.room_id, userId, function (err) {
         if (err) {
           return;
         }
@@ -86,7 +85,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
   },
   kickUser: function (event) {
     event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
+    if (!this.data.isOwner && !this.data.isOp && !this.data.isAdmin) {
       return false;
     }
 
@@ -97,12 +96,12 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({ input: true }, function (reason) {
-      client.roomKick(that.model.get('id'), userId, reason);
+      client.roomKick(that.data.room_id, userId, reason);
     });
   },
   banUser: function (event) {
     event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
+    if (!this.data.isOwner && !this.data.isOp && !this.data.isAdmin) {
       return false;
     }
 
@@ -113,12 +112,12 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({ input: true }, function (reason) {
-      client.roomBan(that.model.get('id'), userId, reason);
+      client.roomBan(that.data.room_id, userId, reason);
     });
   },
   debanUser: function (event) {
     event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
+    if (!this.data.isOwner && !this.data.isOp && !this.data.isAdmin) {
       return false;
     }
 
@@ -129,12 +128,12 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({}, function () {
-      client.roomDeban(that.model.get('id'), userId);
+      client.roomDeban(that.data.room_id, userId);
     });
   },
   voiceUser: function (event) {
     event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
+    if (!this.data.isOwner && !this.data.isOp && !this.data.isAdmin) {
       return false;
     }
 
@@ -145,12 +144,12 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({}, function () {
-      client.roomVoice(that.model.get('id'), userId);
+      client.roomVoice(that.data.room_id, userId);
     });
   },
   devoiceUser: function (event) {
     event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
+    if (!this.data.isOwner && !this.data.isOp && !this.data.isAdmin) {
       return false;
     }
 
@@ -161,7 +160,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({}, function () {
-      client.roomDevoice(that.model.get('id'), userId);
+      client.roomDevoice(that.data.room_id, userId);
     });
   },
 
