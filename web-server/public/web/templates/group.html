@@ -62,6 +62,12 @@
                 <div class="mt20">
                     <%= t('chat.blocked.groupbanned', {at: banned_at}) %>
                 </div>
+            <% if (typeof reason !== 'undefined') { %>
+            <p class="reason">
+                <span class="title"><%= t('chat.blocked.reason') %></span>
+                <span class="reason"><i class="icon icon-quote"></i><%- reason %></span>
+            </p>
+            <% } %>
             <% } %>
         </div>
         <% if (group.has_password && !isMember) { %>

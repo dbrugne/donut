@@ -90,7 +90,7 @@ handler.call = function (data, session, next) {
         return callback('room-not-found');
       }
 
-      if (!room.isIn(user.id)) {
+      if (!room.isIn(user.id) && !user.admin) {
         return callback('not-in');
       }
 
