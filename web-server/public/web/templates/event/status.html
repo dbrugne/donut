@@ -1,5 +1,5 @@
 <% var _icon = (stype === 'in' || stype === 'out') ? stype : 'plug';  %>
-<div class="block inout unviewed" id="<%= data.id %>" data-time="<%= data.time %>">
+<div class="block inout <% if (unviewed) { print('unviewed'); } %>" id="<%= data.id %>" data-time="<%= data.time %>">
     <div class="event <%= stype %>" title="<%= data.username %> <%= t('chat.notifications.' + stype) %> <%= data.dateshort %>">
         <div class="text flex-parent center">
             <div class="avatar open-user-profile" data-user-id="<%= data.user_id %>" style="background-image: url(<%= data.avatar %>)"></div>
