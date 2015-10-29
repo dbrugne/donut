@@ -127,7 +127,8 @@ handler.call = function (data, session, next) {
             username: ban.user.username,
             avatar: ban.user._avatar(),
             color: ban.user.color,
-            banned_at: ban.banned_at
+            banned_at: ban.banned_at,
+            reason: ban.reason
           };
           read.bans.push(el);
         });

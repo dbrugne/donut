@@ -64,8 +64,9 @@ var GroupView = Backbone.View.extend({
       isBanned: !!bannedObject,
       group: group
     };
-    if (bannedObject !== undefined) {
+    if (typeof bannedObject !== 'undefined') {
       data.banned_at = date.longDate(bannedObject.banned_at);
+      data.reason = bannedObject.reason;
     }
 
     var html = this.template(data);
