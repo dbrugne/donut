@@ -8,7 +8,7 @@ var confirmationView = require('./modal-confirmation');
 var date = require('../libs/date');
 
 var DrawerGroupUsersTableView = Backbone.View.extend({
-  template: require('../templates/drawer-room-access-table.html'),
+  template: require('../templates/drawer-group-access-table.html'),
 
   paginationTemplate: require('../templates/pagination.html'),
 
