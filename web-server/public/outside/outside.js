@@ -25,7 +25,7 @@ if ($landing.length) {
   var passwordPattern = /(.{4,255})$/i;
 
   var searchFunction = function (search, skip, replace) {
-    $.ajax('https://donut.local/rest/search?limit=' + limit + '&skip=' + skip + '&q=' + search, {
+    $.ajax(window.location.protocol + '//' + window.location.host + '/rest/search?limit=' + limit + '&skip=' + skip + '&q=' + search, {
       success: function (response) {
         var list = _.union(
           response.rooms
