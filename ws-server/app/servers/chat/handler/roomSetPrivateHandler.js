@@ -53,7 +53,7 @@ handler.call = function (data, session, next) {
         if (err) {
           return callback(err);
         }
-        if (group.default !== data.room_id) {
+        if (group.default.toString() === data.room_id) {
           return callback("params-room-id");
         }
         return callback(null);
