@@ -42,7 +42,9 @@ module.exports = function (req, res, next, roomname) {
           created_at: model.created_at,
           lastjoin_at: model.lastjoin_at,
           activity: model.activity,
-          mode: model.mode
+          mode: model.mode,
+          allow_user_request: model.allow_user_request,
+          allow_group_member: model.allow_group_member
         };
 
         if (model.group) {
