@@ -240,43 +240,6 @@
       width: 100px;
     }
   }
-  .user-list {
-    .item { border:2px solid transparent;
-      .avatar { background-size:contain; }
-    }
-    .item.op { border: 2px solid @cl-success; .border-radius(5px); height:34px;
-      &::after {
-        .icon-op;
-        position: absolute;
-        left: -5px;
-        z-index: 0;
-        top: -7px;
-        border-radius: 50%;
-        color: @cl-success;
-        font-size: 16px;
-        background-color: #FFF;
-      }
-      .avatar {
-        .border-radius(3px);
-      }
-    }
-    .item.owner { border: 2px solid @cl-warning; .border-radius(5px); height:34px;
-      &::after {
-        .icon-owner;
-        position: absolute;
-        left: 3px;
-        z-index: 0;
-        top: -18px;
-        border-radius: 50%;
-        padding: 5px;
-        color: @cl-warning;
-        font-size: 16px;
-      }
-      .avatar {
-        .border-radius(3px);
-      }
-    }
-  }
   .table-users {
     img {
       width: 20px;
