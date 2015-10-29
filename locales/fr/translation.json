@@ -775,7 +775,7 @@
           "placeholder": "Nom du donut",
           "submit": "Créer le donut",
           "group": "Déjà propriétaire d'une communauté ? Vous voulez créer un espace dédié à vos utilisateurs ? Vous pouvez <a href=\"#\" class=\"open-group-create\">créer une communauté</a>.",
-          "description": "Vous êtes sur le point de créer un donut sur l'espace global, si vous voulez créer un donut dans une communauté auquel vous appartenez, aller sur la page de cette communauté et clicker sur \"Créer un Donut\""
+          "description": "Vous êtes sur le point de créer un donut sur l'espace global, si vous voulez créer un donut dans une communauté auquel vous appartenez, aller sur la page de cette communauté et cliquer sur \"Créer un Donut\""
         },
         "edit": {
           "othersettings": "Autres paramètres",
