@@ -448,7 +448,7 @@ roomSchema.methods.getIdentifier = function () {
     return '#' + this.name;
   }
   if (this.group.name) {
-    return  '#' + this.group.name + '/' + this.name;
+    return '#' + this.group.name + '/' + this.name;
   }
 };
 
