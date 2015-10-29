@@ -124,7 +124,7 @@ var DrawerGroupEditView = Backbone.View.extend({
     client.groupUpdate(this.groupId, updateData, _.bind(function (data) {
       this.$('.errors').hide();
       if (data.err) {
-        return this.editError(data);
+        return this.editError(data.err);
       }
       this.trigger('close');
     }, this));
@@ -138,7 +138,7 @@ var DrawerGroupEditView = Backbone.View.extend({
     client.groupUpdate(this.groupId, updateData, function (d) {
       that.$('.errors').hide();
       if (d.err) {
-        that.editError(d);
+        that.editError(d.err);
       }
     });
   },
@@ -165,12 +165,8 @@ var DrawerGroupEditView = Backbone.View.extend({
     return true;
   },
 
-  editError: function (dataErrors) {
-    var message = '';
-    _.each(dataErrors.err, function (error) {
-      message += i18next.t('chat.form.errors.' + error, {defaultValue: 'unknown'}) + '<br>';
-    });
-    this.$('.errors').html(message).show();
+  editError: function (err) {
+    this.$('.errors').html(i18next.t('chat.form.errors.' + err, {defaultValue: i18next.t('global.unknownerror')})).show();
   },
 
   initializeTooltips: function () {

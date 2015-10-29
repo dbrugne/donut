@@ -103,7 +103,7 @@ var DrawerRoomCreateView = Backbone.View.extend({
         } else {
           uri = urls({group_name: this.group_name, name: name}, 'room', 'uri');
         }
-        var error = i18next.t('chat.form.errors.' + response.err, {name: name, uri: uri, defaultValue: 'unknown'});
+        var error = i18next.t('chat.form.errors.' + response.err, {name: name, uri: uri, defaultValue: i18next.t('global.unknownerror')});
         return this.setError(error);
       } else if (response.code === 500) {
         return this.setError(i18next.t('global.unknownerror'));

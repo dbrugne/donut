@@ -66,7 +66,7 @@ var DrawerRoomDeleteView = Backbone.View.extend({
 
     client.roomDelete(this.roomId, _.bind(function (response) {
       if (response.err) {
-        return this.setError(i18next.t('chat.form.errors.' + response.err, {defaultValue: 'unknown'}));
+        return this.setError(i18next.t('chat.form.errors.' + response.err, {defaultValue: i18next.t('global.unknownerror')}));
       }
 
       app.trigger('alert', 'info', i18next.t('chat.form.room-form.edit.room.delete.success'));

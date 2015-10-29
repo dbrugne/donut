@@ -250,7 +250,7 @@ var RoomAccessView = Backbone.View.extend({
 
     client.roomUpdate(this.roomId, {password: this.getPassword()}, _.bind(function (data) {
       if (data.err) {
-        return this.setError(i18next.t('chat.form.errors.' + data.err, {defaultValue: 'unknown'}));
+        return this.setError(i18next.t('chat.form.errors.' + data.err, {defaultValue: i18next.t('global.unknownerror')}));
       }
       this.trigger('close');
     }, this));
@@ -260,7 +260,7 @@ var RoomAccessView = Backbone.View.extend({
 
     client.roomUpdate(this.roomId, {disclaimer: this.$conditions.val()}, _.bind(function (data) {
       if (data.err) {
-        return this.setError(i18next.t('chat.form.errors.' + data.err, {defaultValue: 'unknown'}));
+        return this.setError(i18next.t('chat.form.errors.' + data.err, {defaultValue: i18next.t('global.unknownerror')}));
       }
       this.trigger('close');
     }, this));

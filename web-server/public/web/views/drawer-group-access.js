@@ -234,7 +234,7 @@ var GroupAccessView = Backbone.View.extend({
 
     client.groupUpdate(this.model.get('group_id'), {password: this.getPassword()}, _.bind(function (data) {
       if (data.err) {
-        return this.setError(i18next.t('chat.form.errors.' + data.err, {defaultValue: 'unknown'}));
+        return this.setError(i18next.t('chat.form.errors.' + data.err, {defaultValue: i18next.t('global.unknownerror')}));
       }
       this.trigger('close');
     }, this));
@@ -247,7 +247,7 @@ var GroupAccessView = Backbone.View.extend({
 
     client.groupUpdate(this.model.get('group_id'), {disclaimer: this.$conditions.val()}, _.bind(function (data) {
       if (data.err) {
-        return this.setError(i18next.t('chat.form.errors.' + data.err, {defaultValue: 'unknown'}));
+        return this.setError(i18next.t('chat.form.errors.' + data.err, {defaultValue: i18next.t('global.unknownerror')}));
       }
       this.trigger('close');
     }, this));

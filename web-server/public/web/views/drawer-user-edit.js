@@ -116,7 +116,7 @@ var DrawerUserEditView = Backbone.View.extend({
     client.userUpdate(updateData, function (data) {
       that.$('.errors').hide();
       if (data.err) {
-        return that.editError(data);
+        return that.editError(data.err);
       }
       that.trigger('close');
     });
@@ -129,7 +129,7 @@ var DrawerUserEditView = Backbone.View.extend({
     client.userUpdate(updateData, function (d) {
       that.$('.errors').hide();
       if (d.err) {
-        that.editError(d);
+        that.editError(d.err);
       }
     });
   },
@@ -141,7 +141,7 @@ var DrawerUserEditView = Backbone.View.extend({
     client.userUpdate(updateData, function (d) {
       that.$('.errors').hide();
       if (d.err) {
-        that.editError(d);
+        that.editError(d.err);
       }
     });
   },
@@ -164,12 +164,8 @@ var DrawerUserEditView = Backbone.View.extend({
     this.$('.counter').html(i18next.t('chat.form.common.edit.left', {count: 200 - this.$('#userBio').val().length}));
   },
 
-  editError: function (dataErrors) {
-    var message = '';
-    _.each(dataErrors.err, function (error) {
-      message += i18next.t('chat.form.errors.' + error, {defaultValue: 'unknown'}) + '<br>';
-    });
-    this.$('chat.form.errors').html(message).show();
+  editError: function (err) {
+    this.$('chat.form.errors').html(i18next.t('chat.form.errors.' + err, {defaultValue: i18next.t('global.unknownerror')})).show();
   }
 });
 
