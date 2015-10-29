@@ -178,8 +178,14 @@ handler.call = function (data, session, next) {
         }
       }
 
-      if (_.has(data.data, 'allow_user_request')) {
-        sanitized.allow_user_request = data.data.allow_user_request;
+      if (room.mode === 'public') {
+        if (_.has(data.data, 'allow_user_request')) {
+          errors.allow_user_request = 'invalid-mode';
+        }
+      } else {
+        if (_.has(data.data, 'allow_user_request')) {
+          sanitized.allow_user_request = data.data.allow_user_request;
+        }
       }
 
       if (Object.keys(errors).length > 0) {
@@ -252,7 +258,7 @@ handler.call = function (data, session, next) {
     function broadcast (sanitized, callback) {
       // notify only certain fields
       var sanitizedToNotify = {};
-      var fieldToNotify = ['avatar', 'poster', 'color'];
+      var fieldToNotify = ['avatar', 'poster', 'color', 'allow_group_member'];
       _.each(Object.keys(sanitized), function (key) {
         if (fieldToNotify.indexOf(key) !== -1) {
           if (key === 'avatar') {
@@ -264,6 +270,8 @@ handler.call = function (data, session, next) {
             sanitizedToNotify['color'] = sanitized[key];
             sanitizedToNotify['avatar'] = room._avatar();
             sanitizedToNotify['poster'] = room._poster();
+          } else if (key === 'allow_group_member') {
+            sanitizedToNotify['allow_group_member'] = !!sanitized[key];
           }
         }
       });

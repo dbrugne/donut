@@ -39,6 +39,7 @@ var RoomView = Backbone.View.extend({
     this.listenTo(this.model, 'change:poster', this.onPoster);
     this.listenTo(this.model, 'change:posterblured', this.onPosterBlured);
     this.listenTo(this.model, 'change:color', this.onColor);
+    this.listenTo(this.model, 'change:allow_group_member', this.onChangeAllowGroupMember);
     this.listenTo(this.model, 'setPrivate', this.onPrivate);
 
     this.render();
@@ -60,11 +61,6 @@ var RoomView = Backbone.View.extend({
       model: this.model,
       collection: this.model.users
     });
-
-    this.$privateTooltip = this.$('.private');
-    if (this.model.get('mode') === 'public') {
-      this.$privateTooltip.hide();
-    }
   },
   render: function () {
     var data = this.model.toJSON();
@@ -292,9 +288,14 @@ var RoomView = Backbone.View.extend({
   onPosterBlured: function (model, url) {
     this.$('div.blur').css('background-image', 'url(' + url + ')');
   },
+  onChangeAllowGroupMember: function (model, value, options) {
+    this.$('span.label').attr('data-original-title', i18next.t('global.mode.description.private' + (value ? '-group' : '')));
+    this.$('span.label').text(i18next.t('global.mode.title.private' + (value ? '-group' : '')));
+  },
   onPrivate: function (data) {
     this.model.set('mode', 'private');
-    this.$privateTooltip.show();
+    this.$('span.label').attr('data-original-title', i18next.t('global.mode.description.private' + (data.allow_user_request ? '-invites' : '') + (data.allow_group_member ? '-group' : '')));
+    this.$('span.label').text(i18next.t('global.mode.title.private' + (data.allow_user_request ? '-invites' : '') + (data.allow_group_member ? '-group' : '')));
   },
 
   /**
