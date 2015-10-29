@@ -41,6 +41,10 @@ handler.call = function (data, session, next) {
       if (room.permanent === true) {
         return callback('permanent');
       }
+
+      if (room.name === 'welcome') {
+        return callback('params-room-id');
+      }
       return callback(null);
     },
 

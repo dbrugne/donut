@@ -89,6 +89,12 @@ var RoomView = Backbone.View.extend({
     // room mode
     data.mode = this.model.get('mode');
 
+    // room default
+    data.default = (this.model.get('name') === 'welcome');
+
+    // room group
+    data.isgroup = (this.model.get('group_id'));
+
     // share widget
     var share = 'share-room-' + this.model.get('id');
     this.share = {

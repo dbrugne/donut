@@ -54,9 +54,10 @@ var RoomAccessView = Backbone.View.extend({
       admin: true
     };
     client.roomRead(this.roomId, what, _.bind(function (data) {
-      if (!data.err) {
-        this.onResponse(data);
+      if (data.err || (data.group_id && data.name === 'welcome')) {
+        return this.trigger('close');
       }
+      this.onResponse(data);
     }, this));
   },
   onResponse: function (data) {
