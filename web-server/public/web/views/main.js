@@ -4,6 +4,7 @@ var Backbone = require('backbone');
 var donutDebug = require('../libs/donut-debug');
 var app = require('../models/app');
 var client = require('../libs/client');
+var i18next = require('i18next-client');
 var currentUser = require('../models/current-user');
 var groups = require('../collections/groups');
 var rooms = require('../collections/rooms');
@@ -328,18 +329,24 @@ var MainView = Backbone.View.extend({
     var groupId = $(event.currentTarget).data('groupId');
     var groupName = $(event.currentTarget).data('groupName');
     var view;
-    if (groupId) {
-      view = new DrawerRoomCreateView({
-        name: name,
-        group_id: groupId,
-        group_name: groupName
-      });
-    } else {
+
+    if (!groupId) {
       view = new DrawerRoomCreateView({name: name});
+      this.drawerView.setSize('450px').setView(view).open();
+      return view.focusField();
     }
 
+    if (!groups.isMemberOwnerAdmin(groupId)) {
+      return app.trigger('alert', 'error', i18next.t('chat.form.errors.not-admin-owner-groupowner'));
+    }
+
+    view = new DrawerRoomCreateView({
+      name: name,
+      group_id: groupId,
+      group_name: groupName
+    });
     this.drawerView.setSize('450px').setView(view).open();
-    view.focusField();
+    return view.focusField();
   },
   openGroupCreate: function () {
     var view = new DrawerGroupCreateView();

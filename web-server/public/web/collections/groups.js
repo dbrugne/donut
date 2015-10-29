@@ -111,7 +111,16 @@ var GroupsCollection = Backbone.Collection.extend({
     }
 
     model.onDeop(data); // need to refresh group users list
+  },
+  isMemberOwnerAdmin: function (groupId) {
+    var model;
+    if (!groupId || !(model = this.get(groupId))) {
+      return false;
+    }
+
+    return (model.currentUserIsMember() || model.currentUserIsAdmin() || model.currentUserIsOwner());
   }
+
 });
 
 module.exports = new GroupsCollection();
