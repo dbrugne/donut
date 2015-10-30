@@ -79,8 +79,11 @@ handler.call = function (data, session, next) {
     },
 
     function notification (event, callback) {
-      Notifications(that.app).getType('roomjoinrequest').create(room.owner.id, room, event, function (err) {
-        return callback(err, event);
+      var ids = room.getIdsByType('op');
+      async.eachLimit(ids, 10, function (id, fn) {
+        Notifications(that.app).getType('roomjoinrequest').create(id, room, event,  fn);
+      }, function (err) {
+        return callback(err);
       });
     }
 
