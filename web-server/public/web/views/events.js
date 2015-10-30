@@ -25,11 +25,20 @@ module.exports = Backbone.View.extend({
 
   scrollVisibleTimeout: null,
 
+  chatmode: false,
+
   scrollWasOnBottom: true, // ... before unfocus (scroll position is not
                            // available when discussion is hidden (default:
                            // true, for first focus)
 
   initialize: function () {
+    this.listenTo(client, 'preferences:update', _.bind(function () {
+      if (currentUser.discussionMode() !== this.chatmode) {
+        this.$realtime.toggleClass('compact');
+        this.chatmode = currentUser.discussionMode();
+      }
+    }, this));
+    this.chatmode = currentUser.discussionMode();
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(this.model, 'windowRefocused', this.onScroll);
     this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
@@ -82,7 +91,7 @@ module.exports = Backbone.View.extend({
       ? date.shortTimeSeconds(this.model.get('created_at'))
       : '';
     var html = this.template({
-      chatmode: currentUser.discussionMode(),
+      chatmode: this.chatmode,
       model: modelJson,
       isOwner: (this.model.get('type') === 'room' && this.model.currentUserIsOwner())
     });
