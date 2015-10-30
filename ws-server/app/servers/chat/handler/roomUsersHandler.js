@@ -133,7 +133,7 @@ handler.call = function (data, session, next) {
       return callback(null, query);
     },
 
-    function query (query, callback) {
+    function query (query, callback) { // @todo yfuks use MongoDB Aggregation to make only one query
       if (!data.attributes.selector) {
         data.attributes.selector = {start: 0, length: 0};
       }
