@@ -37,7 +37,7 @@ var callback = function (req, res) {
   });
 };
 
-var bouncerCallback = function(req, res) {
+var bouncerCallback = function (req, res) {
   bouncer.set(req, req.room.chat);
   res.redirect('/login');
 };
