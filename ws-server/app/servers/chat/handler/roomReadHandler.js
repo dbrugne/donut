@@ -147,6 +147,7 @@ handler.call = function (data, session, next) {
 
         var max = 42;
         read.users = [];
+        read.ops = [];
         read.users_count = room.users.length;
         read.users_more = false;
 
@@ -163,6 +164,7 @@ handler.call = function (data, session, next) {
           var op = decorate(u);
           op.is_op = true;
           alreadyIn.push(u.id);
+          read.ops.push(u.id);
           read.users.push(op);
         });
 

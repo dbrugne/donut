@@ -11,7 +11,6 @@ var GroupModel = Backbone.Model.extend({
     };
   },
   initialize: function () {
-    this.listenTo(client, 'group:updated', this.onUpdated);
   },
   onUpdated: function (data) {
     var that = this;

@@ -47,8 +47,6 @@ module.exports = Backbone.View.extend({
       .find('.ctn')
       .first()
       .append('<div class="text-spammed">' + i18next.t('chat.message.text-spammed') + '</div>');
-
-    app.trigger('scrollDown');
   },
   onMarkedAsUnspam: function (room) {
     this.$('#' + room.event)
@@ -57,8 +55,6 @@ module.exports = Backbone.View.extend({
       .remove();
 
     this.$('#' + room.event).find('.remask-spammed-message').remove();
-
-    app.trigger('scrollDown');
   },
   onViewSpammedMessage: function (event) {
     event.preventDefault();
@@ -69,8 +65,6 @@ module.exports = Backbone.View.extend({
     textSpammed.remove();
 
     ctn.prepend('<a class="remask-spammed-message label label-danger">' + i18next.t('chat.message.text-remask') + '</a>');
-
-    app.trigger('scrollDown');
   },
   onRemaskSpammedMessage: function (event) {
     event.preventDefault();
@@ -83,7 +77,5 @@ module.exports = Backbone.View.extend({
       .append('<div class="text-spammed">' + i18next.t('chat.message.text-spammed') + '</div>');
 
     ctn.find('.remask-spammed-message').remove();
-
-    app.trigger('scrollDown');
   }
 });

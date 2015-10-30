@@ -61,8 +61,7 @@ var DrawerRoomUsersView = Backbone.View.extend({
   onResponse: function (data) {
     data.isOwner = currentUser.get('id') === data.owner_id;
     data.isAdmin = currentUser.get('admin');
-    var user = _.find(data.users, currentUser.get('id'));
-    data.isOp = (!data.isOwner && !data.isAdmin) ? user.is_op : false;
+    data.isOp = _.find(data.ops, currentUser.get('user_id'));
 
     if (data.mode !== 'private' || (!data.isOwner && !data.isAdmin && !data.isOp)) {
       this.types = _.without(this.types, 'allowed');
