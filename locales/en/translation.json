@@ -1224,7 +1224,8 @@
     "fail": "Unable to send email, retry later."
   },
   "preferences": {
-    "title": "Notifications",
+    "title": "Settings",
+    "appearance": "appearance",
     "sounds": {
       "title": "Sounds",
       "test": "try"
@@ -1233,6 +1234,11 @@
       "title": "Exit confirmation",
       "label-true": "Request confirmation before I leave DONUT",
       "label-false": "No confirmation when I leave DONUT"
+    },
+    "chatmode": {
+      "title": "discussion mode",
+      "label-false": "Classic, nicer, more space",
+      "label-true": "Compact, display more messages on screen"
     },
     "welcome": {
       "title": "Welcome pop-up",

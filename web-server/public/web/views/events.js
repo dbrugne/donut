@@ -12,6 +12,7 @@ var EventsSpamView = require('./events-spam');
 var EventsEditView = require('./events-edit');
 var windowView = require('./window');
 var EventsEngine = require('../libs/events');
+var currentUser = require('../models/current-user');
 
 module.exports = Backbone.View.extend({
   template: require('../templates/events.html'),
@@ -81,6 +82,7 @@ module.exports = Backbone.View.extend({
       ? date.shortTimeSeconds(this.model.get('created_at'))
       : '';
     var html = this.template({
+      chatmode: currentUser.discussionMode(),
       model: modelJson,
       isOwner: (this.model.get('type') === 'room' && this.model.currentUserIsOwner())
     });

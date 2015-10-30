@@ -63,6 +63,7 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, data, globalCall
           welcomeEvent.preferences[ 'browser:welcome' ] = (user.preferences && user.preferences[ 'browser:welcome' ] === true);
           welcomeEvent.preferences[ 'browser:sounds' ] = (user.preferences && user.preferences[ 'browser:sounds' ] === true);
           welcomeEvent.preferences[ 'notif:channels:desktop' ] = (user.preferences && user.preferences[ 'notif:channels:desktop' ] === true);
+          welcomeEvent.preferences[ 'chatmode:compact' ] = (user.preferences && user.preferences[ 'chatmode:compact' ] === true);
 
           return callback(null, user);
         });

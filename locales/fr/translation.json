@@ -1224,7 +1224,8 @@
     "fail": "Impossible d'envoyer le message, veuillez réessayer plus tard."
   },
   "preferences": {
-    "title": "Mes notifications",
+    "title": "Mes préférences",
+    "appearance": "affichage",
     "sounds": {
       "title": "Sons",
       "test": "tester"
@@ -1233,6 +1234,11 @@
       "title": "Confirmation de sortie",
       "label-true": "Me demander une confirmation avant de quitter l'application",
       "label-false": "Pas de confirmation quand je quitte l'application"
+    },
+    "chatmode": {
+      "title": "Mode de discussion",
+      "label-false": "Classique, plus joli, plus d'espace",
+      "label-true": "Compact, affiche plus de messages à l'écran"
     },
     "welcome": {
       "title": "Fenêtre de bienvenue",

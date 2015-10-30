@@ -70,6 +70,16 @@ var CurrentUserModel = UserModel.extend({
     this.set('preferences', newPreferences, options);
   },
 
+  discussionMode: function () {
+    var preferences = this.get('preferences');
+
+    // if no preference set OR browser:sound equal to true, we play
+    if (!preferences || typeof preferences[ 'chatmode:compact' ] === 'undefined') {
+      return false;
+    }
+
+    return (preferences[ 'chatmode:compact' ] === true);
+  },
   shouldDisplayExitPopin: function () {
     var preferences = this.get('preferences');
 

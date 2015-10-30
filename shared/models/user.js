@@ -273,6 +273,7 @@ userSchema.statics.preferencesKeys = function () {
 
     'notif:usermessage': {default: true},
     'notif:roominvite': {default: true},
+    'chatmode:compact': {default: false},
 
     'room:notif:nothing:__what__': {default: false},
     'room:notif:usermention:__what__': {default: true},
