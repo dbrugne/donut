@@ -220,10 +220,15 @@ handler.call = function (data, session, next) {
 
       var event = {
         name: group.name,
-        room_id: group.id,
+        group_id: group.id,
         data: sanitizedToNotify
       };
-      that.app.globalChannelService.pushMessage('connector', 'group:updated', event, group.name, {}, callback);
+      var ids = group.getIdsByType('members');
+      async.each(ids, function (id, fn) {
+        that.app.globalChannelService.pushMessage('connector', 'group:updated', event, 'user:' + id, {}, fn);
+      }, function (err) {
+        return callback(err);
+      });
     }
 
   ], function (err) {
