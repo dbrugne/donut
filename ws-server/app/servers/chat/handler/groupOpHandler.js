@@ -71,7 +71,7 @@ handler.call = function (data, session, next) {
         return callback('default-room-not-found');
       }
 
-      RoomModel.findOne({ _id: group.default }).exec(function(err, room) {
+      RoomModel.findOne({ _id: group.default }).exec(function (err, room) {
         if (err) {
           return callback('default-room-not-found');
         }
