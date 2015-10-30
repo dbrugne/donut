@@ -27,6 +27,8 @@ var GroupView = Backbone.View.extend({
     this.listenTo(this.model, 'change:members', this.refreshUsers);
     this.listenTo(this.model, 'change:op', this.refreshUsers);
     this.listenTo(this.model, 'change:rooms', this.render);
+    this.listenTo(this.model, 'change:avatar', this.onAvatar);
+    this.listenTo(this.model, 'change:color', this.onColor);
     this.listenTo(this.model, 'redraw', this.render);
     this.render();
   },
@@ -157,6 +159,24 @@ var GroupView = Backbone.View.extend({
         return '<div class="username" style="' + this.dataset.bgcolor + '">@' + this.dataset.username + '</div>';
       }
     });
+  },
+  changeColor: function () {
+    if (this.model.get('focused')) {
+      app.trigger('changeColor', this.model.get('color'));
+    }
+  },
+
+  /**
+   * Update group details methods
+   */
+
+  onColor: function (model, value, options) {
+    this.onAvatar(model, model.get('avatar'), options);
+    this.changeColor();
+  },
+  onAvatar: function (model, value) {
+    var url = common.cloudinary.prepare(value, 100);
+    this.$('img.avatar').attr('src', url);
   },
   refreshUsers: function () {
     this.groupUsersView.render();
