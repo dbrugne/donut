@@ -205,7 +205,7 @@ roomSchema.methods.isInBanned = function (userId) {
     return;
   }
 
-  return _.find(this.bans, function (ban) {
+  var find = _.find(this.bans, function (ban) {
     if (ban.user._id) {
       // populated
       return (ban.user.id === userId);
@@ -213,6 +213,12 @@ roomSchema.methods.isInBanned = function (userId) {
       return (ban.user.toString() === userId);
     }
   });
+
+  if (find) {
+    return true;
+  }
+
+  return this.isGroupBanned(userId);
 };
 
 roomSchema.methods.isBanned = function (userId) {
