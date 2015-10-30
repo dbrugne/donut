@@ -274,15 +274,15 @@ module.exports = function (search, searchInUsers, searchInRooms, searchWithGroup
     var searchResults = {
       users: {
         list: userResults,
-        more: userResults.length >= limit
+        more: userResults.length.toString() === limit
       },
       rooms: {
         list: roomResults,
-        more: roomResults.length >= limit
+        more: roomResults.length.toString() === limit
       },
       groups: {
         list: groupResults,
-        more: groupResults.length >= limit
+        more: groupResults.length.toString() === limit
       }
     };
 
