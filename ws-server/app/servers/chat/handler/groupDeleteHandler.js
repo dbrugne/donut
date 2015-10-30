@@ -4,7 +4,6 @@ var logger = require('../../../../../shared/util/logger').getLogger('donut', __f
 var async = require('async');
 var RoomModel = require('../../../../../shared/models/room');
 var _ = require('underscore');
-var async = require('async');
 
 var Handler = function (app) {
   this.app = app;
