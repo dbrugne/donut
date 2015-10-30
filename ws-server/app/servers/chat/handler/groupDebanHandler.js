@@ -2,6 +2,7 @@
 var _ = require('underscore');
 var errors = require('../../../util/errors');
 var async = require('async');
+var RoomModel = require('../../../../../shared/models/room');
 var Notifications = require('../../../components/notifications');
 
 var Handler = function (app) {
@@ -21,6 +22,7 @@ handler.call = function (data, session, next) {
 
   var that = this;
 
+  var rooms = [];
   var event = {};
 
   async.waterfall(
@@ -72,11 +74,38 @@ handler.call = function (data, session, next) {
           by_avatar: user._avatar(),
           user_id: targetUser.id,
           username: targetUser.username,
-          avatar: targetUser._avatar()
+          avatar: targetUser._avatar(),
+          group_id: group.id,
+          group_name: '#' + group.name
         };
 
         that.app.globalChannelService.pushMessage('connector', 'group:deban', event, 'user:' + targetUser.id, {}, function (reponse) {
           callback(null);
+        });
+      },
+
+      function computeRoomsToProcess (callback) {
+        RoomModel.findByGroup(group._id)
+          .exec(function (err, dbrooms) {
+            if (err) {
+              return callback(err);
+            }
+            rooms = dbrooms;
+            return callback(err);
+          });
+      },
+
+      function broadcast (callback) {
+        async.each(rooms, function (r, callback) {
+          var e = _.clone(event);
+          e.room_id = r.id;
+          e.room_mode = r.mode;
+          e.room_name = r.name;
+          that.app.globalChannelService.pushMessage('connector', 'room:deban', e, 'user:' + targetUser.id, {}, function (reponse) {
+            callback(null);
+          });
+        }, function (err) {
+          return callback(err);
         });
       },
 
@@ -89,7 +118,7 @@ handler.call = function (data, session, next) {
     ],
     function (err) {
       if (err) {
-        return errors.getHandler('group:ban', next)(err);
+        return errors.getHandler('group:deban', next)(err);
       }
 
       return next(null, {success: true});
