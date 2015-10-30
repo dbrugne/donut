@@ -4,6 +4,7 @@ var logger = require('../../../../../shared/util/logger').getLogger('donut', __f
 var async = require('async');
 var RoomModel = require('../../../../../shared/models/room');
 var _ = require('underscore');
+var async = require('async');
 
 var Handler = function (app) {
   this.app = app;
@@ -49,7 +50,7 @@ handler.call = function (data, session, next) {
           if (err) {
             return callback(err);
           }
-          _.each(rooms, function (room) {
+          async.each(rooms, function (room, callback) {
             var event = {
               name: room.name,
               id: room.id,
@@ -62,6 +63,8 @@ handler.call = function (data, session, next) {
               } // not 'return', we delete even if error happen
               return callback(null);
             });
+          }, function (err) {
+            return callback(err);
           });
         });
     },
@@ -81,9 +84,11 @@ handler.call = function (data, session, next) {
           if (err) {
             return callback(err);
           }
-          _.each(rooms, function (room) {
+          async.each(rooms, function (room, callback) {
             room.deleted = true;
             room.save(callback);
+          }, function (err) {
+            return callback(err);
           });
         });
       group.deleted = true;
