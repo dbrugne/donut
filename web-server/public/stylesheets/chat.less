@@ -914,24 +914,36 @@
                   color: @cl-subtext30;
                 }
                 &.compact {
-                  .block {
-                    &.user { padding-top: 10px;
-                      .username, .avatar { display:none; }
+                  .block { .display-flex; z-index: 1; padding-left:0;
+                    &.user { padding-top: 5px; border-top: 1px solid @cl-subtext0; margin-top: 5px;
+                      .username { display:none; }
                     }
-                    &.message { z-index: 1; padding-left:0; .display-flex;
-                      .username { white-space: nowrap; display:inline !important; .ft-opensans-bold; font-size: 1.2rem; .flex-order(2); margin-right: 5px; }
-                      .ctn { .flex-order(3); }
-                      .date { white-space: nowrap; .flex-order(1); position:relative; top: initial; right: initial; margin-right: 5px;
+                    &.date { display:block; }
+                    &.date + .block { border-top: transparent; }
+                    &.message {
+                      .username { display:inline !important; .flex-order(2); margin-right: 5px; }
+                      .ctn { .flex-order(3); width: 100%; }
+                    }
+                    &.topic, &.promote {
+                      .event { .display-flex; z-index: 1;
+                        .text { .flex-order(2);
+                          i { font-size: 1.2rem; margin: auto; height: auto; width:auto; }
+                        }
                       }
                     }
-                    &.unviewed { content: ""; left: 0;
-                      top: 0;
-                      background-color: #E2E2FF;
-                      width: 100%;
-                      height: 100%;
-                      z-index: 0;
-
+                    &.inout {
+                      .username { display:inline; .flex-order(1); }
+                      i { .flex-order(2); margin:0 !important; }
                     }
+                    &.hello { font-size: 1.2rem; line-height: 1.2rem;
+                      .text { border:0; padding:0; }
+                    }
+                    .username { white-space: nowrap; .ft-opensans-bold; font-size: 1.2rem; }
+                    .avatar { display:none !important; }
+                    .date { white-space: nowrap; .flex-order(1); position:relative; top: initial; right: initial; margin-right: 5px;
+                      &.same { visibility: hidden; }
+                    }
+                    &.unviewed::before { content: ""; left: 0; top: 0; background-color: #E2E2FF; width: 100%; height: 100%; z-index: -1; }
                   }
                 }
               } // #chat #center .discussion .content .events .scrollable .scrollable-content .realtime

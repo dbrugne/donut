@@ -6,7 +6,7 @@
      <% if (data.spammed) { print('data-spammed="true"') }; %>
      <% if (data.edited) { print('data-edited="true"') }; %>
      >
-    <span class="username" style="display:none">@<%=data.username%></span>
+    <span class="username open-user-profile" data-user-id="<%= data.user_id %>"  style="display:none">@<%=data.username%></span>
     <div class="ctn">
         <div class="message-edit"><!-- message-edit view --></div>
         <% if (data.message) { %>
