@@ -62,27 +62,7 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function findDefaultRoom (callback) {
-      if (!group.default) {
-        return callback('default-room-not-found');
-      }
-
-      RoomModel.findOne({ _id: group.default }).exec(function(err, room) {
-        if (err) {
-          return callback('default-room-not-found');
-        }
-
-        return callback(null, room);
-      });
-    },
-
-    function removeUserFromDefault (room, callback) {
-      room.update({$pull: {op: targetUser._id}}, function (err) {
-        return callback(err, room);
-      });
-    },
-
-    function broadcast (room, callback) {
+    function broadcast (callback) {
       event = {
         by_user_id: user.id,
         by_username: user.username,
@@ -95,11 +75,37 @@ handler.call = function (data, session, next) {
       };
 
       that.app.globalChannelService.pushMessage('connector', 'group:deop', event, 'user:' + targetUser.id, {}, function (response) {
+        return callback(null);
+      });
+    },
+
+    function findDefaultRoom (callback) {
+      if (!group.default) {
+        return callback(null, null);
+      }
+
+      RoomModel.findOne({ _id: group.default }).exec(function(err, room) {
+        if (err) {
+          return callback('default-room-not-found');
+        }
+
         return callback(null, room);
       });
     },
 
+    function removeUserFromDefault (room, callback) {
+      if (!room) {
+        return callback(null, room);
+      }
+      room.update({$pull: {op: targetUser._id}}, function (err) {
+        return callback(err, room);
+      });
+    },
+
     function broadcastToDefaultRoom (room, callback) {
+      if (!room) {
+        return callback(null);
+      }
       event.room_id = group.default;
       that.app.globalChannelService.pushMessage('connector', 'room:deop', event, room.name, {}, function (response) {
         return callback(null);
