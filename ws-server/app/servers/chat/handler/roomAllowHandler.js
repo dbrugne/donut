@@ -40,7 +40,7 @@ handler.call = function (data, session, next) {
         return callback('room-not-found');
       }
 
-      if (!room.isOwner(currentUser.id) && session.settings.admin !== true) {
+      if (!room.isOwnerOrOp(currentUser.id) && session.settings.admin !== true) {
         return callback('not-admin-owner');
       }
 
