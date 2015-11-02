@@ -421,8 +421,8 @@
       "placeholder": "Explain why, visible in the donut (optional)",
       "placeholderarea": "200 character maximum",
       "label": "Explain why (optional)",
-      "cancel": "No, cancel",
-      "confirm": "Yes, confirm",
+      "cancel": "Cancel",
+      "confirm": "OK",
       "message": {
         "modechange": "WARNING this action is irreversible.",
         "refuseuser": "You are about to refuse @__username__",
