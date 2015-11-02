@@ -119,7 +119,8 @@
     "signup": "créer un compte",
     "orsignup": "ou créer un compte",
     "forgot": "mot de passe oublié",
-    "join": "Accès direct",
+    "join": "rejoindre",
+    "direct-access": "accès direct",
     "discuss": "discuter",
     "account": "mon compte",
     "mute": "son actif",
@@ -431,8 +432,7 @@
         "ban-group-user": "Vous allez bannir l'utilisateur @__username__ de cette communauté",
         "deban-group-user": "Vous allez débannir l'utilisateur @__username__ de cette communauté",
         "invite": "Vous allez autoriser l'accès à @__username__. Une notification va lui être adressée pour l'inviter à rejoindre #__name__.",
-        "requestallowance": "Vous allez envoyer une demande d'accés pour #__name__. Le créateur du donut aura accès à votre vrais nom et addresse mail.",
-        "requestallowancegroup": "Vous allez envoyer une demande d'accés pour #__name__. Le créateur de la communauté aura accès à votre vrais nom et addresse mail."
+        "requestallowance": "<strong>Demander à devenir membre.</strong><br>Le créateur de la communauté va avoir accès à votre vrai nom et votre e-mail."
       }
     },
     "commands": {
@@ -667,7 +667,7 @@
       "disclaimer-public": "Ce donut est public. N'importe quel utilisateur pourra y accéder.",
       "disclaimer-password": "Vous avez également choisi de mettre un mot de passe. Les utilisateurs avec le mot de passe pourront y entrer sans avoir besoin d'être invités au préalable.",
       "disclaimer-changing": "Vous pouvez passer ce donut en mode privé. Alors, seuls les utilisateurs que vous autoriserez pourront rejoindre, participer et accéder à l'historique. L'accès se fera par invitation et/ou par mot de passe. Les membres actuels de donut public resteront autorisés dans ce donut une fois qu'il sera devenu privé. Attention, cette action est irréversible.",
-      "disclaimer-group": "Tous les membres de cette communauté peuvent créer un donut dans cette communauté est en gerer l'accès. Ils peuvent également rejoindre les donuts privés qui autorisent les membres de cette communauté. Les donuts publics de cette communauté sont accessibles par tous les utilisateurs du site.",
+      "disclaimer-group": "Les membres peuvent créer des donuts et les gérer au sein de la communauté. Ils peuvent rejoindre tout donut ouvert aux membres. A noter que les donuts publics sont accessibles à tous.",
       "close": "Fermer ce donut",
       "allowgroupmember": "Autoriser les membres de cette communauté à rejoindre ce donut"
     },
@@ -702,6 +702,11 @@
         }
       },
       "group-form": {
+        "mode": {
+          "disclaimer": {
+            "group-password": "Le mot de passe suffit pour rejoindre la communauté (sans invitation)."
+          }
+        },
         "create": {
           "label": "Créez une communauté",
           "help": "Une communauté est un espace regroupant vos donut et permettant à votre communauté de devenir membre et d'accèder à un groupe de donuts.",
@@ -764,8 +769,7 @@
           "disclaimer": {
             "public": "Tout utilisateur peut rejoindre, participer et accéder à l'historique. Vous disposez d'outils de modération.",
             "private": "Seuls les utilisateurs que vous autorisez pourront rejoindre, participer et accéder à l'historique. Vous disposez d'outils de modération.",
-            "password": "Vous pouvez également mettre un mot de passe. Les utilisateurs ayant le mot de passe pourront rejoindre le donut sans avoir besoin d'être invités au préalable.",
-            "group-password": "Vous pouvez également mettre un mot de passe. Les utilisateurs ayant le mot de passe pourront rejoindre la communauté sans avoir besoin d'être invités au préalable.",
+            "password": "Le mot de passe suffit pour rejoindre le donut (sans invitation).",
             "memberscondition": "Conditions d'entrée ou procédure"
           }
         },
@@ -855,7 +859,7 @@
     "administrator": "Administrateurs",
     "users": "Utilisateurs",
     "invite": "Inviter",
-    "ask-membership": "Demander l'accès",
+    "ask-membership": "Devenir membre",
     "blocked": "Saisissez le mot de passe d'accès direct à la communauté"
   },
   "account": {
