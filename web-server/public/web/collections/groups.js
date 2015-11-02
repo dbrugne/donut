@@ -3,7 +3,7 @@ var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var GroupModel = require('../models/group');
 var client = require('../libs/client');
-var app = require('../models/app');
+var app = require('../libs/app');
 var currentUser = require('../models/current-user');
 var urls = require('../../../../shared/util/url');
 

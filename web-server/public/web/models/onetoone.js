@@ -1,5 +1,5 @@
 var Backbone = require('backbone');
-var app = require('./app');
+var app = require('../libs/app');
 var client = require('../libs/client');
 var currentUser = require('./current-user');
 var EventModel = require('./event');

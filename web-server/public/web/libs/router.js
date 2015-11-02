@@ -1,6 +1,6 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
-var app = require('./../models/app');
+var app = require('./app');
 var client = require('./client');
 var groups = require('../collections/groups');
 var rooms = require('../collections/rooms');
