@@ -3,6 +3,7 @@ var errors = require('../../../util/errors');
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var async = require('async');
 var GroupModel = require('../../../../../shared/models/group');
+var UserModel = require('../../../../../shared/models/user');
 var Notifications = require('../../../components/notifications');
 
 var Handler = function (app) {
@@ -53,6 +54,8 @@ handler.call = function (data, session, next) {
     },
 
     function checkDefaultAndOwnerGroupRoom (callback) {
+      isRoomOwner = room.isOwner(user.id);
+
       if (!room.group) {
         return callback(null);
       }
@@ -72,7 +75,6 @@ handler.call = function (data, session, next) {
         }
 
         isGroupOwner = model.isOwner(user.id);
-        isRoomOwner = room.isOwner(user.id);
         return callback(null);
       });
     },
@@ -96,6 +98,22 @@ handler.call = function (data, session, next) {
         } // not 'return', we delete even if error happen
         return callback(null);
       });
+    },
+
+    function removeBlockedUser (callback) {
+      UserModel.update(
+        {
+          blocked: {$in: [room.id]}
+        },
+        {
+          $pull: {blocked: room.id}
+        },
+        {
+          multi: true
+        }
+      ).exec(function (err) {
+          return callback(err);
+        });
     },
 
     function destroy (callback) {

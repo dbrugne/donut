@@ -31,7 +31,7 @@ handler.call = function (data, session, next) {
         return callback('message-wrong-format');
       }
 
-      if (!room) {
+      if (!room || room.deleted) {
         return callback('room-not-found');
       }
 

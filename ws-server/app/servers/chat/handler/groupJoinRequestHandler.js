@@ -31,7 +31,7 @@ handler.call = function (data, session, next) {
         return callback('message-wrong-format');
       }
 
-      if (!group) {
+      if (!group || group.deleted) {
         return callback('group-not-found');
       }
 
