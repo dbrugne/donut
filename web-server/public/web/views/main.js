@@ -163,23 +163,6 @@ var MainView = Backbone.View.extend({
       $('#block-discussions').show();
     }
 
-    // Rooms
-    _.each(data.rooms, function (room) {
-      rooms.addModel(room);
-    });
-
-    // One to ones
-    _.each(data.onetoones, function (one) {
-      onetoones.addModel(one);
-    });
-
-    // blocked
-    _.each(data.blocked, function (lock) {
-      rooms.addModel(lock, lock.blocked
-        ? lock.blocked
-        : true);
-    });
-
     // only one time for each welcome event
     app.trigger('redrawNavigation');
 
@@ -192,7 +175,6 @@ var MainView = Backbone.View.extend({
     // Run routing only when everything in interface is ready
     app.trigger('readyToRoute');
     this.connectionView.hide();
-    debug.end('welcome');
   },
   onAdminMessage: function (data) {
     app.trigger('alert', 'info', data.message);

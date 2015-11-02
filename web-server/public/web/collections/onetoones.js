@@ -37,6 +37,7 @@ var OnetoonesCollection = Backbone.Collection.extend({
   },
 
   initialize: function () {
+    this.listenTo(client, 'welcome', this.onWelcome);
     this.listenTo(client, 'user:message', this.onMessage);
     this.listenTo(client, 'user:updated', this.onUpdated);
     this.listenTo(client, 'user:online', this.onUserOnline);
@@ -48,6 +49,11 @@ var OnetoonesCollection = Backbone.Collection.extend({
     this.listenTo(client, 'user:deban', this.onDeban);
     this.listenTo(client, 'user:message:edit', this.onMessageEdited);
     this.listenTo(client, 'user:typing', this.onTyping);
+  },
+  onWelcome: function (data) {
+    _.each(data.onetoones, _.bind(function (one) {
+      this.addModel(one);
+    }, this));
   },
   join: function (username) {
     client.userId(username, function (response) {

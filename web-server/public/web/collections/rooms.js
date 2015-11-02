@@ -79,6 +79,7 @@ var RoomsCollection = Backbone.Collection.extend({
   },
 
   initialize: function () {
+    this.listenTo(client, 'welcome', this.onWelcome);
     this.listenTo(client, 'room:in', this.onIn);
     this.listenTo(client, 'room:out', this.onOut);
     this.listenTo(client, 'room:topic', this.onTopic);
@@ -107,6 +108,19 @@ var RoomsCollection = Backbone.Collection.extend({
     this.listenTo(client, 'room:groupban', this.onGroupBan);
     this.listenTo(client, 'room:groupdisallow', this.onGroupDisallow);
   },
+  onWelcome: function (data) {
+    // regular
+    _.each(data.rooms, _.bind(function (room) {
+      this.addModel(room);
+    }, this));
+
+    // blocked
+    _.each(data.blocked, _.bind(function (room) {
+      this.addModel(room, room.blocked
+        ? room.blocked
+        : true);
+    }, this));
+  },
   onJoin: function (data) {
     var model;
     if ((model = this.get(data.room_id)) && model.get('blocked')) {
@@ -121,6 +135,9 @@ var RoomsCollection = Backbone.Collection.extend({
       // server ask to client to open this room in IHM
       this.addModel(data);
     }
+
+    // both case re-render navigation
+    app.trigger('redrawNavigationRooms');
   },
   addModel: function (data, blocked) {
     data.id = data.room_id;
@@ -149,7 +166,7 @@ var RoomsCollection = Backbone.Collection.extend({
       model = new RoomModel(data);
       this.add(model);
     }
-    app.trigger('redrawNavigationRooms');
+//    app.trigger('redrawNavigationRooms');
   },
   onIn: function (data) {
     var model;
@@ -255,6 +272,7 @@ var RoomsCollection = Backbone.Collection.extend({
       }
       this.remove(model);
       this.addModel(modelTmp, blocked);
+      app.trigger('redrawNavigationRooms');
       var message = i18next.t('chat.alert.' + what, {name: model.get('identifier')});
       if (data.reason) {
         message += ' ' + i18next.t('chat.reason', {reason: _.escape(data.reason)});
@@ -323,6 +341,7 @@ var RoomsCollection = Backbone.Collection.extend({
           var modelTmp = model.attributes;
           this.remove(model);
           this.addModel(modelTmp, true);
+          app.trigger('redrawNavigationRooms');
           this.trigger('allowed', {
             model: this.get(data.room_id),
             wasFocused: isFocused

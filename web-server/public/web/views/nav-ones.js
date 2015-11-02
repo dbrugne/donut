@@ -20,7 +20,6 @@ module.exports = Backbone.View.extend({
     this.$list = this.$('.list');
   },
   render: function () {
-    //console.log('render ones');
     if (!onetoones.models.length) {
       this.$list.empty();
       return this.$el.hide();
