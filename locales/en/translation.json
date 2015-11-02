@@ -418,7 +418,6 @@
       "error": "An error has occurred"
     },
     "confirmation": {
-      "sure": "Do you confirm this action?",
       "placeholder": "Explain why, visible in the donut (optional)",
       "placeholderarea": "200 characters maximum",
       "label": "Explain why (optional)",
@@ -565,6 +564,7 @@
       "link": "User list",
       "label": "See all users",
       "search": "search a username in this donut",
+      "search-group": "search a username in this community",
       "type": {
         "owner": "Owner",
         "users": "Users",
