@@ -128,7 +128,7 @@
   "global": {
     "view-profile": "Voir le profil",
     "onetoones": "tête-à-tête",
-    "donuts": "Donuts",
+    "donuts": "donuts",
     "group": "communauté",
     "admin": "(administrateur)",
     "default": "défaut",
@@ -851,7 +851,7 @@
       }
     },
     "members": "Vous êtes maintenant membre de la communauté #__name__",
-    "noroomopened": "Ancuns donut ouvert, vous pouvez en",
+    "noroomopened": "Aucun donut ouvert, vous pouvez en",
     "groupmembersonly": "__name__ est réservée aux membres de la communauté #__group_name__"
   },
   "group": {
