@@ -135,8 +135,8 @@ var GroupView = Backbone.View.extend({
     ConfirmationView.open(options, _.bind(function (password) {
       client.groupJoin(this.model.get('group_id'), password, _.bind(function (response) {
         if (response.err) {
-          if (response.err === 'wrong-password') {
-            app.trigger('alert', 'error', i18next.t('chat.password.' + response.err));
+          if (response.err === 'wrong-password' || response.err === 'params-password') {
+            app.trigger('alert', 'error', i18next.t('chat.password.wrong-password'));
           } else {
             app.trigger('alert', 'error', i18next.t('global.unknownerror'));
           }

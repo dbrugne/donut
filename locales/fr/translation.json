@@ -421,8 +421,8 @@
       "placeholder": "Expliquez pourquoi, visible dans le donut (optionnel)",
       "placeholderarea": "200 caractères maximum",
       "label": "Expliquez pourquoi (optionnel)",
-      "cancel": "Non, j'annule",
-      "confirm": "Oui, je confirme",
+      "cancel": "Annuler",
+      "confirm": "OK",
       "message": {
         "modechange": " ATTENTION cette action est irréversible.",
         "refuseuser": "Vous allez refuser l'accès à @__username__",
@@ -856,7 +856,7 @@
     "users": "Utilisateurs",
     "invite": "Inviter",
     "ask-membership": "Demander l'accès",
-    "blocked": "Cette communauté est bloqué par un mot de passe, pour y accéder nous vous invitons à le taper"
+    "blocked": "Saisissez le mot de passe d'accès direct à la communauté"
   },
   "account": {
     "error": {
