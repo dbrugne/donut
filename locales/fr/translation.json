@@ -404,7 +404,9 @@
       "success": "La demande d'accès a bien été envoyée",
       "error" : {
         "allow-pending": "Une demande d'accès a déjà été envoyée",
-        "message-wrong-format": "Le message ne doit pas faire plus de 200 caractères"
+        "message-wrong-format": "Le message ne doit pas faire plus de 200 caractères",
+        "banned": "Vous avez été banni de ce donut",
+        "group-banned": "Vous avez été banni de la communauté de ce donut"
       }
     },
     "password": {
