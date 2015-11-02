@@ -1,6 +1,7 @@
 var async = require('async');
 var UserModel = require('../shared/models/user');
 var RoomModel = require('../shared/models/room');
+var GroupModel = require('../shared/models/group');
 var HistoryOneModel = require('../shared/models/historyone');
 var HistoryRoomModel = require('../shared/models/historyroom');
 var PomeloBridge = require('../ws-server/app/components/bridge').Bridge;
@@ -40,6 +41,16 @@ module.exports = function (grunt) {
           } ]
         }
       },
+      notifGroupIdentifier: {
+        options: {
+          questions: [ {
+            config: 'notifGroupIdentifier',
+            type: 'input',
+            message: 'Choose a "group" name',
+            default: '#donut'
+          } ]
+        }
+      },
       notifMessage: {
         options: {
           questions: [ {
@@ -57,11 +68,13 @@ module.exports = function (grunt) {
     var usernameFrom = grunt.config('notifUsernameFrom') || 'yangs';
     var usernameTo = grunt.config('notifUsernameTo') || 'david';
     var identifier = grunt.config('notifIdentifier') || '#donut/donut';
+    var groupidentifier = grunt.config('notifGroupIdentifier') || '#donut';
     var message = grunt.config('notifMessage') || '';
 
     var userFrom = null;
     var userTo = null;
     var room = null;
+    var group = null;
 
     var configuration = grunt.config('pomelo');
     var bridge = PomeloBridge({
@@ -108,6 +121,19 @@ module.exports = function (grunt) {
             return callback('Unable to retrieve room: ' + identifier);
           }
           room = r;
+          return callback(null);
+        });
+      },
+
+      function retrieveGroup (callback) {
+        GroupModel.findByName(groupidentifier.replace('#', '')).exec(function (err, g) {
+          if (err) {
+            return callback('Error while retrieving group ' + identifier + ': ' + err);
+          }
+          if (!g) {
+            return callback('Unable to retrieve group: ' + identifier);
+          }
+          group = g;
           return callback(null);
         });
       },
@@ -349,6 +375,48 @@ module.exports = function (grunt) {
             return callback(null);
           });
         });
+      },
+
+      function groupRequestTypes (callback) {
+        async.each([
+          { notification: 'groupallowed' },
+          { notification: 'groupdisallow' },
+          { notification: 'grouprefuse' },
+          { notification: 'groupjoinrequest' },
+          { notification: 'groupinvite' },
+          { notification: 'groupop' },
+          { notification: 'groupdeop' },
+          { notification: 'groupban' },
+          { notification: 'groupdeban' }
+        ], function (item, fn) {
+          var event = {
+            id: group.id,
+            by_user_id: userFrom._id,
+            by_username: userFrom.username,
+            by_avatar: userFrom._avatar(),
+            user_id: userTo._id,
+            username: userTo.username,
+            avatar: userTo._avatar(),
+            group_id: group.id,
+            group_name: group.name,
+            time: new Date(),
+            banned_at: new Date()
+          };
+          var data = {
+            type: item.notification,
+            user: userTo.id,
+            room: group._id,
+            history: event
+          };
+          bridge.notify('chat', 'createNotificationTask.createNotification', data, function (err) {
+            if (err) {
+              return fn(err);
+            }
+
+            grunt.log.ok(item.notification + 'Type done');
+            return fn(null);
+          });
+        }, callback);
       }
 
     ], function (err) {
@@ -367,6 +435,7 @@ module.exports = function (grunt) {
     'prompt:notifUsernameFrom',
     'prompt:notifUsernameTo',
     'prompt:notifIdentifier',
+    'prompt:notifGroupIdentifier',
     'prompt:notifMessage',
     'donut-create-test-notifications'
   ]);

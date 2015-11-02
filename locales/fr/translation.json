@@ -946,7 +946,7 @@
       "content": {
         "title": "Bienvenue sur DONUT !",
         "disclaimer": "Félicitations ! Votre compte utilisateur a bien été créé. Vous pouvez désormais nous rejoindre et discuter autour d'un bon donut en utilisant le bouton ci-dessous",
-        "button": "Se Connecter",
+        "button": "Connexion",
         "info": "On s'en délecte d'avance !"
       }
     },
@@ -990,9 +990,9 @@
       "subject": "Vous n'êtes plus modérateur de __roomname__",
       "content": {
         "title": "Vous n'êtes plus modérateur de __roomname__",
-        "disclaimer": "Aïe! La bonne nouvelle, vous allez avoir un peu plus de temps à consacrer à votre propre donut:)",
+        "disclaimer": " Pas de panique, vous restez membre à part entière de __roomname__ !",
         "action": "…et tout ça grâce à ",
-        "button": "Retourner sur DONUT"
+        "button": "Accéder à la discussion"
       }
     },
     "roomkick": {
@@ -1007,7 +1007,7 @@
       "subject": "Vous avez été banni de __roomname__",
       "content": {
         "title": "Vous avez été banni de __roomname__",
-        "disclaimer": "On dirait bien que vous n'étiez pas faits l'un pour l'autre.<br/>Vous savez ce qu'on dit : \"un donut de perdu, dix de retrouvés !\".",
+        "disclaimer": "On dirait bien que vous n'étiez pas faits l'un pour l'autre.<br/>Rassurez-vous, ça ne s'applique qu'à __roomname__. Il vous reste l'immensité de DONUT à découvrir. J'espère que vous avez de l'appétit !",
         "button": "Retourner sur DONUT"
       }
     },
@@ -1051,27 +1051,30 @@
       }
     },
     "roomjoinrequest": {
-      "subject": "Un utilisateur souhaite rejoindre __roomname__",
+      "subject": "Demande d'accès à __roomname__",
       "content": {
-        "title": "@__username__ demande à rejoindre __roomname__",
+        "title": "@__username__ souhaite rejoindre __roomname__",
         "disclaimer": "On dirait que votre donut est populaire !",
+        "info": "Pour l'accepter ou le refuser, allez dans le menu \"Accès\" de __roomname__.",
         "button": "Accéder à la discussion"
       }
     },
     "roomallow": {
-      "subject": "Un utilisateur a accepté votre demande de rejoindre __roomname__",
+      "subject": "Bienvenue dans __roomname__",
       "content": {
-        "title": "@__username__ vous autorise à rejoindre __roomname__",
-        "disclaimer": "Vous pouvez maintenant profiter de ce donut !",
+        "title": "Vous êtes désormais membre de __roomname__",
+        "disclaimer": "Votre demande d'accès à __roomname__ a été acceptée. Vous pouvez maintenant profiter de ce donut !",
+        "action": "…et tout ça grâce à ",
         "button": "Accéder à la discussion"
       }
     },
     "roomrefuse": {
-      "subject": "Un utilisateur a refusé votre demande de rejoindre __roomname__",
+      "subject": "Accès refusé à __roomname__",
       "content": {
-        "title": "@__username__ a refusé votre demande de rejoindre __roomname__",
-        "disclaimer": "Ne vous inquiétez pas vous pouvez toujours refaire une demande plus tard !",
-        "button": "Accéder à la discussion"
+        "title": "Votre demande d'accès à __roomname__ a été refusée",
+        "disclaimer": "Il faut croire que les conditions d'accès requises par @__username__ n'étaient pas réunies. Retentez votre chance plus tard !",
+        "action": "…et tout ça grâce à ",
+        "button": "Retourner sur DONUT"
       }
     },
     "roominvite": {
@@ -1083,19 +1086,20 @@
       }
     },
     "roomcreate": {
-      "subject": "@__username__ viens de créer le donut __roomname__",
+      "subject": "Nouveau donut __roomname__",
       "content": {
-        "title": "@__username__ viens de créer le donut __roomname__",
+        "title": "@__username__ à crée __roomname__",
         "disclaimer": "Votre communauté fait le plein de donut !",
+        "info": "Vous avez la possibilité de supprimer ce donut à partir de son profil.",
         "button": "Accéder à la discussion"
       }
     },
     "roomdelete": {
-      "subject": "@__username__ a supprimé le donut __roomname__",
+      "subject": "Suppression de __roomname__",
       "content": {
-        "title": "@__username__ a supprimé le donut __roomname__",
-        "disclaimer": "On dirait que votre donut a posé problème, n'hésitez pas a en parler avec le gestionnaire !",
-        "button": "Retourner sur DONUT"
+        "title": "Votre donut __roomname__ a été supprimé",
+        "disclaimer": "On dirait que votre donut a posé problème. N'hésitez pas a en parler avec @__username__ !",
+        "button": "Accéder à la communauté"
       }
     },
     "roomtopic": {
@@ -1119,7 +1123,6 @@
       "subject": "Nouveau message privé de @__username__",
       "content": {
         "title": "Nouveau message privé de @__username__",
-        "disclaimer": "Vous avez un nouveau message privé de la part de ",
         "button": "Accéder à la discussion"
       }
     },
@@ -1134,26 +1137,29 @@
       "subject": "[DONUT] Nouveau formulaire de contact"
     },
     "groupjoinrequest": {
-      "subject": "Un utilisateur veut rejoindre #__groupname__",
+      "subject": "Demande d'accès à #__groupname__",
       "content": {
-        "title": "@__username__ demande l'accès à __groupname__",
-        "disclaimer": "On dirait que votre communauté est parti pour aller loin !",
+        "title": "@__username__ souhaite devenir membre de #__groupname__",
+        "disclaimer": "On dirait que votre communauté est partie pour aller loin !",
+        "info": "Pour l'accepter ou le refuser, allez dans le menu \"Accès\" de #__groupname__.",
         "button": "Accéder à la communauté"
       }
     },
     "groupallow": {
-      "subject": "Un utilisateur a accepté votre demande de rejoindre #__groupname__",
+      "subject": "Bienvenue dans #__groupname__",
       "content": {
-        "title": "@__username__ vous autorise à rejoindre #__groupname__",
-        "disclaimer": "Vous pouvez maintenant profiter de cette communauté !",
+        "title": "Vous êtes désormais membre de #__groupname__",
+        "disclaimer": "Votre demande d'accès à #__groupname__ a été acceptée. Vous faites désormais partie de cette communauté. Vous avez accès à tous les donuts réservés aux membres et vous pouvez créer le vôtre.Plein de belles conversations en perspective !",
+        "action": "…et tout ça grâce à ",
         "button": "Accéder à la communauté"
       }
     },
     "groupdisallow": {
-      "subject": "Vous ne faites plus partie des personnes autorisées dans #__groupname__",
+      "subject": "Vous n'êtes plus membre de #__groupname__",
       "content": {
-        "title": "@__username__ vous a supprimé des personnes autorisées dans #__groupname__",
-        "disclaimer": "Vous pouvez toujours faire une demande d'accès pour rejoindre à nouveau cette communauté !",
+        "title": "Vous n'êtes plus membre de #__groupname__",
+        "disclaimer": "Tout n'est pas perdu, vous pouvez toujours discuter dans vos conversations actives dans cette communauté. Vous pouvez également rejoindre les donuts publics et vous faire inviter dans les donuts privés. Ca en fait des choses !",
+        "action": "…et tout ça grâce à ",
         "button": "Accéder à la communauté"
       }
     },
@@ -1166,23 +1172,24 @@
       }
     },
     "grouprefuse": {
-      "subject": "Un utilisateur a refusé votre demande de rejoindre #__groupname__",
+      "subject": "Accès refusé à #__groupname__",
       "content": {
-        "title": "@__username__ a refusé votre demande de rejoindre #__groupname__",
-        "disclaimer": "Ne vous inquiétez pas vous pouvez toujours refaire une demande plus tard !",
-        "button": "Accéder à la communauté"
+        "title": "Votre demande d'accès à #__groupname__ a été refusée",
+        "disclaimer": "Il faut croire que les conditions d'accès requises par @__username__ n'étaient pas réunies. Retentez votre chance plus tard !",
+        "action": "…et tout ça grâce à ",
+        "button": "Retourner sur DONUT"
       }
     },
     "groupban": {
-      "subject": "Vous avez été banni de la communauté #__groupname__",
+      "subject": "Vous avez été banni de #__groupname__",
       "content": {
         "title": "Vous avez été banni de la communauté #__groupname__",
-        "disclaimer": "",
+        "disclaimer": "On dirait bien que vous n'étiez pas faits l'un pour l'autre.<br/>Rassurez-vous, ça ne s'applique qu'à #__groupname__. Il vous reste l'immensité de DONUT à découvrir. J'espère que vous avez de l'appétit !",
         "button": "Retourner sur DONUT"
       }
     },
     "groupdeban": {
-      "subject": "Vous n'êtes plus banni de la communauté #__groupname__",
+      "subject": "Vous n'êtes plus banni de #__groupname__",
       "content": {
         "title": "Vous n'êtes plus banni de la communauté #__groupname__",
         "disclaimer": "On dirait bien que tout s'est arrangé !",
@@ -1190,7 +1197,7 @@
       }
     },
     "groupop": {
-      "subject": "Vous avez été promu modérateur de la communauté #__groupname__",
+      "subject": "Vous avez été promu modérateur de #__groupname__",
       "content": {
         "title": "Vous avez été promu modérateur de la communauté #__groupname__",
         "disclaimer": "Félicitations ! Vous êtes désormais modérateur de ",
@@ -1200,12 +1207,12 @@
       }
     },
     "groupdeop": {
-      "subject": "Vous n'êtes plus modérateur de la communauté #__groupname__",
+      "subject": "Vous n'êtes plus modérateur de #__groupname__",
       "content": {
         "title": "Vous n'êtes plus modérateur de la communauté #__groupname__",
-        "disclaimer": "Aïe! La bonne nouvelle, vous allez avoir un peu plus de temps à consacrer à votre propre donut:)",
+        "disclaimer": "Pas de panique, vous restez membre à part entière de #__groupname__. Vous pouvez donc créer vos donuts au sein de la communauté et rejoindre tous ceux qui sont accessibles aux membres. Elle est pas belle la vie ?!",
         "action": "…et tout ça grâce à ",
-        "button": "Retourner sur DONUT"
+        "button": "Accéder à la communauté"
       }
     }
   },
