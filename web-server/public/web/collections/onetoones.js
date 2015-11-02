@@ -4,7 +4,6 @@ var client = require('../libs/client');
 var app = require('../libs/app');
 var currentUser = require('../models/current-user');
 var OneToOneModel = require('../models/onetoone');
-var i18next = require('i18next-client');
 
 var OnetoonesCollection = Backbone.Collection.extend({
   comparator: function (a, b) {
@@ -54,25 +53,10 @@ var OnetoonesCollection = Backbone.Collection.extend({
     _.each(data.onetoones, _.bind(function (one) {
       this.addModel(one);
     }, this));
-  },
-  join: function (username) {
-    client.userId(username, function (response) {
-      if (response.err && response !== 500) {
-        return app.trigger('alert', 'error', i18next.t('chat.users.usernotexist'));
-      } else if (response.code === 500) {
-        return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
-      }
-      if (!response.user_id) {
-        return;
-      }
-      client.userJoin(response.user_id, function (response) {
-        if (response.err && response !== 500) {
-          return app.trigger('alert', 'error', i18next.t('chat.users.usernotexist'));
-        } else if (response.code === 500) {
-          return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
-        }
-      });
-    });
+
+    app.trigger('redrawNavigationOnes');
+
+    // @todo : handle existing model deletion if not in data (mobile and browser)
   },
   onJoin: function (data) {
     // server ask to client to open this one to one in IHM
@@ -146,6 +130,7 @@ var OnetoonesCollection = Backbone.Collection.extend({
       }
       withUser.key = key;
       model = this.addModel(withUser);
+      app.trigger('redrawNavigationOnes');
       client.userRead(withUser.user_id, null, function (data) {
         if (!data.err) {
           model.set(data);
@@ -165,6 +150,7 @@ var OnetoonesCollection = Backbone.Collection.extend({
     var model = this.get(data.user_id);
     if (model) {
       this.remove(model);
+      app.trigger('redrawNavigationOnes');
     }
   },
   onMessage: function (data) {

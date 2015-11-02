@@ -100,7 +100,7 @@ var MainView = Backbone.View.extend({
     this.listenTo(onetoones, 'remove', this.onRemoveDiscussion);
     this.listenTo(rooms, 'allowed', this.roomAllowed);
     this.listenTo(rooms, 'join', this.roomJoin);
-    this.listenTo(rooms, 'deleted', this.roomRoomDeleted);
+    this.listenTo(rooms, 'deleted', this.roomDeleted);
     this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
     this.listenTo(app, 'openGroupProfile', this.openGroupProfile);
     this.listenTo(app, 'openUserProfile', this.openUserProfile);
@@ -163,16 +163,13 @@ var MainView = Backbone.View.extend({
       $('#block-discussions').show();
     }
 
-    // only one time for each welcome event
-    app.trigger('redrawNavigation');
-
     // Notifications
     if (data.notifications) {
       this.notificationsView.initializeNotificationState(data.notifications);
     }
-    this.firstConnection = false;
 
     // Run routing only when everything in interface is ready
+    this.firstConnection = false;
     app.trigger('readyToRoute');
     this.connectionView.hide();
   },
@@ -286,7 +283,7 @@ var MainView = Backbone.View.extend({
       app.trigger('focus', event.model);
     }
   },
-  roomRoomDeleted: function (data) {
+  roomDeleted: function (data) {
     if (data.was_focused) {
       app.trigger('focus');
     }
@@ -296,9 +293,7 @@ var MainView = Backbone.View.extend({
       model.onDeleteRoom(data.room_id);
     }
 
-    if (data && data.reason) {
-      app.trigger('alert', 'warning', data.reason);
-    }
+    app.trigger('alert', 'warning', i18next.t('chat.deletemessage', {name: data.name}));
   },
 
   // DRAWERS

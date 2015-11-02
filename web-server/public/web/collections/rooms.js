@@ -1,11 +1,10 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
-var i18next = require('i18next-client');
 var client = require('../libs/client');
 var app = require('../libs/app');
 var currentUser = require('../models/current-user');
 var RoomModel = require('../models/room');
-var EventModel = require('../models/event');
+var EventModel = require('../models/event'); // @todo : remove dep
 
 var RoomsCollection = Backbone.Collection.extend({
   comparator: function (a, b) {
@@ -120,6 +119,10 @@ var RoomsCollection = Backbone.Collection.extend({
         ? room.blocked
         : true);
     }, this));
+
+    app.trigger('redrawNavigationRooms');
+
+    // @todo : handle existing model deletion if not in data (mobile and browser)
   },
   onJoin: function (data) {
     var model;
@@ -166,7 +169,6 @@ var RoomsCollection = Backbone.Collection.extend({
       model = new RoomModel(data);
       this.add(model);
     }
-//    app.trigger('redrawNavigationRooms');
   },
   onIn: function (data) {
     var model;
@@ -273,11 +275,6 @@ var RoomsCollection = Backbone.Collection.extend({
       this.remove(model);
       this.addModel(modelTmp, blocked);
       app.trigger('redrawNavigationRooms');
-      var message = i18next.t('chat.alert.' + what, {name: model.get('identifier')});
-      if (data.reason) {
-        message += ' ' + i18next.t('chat.reason', {reason: _.escape(data.reason)});
-      }
-      app.trigger('alert', 'warning', message);
       if (isFocused) {
         app.trigger('focus', this.get(data.room_id));
       }
@@ -326,7 +323,7 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    client.roomJoin(data.room_id);
+    client.roomJoin(data.room_id); // @todo : anti-pattern!
   },
   onDeban: function (data) {
     var model;
@@ -335,6 +332,7 @@ var RoomsCollection = Backbone.Collection.extend({
     }
 
     if (currentUser.get('user_id') === data.user_id) {
+      // @todo : anti-pattern!
       client.roomJoin(data.room_id, null, _.bind(function () {
         if (data.room_mode === 'private') {
           var isFocused = model.get('focused');
@@ -378,12 +376,14 @@ var RoomsCollection = Backbone.Collection.extend({
     var roomWasFocused = model.get('focused');
     var groupId = model.get('group_id');
     var roomId = model.get('id');
+    var roomName = model.get('name');
 
     this.remove(model);
+    app.trigger('redrawNavigationRooms');
 
     if (data.reason && data.reason === 'deleted') {
       this.trigger('deleted', {
-        reason: i18next.t('chat.deletemessage', {name: data.name}),
+        name: roomName,
         was_focused: roomWasFocused,
         group_id: groupId,
         room_id: roomId
@@ -397,6 +397,7 @@ var RoomsCollection = Backbone.Collection.extend({
     }
 
     this.remove(model);
+    app.trigger('redrawNavigationRooms');
   },
   onViewed: function (data) {
     var model;
@@ -455,6 +456,7 @@ var RoomsCollection = Backbone.Collection.extend({
     // if i'm the "targeted user" destroy the model/view
     if (currentUser.get('user_id') === data.user_id) {
       this.remove(model);
+      app.trigger('redrawNavigationRooms');
       return;
     }
 
@@ -503,8 +505,8 @@ var RoomsCollection = Backbone.Collection.extend({
 
     // if i'm the "targeted user" destroy the model/view
     if (currentUser.get('user_id') === data.user_id) {
-      console.log(model);
       this.remove(model);
+      app.trigger('redrawNavigationRooms');
       return;
     }
 
