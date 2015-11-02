@@ -4,7 +4,8 @@ var client = require('../libs/client');
 var app = require('../libs/app');
 var currentUser = require('../models/current-user');
 var RoomModel = require('../models/room');
-var EventModel = require('../models/event'); // @todo : remove dep
+
+// @todo : deduplicate code _kickBanDisallow, onGroupBan, onGroupDisallow and move in models/room instead of collection
 
 var RoomsCollection = Backbone.Collection.extend({
   comparator: function (a, b) {
@@ -313,10 +314,7 @@ var RoomsCollection = Backbone.Collection.extend({
     model.users.trigger('users-redraw');
 
     // trigger event
-    model.trigger('freshEvent', new EventModel({
-      type: 'room:' + what,
-      data: data
-    }));
+    model.trigger('freshEvent', 'room:' + what, data); // @todo : move in room model
   },
   onAllow: function (data) {
     if (!data || !data.room_id || !(this.get(data.room_id))) {
@@ -482,20 +480,11 @@ var RoomsCollection = Backbone.Collection.extend({
     });
     model.set('devoices', devoices);
 
-    // // remove from allowed_pending
-    // var allowedPendings = _.reject(model.get('allowed_pending'), function (allowedPendingUser) {
-    //   return (allowedPendingUser.user === data.user_id);
-    // });
-    // model.set('allowed_pending', allowedPendings);
-
     model.users.sort();
     model.users.trigger('users-redraw');
 
     // trigger event
-    model.trigger('freshEvent', new EventModel({
-      type: 'room:groupban',
-      data: data
-    }));
+    model.trigger('freshEvent', 'room:groupban', data);  // @todo : move in room model
   },
   onGroupDisallow: function (data) {
     var model;
@@ -524,10 +513,7 @@ var RoomsCollection = Backbone.Collection.extend({
     model.users.trigger('users-redraw');
 
     // trigger event
-    model.trigger('freshEvent', new EventModel({
-      type: 'room:groupdisallow',
-      data: data
-    }));
+    model.trigger('freshEvent', 'room:groupdisallow', data); // @todo : move in room model
   }
 });
 

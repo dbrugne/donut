@@ -4,7 +4,6 @@ var app = require('../libs/app');
 var client = require('../libs/client');
 var currentUser = require('./current-user');
 var UserModel = require('./user');
-var EventModel = require('./event');
 var RoomUsersCollection = require('../collections/room-users');
 
 var RoomModel = Backbone.Model.extend({
@@ -96,14 +95,10 @@ var RoomModel = Backbone.Model.extend({
     this.set('users_number', this.get('users_number') + 1);
     this.users.trigger('users-redraw');
 
-    var model = new EventModel({
-      type: 'room:in',
-      unviewed: (currentUser.get('user_id') !== data.user_id),
-      data: data
-    });
+    app.trigger('newEvent', 'room:in', data, this);
 
-    app.trigger('newEvent', model, this);
-    this.trigger('freshEvent', model);
+    var uv = (currentUser.get('user_id') !== data.user_id);
+    this.trigger('freshEvent', 'room:in', data, uv);
   },
   onOut: function (data) {
     var user = this.users.get(data.user_id);
@@ -116,32 +111,20 @@ var RoomModel = Backbone.Model.extend({
     this.set('users_number', this.get('users_number') - 1);
     this.users.trigger('users-redraw');
 
-    var model = new EventModel({
-      type: 'room:out',
-      data: data
-    });
-    this.trigger('freshEvent', model);
+    this.trigger('freshEvent', 'room:out', data);
   },
   onTopic: function (data) {
     this.set('topic', data.topic);
-    var model = new EventModel({
-      type: 'room:topic',
-      unviewed: (currentUser.get('user_id') !== data.user_id),
-      data: data
-    });
+    app.trigger('newEvent', 'room:topic', data, this);
 
-    app.trigger('newEvent', model, this);
-    this.trigger('freshEvent', model);
+    var uv = (currentUser.get('user_id') !== data.user_id);
+    this.trigger('freshEvent', 'room:topic', data, uv);
   },
   onMessage: function (data) {
-    var model = new EventModel({
-      type: 'room:message',
-      unviewed: (currentUser.get('user_id') !== data.user_id),
-      data: data
-    });
+    app.trigger('newEvent', 'room:message', data, this);
 
-    app.trigger('newEvent', model, this);
-    this.trigger('freshEvent', model);
+    var uv = (currentUser.get('user_id') !== data.user_id);
+    this.trigger('freshEvent', 'room:message', data, uv);
   },
   onOp: function (data) {
     // room.get('op')
@@ -158,11 +141,7 @@ var RoomModel = Backbone.Model.extend({
 
     this.users.trigger('users-redraw');
 
-    var model = new EventModel({
-      type: 'room:op',
-      data: data
-    });
-    this.trigger('freshEvent', model);
+    this.trigger('freshEvent', 'room:op', data);
   },
   onDeop: function (data) {
     // room.get('op')
@@ -180,18 +159,10 @@ var RoomModel = Backbone.Model.extend({
 
     this.users.trigger('users-redraw');
 
-    var model = new EventModel({
-      type: 'room:deop',
-      data: data
-    });
-    this.trigger('freshEvent', model);
+    this.trigger('freshEvent', 'room:deop', data);
   },
   onDeban: function (data) {
-    var model = new EventModel({
-      type: 'room:deban',
-      data: data
-    });
-    this.trigger('freshEvent', model);
+    this.trigger('freshEvent', 'room:deban', data);
   },
   onVoice: function (data) {
     var user = this.users.get(data.user_id);
@@ -210,11 +181,7 @@ var RoomModel = Backbone.Model.extend({
     this.users.trigger('users-redraw');
 
     // message event room:voice
-    var model = new EventModel({
-      type: 'room:voice',
-      data: data
-    });
-    this.trigger('freshEvent', model);
+    this.trigger('freshEvent', 'room:voice', data);
 
     if (currentUser.get('user_id') === data.user_id) {
       this.trigger('inputActive');
@@ -234,11 +201,7 @@ var RoomModel = Backbone.Model.extend({
     this.users.trigger('users-redraw');
 
     // message event room:devoice
-    var model = new EventModel({
-      type: 'room:devoice',
-      data: data
-    });
-    this.trigger('freshEvent', model);
+    this.trigger('freshEvent', 'room:devoice', data);
 
     if (currentUser.get('user_id') === data.user_id) {
       this.trigger('inputActive');
@@ -263,11 +226,7 @@ var RoomModel = Backbone.Model.extend({
 
     model.set({status: expect});
 
-    var event = new EventModel({
-      type: 'user:' + expect,
-      data: data
-    });
-    this.trigger('freshEvent', event);
+    this.trigger('freshEvent', 'user:' + expect, data);
   },
   onUserOnline: function (data) {
     this._onStatus('online', data);

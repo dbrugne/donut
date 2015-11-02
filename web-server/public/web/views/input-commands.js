@@ -5,7 +5,6 @@ var app = require('../libs/app');
 var client = require('../libs/client');
 var rooms = require('../collections/rooms');
 var confirmationView = require('./modal-confirmation');
-var EventModel = require('../models/event');
 
 var InputCommandsView = Backbone.View.extend({
   commandRegexp: /^\/([-a-z0-9]+)/i,
@@ -461,14 +460,9 @@ var InputCommandsView = Backbone.View.extend({
     }
   },
   ping: function (paramString, parameters) {
-    var that = this;
-    client.ping(function (duration) {
-      var model = new EventModel({
-        type: 'ping',
-        data: {duration: duration}
-      });
-      that.model.trigger('freshEvent', model);
-    });
+    client.ping(_.bind(function (duration) {
+      this.model.trigger('freshEvent', 'ping', {duration: duration});
+    }, this));
   },
   random: function (paramString, parameters) {
     // in case of '/random letters'
@@ -518,12 +512,10 @@ var InputCommandsView = Backbone.View.extend({
         ? {cmd: commandHelp}
         : this.getCommands(this.model.get('type'))
     };
-    var model = new EventModel({
-      type: 'command:help',
-      data: data,
-      error: error
-    });
-    this.model.trigger('freshEvent', model);
+    if (error) {
+      data.error = error;
+    }
+    this.model.trigger('freshEvent', 'command:help', data);
   },
   getCommands: function (type) {
     var commands = {};

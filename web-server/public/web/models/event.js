@@ -3,18 +3,7 @@ var Backbone = require('backbone');
 var currentUser = require('./current-user');
 
 module.exports = Backbone.Model.extend({
-  default: function () {
-    return {
-      type: '',
-      data: {}
-    };
-  },
-
-  /**
-   * Hydrate model from .data property
-   * @param options
-   */
-  initialize: function (options) {
+  initialize: function () {
     var data = this.get('data');
     if (!data) {
       data = {};
@@ -46,5 +35,4 @@ module.exports = Backbone.Model.extend({
 
     this.set({ data: data });
   }
-
 });

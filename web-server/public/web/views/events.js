@@ -48,6 +48,7 @@ module.exports = Backbone.View.extend({
 
     this.engine = new EventsEngine({
       model: this.model,
+      currentUserId: currentUser.get('user_id'),
       el: this.$realtime
     });
     this.eventsViewedView = new EventsViewedView({
@@ -206,7 +207,7 @@ module.exports = Backbone.View.extend({
    * Events rendering
    *
    *****************************************************************************************************************/
-  addFreshEvent: function (model) {
+  addFreshEvent: function (type, data, unviewed) {
     // scrollDown only if already on bottom before DOM insertion
     var needToScrollDown = (
       (this.model.get('focused') === true && this.isScrollOnBottom()) ||
@@ -214,7 +215,7 @@ module.exports = Backbone.View.extend({
     );
 
     // render and insert
-    this.engine.insertBottom(model);
+    this.engine.insertBottom(type, data, unviewed);
 
     // scrollDown
     if (needToScrollDown && !this.eventsEditView.messageUnderEdition) {

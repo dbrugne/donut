@@ -30,13 +30,19 @@ var templates = {
 
 var exports = module.exports = function (options) {
   this.discussion = options.model;
+  this.currentUserId = options.currentUserId;
   this.$el = options.el; // at this time it's empty
   this.empty = true;
   this.topEvent = '';
   this.bottomEvent = '';
 };
 
-exports.prototype.insertBottom = function (event) {
+exports.prototype.insertBottom = function (type, data, unviewed) {
+  var event = new EventModel({
+    type: type,
+    data: data,
+    unviewed: (unviewed === true)
+  });
   var id = event.get('id');
   if (!id) {
     return;
