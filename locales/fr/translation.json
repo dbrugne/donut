@@ -418,7 +418,6 @@
       "error": "Une erreur est survenue"
     },
     "confirmation": {
-      "sure": "Vous confirmez que vous voulez faire cela ?",
       "placeholder": "Expliquez pourquoi, visible dans le donut (optionnel)",
       "placeholderarea": "200 caractères maximum",
       "label": "Expliquez pourquoi (optionnel)",
@@ -565,6 +564,7 @@
       "link": "Liste des utilisateurs",
       "label": "Voir tous les utilisateurs",
       "search": "rechercher des utilisateurs dans ce donut",
+      "search-group": "rechercher des utilisateurs dans cette community",
       "type": {
         "owner": "Créateur",
         "users": "Utilisateurs",
