@@ -47,7 +47,7 @@
                     <label>
                         <input class="savable" type="checkbox" value="notif:channels:desktop" <% if (preferences['notif:channels:desktop']) { print('checked'); } %>> <%= t('preferences.notif.channels.desktop') %> (<a class="desktop-notification-test"><i class="icon icon-bolt"></i> <%= t('preferences.notif.channels.desktop-test') %></a>)
                     </label>
-                    <% if (desktop) { %>
+                    <% if (desktop && desktop !== 'granted') { %>
                     <label style="font-style: italic; display: block;">
                         <%= t('preferences.notif.channels.desktop-' + desktop) %>
                     </label>

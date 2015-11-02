@@ -1257,7 +1257,7 @@
     "notif": {
       "title": "Notifications",
       "help": {
-        "user": "DONUT tries to limit smartly the amount of emails and mobile notifications. However if you find that we send too many notifications feel free to send your feedback <a data-toggle='contactform'>by email</a> or on <a href='#donut/help'>#help</a>"
+        "user": "Too many or too few notifications? Tell us <a data-toggle='contactform'>by email</a> or on <a href='#donut/help'>#help</a>"
       },
       "nothing": {
         "label": "Never receive notifications about this donut",
@@ -1269,7 +1269,6 @@
         "desktop": "Desktop",
         "desktop-default": "Your browser will prompt for approval : approve !",
         "desktop-denied" : "You have chosen to <strong>refuse</strong> notifications on your desktop. To modify this choice, you must modify the settings of your browser.",
-        "desktop-granted" : "You have chosen to <strong>accept</strong> notifications on your desktop. To modify this choice, you must modify the settings of your browser.",
         "desktop-test": "try",
         "desktop-notify-test": "test notification",
         "email": "Email (only if you are offline)",
