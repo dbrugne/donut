@@ -537,7 +537,7 @@
       "top": "aller tout en haut",
       "bottom": "aller tout en bas",
       "currently": "C'est ici que tout commence... Vous êtes au tout début de la conversation <span class=\"name dc-text open-room-profile\" data-room-id=\"__room_id__\">__identifier__</span>, donut créé par <span class=\"owner dc-text open-user-profile\" data-user-id=\"__owner_id__\">@__owner_username__</span> le <span class=\"date\">__created_at__</span>",
-      "hasPassword": "Votre donut est privé. Paramétrez les modalités d'accès en cliquant sur \"Gérer les accès\"",
+      "hasPassword": "Votre donut est privé. Cliquez sur \"Gérer les accès\" pour définir qui peut le rejoindre.",
       "onestart": "Cette conversation est privée. Seuls vous et votre interlocuteur pouvez y avoir accès.",
       "edit": "Editer le profil",
       "users": "Gérer les utilisateurs",
@@ -600,7 +600,7 @@
     "welcome": {
       "members-invites": [
         "<p>Bienvenue!</p>",
-        "<p>La conversation est privée. Seuls les membres de la communauté <a class=\"open-group-profile curp\" data-group-id=\"__group_id__\"><strong>#__group_name__</strong></a> ainsi utilisateurs autorisés par <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a> peuvent rejoindre ce donut, y participer et accéder à son historique.</p>",
+        "<p>La conversation est privée. Seuls les membres de la communauté <a class=\"open-group-profile curp\" data-group-id=\"__group_id__\"><strong>#__group_name__</strong></a> ainsi que les utilisateurs autorisés par <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a> peuvent rejoindre ce donut, y participer et accéder à son historique.</p>",
         "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
       ],
       "invites": [
@@ -853,7 +853,11 @@
     },
     "members": "Vous êtes maintenant membre de la communauté #__name__",
     "noroomopened": "Aucun donut ouvert, vous pouvez en",
-    "groupmembersonly": "__name__ est réservée aux membres de la communauté #__group_name__"
+    "groupmembersonly": "__name__ est réservé aux membres de la communauté #__group_name__",
+    "navroom": {
+      "seemore": "voir tout",
+      "seeless": "voir moins"
+    }
   },
   "group": {
     "administrator": "Administrateurs",
