@@ -29,7 +29,7 @@
                         </a>
                     </li>
                     <% }; %>
-                    <% if (isOp || isOwner || isAdmin ) { %>
+                    <% if (isOp || isOwner || isAdmin) { %>
                     <li role="presentation">
                         <a role="menuitem" tabindex="-1" class="open-group-access" data-group-id="<%= group.group_id %>">
                             <i class="icon icon-public"></i> <%= t('chat.access.link') %>
@@ -71,7 +71,7 @@
             <% } %>
         </div>
         <% if (group.has_password && !isMember) { %>
-        <span class="curp btn btn-primary send-password pull-right password-div"><%= t('actions.join') %></span>
+        <span class="curp btn btn-primary send-password pull-right password-div"><%= t('actions.direct-access') %></span>
         <% } %>
     </div>
 

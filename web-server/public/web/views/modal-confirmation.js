@@ -129,9 +129,7 @@ var ConfirmationModalView = Backbone.View.extend({
           name: this.options.room_name
         }));
       } else if (this.options.message === 'request-allowance') {
-        this.$message.text(i18next.t('chat.confirmation.message.requestallowance', {name: this.options.room_name}));
-      } else if (this.options.message === 'request-allowance-group') {
-        this.$message.text(i18next.t('chat.confirmation.message.requestallowancegroup', {name: this.options.group_name.replace('#', '')}));
+        this.$message.html(i18next.t('chat.confirmation.message.requestallowance'));
       } else if (this.options.message === 'request-allowance-password') {
         this.$message.text(i18next.t('group.blocked'));
       }

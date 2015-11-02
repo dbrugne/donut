@@ -119,7 +119,8 @@
     "signup": "sign up",
     "orsignup": "or signup",
     "forgot": "forgotten password",
-    "join": "Direct access",
+    "join": "join",
+    "direct-access": "direct access",
     "discuss": "chat",
     "account": "my account",
     "mute": "sound on",
@@ -419,7 +420,7 @@
     "confirmation": {
       "sure": "Do you confirm this action?",
       "placeholder": "Explain why, visible in the donut (optional)",
-      "placeholderarea": "200 character maximum",
+      "placeholderarea": "200 characters maximum",
       "label": "Explain why (optional)",
       "cancel": "Cancel",
       "confirm": "OK",
@@ -431,8 +432,7 @@
         "ban-group-user": "You are about to ban user @__username__ from this community",
         "deban-group-user": "You are about to deban user @__username__ from this community",
         "invite": "You are about to authorize @__username__. A notification will be sent to invite @__username__ to join #__name__.",
-        "requestallowance": "You are about to request allowance for #__name__. Owner will see your real name and your email on your membership request.",
-        "requestallowancegroup": "You are about to request allowance for #__name__. Owner will see your real name and your email on your membership request."
+        "requestallowance": "<strong>Membership request.</strong><br>The community creator will have access to your real name and email."
       }
     },
     "commands": {
@@ -667,7 +667,7 @@
       "disclaimer-public": "This donut is public. Any user can access it.",
       "disclaimer-password": "You have also chosen to put a password. Users with the password can enter without having to be asked first.",
       "disclaimer-changing": "You can switch this donut to private mode. Then, only users you authorize will be able to join, participate and access history. Access will be based on invitation and/or password. The current members of this public donut will remain members once this donut switched to private. Caution, this action cannot be undone.",
-      "disclaimer-group": "All members of this community can create a donut in this community and manage it. They can also join private room that allow community members. Public donut of this community can be joined by everyone on the platform.",
+      "disclaimer-group": "Members create donuts and manage them. Members can join any donut open for members. Note: public donuts are open to anyone.",
       "close": "Close this donut",
       "allowgroupmember": "Allow community members to join this donut"
     },
@@ -702,6 +702,11 @@
         }
       },
       "group-form": {
+        "mode": {
+          "disclaimer": {
+            "group-password": "Users with the password can join this community without prior invitation."
+          }
+        },
         "create": {
           "label": "Create a community",
           "help": "A community is a place grouping your donut and allowing your community to become a member and access a group of donuts.",
@@ -764,8 +769,7 @@
           "disclaimer": {
             "public": "Any user can join, participate and access history. Moderation tools available.",
             "private": "Only users you authorize can join, participate and access history. Moderation tools available.",
-            "password": "You can also set a password. Users with the password can join without prior invitation.",
-            "group-password": "You can also set a password. Users with the password can join this community without prior invitation.",
+            "password": "Users with the password can join without prior invitation.",
             "memberscondition": "Membership conditions or procedures"
           }
         },
@@ -855,7 +859,7 @@
     "administrator": "Administrators",
     "users": "Users",
     "invite": "Invite",
-    "ask-membership": "Ask for membership",
+    "ask-membership": "Request membership",
     "blocked": "This community is blocked by a password, to join we invite you to type it"
   },
   "account": {

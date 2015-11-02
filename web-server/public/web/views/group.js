@@ -108,9 +108,8 @@ var GroupView = Backbone.View.extend({
   },
   onRequestAllowance: function (event) {
     var options = {
-      message: 'request-allowance-group',
-      area: true,
-      group_name: this.model.get('name')
+      message: 'request-allowance',
+      area: true
     };
 
     ConfirmationView.open(options, _.bind(function (message) {

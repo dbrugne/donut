@@ -87,7 +87,7 @@ var RoomBlockedView = Backbone.View.extend({
   onRequestAllowance: function (event) {
     event.preventDefault();
 
-    ConfirmationView.open({message: 'request-allowance', area: true, room_name: this.model.get('name')}, _.bind(function (message) {
+    ConfirmationView.open({message: 'request-allowance', area: true}, _.bind(function (message) {
       client.roomJoinRequest(this.model.get('id'), message, function (response) {
         if (response.err) {
           if (response.err === 'allow-pending' || response.err === 'message-wrong-format' || response.err === 'banned' || response.err === 'group-banned' || response.err === 'room-not-found') {
