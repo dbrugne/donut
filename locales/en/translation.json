@@ -406,7 +406,8 @@
         "allow-pending": "An access request is already pending",
         "message-wrong-format": "The message should be less than 200 character",
         "banned": "You were ban from this donut",
-        "group-banned": "You were ban from this donut community"
+        "group-banned": "You were ban from this donut community",
+        "room-not-found": "donut not found"
       }
     },
     "password": {

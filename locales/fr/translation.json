@@ -406,7 +406,8 @@
         "allow-pending": "Une demande d'accès a déjà été envoyée",
         "message-wrong-format": "Le message ne doit pas faire plus de 200 caractères",
         "banned": "Vous avez été banni de ce donut",
-        "group-banned": "Vous avez été banni de la communauté de ce donut"
+        "group-banned": "Vous avez été banni de la communauté de ce donut",
+        "room-not-found": "Ce donut n'existe pas"
       }
     },
     "password": {

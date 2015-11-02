@@ -90,7 +90,7 @@ var RoomBlockedView = Backbone.View.extend({
     ConfirmationView.open({message: 'request-allowance', area: true, room_name: this.model.get('name')}, _.bind(function (message) {
       client.roomJoinRequest(this.model.get('id'), message, function (response) {
         if (response.err) {
-          if (response.err === 'allow-pending' || response.err === 'message-wrong-format' || response.err === 'banned' || response.err === 'group-banned') {
+          if (response.err === 'allow-pending' || response.err === 'message-wrong-format' || response.err === 'banned' || response.err === 'group-banned' || response.err === 'room-not-found') {
             app.trigger('alert', 'error', i18next.t('chat.allowed.error.' + response.err));
           } else {
             app.trigger('alert', 'error', i18next.t('global.unknownerror'));
