@@ -39,8 +39,8 @@ var OneToOneModel = Backbone.Model.extend({
   onMessage: function (data) {
     app.trigger('newEvent', 'user:message', data, this);
 
-    var uv = (currentUser.get('user_id') !== data.from_user_id);
-    this.trigger('freshEvent', 'user:message', data, uv);
+    data.unviewed = (currentUser.get('user_id') !== data.from_user_id);
+    this.trigger('freshEvent', 'user:message', data);
   },
   onUserOnline: function (data) {
     this._onStatus('online', data);

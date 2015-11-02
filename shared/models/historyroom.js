@@ -72,11 +72,6 @@ historySchema.methods.toClientJSON = function (userViewed) {
   } // some rooms was removed (but not their history) before Room.deleted flag
     // introduction
 
-  // record
-  var e = {
-    type: this.event
-  };
-
   // re-hydrate data
   var data = (this.data)
     ? _.clone(this.data)
@@ -98,10 +93,10 @@ historySchema.methods.toClientJSON = function (userViewed) {
     data.by_avatar = this.by_user._avatar();
   }
   if (this.spammed === true) {
-    e.spammed = this.spammed;
+    data.spammed = this.spammed;
   }
   if (this.edited === true) {
-    e.edited = this.edited;
+    data.edited = this.edited;
   }
 
   // files
@@ -113,17 +108,18 @@ historySchema.methods.toClientJSON = function (userViewed) {
     });
   }
 
-  e.data = data;
-
   // unviewed status (true if message and if i'm not in .viewed)
   if (userViewed &&
     [ 'room:message', 'room:topic' ].indexOf(this.event) !== -1 &&
     data.user_id !== userViewed &&
     (!this.viewed || (_.isArray(this.viewed) && this.viewed.indexOf(userViewed) === -1))) {
-    e.unviewed = true;
+    data.unviewed = true;
   }
 
-  return e;
+  return {
+    type: this.event,
+    data: data
+  };
 };
 
 /**

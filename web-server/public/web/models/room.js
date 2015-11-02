@@ -97,8 +97,8 @@ var RoomModel = Backbone.Model.extend({
 
     app.trigger('newEvent', 'room:in', data, this);
 
-    var uv = (currentUser.get('user_id') !== data.user_id);
-    this.trigger('freshEvent', 'room:in', data, uv);
+    data.unviewed = (currentUser.get('user_id') !== data.user_id);
+    this.trigger('freshEvent', 'room:in', data);
   },
   onOut: function (data) {
     var user = this.users.get(data.user_id);
@@ -117,14 +117,14 @@ var RoomModel = Backbone.Model.extend({
     this.set('topic', data.topic);
     app.trigger('newEvent', 'room:topic', data, this);
 
-    var uv = (currentUser.get('user_id') !== data.user_id);
-    this.trigger('freshEvent', 'room:topic', data, uv);
+    data.unviewed = (currentUser.get('user_id') !== data.user_id);
+    this.trigger('freshEvent', 'room:topic', data);
   },
   onMessage: function (data) {
     app.trigger('newEvent', 'room:message', data, this);
 
-    var uv = (currentUser.get('user_id') !== data.user_id);
-    this.trigger('freshEvent', 'room:message', data, uv);
+    data.unviewed = (currentUser.get('user_id') !== data.user_id);
+    this.trigger('freshEvent', 'room:message', data);
   },
   onOp: function (data) {
     // room.get('op')
