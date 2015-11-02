@@ -119,7 +119,7 @@
     "signup": "créer un compte",
     "orsignup": "ou créer un compte",
     "forgot": "mot de passe oublié",
-    "join": "rejoindre",
+    "join": "Accès direct",
     "discuss": "discuter",
     "account": "mon compte",
     "mute": "son actif",
@@ -412,7 +412,7 @@
     },
     "password": {
       "spam-password": "Vous avez fait trop d'essais! Patienter ou faites une demande d'accès",
-      "wrong-password": "Mauvais mot de passe",
+      "wrong-password": "Mot de passe erroné",
       "invalid-password": "Mot de passe invalide",
       "error": "Une erreur est survenue"
     },
@@ -618,10 +618,7 @@
         "<p>Cette conversation est privée donc uniquement accessible aux utilisateurs autorisés de même que l'historique.</p>",
         "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
       ],
-      "onetoone": [
-        "<p><strong>@__username__</strong> n'est pas en ligne, les nouveaux messages lui seront remis à sa prochaine connexion</p>",
-        "<p>Postez un message pour amorcer la conversation.</p>"
-      ]
+      "onetoone": "<p><strong>@__username__</strong> n'est pas en ligne, les nouveaux messages lui seront remis à sa prochaine connexion.</p>"
     },
     "connection": {
       "connected": "Connecté ! Chargement de l'interface ...",
