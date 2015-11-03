@@ -1,10 +1,13 @@
 var _ = require('underscore');
+var Backbone = require('backbone');
 var client = require('../libs/client');
-var UserModel = require('./user');
+var app = require('../libs/app');
 
-var CurrentUserModel = UserModel.extend({
+var CurrentUserModel = Backbone.Model.extend({
   initialize: function (options) {
+    this.listenTo(client, 'user:updated', this.onUpdated);
     this.listenTo(client, 'preferences:update', this.setPreference);
+    this.listenTo(client, 'welcome', this.onWelcome);
 
     var that = this;
     this.listenTo(client, 'connecting', function () {
@@ -34,8 +37,22 @@ var CurrentUserModel = UserModel.extend({
     this.listenTo(client, 'error', function () {
       that.set('status', 'error');
     });
+  },
 
-    this._initialize(options);
+  onWelcome: function (data) {
+    this.set(data.user, {silent: true});
+    this.setPreferences(data.preferences, {silent: true});
+    this.trigger('change');
+    app.trigger('muteview');
+  },
+
+  onUpdated: function (data) {
+    if (data.user_id !== this.get('user_id')) {
+      return;
+    }
+    _.each(data.data, _.bind(function (value, key, list) {
+      this.set(key, value);
+    }, this));
   },
 
   setPreference: function (data, options) {
@@ -70,6 +87,16 @@ var CurrentUserModel = UserModel.extend({
     this.set('preferences', newPreferences, options);
   },
 
+  discussionMode: function () {
+    var preferences = this.get('preferences');
+
+    // if no preference set OR browser:sound equal to true, we play
+    if (!preferences || typeof preferences[ 'chatmode:compact' ] === 'undefined') {
+      return false;
+    }
+
+    return (preferences[ 'chatmode:compact' ] === true);
+  },
   shouldDisplayExitPopin: function () {
     var preferences = this.get('preferences');
 
@@ -98,37 +125,6 @@ var CurrentUserModel = UserModel.extend({
     }
 
     return (preferences[ 'notif:channels:desktop' ] === true);
-  },
-
-  _setCookie: function (name, value, exdays) {
-    exdays = exdays || 365; // 1 year by default
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = 'expires=' + d.toUTCString();
-    document.cookie = name + '=' + value + '; ' + expires;
-  },
-  _getCookie: function (name) {
-    var cname = name + '=';
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-      var c = ca[ i ];
-      while (c.charAt(0) === ' ') c = c.substring(1);
-      var value;
-      if (c.indexOf(cname) !== -1) {
-        value = c.substring(cname.length, c.length);
-      }
-      if (typeof value !== 'undefined') {
-        // boolean compliance
-        if (value === 'true') {
-          return true;
-        } else if (value === 'false') {
-          return false;
-        } else {
-          return value;
-        }
-      }
-    }
-    return '';
   },
 
   isAdmin: function () {

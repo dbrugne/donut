@@ -6,7 +6,7 @@
     <% more = false; %>
     <li class="less collapse collapse-<%-lastGroup%>">
         <a class="inverse" role="button" href=".collapse-<%-lastGroup%>" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-<%-lastGroup%>">
-            see less
+            <%= t('chat.navroom.seeless') %>
         </a>
     </li>
 <% } %>
@@ -30,7 +30,7 @@ if (item.group_id && item.group_id === lastGroup) {
     <% more = true; %>
     <li class="more">
         <a class="inverse" role="button" href=".collapse-<%-lastGroup%>" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-<%-lastGroup%>">
-            see more
+            <%= t('chat.navroom.seemore') %>
         </a>
     </li>
 <% } %>

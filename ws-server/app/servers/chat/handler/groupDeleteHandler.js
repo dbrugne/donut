@@ -3,6 +3,7 @@ var errors = require('../../../util/errors');
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var async = require('async');
 var RoomModel = require('../../../../../shared/models/room');
+var roomEmitter = require('../../../util/roomEmitter');
 var _ = require('underscore');
 
 var Handler = function (app) {
@@ -21,6 +22,7 @@ handler.call = function (data, session, next) {
 
   var that = this;
 
+  var rooms = [];
   async.waterfall([
 
     function check (callback) {
@@ -43,31 +45,53 @@ handler.call = function (data, session, next) {
       return callback(null);
     },
 
-    function kick (callback) {
+    function kickRoom (callback) {
       RoomModel.findByGroup(group._id)
-        .exec(function (err, rooms) {
+        .exec(function (err, dbrooms) {
           if (err) {
             return callback(err);
           }
-          _.each(rooms, function (room) {
+          rooms = dbrooms;
+          async.each(dbrooms, function (room, callback) {
             var event = {
               name: room.name,
               id: room.id,
               room_id: room.id,
               reason: 'deleted'
             };
-            that.app.globalChannelService.pushMessage('connector', 'room:leave', event, room.name, {}, function (err) {
+            that.app.globalChannelService.pushMessage('connector', 'room:leave', event, room.id, {}, function (err) {
               if (err) {
                 logger.error(err);
               } // not 'return', we delete even if error happen
               return callback(null);
             });
+          }, function (err) {
+            return callback(err);
           });
         });
     },
 
+    function kickGroup (callback) {
+      var event = {
+        group_id: group.id,
+        group_name: '#' + group.name,
+        by_user_id: user._id,
+        by_username: user.username,
+        by_avatar: user._avatar(),
+        user_id: group.owner._id,
+        username: group.owner.username,
+        avatar: group.owner._avatar()
+      };
+      var ids = group.getIdsByType('members');
+      async.eachLimit(ids, 10, function (id, fn) {
+        that.app.globalChannelService.pushMessage('connector', 'group:leave', event, 'user:' + id, {}, fn);
+      }, function (err) {
+        return callback(err);
+      });
+    },
+
     function destroy (callback) {
-      that.app.globalChannelService.destroyChannel(group.name, function (err) {
+      that.app.globalChannelService.destroyChannel(group.name, function (err) { // @todo i don't think it work !
         if (err) {
           logger.error(err);
         } // not 'return', we continue even if error happen
@@ -76,19 +100,16 @@ handler.call = function (data, session, next) {
     },
 
     function persist (callback) {
-      RoomModel.findByGroup(group._id)
-        .exec(function (err, rooms) {
-          if (err) {
-            return callback(err);
-          }
-          _.each(rooms, function (room) {
-            room.deleted = true;
-            room.save(callback);
-          });
-        });
+      async.each(rooms, function (room, callback) {
+        room.deleted = true;
+        room.save(callback);
+      }, function (err) {
+        return callback(err);
+      });
       group.deleted = true;
       group.save(callback);
     }
+
   ], function (err) {
     if (err) {
       return errors.getHandler('group:delete', next)(err);

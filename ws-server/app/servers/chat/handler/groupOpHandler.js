@@ -66,27 +66,7 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function findDefaultRoom (callback) {
-      if (!group.default) {
-        return callback('default-room-not-found');
-      }
-
-      RoomModel.findOne({ _id: group.default }).exec(function(err, room) {
-        if (err) {
-          return callback('default-room-not-found');
-        }
-
-        return callback(null, room);
-      });
-    },
-
-    function addUserToDefault (room, callback) {
-      room.update({$addToSet: {op: targetUser._id}}, function (err) {
-        return callback(err, room);
-      });
-    },
-
-    function broadcast (room, callback) {
+    function broadcast (callback) {
       event = {
         by_user_id: user.id,
         by_username: user.username,
@@ -99,13 +79,39 @@ handler.call = function (data, session, next) {
       };
 
       that.app.globalChannelService.pushMessage('connector', 'group:op', event, 'user:' + targetUser.id, {}, function (response) {
+        return callback(null);
+      });
+    },
+
+    function findDefaultRoom (callback) {
+      if (!group.default) {
+        return callback(null, null);
+      }
+
+      RoomModel.findOne({ _id: group.default }).exec(function (err, room) {
+        if (err) {
+          return callback('default-room-not-found');
+        }
+
         return callback(null, room);
       });
     },
 
+    function addUserToDefault (room, callback) {
+      if (!room) {
+        return callback(null, room);
+      }
+      room.update({$addToSet: {op: targetUser._id}}, function (err) {
+        return callback(err, room);
+      });
+    },
+
     function broadcastToDefaultRoom (room, callback) {
+      if (!room) {
+        return callback(null);
+      }
       event.room_id = group.default;
-      that.app.globalChannelService.pushMessage('connector', 'room:op', event, room.name, {}, function (response) {
+      that.app.globalChannelService.pushMessage('connector', 'room:op', event, room.id, {}, function (response) {
         return callback(null);
       });
     },

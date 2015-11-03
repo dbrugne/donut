@@ -167,8 +167,7 @@ Notification.prototype.sendEmail = function (model, done) {
           user_avatar: common.cloudinary.prepare(event.data.avatar, 90),
           username: event.data.username,
           message: event.data.message,
-          time_short: moment(event.data.time).format('Do MMMM, HH:mm'),
-          time_full: moment(event.data.time).format('dddd Do MMMM YYYY à HH:mm:ss')
+          time_full: utils.longDateTime(event.data.time)
         });
       });
 

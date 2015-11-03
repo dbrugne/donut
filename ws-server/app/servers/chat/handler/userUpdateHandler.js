@@ -262,7 +262,7 @@ handler.call = function (data, session, next) {
         // inform rooms
         if (rooms && rooms.length) {
           _.each(rooms, function (room) {
-            that.app.globalChannelService.pushMessage('connector', 'user:updated', event, room.name, {}, function (err) {
+            that.app.globalChannelService.pushMessage('connector', 'user:updated', event, room.id, {}, function (err) {
               if (err) {
                 logger.error('Error while pushing user:updated message to ' + room.name + ' on user:update: ' + err);
               }

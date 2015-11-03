@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var async = require('async');
 var Backbone = require('backbone');
-var app = require('../models/app');
+var app = require('../libs/app');
 var date = require('../libs/date');
 var client = require('../libs/client');
 var EventsDateView = require('./events-date');
@@ -12,6 +12,7 @@ var EventsSpamView = require('./events-spam');
 var EventsEditView = require('./events-edit');
 var windowView = require('./window');
 var EventsEngine = require('../libs/events');
+var currentUser = require('../models/current-user');
 
 module.exports = Backbone.View.extend({
   template: require('../templates/events.html'),
@@ -24,11 +25,20 @@ module.exports = Backbone.View.extend({
 
   scrollVisibleTimeout: null,
 
+  chatmode: false,
+
   scrollWasOnBottom: true, // ... before unfocus (scroll position is not
                            // available when discussion is hidden (default:
                            // true, for first focus)
 
   initialize: function () {
+    this.listenTo(client, 'preferences:update', _.bind(function () {
+      if (currentUser.discussionMode() !== this.chatmode) {
+        this.$realtime.toggleClass('compact');
+        this.chatmode = currentUser.discussionMode();
+      }
+    }, this));
+    this.chatmode = currentUser.discussionMode();
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(this.model, 'windowRefocused', this.onScroll);
     this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
@@ -38,6 +48,7 @@ module.exports = Backbone.View.extend({
 
     this.engine = new EventsEngine({
       model: this.model,
+      currentUserId: currentUser.get('user_id'),
       el: this.$realtime
     });
     this.eventsViewedView = new EventsViewedView({
@@ -81,6 +92,7 @@ module.exports = Backbone.View.extend({
       ? date.shortTimeSeconds(this.model.get('created_at'))
       : '';
     var html = this.template({
+      chatmode: this.chatmode,
       model: modelJson,
       isOwner: (this.model.get('type') === 'room' && this.model.currentUserIsOwner())
     });
@@ -195,7 +207,7 @@ module.exports = Backbone.View.extend({
    * Events rendering
    *
    *****************************************************************************************************************/
-  addFreshEvent: function (model) {
+  addFreshEvent: function (type, data) {
     // scrollDown only if already on bottom before DOM insertion
     var needToScrollDown = (
       (this.model.get('focused') === true && this.isScrollOnBottom()) ||
@@ -203,7 +215,7 @@ module.exports = Backbone.View.extend({
     );
 
     // render and insert
-    this.engine.insertBottom(model);
+    this.engine.insertBottom(type, data);
 
     // scrollDown
     if (needToScrollDown && !this.eventsEditView.messageUnderEdition) {

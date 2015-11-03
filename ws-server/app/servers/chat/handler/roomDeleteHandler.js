@@ -3,6 +3,7 @@ var errors = require('../../../util/errors');
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var async = require('async');
 var GroupModel = require('../../../../../shared/models/group');
+var UserModel = require('../../../../../shared/models/user');
 var Notifications = require('../../../components/notifications');
 
 var Handler = function (app) {
@@ -53,6 +54,8 @@ handler.call = function (data, session, next) {
     },
 
     function checkDefaultAndOwnerGroupRoom (callback) {
+      isRoomOwner = room.isOwner(user.id);
+
       if (!room.group) {
         return callback(null);
       }
@@ -72,7 +75,6 @@ handler.call = function (data, session, next) {
         }
 
         isGroupOwner = model.isOwner(user.id);
-        isRoomOwner = room.isOwner(user.id);
         return callback(null);
       });
     },
@@ -90,7 +92,7 @@ handler.call = function (data, session, next) {
         room_id: room.id,
         reason: 'deleted'
       };
-      that.app.globalChannelService.pushMessage('connector', 'room:leave', event, room.name, {}, function (err) {
+      that.app.globalChannelService.pushMessage('connector', 'room:leave', event, room.id, {}, function (err) {
         if (err) {
           logger.error(err);
         } // not 'return', we delete even if error happen
@@ -98,8 +100,24 @@ handler.call = function (data, session, next) {
       });
     },
 
+    function removeBlockedUser (callback) {
+      UserModel.update(
+        {
+          blocked: {$in: [room.id]}
+        },
+        {
+          $pull: {blocked: room.id}
+        },
+        {
+          multi: true
+        }
+      ).exec(function (err) {
+          return callback(err);
+        });
+    },
+
     function destroy (callback) {
-      that.app.globalChannelService.destroyChannel(room.name, function (err) {
+      that.app.globalChannelService.destroyChannel(room.id, function (err) {
         if (err) {
           logger.error(err);
         } // not 'return', we continue even if error happen

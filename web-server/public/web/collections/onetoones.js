@@ -1,10 +1,9 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var client = require('../libs/client');
-var app = require('../models/app');
+var app = require('../libs/app');
 var currentUser = require('../models/current-user');
 var OneToOneModel = require('../models/onetoone');
-var i18next = require('i18next-client');
 
 var OnetoonesCollection = Backbone.Collection.extend({
   comparator: function (a, b) {
@@ -37,6 +36,7 @@ var OnetoonesCollection = Backbone.Collection.extend({
   },
 
   initialize: function () {
+    this.listenTo(client, 'welcome', this.onWelcome);
     this.listenTo(client, 'user:message', this.onMessage);
     this.listenTo(client, 'user:updated', this.onUpdated);
     this.listenTo(client, 'user:online', this.onUserOnline);
@@ -49,24 +49,21 @@ var OnetoonesCollection = Backbone.Collection.extend({
     this.listenTo(client, 'user:message:edit', this.onMessageEdited);
     this.listenTo(client, 'user:typing', this.onTyping);
   },
-  join: function (username) {
-    client.userId(username, function (response) {
-      if (response.err && response !== 500) {
-        return app.trigger('alert', 'error', i18next.t('chat.users.usernotexist'));
-      } else if (response.code === 500) {
-        return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+  onWelcome: function (data) {
+    _.each(data.onetoones, _.bind(function (one) {
+      this.addModel(one);
+    }, this));
+
+    // remove when user no more in
+    var modelsIds = _.map(this.models, 'id');
+    var ids = _.map(data.onetoones, 'user_id');
+    _.each(modelsIds, _.bind(function (modelId) {
+      if (ids.indexOf(modelId) === -1) {
+        this.remove(modelId);
       }
-      if (!response.user_id) {
-        return;
-      }
-      client.userJoin(response.user_id, function (response) {
-        if (response.err && response !== 500) {
-          return app.trigger('alert', 'error', i18next.t('chat.users.usernotexist'));
-        } else if (response.code === 500) {
-          return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
-        }
-      });
-    });
+    }, this));
+
+    app.trigger('redrawNavigationOnes');
   },
   onJoin: function (data) {
     // server ask to client to open this one to one in IHM
@@ -140,6 +137,7 @@ var OnetoonesCollection = Backbone.Collection.extend({
       }
       withUser.key = key;
       model = this.addModel(withUser);
+      app.trigger('redrawNavigationOnes');
       client.userRead(withUser.user_id, null, function (data) {
         if (!data.err) {
           model.set(data);
@@ -159,6 +157,7 @@ var OnetoonesCollection = Backbone.Collection.extend({
     var model = this.get(data.user_id);
     if (model) {
       this.remove(model);
+      app.trigger('redrawNavigationOnes');
     }
   },
   onMessage: function (data) {

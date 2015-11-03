@@ -1,8 +1,7 @@
 var Backbone = require('backbone');
-var app = require('./app');
+var app = require('../libs/app');
 var client = require('../libs/client');
 var currentUser = require('./current-user');
-var EventModel = require('./event');
 
 var OneToOneModel = Backbone.Model.extend({
   defaults: function () {
@@ -38,14 +37,10 @@ var OneToOneModel = Backbone.Model.extend({
     client.userLeave(this.get('user_id'));
   },
   onMessage: function (data) {
-    var model = new EventModel({
-      type: 'user:message',
-      unviewed: (currentUser.get('user_id') !== data.from_user_id),
-      data: data
-    });
+    app.trigger('newEvent', 'user:message', data, this);
 
-    app.trigger('newEvent', model, this);
-    this.trigger('freshEvent', model);
+    data.unviewed = (currentUser.get('user_id') !== data.from_user_id);
+    this.trigger('freshEvent', 'user:message', data);
   },
   onUserOnline: function (data) {
     this._onStatus('online', data);
@@ -63,11 +58,7 @@ var OneToOneModel = Backbone.Model.extend({
       onlined: new Date().toISOString()
     });
 
-    var model = new EventModel({
-      type: 'user:' + expect,
-      data: data
-    });
-    this.trigger('freshEvent', model);
+    this.trigger('freshEvent', 'user:' + expect, data);
   },
   onUpdated: function (data) {
     this.set(data.data);
@@ -83,11 +74,7 @@ var OneToOneModel = Backbone.Model.extend({
     }
 
     // add event to discussion
-    var model = new EventModel({
-      type: 'user:ban',
-      data: data
-    });
-    this.trigger('freshEvent', model);
+    this.trigger('freshEvent', 'user:ban', data);
   },
   onDeban: function (data) {
     if (data.user_id === currentUser.get('user_id')) {
@@ -100,11 +87,7 @@ var OneToOneModel = Backbone.Model.extend({
     }
 
     // add event to discussion
-    var model = new EventModel({
-      type: 'user:deban',
-      data: data
-    });
-    this.trigger('freshEvent', model);
+    this.trigger('freshEvent', 'user:deban', data);
   },
   history: function (start, end, callback) {
     client.userHistory(this.get('user_id'), start, end, 100, function (data) {

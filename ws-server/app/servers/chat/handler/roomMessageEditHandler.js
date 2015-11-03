@@ -107,7 +107,7 @@ handler.call = function (data, session, next) {
         event: event.id,
         message: message
       };
-      that.app.globalChannelService.pushMessage('connector', 'room:message:edit', eventToSend, room.name, {}, function (err) {
+      that.app.globalChannelService.pushMessage('connector', 'room:message:edit', eventToSend, room.id, {}, function (err) {
         return callback(err, mentions);
       });
     },

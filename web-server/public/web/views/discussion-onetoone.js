@@ -1,6 +1,6 @@
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
-var app = require('../models/app');
+var app = require('../libs/app');
 var EventsView = require('./events');
 var InputView = require('./input');
 var date = require('../libs/date');

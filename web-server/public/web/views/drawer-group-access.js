@@ -3,7 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
 var common = require('@dbrugne/donut-common/browser');
-var app = require('../models/app');
+var app = require('../libs/app');
 var client = require('../libs/client');
 var ConfirmationView = require('./modal-confirmation');
 var TableView = require('./drawer-group-access-table');
@@ -28,6 +28,10 @@ var GroupAccessView = Backbone.View.extend({
     'keyup #input-search': 'onSearchUser',
     'click .search-user i.icon-search': 'onSearchUser',
     'click .search-user .dropdown-menu>li': 'onAllowUser',
+
+    'keyup #input-search-banned': 'onSearchUserBanned',
+    'click .search-user-banned i.icon-search': 'onSearchUserBanned',
+    'click .search-user-banned .dropdown-menu>li': 'onBanUser',
 
     'click input.save-access': 'onSubmit',
     'click input.save-conditions': 'onSubmitConditions',
@@ -78,7 +82,9 @@ var GroupAccessView = Backbone.View.extend({
     this.$errors = this.$('.errors');
 
     this.$search = this.$('#input-search');
+    this.$searchBan = this.$('#input-search-banned');
     this.$dropdown = this.$('.search-user .dropdown');
+    this.$dropdownBan = this.$('.search-user-banned .dropdown');
 
     this.$toggleCheckbox = this.$('#input-password-checkbox');
     this.$checkboxGroupAllow = this.$('#input-allowgroupmember-checkbox');
@@ -114,6 +120,7 @@ var GroupAccessView = Backbone.View.extend({
   },
   renderDropDown: function (val, dropdown) {
     this.$dropdown.removeClass('open');
+    this.$dropdownBan.removeClass('open');
 
     dropdown.addClass('open');
     var dropdownMenu = dropdown.find('.dropdown-menu');
@@ -163,6 +170,24 @@ var GroupAccessView = Backbone.View.extend({
       this.renderDropDown(val, this.$dropdown);
     }, this), this.timeBufferBeforeSearch);
   },
+  onSearchUserBanned: function (event) {
+    event.preventDefault();
+    var key = keyboard._getLastKeyCode(event);
+    if (key.key === keyboard.ESC && this.$dropdownBan.hasClass('open')) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.resetDropdownBan();
+    }
+
+    var val = this.$searchBan.val();
+
+    if (val === '') {
+      this.$dropdownBan.removeClass('open');
+      return;
+    }
+
+    this.renderDropDown(val, this.$dropdownBan);
+  },
   onAllowUser: function (event) {
     event.preventDefault();
 
@@ -187,8 +212,39 @@ var GroupAccessView = Backbone.View.extend({
     this.$dropdown.removeClass('open');
     this.$search.val('');
   },
+  onBanUser: function (event) {
+    event.preventDefault();
+
+    var userId = $(event.currentTarget).data('userId');
+    var userName = $(event.currentTarget).data('username');
+
+    if (userId && userName) {
+      ConfirmationView.open({
+        input: true,
+        message: 'ban-group-user',
+        username: userName
+      }, _.bind(function (reason) {
+        client.groupBan(this.model.get('group_id'), userId, reason, _.bind(function (response) {
+          if (response.err) {
+            return this.setError(i18next.t('chat.form.errors.' + response.err, {defaultValue: i18next.t('global.unknownerror')}));
+          }
+
+          this.tablePending.render('pending');
+          this.tableAllowed.render('allowed');
+          this.model.refreshUsers();
+        }, this));
+      }, this));
+    }
+
+    // Close dropdown
+    this.$dropdownBan.removeClass('open');
+    this.$searchBan.val('');
+  },
   resetDropdown: function () {
     this.$dropdown.removeClass('open');
+  },
+  resetDropdownBan: function () {
+    this.$dropdownBan.removeClass('open');
   },
   onChoosePassword: function (event) {
     // Display block on click

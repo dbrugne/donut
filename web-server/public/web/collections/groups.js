@@ -3,7 +3,7 @@ var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var GroupModel = require('../models/group');
 var client = require('../libs/client');
-var app = require('../models/app');
+var app = require('../libs/app');
 var currentUser = require('../models/current-user');
 var urls = require('../../../../shared/util/url');
 
@@ -30,6 +30,7 @@ var GroupsCollection = Backbone.Collection.extend({
     this.listenTo(client, 'group:deop', this.onDeop);
     this.listenTo(client, 'group:allow', this.onAllow);
     this.listenTo(client, 'group:disallow', this.onDisallow);
+    this.listenTo(client, 'group:leave', this.onGroupLeave);
   },
   addModel: function (data) {
     data.id = data.group_id;
@@ -111,6 +112,18 @@ var GroupsCollection = Backbone.Collection.extend({
     }
 
     model.onDeop(data); // need to refresh group users list
+  },
+  onGroupLeave: function (data) {
+    var model;
+    if (!data || !data.group_id || !(model = this.get(data.group_id))) {
+      return;
+    }
+
+    if (currentUser.get('user_id') !== data.user_id) {
+      return;
+    }
+    this.remove(model);
+    app.trigger('refreshRoomsList');
   },
   isMemberOwnerAdmin: function (groupId) {
     var model;

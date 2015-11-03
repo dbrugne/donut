@@ -4,7 +4,7 @@ var common = require('@dbrugne/donut-common/browser');
 var ConfirmationView = require('./modal-confirmation');
 var client = require('../libs/client');
 var i18next = require('i18next-client');
-var app = require('../models/app');
+var app = require('../libs/app');
 var urls = require('../../../../shared/util/url');
 var date = require('../libs/date');
 var GroupUsersView = require('./group-users');
@@ -108,9 +108,8 @@ var GroupView = Backbone.View.extend({
   },
   onRequestAllowance: function (event) {
     var options = {
-      message: 'request-allowance-group',
-      area: true,
-      group_name: this.model.get('name')
+      message: 'request-allowance',
+      area: true
     };
 
     ConfirmationView.open(options, _.bind(function (message) {
@@ -135,8 +134,8 @@ var GroupView = Backbone.View.extend({
     ConfirmationView.open(options, _.bind(function (password) {
       client.groupJoin(this.model.get('group_id'), password, _.bind(function (response) {
         if (response.err) {
-          if (response.err === 'wrong-password') {
-            app.trigger('alert', 'error', i18next.t('chat.password.' + response.err));
+          if (response.err === 'wrong-password' || response.err === 'params-password') {
+            app.trigger('alert', 'error', i18next.t('chat.password.wrong-password'));
           } else {
             app.trigger('alert', 'error', i18next.t('global.unknownerror'));
           }
@@ -180,6 +179,7 @@ var GroupView = Backbone.View.extend({
   },
   refreshUsers: function () {
     this.groupUsersView.render();
+    this.initializeTooltips();
   }
 });
 

@@ -1,14 +1,16 @@
-<div class="block message has-hover <%= data.special %> <% if (spammed) { %>spammed<% } %> <% if (edited) { %>edited<% } %>  <% if (unviewed) { print('unviewed'); } %>"
+<div class="block message has-hover <%= data.special %> <% if (data.spammed) { %>spammed<% } %> <% if (data.edited) { %>edited<% } %>  <% if (data.unviewed) { %>unviewed<% } %>"
      id="<%= data.id %>"
      data-user-id="<%= data.user_id %>"
      data-time="<%= data.time %>"
      <% if (data.special) { print('data-special="' + data.special + '"') }; %>
-    <% if (data.spammed) { print('data-spammed="true"') }; %>
-    <% if (data.edited) { print('data-edited="true"') }; %>>
+     <% if (data.spammed) { print('data-spammed="true"') }; %>
+     <% if (data.edited) { print('data-edited="true"') }; %>
+     >
+    <span class="username open-user-profile" data-user-id="<%= data.user_id %>"  style="display:none">@<%=data.username%></span>
     <div class="ctn">
         <div class="message-edit"><!-- message-edit view --></div>
         <% if (data.message) { %>
-        <div class="text"><%= data.message %><% if (edited) { %><span class="text-edited">&nbsp;(<%= t('chat.message.edition.edited') %>)</span><% } %></div>
+        <div class="text"><%= data.message %><% if (data.edited) { %><span class="text-edited">&nbsp;(<%= t('chat.message.edition.edited') %>)</span><% } %></div>
         <% } %>
         <% if (data.files) { %>
         <div class="images">
@@ -34,7 +36,7 @@
             <hr>
         </div>
         <% } %>
-        <% if (spammed) { %>
+        <% if (data.spammed) { %>
             <div class="text-spammed"><%= t('chat.message.text-spammed') %></div>
         <% } %>
     </div>

@@ -2,7 +2,6 @@ var $ = require('jquery');
 var _ = require('underscore');
 var common = require('@dbrugne/donut-common/browser');
 var date = require('./date');
-var EventModel = require('../models/event');
 
 var templates = {
   'hello': require('../templates/event/block-hello.html'),
@@ -30,17 +29,17 @@ var templates = {
 
 var exports = module.exports = function (options) {
   this.discussion = options.model;
+  this.currentUserId = options.currentUserId;
   this.$el = options.el; // at this time it's empty
   this.empty = true;
   this.topEvent = '';
   this.bottomEvent = '';
 };
 
-exports.prototype.insertBottom = function (event) {
-  var id = event.get('id');
-  if (!id) {
-    return;
-  }
+exports.prototype.insertBottom = function (type, data) {
+  var event = this._data(type, data);
+
+  var id = event.data.id;
   if (this.$el.find('#' + id).length) {
     return console.warn('history and realtime event colision', id);
   }
@@ -50,24 +49,24 @@ exports.prototype.insertBottom = function (event) {
   var html = '';
 
   // new date block
-  if (!previous || !date.isSameDay(event.get('time'), previous.get('time'))) {
+  if (!previous || !date.isSameDay(event.data.time, previous.data.time)) {
     html += require('../templates/event/block-date.html')({
-      time: event.get('time'),
-      date: date.block(event.get('time'))
+      time: event.data.time,
+      date: date.block(event.data.time)
     });
   }
 
   // new message block
   if (this.block(event, previous)) {
     html += require('../templates/event/block-user.html')({
-      user_id: event.get('data').user_id,
-      username: event.get('data').username,
-      avatar: common.cloudinary.prepare(event.get('data').avatar, 30)
+      user_id: event.data.user_id,
+      username: event.data.username,
+      avatar: common.cloudinary.prepare(event.data.avatar, 30)
     });
   }
 
   // render event
-  html += this._renderEvent(event.get('type'), this._data(event));
+  html += this._renderEvent(event);
 
   // previous saving
   if (!this.topEvent && !this.bottomEvent) {
@@ -87,11 +86,11 @@ exports.prototype.insertTop = function (events) {
 
   var html = '';
   var previous;
-  _.each(events, _.bind(function (event) {
-    event = new EventModel(event);
+  _.each(events, _.bind(function (e) {
+    var event = this._data(e.type, e.data);
 
     // try to render event (before)
-    var _html = this._renderEvent(event.get('type'), this._data(event));
+    var _html = this._renderEvent(event);
     if (!_html) {
       return;
     }
@@ -99,17 +98,17 @@ exports.prototype.insertTop = function (events) {
     // new message block
     if (this.block(event, previous)) {
       _html = require('../templates/event/block-user.html')({
-        user_id: event.get('data').user_id,
-        username: event.get('data').username,
-        avatar: common.cloudinary.prepare(event.get('data').avatar, 30)
+        user_id: event.data.user_id,
+        username: event.data.username,
+        avatar: common.cloudinary.prepare(event.data.avatar, 30)
       }) + _html;
     }
 
     // new date block
-    if (!previous || !date.isSameDay(event.get('time'), previous.get('time'))) {
+    if (!previous || !date.isSameDay(event.data.time, previous.data.time)) {
       _html = require('../templates/event/block-date.html')({
-        time: event.get('time'),
-        date: date.block(event.get('time'))
+        time: event.data.time,
+        date: date.block(event.data.time)
       }) + _html;
     }
 
@@ -134,40 +133,40 @@ exports.prototype.insertTop = function (events) {
   this.$el.prepend(html);
 };
 
-exports.prototype.replaceLastDisconnectBlock = function ($lastDisconnectBlock, $previousEventDiv, history) {
-  if (!history.length) {
+exports.prototype.replaceLastDisconnectBlock = function ($lastDisconnectBlock, $previousEventDiv, events) {
+  if (!events.length) {
     $lastDisconnectBlock.replaceWith('');
     return;
   }
 
-  history = history.reverse();
+  events = events.reverse();
 
   var html = '';
   var previous;
-  _.each(history, _.bind(function (event) {
-    event = new EventModel(event);
+  _.each(events, _.bind(function (e) {
+    var event = this._data(e.type, e.data);
 
     // try to render event (before)
-    var _html = this._renderEvent(event.get('type'), this._data(event));
+    var _html = this._renderEvent(event);
     if (!_html) {
       return;
     }
 
     // new message block
-    if ((previous && this.block(event, previous)) || (!previous && event.get('data').user_id !== $previousEventDiv.data('userId'))) {
+    if ((previous && this.block(event, previous)) || (!previous && event.data.user_id !== $previousEventDiv.data('userId'))) {
       _html = require('../templates/event/block-user.html')({
-        user_id: event.get('data').user_id,
-        username: event.get('data').username,
-        avatar: common.cloudinary.prepare(event.get('data').avatar, 30)
+        user_id: event.data.user_id,
+        username: event.data.username,
+        avatar: common.cloudinary.prepare(event.data.avatar, 30)
       }) + _html;
     }
 
     // new date block
-    if ((!previous && !date.isSameDay(event.get('time'), $previousEventDiv.data('time'))) ||
-      (previous && !date.isSameDay(event.get('time'), previous.get('time')))) {
+    if ((!previous && !date.isSameDay(event.data.time, $previousEventDiv.data('time'))) ||
+      (previous && !date.isSameDay(event.data.time, previous.data.time))) {
       _html = require('../templates/event/block-date.html')({
-        time: event.get('time'),
-        date: date.block(event.get('time'))
+        time: event.data.time,
+        date: date.block(event.data.time)
       }) + _html;
     }
 
@@ -182,33 +181,43 @@ exports.prototype.replaceLastDisconnectBlock = function ($lastDisconnectBlock, $
 
 exports.prototype.block = function (event, previous) {
   var messagesTypes = [ 'room:message', 'user:message' ];
-  if (messagesTypes.indexOf(event.get('type')) === -1) {
+  if (messagesTypes.indexOf(event.type) === -1) {
     return false;
   }
   if (!previous) {
     return true;
   }
-  if (messagesTypes.indexOf(previous.get('type')) === -1) {
+  if (messagesTypes.indexOf(previous.type) === -1) {
     return true;
   }
-  if (!date.isSameDay(event.get('time'), previous.get('time'))) {
+  if (!date.isSameDay(event.data.time, previous.data.time)) {
     return true;
   }
-  if (event.get('data').user_id !== previous.get('data').user_id) {
+  if (event.data.user_id !== previous.data.user_id) {
     return true;
   }
   return false;
 };
 
-exports.prototype._data = function (event) {
-  var data = event.toJSON();
-  data.data = _.clone(event.get('data'));
+/**
+ * event {
+ *   type: String,
+ *   data: {}
+ * }
+ */
+exports.prototype._data = function (type, data) {
+  if (!type) {
+    return;
+  }
 
-  data.stype = data.type.replace('room:', '').replace('user:', '');
-  data.type = data.type.replace(':', '');
+  data = (!data) ? {} : _.clone(data);
 
-  // room
-  if (this.discussion.get('type') === 'room') {
+  data.id = data.id || _.uniqueId('auto_');
+  data.time = data.time || Date.now();
+
+  // special: hello block
+  if (type === 'room:in' && this.currentUserId === data.user_id) {
+    type = 'hello';
     data.identifier = this.discussion.get('identifier');
     data.mode = this.discussion.get('mode');
     data.allow_user_request = this.discussion.get('allow_user_request');
@@ -218,39 +227,51 @@ exports.prototype._data = function (event) {
     data.owner_id = this.discussion.get('owner_id');
   }
 
+  data.type = type.replace(':', '');
+  data.stype = type.replace('room:', '').replace('user:', '');
+
+  // ones
+  if (type === 'user:message') {
+    data.user_id = data.from_user_id;
+    data.username = data.from_username;
+    data.avatar = data.from_avatar;
+    data.color = data.from_color;
+  }
+
   // unviewed & spammed & edited
-  data.unviewed = (event.get('unviewed') === true);
-  data.spammed = (event.get('spammed') === true);
-  data.edited = (event.get('edited') === true);
+  data.unviewed = (data.unviewed === true);
+  data.spammed = (data.spammed === true);
+  data.edited = (data.edited === true);
 
   // avatar
-  if (event.get('data').avatar) {
-    data.data.avatar = common.cloudinary.prepare(event.get('data').avatar, 30);
+  if (data.avatar) {
+    data.avatar = common.cloudinary.prepare(data.avatar, 30);
   }
-  if (event.get('data').by_avatar) {
-    data.data.by_avatar = common.cloudinary.prepare(event.get('data').by_avatar, 30);
+  if (data.by_avatar) {
+    data.by_avatar = common.cloudinary.prepare(data.by_avatar, 30);
   }
 
-  if (data.data.message || data.data.topic) {
-    var subject = data.data.message || data.data.topic;
+  if (data.message || data.topic) {
+    var subject = data.message || data.topic;
     subject = common.markup.toHtml(subject, {
       template: require('../templates/markup.html'),
       style: 'color: ' + this.discussion.get('color')
     });
 
+    // @todo : replace with UTF-8 emojis
     subject = $.smilify(subject);
 
-    if (data.data.message) {
-      data.data.message = subject;
+    if (data.message) {
+      data.message = subject;
     } else {
-      data.data.topic = subject;
+      data.topic = subject;
     }
   }
 
   // files
-  if (data.data.files) {
+  if (data.files) {
     var files = [];
-    _.each(data.data.files, function (f) {
+    _.each(data.files, function (f) {
       if (f.type !== 'raw') {
         f.href = common.cloudinary.prepare(f.url, 1500, 'limit');
         f.thumbnail = common.cloudinary.prepare(f.url, 100, 'fill');
@@ -259,28 +280,30 @@ exports.prototype._data = function (event) {
     });
 
     if (files && files.length > 0) {
-      data.data.files = files;
+      data.files = files;
     }
   }
 
   // date
-  var time = event.get('time');
-  data.data.dateshort = date.shortTime(time);
-  data.data.datefull = date.longDateTime(time);
+  data.dateshort = date.shortTime(data.time);
+  data.datefull = date.longDateTime(data.time);
 
-  return data;
+  return {
+    type: type,
+    data: data
+  };
 };
 
-exports.prototype._renderEvent = function (type, data) {
+exports.prototype._renderEvent = function (event) {
   try {
-    var template = templates[type];
+    var template = templates[event.type];
     if (!template) {
-      console.warn('render was unable to find template: ' + type);
+      console.warn('render was unable to find template: ' + event.type);
       return ''; // avoid 'undefined'
     }
-    return template(data);
+    return template(event);
   } catch (e) {
-    console.error('render exception, see below: ' + type, e);
+    console.error('render exception, see below: ' + event.type, e);
     return ''; // avoid 'undefined'
   }
 };

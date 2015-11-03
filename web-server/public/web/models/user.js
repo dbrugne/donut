@@ -1,6 +1,5 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
-var $ = require('jquery');
 var client = require('../libs/client');
 
 var UserModel = Backbone.Model.extend({
@@ -15,23 +14,18 @@ var UserModel = Backbone.Model.extend({
   },
 
   initialize: function (options) {
-    this._initialize();
-  },
-
-  _initialize: function (options) {
-    this.listenTo(client, 'user:updated', this.onUpdated); // @todo : performance leak, should be handled by rooms and onetoones and currentUser
+    // @todo : performance leak, should be handled by rooms and onetoones
+    this.listenTo(client, 'user:updated', this.onUpdated);
   },
 
   onUpdated: function (data) {
-    if (data.username != this.get('username'))
+    if (data.user_id !== this.get('user_id')) {
       return;
-    var that = this;
-    _.each(data.data, function (value, key, list) {
-      that.set(key, value);
-    });
+    }
+    _.each(data.data, _.bind(function (value, key, list) {
+      this.set(key, value);
+    }, this));
   }
-
 });
-
 
 module.exports = UserModel;

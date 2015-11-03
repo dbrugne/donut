@@ -7,7 +7,7 @@
                     <% if (reason) { %>
                         <%= t('email.common.reason', { reason: reason }) %><br/>
                     <% } %>
-                    <%= t('email.roomban.content.disclaimer') %><br/>
+                    <%= t('email.roomban.content.disclaimer', {roomname: roomname}) %><br/>
                 </span>
             </div>
             <div style="height: 35px; line-height: 35px; font-size: 10px;">&nbsp;</div>

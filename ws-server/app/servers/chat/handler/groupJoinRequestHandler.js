@@ -31,7 +31,7 @@ handler.call = function (data, session, next) {
         return callback('message-wrong-format');
       }
 
-      if (!group) {
+      if (!group || group.deleted) {
         return callback('group-not-found');
       }
 
@@ -78,7 +78,7 @@ handler.call = function (data, session, next) {
     function notification (event, callback) {
       var ids = group.getIdsByType('op');
       async.eachLimit(ids, 10, function (id, fn) {
-        Notifications(that.app).getType('groupjoinrequest').create(id, group, event,  fn);
+        Notifications(that.app).getType('groupjoinrequest').create(id, group, event, fn);
       }, function (err) {
         return callback(err);
       });

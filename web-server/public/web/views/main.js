@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var donutDebug = require('../libs/donut-debug');
-var app = require('../models/app');
+var app = require('../libs/app');
 var client = require('../libs/client');
 var i18next = require('i18next-client');
 var currentUser = require('../models/current-user');
@@ -100,7 +100,7 @@ var MainView = Backbone.View.extend({
     this.listenTo(onetoones, 'remove', this.onRemoveDiscussion);
     this.listenTo(rooms, 'allowed', this.roomAllowed);
     this.listenTo(rooms, 'join', this.roomJoin);
-    this.listenTo(rooms, 'deleted', this.roomRoomDeleted);
+    this.listenTo(rooms, 'deleted', this.roomDeleted);
     this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
     this.listenTo(app, 'openGroupProfile', this.openGroupProfile);
     this.listenTo(app, 'openUserProfile', this.openUserProfile);
@@ -145,12 +145,6 @@ var MainView = Backbone.View.extend({
    * @param data
    */
   onWelcome: function (data) {
-    // Current user data (should be done before onetoone logic)
-    currentUser.set(data.user, {silent: true});
-    currentUser.setPreferences(data.preferences, {silent: true});
-    this.currentUserView.render();
-    this.muteView.render();
-
     // Only on first connection
     if (this.firstConnection) { // show if true or if undefined
       // Welcome message
@@ -163,36 +157,15 @@ var MainView = Backbone.View.extend({
       $('#block-discussions').show();
     }
 
-    // Rooms
-    _.each(data.rooms, function (room) {
-      rooms.addModel(room);
-    });
-
-    // One to ones
-    _.each(data.onetoones, function (one) {
-      onetoones.addModel(one);
-    });
-
-    // blocked
-    _.each(data.blocked, function (lock) {
-      rooms.addModel(lock, lock.blocked
-        ? lock.blocked
-        : true);
-    });
-
-    // only one time for each welcome event
-    app.trigger('redrawNavigation');
-
     // Notifications
     if (data.notifications) {
       this.notificationsView.initializeNotificationState(data.notifications);
     }
-    this.firstConnection = false;
 
     // Run routing only when everything in interface is ready
+    this.firstConnection = false;
     app.trigger('readyToRoute');
     this.connectionView.hide();
-    debug.end('welcome');
   },
   onAdminMessage: function (data) {
     app.trigger('alert', 'info', data.message);
@@ -304,7 +277,7 @@ var MainView = Backbone.View.extend({
       app.trigger('focus', event.model);
     }
   },
-  roomRoomDeleted: function (data) {
+  roomDeleted: function (data) {
     if (data.was_focused) {
       app.trigger('focus');
     }
@@ -314,9 +287,7 @@ var MainView = Backbone.View.extend({
       model.onDeleteRoom(data.room_id);
     }
 
-    if (data && data.reason) {
-      app.trigger('alert', 'warning', data.reason);
-    }
+    app.trigger('alert', 'warning', i18next.t('chat.deletemessage', {name: data.name}));
   },
 
   // DRAWERS

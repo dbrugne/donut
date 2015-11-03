@@ -120,6 +120,7 @@
     "orsignup": "or signup",
     "forgot": "forgotten password",
     "join": "join",
+    "direct-access": "direct access",
     "discuss": "chat",
     "account": "my account",
     "mute": "sound on",
@@ -366,7 +367,7 @@
     },
     "op": {
       "is": "This user is the moderator of this donut.",
-      "isgroup": "This user is the moderator of this community",
+      "isgroup": "This user is a moderator of this community",
       "infobox": "Make moderator"
     },
     "deop": {
@@ -404,7 +405,10 @@
       "success": "A request has been sent successfully",
       "error" : {
         "allow-pending": "An access request is already pending",
-        "message-wrong-format": "The message should be less than 200 character"
+        "message-wrong-format": "The message should be less than 200 character",
+        "banned": "You were ban from this donut",
+        "group-banned": "You were ban from this donut community",
+        "room-not-found": "donut not found"
       }
     },
     "password": {
@@ -414,12 +418,11 @@
       "error": "An error has occurred"
     },
     "confirmation": {
-      "sure": "Do you confirm this action?",
       "placeholder": "Explain why, visible in the donut (optional)",
-      "placeholderarea": "200 character maximum",
+      "placeholderarea": "200 characters maximum",
       "label": "Explain why (optional)",
-      "cancel": "No, cancel",
-      "confirm": "Yes, confirm",
+      "cancel": "Cancel",
+      "confirm": "OK",
       "message": {
         "modechange": "WARNING this action is irreversible.",
         "refuseuser": "You are about to refuse @__username__",
@@ -428,8 +431,7 @@
         "ban-group-user": "You are about to ban user @__username__ from this community",
         "deban-group-user": "You are about to deban user @__username__ from this community",
         "invite": "You are about to authorize @__username__. A notification will be sent to invite @__username__ to join #__name__.",
-        "requestallowance": "You are about to request allowance for #__name__. Owner will see your real name and your email on your membership request.",
-        "requestallowancegroup": "You are about to request allowance for #__name__. Owner will see your real name and your email on your membership request."
+        "requestallowance": "<strong>Membership request.</strong><br>The community creator will have access to your real name and email."
       }
     },
     "commands": {
@@ -513,15 +515,15 @@
         "roominvite": "<span>@__username__</span> invites you to join <span>__name__</span>",
         "roomdelete": "<span>@__username__</span> delete your donut <span>__name__</span>",
         "roomcreate": "<span>@__username__</span> create the donut <span>__name__</span>",
-        "groupjoinrequest": "<span>@__username__</span> wants to join <span>__name__</span>",
-        "groupallowed": "You are now authorized to join <span>__name__</span>",
-        "groupdisallow": "You are no more authorized in <span>__name__</span>",
-        "groupinvite": "<span>@__username__</span> invites you to join <span>__name__</span>",
-        "grouprefuse": "Your request to join <span>__name__</span> has been refused",
-        "groupban": "You were banned from community <span>__name__</span>",
-        "groupdeban": "You are no longer banned from community <span>__name__</span>",
-        "groupop": "You are moderator of community <span>__name__</span>",
-        "groupdeop": "You are no longer moderator of community <span>__name__</span>"
+        "groupjoinrequest": "<span>@__username__</span> wants to join <span>#__name__</span>",
+        "groupallowed": "You are now a member of  <span>#__name__</span>",
+        "groupdisallow": "You are no longer a member of <span>#__name__</span>",
+        "groupinvite": "<span>@__username__</span> invites you to join <span>#__name__</span>",
+        "grouprefuse": "Your request to join <span>#__name__</span> has been refused",
+        "groupban": "You were banned from community <span>#__name__</span>",
+        "groupdeban": "You are no longer banned from community <span>#__name__</span>",
+        "groupop": "You are moderator of community <span>#__name__</span>",
+        "groupdeop": "You are no longer moderator of community <span>#__name__</span>"
       },
       "userban": " was blocked by",
       "userdeban": " is no longer blocked as requested by"
@@ -535,7 +537,7 @@
       "top": "go to top",
       "bottom": "go to bottom",
       "currently": "This is it... You are at the very start of the conversation on <span class=\"name dc-text open-room-profile\" data-room-id=\"__room_id__\">__identifier__</span>, donut created by <span class=\"owner dc-text open-user-profile\" data-user-id=\"__owner_id__\">@__owner_username__</span> on <span class=\"date\">__created_at__</span>",
-      "hasPassword": "Your donut is private. Configure the access to your donut so that other users can join",
+      "hasPassword": "Your donut is private. Configure access conditions so that other users can join.",
       "onestart": "This conversation is private. Only you and your interlocutor can see it.",
       "edit": "Edit profile",
       "users": "Manage users",
@@ -562,6 +564,7 @@
       "link": "User list",
       "label": "See all users",
       "search": "search a username in this donut",
+      "search-group": "search a username in this community",
       "type": {
         "owner": "Owner",
         "users": "Users",
@@ -615,10 +618,7 @@
         "<p>This is private conversation and its history are only accessible to allowed users.</p>",
         "<p>Say 'hi' to engage in the discussion.</p>"
       ],
-      "onetoone": [
-        "<strong>@__username__</strong> isn't online, he will get your messages on his next connection",
-        "Post a message to start the conversation."
-      ]
+      "onetoone": "<strong>@__username__</strong> isn't online, he will get your messages on his next connection."
     },
     "connection": {
       "connected": "Connected, loading interface...",
@@ -649,11 +649,11 @@
       "typing_plural": "are typing"
     },
     "blocked": {
-      "allowed": "This donut is private. Only users you authorize can join, participate and access history.",
+      "allowed": "This donut is private.",
       "ask-for-access": "To request access, <a href=\"#\" class=\"ask-for-allowance\"><strong>click here</strong></a>.",
       "rejoin": " to get back in.",
       "allowed_button": "Request access",
-      "password": "Or you can join directly if you know the password:",
+      "password": "Direct access:",
       "message-display": "Display a message",
       "password_placeholder": "Password",
       "password_button": "Join",
@@ -663,11 +663,11 @@
       "kicked": "You have been kicked out from this donut.",
       "kicked_button": "Join",
       "changemode": "Switch to private mode",
-      "disclaimer-private": "This donut is private. Only users you authorize can join, participate and access history.",
+      "disclaimer-private": "This donut is private.",
       "disclaimer-public": "This donut is public. Any user can access it.",
       "disclaimer-password": "You have also chosen to put a password. Users with the password can enter without having to be asked first.",
       "disclaimer-changing": "You can switch this donut to private mode. Then, only users you authorize will be able to join, participate and access history. Access will be based on invitation and/or password. The current members of this public donut will remain members once this donut switched to private. Caution, this action cannot be undone.",
-      "disclaimer-group": "All members of this community can create a donut in this community and manage it. They can also join private room that allow community members. Public donut of this community can be joined by everyone on the platform.",
+      "disclaimer-group": "Members create donuts and manage them. Members can join any donut open for members. Note: public donuts are open to anyone.",
       "close": "Close this donut",
       "allowgroupmember": "Allow community members to join this donut"
     },
@@ -702,6 +702,11 @@
         }
       },
       "group-form": {
+        "mode": {
+          "disclaimer": {
+            "group-password": "Users with the password can join this community without prior invitation."
+          }
+        },
         "create": {
           "label": "Create a community",
           "help": "A community is a place grouping your donut and allowing your community to become a member and access a group of donuts.",
@@ -764,8 +769,7 @@
           "disclaimer": {
             "public": "Any user can join, participate and access history. Moderation tools available.",
             "private": "Only users you authorize can join, participate and access history. Moderation tools available.",
-            "password": "You can also set a password. Users with the password can join without prior invitation.",
-            "group-password": "You can also set a password. Users with the password can join this community without prior invitation.",
+            "password": "Users with the password can join without prior invitation.",
             "memberscondition": "Membership conditions or procedures"
           }
         },
@@ -842,20 +846,24 @@
         "invalid-password": "The password must be 4 and 255 characters",
         "room-already-exist": "Donut __name__ already exists, <a href='__uri__'>would you like to join it</a>?",
         "group-name-already-exist": "Group __name__ already exists, <a href='__uri__'>would you like to join it</a>?",
-        "not-admin-owner-groupowner": "You do not have access to do this.",
-        "not-admin-owner": "You do not have access to do this.",
-        "not-allowed": "You can't do this."
+        "not-admin-owner-groupowner": "Unauthorized action.",
+        "not-admin-owner": "Unauthorized action.",
+        "not-allowed": "Unauthorized action."
       }
     },
     "members": "You are now a member of #__name__",
     "noroomopened": "No donuts opened, you can",
-    "groupmembersonly": "__name__ is only for members from #__group_name__ community"
+    "groupmembersonly": "__name__ is only for #__group_name__ community members",
+    "navroom": {
+      "seemore": "see all",
+      "seeless": "see less"
+    }
   },
   "group": {
     "administrator": "Administrators",
     "users": "Users",
     "invite": "Invite",
-    "ask-membership": "Ask for membership",
+    "ask-membership": "Request membership",
     "blocked": "This community is blocked by a password, to join we invite you to type it"
   },
   "account": {
@@ -982,9 +990,9 @@
       "subject": "You are no longer a moderator of __roomname__",
       "content": {
         "title": "You are no longer a moderator of __roomname__",
-        "disclaimer": "This is sad news... But the good news is you will have more time to focus on your very own donut:)",
+        "disclaimer": "Don't panic you'r still a member of __roomname__ !",
         "action": "…and all of that thanks to ",
-        "button": "Return to DONUT"
+        "button": "Got to chat"
       }
     },
     "roomkick": {
@@ -1047,23 +1055,26 @@
       "content": {
         "title": "@__username__ ask for allowance in __roomname__",
         "disclaimer": "Looks like your donut have great success!",
+        "info": "To accept or refuse his request go to \"Access\" menu from __roomname__.",
         "button": "Go to chat"
       }
     },
     "roomallow": {
-      "subject": "An user accept your request to join __roomname__",
+      "subject": "Welcome in __roomname__",
       "content": {
-        "title": "@__username__ allow you to join __roomname__",
+        "title": "Your request to join __roomname__ have been granted. You can now access to this donut !",
         "disclaimer": "You can now enjoy this donut !",
+        "action": "…and all of that thanks to ",
         "button": "Go to chat"
       }
     },
     "roomrefuse": {
-      "subject": "An user refuse your request to join __roomname__",
+      "subject": "Access refuse to __roomname__",
       "content": {
-        "title": "@__username__ refuse your request to join __roomname__",
+        "title": "Your access request to #__roomname__ have been refused",
         "disclaimer": "Don't worry you can make another request to join this donut later !",
-        "button": "Go to chat"
+        "action": "…and all of that thanks to ",
+        "button": "Go to DONUT.me"
       }
     },
     "roominvite": {
@@ -1075,19 +1086,21 @@
       }
     },
     "roomcreate": {
-      "subject": "@__username__ just create the donut __roomname__",
+      "subject": "New donut __roomname__",
       "content": {
-        "title": "@__username__ just create the donut __roomname__",
+        "title": "@__username__ create __roomname__",
         "disclaimer": "Your community had more and more donut !",
+        "info": "You can delete this donut on his profile page",
         "button": "Go to chat"
       }
     },
     "roomdelete": {
-      "subject": "@__username__ delete your donut __roomname__",
+      "subject": "Deletion of __roomname__",
       "content": {
-        "title": "@__username__ delete your donut __roomname__",
-        "disclaimer": "Looks like your donut has been a problem, do not hesitate to speak with the owner !",
-        "button": "Return to DONUT"
+        "title": "Your donut __roomname__ has been deleted",
+        "disclaimer": "Looks like your donut has been a problem, do not hesitate to speak @__username__ !",
+        "action": "…and all of that thanks to ",
+        "button": "Go to community"
       }
     },
     "roomtopic": {
@@ -1111,7 +1124,6 @@
       "subject": "New private message from @__username__",
       "content": {
         "title": "New private message from @__username__",
-        "disclaimer": "You have a new private message from ",
         "button": "Go to chat"
       }
     },
@@ -1128,24 +1140,27 @@
     "groupjoinrequest": {
       "subject": "An user want to join #__groupname__",
       "content": {
-        "title": "@__username__ ask for allowance in #__groupname__",
+        "title": "@__username__ ask for membership in #__groupname__",
         "disclaimer": "Looks like your donut have great success!",
+        "info": "To accept or refuse his request go to \"Access\" menu from #__groupname__.",
         "button": "Go to community"
       }
     },
     "groupallow": {
-      "subject": "An user accept your request to join #__groupname__",
+      "subject": "Welcome in #__groupname__",
       "content": {
-        "title": "@__username__ allow you to join #__groupname__",
-        "disclaimer": "You can now enjoy this community !",
+        "title": "You are now a member of #__groupname__",
+        "disclaimer": "Your request to join #__groupname__ has been accepted. You are now member of this community. You can access to all donut reserved for members and you can create your. Many talks possibility.",
+        "action": "…and all of that thanks to ",
         "button": "Go to community"
       }
     },
     "groupdisallow": {
-      "subject": "An user remove you from #__groupname__ members",
+      "subject": "You are not longer a member of #__groupname__",
       "content": {
-        "title": "@__username__ remove you from allowed users in #__groupname__",
-        "disclaimer": "You can still make a membership request and rejoin this community!",
+        "title": "You are not longer a member of #__groupname__",
+        "disclaimer": "Everything is not lost, you can still talk in yours active conversations in this community. You can also join public donut and get invite in private donut.",
+        "action": "…and all of that thanks to ",
         "button": "Go to community"
       }
     },
@@ -1158,15 +1173,16 @@
       }
     },
     "grouprefuse": {
-      "subject": "An user refuse your request to join #__groupname__",
+      "subject": "Access refuse to #__groupname__",
       "content": {
-        "title": "@__username__ refuse your request to join #__groupname__",
+        "title": "Your access request to #__groupname__ have been refused",
         "disclaimer": "Don't worry you can make another request to join this community later !",
-        "button": "Go to community"
+        "action": "…and all of that thanks to ",
+        "button": "Go to DONUT.me"
       }
     },
     "groupban": {
-      "subject": "You have been banned of community #__groupname__",
+      "subject": "You have been banned of #__groupname__",
       "content": {
         "title": "You have been banned of community #__groupname__",
         "disclaimer": "",
@@ -1174,7 +1190,7 @@
       }
     },
     "groupdeban": {
-      "subject": "You are no longer banned of community #__groupname__",
+      "subject": "You are no longer banned of #__groupname__",
       "content": {
         "title": "You are no longer banned from community #__groupname__",
         "disclaimer": "It looks like all is well that ends well!",
@@ -1182,22 +1198,22 @@
       }
     },
     "groupop": {
-      "subject": "You were promoted to moderator of community #__groupname__",
+      "subject": "You were promoted to moderator of #__groupname__",
       "content": {
         "title": "You were promoted to moderator of community #__groupname__",
         "disclaimer": "Kudos! You are now a moderator in ",
         "disclaimer2": "It's time to practice your new super powers",
         "action": "…and all of that thanks to ",
-        "button": "Go to chat"
+        "button": "Go to community"
       }
     },
     "groupdeop": {
-      "subject": "You are no longer a moderator of community #__groupname__",
+      "subject": "You are no longer a moderator of #__groupname__",
       "content": {
         "title": "You are no longer a moderator of community #__groupname__",
-        "disclaimer": "This is sad news... But the good news is you will have more time to focus on your very own donut:)",
+        "disclaimer": "Don't panic you're still a member of #__groupname__. So you can create your donut in this community and join the donut accessible for members.",
         "action": "…and all of that thanks to ",
-        "button": "Go to chat"
+        "button": "Go to community"
       }
     }
   },
@@ -1224,7 +1240,8 @@
     "fail": "Unable to send email, retry later."
   },
   "preferences": {
-    "title": "Notifications",
+    "title": "Settings",
+    "appearance": "appearance",
     "sounds": {
       "title": "Sounds",
       "test": "try"
@@ -1233,6 +1250,11 @@
       "title": "Exit confirmation",
       "label-true": "Request confirmation before I leave DONUT",
       "label-false": "No confirmation when I leave DONUT"
+    },
+    "chatmode": {
+      "title": "discussion mode",
+      "label-false": "Classic, nicer, more space",
+      "label-true": "Compact, display more messages on screen"
     },
     "welcome": {
       "title": "Welcome pop-up",
@@ -1248,7 +1270,7 @@
     "notif": {
       "title": "Notifications",
       "help": {
-        "user": "DONUT tries to limit smartly the amount of emails and mobile notifications. However if you find that we send too many notifications feel free to send your feedback <a data-toggle='contactform'>by email</a> or on <a href='#donut/help'>#help</a>"
+        "user": "Too many or too few notifications? Tell us <a data-toggle='contactform'>by email</a> or on <a href='#donut/help'>#help</a>"
       },
       "nothing": {
         "label": "Never receive notifications about this donut",
@@ -1260,7 +1282,6 @@
         "desktop": "Desktop",
         "desktop-default": "Your browser will prompt for approval : approve !",
         "desktop-denied" : "You have chosen to <strong>refuse</strong> notifications on your desktop. To modify this choice, you must modify the settings of your browser.",
-        "desktop-granted" : "You have chosen to <strong>accept</strong> notifications on your desktop. To modify this choice, you must modify the settings of your browser.",
         "desktop-test": "try",
         "desktop-notify-test": "test notification",
         "email": "Email (only if you are offline)",

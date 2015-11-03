@@ -2,7 +2,7 @@ var $ = require('jquery');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
-var app = require('../models/app');
+var app = require('../libs/app');
 var client = require('../libs/client');
 var EventsView = require('./events');
 var InputView = require('./input');
@@ -149,12 +149,12 @@ var RoomView = Backbone.View.extend({
   onFirstFocus: function () {
     this.eventsView.requestHistory('bottom');
     this.eventsView.scrollDown();
-    this.model.fetchUsers();
+    this.model.users.fetchUsers();
   },
   onFirstFocusAfterReconnect: function () {
     this.eventsView.replaceDisconnectBlocks();
     this.eventsView.scrollDown();
-    this.model.fetchUsers();
+    this.model.users.fetchUsers();
   },
 
   /**

@@ -8,6 +8,7 @@ var HistoryOneModel = require('../../../../shared/models/historyone');
 var HistoryRoomModel = require('../../../../shared/models/historyroom');
 var conf = require('../../../../config/index');
 var common = require('@dbrugne/donut-common/server');
+var i18next = require('i18next');
 
 module.exports = {
   retrieveUser: function (user) {
@@ -129,6 +130,34 @@ module.exports = {
   mentionize: function (string, options) {
     options.template = this.mentionTemplate;
     return common.markup.toHtml(string, options);
+  },
+
+  longDateTime: function (date) {
+    var myDate = new Date(date);
+    if (isNaN(myDate)) {
+      return;
+    }
+    return i18next.t('date.days.' + myDate.getDay()) +
+      ' ' +
+      myDate.getDate() +
+      ' ' +
+      i18next.t('date.months.' + myDate.getMonth()) +
+      ' ' +
+      myDate.getFullYear() +
+      ', ' +
+      this.shortTime(date) +
+      ':' +
+      myDate.getSeconds();
+  },
+
+  shortTime: function (date) { // HH:mm
+    var myDate = new Date(date);
+    if (isNaN(myDate)) {
+      return;
+    }
+    var h = myDate.getHours();
+    var m = myDate.getMinutes();
+    return ((h < 10) ? '0' : '') + h + ':' + ((m < 10) ? '0' : '') + m;
   }
 
 };

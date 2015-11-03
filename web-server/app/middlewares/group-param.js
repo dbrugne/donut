@@ -112,6 +112,7 @@ module.exports = function (req, res, next, groupname) {
 
             var room = {
               id: r.id,
+              group_name: group.name,
               room_id: r.id,
               avatar: r._avatar(160),
               mode: r.mode,
@@ -122,8 +123,7 @@ module.exports = function (req, res, next, groupname) {
                 : 0
             };
 
-            var data = urls(r, 'room');
-            room.url = req.protocol + '://' + conf.fqdn + data.url;
+            room.url = req.protocol + '://' + conf.fqdn + urls(room, 'room', 'url');
             room.chat = data.chat;
             room.join = data.join;
 
