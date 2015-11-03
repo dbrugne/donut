@@ -145,12 +145,6 @@ var MainView = Backbone.View.extend({
    * @param data
    */
   onWelcome: function (data) {
-    // Current user data (should be done before onetoone logic)
-    currentUser.set(data.user, {silent: true});
-    currentUser.setPreferences(data.preferences, {silent: true});
-    this.currentUserView.render();
-    this.muteView.render();
-
     // Only on first connection
     if (this.firstConnection) { // show if true or if undefined
       // Welcome message
