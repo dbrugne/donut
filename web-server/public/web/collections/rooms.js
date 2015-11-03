@@ -5,8 +5,6 @@ var app = require('../libs/app');
 var currentUser = require('../models/current-user');
 var RoomModel = require('../models/room');
 
-// @todo : deduplicate code _kickBanDisallow, onGroupBan, onGroupDisallow and move in models/room instead of collection
-
 var RoomsCollection = Backbone.Collection.extend({
   comparator: function (a, b) {
     var aGroup = a.get('group_name');
@@ -92,6 +90,8 @@ var RoomsCollection = Backbone.Collection.extend({
     this.listenTo(client, 'room:kick', this.onKick);
     this.listenTo(client, 'room:ban', this.onBan);
     this.listenTo(client, 'room:disallow', this.onDisallow);
+    this.listenTo(client, 'room:groupban', this.onGroupBan);
+    this.listenTo(client, 'room:groupdisallow', this.onGroupDisallow);
     this.listenTo(client, 'room:allow', this.onAllow);
     this.listenTo(client, 'room:deban', this.onDeban);
     this.listenTo(client, 'room:voice', this.onVoice);
@@ -105,8 +105,6 @@ var RoomsCollection = Backbone.Collection.extend({
     this.listenTo(client, 'room:message:unspam', this.onMessageUnspam);
     this.listenTo(client, 'room:message:edit', this.onMessageEdited);
     this.listenTo(client, 'room:typing', this.onTyping);
-    this.listenTo(client, 'room:groupban', this.onGroupBan);
-    this.listenTo(client, 'room:groupdisallow', this.onGroupDisallow);
   },
   onWelcome: function (data) {
     // regular
@@ -244,15 +242,21 @@ var RoomsCollection = Backbone.Collection.extend({
     model.onUserOffline(data);
   },
   onKick: function (data) {
-    this._kickBanDisallow('kick', data);
+    this._onExpulsion('kick', data);
   },
   onBan: function (data) {
-    this._kickBanDisallow('ban', data);
+    this._onExpulsion('ban', data);
   },
   onDisallow: function (data) {
-    this._kickBanDisallow('allowed', data);
+    this._onExpulsion('allowed', data);
   },
-  _kickBanDisallow: function (what, data) {
+  onGroupBan: function (data) {
+    this._onExpulsion('groupban', data);
+  },
+  onGroupDisallow: function (data) {
+    this._onExpulsion('groupdisallow', data);
+  },
+  _onExpulsion: function (what, data) {
     var model;
     if (!data || !data.room_id || !(model = this.get(data.room_id))) {
       return;
@@ -264,16 +268,16 @@ var RoomsCollection = Backbone.Collection.extend({
       var blocked = (what === 'ban')
         ? 'banned'
         : (what === 'kick')
-          ? 'kicked'
-          : true;
+        ? 'kicked'
+        : true;
       var modelTmp = model.attributes;
-      if (what === 'ban' && data.banned_at) {
+      if (data.banned_at) {
         modelTmp.banned_at = data.banned_at;
-        if (data.reason) {
-          modelTmp.reason = data.reason;
-        }
       }
-      this.remove(model);
+      if (data.reason) {
+        modelTmp.reason = data.reason;
+      }
+      this.remove(model); // remove existing view
       this.addModel(modelTmp, blocked);
       app.trigger('redrawNavigationRooms');
       if (isFocused) {
@@ -282,39 +286,7 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    // check that target is in model.users
-    var user = model.users.get(data.user_id);
-    if (!user) {
-      return;
-    }
-
-    // remove from this.users
-    model.users.remove(user);
-    model.set('users_number', model.get('users_number') - 1);
-
-    // remove from this.op is ban
-    if (what === 'ban') {
-      var ops = _.reject(model.get('op'), function (opUserId) {
-        return (opUserId === data.user_id);
-      });
-      model.set('op', ops);
-    }
-
-    // remove from devoices is ban
-    if (what === 'ban') {
-      var devoices = model.get('devoices');
-      if (devoices.length) {
-        model.set('devoices', _.reject(devoices, function (element) {
-          return (element === data.user_id);
-        }));
-      }
-    }
-
-    model.users.sort();
-    model.users.trigger('users-redraw');
-
-    // trigger event
-    model.trigger('freshEvent', 'room:' + what, data); // @todo : move in room model
+    model.onExpulsion(what, data);
   },
   onAllow: function (data) {
     if (!data || !data.room_id || !(this.get(data.room_id))) {
@@ -444,76 +416,6 @@ var RoomsCollection = Backbone.Collection.extend({
     }
 
     model.trigger('typing', data);
-  },
-  onGroupBan: function (data) {
-    var model;
-    if (!data || !data.room_id || !(model = this.get(data.room_id))) {
-      return;
-    }
-
-    // if i'm the "targeted user" destroy the model/view
-    if (currentUser.get('user_id') === data.user_id) {
-      this.remove(model);
-      app.trigger('redrawNavigationRooms');
-      return;
-    }
-
-    // check that target is in model.users
-    var user = model.users.get(data.user_id);
-    if (!user) {
-      return;
-    }
-
-    // remove from this.users
-    model.users.remove(user);
-    model.set('users_number', model.get('users_number') - 1);
-
-    // remove from this.op
-    var ops = _.reject(model.get('op'), function (opUserId) {
-      return (opUserId === data.user_id);
-    });
-    model.set('op', ops);
-
-    // remove from devoices
-    var devoices = _.reject(model.get('devoices'), function (devoicedUser) {
-      return (devoicedUser.user === data.user_id);
-    });
-    model.set('devoices', devoices);
-
-    model.users.sort();
-    model.users.trigger('users-redraw');
-
-    // trigger event
-    model.trigger('freshEvent', 'room:groupban', data);  // @todo : move in room model
-  },
-  onGroupDisallow: function (data) {
-    var model;
-    if (!data || !data.room_id || !(model = this.get(data.room_id))) {
-      return;
-    }
-
-    // if i'm the "targeted user" destroy the model/view
-    if (currentUser.get('user_id') === data.user_id) {
-      this.remove(model);
-      app.trigger('redrawNavigationRooms');
-      return;
-    }
-
-    // check that target is in model.users
-    var user = model.users.get(data.user_id);
-    if (!user) {
-      return;
-    }
-
-    // remove from this.users
-    model.users.remove(user);
-    model.set('users_number', model.get('users_number') - 1);
-
-    model.users.sort();
-    model.users.trigger('users-redraw');
-
-    // trigger event
-    model.trigger('freshEvent', 'room:groupdisallow', data); // @todo : move in room model
   }
 });
 

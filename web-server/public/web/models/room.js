@@ -293,6 +293,33 @@ var RoomModel = Backbone.Model.extend({
     }
     this.trigger('viewed', data);
   },
+  onExpulsion: function (what, data) {
+    // check that target is in model.users
+    var user = this.users.get(data.user_id);
+    if (!user) {
+      return;
+    }
+
+    // remove from this.users
+    this.users.remove(user);
+    this.set('users_number', this.get('users_number') - 1);
+
+    // remove from this.op and this.devoices (all events except kick)
+    if (what !== 'kick') {
+      this.set('op', _.reject(this.get('op'), function (e) {
+        return (e === data.user_id);
+      }));
+      this.set('devoices', _.reject(this.get('devoices'), function (e) {
+        return (e === data.user_id);
+      }));
+    }
+
+    this.users.sort();
+    this.users.trigger('users-redraw');
+
+    // trigger event
+    this.trigger('freshEvent', 'room:' + what, data);
+  },
   isInputActive: function () {
     return !(this.userIsDevoiced(currentUser.get('user_id')));
   }
