@@ -153,7 +153,8 @@ Notification.prototype.sendEmail = function (model, done) {
           method = emailer.roomDelete;
           data = {
             username: model.data.by_user.username,
-            roomname: room.getIdentifier()
+            roomname: room.getIdentifier(),
+            groupname: model.data.room.group.name
           };
           break;
         case 'roomcreate':
