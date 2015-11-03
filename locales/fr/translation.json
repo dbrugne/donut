@@ -834,6 +834,11 @@
           "username": {
             "label": "Nom d'utilisateur",
             "info": "(Non modifiable)"
+          },
+          "real-name": {
+            "label": "Nom complet",
+            "placeholder": "Nom et prénom",
+            "help": "Facultatif"
           }
         }
       },

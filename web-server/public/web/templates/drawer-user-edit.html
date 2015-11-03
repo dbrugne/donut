@@ -14,6 +14,11 @@
             <span class="user-username">@<%= user.username %></span>&nbsp;<span class="help"><%= t('chat.form.user-form.edit.username.info') %></span>
         </div>
         <div class="block">
+            <label for="userRealName"><%= t('chat.form.user-form.edit.real-name.label') %></label>
+            <input name="realname" class="form-control" id="userRealName" placeholder="<%= t('chat.form.user-form.edit.real-name.placeholder') %>" maxlength="200">
+            <p class="help-block"><%= t('chat.form.user-form.edit.real-name.help') %></p>
+        </div>
+        <div class="block">
             <label for="userBio"><%= t('chat.form.user-form.edit.bio.label') %></label>
             <textarea name="bio" class="form-control" id="userBio" placeholder="<%= t('chat.form.user-form.edit.bio.placeholder') %>" maxlength="200"><%= user.bio %></textarea>
             <p class="help-block"><%= t('chat.form.user-form.edit.bio.help') %><span class="counter"></span></p>

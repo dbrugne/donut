@@ -834,6 +834,11 @@
           "username": {
             "label": "Username",
             "info": "(Unchangeable)"
+          },
+          "real-name": {
+            "label": "Real name",
+            "placeholder": "Real name",
+            "help": "Optional"
           }
         }
       },
