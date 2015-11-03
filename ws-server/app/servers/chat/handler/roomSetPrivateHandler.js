@@ -76,7 +76,7 @@ handler.call = function (data, session, next) {
         allow_user_request: true,
         allow_group_member: !!room.group
       };
-      that.app.globalChannelService.pushMessage('connector', 'room:set:private', privateEvent, room.name, {}, callback);
+      that.app.globalChannelService.pushMessage('connector', 'room:set:private', privateEvent, room.id, {}, callback);
     }
 
   ], function (err) {

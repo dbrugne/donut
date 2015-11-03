@@ -46,7 +46,7 @@ handler.call = function (data, session, next) {
         user_id: user.id,
         username: user.username
       };
-      that.app.globalChannelService.pushMessage('connector', 'room:typing', typingEvent, room.name, {}, callback);
+      that.app.globalChannelService.pushMessage('connector', 'room:typing', typingEvent, room.id, {}, callback);
     }
 
   ], function (err) {

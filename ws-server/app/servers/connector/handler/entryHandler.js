@@ -136,7 +136,7 @@ handler.enter = function (msg, session, next) {
       var parallels = [];
       _.each(welcome.rooms, function (room) {
         parallels.push(function (fn) {
-          that.app.globalChannelService.add(room.name, uid, session.frontendId, function (err) {
+          that.app.globalChannelService.add(room.room_id, uid, session.frontendId, function (err) {
             if (err) {
               return fn('Error while registering user in room channel: ' + err);
             }

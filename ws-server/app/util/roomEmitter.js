@@ -47,7 +47,7 @@ module.exports = function (app, user, room, eventName, eventData, callback) {
       });
     }
 
-    app.globalChannelService.pushMessage('connector', eventName, eventData, room.name, {}, function (err) {
+    app.globalChannelService.pushMessage('connector', eventName, eventData, room.id, {}, function (err) {
       if (err) {
         return callback('Error while pushing message: ' + err);
       }

@@ -285,7 +285,7 @@ handler.call = function (data, session, next) {
         room_id: room.id,
         data: sanitizedToNotify
       };
-      that.app.globalChannelService.pushMessage('connector', 'room:updated', event, room.name, {}, callback);
+      that.app.globalChannelService.pushMessage('connector', 'room:updated', event, room.id, {}, callback);
     }
 
   ], function (err) {
