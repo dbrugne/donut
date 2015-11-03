@@ -141,7 +141,7 @@ Notification.prototype.sendEmail = function (model, done) {
 
     function mentions (history, events, callback) {
       _.each(events, function (event, index, list) {
-        if (!event.data.message) {
+        if (!event.data || !event.data.message) {
           return;
         }
 

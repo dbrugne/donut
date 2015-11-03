@@ -33,7 +33,7 @@ module.exports = function (app, rooms, eventName, eventData, callback) {
 
       // emit event to room users
       data.id = Date.now() + room.id + data.user_id;
-      app.globalChannelService.pushMessage('connector', eventName, data, room.name, {}, function (err) {
+      app.globalChannelService.pushMessage('connector', eventName, data, room.id, {}, function (err) {
         if (err) {
           return logger.error('Error while pushing message: ' + err);
         }

@@ -182,7 +182,7 @@ var retriever = function (app, fn) {
         var parallels = [];
         _.each(roomsData, function (room) {
           parallels.push(function (then) {
-            app.globalChannelService.getMembersByChannelName('connector', room.name, function (err, members) {
+            app.globalChannelService.getMembersByChannelName('connector', room.id, function (err, members) {
               if (err) {
                 return then(err);
               }

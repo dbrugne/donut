@@ -1,11 +1,13 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var client = require('../libs/client');
+var app = require('../libs/app');
 
 var CurrentUserModel = Backbone.Model.extend({
   initialize: function (options) {
     this.listenTo(client, 'user:updated', this.onUpdated);
     this.listenTo(client, 'preferences:update', this.setPreference);
+    this.listenTo(client, 'welcome', this.onWelcome);
 
     // listen for client statuses (should be done only by client and view??)
     var statuses = {
@@ -24,6 +26,13 @@ var CurrentUserModel = Backbone.Model.extend({
         this.set('status', element);
       }, this));
     }, this));
+  },
+
+  onWelcome: function (data) {
+    this.set(data.user, {silent: true});
+    this.setPreferences(data.preferences, {silent: true});
+    this.trigger('change');
+    app.trigger('muteview');
   },
 
   onUpdated: function (data) {

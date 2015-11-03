@@ -13,6 +13,7 @@ var MuteView = Backbone.View.extend({
 
   initialize: function (options) {
     this.listenTo(client, 'preferences:update', this.render);
+    this.listenTo(app, 'muteview', this.render);
 
     this.$icon = this.$('.icon');
   },

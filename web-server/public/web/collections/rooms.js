@@ -107,8 +107,6 @@ var RoomsCollection = Backbone.Collection.extend({
     this.listenTo(client, 'room:typing', this.onTyping);
   },
   onWelcome: function (data) {
-    currentUser.set(data.user, {silent: true});
-    currentUser.setPreferences(data.preferences, {silent: true});
     // regular
     _.each(data.rooms, _.bind(function (room) {
       this.addModel(room);

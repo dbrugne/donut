@@ -74,7 +74,7 @@ handler.call = function (data, session, next) {
         room_id: room.id,
         event: event.id
       };
-      that.app.globalChannelService.pushMessage('connector', 'room:message:spam', eventToSend, room.name, {}, callback);
+      that.app.globalChannelService.pushMessage('connector', 'room:message:spam', eventToSend, room.id, {}, callback);
     }
 
   ], function (err) {
