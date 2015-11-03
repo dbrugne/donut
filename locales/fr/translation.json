@@ -830,6 +830,10 @@
             "label": "Lieu",
             "placeholder": "Ville, pays où vous êtes",
             "help": "Facultatif"
+          },
+          "username": {
+            "label": "Nom d'utilisateur",
+            "info": "(Non modifiable)"
           }
         }
       },
