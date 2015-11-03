@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var Backbone = require('backbone');
 var UserModel = require('../models/user');
 
@@ -8,18 +7,38 @@ var RoomUsersCollection = Backbone.Collection.extend({
   comparator: function (model1, model2) {
     // create strings (sortable as string: aabfoobar)
     var string1 = '';
-    string1 += (model1.get('status') === 'online') ? 'a' : 'b';
-    string1 += (model1.get('is_owner')) ? 'a' : 'b';
-    string1 += (model1.get('is_op')) ? 'a' : 'b';
-    string1 += (model1.get('is_op') && model1.get('is_devoice')) ? 'a' : 'b';
-    string1 += (model1.get('is_devoice')) ? 'a' : 'b';
+    string1 += (model1.get('status') === 'online')
+      ? 'a'
+      : 'b';
+    string1 += (model1.get('is_owner'))
+      ? 'a'
+      : 'b';
+    string1 += (model1.get('is_op'))
+      ? 'a'
+      : 'b';
+    string1 += (model1.get('is_op') && model1.get('is_devoice'))
+      ? 'a'
+      : 'b';
+    string1 += (model1.get('is_devoice'))
+      ? 'a'
+      : 'b';
     string1 += model1.get('username').toLowerCase();
     var string2 = '';
-    string2 += (model2.get('status') === 'online') ? 'a' : 'b';
-    string2 += (model2.get('is_owner')) ? 'a' : 'b';
-    string2 += (model2.get('is_op')) ? 'a' : 'b';
-    string2 += (model2.get('is_op') && model2.get('is_devoice')) ? 'a' : 'b';
-    string2 += (model2.get('is_devoice')) ? 'a' : 'b';
+    string2 += (model2.get('status') === 'online')
+      ? 'a'
+      : 'b';
+    string2 += (model2.get('is_owner'))
+      ? 'a'
+      : 'b';
+    string2 += (model2.get('is_op'))
+      ? 'a'
+      : 'b';
+    string2 += (model2.get('is_op') && model2.get('is_devoice'))
+      ? 'a'
+      : 'b';
+    string2 += (model2.get('is_devoice'))
+      ? 'a'
+      : 'b';
     string2 += model2.get('username').toLowerCase();
 
     return string1.toLowerCase().localeCompare(string2.toLowerCase());
@@ -33,16 +52,19 @@ var RoomUsersCollection = Backbone.Collection.extend({
       return undefined;
     }
 
-    return matches[0];
+    return matches[ 0 ];
   },
 
   initialize: function (options) {
     this.on('change:avatar', this.onChange);
-    this.on('change:status', this.onChange); // @todo dbr same fix as model/user, reduce event propagation
+
+    // @todo dbr same fix as model/user, reduce event propagation
+    this.on('change:status', this.onChange);
   },
 
   /**
-   * With the following method the UserCollection trigger a 'users-redraw' event
+   * With the following method the UserCollection trigger a 'users-redraw'
+   * event
    * any time a model has changed an attribute.
    * Usefull for 'redraw-pattern' views.
    *
@@ -55,8 +77,6 @@ var RoomUsersCollection = Backbone.Collection.extend({
     this.sort(); // for 'status' attribute
     this.trigger('users-redraw');
   }
-
 });
-
 
 module.exports = RoomUsersCollection;
