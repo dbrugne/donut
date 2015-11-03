@@ -54,9 +54,16 @@ var OnetoonesCollection = Backbone.Collection.extend({
       this.addModel(one);
     }, this));
 
-    app.trigger('redrawNavigationOnes');
+    // remove when user no more in
+    var modelsIds = _.map(this.models, 'id');
+    var ids = _.map(data.onetoones, 'user_id');
+    _.each(modelsIds, _.bind(function (modelId) {
+      if (ids.indexOf(modelId) === -1) {
+        this.remove(modelId);
+      }
+    }, this));
 
-    // @todo : handle existing model deletion if not in data (mobile and browser)
+    app.trigger('redrawNavigationOnes');
   },
   onJoin: function (data) {
     // server ask to client to open this one to one in IHM

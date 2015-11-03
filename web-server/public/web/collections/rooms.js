@@ -119,9 +119,16 @@ var RoomsCollection = Backbone.Collection.extend({
         : true);
     }, this));
 
-    app.trigger('redrawNavigationRooms');
+    // remove when user no more in
+    var modelsIds = _.map(this.models, 'id');
+    var ids = _.map(data.rooms, 'id').concat(_.map(data.blocked, 'id'));
+    _.each(modelsIds, _.bind(function (modelId) {
+      if (ids.indexOf(modelId) === -1) {
+        this.remove(modelId);
+      }
+    }, this));
 
-    // @todo : handle existing model deletion if not in data (mobile and browser)
+    app.trigger('redrawNavigationRooms');
   },
   onJoin: function (data) {
     var model;
