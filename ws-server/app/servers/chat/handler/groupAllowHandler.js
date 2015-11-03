@@ -65,6 +65,7 @@ handler.call = function (data, session, next) {
         user_id: targetUser._id,
         username: targetUser.username,
         avatar: targetUser._avatar(),
+        color: targetUser.color,
         group_id: group.id
       };
       callback(null, event);
