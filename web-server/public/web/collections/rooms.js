@@ -182,7 +182,7 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    model.onIn(data);
+    model.users.onIn(data);
   },
   onOut: function (data) {
     var model;
@@ -190,7 +190,7 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    model.onOut(data);
+    model.users.onOut(data);
   },
   onTopic: function (data) {
     var model;
@@ -214,7 +214,7 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    model.onOp(data);
+    model.users.onOp(data);
   },
   onDeop: function (data) {
     var model;
@@ -222,7 +222,7 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    model.onDeop(data);
+    model.users.onDeop(data);
   },
   onUpdated: function (data) {
     var model;
@@ -238,7 +238,7 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    model.onUserOnline(data);
+    model.users.onUserOnline(data);
   },
   onUserOffline: function (data) {
     var model;
@@ -246,7 +246,7 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    model.onUserOffline(data);
+    model.users.onUserOffline(data);
   },
   onKick: function (data) {
     this._onExpulsion('kick', data);
@@ -293,7 +293,7 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    model.onExpulsion(what, data);
+    model.users.onExpulsion(what, data);
   },
   onAllow: function (data) {
     if (!data || !data.room_id || !(this.get(data.room_id))) {
@@ -325,7 +325,7 @@ var RoomsCollection = Backbone.Collection.extend({
       }, this));
     }
 
-    model.onDeban(data);
+    model.users.onDeban(data);
   },
   onVoice: function (data) {
     var model;
@@ -333,7 +333,7 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    model.onVoice(data);
+    model.users.onVoice(data);
   },
   onDevoice: function (data) {
     var model;
@@ -341,7 +341,7 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    model.onDevoice(data);
+    model.users.onDevoice(data);
   },
   onLeave: function (data) {
     // server asks to this client to leave this room

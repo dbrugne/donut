@@ -149,12 +149,12 @@ var RoomView = Backbone.View.extend({
   onFirstFocus: function () {
     this.eventsView.requestHistory('bottom');
     this.eventsView.scrollDown();
-    this.model.fetchUsers();
+    this.model.users.fetchUsers();
   },
   onFirstFocusAfterReconnect: function () {
     this.eventsView.replaceDisconnectBlocks();
     this.eventsView.scrollDown();
-    this.model.fetchUsers();
+    this.model.users.fetchUsers();
   },
 
   /**
