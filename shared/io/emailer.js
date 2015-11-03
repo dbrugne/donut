@@ -314,7 +314,7 @@ emailer.roomInvite = function (to, data, callback) {
 };
 
 emailer.roomDelete = function (to, data, callback) {
-  data.name = data.roomname.replace('#', '');
+  data.name = data.groupname;
   sendEmail(to, 'emails/room-delete.html', {
     username: data.username,
     roomname: data.roomname,
@@ -330,7 +330,7 @@ emailer.roomDelete = function (to, data, callback) {
       action: i18next.t('email.roomdelete.content.action'),
       userlink: {url: protocol + '://' + conf.fqdn + urls(data, 'user', 'url')}
     },
-    fqdn: conf.fqdn
+    grouplink: {chat: protocol + '://' + conf.fqdn + urls(data, 'group', 'chat')}
   }, callback);
 };
 

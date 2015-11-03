@@ -1088,7 +1088,7 @@
     "roomcreate": {
       "subject": "Nouveau donut __roomname__",
       "content": {
-        "title": "@__username__ à crée __roomname__",
+        "title": "@__username__ a crée __roomname__",
         "disclaimer": "Votre communauté fait le plein de donut !",
         "info": "Vous avez la possibilité de supprimer ce donut à partir de son profil.",
         "button": "Accéder à la discussion"
@@ -1099,6 +1099,7 @@
       "content": {
         "title": "Votre donut __roomname__ a été supprimé",
         "disclaimer": "On dirait que votre donut a posé problème. N'hésitez pas a en parler avec @__username__ !",
+        "action": "…et tout ça grâçe à ",
         "button": "Accéder à la communauté"
       }
     },

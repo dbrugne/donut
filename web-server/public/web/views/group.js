@@ -179,6 +179,7 @@ var GroupView = Backbone.View.extend({
   },
   refreshUsers: function () {
     this.groupUsersView.render();
+    this.initializeTooltips();
   }
 });
 
