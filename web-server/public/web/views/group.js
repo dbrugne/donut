@@ -38,7 +38,8 @@ var GroupView = Backbone.View.extend({
     var isOwner = this.model.currentUserIsOwner();
     var isOp = this.model.currentUserIsOp();
     var isAdmin = this.model.currentUserIsAdmin();
-    var bannedObject = this.model.currentUserIsBanned();
+
+    this.bannedObject = this.model.currentUserIsBanned();
 
     // prepare avatar for group
     group.avatarUrl = common.cloudinary.prepare(group.avatar, 160);
@@ -63,12 +64,12 @@ var GroupView = Backbone.View.extend({
       isOp: isOp,
       isOwner: isOwner,
       isAdmin: isAdmin,
-      isBanned: !!bannedObject,
+      isBanned: !!this.bannedObject,
       group: group
     };
-    if (typeof bannedObject !== 'undefined') {
-      data.banned_at = date.longDate(bannedObject.banned_at);
-      data.reason = bannedObject.reason;
+    if (typeof this.bannedObject !== 'undefined') {
+      data.banned_at = date.longDate(this.bannedObject.banned_at);
+      data.reason = this.bannedObject.reason;
     }
 
     var html = this.template(data);
@@ -127,6 +128,9 @@ var GroupView = Backbone.View.extend({
     }, this));
   },
   onSendPassword: function (event) {
+    if (!!this.bannedObject === true) {
+      return app.trigger('alert', 'error', i18next.t('chat.password.group-banned'));
+    }
     var options = {
       password: true
     };

@@ -307,6 +307,10 @@ var MainView = Backbone.View.extend({
       return view.focusField();
     }
 
+    if (groups.isMemberBanned(groupId)) {
+      return app.trigger('alert', 'error', i18next.t('chat.form.errors.group-banned'));
+    }
+
     if (!groups.isMemberOwnerAdmin(groupId)) {
       return app.trigger('alert', 'error', i18next.t('chat.form.errors.not-admin-owner-groupowner'));
     }
