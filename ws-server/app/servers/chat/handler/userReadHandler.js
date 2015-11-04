@@ -38,6 +38,7 @@ handler.call = function (data, session, next) {
 
     function details (callback) {
       read.user_id = readUser.id;
+      read.name = readUser.name;
       read.username = readUser.username;
       read.color = readUser.color;
       read.avatar = readUser._avatar();

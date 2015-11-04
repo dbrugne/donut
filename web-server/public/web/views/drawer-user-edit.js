@@ -98,6 +98,7 @@ var DrawerUserEditView = Backbone.View.extend({
     }
 
     var updateData = {
+      name: this.$('input[name=realname]').val(),
       bio: this.$('textarea[name=bio]').val(),
       location: this.$('input[name=location]').val(),
       website: this.$('input[name=website]').val(),

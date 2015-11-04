@@ -41,6 +41,7 @@ module.exports = function (req, res, next, username) {
       data.avatar = user._avatar(160);
       data.poster = user._poster();
       data.color = user.color;
+      data.name = user.name;
       data.bio = user.bio;
       data.location = user.location;
       data.website = user.website;

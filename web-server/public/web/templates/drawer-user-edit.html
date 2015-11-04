@@ -15,7 +15,7 @@
         </div>
         <div class="block">
             <label for="userRealName"><%= t('chat.form.user-form.edit.real-name.label') %></label>
-            <input name="realname" class="form-control" id="userRealName" placeholder="<%= t('chat.form.user-form.edit.real-name.placeholder') %>" maxlength="200">
+            <input name="realname" class="form-control" id="userRealName" placeholder="<%= t('chat.form.user-form.edit.real-name.placeholder') %>" value="<%= user.name %>">
             <p class="help-block"><%= t('chat.form.user-form.edit.real-name.help') %></p>
         </div>
         <div class="block">
