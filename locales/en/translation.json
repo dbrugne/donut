@@ -415,6 +415,7 @@
       "wrong-password": "Wrong password",
       "spam-password": "You have made ​​too many tests ! Wait or ask for an access​",
       "invalid-password": "Invalid password",
+      "group-banned": "You were ban from this donut community",
       "error": "An error has occurred"
     },
     "confirmation": {
@@ -857,7 +858,8 @@
         "group-name-already-exist": "Group __name__ already exists, <a href='__uri__'>would you like to join it</a>?",
         "not-admin-owner-groupowner": "Unauthorized action.",
         "not-admin-owner": "Unauthorized action.",
-        "not-allowed": "Unauthorized action."
+        "not-allowed": "Unauthorized action.",
+        "group-banned": "You were banned from community"
       }
     },
     "members": "You are now a member of #__name__",

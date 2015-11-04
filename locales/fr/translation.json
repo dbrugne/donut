@@ -407,7 +407,7 @@
         "allow-pending": "Une demande d'accès a déjà été envoyée",
         "message-wrong-format": "Le message ne doit pas faire plus de 200 caractères",
         "banned": "Vous avez été banni de ce donut",
-        "group-banned": "Vous avez été banni de la communauté de ce donut",
+        "group-banned": "Vous avez été banni de la communauté",
         "room-not-found": "Ce donut n'existe pas"
       }
     },
@@ -415,6 +415,7 @@
       "spam-password": "Vous avez fait trop d'essais! Patienter ou faites une demande d'accès",
       "wrong-password": "Mot de passe erroné",
       "invalid-password": "Mot de passe invalide",
+      "group-banned": "Vous avez été banni de la communauté",
       "error": "Une erreur est survenue"
     },
     "confirmation": {
@@ -536,7 +537,7 @@
       "loading": "Chargement de l'historique ...",
       "top": "aller tout en haut",
       "bottom": "aller tout en bas",
-      "currently": "C'est ici que tout commence... Vous êtes au tout début de la conversation <span class=\"name dc-text open-room-profile\" data-room-id=\"__room_id__\">__identifier__</span>, donut créé par <span class=\"owner dc-text open-user-profile\" data-user-id=\"__owner_id__\">@__owner_username__</span> le <span class=\"date\">__created_at__</span>",
+      "currently": "C'est ici que tout commence ... Vous êtes au tout début de la conversation <span class=\"name dc-text open-room-profile\" data-room-id=\"__room_id__\">__identifier__</span>, donut créé par <span class=\"owner dc-text open-user-profile\" data-user-id=\"__owner_id__\">@__owner_username__</span> le <span class=\"date\">__created_at__</span>",
       "hasPassword": "Votre donut est privé. Cliquez sur \"Gérer les accès\" pour définir qui peut le rejoindre.",
       "onestart": "Cette conversation est privée. Seuls vous et votre interlocuteur pouvez y avoir accès.",
       "edit": "Editer le profil",
@@ -857,7 +858,8 @@
         "group-name-already-exist": "La communauté __name__ existe déjà, <a href='__uri__'>voulez-vous la rejoindre</a> ?",
         "not-admin-owner-groupowner": "Action non autorisée.",
         "not-admin-owner": "Action non autorisée.",
-        "not-allowed": "Action non autorisée."
+        "not-allowed": "Action non autorisée.",
+        "group-banned": "Vous êtes banni de la communauté"
       }
     },
     "members": "Vous êtes maintenant membre de la communauté #__name__",
@@ -991,7 +993,7 @@
         "title": "Vous avez été promu modérateur de __roomname__",
         "disclaimer": "Félicitations ! Vous êtes désormais modérateur de ",
         "disclaimer2": "Il est temps d'aller exercer vos nouveaux super pouvoirs",
-        "action": "…et tout ça grâce à ",
+        "action": "... et tout ça grâce à ",
         "button": "Accéder à la discussion"
       }
     },
@@ -1000,7 +1002,7 @@
       "content": {
         "title": "Vous n'êtes plus modérateur de __roomname__",
         "disclaimer": " Pas de panique, vous restez membre à part entière de __roomname__ !",
-        "action": "…et tout ça grâce à ",
+        "action": "... et tout ça grâce à ",
         "button": "Accéder à la discussion"
       }
     },
@@ -1026,7 +1028,7 @@
         "title": "Vous n'êtes plus banni de __roomname__",
         "disclaimer": "Vous n'êtes plus banni de ",
         "disclaimer2": "On dirait bien que tout s'est arrangé !",
-        "action": "…et tout ça grâce à ",
+        "action": "... et tout ça grâce à ",
         "button": "Accéder à la discussion"
       }
     },
@@ -1073,7 +1075,7 @@
       "content": {
         "title": "Vous êtes désormais membre de __roomname__",
         "disclaimer": "Votre demande d'accès à __roomname__ a été acceptée. Vous pouvez maintenant profiter de ce donut !",
-        "action": "…et tout ça grâce à ",
+        "action": "... et tout ça grâce à ",
         "button": "Accéder à la discussion"
       }
     },
@@ -1082,7 +1084,7 @@
       "content": {
         "title": "Votre demande d'accès à __roomname__ a été refusée",
         "disclaimer": "Il faut croire que les conditions d'accès requises par @__username__ n'étaient pas réunies. Retentez votre chance plus tard !",
-        "action": "…et tout ça grâce à ",
+        "action": "... et tout ça grâce à ",
         "button": "Retourner sur DONUT"
       }
     },
@@ -1108,7 +1110,7 @@
       "content": {
         "title": "Votre donut __roomname__ a été supprimé",
         "disclaimer": "On dirait que votre donut a posé problème. N'hésitez pas a en parler avec @__username__ !",
-        "action": "…et tout ça grâçe à ",
+        "action": "... et tout ça grâçe à ",
         "button": "Accéder à la communauté"
       }
     },
@@ -1160,7 +1162,7 @@
       "content": {
         "title": "Vous êtes désormais membre de #__groupname__",
         "disclaimer": "Votre demande d'accès à #__groupname__ a été acceptée. Vous faites désormais partie de cette communauté. Vous avez accès à tous les donuts réservés aux membres et vous pouvez créer le vôtre.Plein de belles conversations en perspective !",
-        "action": "…et tout ça grâce à ",
+        "action": "... et tout ça grâce à ",
         "button": "Accéder à la communauté"
       }
     },
@@ -1169,7 +1171,7 @@
       "content": {
         "title": "Vous n'êtes plus membre de #__groupname__",
         "disclaimer": "Tout n'est pas perdu, vous pouvez toujours discuter dans vos conversations actives dans cette communauté. Vous pouvez également rejoindre les donuts publics et vous faire inviter dans les donuts privés. Ca en fait des choses !",
-        "action": "…et tout ça grâce à ",
+        "action": "... et tout ça grâce à ",
         "button": "Accéder à la communauté"
       }
     },
@@ -1186,7 +1188,7 @@
       "content": {
         "title": "Votre demande d'accès à #__groupname__ a été refusée",
         "disclaimer": "Il faut croire que les conditions d'accès requises par @__username__ n'étaient pas réunies. Retentez votre chance plus tard !",
-        "action": "…et tout ça grâce à ",
+        "action": "... et tout ça grâce à ",
         "button": "Retourner sur DONUT"
       }
     },
@@ -1212,7 +1214,7 @@
         "title": "Vous avez été promu modérateur de la communauté #__groupname__",
         "disclaimer": "Félicitations ! Vous êtes désormais modérateur de ",
         "disclaimer2": "Il est temps d'aller exercer vos nouveaux super pouvoirs",
-        "action": "…et tout ça grâce à ",
+        "action": "... et tout ça grâce à ",
         "button": "Accéder à la discussion"
       }
     },
@@ -1221,7 +1223,7 @@
       "content": {
         "title": "Vous n'êtes plus modérateur de la communauté #__groupname__",
         "disclaimer": "Pas de panique, vous restez membre à part entière de #__groupname__. Vous pouvez donc créer vos donuts au sein de la communauté et rejoindre tous ceux qui sont accessibles aux membres. Elle est pas belle la vie ?!",
-        "action": "…et tout ça grâce à ",
+        "action": "... et tout ça grâce à ",
         "button": "Accéder à la communauté"
       }
     }

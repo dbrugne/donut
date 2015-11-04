@@ -132,6 +132,14 @@ var GroupsCollection = Backbone.Collection.extend({
     }
 
     return (model.currentUserIsMember() || model.currentUserIsAdmin() || model.currentUserIsOwner());
+  },
+  isMemberBanned: function (groupId) {
+    var model;
+    if (!groupId || !(model = this.get(groupId))) {
+      return false;
+    }
+
+    return (model.currentUserIsBanned());
   }
 
 });

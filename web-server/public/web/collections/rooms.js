@@ -300,7 +300,7 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    client.roomJoin(data.room_id); // @todo : anti-pattern!
+    client.roomJoin(data.room_id); // @todo yls : trigger event instead
   },
   onDeban: function (data) {
     var model;
@@ -309,7 +309,7 @@ var RoomsCollection = Backbone.Collection.extend({
     }
 
     if (currentUser.get('user_id') === data.user_id) {
-      // @todo : anti-pattern!
+      // @todo yls : trigger event instead
       client.roomJoin(data.room_id, null, _.bind(function () {
         if (data.room_mode === 'private') {
           var isFocused = model.get('focused');

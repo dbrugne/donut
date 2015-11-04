@@ -92,7 +92,7 @@ handler.call = function (data, session, next) {
         room_id: room.id,
         reason: 'deleted'
       };
-      that.app.globalChannelService.pushMessage('connector', 'room:leave', event, room.name, {}, function (err) {
+      that.app.globalChannelService.pushMessage('connector', 'room:leave', event, room.id, {}, function (err) {
         if (err) {
           logger.error(err);
         } // not 'return', we delete even if error happen
@@ -117,7 +117,7 @@ handler.call = function (data, session, next) {
     },
 
     function destroy (callback) {
-      that.app.globalChannelService.destroyChannel(room.name, function (err) {
+      that.app.globalChannelService.destroyChannel(room.id, function (err) {
         if (err) {
           logger.error(err);
         } // not 'return', we continue even if error happen

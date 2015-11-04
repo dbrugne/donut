@@ -119,7 +119,7 @@ var MainView = Backbone.View.extend({
     this.muteView = new MuteView();
 
     // @debug
-    // @todo : mount only on debug mode
+    // @todo dbr : mount only on debug mode
     window.d = {
       $: $,
       app: app,
@@ -305,6 +305,10 @@ var MainView = Backbone.View.extend({
       view = new DrawerRoomCreateView({name: name});
       this.drawerView.setSize('450px').setView(view).open();
       return view.focusField();
+    }
+
+    if (groups.isMemberBanned(groupId)) {
+      return app.trigger('alert', 'error', i18next.t('chat.form.errors.group-banned'));
     }
 
     if (!groups.isMemberOwnerAdmin(groupId)) {

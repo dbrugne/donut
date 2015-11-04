@@ -11,11 +11,11 @@ var parser = require('@dbrugne/donut-common/server').markup.parser(linkify);
  * Check for maximal length, sanitize line breaks
  * Return filtered string or empty string if too long or empty.
  * @param value
- * @param max
+ * @param maxLength
  * @return false || filtered String
  */
 module.exports.filter = function (value, maxLength) {
-  // @todo : add without smileys code count
+  // @todo dbr : add without smileys code count
 
   if (!value) {
     return false;

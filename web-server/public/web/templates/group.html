@@ -70,13 +70,13 @@
             <% } %>
             <% } %>
         </div>
-        <% if (group.has_password && !isMember) { %>
+        <% if (group.has_password && !isMember && !isBanned) { %>
         <span class="curp btn btn-primary send-password pull-right password-div"><%= t('actions.direct-access') %></span>
         <% } %>
     </div>
 
     <div class="flex-parent center mt100">
-        <% if (isMember) { %>
+        <% if (isMember && !isBanned) { %>
         <h2 class="vcentered"><%= t('global.donuts') %></h2>
         <span class="open-create-room btn btn-primary ml20 curp" data-group-id="<%=group.group_id%>" data-group-name="<%=group.name%>"><%= t('actions.create') %></span>
         <% } %>

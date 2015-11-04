@@ -301,7 +301,7 @@ Facade.prototype.retrieveScheduledNotifications = function (callback) {
   var q = NotificationModel.find({
     done: false,
     viewed: false,
-    time: {$lt: time}, // @todo : add delay before sending email/mobile for each notification type here
+    time: {$lt: time},
     $or: [
       {to_email: true, sent_to_email: false}
     ]

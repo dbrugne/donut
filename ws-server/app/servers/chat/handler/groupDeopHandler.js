@@ -107,7 +107,7 @@ handler.call = function (data, session, next) {
         return callback(null);
       }
       event.room_id = group.default;
-      that.app.globalChannelService.pushMessage('connector', 'room:deop', event, room.name, {}, function (response) {
+      that.app.globalChannelService.pushMessage('connector', 'room:deop', event, room.id, {}, function (response) {
         return callback(null);
       });
     },
