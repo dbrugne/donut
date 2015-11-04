@@ -44,6 +44,10 @@ handler.call = function (data, session, next) {
         return callback('allowed');
       }
 
+      if (group.isBanned(user.id)) {
+        return callback('group-banned');
+      }
+
       return callback(null);
     },
 

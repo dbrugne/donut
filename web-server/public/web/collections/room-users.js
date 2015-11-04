@@ -109,7 +109,7 @@ var RoomUsersCollection = Backbone.Collection.extend({
     return model;
   },
   fetchUsers: function (callback) {
-    // @todo : bad pattern, client should do only one call and received a complete list
+    // @todo yfuks bad pattern, client should do only one call and received a complete list
     client.roomUsers(this.parent.get('room_id'), {
       type: 'users',
       status: 'online'
