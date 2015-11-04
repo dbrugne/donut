@@ -119,7 +119,7 @@ var MainView = Backbone.View.extend({
     this.muteView = new MuteView();
 
     // @debug
-    // @todo : mount only on debug mode
+    // @todo dbr : mount only on debug mode
     window.d = {
       $: $,
       app: app,

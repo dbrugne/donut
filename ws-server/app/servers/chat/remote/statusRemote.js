@@ -8,7 +8,7 @@ var roomMultiEmitter = require('../../../util/roomMultiEmitter');
 var oneMultiEmitter = require('../../../util/oneMultiEmitter');
 
 /**
- * @todo : replace actual logic for user:on/offline and remove roomMultiEmitter
+ * @todo dbr : replace actual logic for user:on/offline and remove roomMultiEmitter
  *   + oneMultiEmitter
  *  - on status change detection retrieve user rooms and onetoones,
  *  - extract full online user list from redis
@@ -234,7 +234,7 @@ DisconnectRemote.prototype.offline = function (uid) {
     },
 
     function determineIfGracefullShutdown (user, callback) {
-      // @todo : no-op after user lastoffline_at persistence if gracefull
+      // @todo dbr : no-op after user lastoffline_at persistence if gracefull
       // shutdown
       return callback(null, user);
     },

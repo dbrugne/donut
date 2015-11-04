@@ -91,7 +91,7 @@ handler.call = function (data, session, next) {
     },
 
     function destroy (callback) {
-      that.app.globalChannelService.destroyChannel(group.name, function (err) { // @todo i don't think it work !
+      that.app.globalChannelService.destroyChannel(group.name, function (err) { // @todo spariaud i don't think it works !
         if (err) {
           logger.error(err);
         } // not 'return', we continue even if error happen

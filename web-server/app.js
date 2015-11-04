@@ -30,7 +30,7 @@ var app = express();
 app.enable('trust proxy'); // nginx
 
 app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use(cors()); // allow requests from mobile client (@todo: whitelist allowed origins URLs)
+app.use(cors()); // allow requests from mobile client (@todo dbr: whitelist allowed origins URLs)
 app.use(less(__dirname + '/public', { force: conf.less.force }));
 app.use(express.static(path.join(__dirname, '../node_modules/socket.io-client'))); // => require('socket.io-client');
 app.use(express.static(path.join(__dirname, 'public')));

@@ -8,7 +8,7 @@ var conf = require('../../config/index');
 var mailgunTransport = require('nodemailer-mailgun-transport');
 var urls = require('../util/url');
 
-var protocol = 'https'; // @todo retrieve that a better way...
+var protocol = 'https'; // @todo yls retrieve that a better way...
 var emailer = {};
 module.exports = emailer;
 
