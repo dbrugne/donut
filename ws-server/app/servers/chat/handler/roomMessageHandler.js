@@ -72,6 +72,7 @@ handler.call = function (data, session, next) {
       var event = {
         user_id: user.id,
         username: user.username,
+        realname: user.name,
         avatar: user._avatar()
       };
       if (message) {

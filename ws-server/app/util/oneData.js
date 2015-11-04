@@ -35,6 +35,7 @@ module.exports = function (app, user, users, fn) {
 
         var one = {
           user_id: u.id,
+          name: u.name,
           username: u.username,
           avatar: u._avatar(),
           poster: u._poster(),

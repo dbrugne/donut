@@ -61,6 +61,7 @@ exports.prototype.insertBottom = function (type, data) {
     html += require('../templates/event/block-user.html')({
       user_id: event.data.user_id,
       username: event.data.username,
+      realname: event.data.realname,
       avatar: common.cloudinary.prepare(event.data.avatar, 30)
     });
   }
@@ -100,6 +101,7 @@ exports.prototype.insertTop = function (events) {
       _html = require('../templates/event/block-user.html')({
         user_id: event.data.user_id,
         username: event.data.username,
+        realname: event.data.realname,
         avatar: common.cloudinary.prepare(event.data.avatar, 30)
       }) + _html;
     }
@@ -157,6 +159,7 @@ exports.prototype.replaceLastDisconnectBlock = function ($lastDisconnectBlock, $
       _html = require('../templates/event/block-user.html')({
         user_id: event.data.user_id,
         username: event.data.username,
+        realname: event.data.realname,
         avatar: common.cloudinary.prepare(event.data.avatar, 30)
       }) + _html;
     }

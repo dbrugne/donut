@@ -1,4 +1,4 @@
 <div class="block user" data-user-id="<%= user_id %>">
     <div class="avatar open-user-profile" data-user-id="<%= user_id %>" style="background-image: url(<%= avatar %>)"></div>
-    <div class="username open-user-profile" data-user-id="<%= user_id %>">@<%= username %></div>
+    <span class="username open-user-profile" data-user-id="<%= user_id %>"><% if (realname) { %><%= realname %><% } else { %>@<%= username %><% } %></span>
 </div>

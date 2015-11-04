@@ -14,7 +14,8 @@
             <img src="<%= avatar %>" alt="<%= username %> avatar">
         </div>
         <div class="info hidden-xs hidden-sm">
-            <span class="username open-user-profile" data-user-id="<%= user_id %>">@<%= username %></span>
+            <span class="username open-user-profile" data-user-id="<%= user_id %>"><% if (name) { %><%= name %><% } else { %>@<%= username %><% } %></span>
+            <% if (name) { %><span><strong>@<%= username %></strong></span><% } %>
 
             <%= dropdown %>
 
