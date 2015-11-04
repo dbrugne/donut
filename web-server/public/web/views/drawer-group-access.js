@@ -127,7 +127,11 @@ var GroupAccessView = Backbone.View.extend({
     dropdownMenu.html(require('../templates/spinner.html'));
 
     var that = this;
-    client.search(val, false, true, false, 15, 0, false, false, function (data) {
+    var options = {
+      users: true,
+      limit: 15
+    };
+    client.search(val, options, function (data) {
       _.each(data.users.list, function (element, index, list) {
         list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 20);
       });

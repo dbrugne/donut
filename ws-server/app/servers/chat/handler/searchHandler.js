@@ -13,27 +13,18 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
-  if (!data.search && !data.with_group) {
+
+  // at least look into something
+  if (!(data.options.users || data.options.rooms || data.options.groups)) {
     return next(null, {});
   }
 
-  var searchInUsers = (data.users && data.users === true);
-  var searchInRooms = (data.rooms && data.rooms === true);
-  if (!searchInUsers && !searchInRooms) {
+  // at least look for something
+  if (!(data.search || data.options.group_name)) {
     return next(null, {});
   }
 
-  var withGroups = (data.with_group && data.rooms) ? data.with_group : false;
-
-  var lightSearch = (data.light && data.light === true);
-
-  var limit = (data.limit) ? data.limit : 150;
-
-  var skip = (data.skip) ? data.skip : 0;
-
-  var withPrivateRoomsInGroup = (data.private_group_rooms && data.rooms);
-
-  search(data.search, searchInUsers, searchInRooms, withGroups, limit, skip, lightSearch, withPrivateRoomsInGroup, function (err, results) {
+  search(data.search, data.options, function (err, results) {
     if (err) {
       logger('[search] ' + err);
       return next(null, {code: 500, err: 'internal'});

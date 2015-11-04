@@ -27,15 +27,22 @@ var SearchView = Backbone.View.extend({
     }, this), this.timeBufferBeforeSearch);
   },
   search: function (skip) {
-    skip = skip || 0;
+    skip = skip || null;
     var s = this.$search.val();
     if (!s || s.length < 1) {
       return this.trigger('emptySearch');
     }
 
     this.lastSearch = s;
-    client.search(s, true, true, false, this.limit, skip, false, false, _.bind(function (data) {
-      if (skip > 0) {
+    var options = {
+      users: true,
+      rooms: true,
+      groups: true,
+      limit: this.limit,
+      skip: skip
+    };
+    client.search(s, options, _.bind(function (data) {
+      if (skip !== null) {
         data.append = true;
       }
       this.trigger('searchResults', data);

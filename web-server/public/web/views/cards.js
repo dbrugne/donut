@@ -81,7 +81,11 @@ var CardsView = Backbone.View.extend({
   },
 
   count: function () {
-    return this.$('.card').length;
+    return {
+      rooms: this.$('.card.card-room').length,
+      groups: this.$('.card.card-group').length,
+      users: this.$('.card.card-user').length
+    };
   },
 
   onClose: function (event) {

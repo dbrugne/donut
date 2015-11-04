@@ -193,10 +193,13 @@ var InputRollupView = Backbone.View.extend({
     var search = input.substr(1);
 
     var that = this;
-
+    var options = {};
     if (prefix === '#') {
       if (input.indexOf('/') === -1) {
-        client.search(search, true, false, false, 15, 0, false, false, function (data) {
+        options.rooms = true;
+        options.groups = true;
+        options.limit = 15;
+        client.search(search, options, function (data) {
           _.each(_.union(data.groups.list, data.rooms.list), function (d) {
             d.avatarUrl = common.cloudinary.prepare(d.avatar);
           });
@@ -207,20 +210,26 @@ var InputRollupView = Backbone.View.extend({
         });
       } else {
         var roomSearch = search.split('/')[1] ? search.split('/')[1] : '';
-        client.search(roomSearch, true, false, search.split('/')[0], 15, 0, false, true, function (data) {
-          _.each(_.union(data.groups.list, data.rooms.list), function (d) {
+        options.rooms = true;
+        options.group_name = search.split('/')[0];
+        options.public_rooms = true;
+        options.limit = 15;
+        client.search(roomSearch, options, function (data) {
+          _.each(data.rooms.list, function (d) {
             d.avatarUrl = common.cloudinary.prepare(d.avatar);
           });
           that.$rollup.html(that.template({
             type: 'rooms',
-            results: _.union(data.groups.list, data.rooms.list)
+            results: data.rooms.list
           }));
         });
       }
     }
 
     if (prefix === '@') {
-      client.search(search, false, true, false, 15, 0, false, false, function (data) {
+      options.users = true;
+      options.limit = 15;
+      client.search(search, options, function (data) {
         _.each(data.users.list, function (d) {
           d.avatarUrl = common.cloudinary.prepare(d.avatar);
         });

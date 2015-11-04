@@ -58,12 +58,14 @@ var HomeView = Backbone.View.extend({
     this.toggleMore(data);
   },
   toggleMore: function (data) {
+    var count = this.cardsView.count();
+    count.users = this.usersView.count();
     var more =
       (data.rooms
-        ? data.rooms.more
+        ? data.rooms.count > count.rooms
         : false) ||
       (data.groups
-        ? data.groups.more
+        ? data.groups.count > count.groups
         : false);
 
     if (more) {
@@ -74,7 +76,9 @@ var HomeView = Backbone.View.extend({
   },
   onLoadMore: function () {
     this.cardsView.cleanupEmpty();
-    this.searchView.search(this.cardsView.count());
+    var count = this.cardsView.count();
+    count.users = this.usersView.count();
+    this.searchView.search(count);
   }
 });
 
