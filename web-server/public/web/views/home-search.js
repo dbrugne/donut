@@ -9,11 +9,15 @@ var SearchView = Backbone.View.extend({
   limit: 100,
   events: {
     'keyup input[type=text]': 'onKeyup',
-    'click i.icon-search': 'onKeyup'
+    'click i.icon-search': 'onKeyup',
+    'change .checkbox-search': 'onKeyup'
   },
 
   initialize: function (options) {
     this.$search = this.$('input[type=text]').first();
+    this.$searchOptionsUsers = this.$('#search-options-users');
+    this.$searchOptionsRooms = this.$('#search-options-rooms');
+    this.$searchOptionsGroups = this.$('#search-options-groups');
   },
   render: function (data) {
     return this;
@@ -23,11 +27,20 @@ var SearchView = Backbone.View.extend({
 
     clearTimeout(this.timeout);
     this.timeout = setTimeout(_.bind(function () {
-      this.search();
+      this.search(null, {
+        users: this.$searchOptionsUsers.is(':checked'),
+        rooms: this.$searchOptionsRooms.is(':checked'),
+        groups: this.$searchOptionsGroups.is(':checked')
+      });
     }, this), this.timeBufferBeforeSearch);
   },
-  search: function (skip) {
+  search: function (skip, opt) {
     skip = skip || null;
+    opt = opt || {
+      users: true,
+      rooms: true,
+      groups: true
+    };
     var s = this.$search.val();
     if (!s || s.length < 1) {
       return this.trigger('emptySearch');
@@ -35,9 +48,9 @@ var SearchView = Backbone.View.extend({
 
     this.lastSearch = s;
     var options = {
-      users: true,
-      rooms: true,
-      groups: true,
+      users: opt.users,
+      rooms: opt.rooms,
+      groups: opt.groups,
       limit: this.limit,
       skip: skip
     };

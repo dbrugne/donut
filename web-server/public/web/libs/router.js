@@ -7,6 +7,7 @@ var rooms = require('../collections/rooms');
 var onetoones = require('../collections/onetoones');
 var i18next = require('i18next-client');
 var HomeView = require('../views/home');
+var SearchView = require('../views/search');
 
 var DonutRouter = Backbone.Router.extend({
 
@@ -15,6 +16,7 @@ var DonutRouter = Backbone.Router.extend({
     '_=_': 'root', // workaround for facebook redirect uri bug https://github.com/jaredhanson/passport-facebook/issues/12#issuecomment-5913711
     'u/:user': 'focusOne',
     'g/:group': 'focusGroup',
+    'search': 'search',
     ':group(/:room)': 'identifierRoom',
     '*default': 'default'
   },
@@ -24,6 +26,7 @@ var DonutRouter = Backbone.Router.extend({
   nextFocus: null,
 
   homeView: null,
+  searchView: null,
 
   initialize: function (options) {
     var that = this;
@@ -44,6 +47,7 @@ var DonutRouter = Backbone.Router.extend({
 
     // static views
     this.homeView = new HomeView({});
+    this.searchView = new SearchView({});
   },
 
   root: function () {
@@ -53,12 +57,20 @@ var DonutRouter = Backbone.Router.extend({
     Backbone.history.navigate('#'); // just change URI, not run route action
   },
 
+  search: function () {
+    console.log('search');
+    this.unfocusAll();
+    app.trigger('redrawNavigation');
+    this.searchView.focus();
+    Backbone.history.navigate('search'); // just change URI, not run route action
+  },
+
   focusGroup: function (name) {
     var model = groups.iwhere('name', name);
 
     client.groupId(name, _.bind(function (response) {
       if (response.code === 404) {
-        return app.trigger('alert', 'error', i18next.t('chat.groupnotexists', { name: name }));
+        return app.trigger('alert', 'error', i18next.t('chat.groupnotexists', {name: name}));
       } else if (response.code === 500) {
         return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
       }
@@ -98,15 +110,18 @@ var DonutRouter = Backbone.Router.extend({
     this.nextFocus = identifier;
     client.roomId(identifier, function (responseRoom) {
       if (responseRoom.code === 404) {
-        return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', { name: identifier }));
+        return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', {name: identifier}));
       } else if (responseRoom.code === 500) {
         return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
       }
       client.roomJoin(responseRoom.room_id, null, _.bind(function (response) {
         if (response.err === 'group-members-only') {
-          return app.trigger('alert', 'error', i18next.t('chat.groupmembersonly', { name: identifier, group_name: responseRoom.group.name }));
+          return app.trigger('alert', 'error', i18next.t('chat.groupmembersonly', {
+            name: identifier,
+            group_name: responseRoom.group.name
+          }));
         } else if (response.code === 404) {
-          return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', { name: identifier }));
+          return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', {name: identifier}));
         } else if (response.code === 403) {
           rooms.addModel(response.room, response.err);
           app.trigger('redrawNavigationRooms'); // also trigger a redraw when displaying a room blocked
@@ -169,6 +184,7 @@ var DonutRouter = Backbone.Router.extend({
 
     // static pages
     this.homeView.$el.hide();
+    this.searchView.$el.hide();
   },
 
   focus: function (model) {

@@ -391,7 +391,13 @@
         }
       }
     }
-    #home { height: 100%; display: none; background-color: @cl-background; overflow-y: auto; .scrollbar-grey;
+    #home, #search { height: 100%; display: none; background-color: @cl-background; overflow-y: auto; .scrollbar-grey;
+      .search { position: relative; font-size: 1.8em; padding: 40px 20px;
+        input[type=text] { width: 100%; border: 1px solid @cl-subtext10; .border-radius(50px); padding: 5px 75px 6px 30px; .ft-raleway-medium; color: @cl-subtext50; outline: none; }
+        i { position: absolute; top: 50px; right: 35px; color: @cl-subtext50; cursor: pointer; }
+      } // #chat #center #home .search
+    }
+    #home {
       .title {
         .ft-raleway-medium;
         color: @cl-subtext30;
@@ -417,11 +423,8 @@
         .make-lg-column(9);
         height: 100%;
         overflow-x: auto;
-        .search { position: relative; font-size: 1.8em; padding: 40px 20px;
-          input[type=text] { width: 100%; border: 1px solid @cl-subtext10; .border-radius(50px); padding: 5px 75px 6px 30px; .ft-raleway-medium; color: @cl-subtext50; outline: none; }
-          i { position: absolute; top: 50px; right: 35px; color: @cl-subtext50; cursor: pointer; }
-        } // #chat #center #home .left>.search
       }
+
       > .right { .make-xs-column(0); .make-sm-column(2); .make-lg-column(3); height: 100%; padding: 20px 5px 20px 14px; background-color: @cl-subtext10;
         .users { height:100%;
           .list { overflow-y: auto; overflow-x: hidden; height: 100%; .scrollbar-white;
