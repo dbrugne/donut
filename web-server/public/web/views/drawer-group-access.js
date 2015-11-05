@@ -129,7 +129,9 @@ var GroupAccessView = Backbone.View.extend({
     var that = this;
     var options = {
       users: true,
-      limit: 15
+      limit: {
+        users: 15
+      }
     };
     client.search(val, options, function (data) {
       _.each(data.users.list, function (element, index, list) {

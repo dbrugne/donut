@@ -14,7 +14,11 @@ var common = require('@dbrugne/donut-common/server');
  *    users: boolean // wether to search in users or not
  *    rooms: boolean // wether to search in rooms or not
  *    groups: boolean // wether to search in groups or not
- *    limit: integer // limit the number of results
+ *    limit: {
+ *      users: integer, // nb of users results max
+ *      rooms: integer, // nb of rooms results max
+ *      groups: integer, // nb of groups results max
+ *    } // limit the number of results
  *    skip: {
  *      users: integer, // nb of users results to skip
  *      rooms: integer, // nb of rooms results to skip
@@ -59,7 +63,11 @@ module.exports = function (search, options, callback) {
   var rooms = [];
   var groups = [];
 
-  var limit = options.limit || 100;
+  var limit = options.limit || {
+    users: 100,
+    groups: 100,
+    rooms: 100
+  };
   var criteria = options.criteria || {};
 
   var searchResults = {
@@ -99,7 +107,9 @@ module.exports = function (search, options, callback) {
         if (options.skip && options.skip.groups) {
           q.skip(options.skip.groups);
         }
-        q.limit(limit);
+        if (limit.groups) {
+          q.limit(limit.groups);
+        }
         q.populate('owner', 'username');
         q.exec(function (err, dbgroups) {
           if (err) {
@@ -170,7 +180,9 @@ module.exports = function (search, options, callback) {
           if (options.skip && options.skip.rooms) {
             q.skip(options.skip.rooms);
           }
-          q.limit(limit);
+          if (limit.rooms) {
+            q.limit(limit.rooms);
+          }
           q.populate('owner', 'username');
           q.populate('group', 'name avatar color');
         } else {
@@ -179,7 +191,9 @@ module.exports = function (search, options, callback) {
           if (options.skip && options.skip.rooms) {
             q.skip(options.skip.rooms);
           }
-          q.limit(limit);
+          if (limit.rooms) {
+            q.limit(limit.rooms);
+          }
           q.populate('group', 'name avatar color');
         }
         q.exec(function (err, dbrooms) {
@@ -215,7 +229,9 @@ module.exports = function (search, options, callback) {
         if (options.skip && options.skip.users) {
           q.skip(options.skip.users);
         }
-        q.limit(limit);
+        if (limit.users) {
+          q.limit(limit.users);
+        }
         q.exec(function (err, dbusers) {
           if (err) {
             return callback(err);

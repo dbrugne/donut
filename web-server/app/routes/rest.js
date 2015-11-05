@@ -14,7 +14,11 @@ router.get('/rest/search', function (req, res) {
     users: false,
     rooms: true,
     groups: true,
-    limit: req.query.limit || 50,
+    limit: {
+      users: req.query.limit || 50,
+      rooms: req.query.limit || 50,
+      groups: req.query.limit || 50
+    },
     skip: skip
   };
   search(

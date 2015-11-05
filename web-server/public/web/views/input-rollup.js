@@ -198,7 +198,10 @@ var InputRollupView = Backbone.View.extend({
       if (input.indexOf('/') === -1) {
         options.rooms = true;
         options.groups = true;
-        options.limit = 15;
+        options.limit = {
+          groups: 15,
+          rooms: 15
+        };
         client.search(search, options, function (data) {
           _.each(_.union(data.groups.list, data.rooms.list), function (d) {
             d.avatarUrl = common.cloudinary.prepare(d.avatar);
@@ -212,7 +215,10 @@ var InputRollupView = Backbone.View.extend({
         var roomSearch = search.split('/')[1] ? search.split('/')[1] : '';
         options.rooms = true;
         options.group_name = search.split('/')[0];
-        options.limit = 15;
+        options.limit = {
+          groups: 15,
+          rooms: 15
+        };
         client.search(roomSearch, options, function (data) {
           _.each(data.rooms.list, function (d) {
             d.avatarUrl = common.cloudinary.prepare(d.avatar);
@@ -227,7 +233,9 @@ var InputRollupView = Backbone.View.extend({
 
     if (prefix === '@') {
       options.users = true;
-      options.limit = 15;
+      options.limit = {
+        users: 15
+      };
       client.search(search, options, function (data) {
         _.each(data.users.list, function (d) {
           d.avatarUrl = common.cloudinary.prepare(d.avatar);
