@@ -627,7 +627,7 @@ var MainView = Backbone.View.extend({
   },
 
   goToSearch: function (event) {
-    app.trigger('goToSearch');
+    app.trigger('goToSearch', event);
   },
 
   switchLanguage: function (event) {

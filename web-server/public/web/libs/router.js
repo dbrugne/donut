@@ -1,3 +1,4 @@
+var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('./app');
@@ -57,11 +58,31 @@ var DonutRouter = Backbone.Router.extend({
     Backbone.history.navigate('#'); // just change URI, not run route action
   },
 
-  search: function () {
+  search: function (event) {
+    var data = {};
+    if (event) {
+      var elt = $(event.currentTarget);
+      if (elt && elt.data('search')) {
+        data.search = elt.data('search');
+        data.skip = null;
+        data.what = {
+          users: true,
+          groups: true,
+          rooms: true
+        };
+        if (elt.data('type')) {
+          data.what = {
+            users: (_.indexOf(elt.data('type').split('|'), 'users') !== -1),
+            groups: (_.indexOf(elt.data('type').split('|'), 'groups') !== -1),
+            rooms: (_.indexOf(elt.data('type').split('|'), 'rooms') !== -1)
+          };
+        }
+      }
+    }
     this.unfocusAll();
     app.trigger('redrawNavigation');
     app.trigger('drawerClose');
-    this.searchView.focus();
+    this.searchView.render(data);
     Backbone.history.navigate('search'); // just change URI, not run route action
   },
 

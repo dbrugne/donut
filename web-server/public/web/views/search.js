@@ -11,7 +11,6 @@ var SearchPageView = Backbone.View.extend({
   timeBufferBeforeSearch: 500,
   lastSearch: '',
   limit: 100,
-  empty: true,
 
   events: {
     'keyup input[type=text]': 'onKeyup',
@@ -20,9 +19,11 @@ var SearchPageView = Backbone.View.extend({
     'change .checkbox-search': 'onKeyup'
   },
 
-  initialize: function (options) {
-    this.render();
+  initialize: function () {
 
+  },
+
+  render: function (data) {
     this.cardsView = new CardsView({
       el: this.$('.cards')
     });
@@ -31,25 +32,22 @@ var SearchPageView = Backbone.View.extend({
     this.$searchOptionsUsers = this.$('#search-options-users');
     this.$searchOptionsRooms = this.$('#search-options-rooms');
     this.$searchOptionsGroups = this.$('#search-options-groups');
-  },
-  render: function () {
-    return this;
-  },
-  request: function () {
-    client.home(_.bind(this.onHome, this));
-  },
-  focus: function () {
-    if (this.empty) {
-      this.request();
-    }
-    this.$el.show();
+
     app.trigger('setTitle');
     app.trigger('changeColor');
+
+    // @todo put #search content in a template, and generate again here
+    // @todo translations
+    if (data && data.search && data.what) {
+      return this.search(data.search, data.skip, data.what);
+    }
+
+    client.home(_.bind(this.onHome, this));
   },
   onHome: function (data) {
     data.fill = true;
     this.cardsView.render(data);
-    this.empty = false;
+    this.$el.show();
   },
   onSearchResults: function (data) {
     data.search = true;
@@ -75,7 +73,7 @@ var SearchPageView = Backbone.View.extend({
   onLoadMore: function () {
     this.cardsView.cleanupEmpty();
     var count = this.cardsView.count();
-    this.search(count, {
+    this.search(this.$search.val(), count, {
       users: this.$searchOptionsUsers.is(':checked'),
       rooms: this.$searchOptionsRooms.is(':checked'),
       groups: this.$searchOptionsGroups.is(':checked')
@@ -86,23 +84,24 @@ var SearchPageView = Backbone.View.extend({
 
     clearTimeout(this.timeout);
     this.timeout = setTimeout(_.bind(function () {
-      this.search(null, {
+      this.search(this.$search.val(), null, {
         users: this.$searchOptionsUsers.is(':checked'),
         rooms: this.$searchOptionsRooms.is(':checked'),
         groups: this.$searchOptionsGroups.is(':checked')
       });
     }, this), this.timeBufferBeforeSearch);
   },
-  search: function (skip, opt) {
+  search: function (s, skip, opt) {
     skip = skip || null;
-    opt = opt || {
-      users: true,
-      rooms: true,
-      groups: true
-    };
-    var s = this.$search.val();
+    opt = opt
+      || {
+        users: true,
+        rooms: true,
+        groups: true
+      };
+
     if (!s || s.length < 1) {
-      return this.request();
+      return;
     }
 
     this.lastSearch = s;
