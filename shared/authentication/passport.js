@@ -294,8 +294,8 @@ passport.use(new FacebookTokenStrategy({
       newUser.lastlogin_at = Date.now();
       newUser.facebook.id = profile.id;
       newUser.facebook.token = accessToken;
-      newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName; // @todo :test
-      newUser.name = profile.displayName; // @todo :test
+      newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName; // @todo dbr :test
+      newUser.name = profile.displayName; // @todo dbr :test
       if (profile.emails) {
         newUser.facebook.email = profile.emails[ 0 ].value;
       } // facebook can return multiple emails so we'll take the first

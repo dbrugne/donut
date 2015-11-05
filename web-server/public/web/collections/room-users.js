@@ -73,9 +73,6 @@ var RoomUsersCollection = Backbone.Collection.extend({
    * Usefull for 'redraw-pattern' views.
    *
    * @source: http://www.garethelms.org/2012/02/backbone-js-collections-can-listen-to-its-models-changes/
-   * @param model
-   * @param value
-   * @param options
    */
   onChange: function (model, value, options) {
     this.sort(); // for 'status' attribute
@@ -112,7 +109,7 @@ var RoomUsersCollection = Backbone.Collection.extend({
     return model;
   },
   fetchUsers: function (callback) {
-    // @todo : bad pattern, client should do only one call and received a complete list
+    // @todo yfuks bad pattern, client should do only one call and received a complete list
     client.roomUsers(this.parent.get('room_id'), {
       type: 'users',
       status: 'online'

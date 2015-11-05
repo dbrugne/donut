@@ -9,34 +9,23 @@ var CurrentUserModel = Backbone.Model.extend({
     this.listenTo(client, 'preferences:update', this.setPreference);
     this.listenTo(client, 'welcome', this.onWelcome);
 
-    var that = this;
-    this.listenTo(client, 'connecting', function () {
-      that.set('status', 'connecting');
-    });
-    this.listenTo(client, 'connect', function () {
-      that.set('status', 'online');
-    });
-    this.listenTo(client, 'disconnect', function () {
-      that.set('status', 'offline');
-    });
-    this.listenTo(client, 'reconnect', function () {
-      that.set('status', 'online');
-    });
-    this.listenTo(client, 'reconnect_attempt', function () {
-      that.set('status', 'connecting');
-    });
-    this.listenTo(client, 'reconnecting', function () {
-      that.set('status', 'connecting');
-    });
-    this.listenTo(client, 'reconnect_error', function () {
-      that.set('status', 'connecting');
-    });
-    this.listenTo(client, 'reconnect_failed', function () {
-      that.set('status', 'error');
-    });
-    this.listenTo(client, 'error', function () {
-      that.set('status', 'error');
-    });
+    // listen for client statuses (should be done only by client and view??)
+    var statuses = {
+      connecting: 'connecting',
+      connect: 'online',
+      disconnect: 'offline',
+      reconnect: 'online',
+      reconnect_attempt: 'connecting',
+      reconnecting: 'connecting',
+      reconnect_error: 'connecting',
+      reconnect_failed: 'error',
+      error: 'error'
+    };
+    _.each(statuses, _.bind(function (element, key) {
+      this.listenTo(client, key, _.bind(function () {
+        this.set('status', element);
+      }, this));
+    }, this));
   },
 
   onWelcome: function (data) {
@@ -54,7 +43,6 @@ var CurrentUserModel = Backbone.Model.extend({
       this.set(key, value);
     }, this));
   },
-
   setPreference: function (data, options) {
     options = options || {};
 

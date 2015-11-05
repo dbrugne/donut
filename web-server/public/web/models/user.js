@@ -14,7 +14,7 @@ var UserModel = Backbone.Model.extend({
   },
 
   initialize: function (options) {
-    // @todo : performance leak, should be handled by rooms and onetoones
+    // @todo dbr : performance leak, should be handled by rooms and onetoones
     this.listenTo(client, 'user:updated', this.onUpdated);
   },
 

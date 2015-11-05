@@ -258,7 +258,7 @@ exports.prototype._data = function (type, data) {
       style: 'color: ' + this.discussion.get('color')
     });
 
-    // @todo : replace with UTF-8 emojis
+    // @todo dbr : replace with UTF-8 emojis
     subject = $.smilify(subject);
 
     if (data.message) {
