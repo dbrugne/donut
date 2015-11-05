@@ -4,32 +4,33 @@ var Backbone = require('backbone');
 var client = require('../libs/client');
 var app = require('../libs/app');
 var CardsView = require('./cards');
-var SearchView = require('./home-search');
 
 var SearchPageView = Backbone.View.extend({
   el: $('#search'),
-
+  timeout: 0,
+  timeBufferBeforeSearch: 500,
+  lastSearch: '',
+  limit: 100,
   empty: true,
 
   events: {
-    'click .load-more': 'onLoadMore'
+    'click .load-more': 'onLoadMore',
+    'keyup input[type=text]': 'onKeyup',
+    'click i.icon-search': 'onKeyup',
+    'change .checkbox-search': 'onKeyup'
   },
 
   initialize: function (options) {
     this.render();
-    this.searchView = new SearchView({
-      el: this.$('.search')
-    });
+
     this.cardsView = new CardsView({
       el: this.$('.cards')
     });
+    this.$search = this.$('input[type=text]').first();
     this.$searchMore = this.$('.load-more');
     this.$searchOptionsUsers = this.$('#search-options-users');
     this.$searchOptionsRooms = this.$('#search-options-rooms');
     this.$searchOptionsGroups = this.$('#search-options-groups');
-
-    this.listenTo(this.searchView, 'searchResults', this.onSearchResults);
-    this.listenTo(this.searchView, 'emptySearch', this.request);
   },
   render: function () {
     return this;
@@ -74,11 +75,51 @@ var SearchPageView = Backbone.View.extend({
   onLoadMore: function () {
     this.cardsView.cleanupEmpty();
     var count = this.cardsView.count();
-    this.searchView.search(count, {
+    this.search(count, {
       users: this.$searchOptionsUsers.is(':checked'),
       rooms: this.$searchOptionsRooms.is(':checked'),
       groups: this.$searchOptionsGroups.is(':checked')
     });
+  },
+  onKeyup: function (event) {
+    event.preventDefault();
+
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(_.bind(function () {
+      this.search(null, {
+        users: this.$searchOptionsUsers.is(':checked'),
+        rooms: this.$searchOptionsRooms.is(':checked'),
+        groups: this.$searchOptionsGroups.is(':checked')
+      });
+    }, this), this.timeBufferBeforeSearch);
+  },
+  search: function (skip, opt) {
+    skip = skip || null;
+    opt = opt || {
+      users: true,
+      rooms: true,
+      groups: true
+    };
+    var s = this.$search.val();
+    if (!s || s.length < 1) {
+      return this.request();
+    }
+
+    this.lastSearch = s;
+    var options = {
+      users: opt.users,
+      rooms: opt.rooms,
+      groups: opt.groups,
+      limit: this.limit,
+      skip: skip,
+      mix: true
+    };
+    client.search(s, options, _.bind(function (data) {
+      if (skip !== null) {
+        data.append = true;
+      }
+      this.onSearchResults(data);
+    }, this));
   }
 });
 

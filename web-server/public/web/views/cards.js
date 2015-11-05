@@ -15,7 +15,9 @@ var CardsView = Backbone.View.extend({
   },
   render: function (data) {
     var cards = [];
-    var list = _.union(
+    var list = data.all
+      ? data.all.list // if cards have been mixed
+      : _.union( // cards have not been mixed
       data.rooms
         ? data.rooms.list
         : [],
@@ -24,7 +26,8 @@ var CardsView = Backbone.View.extend({
         : [],
       data.users
         ? data.users.list
-        : []);
+        : []
+    );
 
     _.each(list, function (card) {
       switch (card.type) {

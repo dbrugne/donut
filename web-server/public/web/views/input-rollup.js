@@ -212,7 +212,6 @@ var InputRollupView = Backbone.View.extend({
         var roomSearch = search.split('/')[1] ? search.split('/')[1] : '';
         options.rooms = true;
         options.group_name = search.split('/')[0];
-        options.public_rooms = true;
         options.limit = 15;
         client.search(roomSearch, options, function (data) {
           _.each(data.rooms.list, function (d) {
