@@ -37,12 +37,11 @@ module.exports = function (req, res, next, username) {
     function prepare (user, callback) {
       // avatar & poster
       data.id = user.id;
-      data.name = user.name;
+      data.realname = user.realname;
       data.username = user.username;
       data.avatar = user._avatar(160);
       data.poster = user._poster();
       data.color = user.color;
-      data.name = user.name;
       data.bio = user.bio;
       data.location = user.location;
       data.website = user.website;

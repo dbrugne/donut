@@ -34,19 +34,19 @@ handler.call = function (data, session, next) {
       var errors = {};
       var sanitized = {};
 
-      // name
-      if (_.has(data.data, 'name')) {
+      // realname
+      if (_.has(data.data, 'realname')) {
         var pattern = /^[a-zA-Z-\d\s]{0,20}$/g;
-        if (!pattern.test(data.data.name)) {
-          errors.name = 'real-name-format';
-        } else if (!validator.isLength(data.data.name, 0, 20)) {
-          errors.name = 'real-name'; // Name should be 20 characters max.
+        if (!pattern.test(data.data.realname)) {
+          errors.realname = 'real-name-format';
+        } else if (!validator.isLength(data.data.realname, 0, 20)) {
+          errors.realname = 'real-name'; // Name should be 20 characters max.
         } else {
-          var name = data.data.name;
-          name = validator.trim(name);
-          name = validator.escape(name);
-          if (name !== user.name) {
-            sanitized.name = name;
+          var realname = data.data.realname;
+          realname = validator.trim(realname);
+          realname = validator.escape(realname);
+          if (realname !== user.realname) {
+            sanitized.realname = realname;
           }
         }
       }

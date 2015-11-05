@@ -81,11 +81,11 @@ handler.call = function (data, session, next) {
       // population
       if (room) {
         q.populate('room', 'name')
-          .populate('user', 'username avatar color facebook')
-          .populate('by_user', 'username avatar color facebook');
+          .populate('user', 'realname username avatar color facebook')
+          .populate('by_user', 'realname username avatar color facebook');
       } else {
-        q.populate('from', 'username avatar color facebook')
-          .populate('to', 'username avatar color facebook');
+        q.populate('from', 'realname username avatar color facebook')
+          .populate('to', 'realname username avatar color facebook');
       }
 
       q.exec(callback);
