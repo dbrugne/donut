@@ -43,7 +43,7 @@ var DonutRouter = Backbone.Router.extend({
     this.listenTo(app, 'joinOnetoone', this.focusOne);
     this.listenTo(app, 'joinGroup', this.focusGroup);
     this.listenTo(app, 'viewAdded', this.viewAdded);
-    this.listenTo(app, 'goToSearch', this.focusOnSearch);
+    this.listenTo(app, 'goToSearch', this.search);
 
     // static views
     this.homeView = new HomeView({});
@@ -61,6 +61,7 @@ var DonutRouter = Backbone.Router.extend({
     console.log('search');
     this.unfocusAll();
     app.trigger('redrawNavigation');
+    app.trigger('drawerClose');
     this.searchView.focus();
     Backbone.history.navigate('search'); // just change URI, not run route action
   },
@@ -163,12 +164,6 @@ var DonutRouter = Backbone.Router.extend({
 
   default: function () {
     Backbone.history.navigate('#', {trigger: true}); // redirect on home
-  },
-
-  focusOnSearch: function () {
-    this.root();
-    this.homeView.searchView.$search.focus();
-    app.trigger('drawerClose');
   },
 
   unfocusAll: function () {
