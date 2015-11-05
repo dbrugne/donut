@@ -36,11 +36,11 @@ handler.call = function (data, session, next) {
 
       // realname
       if (_.has(data.data, 'realname')) {
-        var pattern = /^[a-zA-Z-\d\s]{0,20}$/g;
+        var pattern = /^[a-zA-Z-\d\s]{0,41}$/g;
         if (!pattern.test(data.data.realname)) {
           errors.realname = 'real-name-format';
-        } else if (!validator.isLength(data.data.realname, 0, 20)) {
-          errors.realname = 'real-name'; // Name should be 20 characters max.
+        } else if (!validator.isLength(data.data.realname, 0, 41)) {
+          errors.realname = 'real-name'; // Realname should be 41 characters max.
         } else {
           var realname = data.data.realname;
           realname = validator.trim(realname);
