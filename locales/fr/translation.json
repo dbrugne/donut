@@ -339,7 +339,11 @@
       "placeholder": "Recherchez un donut, une communauté ou un utilisateur ici",
       "noresults": "Aucun résultat de recherche",
       "roomstitle": "Voici les donuts correspondant à votre recherche, vous pouvez aussi en <a class='open-create-room'>créer un nouveau</a> :",
-      "userstitle": "Utilisateurs correspondants"
+      "userstitle": "Utilisateurs correspondants",
+      "see_all_results": "Voir tous les résultats",
+      "groups_results": "<strong>__length__ communautés</strong> trouvées sur un total de <strong>__count__</strong>",
+      "rooms_results": "<strong>__length__ donuts</strong> trouvés sur un total de <strong>__count__</strong>",
+      "users_results": "<strong>__length__ utilisateurs</strong> trouvés sur un total de <strong>__count__</strong>"
     },
     "userscount": "<strong>__count__</strong> <span>utilisateur dans ce donut</span>",
     "userscount_plural": "<strong>__count__</strong> <span>utilisateurs dans ce donut</span>",

@@ -58,7 +58,6 @@ var DonutRouter = Backbone.Router.extend({
   },
 
   search: function () {
-    console.log('search');
     this.unfocusAll();
     app.trigger('redrawNavigation');
     app.trigger('drawerClose');

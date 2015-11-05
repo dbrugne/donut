@@ -339,7 +339,11 @@
       "placeholder": "Search donut, community or user here",
       "noresults": "No match found",
       "roomstitle": "Here are the donuts matching your request, you can also <a class='open-create-room'>create one</a> :",
-      "userstitle": "Matching users"
+      "userstitle": "Matching users",
+      "see_all_results": "See all results",
+      "groups_results": "<strong>__length__ found communities</strong> out of <strong>__count__</strong>",
+      "rooms_results": "<strong>__length__ found donuts</strong> out of <strong>__count__</strong>",
+      "users_results": "<strong>__length__ found users</strong> out of <strong>__count__</strong>"
     },
     "userscount": "<strong>__count__</strong> user in this donut",
     "userscount_plural": "<strong>__count__</strong> users in this donut",

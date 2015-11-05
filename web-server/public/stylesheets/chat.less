@@ -407,6 +407,21 @@
         .input-group { width: 100%;
           input { .border-radius(4px); }
         }
+        &.open .input-group input { .border-radiuses(4px, 0, 0, 4px); }
+        &.open:focus { outline:none; }
+        .results { margin: 0; padding: 0; list-style: none; position: absolute; top: 34px; border: 1px solid #CCC; width: 100%; z-index: 1; background: rgb(255, 255, 255); border-top: 0;
+          li.result { height: 44px; .display-flex; .flex-flow(row nowrap); .align-items(center); overflow:hidden;
+            img { width: 40px; height: 40px; margin-left: 2px; .border-radius(3px); border-style:solid; border-width:1px; }
+            .name {.ft-raleway-heavy; font-size: 1.4rem; margin-right: 5px }
+            .disclaimer { white-space: nowrap; text-overflow: ellipsis; width: 100%; flex: 1; color: @cl-subtext30; font-style: italic;     margin-right: 10px; overflow: hidden; }
+            &:nth-of-type(odd) { background-color: #f9f9f9; }
+            &:hover { outline: 1px solid #c7c7c7; background-color: #f0f0f0 !important; }
+          }
+          .spinner, .empty { padding: 5px 15px; text-align: center; }
+          .presentation { background-color: #CCC; color: #FFF; padding: 5px 15px 5px 10px;
+            span { float: right; color: @cl-text; text-decoration: underline; }
+          }
+        }
       }
       .title {
         .ft-raleway-medium;
@@ -1152,6 +1167,7 @@
   .home>.dropdown-menu>li>a,
   .share,
   .open-group-edit,
+  .open-group-profile,
   .open-group-access,
   .open-group-delete,
   .open-room-edit,

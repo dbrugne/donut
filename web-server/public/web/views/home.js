@@ -6,13 +6,17 @@ var app = require('../libs/app');
 var CardsView = require('./cards');
 var SearchView = require('./home-search');
 var UsersView = require('./home-users');
+var common = require('@dbrugne/donut-common/browser');
 
 var HomeView = Backbone.View.extend({
   el: $('#home'),
 
   empty: true,
+  resultsTemplate: require('../templates/dropdown-search.html'),
 
-  events: {},
+  events: {
+    'blur input[type=text]': 'closeResults'
+  },
 
   initialize: function (options) {
     this.render();
@@ -25,9 +29,11 @@ var HomeView = Backbone.View.extend({
     this.usersView = new UsersView({
       el: this.$('.users')
     });
+    this.$dropdownResults = this.$('.search .results');
+    this.$search = this.$('.search');
 
     this.listenTo(this.searchView, 'searchResults', this.onSearchResults);
-    this.listenTo(this.searchView, 'emptySearch', this.request);
+    this.listenTo(this.searchView, 'emptySearch', this.onEmptyResults);
   },
   render: function () {
     return this;
@@ -50,8 +56,29 @@ var HomeView = Backbone.View.extend({
     this.empty = false;
   },
   onSearchResults: function (data) {
-    data.search = true;
-    this.onHome(data);
+    _.each(_.union(
+      data.rooms
+        ? data.rooms.list
+        : [],
+      data.groups
+        ? data.groups.list
+        : [],
+      data.users
+        ? data.users.list
+        : []
+    ), function (card) {
+      card.avatar = common.cloudinary.prepare(card.avatar, 90);
+    });
+    this.$dropdownResults.html(this.resultsTemplate({search: this.searchView.getValue(), results: data}));
+    this.$dropdownResults.fadeIn();
+  },
+  onEmptyResults: function () {
+    this.$dropdownResults.html(this.resultsTemplate());
+    this.$dropdownResults.fadeIn();
+  },
+  closeResults: function () {
+    this.$search.removeClass('open');
+    this.$dropdownResults.fadeOut();
   }
 });
 

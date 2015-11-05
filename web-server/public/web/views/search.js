@@ -14,7 +14,10 @@ var SearchPageView = Backbone.View.extend({
   empty: true,
 
   events: {
-    'keyup input[type=text]': 'onKeyup'
+    'keyup input[type=text]': 'onKeyup',
+    'click .load-more': 'onLoadMore',
+    'click .btn-group .btn': 'onKeyup',
+    'change .checkbox-search': 'onKeyup'
   },
 
   initialize: function (options) {
@@ -49,7 +52,34 @@ var SearchPageView = Backbone.View.extend({
     this.empty = false;
   },
   onSearchResults: function (data) {
-    // todo display results in dropdown
+    data.search = true;
+    this.onHome(data);
+    this.toggleMore(data);
+  },
+  toggleMore: function (data) {
+    var count = this.cardsView.count();
+    var more =
+      (data.rooms
+        ? data.rooms.count > count.rooms
+        : false) ||
+      (data.groups
+        ? data.groups.count > count.groups
+        : false);
+
+    if (more) {
+      this.$searchMore.removeClass('hidden');
+    } else {
+      this.$searchMore.addClass('hidden');
+    }
+  },
+  onLoadMore: function () {
+    this.cardsView.cleanupEmpty();
+    var count = this.cardsView.count();
+    this.search(count, {
+      users: this.$searchOptionsUsers.is(':checked'),
+      rooms: this.$searchOptionsRooms.is(':checked'),
+      groups: this.$searchOptionsGroups.is(':checked')
+    });
   },
   onKeyup: function (event) {
     event.preventDefault();
