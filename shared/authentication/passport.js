@@ -202,7 +202,13 @@ passport.use(new FacebookStrategy(facebookStrategyOptions,
             newUser.facebook.id = profile.id;
             newUser.facebook.token = token;
             newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
-            newUser.realname = profile.displayName;
+            if (profile.displayName.length <= conf.user.default.realnameMax) {
+              newUser.realname = profile.displayName;
+            } else {
+              var diff = conf.user.default.realnameMax - profile.name.familyName.length;
+              var name = (diff <= 0) ? profile.name.familyName.substring(0, conf.user.default.realnameMax - 3) : profile.name.familyName.substring(0, diff);
+              newUser.realname = profile.name.givenName.substring(0, 1) + '. ' + name;
+            }
             if (profile.emails) {
               newUser.facebook.email = profile.emails[ 0 ].value;
             } // facebook can return multiple emails so we'll take the first
@@ -295,7 +301,13 @@ passport.use(new FacebookTokenStrategy({
       newUser.facebook.id = profile.id;
       newUser.facebook.token = accessToken;
       newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName; // @todo dbr :test
-      newUser.realname = profile.displayName;
+      if (profile.displayName.length <= conf.user.default.realnameMax) {
+        newUser.realname = profile.displayName;
+      } else {
+        var diff = conf.user.default.realnameMax - profile.name.familyName.length;
+        var name = (diff <= 0) ? profile.name.familyName.substring(0, conf.user.default.realnameMax - 3) : profile.name.familyName.substring(0, diff);
+        newUser.realname = profile.name.givenName.charAt(0) + '. ' + name;
+      }
       if (profile.emails) {
         newUser.facebook.email = profile.emails[ 0 ].value;
       } // facebook can return multiple emails so we'll take the first
