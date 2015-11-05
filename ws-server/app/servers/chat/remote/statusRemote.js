@@ -56,13 +56,14 @@ DisconnectRemote.prototype.online = function (uid, welcome, globalCallback) {
     },
 
     function broadcast (callback) {
+      var roomsId = _.map(welcome.rooms, 'room_id');
+      var onesId = _.map(welcome.onetoones, 'user_id');
       var event = {
         user_id: welcome.user.user_id,
         username: welcome.user.username,
-        avatar: welcome.user.avatar
+        avatar: welcome.user.avatar,
+        rooms_id: roomsId
       };
-      var roomsId = _.map(welcome.rooms, 'room_id');
-      var onesId = _.map(welcome.onetoones, 'user_id');
 
       that.app.globalChannelService.pushMessageToRelatedUsers('connector', roomsId, onesId, 'user:online', event, uid, {}, callback);
     }
@@ -185,11 +186,6 @@ DisconnectRemote.prototype.offline = function (uid) {
     },
 
     function broadcast (user, callback) {
-      var event = {
-        user_id: user.id,
-        username: user.username,
-        avatar: user._avatar()
-      };
       Room.findByUser(user.id).exec(function (err, rooms) {
         if (err) {
           return callback(err);
@@ -202,6 +198,12 @@ DisconnectRemote.prototype.offline = function (uid) {
           }
 
           var usersId = _.map(ones, '_id');
+          var event = {
+            user_id: user.id,
+            username: user.username,
+            avatar: user._avatar(),
+            rooms_id: roomsId
+          };
           that.app.globalChannelService.pushMessageToRelatedUsers('connector', roomsId, usersId, 'user:offline', event, uid, {}, callback);
         });
       });
