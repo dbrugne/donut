@@ -336,7 +336,7 @@
       "userstitle": "Users"
     },
     "search": {
-      "placeholder": "Search donut or user here",
+      "placeholder": "Search donut, community or user here",
       "noresults": "No match found",
       "roomstitle": "Here are the donuts matching your request, you can also <a class='open-create-room'>create one</a> :",
       "userstitle": "Matching users"

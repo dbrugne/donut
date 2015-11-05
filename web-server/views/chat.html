@@ -132,20 +132,24 @@
                 </div>
                 <div id="search">
                     <div class="search">
-                        <input type="text" placeholder="<%= t('chat.search.placeholder') %>">
-                        <i class="icon icon-search"></i>
-                        <div class="options flex-parent">
-                            <div class="flex-child">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="<%= t('chat.search.placeholder') %>">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-success"><span class="icon icon-search" aria-hidden="true"></span></button>
+                            </div>
+                        </div>
+                        <div class="btn-group options flex-parent" data-toggle="buttons">
+                            <div class="btn btn-default active flex-child">
                                 <label for="search-options-users">search in users</label>
-                                <input class="checkbox-search" type="checkbox" id="search-options-users" name="search[options][users]" checked="checked" />
+                                <input class="checkbox-search" autocomplete="off" type="checkbox" id="search-options-users" name="search[options][users]" checked="checked" />
                             </div>
-                            <div class="flex-child">
+                            <div class="btn btn-default active flex-child">
                                 <label for="search-options-rooms">search in rooms</label>
-                                <input class="checkbox-search" type="checkbox" id="search-options-rooms" name="search[options][rooms]" checked="checked" />
+                                <input class="checkbox-search" autocomplete="off" type="checkbox" id="search-options-rooms" name="search[options][rooms]" checked="checked" />
                             </div>
-                            <div class="flex-child">
+                            <div class="btn btn-default active flex-child">
                                 <label for="search-options-groups">search in groups</label>
-                                <input class="checkbox-search" type="checkbox" id="search-options-groups" name="search[options][groups]" checked="checked" />
+                                <input class="checkbox-search" autocomplete="off" type="checkbox" id="search-options-groups" name="search[options][groups]" checked="checked" />
                             </div>
                         </div>
                         <div class="search-results">

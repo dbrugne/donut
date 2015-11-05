@@ -14,9 +14,10 @@ var SearchPageView = Backbone.View.extend({
   empty: true,
 
   events: {
-    'click .load-more': 'onLoadMore',
     'keyup input[type=text]': 'onKeyup',
+    'click .load-more': 'onLoadMore',
     'click i.icon-search': 'onKeyup',
+    'click .btn-group .btn': 'onKeyup',
     'change .checkbox-search': 'onKeyup'
   },
 
