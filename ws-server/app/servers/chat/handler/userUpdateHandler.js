@@ -40,7 +40,7 @@ handler.call = function (data, session, next) {
         if (!pattern.test(data.data.realname)) {
           errors.realname = 'real-name-format';
         } else if (!validator.isLength(data.data.realname, 0, 20)) {
-          errors.realname = 'real-name'; // Realname should be 20 characters max.
+          errors.realname = 'real-name-format';
         } else {
           var realname = data.data.realname;
           realname = validator.trim(realname);
@@ -293,6 +293,12 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
+      if (_.isObject(err)) { // errors function validate
+        _.each(err, function (e) {
+          logger.warn('[user:updated] ' + e);
+        });
+        return next(null, { code: 400, err: err });
+      }
       return errors.getHandler('user:updated', next)(err);
     }
 

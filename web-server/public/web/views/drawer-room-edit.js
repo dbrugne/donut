@@ -179,7 +179,11 @@ var DrawerRoomEditView = Backbone.View.extend({
   },
 
   editError: function (err) {
-    this.$('.errors').html(i18next.t('chat.form.errors.' + err, {defaultValue: i18next.t('global.unknownerror')})).show();
+    var errors = '';
+    _.each(err, function (e) {
+      errors += i18next.t('chat.form.errors.' + e, {defaultValue: i18next.t('global.unknownerror')}) + '<br>';
+    });
+    this.$('.errors').html(errors).show();
   },
 
   onTypingDescription: function (event) {
