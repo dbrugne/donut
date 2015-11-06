@@ -405,20 +405,27 @@
     #home { height: 100%; display: none; background-color: @cl-background; overflow-y: auto; .scrollbar-grey;
       .search { position: relative; margin: 20px 20px 2px;
         .input-group { width: 100%;
-          input { .border-radius(4px); }
+          input { .border-radius(4px); border-width: 2px; }
         }
-        &.open .input-group input { .border-radiuses(4px, 0, 0, 4px); }
+        &.open .input-group input { .border-radiuses(4px, 0, 0, 4px);
+          border-color: @cl-first @cl-first transparent @cl-first;
+        }
         &.open:focus { outline:none; }
-        .results { margin: 0; padding: 0; list-style: none; position: absolute; top: 34px; border: 1px solid #CCC; width: 100%; z-index: 1; background: rgb(255, 255, 255); border-top: 0;
+        .results { margin: 0; padding: 0; list-style: none; position: absolute; top: 33px; width: 100%; z-index: 1; background: rgb(255, 255, 255);
+          border-width: 0 2px 2px 2px;
+          border-style: solid;
+          border-color: #ccc @cl-first @cl-first @cl-first;
+          .border-radiuses(0, 4px, 4px, 0);
           li.result { height: 44px; .display-flex; .flex-flow(row nowrap); .align-items(center); overflow:hidden;
             img { width: 40px; height: 40px; margin-left: 2px; .border-radius(3px); border-style:solid; border-width:1px; }
             .name {.ft-raleway-heavy; font-size: 1.4rem; margin-right: 5px }
             .disclaimer { white-space: nowrap; text-overflow: ellipsis; width: 100%; flex: 1; color: @cl-subtext30; font-style: italic;     margin-right: 10px; overflow: hidden; }
             &:nth-of-type(odd) { background-color: #f9f9f9; }
             &:hover { outline: 1px solid #c7c7c7; background-color: #f0f0f0 !important; }
+            &:last-child { .border-radiuses(0, 4px, 4px, 0); }
           }
           .spinner, .empty { padding: 5px 15px; text-align: center; }
-          .presentation { background-color: #CCC; color: #FFF; padding: 5px 15px 5px 10px;
+          .presentation { background-color: #CCC; color: @cl-text; padding: 5px 15px 5px 10px;
             span { float: right; color: @cl-text; text-decoration: underline; }
           }
         }
