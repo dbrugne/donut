@@ -64,6 +64,7 @@ var DrawerGroupDeleteView = Backbone.View.extend({
     }
 
     client.groupDelete(this.groupId);
+    this.trigger('close');
   },
   onDelete: function (data) {
     if (!data.name || data.name.toLocaleLowerCase() !== this.groupNameConfirmation) {
