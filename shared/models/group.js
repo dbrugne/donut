@@ -29,7 +29,8 @@ var groupSchema = mongoose.Schema({
   description: String,
   disclaimer: String,
   website: mongoose.Schema.Types.Mixed,
-  created_at: {type: Date, default: Date.now}
+  created_at: {type: Date, default: Date.now},
+  lastactivity_at: {type: Date}
 });
 
 groupSchema.statics.findByName = function (name) {
