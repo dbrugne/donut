@@ -8,6 +8,7 @@ var inputUtil = require('../../../util/input');
 var filesUtil = require('../../../util/files');
 var keenio = require('../../../../../shared/io/keenio');
 var Notifications = require('../../../components/notifications');
+var GroupModel = require('../../../../../shared/models/group');
 
 var Handler = function (app) {
   this.app = app;
@@ -98,6 +99,16 @@ handler.call = function (data, session, next) {
       // Update topic and activity date
       room.lastactivity_at = Date.now();
       room.save(function (err) {
+        return callback(err, sentEvent, mentions);
+      });
+    },
+
+    function persistOnGroup (sentEvent, mentions, callback) {
+      if (!room.get('group')) {
+        return callback(null, sentEvent, mentions);
+      }
+
+      GroupModel.update({_id: room.get('group').get('id')}, {lastactivity_at: Date.now()}, {multi: false}, function (err) {
         return callback(err, sentEvent, mentions);
       });
     },
