@@ -84,13 +84,13 @@ historySchema.methods.toClientJSON = function (userViewed) {
   data.time = this.time;
   if (this.user) {
     data.user_id = this.user.id;
-    data.realname= this.user.realname;
+    data.realname = this.user.realname;
     data.username = this.user.username;
     data.avatar = this.user._avatar();
   }
   if (this.by_user) {
     data.by_user_id = this.by_user.id;
-    data.by_realname = this.by_realname;
+    data.by_realname = this.by_user.realname;
     data.by_username = this.by_user.username;
     data.by_avatar = this.by_user._avatar();
   }
