@@ -711,7 +711,7 @@
         "create": {
           "label": "Create a community",
           "help": "A community is a place grouping your donut and allowing your community to become a member and access a group of donuts.",
-          "help-name": "Between 3 and 20 characters, only letters, numbers,  dashes (-) and underscores (_).<br>Caution the community name will no longer be editable.",
+          "help-name": "Between 3 and 20 characters, only letters, numbers, dashes (-) and underscores (_).<br>Caution the community name will no longer be editable.",
           "placeholder": "Group name",
           "submit": "Create"
         },
@@ -839,7 +839,7 @@
           "real-name": {
             "label": "Real name",
             "placeholder": "name and first name",
-            "help": "Optional"
+            "help": "Optional (Between 3 and 20 characters, only letters, numbers, spaces and dashes (-))"
           }
         }
       },
