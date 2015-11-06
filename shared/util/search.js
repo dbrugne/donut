@@ -64,10 +64,10 @@ module.exports = function (search, options, callback) {
   var groups = [];
 
   var limit = options.limit || {
-    users: 100,
-    groups: 100,
-    rooms: 100
-  };
+      users: 100,
+      groups: 100,
+      rooms: 100
+    };
   var criteria = options.criteria || {};
 
   var searchResults = {
@@ -102,14 +102,14 @@ module.exports = function (search, options, callback) {
         }
         searchResults.groups.count = count;
 
-        // @todo yls add lastactivity_at when #896 is done
-        var q = GroupModel.find(criteria, 'name owner avatar color members op priority');
+        var q = GroupModel.find(criteria, 'name owner avatar color members op lastactivity_at');
         if (options.skip && options.skip.groups) {
           q.skip(options.skip.groups);
         }
         if (limit.groups) {
           q.limit(limit.groups);
         }
+        q.sort(options.sort || '-lastactivity_at -members avatar name');
         q.populate('owner', 'username');
         q.exec(function (err, dbgroups) {
           if (err) {
@@ -175,8 +175,8 @@ module.exports = function (search, options, callback) {
 
         var q;
         if (!options.light) {
-          q = RoomModel.find(criteria, 'name owner group description topic avatar color users lastjoin_at mode priority');
-          q.sort({'lastjoin_at': -1});
+          q = RoomModel.find(criteria, 'name owner group description topic avatar color users lastjoin_at lastactivity_at mode');
+          q.sort(options.sort || '-lastactivity_at -lastjoin_at -users avatar name');
           if (options.skip && options.skip.rooms) {
             q.skip(options.skip.rooms);
           }
@@ -186,8 +186,8 @@ module.exports = function (search, options, callback) {
           q.populate('owner', 'username');
           q.populate('group', 'name avatar color');
         } else {
-          q = RoomModel.find(criteria, 'name group avatar color lastjoin_at mode priority');
-          q.sort({'lastjoin_at': -1});
+          q = RoomModel.find(criteria, 'name group avatar color lastjoin_at lastactivity_at mode');
+          q.sort(options.sort || '-lastactivity_at -lastjoin_at avatar name');
           if (options.skip && options.skip.rooms) {
             q.skip(options.skip.rooms);
           }
@@ -213,9 +213,6 @@ module.exports = function (search, options, callback) {
         return callback(false);
       }
 
-      // @todo yls implement search on group members / op when required, based on group id
-      // GroupModel.find( members.name / op.name === str ) . populate ...
-
       criteria.username = _regexp;
 
       UserModel.count(criteria, function (err, count) {
@@ -224,14 +221,16 @@ module.exports = function (search, options, callback) {
         }
         searchResults.users.count = count;
 
-        var q = UserModel.find(criteria, 'username avatar color facebook bio');
-        q.sort(options.sort || {'lastonline_at': -1, 'lastoffline_at': -1});
+        var q = UserModel.find(criteria, 'username avatar color facebook bio ones location');
+        q.sort(options.sort || '-lastonline_at -lastoffline_at -avatar username');
         if (options.skip && options.skip.users) {
           q.skip(options.skip.users);
         }
         if (limit.users) {
           q.limit(limit.users);
         }
+        q.populate('ones', 'lastactivity_at');
+        q.populate('ones.user', 'id');
         q.exec(function (err, dbusers) {
           if (err) {
             return callback(err);
@@ -259,8 +258,7 @@ module.exports = function (search, options, callback) {
             avatar: room._avatar(),
             color: room.color,
             mode: room.mode,
-            lastjoin_at: new Date(room.lastjoin_at).getTime(),
-            priority: room.priority || 0
+            lastjoin_at: new Date(room.lastjoin_at).getTime()
           };
 
           if (room.group) {
@@ -281,32 +279,6 @@ module.exports = function (search, options, callback) {
 
           searchResults.rooms.list.push(r);
         });
-
-        if (!options.mix) {
-          searchResults.rooms.list.sort(function (a, b) {
-            if (a.priority !== b.priority) {
-              return b.priority - a.priority;
-            }
-
-            if (a.users !== b.users) {
-              // b - a == descending
-              return (b.users - a.users);
-            }
-
-            if (a.avatar && !b.avatar) {
-              return -1;
-            } else if (!a.avatar && b.avatar) {
-              return 1;
-            }
-
-            if (a.lastjoin_at !== b.lastjoin_at) {
-              // b - a == descending
-              return (b.lastjoin_at - a.lastjoin_at);
-            }
-
-            return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-          });
-        }
       }
 
       if (options.groups && groups.length > 0) {
@@ -321,8 +293,7 @@ module.exports = function (search, options, callback) {
             disclaimer: group.disclaimer,
             color: group.color,
             avatar: group._avatar(),
-            users: count,
-            priority: group.priority || 0
+            users: count
           };
 
           if (group.owner) {
@@ -332,33 +303,6 @@ module.exports = function (search, options, callback) {
 
           searchResults.groups.list.push(_data);
         });
-
-        if (!options.mix) {
-          searchResults.groups.list.sort(function (a, b) {
-            if (a.priority !== b.priority) {
-              return b.priority - a.priority;
-            }
-
-            if ((a.members + a.op) !== (b.members + b.op)) {
-              // b - a == descending
-              return ((b.members + b.op) - (a.members + a.op));
-            }
-
-            if (a.avatar && !b.avatar) {
-              return -1;
-            } else if (!a.avatar && b.avatar) {
-              return 1;
-            }
-
-            // @todo yls uncomment when #896 is done
-            // if (a.lastactivity_at !== b.lastactivity_at) {
-            //   // b - a == descending
-            //   return (b.lastactivity_at - a.lastactivity_at);
-            // }
-
-            return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-          });
-        }
       }
 
       if (options.users && users.length > 0) {
@@ -372,6 +316,12 @@ module.exports = function (search, options, callback) {
             color: user.color,
             bio: user.bio
           };
+          if (options.user_id) {
+            var a = _.find(user.get('ones'), function (item) {
+              return item.user.id === options.user_id;
+            });
+            r.lastactivity_at = a && a.lastactivity_at ? a.lastactivity_at : null;
+          }
 
           searchResults.users.list.push(r);
         });
@@ -384,13 +334,13 @@ module.exports = function (search, options, callback) {
 
         searchResults.all.list.sort(function (a, b) {
           // order by last_activity, descending
-          if (a.lastactivity_at && b.lastactivity_at && (a.lastactivity_at !== b.lastactivity_at)) {
+          if (a.lastactivity_at !== b.lastactivity_at) {
             return (b.lastactivity_at - a.lastactivity_at);
           }
 
-          // order by priority (admin), descending
-          if (a.priority !== b.priority) {
-            return b.priority - a.priority;
+          // order by lastjoin_at
+          if (a.lastjoin_at && b.lastjoin_at && (a.lastjoin_at !== b.lastjoin_at)) {
+            return (b.lastjoin_at - a.lastjoin_at);
           }
 
           // order by nb users / nb members
@@ -414,11 +364,6 @@ module.exports = function (search, options, callback) {
             return -1;
           } else if (!a.avatar && b.avatar) {
             return 1;
-          }
-
-          // order by lastjoin_at
-          if (a.lastjoin_at && b.lastjoin_at && (a.lastjoin_at !== b.lastjoin_at)) {
-            return (b.lastjoin_at - a.lastjoin_at);
           }
 
           // finally order by name
