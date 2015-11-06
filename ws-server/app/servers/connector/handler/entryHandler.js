@@ -1,15 +1,15 @@
 'use strict';
 
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
-var _online = require('../../../util/_online');
-var _offline = require('../../../util/_offline');
 var _ = require('underscore');
+var online = require('../../../util/_online');
+var offline = require('../../../util/_offline');
 
 module.exports = function (app) {
   return new Handler(app);
 };
 
 var Handler = function (app) {
+  this.offline = _.bind(offline, this);
   this.app = app;
 };
 
@@ -28,18 +28,12 @@ handler.enter = function (msg, session, next) {
     !session.__session__.__socket__ ||
     !session.__session__.__socket__.socket ||
     !session.__session__.__socket__.socket.decoded_token) {
-    return next('No user data provided by connector');
+    return next('no-user-data-provided-by-connector');
   }
 
-  var uid = session.__session__.__socket__.socket.decoded_token.id;
+  // socket go offline
+  session.on('closed', this.offline);
 
-  logger.trace('bind session ' + session.id + ' to user ' + uid);
-  session.bind(uid);
-
-  // disconnect event
-  session.on('closed', _.bind(function () {
-    _offline(this.app, session, null);
-  }, this));
-
-  _online(this.app, msg, uid, session, next);
+  // socket go online
+  online(this.app, msg, session, next);
 };

@@ -1,13 +1,15 @@
 'use strict';
+
 var logger = require('../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var keenio = require('../../../shared/io/keenio');
 
-module.exports = function (app, session, reason) {
+module.exports = function (session, reason) {
+  var that = this;
+
+  // if a uid was not already bound before disconnect (crash, bug, debug session, ...)
   if (!session || !session.uid) {
     return;
-  } // could happen if a uid was not already bound before disconnect (crash,
-    // bug, debug session, ...)
-
+  }
   var duration = Math.ceil((Date.now() - session.settings.started) / 1000); // seconds
 
   // Keen.io tracking
@@ -26,6 +28,7 @@ module.exports = function (app, session, reason) {
       admin: (session.settings.admin === true)
     }
   };
+
   keenio.addEvent('session_end', sessionEvent, function (err, res) {
     if (err) {
       logger.error('Error while tracking session_end in keen.io for ' + session.uid + ': ' + err);
@@ -47,7 +50,7 @@ module.exports = function (app, session, reason) {
     logger.trace(log);
 
     // user:offline
-    app.rpc.chat.statusRemote.socketGoesOffline(
+    that.app.rpc.chat.statusRemote.socketGoesOffline(
       session,
       session.uid,
       function (err) {

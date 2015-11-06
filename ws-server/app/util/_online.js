@@ -9,10 +9,14 @@ var keenio = require('../../../shared/io/keenio');
 var GLOBAL_CHANNEL_NAME = 'global';
 var USER_CHANNEL_PREFIX = 'user:';
 
-module.exports = function (app, msg, uid, session, next) {
+module.exports = function (app, msg, session, next) {
+  var uid = session.__session__.__socket__.socket.decoded_token.id;
   var device = session.__session__.__socket__.socket.handshake.query.device;
 
   logger.trace('entry request for ' + uid + '@' + session.frontendId + ' sessionId: ' + session.id);
+
+  // bind uid to pomelo sessions
+  session.bind(uid);
 
   var firstClient = true;
 
