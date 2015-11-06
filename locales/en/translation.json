@@ -844,7 +844,7 @@
         }
       },
       "errors": {
-        "real-name": "Real name must be 41 characters max.",
+        "real-name": "Real name must be 20 characters max.",
         "real-name-format": "Invalid real name",
         "bio": "Bio must be 200 characters max.",
         "location": "Location must be 70 characters max.",

@@ -844,7 +844,7 @@
         }
       },
       "errors": {
-        "real-name": "Le nom complet devrait contenir 41 caractères max.",
+        "real-name": "Le nom complet devrait contenir 20 caractères max.",
         "real-name-format": "Le nom complet est invalide",
         "bio": "La bio devrait contenir 200 caractères max.",
         "location": "Le lieu devrait contenir 70 caractères max.",
