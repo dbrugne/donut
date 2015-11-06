@@ -205,9 +205,9 @@ passport.use(new FacebookStrategy(facebookStrategyOptions,
             if (profile.displayName.length <= conf.user.default.realnameMax) {
               newUser.realname = profile.displayName;
             } else {
-              var diff = conf.user.default.realnameMax - profile.name.familyName.length;
+              var diff = (conf.user.default.realnameMax - 3) - profile.name.familyName.length;
               var name = (diff <= 0) ? profile.name.familyName.substring(0, conf.user.default.realnameMax - 3) : profile.name.familyName.substring(0, diff);
-              newUser.realname = profile.name.givenName.substring(0, 1) + '. ' + name;
+              newUser.realname = profile.name.givenName.charAt(0).toUpperCase() + '. ' + name;
             }
             if (profile.emails) {
               newUser.facebook.email = profile.emails[ 0 ].value;
@@ -304,9 +304,9 @@ passport.use(new FacebookTokenStrategy({
       if (profile.displayName.length <= conf.user.default.realnameMax) {
         newUser.realname = profile.displayName;
       } else {
-        var diff = conf.user.default.realnameMax - profile.name.familyName.length;
+        var diff = (conf.user.default.realnameMax - 3)  - profile.name.familyName.length;
         var name = (diff <= 0) ? profile.name.familyName.substring(0, conf.user.default.realnameMax - 3) : profile.name.familyName.substring(0, diff);
-        newUser.realname = profile.name.givenName.charAt(0) + '. ' + name;
+        newUser.realname = profile.name.givenName.charAt(0).toUpperCase() + '. ' + name;
       }
       if (profile.emails) {
         newUser.facebook.email = profile.emails[ 0 ].value;

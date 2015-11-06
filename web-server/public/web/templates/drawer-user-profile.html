@@ -16,8 +16,8 @@
 
 <div class="ctn-drawer">
     <div class="user block">
-        <p class="username text-center"><% if (user.realname) { %><%= user.realname %><% } else { %>@<%= user.username %><% } %></p>
-        <% if (user.realname) { %><p class="text-center">@<%= user.username %></p><% }; %>
+        <p class="username text-center"><% if (user.realname) { %><%= user.realname %><br><span class="othername text-center">@<%= user.username %></span><% } else { %>@<%= user.username %><% } %></p>
+        <% if (user.realname) { %><% }; %>
         <% if (user.bio) { %><p class="bio mt20 mb20 left"><%= user.bio %></p><% }; %>
         <% if (user.location) { %><p class="action location left"><i class="icon icon-fw icon-map-marker dc-text"></i> <%= user.location %></p><% }; %>
         <% if (user.website && user.website.href) { %><p class="action website left"><i class="icon icon-fw icon-link dc-text"></i> <a class="colored" href="<%= user.website.href %>" target="_blank" title="<%= user.website.title %>"><%= user.website.title %></a></p><% }; %>
