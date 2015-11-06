@@ -100,6 +100,14 @@ emailer.forgot = function (to, token, callback) {
   }, callback);
 };
 
+emailer.verify = function (to, token, callback) {
+  sendEmail(to, 'emails/verify.html', {
+    token: token,
+    title: i18next.t('email.verify.content.title'),
+    subject: i18next.t('email.verify.subject')
+  }, callback);
+};
+
 emailer.welcome = function (to, callback) {
   sendEmail(to, 'emails/signup.html', {
     title: i18next.t('email.welcome.content.title'),

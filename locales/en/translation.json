@@ -124,7 +124,8 @@
     "discuss": "chat",
     "account": "my account",
     "mute": "sound on",
-    "muted": "sound off"
+    "muted": "sound off",
+    "verify": "Verification of your email"
   },
   "global": {
     "view-profile": "View profile",
@@ -198,6 +199,14 @@
     "error": {
       "notexists": "No account with that email address exists.",
       "expired": "Please restart the process. This token has expired or has already been used."
+    }
+  },
+  "verify": {
+    "success": "Your email have been validate",
+    "error": {
+      "expired": "Please restart the process. This token has expired or has already been used.",
+      "invalid": "Please restart the process. This token his not valid.",
+      "already-validate": "This mail address is already validated"
     }
   },
   "signup": {
@@ -959,6 +968,15 @@
         "disclaimer": "You are receiving this e-mail because you have requested a password reset. Please click on the following link to complete the process",
         "button": "Reset your password",
         "info": "If you ignore this e-mail your password will remain unchanged"
+      }
+    },
+    "verify": {
+      "subject": "Email validation on DONUT.me",
+      "content": {
+        "title": "Validate email on DONUT.me",
+        "disclaimer": "You should valid your email to access to all features on the platform",
+        "button": "Valid your email",
+        "info": "If you ignore this e-mail you can't access to everything on the platform DONUT.me"
       }
     },
     "passwordchanged": {

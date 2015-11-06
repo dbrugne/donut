@@ -124,7 +124,8 @@
     "discuss": "discuter",
     "account": "mon compte",
     "mute": "son actif",
-    "muted": "son désactivé"
+    "muted": "son désactivé",
+    "verify": "Verification de votre email"
   },
   "global": {
     "view-profile": "Voir le profil",
@@ -198,6 +199,14 @@
     "error": {
       "notexists": "Désolé, ce compte n'existe pas",
       "expired": "Le jeton de changement de mot de passe a déjà été utilisé ou a éxpiré, veuillez recommencer la procédure"
+    }
+  },
+  "verify": {
+    "success": "Votre email a été validé avec succès",
+    "error": {
+      "expired": "Le jeton de validation de l'adresse mail a déjà été utilisé ou a éxpiré, veuillez recommencer la procédure",
+      "invalid": "Le jeton de validation de l'adresse mail est invalide, veuillez recommencer la procédure",
+      "already-validate": "Cette adresse mail a déjà été validée"
     }
   },
   "signup": {
@@ -959,6 +968,15 @@
         "disclaimer": "Vous avez demandé à changer de mot de passe. Cliquez sur le lien suivant pour définir un nouveau mot de passe",
         "button": "Réinitialiser votre mot de passe",
         "info": "Si vous ne faîtes rien, votre mot de passe restera inchangé"
+      }
+    },
+    "verify": {
+      "subject": "Valider votre email DONUT.me",
+      "content": {
+        "title": "Valider votre email",
+        "disclaimer": "Vous devez valider votre email afin d'accéder à toutes les possibilités de la plateforme",
+        "button": "Valider votre email",
+        "info": "Si vous ne faîtes rien, vous n'aurez pas accès à toute la plateforme DONUT.me"
       }
     },
     "passwordchanged": {
