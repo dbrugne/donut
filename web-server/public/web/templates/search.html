@@ -1,0 +1,25 @@
+<div class="search">
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="<%= t('chat.search.placeholder') %>" value="<%= data.search ? data.search : '' %>">
+    </div>
+    <div class="btn-group options flex-parent" data-toggle="buttons">
+        <div class="btn btn-default active flex-child">
+            <label for="search-options-users"><%= t('chat.search.search_in_users') %></label>
+            <input class="checkbox-search" autocomplete="off" type="checkbox" id="search-options-users" name="search[options][users]" <% if ( data.what && data.what.users && data.what.users === true) { print('checked="checked"') } %> />
+        </div>
+        <div class="btn btn-default active flex-child">
+            <label for="search-options-rooms"><%= t('chat.search.search_in_rooms') %></label>
+            <input class="checkbox-search" autocomplete="off" type="checkbox" id="search-options-rooms" name="search[options][rooms]" <% if ( data.what && data.what.rooms && data.what.rooms === true) { print('checked="checked"') } %> />
+        </div>
+        <div class="btn btn-default active flex-child">
+            <label for="search-options-groups"><%= t('chat.search.search_in_groups') %></label>
+            <input class="checkbox-search" autocomplete="off" type="checkbox" id="search-options-groups" name="search[options][groups]" <% if ( data.what && data.what.groups && data.what.groups === true) { print('checked="checked"') } %> />
+        </div>
+    </div>
+    <div class="search-results">
+        <div class="title flex-child hidden"><!--Search title--></div>
+        <div class="nothing mt20 mb20 hidden"><%= t('chat.search.noresults') %></div>
+    </div>
+</div>
+<div class="cards"><!--cards list--></div>
+<button class="load-more button center-block mt20 mb20 hidden"><%= t('landing.loadmore') %></button>

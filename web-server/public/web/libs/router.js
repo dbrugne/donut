@@ -59,17 +59,19 @@ var DonutRouter = Backbone.Router.extend({
   },
 
   search: function (event) {
-    var data = {};
+    var data = {
+      search: '',
+      what: {
+        users: true,
+        groups: true,
+        rooms: true
+      }
+    };
     if (event) {
       var elt = $(event.currentTarget);
       if (elt && elt.data('search')) {
         data.search = elt.data('search');
         data.skip = null;
-        data.what = {
-          users: true,
-          groups: true,
-          rooms: true
-        };
         if (elt.data('type')) {
           data.what = {
             users: (_.indexOf(elt.data('type').split('|'), 'users') !== -1),

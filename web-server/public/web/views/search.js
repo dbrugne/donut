@@ -7,6 +7,8 @@ var CardsView = require('./cards');
 
 var SearchPageView = Backbone.View.extend({
   el: $('#search'),
+  template: require('../templates/search.html'),
+
   timeout: 0,
   timeBufferBeforeSearch: 500,
   lastSearch: '',
@@ -20,10 +22,10 @@ var SearchPageView = Backbone.View.extend({
   },
 
   initialize: function () {
-
   },
 
   render: function (data) {
+    this.$el.html(this.template({data: data}));
     this.cardsView = new CardsView({
       el: this.$('.cards')
     });
@@ -36,8 +38,6 @@ var SearchPageView = Backbone.View.extend({
     app.trigger('setTitle');
     app.trigger('changeColor');
 
-    // @todo put #search content in a template, and generate again here
-    // @todo translations
     if (data && data.search && data.what) {
       return this.search(data.search, data.skip, data.what);
     }
