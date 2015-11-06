@@ -5,17 +5,6 @@ var async = require('async');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
 
-/**
- * @todo dbr : replace actual logic for user:on/offline and remove roomMultiEmitter
- *   + oneMultiEmitter
- *  - on status change detection retrieve user rooms and onetoones,
- *  - extract full online user list from redis
- *  - deduplicate list
- *  - push message
- *  - on client side handle user:online/offline globally and update discussion
- *   accordingly
- */
-
 var TIMEOUT_BEFORE_OFFLINE = 4000; // 4s
 
 module.exports = function (app) {
