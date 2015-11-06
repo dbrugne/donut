@@ -203,6 +203,7 @@ passport.use(new FacebookStrategy(facebookStrategyOptions,
             newUser.facebook.token = token;
             newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
             newUser.name = profile.displayName;
+            newUser.confirmed = true;
             if (profile.emails) {
               newUser.facebook.email = profile.emails[ 0 ].value;
             } // facebook can return multiple emails so we'll take the first
@@ -296,6 +297,7 @@ passport.use(new FacebookTokenStrategy({
       newUser.facebook.token = accessToken;
       newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName; // @todo dbr :test
       newUser.name = profile.displayName; // @todo dbr :test
+      newUser.confirmed = true;
       if (profile.emails) {
         newUser.facebook.email = profile.emails[ 0 ].value;
       } // facebook can return multiple emails so we'll take the first

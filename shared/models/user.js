@@ -9,9 +9,14 @@ var cloudinary = require('../util/cloudinary');
 var userSchema = mongoose.Schema({
   username: String,
   name: String,
+  emails: [{
+    email: {type: String},
+    confirmed: {type: Boolean, default: false}
+  }],
   admin: {type: Boolean, default: false},
   deleted: {type: Boolean, default: false},
   suspended: {type: Boolean, default: false},
+  confirmed: {type: Boolean, default: false},
   bio: String,
   location: String,
   website: mongoose.Schema.Types.Mixed,
@@ -22,7 +27,9 @@ var userSchema = mongoose.Schema({
     email: String,
     password: String,
     resetToken: String,
-    resetExpires: Date
+    resetExpires: Date,
+    confirmToken: String,
+    confirmExpires: Date
   },
   facebook: {
     id: String,
