@@ -99,9 +99,6 @@ historySchema.methods.toClientJSON = function (userViewed) {
   }
   if (this.to) {
     data.to_user_id = this.to._id.toString();
-    //data.to_username = this.to.username;
-    //data.to_realname = this.to.realname;
-    //data.to_avatar = this.to._avatar();
   }
   if (this.edited === true) {
     data.edited = this.edited;

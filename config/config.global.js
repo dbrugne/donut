@@ -8,11 +8,6 @@ module.exports = {
   less: {
     force: false
   },
-  user: {
-    default: {
-      realnameMax: 20
-    }
-  },
   room: {
     default: {
       color: '#fc2063'

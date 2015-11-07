@@ -7,6 +7,7 @@ var Room = require('../../../../../shared/models/room');
 var validator = require('validator');
 var cloudinary = require('../../../../../shared/util/cloudinary').cloudinary;
 var linkify = require('linkifyjs');
+var common = require('@dbrugne/donut-common/server');
 
 var Handler = function (app) {
   this.app = app;
@@ -36,8 +37,7 @@ handler.call = function (data, session, next) {
 
       // realname
       if (_.has(data.data, 'realname')) {
-        var pattern = /^[a-zA-Z-\d\s]{0,20}$/g;
-        if (!pattern.test(data.data.realname)) {
+        if (!common.validate.realname(data.data.realname)) {
           errors.realname = 'real-name-format';
         } else if (!validator.isLength(data.data.realname, 0, 20)) {
           errors.realname = 'real-name-format';

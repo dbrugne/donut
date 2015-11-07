@@ -28,6 +28,18 @@ var keenIoTracking = function (user, type) {
   });
 };
 
+var getAndParseRealNameFacebook = function (profileFacebook) {
+  var realname = '';
+  if (profileFacebook.displayName.length <= 20) {
+    realname = profileFacebook.displayName;
+  } else {
+    var diff = 17 - profileFacebook.name.familyName.length; // 17 = 20(max realname) - 3(char+'. ')
+    var name = (diff <= 0) ? profileFacebook.name.familyName.substring(0,  17) : profileFacebook.name.familyName.substring(0, diff);
+    realname = profileFacebook.name.givenName.charAt(0).toUpperCase() + '. ' + name;
+  }
+  return realname;
+};
+
 // serialize user for the session
 passport.serializeUser(function (user, done) {
   done(null, user.id);
@@ -202,13 +214,7 @@ passport.use(new FacebookStrategy(facebookStrategyOptions,
             newUser.facebook.id = profile.id;
             newUser.facebook.token = token;
             newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
-            if (profile.displayName.length <= conf.user.default.realnameMax) {
-              newUser.realname = profile.displayName;
-            } else {
-              var diff = (conf.user.default.realnameMax - 3) - profile.name.familyName.length;
-              var name = (diff <= 0) ? profile.name.familyName.substring(0, conf.user.default.realnameMax - 3) : profile.name.familyName.substring(0, diff);
-              newUser.realname = profile.name.givenName.charAt(0).toUpperCase() + '. ' + name;
-            }
+            newUser.realname = getAndParseRealNameFacebook(profile);
             if (profile.emails) {
               newUser.facebook.email = profile.emails[ 0 ].value;
             } // facebook can return multiple emails so we'll take the first
@@ -301,13 +307,7 @@ passport.use(new FacebookTokenStrategy({
       newUser.facebook.id = profile.id;
       newUser.facebook.token = accessToken;
       newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName; // @todo dbr :test
-      if (profile.displayName.length <= conf.user.default.realnameMax) {
-        newUser.realname = profile.displayName;
-      } else {
-        var diff = (conf.user.default.realnameMax - 3)  - profile.name.familyName.length;
-        var name = (diff <= 0) ? profile.name.familyName.substring(0, conf.user.default.realnameMax - 3) : profile.name.familyName.substring(0, diff);
-        newUser.realname = profile.name.givenName.charAt(0).toUpperCase() + '. ' + name;
-      }
+      newUser.realname = getAndParseRealNameFacebook(profile);
       if (profile.emails) {
         newUser.facebook.email = profile.emails[ 0 ].value;
       } // facebook can return multiple emails so we'll take the first

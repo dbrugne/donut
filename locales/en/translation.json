@@ -834,12 +834,12 @@
           },
           "username": {
             "label": "Username",
-            "info": "(Unchangeable)"
+            "info": "(unchangeable)"
           },
           "real-name": {
             "label": "Real name",
             "placeholder": "name and first name",
-            "help": "Optional (Between 3 and 20 characters, only letters, numbers, spaces and dashes (-))"
+            "help": "Optional (Between 3 and 20 characters, only letters, numbers, spaces and dashes)"
           }
         }
       },

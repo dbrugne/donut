@@ -834,7 +834,7 @@
           },
           "username": {
             "label": "Nom d'utilisateur",
-            "info": "(Non modifiable)"
+            "info": "(non modifiable)"
           },
           "real-name": {
             "label": "Nom complet",
