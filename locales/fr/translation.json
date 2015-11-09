@@ -163,18 +163,18 @@
     "unknownerror": "Erreur inconnue, veuillez réessayer",
     "mode": {
       "title": {
-        "private": "invités",
-        "private-invites": "invités",
-        "private-invites-group": "membres et invités",
-        "private-group": "membres et invités",
+        "private": "privé",
+        "private-invites": "privé",
+        "private-invites-group": "membres",
+        "private-group": "membres",
         "public": "public"
       },
       "description": {
-        "private": "Ce donut est privé, accessible uniquement sur invitation",
-        "private-invites": "Ce donut est privé, accessible uniquement sur invitation",
-        "private-invites-group": "Ce donut est privé, accessible uniquement aux membres de cette de communauté et sur invitation",
-        "private-group": "Ce donut est privé, accessible uniquement aux membres de cette de communauté et sur invitation",
-        "public": "Ce donut est public, accessible à tout utilisateur"
+        "private": " accessible aux utilisateurs invités uniquement",
+        "private-invites": "accessible aux utilisateurs invités uniquement",
+        "private-invites-group": "accessible aux membres de la communauté et aux utilisateurs invités",
+        "private-group": "accessible aux membres de la communauté et aux utilisateurs invités",
+        "public": "accessible à tous"
       }
     }
   },
