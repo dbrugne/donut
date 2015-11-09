@@ -4,19 +4,6 @@ var _ = require('underscore');
 var async = require('async');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
-var roomMultiEmitter = require('../../../util/roomMultiEmitter');
-var oneMultiEmitter = require('../../../util/oneMultiEmitter');
-
-/**
- * @todo dbr : replace actual logic for user:on/offline and remove roomMultiEmitter
- *   + oneMultiEmitter
- *  - on status change detection retrieve user rooms and onetoones,
- *  - extract full online user list from redis
- *  - deduplicate list
- *  - push message
- *  - on client side handle user:online/offline globally and update discussion
- *   accordingly
- */
 
 var TIMEOUT_BEFORE_OFFLINE = 4000; // 4s
 
@@ -31,8 +18,7 @@ var DisconnectRemote = function (app) {
 /**
  * Handle "this user goes online logic":
  * - update lastonline_at
- * - broadcast user:online message to all rooms he is in
- * - broadcast user:offline message to all opened onetoone with hi
+ * - broadcast user:online message to all rooms users related
  *
  * @param {String} uid unique id for user
  * @param {String} welcome message
@@ -58,70 +44,20 @@ DisconnectRemote.prototype.online = function (uid, welcome, globalCallback) {
       });
     },
 
-    function prepareEvent (callback) {
-      return callback(null, {
+    function broadcast (callback) {
+      var roomsId = _.map(welcome.rooms, 'room_id');
+      var onesId = _.map(welcome.onetoones, 'user_id');
+      var event = {
         user_id: welcome.user.user_id,
         username: welcome.user.username,
-        avatar: welcome.user.avatar
-      });
-    },
+        avatar: welcome.user.avatar,
+        rooms_id: roomsId
+      };
 
-    function toRooms (event, callback) {
-      if (!welcome.rooms || welcome.rooms.length < 1) {
-        return callback(null, event);
-      }
-
-      var roomsToInform = _.map(welcome.rooms, function (room) {
-        return {
-          name: room.name,
-          id: (room.id) ? room.id : room.room_id
-        };
-      });
-
-      roomMultiEmitter(that.app, roomsToInform, 'user:online', event, function (err) {
-        if (err) {
-          return callback(err);
-        }
-
-        logger.trace('inform following rooms: ', roomsToInform);
-        return callback(null, event);
-      });
-    },
-
-    function toOnes (event, callback) {
-      if (!welcome.onetoones || welcome.onetoones.length < 1) {
-        return callback(null, event);
-      }
-
-      User.find({ 'ones.user': { $in: [ uid ] } }, 'username', function (err, ones) {
-        if (err) {
-          return callback('Unable to find onetoones to inform on connection: ' + err);
-        }
-
-        var onesToInform = [];
-        _.each(ones, function (one) {
-          if (!one || !one.username) {
-            return;
-          }
-
-          onesToInform.push({ from: uid, to: one._id.toString() });
-        });
-
-        if (onesToInform.length < 1) {
-          return callback(null, event);
-        }
-
-        oneMultiEmitter(that.app, onesToInform, 'user:online', event, function (err) {
-          if (err) {
-            return callback(err);
-          }
-
-          return callback(null, event);
-        });
-      });
+      that.app.globalChannelService.pushMessageToRelatedUsers('connector', roomsId, onesId, 'user:online', event, uid, {}, callback);
     }
 
-  ], function (err, event) {
+  ], function (err) {
     if (err) {
       logger.error('statusRemote.online', {
         result: 'fail',
@@ -197,8 +133,7 @@ DisconnectRemote.prototype.socketGoesOffline = function (uid, globalCallback) {
 /**
  * Handle "this user goes offline logic":
  * - update lastoffline_at
- * - broadcast user:offline message to all rooms he is in
- * - broadcast user:offline message to all opened onetoone with him
+ * - broadcast user:offline message to all users related
  *
  * @param {String} uid unique id for user
  *
@@ -239,67 +174,26 @@ DisconnectRemote.prototype.offline = function (uid) {
       return callback(null, user);
     },
 
-    function prepareEvent (user, callback) {
-      return callback(null, user, {
-        user_id: user.id,
-        username: user.username,
-        avatar: user._avatar()
-      });
-    },
-
-    function emitUserOfflineToRooms (user, event, callback) {
+    function broadcast (user, callback) {
       Room.findByUser(user.id).exec(function (err, rooms) {
         if (err) {
           return callback(err);
         }
 
-        var roomsToInform = _.map(rooms, function (room) {
-          return {
-            name: room.name,
-            id: room.id
+        var roomsId = _.map(rooms, '_id');
+        User.find({ 'ones.user': { $in: [ uid ] } }, 'username', function (err, ones) {
+          if (err) {
+            return callback(err);
+          }
+
+          var usersId = _.map(ones, '_id');
+          var event = {
+            user_id: user.id,
+            username: user.username,
+            avatar: user._avatar(),
+            rooms_id: roomsId
           };
-        });
-
-        if (roomsToInform.length < 1) {
-          return callback(null, user, event);
-        }
-
-        roomMultiEmitter(that.app, roomsToInform, 'user:offline', event, function (err) {
-          if (err) {
-            return callback(err);
-          }
-
-          logger.trace('Following rooms informed: ' + roomsToInform.join(', '));
-          return callback(null, user, event);
-        });
-      });
-    },
-
-    function emitUserOfflineToOnes (user, event, callback) {
-      User.find({ 'ones.user': { $in: [ uid ] } }, 'username', function (err, ones) {
-        if (err) {
-          return callback('Unable to find onetoones to inform on connection: ' + err);
-        }
-
-        var onesToInform = [];
-        _.each(ones, function (one) {
-          if (!one || !one.username) {
-            return;
-          }
-
-          onesToInform.push({ from: uid, to: one._id.toString() });
-        });
-
-        if (onesToInform.length < 1) {
-          return callback(null, user, event);
-        }
-
-        oneMultiEmitter(that.app, onesToInform, 'user:offline', event, function (err) {
-          if (err) {
-            return callback(err);
-          }
-
-          return callback(null, user);
+          that.app.globalChannelService.pushMessageToRelatedUsers('connector', roomsId, usersId, 'user:offline', event, uid, {}, callback);
         });
       });
     }

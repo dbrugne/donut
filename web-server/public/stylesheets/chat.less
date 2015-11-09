@@ -807,12 +807,16 @@
               i { font-size: 0.9em; }
               .ago { display: none; font-size: 0.9em; font-style: italic; }
               &.online {
-                .display-online { visibility:visible; }
-                .display-offline { visibility:hidden; }
+                .display-online { display: inline-block; }
+                .display-offline { display: none; }
+                .visible-online { visibility: visible; }
+                .visible-offline { visibility: hidden; }
               }
               &.offline {
-                .display-online { visibility:hidden; }
-                .display-offline { visibility:visible; }
+                .display-online { display: none; }
+                .display-offline { display: inline-block; }
+                .visible-online { visibility: hidden; }
+                .visible-offline { visibility: visible; }
               }
             } // #chat #center .discussion .content .header.user .status-block
           } // #chat #center .discussion .content .header.user

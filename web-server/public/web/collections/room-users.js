@@ -62,7 +62,7 @@ var RoomUsersCollection = Backbone.Collection.extend({
 
     this.on('change:avatar', this.onChange);
 
-    // @todo dbr same fix as model/user, reduce event propagation
+    // @todo yfuks same fix as models/user, reduce event propagation => listenTo('user:updated') => check that user is in this collection => change model + redraw
     this.on('change:status', this.onChange);
   },
 
