@@ -204,7 +204,7 @@ var InputCommandsView = Backbone.View.extend({
     } else if (parameters[1] && parameters[2]) {
       // group (#donut/)
       identifier = parameters[1].replace('#', '');
-      return app.trigger('joinGroup', identifier);
+      return app.trigger('joinGroup', {name: identifier, popin: false});
     } else {
       // room not in group (#donut)
       identifier = parameters[1];
