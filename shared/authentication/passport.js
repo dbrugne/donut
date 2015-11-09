@@ -217,8 +217,8 @@ passport.use(new FacebookStrategy(facebookStrategyOptions,
             if (!user.facebook.token) {
               user.facebook.token = token;
 
-              if (profile.name && profile.name.displayName) {
-                newUser.facebook.name = profile.name.displayName;
+              if (profile.name && profile.displayName) {
+                newUser.facebook.name = profile.displayName;
               }
 
               if (profile.emails) {
@@ -242,7 +242,7 @@ passport.use(new FacebookStrategy(facebookStrategyOptions,
             var realname = getAndParseRealNameFacebook(profile);
             if (realname) {
               newUser.realname = realname;
-              newUser.facebook.name = profile.name.displayName;
+              newUser.facebook.name = profile.displayName;
             }
 
             if (profile.emails) {
@@ -340,7 +340,7 @@ passport.use(new FacebookTokenStrategy({
       var realname = getAndParseRealNameFacebook(profile);
       if (realname) {
         newUser.realname = realname;
-        newUser.facebook.name = profile.name.displayName;
+        newUser.facebook.name = profile.displayName;
       }
 
       if (profile.emails) {
