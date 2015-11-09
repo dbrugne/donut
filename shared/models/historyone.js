@@ -122,7 +122,7 @@ historySchema.methods.toClientJSON = function (userViewed) {
 
   return {
     type: this.event,
-    date: data
+    data: data
   };
 };
 
