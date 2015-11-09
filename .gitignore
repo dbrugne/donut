@@ -5,6 +5,7 @@
 # Dependencies
 /ws-server/logs
 /web-server/public/vendor
+/node_modules
 
 # Compiled files
 /ecosystem.json
