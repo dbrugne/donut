@@ -39,7 +39,7 @@ handler.call = function (data, session, next) {
       if (_.has(data.data, 'realname')) {
         if (!common.validate.realname(data.data.realname)) {
           errors.realname = 'real-name-format';
-        } else if (!validator.isLength(data.data.realname, 3, 20)) {
+        } else if (!validator.isLength(data.data.realname, 2, 20)) {
           errors.realname = 'real-name-format';
         } else {
           var realname = data.data.realname;

@@ -839,7 +839,7 @@
           "real-name": {
             "label": "Nom complet",
             "placeholder": "Nom et prénom",
-            "help": "Facultatif (Entre 3 et 20 caractères, chiffres, lettres, espaces et tirets)"
+            "help": "Facultatif (Entre 2 et 20 caractères, chiffres, lettres, espaces et tirets)"
           }
         }
       },
