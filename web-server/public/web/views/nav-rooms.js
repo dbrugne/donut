@@ -4,6 +4,7 @@ var Backbone = require('backbone');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
 var rooms = require('../collections/rooms');
+var i18next = require('i18next-client');
 
 module.exports = Backbone.View.extend({
   el: $('#rooms'),
@@ -65,7 +66,13 @@ module.exports = Backbone.View.extend({
       }
     });
   },
-  highlightGroup: function (groupId) {
-    this.$list.find('[data-type="group"][data-group-id="' + groupId + '"]').addClass('active');
+  highlightGroup: function (data) {
+    this.$list.find('[data-type="group"][data-group-id="' + data.group_id + '"]').addClass('active');
+    if (data.popin) {
+      var $popin = $('#popin');
+      $popin.find('.modal-title').html(i18next.t('popins.group-create.title'));
+      $popin.find('.modal-body').html(i18next.t('popins.group-create.content', {groupname: data.group_name, groupid: data.group_id}));
+      $popin.modal('show');
+    }
   }
 });
