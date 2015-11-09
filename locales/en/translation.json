@@ -442,7 +442,9 @@
         "deban-group-user": "You are about to deban user @__username__ from this community",
         "invite": "You are about to authorize @__username__. A notification will be sent to invite @__username__ to join #__name__.",
         "requestallowance": "<strong>Membership request.</strong><br>The community creator will have access to your real name and email.",
-        "add-email": "New mail address :"
+        "add-email": "New mail address :",
+        "send-email": "A confirmation mail gonna be send to __email__",
+        "delete-email": "__email__ will be deleted of your address"
       }
     },
     "commands": {
@@ -939,7 +941,14 @@
       "delete": "Delete",
       "noresult": "No mails found",
       "main": "Main",
-      "add": "Add an address"
+      "add": "Add an address",
+      "errors": {
+        "wrong-format": "Mail address is not valid",
+        "mail-already-exist": "This mail address is already used",
+        "not-allowed": "This mail address is already verified",
+        "not-found": "This mail address cannot be found",
+        "permanent": "This mail address can't be deleted"
+      }
     }
   },
   "page": {

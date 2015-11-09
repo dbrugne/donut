@@ -11,7 +11,8 @@ var DrawerAccountManageEmailsView = Backbone.View.extend({
   events: {
     'change .savable': 'onChangeMainEmail',
     'click .add-email': 'onAddEmail',
-    'click .delete-email': 'onDeleteEmail'
+    'click .delete-email': 'onDeleteEmail',
+    'click .send-validation-email': 'onSendValidationEmail'
   },
 
   initialize: function (options) {
@@ -34,8 +35,8 @@ var DrawerAccountManageEmailsView = Backbone.View.extend({
     return this;
   },
 
-  putError: function () {
-    this.$errorLabel.text(i18next.t('global.unknownerror'));
+  putError: function (err) {
+    this.$errorLabel.text(i18next.t('account.manageemail.errors.' + err, {defaultValue: i18next.t('global.unknownerror')}));
     this.$error.show();
   },
 
@@ -45,7 +46,7 @@ var DrawerAccountManageEmailsView = Backbone.View.extend({
 
     client.userUpdate({email: email}, _.bind(function (d) {
       if (d.err) {
-        return this.putError();
+        return this.putError(d.err);
       }
 
       _.each(this.user.account.emails, function (e) {
@@ -57,13 +58,47 @@ var DrawerAccountManageEmailsView = Backbone.View.extend({
 
   onAddEmail: function (event) {
     confirmationView.open({message: 'add-email', input: true}, _.bind(function (email) {
-      // add email
+      client.accountEmail(email, 'add', _.bind(function (response) {
+        if (response.err) {
+          return this.putError(response.err);
+        }
+
+        this.user.account.emails.push({email: email, confirmed: false});
+        this.render();
+      }, this));
     }, this));
   },
 
   onDeleteEmail: function (event) {
-    confirmationView.open({}, _.bind(function (email) {
-      // delete email
+    var email = $(event.currentTarget).data('email');
+
+    confirmationView.open({message: 'delete-email', email: email}, _.bind(function () {
+      client.accountEmail(email, 'delete', _.bind(function (response) {
+        if (response.err) {
+          return this.putError(response.err);
+        }
+
+        var emails = [];
+        _.each(this.user.account.emails, function (e) {
+          if (e.email !== email) {
+            emails.push(e);
+          }
+        });
+        this.user.account.emails = emails;
+        this.render();
+      }, this));
+    }, this));
+  },
+
+  onSendValidationEmail: function (event) {
+    var email = $(event.currentTarget).data('email');
+
+    confirmationView.open({message: 'send-email', email: email}, _.bind(function () {
+      client.accountEmail(email, 'validate', _.bind(function (response) {
+        if (response.err) {
+          return this.putError(response.err);
+        }
+      }, this));
     }, this));
   },
 

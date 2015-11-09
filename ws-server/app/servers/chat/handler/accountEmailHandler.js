@@ -1,9 +1,12 @@
 'use strict';
+var _ = require('underscore');
 var errors = require('../../../util/errors');
 var async = require('async');
 var User = require('../../../../../shared/models/user');
 var emailer = require('../../../../../shared/io/emailer');
 var validator = require('validator');
+var jwt = require('jsonwebtoken');
+var conf = require('../../../../../config/index');
 
 var Handler = function (app) {
   this.app = app;
@@ -18,30 +21,36 @@ var handler = Handler.prototype;
 handler.call = function (data, session, next) {
   var user = session.__currentUser__;
 
-  var email;
+  var methods = [
+    'add',        // Add the email to the list of user emails
+    'delete',     // Delete the email from the list of user emails
+    'validate'    // Send a validation email to user
+  ];
+
+  if (!data.email) {
+    return next('wrong-format');
+  }
+
+  var email = data.email.toLocaleLowerCase();
+
+  if (!validator.isEmail(email)) {
+    return next('wrong-format');
+  }
+
+  if (!data.method || methods.indexOf(data.method) === -1) {
+    return next('params');
+  }
+
+  this[data.method](data.email, user, next);
+};
+
+handler.add = function (email, user, next) {
+  var that = this;
 
   async.waterfall([
 
     function check (callback) {
-      if (!data.email) {
-        return callback('wrong-format');
-      }
-
-      email = data.email.toLocaleLowerCase();
-
-      if (!validator.isEmail(email)) {
-        return callback('wrong-format');
-      }
-
-      if (user.local && user.local.email && email === user.local.email.toLocaleLowerCase()) {
-        return callback('same-mail');
-      }
-
-      return callback(null);
-    },
-
-    function exist (callback) {
-      User.findOne({'local.email': email}, function (err, user) {
+      User.findOne({'emails.email': email}).exec(function (err, user) {
         if (err) {
           return callback(err);
         }
@@ -53,35 +62,85 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function save (callback) {
-      var oldEmail = (user.local && user.local.email)
-        ? user.local.email
-        : '';
-      user.local.email = email;
+    function update (callback) {
+      var emails = user.emails;
+      emails.push({email: email, confirmed: false});
+      user.emails = emails;
       user.save(function (err) {
-        if (err) {
-          return callback(err);
-        }
-
-        emailer.emailChanged(email, function (err) {
-          if (err) {
-            return callback(err);
-          }
-
-          if (oldEmail === '' || oldEmail === email) {
-            return callback(null);
-          }
-
-          // inform old email if different from new one
-          emailer.emailChanged(oldEmail, callback);
-        });
+        return callback(err);
       });
     }
 
   ], function (err) {
     if (err) {
-      return errors.getHandler('user:email:edit', next)(err);
+      return errors.getHandler('user:email:add', next)(err);
     }
+
+    that.validate(email, user, next);
+  });
+};
+
+handler.validate = function (email, user, next) {
+  async.waterfall([
+
+    function check (callback) {
+      if (_.findWhere(user.emails, {email: email, confirmed: true})) {
+        return callback('not-allowed');
+      }
+
+      return callback(null);
+    },
+
+    function sendMail (callback) {
+      var profile = {
+        id: user.id,
+        email: email
+      };
+      var token = jwt.sign(profile, conf.verify.secret, {expiresIn: conf.verify.expire});
+      emailer.verify(email, token, function (err) {
+        if (err) {
+          return callback(err);
+        }
+
+        return callback(null);
+      });
+    }
+
+  ], function (err) {
+    if (err) {
+      return errors.getHandler('user:email:validate', next)(err);
+    }
+
+    return next(null, {success: true});
+  });
+};
+
+handler.delete = function (email, user, next) {
+  async.waterfall([
+
+    function check (callback) {
+      if (!_.findWhere(user.emails, {email: email})) {
+        return callback('not-found');
+      }
+
+      if ((user.local && user.local.email === email) || (user.facebook && user.facebook.email === email)) {
+        return callback('permanent');
+      }
+
+      return callback(null);
+    },
+
+    function update (callback) {
+      user.update({$pull: {emails: {email: email}}}, function (err) {
+        return callback(err);
+      });
+    }
+
+  ], function (err) {
+    if (err) {
+      return errors.getHandler('user:email:delete', next)(err);
+    }
+
     return next(null, {success: true});
   });
 };

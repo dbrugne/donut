@@ -442,7 +442,9 @@
         "deban-group-user": "Vous allez débannir l'utilisateur @__username__ de cette communauté",
         "invite": "Vous allez autoriser l'accès à @__username__. Une notification va lui être adressée pour l'inviter à rejoindre #__name__.",
         "requestallowance": "<strong>Demander à devenir membre.</strong><br>Le créateur de la communauté va avoir accès à votre vrai nom et votre e-mail.",
-        "add-email": "Nouvelle adresse électronique :"
+        "add-email": "Nouvelle adresse électronique :",
+        "send-email": "Un email de confirmation va être envoyé à __email__",
+        "delete-email": "__email__ va être supprimé de vos adresses mails"
       }
     },
     "commands": {
@@ -939,7 +941,14 @@
       "delete": "Supprimer",
       "noresult": "Aucunes adresse mail trouvées",
       "main": "Principal",
-      "add": "Ajouter une adresse"
+      "add": "Ajouter une adresse",
+      "errors": {
+        "wrong-format": "L'addresse mail n'est pas valide",
+        "mail-already-exist": "Cette adresse mail est déjà utilisé",
+        "not-allowed": "Cette adresse mail à déjà été validée",
+        "not-found": "Cette adresse mail n'a pas été trouvée",
+        "permanent": "Cette addresse mail ne peut pas être supprimer"
+      }
     }
   },
   "page": {
