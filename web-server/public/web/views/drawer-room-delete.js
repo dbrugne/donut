@@ -2,7 +2,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
 var i18next = require('i18next-client');
-var app = require('../models/app');
+var app = require('../libs/app');
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 var groups = require('../collections/groups');
@@ -14,7 +14,8 @@ var DrawerRoomDeleteView = Backbone.View.extend({
 
   events: {
     'keyup input[name=input-delete]': 'onKeyup',
-    'click .submit': 'onSubmit'
+    'click .submit': 'onSubmit',
+    'click .cancel-lnk': 'onClose'
   },
 
   initialize: function (options) {
@@ -71,8 +72,12 @@ var DrawerRoomDeleteView = Backbone.View.extend({
 
       app.trigger('alert', 'info', i18next.t('chat.form.room-form.edit.room.delete.success'));
       this.trigger('close');
-      var model = groups.findWhere({id: this.groupId});
-      model.onDeleteRoom(this.roomId);
+      if (this.groupId) {
+        var model = groups.findWhere({id: this.groupId});
+        if (model) {
+          model.onDeleteRoom(this.roomId);
+        }
+      }
     }, this));
   },
   onKeyup: function (event) {
@@ -89,6 +94,10 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     if (event.type === 'keyup' && key.key === keyboard.RETURN) {
       return this.onSubmit(event);
     }
+  },
+  onClose: function (event) {
+    event.preventDefault();
+    this.trigger('close');
   },
   _valid: function () {
     var name = this.$input.val();

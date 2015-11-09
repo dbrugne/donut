@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var app = require('../models/app');
+var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
 var rooms = require('../collections/rooms');
 
@@ -25,7 +25,6 @@ module.exports = Backbone.View.extend({
     this.$empty = this.$('.empty');
   },
   render: function () {
-    //console.log('render rooms');
     if (!rooms.models.length) {
       this.$list.empty();
       return this.$empty.show();

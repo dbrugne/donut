@@ -3,7 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
-var app = require('../models/app');
+var app = require('../libs/app');
 var confirmationView = require('./modal-confirmation');
 var date = require('../libs/date');
 

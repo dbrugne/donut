@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
-var app = require('../models/app');
+var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
 var i18next = require('i18next-client');
@@ -93,7 +93,7 @@ var DrawerGroupCreateView = Backbone.View.extend({
         return this.setError(i18next.t('global.unknownerror'));
       }
 
-      app.trigger('joinRoom', '#' + name + '/welcome'); // @todo put that in constant
+      app.trigger('joinRoom', '#' + name + '/' + window.group_room_default);
       this.reset();
       this.trigger('close');
     }, this));

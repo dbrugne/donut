@@ -8,6 +8,7 @@ var inputUtil = require('../../../util/input');
 var filesUtil = require('../../../util/files');
 var keenio = require('../../../../../shared/io/keenio');
 var Notifications = require('../../../components/notifications');
+var GroupModel = require('../../../../../shared/models/group');
 
 var Handler = function (app) {
   this.app = app;
@@ -101,6 +102,16 @@ handler.call = function (data, session, next) {
       });
     },
 
+    function persistOnGroup (sentEvent, mentions, callback) {
+      if (!room.get('group')) {
+        return callback(null, sentEvent, mentions);
+      }
+
+      GroupModel.update({_id: room.get('group').get('id')}, {lastactivity_at: Date.now()}, {multi: false}, function (err) {
+        return callback(err, sentEvent, mentions);
+      });
+    },
+
     function mentionNotification (sentEvent, mentions, callback) {
       if (!mentions || !mentions.length) {
         return callback(null, sentEvent);
@@ -122,7 +133,7 @@ handler.call = function (data, session, next) {
     },
 
     function messageNotification (sentEvent, callback) {
-      // @todo : change pattern for this event (particularly frequent) and tag historyRoomModel as "to_be_consumed" and
+      // @todo dbr : change pattern for this event (particularly frequent) and tag historyRoomModel as "to_be_consumed" and
       //         implement a consumer to treat notifications asynchronously
       Notifications(that.app).getType('roommessage').create(room, sentEvent.id, function (err) {
         if (err) {

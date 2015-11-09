@@ -30,7 +30,7 @@ var app = express();
 app.enable('trust proxy'); // nginx
 
 app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use(cors()); // allow requests from mobile client (@todo: whitelist allowed origins URLs)
+app.use(cors()); // allow requests from mobile client (@todo dbr: whitelist allowed origins URLs)
 app.use(less(__dirname + '/public', { force: conf.less.force }));
 app.use(express.static(path.join(__dirname, '../node_modules/socket.io-client'))); // => require('socket.io-client');
 app.use(express.static(path.join(__dirname, 'public')));
@@ -55,7 +55,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json()); // for react-native fetch
+app.use(bodyParser.json()); // for react-native fetch()
 app.use(expressValidator()); // must be immediately after bodyParser()
 app.use(cookieParser());
 app.use(session);

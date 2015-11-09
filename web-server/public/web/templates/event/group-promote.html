@@ -1,18 +1,18 @@
 <%
 var _icon = 'icon-';
-switch (stype) {
+switch (data.stype) {
   case 'groupban':
     _icon += 'ban';
     break;
 };
 %>
-<div class="block promote <%= stype %> <% if (unviewed) { print('unviewed'); } %>" id="<%= data.id %>" data-time="<%= data.time %>">
+<div class="block promote <%= data.stype %> <% if (data.unviewed) { print('unviewed'); } %>" id="<%= data.id %>" data-time="<%= data.time %>">
     <div class="event">
         <div class="text">
-            <i class="icon <%= _icon %>"></i>
+            <i class="icon icon-fw <%= _icon %>"></i>
             <div class="avatar open-user-profile" data-user-id="<%= data.user_id %>" style="background-image: url(<%= data.avatar %>)"></div>
             <span class="username open-user-profile"  data-user-id="<%= data.user_id %>">@<%= data.username %></span>
-            <span class="message"><%= t('chat.notifications.' + type) %></span>
+            <span class="message"><%= t('chat.notifications.' + data.type) %></span>
             <div class="avatar open-user-profile" data-user-id="<%= data.by_user_id %>" style="background-image: url(<%= data.by_avatar %>)"></div>
             <span class="username open-user-profile" data-user-id="<%= data.by_user_id %>">@<%= data.by_username %></span>
             <% if (data.reason && data.reason !== '') { %>

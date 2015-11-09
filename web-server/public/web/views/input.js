@@ -1,5 +1,4 @@
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
@@ -122,7 +121,6 @@ var DiscussionInputView = Backbone.View.extend({
    */
   onKeyDown: function (event) {
     var data = keyboard._getLastKeyCode(event);
-    var message = this.$editable.val();
 
     // Avoid loosing focus when tab is pushed
     if (data.key === keyboard.TAB) {
@@ -172,7 +170,7 @@ var DiscussionInputView = Backbone.View.extend({
     }
 
     // check length (max)
-    // @todo: replace with a "withoutSmileysCodes" logic
+    // @todo dbr: replace with a "withoutSmileysCodes" logic
     if (message.length > 512) {
       debug('message is too long');
       return false;
@@ -192,6 +190,5 @@ var DiscussionInputView = Backbone.View.extend({
   }
 
 });
-
 
 module.exports = DiscussionInputView;

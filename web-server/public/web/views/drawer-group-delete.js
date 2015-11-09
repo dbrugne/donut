@@ -2,7 +2,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
 var i18next = require('i18next-client');
-var app = require('../models/app');
+var app = require('../libs/app');
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 
@@ -13,7 +13,8 @@ var DrawerGroupDeleteView = Backbone.View.extend({
 
   events: {
     'keyup input[name=input-delete]': 'onKeyup',
-    'click .submit': 'onSubmit'
+    'click .submit': 'onSubmit',
+    'click .cancel-lnk': 'onClose'
   },
 
   initialize: function (options) {
@@ -63,6 +64,7 @@ var DrawerGroupDeleteView = Backbone.View.extend({
     }
 
     client.groupDelete(this.groupId);
+    this.trigger('close');
   },
   onDelete: function (data) {
     if (!data.name || data.name.toLocaleLowerCase() !== this.groupNameConfirmation) {
@@ -97,6 +99,10 @@ var DrawerGroupDeleteView = Backbone.View.extend({
     if (event.type === 'keyup' && key.key === keyboard.RETURN) {
       return this.onSubmit(event);
     }
+  },
+  onClose: function (event) {
+    event.preventDefault();
+    this.trigger('close');
   },
   _valid: function () {
     var name = this.$input.val();

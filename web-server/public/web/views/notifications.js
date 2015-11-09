@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
-var app = require('../models/app');
+var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
 var date = require('../libs/date');
@@ -115,6 +115,8 @@ var NotificationsView = Backbone.View.extend({
     var message = i18next.t('chat.notifications.messages.' + data.type, {
       name: (data.data.room)
         ? data.data.room.name
+        : (data.data.group)
+        ? data.data.group.name
         : '',
       username: (data.data.by_user)
         ? data.data.by_user.username
@@ -142,7 +144,7 @@ var NotificationsView = Backbone.View.extend({
     } else if (n.data.group) {
       n.avatar = common.cloudinary.prepare(n.data.group.avatar, 90);
       n.title = n.data.group.name;
-      n.name = n.data.group.name.replace('#', '');
+      n.name = n.data.group.name;
       n.href = '#g/' + n.name;
     } else if (n.data.by_user) {
       n.avatar = common.cloudinary.prepare(n.data.by_user.avatar, 90);

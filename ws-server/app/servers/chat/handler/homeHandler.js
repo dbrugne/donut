@@ -33,7 +33,7 @@ handler.call = function (data, session, next) {
 
   var that = this;
 
-  // @todo : fix this horrible mess!
+  // @todo yls : fix this horrible mess!
   async.waterfall(
     [
       function roomsFetch (callback) {

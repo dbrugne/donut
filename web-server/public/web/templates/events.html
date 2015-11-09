@@ -9,9 +9,6 @@
             <div class="no-more">
                 <% if (model.type === 'room') { %>
                     <div class="room">
-                        <div class="title">
-                            <span class="open-room-profile" data-room-id="<%= model.room_id %>"><%= model.identifier %></span>
-                        </div>
                         <div class="info">
                             <p><%= t('chat.history.currently', model) %>
                             </p>
@@ -29,7 +26,6 @@
                     </div>
                 <% } else if (model.type === 'onetoone') { %>
                     <div class="user">
-                        <div class="title">@<%= model.username %></div>
                         <div class="info">
                             <%= t('chat.history.onestart') %>
                         </div>
@@ -38,6 +34,6 @@
             </div>
         </div>
         <div class="blank flex-child"></div>
-        <div class="realtime"></div>
+        <div class="realtime <%= chatmode ? 'compact' : '' %>"></div>
     </div>
 </div>

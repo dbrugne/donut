@@ -5,7 +5,7 @@ var keyboard = require('../libs/keyboard');
 var i18next = require('i18next-client');
 var date = require('../libs/date');
 var common = require('@dbrugne/donut-common/browser');
-var app = require('../models/app');
+var app = require('../libs/app');
 var client = require('../libs/client');
 var ConfirmationView = require('./modal-confirmation');
 
@@ -33,6 +33,9 @@ var RoomBlockedView = Backbone.View.extend({
     this.render();
   },
   render: function () {
+    // @todo dbr : handle groupban and groupdisallow blocked values
+    // @todo dbr : persist blocked room on user on groupban and groupdisallow blocked values
+
     var data = this.model.toJSON();
 
     // banned_at
@@ -87,10 +90,10 @@ var RoomBlockedView = Backbone.View.extend({
   onRequestAllowance: function (event) {
     event.preventDefault();
 
-    ConfirmationView.open({message: 'request-allowance', area: true, room_name: this.model.get('name')}, _.bind(function (message) {
+    ConfirmationView.open({message: 'request-allowance', area: true}, _.bind(function (message) {
       client.roomJoinRequest(this.model.get('id'), message, function (response) {
         if (response.err) {
-          if (response.err === 'allow-pending' || response.err === 'message-wrong-format') {
+          if (response.err === 'allow-pending' || response.err === 'message-wrong-format' || response.err === 'banned' || response.err === 'group-banned' || response.err === 'room-not-found') {
             app.trigger('alert', 'error', i18next.t('chat.allowed.error.' + response.err));
           } else {
             app.trigger('alert', 'error', i18next.t('global.unknownerror'));

@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var app = require('../models/app');
+var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
 var onetoones = require('../collections/onetoones');
 
@@ -20,7 +20,6 @@ module.exports = Backbone.View.extend({
     this.$list = this.$('.list');
   },
   render: function () {
-    //console.log('render ones');
     if (!onetoones.models.length) {
       this.$list.empty();
       return this.$el.hide();

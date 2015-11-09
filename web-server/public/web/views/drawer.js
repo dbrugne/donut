@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var app = require('../models/app');
+var app = require('../libs/app');
 
 var DrawerView = Backbone.View.extend({
   defaultSize: '280px',

@@ -31,7 +31,7 @@ handler.call = function (data, session, next) {
         return callback('message-wrong-format');
       }
 
-      if (!room) {
+      if (!room || room.deleted) {
         return callback('room-not-found');
       }
 
@@ -49,6 +49,10 @@ handler.call = function (data, session, next) {
 
       if (!room.allow_user_request) {
         return callback('not-allowed');
+      }
+
+      if (room.isGroupBanned(user.id)) {
+        return callback('group-banned');
       }
 
       return callback(null);
@@ -74,14 +78,14 @@ handler.call = function (data, session, next) {
       Room.update(
         {_id: { $in: [room.id] }},
         {$addToSet: {allowed_pending: pendingModel}}, function (err) {
-        return callback(err, eventData);
-      });
+          return callback(err, eventData);
+        });
     },
 
     function notification (event, callback) {
       var ids = room.getIdsByType('op');
       async.eachLimit(ids, 10, function (id, fn) {
-        Notifications(that.app).getType('roomjoinrequest').create(id, room, event,  fn);
+        Notifications(that.app).getType('roomjoinrequest').create(id, room, event, fn);
       }, function (err) {
         return callback(err);
       });

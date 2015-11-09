@@ -112,7 +112,7 @@ handler.call = function (data, session, next) {
         var parallels = [];
         _.each(sids, function (sid) {
           parallels.push(function (fn) {
-            that.app.globalChannelService.leave(room.name, kickedUser.id, sid, function (err) {
+            that.app.globalChannelService.leave(room.id, kickedUser.id, sid, function (err) {
               if (err) {
                 return fn(sid + ': ' + err);
               }

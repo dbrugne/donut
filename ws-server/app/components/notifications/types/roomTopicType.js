@@ -84,7 +84,7 @@ Notification.prototype.create = function (room, history, done) {
           return callback(err);
         }
 
-        logger.debug('roomTopicType.create ' + createdNotifications.length + ' notifications created');
+        logger.info('roomTopicType.create ' + createdNotifications.length + ' notifications created');
         return callback(null, roomModel, historyModel, createdNotifications);
       });
     },

@@ -1,6 +1,7 @@
 'use strict';
 var errors = require('../../../util/errors');
 var async = require('async');
+var GroupModel = require('../../../../../shared/models/group');
 
 var Handler = function (app) {
   this.app = app;
@@ -69,12 +70,22 @@ handler.call = function (data, session, next) {
       });
     },
 
+    function persistOnGroup (callback) {
+      if (!room.get('group')) {
+        return callback(null);
+      }
+
+      GroupModel.update({_id: room.get('group').get('id')}, {lastactivity_at: Date.now()}, {multi: false}, function (err) {
+        return callback(err);
+      });
+    },
+
     function broadcast (callback) {
       var eventToSend = {
         room_id: room.id,
         event: event.id
       };
-      that.app.globalChannelService.pushMessage('connector', 'room:message:spam', eventToSend, room.name, {}, callback);
+      that.app.globalChannelService.pushMessage('connector', 'room:message:spam', eventToSend, room.id, {}, callback);
     }
 
   ], function (err) {

@@ -1,6 +1,6 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
-var app = require('../models/app');
+var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');

@@ -4,7 +4,7 @@ var common = require('@dbrugne/donut-common/browser');
 var ConfirmationView = require('./modal-confirmation');
 var client = require('../libs/client');
 var i18next = require('i18next-client');
-var app = require('../models/app');
+var app = require('../libs/app');
 var urls = require('../../../../shared/util/url');
 var date = require('../libs/date');
 var GroupUsersView = require('./group-users');
@@ -38,7 +38,8 @@ var GroupView = Backbone.View.extend({
     var isOwner = this.model.currentUserIsOwner();
     var isOp = this.model.currentUserIsOp();
     var isAdmin = this.model.currentUserIsAdmin();
-    var bannedObject = this.model.currentUserIsBanned();
+
+    this.bannedObject = this.model.currentUserIsBanned();
 
     // prepare avatar for group
     group.avatarUrl = common.cloudinary.prepare(group.avatar, 160);
@@ -63,12 +64,12 @@ var GroupView = Backbone.View.extend({
       isOp: isOp,
       isOwner: isOwner,
       isAdmin: isAdmin,
-      isBanned: !!bannedObject,
+      isBanned: !!this.bannedObject,
       group: group
     };
-    if (typeof bannedObject !== 'undefined') {
-      data.banned_at = date.longDate(bannedObject.banned_at);
-      data.reason = bannedObject.reason;
+    if (typeof this.bannedObject !== 'undefined') {
+      data.banned_at = date.longDate(this.bannedObject.banned_at);
+      data.reason = this.bannedObject.reason;
     }
 
     var html = this.template(data);
@@ -108,9 +109,8 @@ var GroupView = Backbone.View.extend({
   },
   onRequestAllowance: function (event) {
     var options = {
-      message: 'request-allowance-group',
-      area: true,
-      group_name: this.model.get('name')
+      message: 'request-allowance',
+      area: true
     };
 
     ConfirmationView.open(options, _.bind(function (message) {
@@ -128,6 +128,9 @@ var GroupView = Backbone.View.extend({
     }, this));
   },
   onSendPassword: function (event) {
+    if (!!this.bannedObject === true) {
+      return app.trigger('alert', 'error', i18next.t('chat.password.group-banned'));
+    }
     var options = {
       password: true
     };
@@ -135,8 +138,8 @@ var GroupView = Backbone.View.extend({
     ConfirmationView.open(options, _.bind(function (password) {
       client.groupJoin(this.model.get('group_id'), password, _.bind(function (response) {
         if (response.err) {
-          if (response.err === 'wrong-password') {
-            app.trigger('alert', 'error', i18next.t('chat.password.' + response.err));
+          if (response.err === 'wrong-password' || response.err === 'params-password') {
+            app.trigger('alert', 'error', i18next.t('chat.password.wrong-password'));
           } else {
             app.trigger('alert', 'error', i18next.t('global.unknownerror'));
           }
@@ -180,6 +183,7 @@ var GroupView = Backbone.View.extend({
   },
   refreshUsers: function () {
     this.groupUsersView.render();
+    this.initializeTooltips();
   }
 });
 

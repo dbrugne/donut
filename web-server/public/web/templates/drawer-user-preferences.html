@@ -2,7 +2,6 @@
 
 <div class="title">
     <%= t('preferences.title') %>
-    @<%= username %>
 </div>
 
 <div class="ctn-drawer">
@@ -48,7 +47,7 @@
                     <label>
                         <input class="savable" type="checkbox" value="notif:channels:desktop" <% if (preferences['notif:channels:desktop']) { print('checked'); } %>> <%= t('preferences.notif.channels.desktop') %> (<a class="desktop-notification-test"><i class="icon icon-bolt"></i> <%= t('preferences.notif.channels.desktop-test') %></a>)
                     </label>
-                    <% if (desktop) { %>
+                    <% if (desktop && desktop !== 'granted') { %>
                     <label style="font-style: italic; display: block;">
                         <%= t('preferences.notif.channels.desktop-' + desktop) %>
                     </label>
@@ -92,20 +91,37 @@
             </div>
         </div>
         <% if(bannedUsers.length > 0) { %>
-        <h2><%= t('preferences.notif.banned-users') %></h2>
-        <div class="form-group users">
-            <div class="flex-parent center">
-                <% _.each(bannedUsers, function(u){ %>
-                    <div class="avatar open-user-profile mr5" data-user-id="<%= u.user_id %>"><img src="<%= u.avatarUrl %>" alt="<%= u.username %>"></div>
-                    <div class="username mr5"><span class="open-user-profile" data-user-id="<%= u.user_id %>"><%= u.username %></span></div>
-                    <div class="actions">
-                        <span class="action-user-deban curp" data-user-id="<%= u.user_id %>" data-toggle="tooltip" data-placement="top" title="<%= t('chat.actions.deban') %>">
-                            <i class="icon icon-ban"></i>
-                        </span>
-                    </div>
-                <% }); %>
+            <h2><%= t('preferences.notif.banned-users') %></h2>
+            <div class="form-group users">
+                <div class="flex-parent center">
+                    <% _.each(bannedUsers, function(u){ %>
+                        <div class="avatar open-user-profile mr5" data-user-id="<%= u.user_id %>"><img src="<%= u.avatarUrl %>" alt="<%= u.username %>"></div>
+                        <div class="username mr5"><span class="open-user-profile" data-user-id="<%= u.user_id %>"><%= u.username %></span></div>
+                        <div class="actions">
+                            <span class="action-user-deban curp" data-user-id="<%= u.user_id %>" data-toggle="tooltip" data-placement="top" title="<%= t('chat.actions.deban') %>">
+                                <i class="icon icon-ban"></i>
+                            </span>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+        <% } %>
+
+        <h2><%= t('preferences.appearance') %></h2>
+        <div class="form-group">
+            <label><%= t('preferences.chatmode.title') %></label>
+            <div class="radio">
+                <label>
+                    <input type="radio" class="savable" name="chatmode:compact" value="chatmode:compact:false" <% if (preferences['chatmode:compact'] === false) { print('checked'); } %>>
+                    <%= t('preferences.chatmode.label-false') %>
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" class="savable" name="chatmode:compact" value="chatmode:compact:true" <% if (typeof preferences['chatmode:compact'] == 'undefined' || preferences['chatmode:compact']) { print('checked'); } %>>
+                    <%= t('preferences.chatmode.label-true') %>
+                </label>
             </div>
         </div>
-        <% } %>
     </form>
 </div>

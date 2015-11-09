@@ -85,11 +85,6 @@ historySchema.statics.getLastMessage = function (fromUid, toUid, fn) {
 historySchema.methods.toClientJSON = function (userViewed) {
   userViewed = userViewed || false;
 
-  // record
-  var e = {
-    type: this.event
-  };
-
   // re-hydrate data
   var data = (this.data)
     ? _.clone(this.data)
@@ -107,7 +102,7 @@ historySchema.methods.toClientJSON = function (userViewed) {
     data.to_avatar = this.to._avatar();
   }
   if (this.edited === true) {
-    e.edited = this.edited;
+    data.edited = this.edited;
   }
 
   // files
@@ -119,15 +114,16 @@ historySchema.methods.toClientJSON = function (userViewed) {
     });
   }
 
-  e.data = data;
-
   // unviewed status (true if message, i'm the receiver and current value is
   // false)
   if (userViewed && [ 'user:message' ].indexOf(this.event) !== -1 && data.to_user_id === userViewed && !this.viewed) {
-    e.unviewed = true;
+    data.unviewed = true;
   }
 
-  return e;
+  return {
+    type: this.event,
+    data: data
+  };
 };
 
 /**

@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
-var app = require('../models/app');
+var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');
@@ -170,8 +170,7 @@ var WindowView = Backbone.View.extend({
    * New incoming event title, sound and badges
    ***************************************************/
 
-  onNewEvent: function (event, model) {
-    var data = event.get('data');
+  onNewEvent: function (type, data, model) {
     if (!data) {
       return;
     }
@@ -228,18 +227,18 @@ var WindowView = Backbone.View.extend({
     }
 
     var title;
-    if (event.get('type') === 'room:topic') {
+    if (type === 'room:topic') {
       title = i18next.t('chat.notifications.messages.roomtopic', {
         name: data.name,
         topic: data.topic
       });
-    } else if (event.get('type') === 'room:message') {
+    } else if (type === 'room:message') {
       // same message as user:message
       title = i18next.t('chat.notifications.messages.usermessage', {
         username: data.username,
         message: data.message
       });
-    } else if (event.get('type') === 'user:message') {
+    } else if (type === 'user:message') {
       title = i18next.t('chat.notifications.messages.usermessage', {
         username: data.from_username,
         message: data.message

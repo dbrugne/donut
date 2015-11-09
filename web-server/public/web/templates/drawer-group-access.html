@@ -34,6 +34,16 @@
         <div class="paginate flex-parent block"></div>
     </div>
 
+    <div class="search block search-user-banned">
+        <div class="flex-child flex-parent relative">
+            <input type="text" id="input-search-banned" placeholder="<%= t('chat.actions.banuser') %>" class="form-control flex-child" />
+            <i class="icon icon-search"></i>
+            <div class="dropdown">
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1"></ul>
+            </div>
+        </div>
+    </div>
+
     <% if (group.isOwner ||  group.isAdmin) { %>
         <h2 class="block"><%= t('chat.form.room-form.mode.disclaimer.memberscondition') %></h2>
 
@@ -48,7 +58,7 @@
         <h2 class="block"><%= t('chat.blocked.password_placeholder') %></h2>
 
         <div class="field-password radio block">
-            <p><%= t('chat.form.room-form.mode.disclaimer.group-password') %></p>
+            <p><%= t('chat.form.group-form.mode.disclaimer.group-password') %></p>
             <div class="password-block form-inline mt10 flex-parent baseline space-between">
                 <input type="checkbox" id="input-password-checkbox" name="input-password-checkbox" <% if (password) { %> checked <% } %> />
                 <input type="text"

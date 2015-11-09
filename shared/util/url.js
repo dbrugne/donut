@@ -19,7 +19,7 @@ module.exports = function (model, type, what) {
       join: '/g/join/' + model.name
     };
   }
-  if (type === 'user') {
+  if (type === 'user' && model.username) {
     data = {
       url: '/u/' + model.username.toLocaleLowerCase(),
       uri: '!#u/' + model.username,

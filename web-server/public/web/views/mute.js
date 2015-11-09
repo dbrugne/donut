@@ -1,12 +1,8 @@
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
-var app = require('../models/app');
-var donutDebug = require('../libs/donut-debug');
+var app = require('../libs/app');
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');
-
-var debug = donutDebug('donut:mute');
 
 var MuteView = Backbone.View.extend({
   el: $('#mute'),
@@ -17,6 +13,7 @@ var MuteView = Backbone.View.extend({
 
   initialize: function (options) {
     this.listenTo(client, 'preferences:update', this.render);
+    this.listenTo(app, 'muteview', this.render);
 
     this.$icon = this.$('.icon');
   },
@@ -38,9 +35,8 @@ var MuteView = Backbone.View.extend({
     client.userPreferencesUpdate({
       'browser:sounds': !currentUser.shouldPlaySound()
     });
-  },
+  }
 
 });
-
 
 module.exports = MuteView;

@@ -1,6 +1,6 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
-var app = require('./../models/app');
+var app = require('./app');
 var client = require('./client');
 var groups = require('../collections/groups');
 var rooms = require('../collections/rooms');
@@ -121,13 +121,29 @@ var DonutRouter = Backbone.Router.extend({
 
   focusOne: function (username) {
     var model = onetoones.iwhere('username', username);
-    if (typeof model === 'undefined') {
-      // Not already open
-      this.nextFocus = '@' + username;
-      onetoones.join(username);
-    } else {
-      this.focus(model);
+    if (typeof model !== 'undefined') {
+      return this.focus(model);
     }
+
+    // not already open
+    this.nextFocus = '@' + username;
+    client.userId(username, function (response) {
+      if (response.err && response !== 500) {
+        return app.trigger('alert', 'error', i18next.t('chat.users.usernotexist'));
+      } else if (response.code === 500) {
+        return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+      }
+      if (!response.user_id) {
+        return;
+      }
+      client.userJoin(response.user_id, function (response) {
+        if (response.err && response !== 500) {
+          return app.trigger('alert', 'error', i18next.t('chat.users.usernotexist'));
+        } else if (response.code === 500) {
+          return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+        }
+      });
+    });
   },
 
   default: function () {

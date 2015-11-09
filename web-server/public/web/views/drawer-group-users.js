@@ -1,6 +1,6 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
-var app = require('../models/app');
+var app = require('../libs/app');
 var client = require('../libs/client');
 var GroupUsersTableConfirmation = require('./drawer-group-users-table');
 var keyboard = require('../libs/keyboard');

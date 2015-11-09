@@ -174,7 +174,6 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="message"></div>
-                    <div class="question"><%= t('chat.confirmation.sure') %></div>
                     <div class="input">
                         <input type="text" class="form-control" placeholder="<%= t('chat.confirmation.placeholder') %>">
                     </div>
@@ -207,6 +206,7 @@
     <script>
         window.recaptcha_site_key = '<%- recaptcha.sitekey %>';
         window.room_default_color = '<%- room_default_color %>';
+        window.group_room_default = '<%- group_room_default %>';
         window.message_maxedittime = <%= message_maxedittime %>;
         window.colors = <%= colors %>;
 
