@@ -22,16 +22,16 @@
         }
       }
     }
-    &.card-room { .border-radius(3px);
-      .design-room1 { border-top-width:5px; border-top-style:solid; .border-radiuses(3px, 0, 0, 3px); height: @card-height;
-        > .ctn { height:100%; overflow: hidden;
-          .user-avatar { display:block; border:5px solid rgba(167,167,167,0.2); background-size: 70px; background-repeat: no-repeat; background-position: center center; width: 70px; height: 70px; margin: 10px auto 0; }
-          .name { word-break: normal; overflow: hidden; text-overflow: ellipsis; margin: 0 20px; text-align: center;
+    &.card-room { .border-radius(0);
+      .design-room1 { height: @card-height; border-width:10px 0 0; border-style:solid;
+        > .ctn { height:100%; overflow: hidden; border-left: 1px solid #e1e8ed; border-right: 1px solid #e1e8ed; border-bottom: 1px solid #e1e8ed;
+          .user-avatar { display:block; border:4px solid rgb(225, 232, 237); background-size: 75px; background-repeat: no-repeat; background-position: center center; width: 75px; height: 75px; margin: 10px auto 0; }
+          .name { word-break: normal; overflow: hidden; text-overflow: ellipsis; margin: 0 10px; text-align: center;
             .roomname { white-space: nowrap; font-size: 1.9rem; .ft-raleway-heavy; }
           }
           .description { max-height: 62px; line-height: 2rem; margin: 5px 10px 5px; overflow: hidden; text-overflow: ellipsis; font-style: italic; }
           .actions { margin:5px 10px 10px 5px;
-            .mode-ctn { width: 100px;}
+            .mode-ctn { width: 100px; font-size: 1rem;}
             .btn i { font-size:2rem; position: absolute; top: 6px; margin-left: 3px; }
           }
         }
