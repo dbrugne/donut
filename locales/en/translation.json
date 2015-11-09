@@ -164,18 +164,18 @@
     "unknownerror": "Unknown error, please retry later",
     "mode": {
       "title": {
-        "private": "invites",
-        "private-invites": "invites",
-        "private-invites-group": "members & invites",
-        "private-group": "members & invites",
+        "private": "private",
+        "private-invites": "private",
+        "private-invites-group": "members",
+        "private-group": "members",
         "public": "public"
       },
       "description": {
-        "private": "This donut is private, for invites only",
-        "private-invites": "This donut is private, for invites only",
-        "private-invites-group": "This donut is private, for members of this community and invites only",
-        "private-group": "This donut is private, for members of this community and invites only",
-        "public": "This donut is public, any user can join"
+        "private": "open to invitees only",
+        "private-invites": "open to invitees only",
+        "private-invites-group": "open to community members and invitees",
+        "private-group": " open to community members and invitees",
+        "public": "open to all"
       }
     }
   },
