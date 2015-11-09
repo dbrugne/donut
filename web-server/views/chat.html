@@ -133,6 +133,20 @@
             </div><!-- /#center -->
         </div><!-- /.row -->
     </div><!-- /#chat -->
+    <div id="popin" class="modal fade" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><!--modal-title--></h4>
+                </div>
+                <div class="modal-body"><!--modal-content--></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><%= t('global.close') %></button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /#welcome -->
     <div id="welcome" class="modal fade" role="dialog" aria-labelledby="welcomeMessage" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -206,6 +220,7 @@
     <script>
         window.recaptcha_site_key = '<%- recaptcha.sitekey %>';
         window.room_default_color = '<%- room_default_color %>';
+        window.group_room_default = '<%- group_room_default %>';
         window.message_maxedittime = <%= message_maxedittime %>;
         window.colors = <%= colors %>;
 

@@ -1353,5 +1353,11 @@
       },
       "banned-users": "Users locked by you"
     }
+  },
+  "popins": {
+    "group-create": {
+      "title": "Community's creation",
+      "content": "Congrats ! This is your homepage where your members can see all the members, and all the donuts of your community. We created your first donut: <strong>#__groupname__/welcome</strong>. It is public so anyone (even non-members) can join it. Take a minute to <a href=\"#\" class=\"inverse open-group-profile\" data-group-id=\"__groupid__\" data-dismiss=\"modal\">customize your profile</a> and configure who can <a href=\"#\" class=\"inverse open-group-access\" data-group-id=\"__groupid__\" data-dismiss=\"modal\">access your community</a>"
+    }
   }
 }

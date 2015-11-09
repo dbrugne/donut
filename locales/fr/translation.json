@@ -1353,5 +1353,11 @@
       },
       "banned-users": "Utilisateurs que vous avez bloqué"
     }
+  },
+  "popins": {
+    "group-create": {
+      "title": "Création de communauté",
+      "content": "Ca y est, vous avez votre communauté ! Voici votre page d'accueil, vos membres peuvent y voir tous les autres membres, et tous les donuts pour les rejoindre plus facilement. Nous avons créé votre premier donut: <strong>#__groupname__/welcome</strong>. Il est public donc accessible y compris aux non-membres. Pensez à <a href=\"#\" class=\"inverse open-group-profile\" data-group-id=\"__groupid__\" data-dismiss=\"modal\">personnaliser votre profil</a> et ceux qui <a href=\"#\" class=\"inverse open-group-access\" data-group-id=\"__groupid__\" data-dismiss=\"modal\">accèdent à votre communauté</a>"
+    }
   }
 }
