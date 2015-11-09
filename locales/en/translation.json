@@ -441,7 +441,8 @@
         "ban-group-user": "You are about to ban user @__username__ from this community",
         "deban-group-user": "You are about to deban user @__username__ from this community",
         "invite": "You are about to authorize @__username__. A notification will be sent to invite @__username__ to join #__name__.",
-        "requestallowance": "<strong>Membership request.</strong><br>The community creator will have access to your real name and email."
+        "requestallowance": "<strong>Membership request.</strong><br>The community creator will have access to your real name and email.",
+        "add-email": "New mail address :"
       }
     },
     "commands": {
@@ -928,6 +929,17 @@
     },
     "delete": {
       "success": "Account successfully deleted, see you soon!"
+    },
+    "manageemail": {
+      "label": "Manage your mails",
+      "facebook": "Address link to facebook account",
+      "verified": "Address verified",
+      "notverified": "Address not verified",
+      "send": "Re-send validation email",
+      "delete": "Delete",
+      "noresult": "No mails found",
+      "main": "Main",
+      "add": "Add an address"
     }
   },
   "page": {

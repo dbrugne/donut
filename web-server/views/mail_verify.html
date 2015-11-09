@@ -11,6 +11,15 @@
                     <%= partial('errors') %>
                     <%= partial('success') %>
 
+                    <div class="actions text-center">
+                        <% if (user) { %>
+                        <a class="flex-child" href="/!"><%= t('logged.chat') %></a>
+                        <a class="flex-child" href="/logout"><%= t('logged.logout') %></a>
+                        <% } else { %>
+                        <a href="/signup" class="flex-child"><%= t('landing.signup') %></a>
+                        <a href="/login"  class="flex-child"><%= t('landing.login') %></a>
+                        <% } %>
+                    </div>
                     <div class="clearfix"></div>
                 </form>
             </div>

@@ -76,7 +76,7 @@ passport.use('local-signup', new LocalStrategy(localStrategyOptions,
 
       // find existing user with this email
       email = email.toLowerCase();
-      User.findOne({ 'local.email': email }, function (err, user) {
+      User.findOne({ $or: [{'local.email': email}, {'emails.email': email}] }, function (err, user) {
         if (err) {
           return done(err);
         }
@@ -200,6 +200,8 @@ passport.use(new FacebookStrategy(facebookStrategyOptions,
               user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
               if (profile.emails) {
                 user.facebook.email = profile.emails[ 0 ].value;
+                user.local.email = profile.emails[ 0 ].value;
+                user.emails = [{email: profile.emails[ 0 ].value, confirmed: true}];
               }
             }
             user.save(function (err) {
@@ -220,6 +222,8 @@ passport.use(new FacebookStrategy(facebookStrategyOptions,
             newUser.confirmed = true;
             if (profile.emails) {
               newUser.facebook.email = profile.emails[ 0 ].value;
+              newUser.local.email = profile.emails[ 0 ].value;
+              newUser.emails = [{email: profile.emails[ 0 ].value, confirmed: true}];
             } // facebook can return multiple emails so we'll take the first
 
             newUser.save(function (err) {

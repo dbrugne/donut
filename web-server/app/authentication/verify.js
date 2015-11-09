@@ -44,19 +44,20 @@ var verified = function (req, res, next) {
     }
 
   ], function (err) {
-    console.log(req.user);
     if (err) {
       logger.debug(err);
       return res.render('mail_verify', {
         meta: {title: i18next.t('title.default')},
         errors: [{msg: i18next.t('verify.error.' + err)}],
-        token: req.csrfToken()
+        token: req.csrfToken(),
+        user: req.user
       });
     }
     return res.render('mail_verify', {
       meta: {title: i18next.t('title.default')},
       success: [{msg: i18next.t('verify.success')}],
-      token: req.csrfToken()
+      token: req.csrfToken(),
+      user: req.user
     });
   });
 };

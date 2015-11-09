@@ -161,6 +161,24 @@ handler.call = function (data, session, next) {
       return callback(null, sanitized);
     },
 
+    function email (sanitized, callback) {
+      // main email
+      if (_.has(data.data, 'email')) {
+        var email = data.data.email.toLocaleLowerCase();
+        if (!_.findWhere(user.emails, {email: email})) {
+          errors.emails = 'not-found';
+        } else if (!user.local) {
+          errors.emails = 'Not able to found user.local';
+          return callback(null);
+        } else {
+          user.local.email = email;
+          user.save(function (err) {
+            return callback(err, sanitized);
+          });
+        }
+      }
+    },
+
     function update (sanitized, callback) {
       for (var field in sanitized) {
         user.set(field, sanitized[field]);

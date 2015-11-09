@@ -65,6 +65,7 @@ var ConfirmationModalView = Backbone.View.extend({
   },
   _reset: function () {
     this.$inputBlock.show();
+    this.$input.attr('placeholder', i18next.t('chat.confirmation.placeholder'));
     this.$confirmMessage.show();
     this.$password.val('');
     this.$input.val('');
@@ -132,6 +133,9 @@ var ConfirmationModalView = Backbone.View.extend({
         this.$message.html(i18next.t('chat.confirmation.message.requestallowance'));
       } else if (this.options.message === 'request-allowance-password') {
         this.$message.text(i18next.t('group.blocked'));
+      } else if (this.options.message === 'add-email') {
+        this.$message.text(i18next.t('chat.confirmation.message.add-email'));
+        this.$input.attr('placeholder', '');
       }
     }
     // bind 'enter' only when showing popin

@@ -441,7 +441,8 @@
         "ban-group-user": "Vous allez bannir l'utilisateur @__username__ de cette communauté",
         "deban-group-user": "Vous allez débannir l'utilisateur @__username__ de cette communauté",
         "invite": "Vous allez autoriser l'accès à @__username__. Une notification va lui être adressée pour l'inviter à rejoindre #__name__.",
-        "requestallowance": "<strong>Demander à devenir membre.</strong><br>Le créateur de la communauté va avoir accès à votre vrai nom et votre e-mail."
+        "requestallowance": "<strong>Demander à devenir membre.</strong><br>Le créateur de la communauté va avoir accès à votre vrai nom et votre e-mail.",
+        "add-email": "Nouvelle adresse électronique :"
       }
     },
     "commands": {
@@ -928,6 +929,17 @@
     },
     "delete": {
       "success": "Compte supprimé avec succés, à bientôt !"
+    },
+    "manageemail": {
+      "label": "Gérer vos emails",
+      "facebook": "Adresse lié au compte facebook",
+      "verified": "Adresse mail vérifié",
+      "notverified": "Adresse mail non vérifié",
+      "send": "Renvoyer un email de validation",
+      "delete": "Supprimer",
+      "noresult": "Aucunes adresse mail trouvées",
+      "main": "Principal",
+      "add": "Ajouter une adresse"
     }
   },
   "page": {

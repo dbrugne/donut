@@ -80,35 +80,35 @@ handler.call = function (data, session, next) {
       }, 'name avatar color owner op users group')
         .populate('group', 'name')
         .exec(function (err, models) {
-        if (err) {
-          return callback(err);
-        }
-
-        read.rooms = {
-          owned: [],
-          oped: [],
-          joined: []
-        };
-        _.each(models, function (room) {
-          var _room = {
-            name: room.name,
-            identifier: room.getIdentifier(),
-            id: room.id,
-            avatar: room._avatar(),
-            color: room.color
-          };
-
-          if (room.owner && room.owner.toString() === readUser.id) {
-            read.rooms.owned.push(_room);
-          } else if (room.op.length && room.op.indexOf(readUser._id) !== -1) {
-            read.rooms.oped.push(_room);
-          } else {
-            read.rooms.joined.push(_room);
+          if (err) {
+            return callback(err);
           }
-        });
 
-        return callback(null);
-      });
+          read.rooms = {
+            owned: [],
+            oped: [],
+            joined: []
+          };
+          _.each(models, function (room) {
+            var _room = {
+              name: room.name,
+              identifier: room.getIdentifier(),
+              id: room.id,
+              avatar: room._avatar(),
+              color: room.color
+            };
+
+            if (room.owner && room.owner.toString() === readUser.id) {
+              read.rooms.owned.push(_room);
+            } else if (room.op.length && room.op.indexOf(readUser._id) !== -1) {
+              read.rooms.oped.push(_room);
+            } else {
+              read.rooms.joined.push(_room);
+            }
+          });
+
+          return callback(null);
+        });
     },
 
     function account (callback) {
@@ -121,6 +121,22 @@ handler.call = function (data, session, next) {
       // email
       if (readUser.local && readUser.local.email) {
         read.account.email = readUser.local.email;
+      }
+
+      // emails
+      if (readUser.emails && readUser.emails.length > 0) {
+        var emails = [];
+        _.each(readUser.emails, function (e) {
+          var mail = {email: e.email, confirmed: e.confirmed};
+          if (readUser.local && readUser.local.email === e.email) {
+            mail.main = true;
+          }
+          if (readUser.facebook && readUser.facebook.id && readUser.facebook.email === e.email) {
+            mail.facebook = true;
+          }
+          emails.push(mail);
+        });
+        read.account.emails = emails;
       }
 
       // password
