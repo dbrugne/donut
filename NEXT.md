@@ -18,7 +18,7 @@ db.getCollection('history-one').update({'data.images': {$exists: true }}, {$rena
 
 * Remove name in user model
 ```
-db.getCollection('users').update({}, {$unset: {'name': {$exists: true}}}, {multi: true})
+db.getCollection('users').update({'name': {$exists: true}}, {$unset: {'name': true}}, {multi: true})
 ```
 
 

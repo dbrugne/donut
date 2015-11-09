@@ -711,7 +711,7 @@
         "create": {
           "label": "Create a community",
           "help": "A community is a place grouping your donut and allowing your community to become a member and access a group of donuts.",
-          "help-name": "Between 3 and 20 characters, only letters, numbers, dashes (-) and underscores (_).<br>Caution the community name will no longer be editable.",
+          "help-name": "Between 2 and 15 characters, only letters, numbers, dashes (-) and underscores (_).<br>Caution the community name will no longer be editable.",
           "placeholder": "Group name",
           "submit": "Create"
         },
@@ -776,7 +776,7 @@
         },
         "create": {
           "label": "Create a donut",
-          "help": "Between 3 and 20 characters, only letters, numbers,  dashes (-) and underscores (_)",
+          "help": "Between 2 and 15 characters, only letters, numbers,  dashes (-) and underscores (_)",
           "placeholder": "Donut name",
           "submit": "Create",
           "group": "Already owner of a community? Want to create a dedicated space for you users? You can <a href=\"#\" class=\"open-group-create\">create a community</a>",
