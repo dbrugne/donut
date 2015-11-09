@@ -16,7 +16,7 @@
                 <% } %>
 
                 <% if (data.mode === 'private' && data.blocked !== 'groupbanned' && data.blocked !== 'banned' && data.blocked !== 'kicked') { %>
-                    <% if (data.hasPassword) { %>
+                    <% if (data.hasPassword && confirmed !== false) { %>
                         <div class="password-form mt15 fs15">
                             <%= t('chat.blocked.allowed') %>
                             <% if(data.allow_user_request) { %>
@@ -28,7 +28,7 @@
                                 <button class="valid-password btn btn-success"><%= t('chat.blocked.password_button') %></button>
                             </div>
                         </div>
-                    <% } else { %>
+                    <% } else if (confirmed !== false) { %>
                         <div class="mt15 mb5 fs15">
                             <%= t('chat.blocked.allowed') %>
                             <% if(data.allow_user_request) { %>

@@ -93,7 +93,7 @@ var RoomModel = Backbone.Model.extend({
     this.trigger('viewed', data);
   },
   isInputActive: function () {
-    return !(this.users.isUserDevoiced(currentUser.get('user_id')));
+    return !(this.users.isUserDevoiced(currentUser.get('user_id')) || !currentUser.isConfirmed());
   }
 
 });

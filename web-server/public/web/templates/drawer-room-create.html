@@ -57,7 +57,7 @@
     </div>
 
     <div class="block flex-parent jc-center center">
-        <button class="submit btn btn-success" type="button"><%= t('chat.form.room-form.create.submit') %></button>
+        <button class="submit btn btn-success <% if (!confirmed) { %>disabled<% } %>" type="button"><%= t('chat.form.room-form.create.submit') %></button>
     </div>
     <% if (!group_id) { %>
     <div class="block">

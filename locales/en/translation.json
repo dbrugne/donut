@@ -333,7 +333,8 @@
       "banned": "You have blocked this user",
       "bannedMessage": {
         "onetoone": "You have been blocked by this user",
-        "room": "You are mute in this donut as requested by a moderator"
+        "room": "You are mute in this donut as requested by a moderator",
+        "confirm": "Your account is not validate, your can't do this"
       },
       "unlock": "(Click here to unblock)"
     },
@@ -862,7 +863,8 @@
         "not-admin-owner-groupowner": "Unauthorized action.",
         "not-admin-owner": "Unauthorized action.",
         "not-allowed": "Unauthorized action.",
-        "group-banned": "You were banned from community"
+        "group-banned": "You were banned from community",
+        "not-confirmed": "You can't do that, your account is not confirmed yet"
       }
     },
     "members": "You are now a member of #__name__",

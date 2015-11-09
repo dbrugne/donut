@@ -63,7 +63,8 @@ var DiscussionInputView = Backbone.View.extend({
   render: function () {
     this.$el.html(this.template({
       avatar: common.cloudinary.prepare(currentUser.get('avatar'), 80),
-      bannedMessage: i18next.t('chat.actions.bannedMessage.__type__'.replace('__type__', this.model.get('type')))
+      bannedMessage: i18next.t('chat.actions.bannedMessage.__type__'.replace('__type__', this.model.get('type'))),
+      confirmed: currentUser.isConfirmed()
     }));
 
     this.$editable = this.$('.editable');

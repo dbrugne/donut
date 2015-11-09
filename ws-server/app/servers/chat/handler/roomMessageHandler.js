@@ -49,6 +49,10 @@ handler.call = function (data, session, next) {
         return callback('not-allowed');
       }
 
+      if (user.confirmed === false) {
+        return callback('not-confirmed');
+      }
+
       return callback(null);
     },
 

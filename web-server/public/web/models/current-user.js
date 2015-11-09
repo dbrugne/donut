@@ -117,6 +117,10 @@ var CurrentUserModel = Backbone.Model.extend({
 
   isAdmin: function () {
     return (this.get('admin') === true);
+  },
+
+  isConfirmed: function () {
+    return (this.get('confirmed') === true);
   }
 });
 
