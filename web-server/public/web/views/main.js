@@ -1,6 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
+var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
 var app = require('../libs/app');
 var client = require('../libs/client');
@@ -40,6 +41,7 @@ var NavRoomsView = require('./nav-rooms');
 var NotificationsView = require('./notifications');
 var ConfirmationView = require('./modal-confirmation');
 var MuteView = require('./mute');
+var SearchView = require('./home-search');
 
 var debug = donutDebug('donut:main');
 
@@ -47,6 +49,8 @@ var MainView = Backbone.View.extend({
   el: $('body'),
 
   $discussionsPanelsContainer: $('#center'),
+
+  resultsTemplate: require('../templates/dropdown-search.html'),
 
   firstConnection: true,
 
@@ -83,7 +87,8 @@ var MainView = Backbone.View.extend({
     'click .open-group-users': 'openGroupUsers',
     'click .close-discussion': 'onCloseDiscussion',
     'click .open-room-access': 'openRoomAccess',
-    'click .switch[data-language]': 'switchLanguage'
+    'click .switch[data-language]': 'switchLanguage',
+    'blur #navbar .search input[type=text]': 'closeResults'
   },
 
   initialize: function () {
@@ -117,6 +122,15 @@ var MainView = Backbone.View.extend({
     this.welcomeView = new WelcomeModalView();
     this.notificationsView = new NotificationsView();
     this.muteView = new MuteView();
+    this.searchView = new SearchView({
+      el: this.$('#navbar .search')
+    });
+
+    this.$dropdownResults = this.$('.search .results');
+    this.$search = this.$('.search');
+
+    this.listenTo(this.searchView, 'searchResults', this.onSearchResults);
+    this.listenTo(this.searchView, 'emptySearch', this.onEmptyResults);
 
     // @debug
     // @todo dbr : mount only on debug mode
@@ -137,6 +151,34 @@ var MainView = Backbone.View.extend({
 
   initializeCollapse: function () {
     this.$('[data-toggle="collapse"]').collapse();
+  },
+
+  onSearchResults: function (data) {
+    _.each(_.union(
+      data.rooms
+        ? data.rooms.list
+        : [],
+      data.groups
+        ? data.groups.list
+        : [],
+      data.users
+        ? data.users.list
+        : []
+    ), function (card) {
+      card.avatar = common.cloudinary.prepare(card.avatar, 90);
+    });
+    this.$dropdownResults.html(this.resultsTemplate({search: this.searchView.getValue(), results: data}));
+    this.$dropdownResults.fadeIn();
+  },
+
+  onEmptyResults: function () {
+    this.$dropdownResults.html(this.resultsTemplate());
+    this.$dropdownResults.fadeIn();
+  },
+
+  closeResults: function () {
+    this.$search.removeClass('open');
+    this.$dropdownResults.fadeOut();
   },
 
   /**
