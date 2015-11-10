@@ -78,9 +78,11 @@ handler.call = function (data, session, next) {
       var event = {
         from_user_id: user.id,
         from_username: user.username,
+        from_realname: user.realname,
         from_avatar: user._avatar(),
         to_user_id: withUser.id,
         to_username: withUser.username,
+        to_realname: withUser.realname,
         time: Date.now()
       };
 
@@ -114,11 +116,13 @@ handler.call = function (data, session, next) {
         user: {
           id: user.id,
           username: user.username,
+          realname: user.realname,
           admin: (session.settings.admin === true)
         },
         to: {
           id: withUser.id,
           username: withUser.username,
+          realname: withUser.realname,
           admin: (withUser.admin === true)
         },
         message: {

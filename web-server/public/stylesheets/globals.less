@@ -246,7 +246,7 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   }
 }
 
-.button { padding: 10px 15px; .ft-raleway; text-transform: uppercase; .border-radius(25px); background-color: @cl-first; border: 0; color: #fff; text-decoration:none; text-align: center; .display-flex; .align-items(baseline);
+.button { padding: 10px 15px; text-transform: uppercase; background-color: @cl-first; border: 0; color: #fff; text-decoration:none; text-align: center; .display-flex; .align-items(baseline);
   &:hover { text-decoration: none; background-color: lighten(@cl-first, 10%); }
   &.square { .border-radius(0); }
 
@@ -263,7 +263,7 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   }
 
   &.button-small { padding: 7px 12px; font-size: 1.3rem; display: flex; }
-  &.button-big { padding: 12px 20px; font-size: 2rem; display: flex; .ft-raleway-medium; }
+  &.button-big { padding: 12px 20px; font-size: 1.5rem; display: flex; }
 
   &.loading { position:relative; .opacity(0.65); background-color: @cl-subtext15; cursor: not-allowed; color: #FFFFFF; padding: 10px 15px 10px 35px;
     &:after { .icon-spinner; .spin; position: absolute; left: 10px; font-size: inherit; margin-top: 1px; }
@@ -389,15 +389,14 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
     font-size: 2.0em;
     line-height: 1.2;
   }
+  .othername { color: @cl-subtext20; font-weight: normal; }
   .bio { .ft-opensans; font-size: 1em; margin-bottom: 20px; }
   .website {}
   .discuss {
     a {
-      .ft-raleway-medium;
-      .border-radius(100px);
       text-transform: uppercase;
-      padding: 15px 20px;
-      font-size: 17px;
+      padding: 15px 18px;
+      font-size: 14px;
       i {
         color: @cl-warning;
       }
