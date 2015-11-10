@@ -3,6 +3,7 @@ var Backbone = require('backbone');
 var client = require('../libs/client');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
+var keyboard = require('../libs/keyboard');
 
 var SearchView = Backbone.View.extend({
   timeout: 0,
@@ -12,7 +13,8 @@ var SearchView = Backbone.View.extend({
   events: {
     'keyup input[type=text]': 'onKeyup',
     'change .checkbox-search': 'onKeyup',
-    'blur #navbar .search input[type=text]': 'closeResults'
+    'blur input[type=text]': 'closeResults',
+    'click .results': 'closeResults'
   },
 
   initialize: function (options) {
@@ -25,6 +27,52 @@ var SearchView = Backbone.View.extend({
   },
   onKeyup: function (event) {
     event.preventDefault();
+
+    var key = keyboard._getLastKeyCode(event);
+    var current;
+    if (key.key === keyboard.ESC) {
+      return this.closeResults();
+    }
+
+    // Handle navigation
+    if (key.key === keyboard.UP || key.key === keyboard.DOWN) {
+      current = this.$dropdownResults.find('.result.active');
+      if (key.key === keyboard.UP) {
+        if (!current) {
+          this.$dropdownResults.find('.result').last().addClass('active');
+        } else {
+          if (current.prevAll('.result').length === 0) { // current is first
+            this.$dropdownResults.find('.result').last().addClass('active');
+          } else {
+            current.prevAll('.result').first().addClass('active');
+          }
+          current.removeClass('active');
+        }
+      }
+      if (key.key === keyboard.DOWN) {
+        if (!current) {
+          this.$dropdownResults.find('.result').first().addClass('active');
+        } else {
+          if (current.nextAll('.result').length === 0) { // current is last
+            this.$dropdownResults.find('.result').first().addClass('active');
+          } else {
+            current.nextAll('.result').first().addClass('active');
+          }
+          current.removeClass('active');
+        }
+      }
+      return;
+    }
+
+    if (key.key === keyboard.RETURN) {
+      current = this.$dropdownResults.find('.result.active');
+      if (!current) {
+        return;
+      }
+      current.click();
+      this.closeResults();
+      return;
+    }
 
     clearTimeout(this.timeout);
     this.timeout = setTimeout(_.bind(function () {
