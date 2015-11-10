@@ -59,33 +59,30 @@ var DonutRouter = Backbone.Router.extend({
   },
 
   search: function (event) {
-    var data = {
-      search: '',
-      what: {
-        users: true,
-        groups: true,
-        rooms: true
-      }
-    };
     if (event) {
       var elt = $(event.currentTarget);
-      if (elt && elt.data('search')) {
-        data.search = elt.data('search');
-        data.skip = null;
-        if (elt.data('type')) {
-          data.what = {
-            users: (_.indexOf(elt.data('type').split('|'), 'users') !== -1),
-            groups: (_.indexOf(elt.data('type').split('|'), 'groups') !== -1),
-            rooms: (_.indexOf(elt.data('type').split('|'), 'rooms') !== -1)
-          };
-        }
+      if (elt && elt.data('search') && elt.data('type')) {
+        var data = {
+          search: elt.data('search'),
+          skip: null,
+          what: {
+            users: false,
+            groups: false,
+            rooms: false
+          }
+        };
+        data['what'][elt.data('type')] = true;
+
+        this.unfocusAll();
+        app.trigger('redrawNavigation');
+        app.trigger('drawerClose');
+        this.searchView.render(data);
+        Backbone.history.navigate('search'); // just change URI, not run route action
+        return;
       }
     }
-    this.unfocusAll();
-    app.trigger('redrawNavigation');
-    app.trigger('drawerClose');
-    this.searchView.render(data);
-    Backbone.history.navigate('search'); // just change URI, not run route action
+
+    this.root();
   },
 
   focusGroup: function (name) {
