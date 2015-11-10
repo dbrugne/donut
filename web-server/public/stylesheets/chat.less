@@ -603,7 +603,7 @@
     }
     #home { height: 100%; display: none; background-color: @cl-background; overflow-y: auto; .scrollbar-grey;
       .title {
-        .ft-raleway-medium;
+        .ft-opensans;
         color: @cl-subtext30;
         font-size: 1.6em;
         margin-bottom: 10px;
@@ -615,7 +615,7 @@
         }
       }
       .nothing {
-        .ft-raleway-medium;
+        .ft-opensans;
         color: @cl-subtext30;
         text-align: center;
         font-size: 1.2em;
@@ -801,6 +801,7 @@
             .banned-status { color: rgb(255, 78, 78); font-style: italic; }
             .info { font-size: 1.2em;
               .username { display: inline-block; margin-top: 12px; margin-right: 4px; font-size: 2em; }
+              .othername { color: @cl-subtext20; font-weight: normal; }
               .location, .website { }
               .dropdown { display: inline-block; position: relative;
                 button { font-size: 24px; border: none; background-color: transparent; }
@@ -838,7 +839,7 @@
                   .spinner { font-size: 1.3em; }
                 }
                 .no-more { margin:50px 0; display: none; text-align: left;
-                  .title { font-size:3rem; .ft-raleway-heavy; }
+                  .title { font-size:3rem; .ft-opensans-bold; }
                   .info { font-size: 2rem;
                     .name, .owner { font-size:2rem; font-weight:normal; }
                   }
@@ -973,6 +974,7 @@
                 .block.user { padding-top: 23px; padding-left: 40px; clear: both; /*border-top: 1px solid @cl-subtext0;*/
                   .avatar { position: absolute; top: 5px; left: 5px; border: none; width: 30px; height: 30px; background-position: center center; background-size: 30px 30px; }
                   .username { position: absolute; top: 5px; left: 45px; .ft-opensans-bold; font-size: 1em; }
+                  .othername { color: @cl-subtext20; font-weight: normal; }
                 }
                 .block.message { position: relative; padding-left: 45px; border-top: 0;
                   .text-spammed { display:none; }

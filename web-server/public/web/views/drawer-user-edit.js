@@ -98,6 +98,7 @@ var DrawerUserEditView = Backbone.View.extend({
     }
 
     var updateData = {
+      realname: this.$('input[name=realname]').val(),
       bio: this.$('textarea[name=bio]').val(),
       location: this.$('input[name=location]').val(),
       website: this.$('input[name=website]').val(),
@@ -165,7 +166,11 @@ var DrawerUserEditView = Backbone.View.extend({
   },
 
   editError: function (err) {
-    this.$('chat.form.errors').html(i18next.t('chat.form.errors.' + err, {defaultValue: i18next.t('global.unknownerror')})).show();
+    var errors = '';
+    _.each(err, function (e) {
+      errors += i18next.t('chat.form.errors.' + e, {defaultValue: i18next.t('global.unknownerror')}) + '<br>';
+    });
+    this.$('.errors').html(errors).show();
   }
 });
 

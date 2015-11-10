@@ -8,7 +8,7 @@ var cloudinary = require('../util/cloudinary');
 
 var userSchema = mongoose.Schema({
   username: String,
-  name: String,
+  realname: String,
   admin: {type: Boolean, default: false},
   deleted: {type: Boolean, default: false},
   suspended: {type: Boolean, default: false},

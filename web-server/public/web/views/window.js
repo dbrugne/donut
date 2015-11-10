@@ -189,6 +189,7 @@ var WindowView = Backbone.View.extend({
       model.set('unviewed', true);
     }
 
+    // update navigation
     collection.sort();
     if (model.get('type') === 'room') {
       app.trigger('redrawNavigationRooms');
