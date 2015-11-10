@@ -998,9 +998,8 @@
       "subject": "Email validation on DONUT.me",
       "content": {
         "title": "Validate email on DONUT.me",
-        "disclaimer": "You should valid your email to access to all features on the platform",
-        "button": "Valid your email",
-        "info": "If you ignore this e-mail you can't access to everything on the platform DONUT.me"
+        "disclaimer": "To activate your email you should click on the link below",
+        "button": "Valid your email"
       }
     },
     "passwordchanged": {
