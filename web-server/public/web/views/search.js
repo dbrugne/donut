@@ -15,21 +15,20 @@ var SearchPageView = Backbone.View.extend({
   limit: 100,
 
   events: {
-    'keyup input[type=text]': 'onKeyup',
     'click .load-more': 'onLoadMore',
-    'click .btn-group .btn': 'onKeyup',
-    'change .checkbox-search': 'onKeyup'
+    'click .options a': 'onKeyup'
   },
 
   initialize: function () {
   },
 
   render: function (data) {
+    this.$search = $('#navbar').find('.search').find('input[type=text]').first();
+    this.$options = $('.options');
     this.$el.html(this.template({data: data}));
     this.cardsView = new CardsView({
       el: this.$('.cards')
     });
-    this.$search = this.$('input[type=text]').first();
     this.$searchMore = this.$('.load-more');
     this.$searchOptionsUsers = this.$('#search-options-users');
     this.$searchOptionsRooms = this.$('#search-options-rooms');
@@ -81,13 +80,20 @@ var SearchPageView = Backbone.View.extend({
   },
   onKeyup: function (event) {
     event.preventDefault();
+    var what = $(event.currentTarget).data('type');
+    if (!what) {
+      return;
+    }
+
+    this.$options.find('li').removeClass('active');
+    $(event.currentTarget).parent('li').addClass('active');
 
     clearTimeout(this.timeout);
     this.timeout = setTimeout(_.bind(function () {
       this.search(this.$search.val(), null, {
-        users: this.$searchOptionsUsers.is(':checked'),
-        rooms: this.$searchOptionsRooms.is(':checked'),
-        groups: this.$searchOptionsGroups.is(':checked')
+        users: what === 'users',
+        rooms: what === 'rooms',
+        groups: what === 'groups'
       });
     }, this), this.timeBufferBeforeSearch);
   },

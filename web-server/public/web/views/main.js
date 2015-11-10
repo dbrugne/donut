@@ -50,8 +50,6 @@ var MainView = Backbone.View.extend({
 
   $discussionsPanelsContainer: $('#center'),
 
-  resultsTemplate: require('../templates/dropdown-search.html'),
-
   firstConnection: true,
 
   defaultColor: '',
@@ -87,8 +85,7 @@ var MainView = Backbone.View.extend({
     'click .open-group-users': 'openGroupUsers',
     'click .close-discussion': 'onCloseDiscussion',
     'click .open-room-access': 'openRoomAccess',
-    'click .switch[data-language]': 'switchLanguage',
-    'blur #navbar .search input[type=text]': 'closeResults'
+    'click .switch[data-language]': 'switchLanguage'
   },
 
   initialize: function () {
@@ -129,9 +126,6 @@ var MainView = Backbone.View.extend({
     this.$dropdownResults = this.$('.search .results');
     this.$search = this.$('.search');
 
-    this.listenTo(this.searchView, 'searchResults', this.onSearchResults);
-    this.listenTo(this.searchView, 'emptySearch', this.onEmptyResults);
-
     // @debug
     // @todo dbr : mount only on debug mode
     window.d = {
@@ -151,34 +145,6 @@ var MainView = Backbone.View.extend({
 
   initializeCollapse: function () {
     this.$('[data-toggle="collapse"]').collapse();
-  },
-
-  onSearchResults: function (data) {
-    _.each(_.union(
-      data.rooms
-        ? data.rooms.list
-        : [],
-      data.groups
-        ? data.groups.list
-        : [],
-      data.users
-        ? data.users.list
-        : []
-    ), function (card) {
-      card.avatar = common.cloudinary.prepare(card.avatar, 90);
-    });
-    this.$dropdownResults.html(this.resultsTemplate({search: this.searchView.getValue(), results: data}));
-    this.$dropdownResults.fadeIn();
-  },
-
-  onEmptyResults: function () {
-    this.$dropdownResults.html(this.resultsTemplate());
-    this.$dropdownResults.fadeIn();
-  },
-
-  closeResults: function () {
-    this.$search.removeClass('open');
-    this.$dropdownResults.fadeOut();
   },
 
   /**

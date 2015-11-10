@@ -68,7 +68,6 @@ module.exports = function (search, options, callback) {
       groups: 100,
       rooms: 100
     };
-  var criteria = options.criteria || {};
 
   var searchResults = {
     users: {
@@ -93,6 +92,7 @@ module.exports = function (search, options, callback) {
         return callback(null);
       }
 
+      var criteria = options.criteria || {};
       criteria.name = _regexp;
       criteria.deleted = {$ne: true};
 
@@ -148,6 +148,7 @@ module.exports = function (search, options, callback) {
         return callback(null, null);
       }
 
+      var criteria = options.criteria || {};
       criteria.name = _regexp;
       criteria.deleted = {$ne: true};
 
@@ -213,6 +214,7 @@ module.exports = function (search, options, callback) {
         return callback(false);
       }
 
+      var criteria = options.criteria || {};
       criteria.username = _regexp;
 
       UserModel.count(criteria, function (err, count) {
