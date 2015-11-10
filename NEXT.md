@@ -5,6 +5,11 @@
 grunt migration-room-hash
 ```
 
+* Change long room name:
+```
+grunt change-long-name
+```
+
 * Migrate onetoones to the new format:
 ```
 grunt migration-onetoones
