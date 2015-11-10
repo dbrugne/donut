@@ -109,40 +109,41 @@ var RoomUsersCollection = Backbone.Collection.extend({
     return model;
   },
   fetchUsers: function (callback) {
-    // @todo yfuks bad pattern, client should do only one call and received a complete list
     client.roomUsers(this.parent.get('room_id'), {
       type: 'users',
-      status: 'online'
+      status: 'onoff',
+      maxOffline: 15
     }, _.bind(function (data) {
       this.reset();
 
-      _.each(data.users, _.bind(function (element, key, list) {
-        // false: avoid automatic sorting on each model .add()
-        this.addUser(element, false);
-      }, this));
-
-      var maxOfflineUsersToDisplay = (15 - data.count > 0)
-        ? 15 - data.count
-        : 2;
-      var searchAttributes = {
-        type: 'users',
-        status: 'offline',
-        selector: {start: 0, length: maxOfflineUsersToDisplay}
-      };
-      client.roomUsers(this.parent.get('room_id'), searchAttributes, _.bind(function (data) {
-        _.each(data.users, _.bind(function (element, key, list) {
+      var usersDisplayed = 0;
+      _.each(data.users, _.bind(function (user) {
+        if (user.status === 'online') {
           // false: avoid automatic sorting on each model .add()
-          this.addUser(element, false);
-        }, this));
-
-        // sort after batch addition to collection to avoid performance issue
-        this.sort();
-
-        this.trigger('users-redraw');
-        if (callback) {
-          return callback();
+          this.addUser(user, false);
+          usersDisplayed += 1;
         }
       }, this));
+
+      var usersOfflineDisplayed = 0;
+      _.find(data.users, _.bind(function (user) {
+        // add only one offline user if there is more than 15 users online
+        if (usersDisplayed < 15 || !usersOfflineDisplayed) {
+          // false: avoid automatic sorting on each model .add()
+          this.addUser(user, false);
+          usersDisplayed += 1;
+          usersOfflineDisplayed += 1;
+        }
+      }, this));
+
+      // sort after batch addition to collection to avoid performance issue
+      this.sort();
+
+      this.trigger('users-redraw');
+
+      if (callback) {
+        return callback();
+      }
     }, this));
   },
   isUserDevoiced: function (userId) {
