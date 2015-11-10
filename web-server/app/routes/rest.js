@@ -5,6 +5,7 @@ var router = express.Router();
 
 var search = require('../../../shared/util/search');
 router.get('/rest/search', function (req, res) {
+  // @todo : only rooms on landing page ? So all following params are useless?
   var skip = {
     users: req.query.skip_users ? req.query.skip_users : 0,
     rooms: req.query.skip_rooms ? req.query.skip_rooms : 0,
@@ -22,7 +23,7 @@ router.get('/rest/search', function (req, res) {
     skip: skip
   };
   search(
-    req.query.q,            // querry
+    req.query.q,
     options,
     function (err, results) {
       if (err) {

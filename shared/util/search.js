@@ -63,26 +63,28 @@ module.exports = function (search, options, callback) {
   var rooms = [];
   var groups = [];
 
-  var limit = options.limit || {
-      users: 100,
-      groups: 100,
-      rooms: 100
-    };
+  var limit = options.limit || {  // @todo : to 25 (here and on client side)
+    users: 100,
+    groups: 100,
+    rooms: 100
+  };
 
   var searchResults = {
     users: {
       list: [],
-      count: 0
+      count: 0 // @todo : useless?
     },
     rooms: {
       list: [],
-      count: 0
+      count: 0 // @todo : useless?
     },
     groups: {
       list: [],
-      count: 0
+      count: 0 // @todo : useless?
     }
   };
+
+  // @todo : add a .more logic (get limit + 1 ...)
 
   async.waterfall([
 
@@ -129,16 +131,16 @@ module.exports = function (search, options, callback) {
         return callback(null, null);
       }
 
-      GroupModel.find({name: options.group_name})
-        .populate('members')
-        .populate('op')
+      GroupModel.find({name: options.group_name})// @todo : why searching on name? (and case sensitivity?)
+        .populate('members') // @todo why?
+        .populate('op') // @todo why?
         .populate('owner')
         .exec(function (err, models) {
           if (err || !models || models.length === 0) {
             return callback(err, null);
           }
 
-          return callback(null, models.pop());
+          return callback(null, models.pop()); // @todo : pop() ?
         });
     },
 

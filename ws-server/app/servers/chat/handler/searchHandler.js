@@ -25,6 +25,8 @@ handler.call = function (data, session, next) {
     return next(null, {});
   }
 
+  // @todo : data.options and data.options.criteria are not filtered, so you can add every criteria to search in console?
+
   data.options.user_id = user.id;
 
   search(data.search, data.options, function (err, results) {
