@@ -114,7 +114,7 @@ Facade.prototype.getType = function (type) {
   return typeObject;
 };
 
-Facade.prototype.retrieveUserNotifications = function (uid, what, callback) { // @todo yfuks refacto
+Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
   what = what || {};
   var criteria = {
     user: uid,
@@ -140,6 +140,7 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) { //
     select: 'local username color facebook avatar'
   });
 
+  var that = this;
   q.exec(function (err, results) {
     if (err) {
       return (err);
@@ -150,108 +151,14 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) { //
         return fn(null);
       }
 
-      if (n.type === 'roomrefuse' || n.type === 'roomallowed' || n.type === 'roomjoinrequest' || n.type === 'roominvite' || n.type === 'roomdelete' || n.type === 'roomcreate') {
-        NotificationModel.findOne({_id: n._id})
-          .populate({
-            path: 'data.user',
-            model: 'User',
-            select: 'facebook username local avatar color'})
-          .populate({
-            path: 'data.by_user',
-            model: 'User',
-            select: 'facebook username local avatar color'})
-          .populate({
-            path: 'data.room',
-            model: 'Room',
-            select: 'avatar color name group'})
-          .exec(function (err, notification) {
-            if (err) {
-              return fn(err);
-            }
-            if (!notification) {
-              return fn(null);
-            }
+      that.getType(n.type).populateNotification(n, function (err, notif) {
+        if (err) {
+          return fn(err);
+        }
 
-            NotificationModel.populate(notification, {
-              path: 'data.room.group',
-              model: 'Group',
-              select: 'name'
-            }, function (err, docs) {
-              if (err) {
-                callback(err);
-              }
-
-              n = notification;
-              notifications.push(n);
-              return fn(null);
-            });
-          });
-      } else if (_.indexOf(['groupjoinrequest', 'grouprefuse', 'groupallowed', 'groupinvite', 'groupban', 'groupdeban', 'groupop', 'groupdeop', 'groupdisallow', 'groupdeban'], n.type) !== -1) {
-        NotificationModel.findOne({_id: n._id})
-          .populate({
-            path: 'data.by_user',
-            model: 'User',
-            select: 'facebook username local avatar color'})
-          .populate({
-            path: 'data.group',
-            model: 'Group',
-            select: 'avatar color name'})
-          .exec(function (err, notification) {
-            if (err) {
-              return fn(err);
-            }
-            if (!notification) {
-              return fn(null);
-            }
-
-            n = notification;
-            notifications.push(n);
-            return fn(null);
-          });
-      } else if (n.getEventType() === 'historyone') {
-        var q = HistoryOne.findOne({_id: n.data.event.toString()})
-          .populate('from', 'username avatar color facebook')
-          .populate('to', 'username avatar color facebook');
-        q.exec(function (err, event) {
-          if (err) {
-            return fn(err);
-          }
-          if (!event) {
-            return fn(null);
-          }
-
-          n.data.event = event;
-          notifications.push(n);
-          return fn(null);
-        });
-      } else {
-        HistoryRoom.findOne({_id: n.data.event.toString()})
-          .populate('user', 'username avatar color facebook')
-          .populate('by_user', 'username avatar color facebook')
-          .populate('room', 'avatar color name group')
-          .exec(function (err, event) {
-            if (err) {
-              return fn(err);
-            }
-            if (!event) {
-              return fn(null);
-            }
-
-            RoomModel.populate(event, {
-              path: 'room.group',
-              model: 'Group',
-              select: 'name'
-            }, function (err, docs) {
-              if (err) {
-                callback(err);
-              }
-
-              n.data.event = docs;
-              notifications.push(n);
-              return fn(null);
-            });
-          });
-      }
+        notifications.push(notif);
+        return fn(null);
+      });
     }, function (err) {
       if (err) {
         return callback(err);

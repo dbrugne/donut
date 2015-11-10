@@ -181,3 +181,43 @@ Notification.prototype.sendEmail = function (model, done) {
 
   ], done);
 };
+
+Notification.prototype.populateNotification = function (notification, done) {
+  if (!notification || !notification._id) {
+    return done('roomRequest population error: params');
+  }
+
+  NotificationModel.findOne({_id: notification._id})
+    .populate({
+      path: 'data.user',
+      model: 'User',
+      select: 'facebook username local avatar color'})
+    .populate({
+      path: 'data.by_user',
+      model: 'User',
+      select: 'facebook username local avatar color'})
+    .populate({
+      path: 'data.room',
+      model: 'Room',
+      select: 'avatar color name group'})
+    .exec(function (err, n) {
+      if (err) {
+        return done(err);
+      }
+      if (!n) {
+        return done(null);
+      }
+
+      NotificationModel.populate(n, {
+        path: 'data.room.group',
+        model: 'Group',
+        select: 'name'
+      }, function (err, docs) {
+        if (err) {
+          return done(err);
+        }
+
+        return done(null, n);
+      });
+    });
+};
