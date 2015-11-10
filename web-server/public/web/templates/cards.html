@@ -53,7 +53,7 @@
                     <a class="user-avatar open-group-profile img-circle" href="<%= card.url %>" data-group-id="<%=card.group_id%>" style="background-image:url(<%= card.avatar %>)"></a>
                     <div class="name">
                         <a href="<%= card.join %>" class="open-group-profile flex-child flex-parent center jc-center" data-group-id="<%=card.group_id%>">
-                            <span class="roomname"><%=card.identifier%></span>
+                            <span class="roomname"><%=card.identifier.replace('#','')%></span>
                         </a>
                         <% if (card.owner_id) { %>
                             <span class="owner flex-child flex-parent  center jc-center">
@@ -72,10 +72,9 @@
                         </div>
                         <div class="btn-ctn flex-child flex-parent jc-center">
                             <% if(card.join) { %>
-                            <a class="btn btn-default clean join flex-child relative" href="<%= card.join %>">
-                                <%= t('actions.join') %>
-                                <i class="icon icon-in dc-text"></i>
-                            </a>
+                                <a class="btn btn-default clean join flex-child relative" href="<%= card.join %>">
+                                    <%= t('global.view-group') %>
+                                </a>
                             <% } else { %>
                             <a class="btn btn-default open-group-profile" data-dismiss="modal" href="<%=card.url%>" data-group-id="<%=card.group_id%>">
                                 <%= t('global.view-profile') %>

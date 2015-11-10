@@ -127,7 +127,8 @@
     "muted": "sound off"
   },
   "global": {
-    "view-profile": "View profile",
+    "view-profile": "view profile",
+    "view-group": "view the groupe",
     "onetoones": "one to ones",
     "donuts": "Donuts",
     "group": "community",
