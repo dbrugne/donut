@@ -1,7 +1,6 @@
 var _ = require('underscore');
 var async = require('async');
 var RoomModel = require('../shared/models/room');
-var UserModel = require('../shared/models/user');
 
 module.exports = function (grunt) {
   grunt.registerTask('change-long-name', 'change long room name', function () {
