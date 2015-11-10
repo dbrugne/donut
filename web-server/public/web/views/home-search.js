@@ -12,6 +12,7 @@ var SearchView = Backbone.View.extend({
   resultsTemplate: require('../templates/dropdown-search.html'),
   events: {
     'keyup input[type=text]': 'onKeyup',
+    'click .icon.icon-search': 'onKeyup',
     'change .checkbox-search': 'onKeyup',
     'blur input[type=text]': 'closeResults',
     'click .results': 'closeResults'
