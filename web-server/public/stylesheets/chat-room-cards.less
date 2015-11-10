@@ -1,6 +1,6 @@
 @card-height: 250px;
 @card-width: 300px;
-.cards { .scrollbar-grey-thin; overflow: auto;
+.cards { .scrollbar-grey-thin; overflow: auto; .display-flex; .flex-flow(row wrap); .justify-content(center); .align-items(center);
   .card { margin: 5px; height: @card-height; width: @card-width; float: left; border:1px solid @cl-subtext5; background-color: #FFF;
     &.empty { box-shadow:none; height: 1px; margin: 0 20px; }
     .design-room1 { height: @card-height; border-width:10px 0 0; border-style:solid;

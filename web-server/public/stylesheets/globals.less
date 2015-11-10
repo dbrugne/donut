@@ -284,6 +284,23 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   }
 }
 
+.nav.nav-pills {
+  li { border-bottom: 5px solid transparent; padding:10px;
+    a { .border-radius(0); padding:0;
+      &:after { content:' '; border:1px solid #ccd6dd; position:absolute; right: -11px; width: 1px; height: 18px; display:inline-block; }
+    }
+    a:last-child:after { border-color:transparent; }
+    &.active>a, &:hover>a, &:focus>a {
+      background-color: transparent;
+      color: initial;
+
+    }
+    &.active, &:hover, &:focus {
+      border-bottom: 5px solid @cl-first;
+    }
+  }
+}
+
 .input-picto { z-index: 2; color: @cl-first; font-size: 22px; top: 0; left: 10px; position: absolute; display: block; width: 34px; height: 34px; line-height: 34px; text-align: center; }
 
 .color-picker { position: relative; color: #555; font-size: 16px;

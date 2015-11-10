@@ -1,6 +1,6 @@
 <div class="search">
     <div class="center-block">
-        <ul class="nav nav-pills options">
+        <ul class="nav nav-pills search-options flex-parent center jc-center">
             <li role="presentation" <% if ( data.what && data.what.users && data.what.users === true) { print('class="active"') } %>><a href="#"   data-type="users"  ><%= t('chat.search.search_in_users') %></a></li>
             <li role="presentation" <% if ( data.what && data.what.rooms && data.what.rooms === true) { print('class="active"') } %>><a href="#"   data-type="rooms"  ><%= t('chat.search.search_in_rooms') %></a></li>
             <li role="presentation" <% if ( data.what && data.what.groups && data.what.groups === true) { print('class="active"') } %>><a href="#" data-type="groups" ><%= t('chat.search.search_in_groups') %></a></li>

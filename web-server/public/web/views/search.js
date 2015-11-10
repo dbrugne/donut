@@ -16,7 +16,7 @@ var SearchPageView = Backbone.View.extend({
 
   events: {
     'click .load-more': 'onLoadMore',
-    'click .options a': 'onKeyup'
+    'click .search-options a': 'onKeyup'
   },
 
   initialize: function () {
@@ -24,8 +24,8 @@ var SearchPageView = Backbone.View.extend({
 
   render: function (data) {
     this.$search = $('#navbar').find('.search').find('input[type=text]').first();
-    this.$options = $('.options');
     this.$el.html(this.template({data: data}));
+    this.$options = this.$el.find('.search-options');
     this.cardsView = new CardsView({
       el: this.$('.cards')
     });
