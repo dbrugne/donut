@@ -163,18 +163,18 @@
     "unknownerror": "Erreur inconnue, veuillez réessayer",
     "mode": {
       "title": {
-        "private": "invités",
-        "private-invites": "invités",
-        "private-invites-group": "membres et invités",
-        "private-group": "membres et invités",
+        "private": "privé",
+        "private-invites": "privé",
+        "private-invites-group": "membres",
+        "private-group": "membres",
         "public": "public"
       },
       "description": {
-        "private": "Ce donut est privé, accessible uniquement sur invitation",
-        "private-invites": "Ce donut est privé, accessible uniquement sur invitation",
-        "private-invites-group": "Ce donut est privé, accessible uniquement aux membres de cette de communauté et sur invitation",
-        "private-group": "Ce donut est privé, accessible uniquement aux membres de cette de communauté et sur invitation",
-        "public": "Ce donut est public, accessible à tout utilisateur"
+        "private": " accessible aux utilisateurs invités uniquement",
+        "private-invites": "accessible aux utilisateurs invités uniquement",
+        "private-invites-group": "accessible aux membres de la communauté et aux utilisateurs invités",
+        "private-group": "accessible aux membres de la communauté et aux utilisateurs invités",
+        "public": "accessible à tous"
       }
     }
   },
@@ -1332,6 +1332,12 @@
         }
       },
       "banned-users": "Utilisateurs que vous avez bloqué"
+    }
+  },
+  "popins": {
+    "group-create": {
+      "title": "Création de communauté",
+      "content": "Ca y est, vous avez votre communauté ! Voici votre page d'accueil, vos membres peuvent y voir tous les autres membres, et tous les donuts pour les rejoindre plus facilement. Nous avons créé votre premier donut: <strong>#__groupname__/welcome</strong>. Il est public donc accessible y compris aux non-membres. Pensez à <a href=\"#\" class=\"inverse open-group-profile\" data-group-id=\"__groupid__\" data-dismiss=\"modal\">personnaliser votre profil</a> et ceux qui <a href=\"#\" class=\"inverse open-group-access\" data-group-id=\"__groupid__\" data-dismiss=\"modal\">accèdent à votre communauté</a>"
     }
   }
 }

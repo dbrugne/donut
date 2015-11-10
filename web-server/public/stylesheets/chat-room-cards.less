@@ -1,39 +1,11 @@
-.cards { .display-flex; .flex-flow(row wrap); .scrollbar-grey-thin; overflow: auto;
-  .card { .flex(1 0 300px); margin: 20px; .border-radius(5px); min-width: 300px; height: 190px; max-width: 400px; box-shadow: 1px 1px 3px rgba(0,0,0,.65);
+@card-height: 250px;
+@card-width: 350px;
+.cards { .scrollbar-grey-thin; overflow: auto;
+  .card { margin: 5px; .border-radius(5px); height: @card-height; width: @card-width; float: left; border:1px solid @cl-subtext5;
     &.empty { box-shadow:none; height: 1px; margin: 0 20px; }
     &.card-user {
-      //.design-1 {
-      //  .avatar-ctn { height: 90px; .border-radiuses(5px, 0, 0, 5px); border-bottom-width: 4px; border-bottom-style: solid; background-color: @cl-subtext10; border-color: @cl-subtext15;
-      //    .avatar { margin: 30px auto 0; width: 100px; border: 3px solid @cl-subtext15; display: block; background-size: 100%; background-position: center center; }
-      //  }
-      //  .username, .location { width: 100%; display: block; text-align: center; padding: 35px 10px 5px; border-style: solid; border-width: 0 1px; text-overflow: ellipsis; overflow: hidden; }
-      //  .location { padding: 0 10px 5px; color: @cl-neutral; white-space: nowrap; height:22px; }
-      //  .action { .border-radiuses(0, 5px, 5px, 0); border-top-width: 2px; border-top-style: solid; padding: 10px;
-      //    a { margin: auto; text-transform: uppercase; font-weight: bold; }
-      //  }
-      //}
-      //.design-2 {
-      //  .img-ctn { position:relative; width: 30%;
-      //    .user-avatar { .border-radiuses(0, 0, 5px, 5px); background-size: cover; background-repeat: no-repeat; background-position: center center; width: 100%; border-right-style: solid; border-right-width: 3px; }
-      //  }
-      //  .content-ctn { .flex(2); }
-      //  .name { word-break: normal; overflow: hidden; text-overflow: ellipsis; margin-right: 20px; padding-left: 10px; height: 100px;
-      //    .username { position:absolute; top: 40px; left: 15px; white-space: nowrap; font-size: 2rem; .ft-raleway-heavy;  }
-      //    .location { padding: 10px 20px 10px; position: absolute; top: 60px; left: 110px; }
-      //  }
-      //  .actions { background-color: @cl-subtext5;
-      //    .first, .last { text-align: center; padding:5px; position:relative;
-      //      &:hover { background-color: @cl-subtext10;
-      //        &.empty { background-color: @cl-subtext5; }
-      //      }
-      //    }
-      //    .last { .border-radiuses(0, 5px, 0, 0); }
-      //    .first::after { content:""; border-right:1px solid @cl-subtext20; position:absolute; right:0; height:50%; width:1px; }
-      //    .first.empty::after {border-color:transparent}
-      //  }
-      //}
       .design-3 { border-bottom-width:5px; border-bottom-style:solid; .border-radiuses(0, 5px, 5px, 0);
-        .user-avatar { border-width:3px; border-style:solid; background-size: contain; background-repeat: no-repeat; background-position: center center; width: 70px; height:70px; margin: 10px auto 0;}
+        .user-avatar { border-width:3px; border-style:solid; background-size: 70px; background-repeat: no-repeat; background-position: center center; width: 70px; height:70px; margin: 10px auto 0;}
         .name { word-break: normal; overflow: hidden; text-overflow: ellipsis; margin: 0 20px; text-align: center;
           .username { white-space: nowrap; font-size: 1.9rem; .ft-raleway-heavy;  }
           .location { padding: 10px 20px 10px; }
@@ -50,19 +22,41 @@
         }
       }
     }
-    &.card-room {
-      //.design-room1 {
-      //  .img-ctn { position:relative; width: 30%;
-      //    .group-avatar { .border-radiuses(0, 0, 0, 5px); background-size: cover; background-repeat: no-repeat; background-position: center center; width: 100%; border-right-style: solid; border-right-width: 3px; }
-      //    .avatar { border-style: solid; border-width: 3px; width: 50px; height: 50px; z-index: 1; top: 30px; background-size: contain; background-repeat: no-repeat; background-position: center center; position: absolute; right: -23px; } }
-      //  .content-ctn { .flex(2); }
-      //  .room-profile { .border-radiuses(0, 0, 5px, 0); width: 100%; text-align: center; margin: 0; padding: 5px; background-color: @cl-subtext5; border-right-width: 3px; border-right-style: solid; color: @cl-text !important; }
-      //  .name { word-break: normal; overflow: hidden; text-overflow: ellipsis; margin-right: 20px; padding-left: 10px;  height: 100px;
-      //    .groupname { font-size:2.5rem; text-transform: uppercase; white-space: nowrap; .ft-raleway-heavy; }
-      //    .roomname { font-size: 2rem; position:absolute; top: 40px; left: 25px; white-space: nowrap; .ft-raleway-heavy; }
-      //    .owner { padding: 10px 20px 10px; position: absolute; top: 60px; left: 0; }
+    &.card-room { .border-radius(0);
+      .design-room1 { height: @card-height; border-width:10px 0 0; border-style:solid;
+        > .ctn { height:100%; overflow: hidden; border-left: 1px solid #e1e8ed; border-right: 1px solid #e1e8ed; border-bottom: 1px solid #e1e8ed;
+          .user-avatar { display:block; border:4px solid rgb(225, 232, 237); background-size: 75px; background-repeat: no-repeat; background-position: center center; width: 75px; height: 75px; margin: 10px auto 0; }
+          .name { word-break: normal; overflow: hidden; text-overflow: ellipsis; margin: 0 10px; text-align: center;
+            .roomname { white-space: nowrap; font-size: 1.9rem; .ft-raleway-heavy; }
+          }
+          .description { max-height: 62px; line-height: 2rem; margin: 5px 10px 5px; overflow: hidden; text-overflow: ellipsis; font-style: italic; }
+          .actions { margin:5px 10px 10px 5px;
+            .mode-ctn { width: 100px; font-size: 1rem;}
+            .btn i { font-size:2rem; position: absolute; top: 6px; margin-left: 3px; }
+          }
+        }
+      }
+      //.design-room3 { .border-radius(3px); height: @card-height;
+      //  > .ctn { height:100%;
+      //    .background { background-size: cover; background-position: center center; height: 70px; margin-bottom:10px; }
+      //    .user-avatar { display: block; border-width:3px; border-style:solid; background-size: contain; background-repeat: no-repeat; background-position: center center; width: 70px; height:70px; position: absolute; margin: 0 auto; top: 10px; left: 139px; }
+      //    .name { word-break: normal; overflow: hidden; text-overflow: ellipsis; margin: 0 20px; text-align: center;
+      //      .roomname { white-space: nowrap; font-size: 1.9rem; .ft-raleway-heavy; }
+      //    }
+      //    .description { max-height: 62px; line-height: 2rem; margin: 5px 10px 5px; overflow: hidden; text-overflow: ellipsis; font-style: italic; text-align: justify; }
+      //    .actions { margin:5px 10px 10px 5px;
+      //      .mode-ctn { width: 100px;}
+      //    }
+      //  }
+      //}
+      //.design-room2 { border-bottom-width:5px; border-bottom-style:solid; .border-radiuses(0, 5px, 5px, 0);
+      //  .user-avatar { border-width:3px; border-style:solid; background-size: contain; background-repeat: no-repeat; background-position: center center; width: 70px; height:70px; margin: 10px auto 0;}
+      //  .name { word-break: normal; overflow: hidden; text-overflow: ellipsis; margin: 0 20px; text-align: center;
+      //    .roomname { white-space: nowrap; font-size: 1.9rem; .ft-raleway-heavy; }
+      //    .groupname { white-space: nowrap; font-size: 1.5rem; .ft-raleway-heavy; }
       //  }
       //  .actions { background-color: @cl-subtext5;
+      //    .mode { text-align: center; padding:5px; position:relative; }
       //    .first, .last { text-align: center; padding:5px; position:relative;
       //      &:hover { background-color: @cl-subtext10;
       //        &.empty { background-color: @cl-subtext5; }
@@ -73,50 +67,8 @@
       //    .first.empty::after {border-color:transparent}
       //  }
       //}
-      .design-room2 { border-bottom-width:5px; border-bottom-style:solid; .border-radiuses(0, 5px, 5px, 0);
-        .user-avatar { border-width:3px; border-style:solid; background-size: contain; background-repeat: no-repeat; background-position: center center; width: 70px; height:70px; margin: 10px auto 0;}
-        .name { word-break: normal; overflow: hidden; text-overflow: ellipsis; margin: 0 20px; text-align: center;
-          .roomname { white-space: nowrap; font-size: 1.9rem; .ft-raleway-heavy; }
-          .groupname { white-space: nowrap; font-size: 1.5rem; .ft-raleway-heavy; }
-        }
-        .actions { background-color: @cl-subtext5;
-          .mode { text-align: center; padding:5px; position:relative; }
-          .first, .last { text-align: center; padding:5px; position:relative;
-            &:hover { background-color: @cl-subtext10;
-              &.empty { background-color: @cl-subtext5; }
-            }
-          }
-          .last { .border-radiuses(0, 5px, 0, 0); }
-          .first::after { content:""; border-right:1px solid @cl-subtext20; position:absolute; right:0; height:50%; width:1px; }
-          .first.empty::after {border-color:transparent}
-        }
-      }
     }
     &.card-group {
-      //.design-group1 {
-      //  .img-ctn { .border-radiuses(0, 0, 5px, 5px); .justify-content(space-around); .align-items(center);  min-width: 55px; border-right-style: solid; border-right-width: 2px;
-      //    .avatar-group { width: 53px; height: 53px; background-size: contain; background-position: center center; display:block; margin: auto;
-      //      &::after { content: ""; background-image: url('@{img-path}/portrait.png'); width: 55px; height: 55px; background-size: 55px; z-index: 3; position: absolute; background-repeat: no-repeat; top: 0; left: 0; }
-      //    }
-      //  }
-      //  .content-ctn { padding-top: 20px; .flex(4);
-      //    .name { word-break: normal; overflow: hidden; text-overflow: ellipsis; font-size: 2rem; padding: 0 20px; .ft-raleway-heavy;
-      //      .groupname { font-size:2.5rem; }
-      //      .groupname + .roomname { padding-left: 10px; }
-      //    }
-      //    .owner { font-size: 1.4rem;    padding: 10px 20px 10px; text-align: right; }
-      //    .actions {
-      //      .first, .last { text-align: center; padding:8px; position:relative;
-      //        &:hover { background-color: @cl-subtext10;
-      //          &.empty { background-color: @cl-subtext5; }
-      //        }
-      //      }
-      //      .last { .border-radiuses(0, 5px, 0, 0); }
-      //      .first::after { content:""; border-right:1px solid @cl-subtext20; position:absolute; right:0; height:50%; width:1px; }
-      //      .first.empty::after {border-color:transparent}
-      //    }
-      //  }
-      //}
       .design-group2 { border-bottom-width:5px; border-bottom-style:solid; .border-radiuses(0, 5px, 5px, 0);
         .user-avatar { border-width:3px; border-style:solid; background-size: contain; background-repeat: no-repeat; background-position: center center; width: 70px; height:70px; margin: 10px auto 0;}
         .name { word-break: normal; overflow: hidden; text-overflow: ellipsis; margin: 0 20px; text-align: center;

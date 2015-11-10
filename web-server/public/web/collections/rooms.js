@@ -234,19 +234,21 @@ var RoomsCollection = Backbone.Collection.extend({
   },
   onUserOnline: function (data) {
     var model;
-    if (!data || !data.room_id || !(model = this.get(data.room_id))) {
-      return;
-    }
 
-    model.users.onUserOnline(data);
+    _.each(data.rooms_id, _.bind(function (roomId) {
+      if ((model = this.get(roomId))) {
+        model.users.onUserOnline(data);
+      }
+    }, this));
   },
   onUserOffline: function (data) {
     var model;
-    if (!data || !data.room_id || !(model = this.get(data.room_id))) {
-      return;
-    }
 
-    model.users.onUserOffline(data);
+    _.each(data.rooms_id, _.bind(function (roomId) {
+      if ((model = this.get(roomId))) {
+        model.users.onUserOffline(data);
+      }
+    }, this));
   },
   onKick: function (data) {
     this._onExpulsion('kick', data);

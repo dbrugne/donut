@@ -219,6 +219,31 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
 .btn {
   &.btn-success { .button-variant(@cl-clouds; @cl-emerald; @cl-green_sea); }
   &.btn-primary { .button-variant(@cl-clouds; @cl-first; @cl-first-dark-10); }
+  &.btn-default {
+    text-transform: capitalize;
+    border: 1px solid #e1e8ed;
+    .border-radius(4px);
+    align-items: flex-start;
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: rgb(245, 248, 250);
+    background-image: linear-gradient(rgb(255, 255, 255), rgb(245, 248, 250));
+    background-origin: padding-box;
+    background-repeat: no-repeat;
+    color: rgb(41, 47, 51);
+    cursor: pointer;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: bold;
+    height: 29px;
+    padding: 3px 11px 5px;
+    text-align: center;
+    &:hover {
+      background-color: #e1e8ed;
+      background-image: linear-gradient(#fff,#e1e8ed);
+      border-color: #e1e8ed;
+    }
+  }
 }
 
 .button { padding: 10px 15px; text-transform: uppercase; background-color: @cl-first; border: 0; color: #fff; text-decoration:none; text-align: center; .display-flex; .align-items(baseline);

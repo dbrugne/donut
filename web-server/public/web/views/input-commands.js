@@ -204,7 +204,7 @@ var InputCommandsView = Backbone.View.extend({
     } else if (parameters[1] && parameters[2]) {
       // group (#donut/)
       identifier = parameters[1].replace('#', '');
-      return app.trigger('joinGroup', identifier);
+      return app.trigger('joinGroup', {name: identifier, popin: false});
     } else {
       // room not in group (#donut)
       identifier = parameters[1];
@@ -362,7 +362,7 @@ var InputCommandsView = Backbone.View.extend({
       ? paramString
       : parameters[3];
 
-    if (message && /^@/.test(message) && !parameters[2]) {
+    if (message && /^@/.test(message) && !parameters) {
       message = message.replace(/\s+/, '');
       app.trigger('joinOnetoone', message.replace(/^@/, ''));
       return;
@@ -384,6 +384,7 @@ var InputCommandsView = Backbone.View.extend({
         if (!response.user_id) {
           return;
         }
+        app.trigger('joinOnetoone', parameters[1].replace('@', ''));
         client.userMessage(response.user_id, message);
       });
       return;

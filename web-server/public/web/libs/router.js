@@ -38,7 +38,7 @@ var DonutRouter = Backbone.Router.extend({
     this.listenTo(app, 'focus', this.focus);
     this.listenTo(app, 'joinRoom', this.focusRoom);
     this.listenTo(app, 'joinOnetoone', this.focusOne);
-    this.listenTo(app, 'joinGroup', this.focusGroup);
+    this.listenTo(app, 'joinGroup', this.joinGroup);
     this.listenTo(app, 'viewAdded', this.viewAdded);
     this.listenTo(app, 'goToSearch', this.focusOnSearch);
 
@@ -54,6 +54,11 @@ var DonutRouter = Backbone.Router.extend({
   },
 
   focusGroup: function (name) {
+    this.joinGroup({name: name, popin: false});
+  },
+
+  joinGroup: function (data) {
+    var name = data.name;
     var model = groups.iwhere('name', name);
 
     client.groupId(name, _.bind(function (response) {
@@ -72,7 +77,7 @@ var DonutRouter = Backbone.Router.extend({
           model = groups.addModel(response);
           this.focus(model);
           model.trigger('redraw');
-          app.trigger('nav-active-group', response.group_id);
+          app.trigger('nav-active-group', {group_id: response.group_id, group_name: name, popin: data.popin});
         }
       }, this));
     }, this));

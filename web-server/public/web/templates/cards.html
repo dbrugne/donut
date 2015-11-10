@@ -1,53 +1,9 @@
 <% _.each(cards, function(card) { %>
     <% var _color = card.color ? card.color.replace('#', '').toLowerCase() : 'default' %>
 
-    <div class="card dc-i-<%= _color %> card-<%= card.type %> flex-parent">
+    <div class="card dc-i-<%= _color %> card-<%= card.type %>">
 
         <% if(card.type === 'user') { %>
-
-        <!--<div class="design-1 flex-child">-->
-            <!--<div clas   s="flex-parent dc-back avatar-ctn dc-border-darker">-->
-                <!--<a class="avatar img-circle open-user-profile" href="<%= card.url %>" data-user-id="<%=card.user_id%>" style="background-image:url(<%= card.avatar %>)"></a>-->
-            <!--</div>-->
-
-            <!--<a href="<%=card.owner_url%>" class="username open-user-profile dc-border dc-text" data-user-id="<%= card.user_id %>">@<%= card.username %></a>-->
-            <!--<div class="location dc-border"><%= card.location %></div>-->
-
-            <!--<div class="flex-parent dc-back action dc-border-darker">-->
-                <!--<a class="dc-text-contrast" href="<%= card.join %>">-->
-                    <!--<%= t('actions.discuss') %>-->
-                <!--</a>-->
-            <!--</div>-->
-        <!--</div>-->
-
-       <!--<div class="design-2 flex-parent flex-child">-->
-           <!--<div class="flex-parent flex-child relative">-->
-               <!--<div class="flex-child flex-parent column img-ctn">-->
-                    <!--<div class="flex-parent flex-child open-user-profile user-avatar dc-border" style="background-image:url(<%= card.avatar %>)" data-user-id="<%=card.user_id%>"></div>-->
-               <!--</div>-->
-               <!--<div class="flex-child flex-parent column content-ctn">-->
-                   <!--<span class="name relative">-->
-                       <!--<a href="<%= card.url %>" class="open-user-profile" data-user-id="<%=card.user_id%>">-->
-                           <!--<span class="username">@<%= card.username %></span>-->
-                       <!--</a>-->
-                       <!--<% if (card.location) { %>-->
-                        <!--<span class="location"> <%= card.location %> </span>-->
-                       <!--<% } %>-->
-                   <!--</span>-->
-                   <!--<div class="flex-child"></div>-->
-                   <!--<div class="actions flex-parent jc-center">-->
-                       <!--<% if(card.join) { %>-->
-                       <!--<a class="first clean flex-child" href="<%= card.join %>" data-dismiss="modal"><%= t('actions.discuss') %></a>-->
-                       <!--<% } else { %>-->
-                       <!--<span class="first empty clean flex-child"></span>-->
-                       <!--<% } %>-->
-                        <!--<a class="last clean flex-child open-user-profile" data-dismiss="modal" href="<%=card.url%>" data-user-id="<%=card.user_id%>">-->
-                            <!--<%= t('global.view-profile') %>-->
-                        <!--</a>-->
-                   <!--</div>-->
-               <!--</div>-->
-           <!--</div>-->
-        <!--</div>-->
 
         <div class="design-3 flex-parent flex-child dc-border">
             <div class="flex-child flex-parent column">
@@ -77,37 +33,6 @@
         </div>
 
        <% } else if(card.type === 'group') { %>
-
-       <!--<div class="flex-parent flex-child relative design-group1">-->
-            <!--<div class="flex-child flex-parent column dc-back img-ctn dc-border-darker">-->
-                <!--<span class="flex-child flex-parent">-->
-                    <!--<a class="relative avatar-group dc-border-darker open-group-profile img-circle" href="<%= card.group_url %>" data-group-id="<%=card.group_id%>" style="background-image:url(<%= card.avatar %>)"></a>-->
-                <!--</span>-->
-            <!--</div>-->
-            <!--<div class="flex-child flex-parent column content-ctn">-->
-                <!--<a href="<%= card.url %>" class="name open-group-profile" data-group-id="<%=card.group_id%>"><%= card.name %></a>-->
-                <!--<div class="flex-child"></div>-->
-                    <!--<% if (card.owner_id) { %>-->
-                        <!--<span class="owner">-->
-                            <!--<%= t('global.by') %> <a class="dc-text open-user-profile" href="<%= card.owner_url %>" data-user-id="<%= card.owner_id %>">@<%= card.owner_username %></a>-->
-                        <!--</span>-->
-                    <!--<% } %>-->
-                <!--<div class="actions flex-parent jc-center">-->
-                    <!--<% if(card.join) { %>-->
-                    <!--<a class="first clean flex-child" href="<%= card.join %>" data-dismiss="modal">-->
-                        <!--<%= t('actions.join') %>-->
-                        <!--<% if (card.users > 0) { %><%= card.users %><% } %>-->
-                        <!--<i class="icon icon-user-custom cl-warning"></i>-->
-                    <!--</a>-->
-                    <!--<% } else { %>-->
-                    <!--<span class="first clean empty flex-child"></span>-->
-                    <!--<% } %>-->
-                    <!--<a class="last clean flex-child open-group-profile" href="<%=card.url%>" data-dismiss="modal" data-group-id="<%=card.group_id%>">-->
-                        <!--<%= t('global.view-profile') %>-->
-                    <!--</a>-->
-                <!--</div>-->
-            <!--</div>-->
-       <!--</div>-->
 
         <div class="flex-parent flex-child relative design-group2 dc-border">
             <div class="flex-child flex-parent column">
@@ -142,108 +67,93 @@
         </div>
 
         <% } else if(card.type === 'room') { %>
-            <% var identifierHtml = card.identifier.indexOf('/') !== -1
-                ? '<div class="groupname">' + card.identifier.replace('#', '').split('/')[0] + '</div><div class="roomname">/' + card.identifier.replace('#', '').split('/')[1] + '</div>'
-                : '<div class="roomname">' + card.identifier + '</div>'; %>
 
-            <!--<div class="flex-parent flex-child relative design-room1">-->
-                <!--<div class="flex-child flex-parent column img-ctn">-->
-                    <!--<% if(card.group_id) { %>-->
-                    <!--<div class="flex-parent flex-child open-group-profile group-avatar dc-border" style="background-image:url(<%= card.group_avatar %>)" data-group-id="<%=card.group_id%>" >-->
-                        <!--<a class="relative avatar open-room-profile img-circle dc-border" href="<%= card.url %>" data-room-id="<%=card.room_id%>" style="background-image:url(<%= card.avatar %>)"></a>-->
-                    <!--</div>-->
-                    <!--<% } else { %>-->
-                    <!--<div class="flex-parent flex-child group-avatar dc-border">-->
-                        <!--<a class="relative avatar open-room-profile img-circle dc-border" href="<%= card.url %>" data-room-id="<%=card.room_id%>" style="background-image:url(<%= card.avatar %>)"></a>-->
-                    <!--</div>-->
-                    <!--<% } %>-->
-                    <!--<div class="room-profile dc-border dc-text-contrast curp" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + card.mode) %>">-->
-                        <!--<%= t('global.mode.title.' + card.mode) %>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="flex-child flex-parent column content-ctn">-->
-                    <!--<span class="name relative">-->
-                        <!--<a href="<%= card.url %>" class="open-room-profile" data-room-id="<%=card.room_id%>">-->
-                            <!--<%= identifierHtml %>-->
-                        <!--</a>-->
-                        <!--<% if (card.owner_id) { %>-->
-                            <!--<span class="owner">-->
-                                <!--<%= t('global.by') %> <a class="dc-text open-user-profile" href="<%= card.owner_url %>" data-user-id="<%= card.owner_id %>">@<%= card.owner_username %></a>-->
-                            <!--</span>-->
-                        <!--<% } %>-->
-                    <!--</span>-->
-                    <!--<div class="flex-child"></div>-->
-                    <!--<div class="actions flex-parent jc-center">-->
-                        <!--<% if(card.join) { %>-->
-                            <!--<a class="first clean flex-child" href="<%= card.join %>" data-dismiss="modal">-->
-                                <!--<%= t('actions.join') %>-->
-                                <!--<% if (card.users > 0) { %><%= card.users %><% } %>-->
-                                <!--<i class="icon icon-user-custom cl-warning"></i>-->
-                            <!--</a>-->
-                        <!--<% } else { %>-->
-                        <!--<span class="first clean empty flex-child"></span>-->
-                        <!--<% } %>-->
-                        <!--<a class="last clean flex-child open-room-profile" data-dismiss="modal" href="<%=card.url%>" data-room-id="<%=card.room_id%>">-->
-                            <!--<%= t('global.view-profile') %>-->
-                        <!--</a>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-
-
-        <div class="flex-parent flex-child relative design-room2 dc-border">
-            <div class="flex-child flex-parent column">
-                <div class="flex-parent">
-                    <a class="user-avatar open-room-profile img-circle dc-border-darker" href="<%= card.join %>" data-room-id="<%=card.room_id%>" style="background-image:url(<%= card.avatar %>)"></a>
-                </div>
-                <span class="name flex-child flex-parent column">
-                    <% if(card.group_id) { %>
-                        <a href="<%= card.group_url %>" class="open-group-profile flex-child flex-parent center jc-center" data-group-id="<%=card.group_id%>">
-                            <span class="groupname"><%= card.group_name %></span>
-                        </a>
-                        <a href="<%= card.join %>" class="open-room-profile flex-child flex-parent center jc-center" data-room-id="<%=card.room_id%>">
-                            <span class="roomname">/<%= card.name %></span>
-                        </a>
-                    <% } else { %>
-                       <a href="<%= card.join %>" class="open-room-profile flex-child flex-parent center jc-center" data-room-id="<%=card.room_id%>">
-                           <span class="roomname"><%=card.identifier%></span>
-                       </a>
-                    <% } %>
+        <div class="relative design-room1 dc-border">
+            <div class="ctn flex-parent column">
+                <a class="user-avatar open-room-profile img-circle" href="<%= card.join %>" data-room-id="<%=card.room_id%>" style="background-image:url(<%= card.avatar %>)"></a>
+                <div class="name">
+                   <a href="<%= card.join %>" class="open-room-profile flex-child flex-parent center jc-center" data-room-id="<%=card.room_id%>">
+                       <span class="roomname"><%=card.identifier%></span>
+                   </a>
                    <% if (card.owner_id) { %>
                         <span class="owner flex-child flex-parent  center jc-center">
                             <%= t('global.by') %> <a class="dc-text open-user-profile ml5" href="<%= card.owner_url %>" data-user-id="<%= card.owner_id %>">@<%= card.owner_username %></a>
                         </span>
                     <% } %>
-               </span>
-                <div class="actions flex-parent jc-center">
-                    <span class="mode dc-text-contrast dc-back curp flex-child" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + (card.mode === 'public' ? 'public' : 'private' + (card.allow_user_request ? '-invites' : '') + (card.allow_group_member ? '-group' : ''))) %>">
-                        <%= t('global.mode.title.' + (card.mode === 'public' ? 'public' : 'private' + (card.allow_user_request ? '-invites' : '') + (card.allow_group_member ? '-group' : ''))) %>
-                    </span>
-                    <% if(card.join) { %>
-                        <a class="first clean flex-child join" href="<%= card.join %>">
-                            <%= t('actions.join') %>
-                            <% if (card.users > 0) { %><%= card.users %><% } %>
-                            <i class="icon icon-user-custom cl-warning"></i>
-                        </a>
-                    <% } else { %>
-                        <span class="first empty clean flex-child"></span>
-                    <% } %>
-                    <a class="last clean flex-child open-room-profile" data-dismiss="modal" href="<%=card.url%>" data-room-id="<%=card.room_id%>">
-                        <%= t('global.view-profile') %>
-                    </a>
+                </div>
+                <div class="description flex-child">
+                    <%= card.description %>
+                </div>
+                <div class="actions flex-parent">
+                    <div class="mode-ctn text-center">
+                        <div class="mode" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + (card.mode === 'public' ? 'public' : 'private' + (card.allow_user_request ? '-invites' : '') + (card.allow_group_member ? '-group' : ''))) %>">
+                            <%= t('global.mode.title.' + (card.mode === 'public' ? 'public' : 'private' + (card.allow_user_request ? '-invites' : '') + (card.allow_group_member ? '-group' : ''))) %>
+                        </div>
+                        <div class="users">
+                            <i class="icon icon-user-custom dc-text"></i> <%= card.users %>
+                        </div>
+                    </div>
+                    <div class="btn-ctn flex-child flex-parent jc-center">
+                        <% if(card.join) { %>
+                            <a class="btn btn-default clean join flex-child relative" href="<%= card.join %>">
+                                <%= t('actions.join') %>
+                                <i class="icon icon-in dc-text"></i>
+                            </a>
+                        <% } else { %>
+                            <a class="btn btn-default open-room-profile" data-dismiss="modal" href="<%=card.url%>" data-room-id="<%=card.room_id%>">
+                                <%= t('global.view-profile') %>
+                            </a>
+                        <% } %>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!--<div class="flex-parent flex-child relative design-room2 dc-border">-->
+            <!--<div class="flex-child flex-parent column">-->
+                <!--<div class="flex-parent">-->
+                    <!--<a class="user-avatar open-room-profile img-circle dc-border-darker" href="<%= card.join %>" data-room-id="<%=card.room_id%>" style="background-image:url(<%= card.avatar %>)"></a>-->
+                <!--</div>-->
+                <!--<span class="name flex-child flex-parent column">-->
+                    <!--<% if(card.group_id) { %>-->
+                        <!--<a href="<%= card.group_url %>" class="open-group-profile flex-child flex-parent center jc-center" data-group-id="<%=card.group_id%>">-->
+                            <!--<span class="groupname"><%= card.group_name %></span>-->
+                        <!--</a>-->
+                        <!--<a href="<%= card.join %>" class="open-room-profile flex-child flex-parent center jc-center" data-room-id="<%=card.room_id%>">-->
+                            <!--<span class="roomname">/<%= card.name %></span>-->
+                        <!--</a>-->
+                    <!--<% } else { %>-->
+                       <!--<a href="<%= card.join %>" class="open-room-profile flex-child flex-parent center jc-center" data-room-id="<%=card.room_id%>">-->
+                           <!--<span class="roomname"><%=card.identifier%></span>-->
+                       <!--</a>-->
+                    <!--<% } %>-->
+                   <!--<% if (card.owner_id) { %>-->
+                        <!--<span class="owner flex-child flex-parent  center jc-center">-->
+                            <!--<%= t('global.by') %> <a class="dc-text open-user-profile ml5" href="<%= card.owner_url %>" data-user-id="<%= card.owner_id %>">@<%= card.owner_username %></a>-->
+                        <!--</span>-->
+                    <!--<% } %>-->
+               <!--</span>-->
+                <!--<div class="actions flex-parent jc-center">-->
+                    <!--<span class="mode dc-text-contrast dc-back curp flex-child" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + (card.mode === 'public' ? 'public' : 'private' + (card.allow_user_request ? '-invites' : '') + (card.allow_group_member ? '-group' : ''))) %>">-->
+                        <!--<%= t('global.mode.title.' + (card.mode === 'public' ? 'public' : 'private' + (card.allow_user_request ? '-invites' : '') + (card.allow_group_member ? '-group' : ''))) %>-->
+                    <!--</span>-->
+                    <!--<% if(card.join) { %>-->
+                        <!--<a class="first clean flex-child join" href="<%= card.join %>">-->
+                            <!--<%= t('actions.join') %>-->
+                            <!--<% if (card.users > 0) { %><%= card.users %><% } %>-->
+                            <!--<i class="icon icon-user-custom cl-warning"></i>-->
+                        <!--</a>-->
+                    <!--<% } else { %>-->
+                        <!--<span class="first empty clean flex-child"></span>-->
+                    <!--<% } %>-->
+                    <!--<a class="last clean flex-child open-room-profile" data-dismiss="modal" href="<%=card.url%>" data-room-id="<%=card.room_id%>">-->
+                        <!--<%= t('global.view-profile') %>-->
+                    <!--</a>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
 
         <% } %>
 
     </div>
 <% }); %>
-
-<% if (fill) { %>
-    <!--FIX Last card alignment & grow. No other solution at the moment-->
-    <div class="card flex-parent empty"></div>
-    <div class="card flex-parent empty"></div>
-    <div class="card flex-parent empty"></div>
-    <div class="card flex-parent empty"></div>
-<% } %>
