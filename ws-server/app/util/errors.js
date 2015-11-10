@@ -67,7 +67,8 @@ var errors = {
 
   // UNPROCESSABLE ENTITY (422)
   'wrong-password': 422,              // User type a wrong password
-  'expired-time': 422                 // Expired time
+  'expired-time': 422,                // Expired time
+  'domain': 422                       // Email domain is garbage
 };
 
 module.exports = {

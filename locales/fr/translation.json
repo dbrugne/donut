@@ -907,7 +907,8 @@
       "error": {
         "format": "Cette adresse email n'est pas valide",
         "alreadyexists": "Cette adresse email est déjà utilisée par un autre compte",
-        "alreadyyours": "Vous utilisez déjà cette adresse mail"
+        "alreadyyours": "Vous utilisez déjà cette adresse mail",
+        "domain": "Ce domaine d'emails est invalide"
       },
       "new": "Nouvel email",
       "confirm": "Confirmer"
@@ -961,7 +962,8 @@
         "mail-already-exist": "Cette adresse mail est déjà utilisé",
         "not-allowed": "Cette adresse mail à déjà été validée",
         "not-found": "Cette adresse mail n'a pas été trouvée",
-        "permanent": "Cette addresse mail ne peut pas être supprimer"
+        "permanent": "Cette addresse mail ne peut pas être supprimer",
+        "domain": "Ce domaine d'emails est invalide"
       }
     }
   },

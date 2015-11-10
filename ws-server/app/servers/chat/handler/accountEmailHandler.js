@@ -7,6 +7,7 @@ var emailer = require('../../../../../shared/io/emailer');
 var validator = require('validator');
 var jwt = require('jsonwebtoken');
 var conf = require('../../../../../config/index');
+var disposableDomains = require('disposable-email-domains');
 
 var Handler = function (app) {
   this.app = app;
@@ -35,6 +36,11 @@ handler.call = function (data, session, next) {
 
   if (!validator.isEmail(email)) {
     return errors.getHandler('user:email', next)('wrong-format');
+  }
+
+  var domain = data.email.split('@')[1];
+  if (disposableDomains.indexOf(domain) !== -1) {
+    return errors.getHandler('user:email', next)('domain');
   }
 
   if (!data.method || methods.indexOf(data.method) === -1) {

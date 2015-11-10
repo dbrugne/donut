@@ -907,7 +907,8 @@
       "error": {
         "format": "Invalid e-mail",
         "alreadyexists": "This e-mail is already used by another account",
-        "alreadyyours": "You already use this e-mail"
+        "alreadyyours": "You already use this e-mail",
+        "domain": "This email domain is invalid"
       },
       "new": "New E-mail",
       "confirm": "Confirm"
@@ -961,7 +962,8 @@
         "mail-already-exist": "This mail address is already used",
         "not-allowed": "This mail address is already verified",
         "not-found": "This mail address cannot be found",
-        "permanent": "This mail address can't be deleted"
+        "permanent": "This mail address can't be deleted",
+        "domain": "This email domain is invalid"
       }
     }
   },

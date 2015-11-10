@@ -4,6 +4,7 @@ var router = express.Router();
 var passport = require('../../../shared/authentication/passport');
 var i18next = require('../../../shared/util/i18next');
 var bouncer = require('../middlewares/bouncer');
+var disposableDomains = require('disposable-email-domains');
 
 var validateInput = function (req, res, next) {
   req.checkBody('email', i18next.t('account.email.error.format')).isEmail();
@@ -16,6 +17,18 @@ var validateInput = function (req, res, next) {
         username: req.body.username
       },
       errors: req.validationErrors(),
+      token: req.csrfToken()
+    });
+  }
+  var domain = req.body.email.split('@')[1];
+  if (disposableDomains.indexOf(domain) !== -1) {
+    return res.render('signup', {
+      meta: {title: i18next.t('title.default')},
+      userFields: {
+        email: req.body.email,
+        username: req.body.username
+      },
+      errors: [{msg: i18next.t('account.email.error.domain')}],
       token: req.csrfToken()
     });
   }
