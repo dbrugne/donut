@@ -201,3 +201,29 @@ Notification.prototype.sendEmail = function (model, done) {
 
   ], done);
 };
+
+Notification.prototype.populateNotification = function (notification, done) {
+  if (!notification || !notification._id) {
+    return done('groupRequest population error: params');
+  }
+
+  NotificationModel.findOne({_id: notification._id})
+    .populate({
+      path: 'data.by_user',
+      model: 'User',
+      select: 'facebook username local avatar color'})
+    .populate({
+      path: 'data.group',
+      model: 'Group',
+      select: 'avatar color name'})
+    .exec(function (err, n) {
+      if (err) {
+        return done(err);
+      }
+      if (!notification) {
+        return done(null);
+      }
+
+      return done(null, n);
+    });
+};
