@@ -446,7 +446,8 @@
         "requestallowance": "<strong>Demander à devenir membre.</strong><br>Le créateur de la communauté va avoir accès à votre vrai nom et votre e-mail.",
         "add-email": "Nouvelle adresse électronique :",
         "send-email": "Un email de confirmation va être envoyé à __email__",
-        "delete-email": "__email__ va être supprimé de vos adresses mails"
+        "delete-email": "__email__ va être supprimé de vos adresses mails",
+        "change-email": "__email__ va devenir votre adresse mail principale, elle vous servira pour vous connecter et pour revecoir tous les mails de la part de Donut.me"
       }
     },
     "commands": {

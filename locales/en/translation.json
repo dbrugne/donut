@@ -446,7 +446,8 @@
         "requestallowance": "<strong>Membership request.</strong><br>The community creator will have access to your real name and email.",
         "add-email": "New mail address :",
         "send-email": "A confirmation mail gonna be send to __email__",
-        "delete-email": "__email__ will be deleted of your address"
+        "delete-email": "__email__ will be deleted of your address",
+        "change-email": "__email__ is going to be your main address, she will be used for your login and to received mails from Donut.me"
       }
     },
     "commands": {

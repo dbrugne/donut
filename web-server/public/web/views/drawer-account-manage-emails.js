@@ -43,15 +43,20 @@ var DrawerAccountManageEmailsView = Backbone.View.extend({
   onChangeMainEmail: function (event) {
     var $target = $(event.currentTarget);
     var email = $target.data('email');
+    $target.prop('checked', false);
 
-    client.userUpdate({email: email}, _.bind(function (d) {
-      if (d.err) {
-        return this.putError(d.err);
-      }
+    confirmationView.open({message: 'change-email', email: email}, _.bind(function () {
+      client.userUpdate({email: email}, _.bind(function (d) {
+        if (d.err) {
+          return this.putError(d.err);
+        }
 
-      _.each(this.user.account.emails, function (e) {
-        e.main = (e.email === email);
-      });
+        _.each(this.user.account.emails, function (e) {
+          e.main = (e.email === email);
+        });
+        this.render();
+      }, this));
+    }, this), _.bind(function () {
       this.render();
     }, this));
   },
