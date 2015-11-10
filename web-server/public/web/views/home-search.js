@@ -12,7 +12,7 @@ var SearchView = Backbone.View.extend({
   resultsTemplate: require('../templates/dropdown-search.html'),
   events: {
     'keyup input[type=text]': 'onKeyup',
-    'click .icon.icon-search': 'onKeyup',
+    'click .icon.icon-search': 'updateSearch',
     'change .checkbox-search': 'onKeyup',
     'blur input[type=text]': 'closeResults',
     'click .results': 'closeResults'
@@ -39,7 +39,7 @@ var SearchView = Backbone.View.extend({
     if (key.key === keyboard.UP || key.key === keyboard.DOWN) {
       current = this.$dropdownResults.find('.result.active');
       if (key.key === keyboard.UP) {
-        if (!current) {
+        if (current.length === 0) {
           this.$dropdownResults.find('.result').last().addClass('active');
         } else {
           if (current.prevAll('.result').length === 0) { // current is first
@@ -51,7 +51,7 @@ var SearchView = Backbone.View.extend({
         }
       }
       if (key.key === keyboard.DOWN) {
-        if (!current) {
+        if (current.length === 0) {
           this.$dropdownResults.find('.result').first().addClass('active');
         } else {
           if (current.nextAll('.result').length === 0) { // current is last
@@ -67,18 +67,26 @@ var SearchView = Backbone.View.extend({
 
     if (key.key === keyboard.RETURN) {
       current = this.$dropdownResults.find('.result.active');
-      if (!current) {
+      if (current.length !== 0) {
+        current.click();
+        this.closeResults();
         return;
+      } else {
+        if (this.getValue() !== '') {
+          this.updateSearch();
+          this.closeResults();
+          return;
+        }
       }
-      current.click();
-      this.closeResults();
-      return;
     }
 
     clearTimeout(this.timeout);
     this.timeout = setTimeout(_.bind(function () {
       this.search();
     }, this), this.timeBufferBeforeSearch);
+  },
+  updateSearch: function () {
+    app.trigger('updateSearch', this.$search.val(), 'rooms');
   },
   search: function () {
     this.$dropdownResults.html(require('../templates/spinner.html'));
@@ -90,7 +98,7 @@ var SearchView = Backbone.View.extend({
 
     var options = {
       users: true,
-      rooms: true,
+      rooms: true, // by default, search on rooms
       groups: true,
       limit: {
         users: 4,
@@ -115,7 +123,10 @@ var SearchView = Backbone.View.extend({
       ), function (card) {
         card.avatar = common.cloudinary.prepare(card.avatar, 90);
       });
-      this.$dropdownResults.html(this.resultsTemplate({search: this.getValue(), results: data}));
+      this.$dropdownResults.html(this.resultsTemplate({
+        search: this.getValue(),
+        results: data
+      }));
       this.$dropdownResults.fadeIn();
     }, this));
   },

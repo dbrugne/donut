@@ -20,19 +20,16 @@ var SearchPageView = Backbone.View.extend({
   },
 
   initialize: function () {
+    this.$search = $('#navbar').find('.search').find('input[type=text]').first();
   },
 
   render: function (data) {
-    this.$search = $('#navbar').find('.search').find('input[type=text]').first();
     this.$el.html(this.template({data: data}));
     this.$options = this.$el.find('.search-options');
     this.cardsView = new CardsView({
       el: this.$('.cards')
     });
     this.$searchMore = this.$('.load-more');
-    this.$searchOptionsUsers = this.$('#search-options-users');
-    this.$searchOptionsRooms = this.$('#search-options-rooms');
-    this.$searchOptionsGroups = this.$('#search-options-groups');
 
     app.trigger('setTitle');
     app.trigger('changeColor');
@@ -41,7 +38,8 @@ var SearchPageView = Backbone.View.extend({
       return this.search(data.search, data.skip, data.what);
     }
 
-    client.home(_.bind(this.onHome, this));
+    data.search = this.$search.val();
+    this.search(data.search, null, data.what);
   },
   onHome: function (data) {
     data.fill = true;
@@ -73,9 +71,9 @@ var SearchPageView = Backbone.View.extend({
     this.cardsView.cleanupEmpty();
     var count = this.cardsView.count();
     this.search(this.$search.val(), count, {
-      users: this.$searchOptionsUsers.is(':checked'),
-      rooms: this.$searchOptionsRooms.is(':checked'),
-      groups: this.$searchOptionsGroups.is(':checked')
+      users: this.$options.find('li[data-type="users"]').hasClass('active'),
+      rooms: this.$options.find('li[data-type="rooms"]').hasClass('active'),
+      groups: this.$options.find('li[data-type="groups"]').hasClass('active')
     });
   },
   onKeyup: function (event) {
@@ -101,9 +99,9 @@ var SearchPageView = Backbone.View.extend({
     skip = skip || null;
     opt = opt
       || {
-        users: true,
-        rooms: true,
-        groups: true
+        users: this.$options.find('li[data-type="users"]').hasClass('active'),
+        rooms: this.$options.find('li[data-type="rooms"]').hasClass('active'),
+        groups: this.$options.find('li[data-type="groups"]').hasClass('active')
       };
 
     if (!s || s.length < 1) {
@@ -113,7 +111,7 @@ var SearchPageView = Backbone.View.extend({
     this.lastSearch = s;
     var options = {
       users: opt.users,
-      rooms: opt.rooms,
+      rooms: opt.rooms || (!opt.users && !opt.rooms && !opt.groups), // default search on rooms when all are null
       groups: opt.groups,
       limit: {
         users: this.limit,

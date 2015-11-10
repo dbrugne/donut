@@ -44,7 +44,8 @@ var DonutRouter = Backbone.Router.extend({
     this.listenTo(app, 'joinOnetoone', this.focusOne);
     this.listenTo(app, 'joinGroup', this.joinGroup);
     this.listenTo(app, 'viewAdded', this.viewAdded);
-    this.listenTo(app, 'goToSearch', this.search);
+    this.listenTo(app, 'goToSearch', this.goToSearch);
+    this.listenTo(app, 'updateSearch', this.search);
 
     // static views
     this.homeView = new HomeView({});
@@ -58,31 +59,36 @@ var DonutRouter = Backbone.Router.extend({
     Backbone.history.navigate('#'); // just change URI, not run route action
   },
 
-  search: function (event) {
+  goToSearch: function (event) {
     if (event) {
       var elt = $(event.currentTarget);
       if (elt && elt.data('search') && elt.data('type')) {
-        var data = {
-          search: elt.data('search'),
-          skip: null,
-          what: {
-            users: false,
-            groups: false,
-            rooms: false
-          }
-        };
-        data['what'][elt.data('type')] = true;
-
-        this.unfocusAll();
-        app.trigger('redrawNavigation');
-        app.trigger('drawerClose');
-        this.searchView.render(data);
-        Backbone.history.navigate('search'); // just change URI, not run route action
-        return;
+        return this.search(elt.data('search'), elt.data('type'));
       }
     }
-
     this.root();
+  },
+
+  search: function (search, type) {
+    if (!search || !type) {
+      return this.root();
+    }
+
+    var data = {
+      search: search,
+      skip: null,
+      what: {
+        users: type === 'users',
+        groups: type === 'groups',
+        rooms: type === 'rooms'
+      }
+    };
+
+    this.unfocusAll();
+    app.trigger('redrawNavigation');
+    app.trigger('drawerClose');
+    this.searchView.render(data);
+    Backbone.history.navigate('search'); // just change URI, not run route action
   },
 
   focusGroup: function (name) {
@@ -109,7 +115,11 @@ var DonutRouter = Backbone.Router.extend({
           model = groups.addModel(response);
           this.focus(model);
           model.trigger('redraw');
-          app.trigger('nav-active-group', {group_id: response.group_id, group_name: name, popin: data.popin});
+          app.trigger('nav-active-group', {
+            group_id: response.group_id,
+            group_name: name,
+            popin: data.popin
+          });
         }
       }, this));
     }, this));
