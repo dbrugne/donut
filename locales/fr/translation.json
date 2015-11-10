@@ -344,9 +344,9 @@
       "groups_results": "<strong>__length__ communautés</strong> trouvées sur un total de <strong>__count__</strong>",
       "rooms_results": "<strong>__length__ donuts</strong> trouvés sur un total de <strong>__count__</strong>",
       "users_results": "<strong>__length__ utilisateurs</strong> trouvés sur un total de <strong>__count__</strong>",
-      "search_in_users": "chercher dans les utilisateurs",
-      "search_in_rooms": "chercher dans les donuts",
-      "search_in_groups": "chercher dans les communautés"
+      "search_in_users": "chercher des utilisateurs",
+      "search_in_rooms": "chercher des donuts",
+      "search_in_groups": "chercher des communautés"
     },
     "userscount": "<strong>__count__</strong> <span>utilisateur dans ce donut</span>",
     "userscount_plural": "<strong>__count__</strong> <span>utilisateurs dans ce donut</span>",

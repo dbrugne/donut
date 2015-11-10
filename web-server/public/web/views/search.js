@@ -16,7 +16,7 @@ var SearchPageView = Backbone.View.extend({
 
   events: {
     'click .load-more': 'onLoadMore',
-    'click .search-options a': 'onKeyup'
+    'click .search-options li': 'onKeyup'
   },
 
   initialize: function () {
