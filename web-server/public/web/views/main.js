@@ -347,7 +347,7 @@ var MainView = Backbone.View.extend({
   openUserAccount: function (event) {
     event.preventDefault();
     var view = new DrawerUserAccountView();
-    this.drawerView.setSize('380px').setView(view).open();
+    this.drawerView.setSize('450px').setView(view).open();
   },
   onOpenUserProfile: function (event) {
     this.$el.find('.tooltip').tooltip('hide');

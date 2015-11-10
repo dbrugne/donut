@@ -69,3 +69,8 @@ db[ 'history-one' ].dropIndex({
   'time': -1
 });
 ```
+
+* Set all users to confirmed and add email to emails field
+```
+grunt migration-emails-confirmed
+```

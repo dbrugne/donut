@@ -33,7 +33,7 @@ var CurrentUserModel = Backbone.Model.extend({
     this.set(data.user, {silent: true});
     this.setPreferences(data.preferences, {silent: true});
 
-    var html = '<span class=\"open-user-account\">' + i18next.t('global.notconfirmed') + '</span>';
+    var html = '<a href=\"#\" class=\"open-user-account\">' + i18next.t('global.notconfirmed') + '</a>';
     if (!this.isConfirmed()) {
       app.trigger('alert', 'warning', html, true);
     }

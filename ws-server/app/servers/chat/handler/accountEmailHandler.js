@@ -28,17 +28,17 @@ handler.call = function (data, session, next) {
   ];
 
   if (!data.email) {
-    return next('wrong-format');
+    return errors.getHandler('user:email', next)('wrong-format');
   }
 
   var email = data.email.toLocaleLowerCase();
 
   if (!validator.isEmail(email)) {
-    return next('wrong-format');
+    return errors.getHandler('user:email', next)('wrong-format');
   }
 
   if (!data.method || methods.indexOf(data.method) === -1) {
-    return next('params');
+    return errors.getHandler('user:email', next)('params');
   }
 
   this[data.method](data.email, user, next);
