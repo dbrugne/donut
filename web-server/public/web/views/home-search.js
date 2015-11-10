@@ -7,7 +7,7 @@ var keyboard = require('../libs/keyboard');
 
 var SearchView = Backbone.View.extend({
   timeout: 0,
-  timeBufferBeforeSearch: 500,
+  timeBufferBeforeSearch: 100,
   limit: 100,
   resultsTemplate: require('../templates/dropdown-search.html'),
   events: {
