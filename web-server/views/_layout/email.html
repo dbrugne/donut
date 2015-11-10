@@ -158,7 +158,7 @@
                 <span style="font-family: Arial,Helvetica,sans-serif; font-size: 26px; color: #ecf0f1;  line-height: 40px;">
                     <%- title %>
                 </span>
-                <% if (email_heading_action !== false) { %>
+                <% if (typeof email_heading_action !== 'undefined' && email_heading_action !== false) { %>
                 <small style="font-size:13px;display: block;text-align: right;color: #ecf0f1;margin-right: 10px;">
                     <%= email_heading_action.action %>&nbsp;<strong><a href="<%= email_heading_action.userlink.url %>" target="_blank" style="color:#FFFFFF; text-decoration:none;">@<%= username %></a></strong>
                 </small>
