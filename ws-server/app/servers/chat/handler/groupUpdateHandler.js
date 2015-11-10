@@ -234,6 +234,9 @@ handler.call = function (data, session, next) {
   ], function (err) {
     if (err) {
       if (_.isObject(err)) {
+        _.each(err, function (e) {
+          logger.warn('[group:updated] ' + e);
+        });
         return next(null, {code: 400, err: err});
       }
       return errors.getHandler('group:updated', next)(err);

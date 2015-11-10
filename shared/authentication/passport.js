@@ -29,6 +29,39 @@ var keenIoTracking = function (user, type) {
   });
 };
 
+var getAndParseRealNameFacebook = function (profile) {
+  if (!profile || !profile.displayName || !profile.displayName.length) {
+    return;
+  }
+
+  if (profile.displayName.length <= 20) {
+    return profile.displayName;
+  }
+
+  if (!profile.name || (!profile.name.givenName && !profile.name.familyName)) {
+    return profile.displayName.substr(0, 20);
+  }
+
+  if (profile.name.givenName && !profile.name.familyName) {
+    return profile.name.givenName.substr(0, 20);
+  }
+
+  if (!profile.name.givenName && profile.name.familyName) {
+    return profile.name.familyName.substr(0, 20);
+  }
+
+  // we get both givenName and familyName
+
+  var realname = profile.name.givenName + ' ' + profile.name.familyName;
+  if (realname.length <= 20) {
+    return realname;
+  }
+
+  realname = profile.name.givenName.charAt(0).toUpperCase() + '.';
+  realname += ' ' + profile.name.familyName;
+  return realname.substr(0, 20);
+};
+
 // serialize user for the session
 passport.serializeUser(function (user, done) {
   done(null, user.id);
@@ -197,7 +230,11 @@ passport.use(new FacebookStrategy(facebookStrategyOptions,
             // information
             if (!user.facebook.token) {
               user.facebook.token = token;
-              user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
+
+              if (profile.name && profile.displayName) {
+                newUser.facebook.name = profile.displayName;
+              }
+
               if (profile.emails) {
                 user.facebook.email = profile.emails[ 0 ].value;
                 user.local.email = profile.emails[ 0 ].value;
@@ -217,13 +254,15 @@ passport.use(new FacebookStrategy(facebookStrategyOptions,
             newUser.lastlogin_at = Date.now();
             newUser.facebook.id = profile.id;
             newUser.facebook.token = token;
-            newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
-            newUser.name = profile.displayName;
             newUser.confirmed = true;
+            var realname = getAndParseRealNameFacebook(profile);
+            if (realname) {
+              newUser.realname = realname;
+              newUser.facebook.name = profile.displayName;
+            }
+
             if (profile.emails) {
               newUser.facebook.email = profile.emails[ 0 ].value;
-              newUser.local.email = profile.emails[ 0 ].value;
-              newUser.emails = [{email: profile.emails[ 0 ].value, confirmed: true}];
             } // facebook can return multiple emails so we'll take the first
 
             newUser.save(function (err) {
@@ -313,9 +352,13 @@ passport.use(new FacebookTokenStrategy({
       newUser.lastlogin_at = Date.now();
       newUser.facebook.id = profile.id;
       newUser.facebook.token = accessToken;
-      newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName; // @todo dbr :test
-      newUser.name = profile.displayName; // @todo dbr :test
       newUser.confirmed = true;
+      var realname = getAndParseRealNameFacebook(profile);
+      if (realname) {
+        newUser.realname = realname;
+        newUser.facebook.name = profile.displayName;
+      }
+
       if (profile.emails) {
         newUser.facebook.email = profile.emails[ 0 ].value;
       } // facebook can return multiple emails so we'll take the first

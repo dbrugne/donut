@@ -16,6 +16,12 @@ db.getCollection('history-room').update({'data.images': {$exists: true }}, {$ren
 db.getCollection('history-one').update({'data.images': {$exists: true }}, {$rename: {'data.images': 'data.files'}}, {multi:true})
 ```
 
+* Remove name in user model
+```
+db.getCollection('users').update({'name': {$exists: true}}, {$unset: {'name': true}}, {multi: true})
+```
+
+
 * Remove position in user model (Branch 477/610)
 ```
 db.getCollection('users').update({}, {$unset: {positions: 1}}, {multi: true});

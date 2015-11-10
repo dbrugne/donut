@@ -725,7 +725,7 @@
         "create": {
           "label": "Create a community",
           "help": "A community is a place grouping your donut and allowing your community to become a member and access a group of donuts.",
-          "help-name": "Between 3 and 20 characters, only letters, numbers,  dashes (-) and underscores (_).<br>Caution the community name will no longer be editable.",
+          "help-name": "Between 2 and 15 characters, only letters, numbers, dashes (-) and underscores (_).<br>Caution the community name will no longer be editable.",
           "placeholder": "Group name",
           "submit": "Create"
         },
@@ -790,7 +790,7 @@
         },
         "create": {
           "label": "Create a donut",
-          "help": "Between 3 and 20 characters, only letters, numbers,  dashes (-) and underscores (_)",
+          "help": "Between 2 and 15 characters, only letters, numbers,  dashes (-) and underscores (_)",
           "placeholder": "Donut name",
           "submit": "Create",
           "group": "Already owner of a community? Want to create a dedicated space for you users? You can <a href=\"#\" class=\"open-group-create\">create a community</a>",
@@ -845,10 +845,20 @@
             "label": "Place",
             "placeholder": "City, country where you are",
             "help": "Optional"
+          },
+          "username": {
+            "label": "Username",
+            "info": "(unchangeable)"
+          },
+          "real-name": {
+            "label": "Real name",
+            "placeholder": "name and first name",
+            "help": "Optional (between 2 and 20 characters, only letters, numbers, spaces and dashes)"
           }
         }
       },
       "errors": {
+        "real-name-format": "Invalid real name",
         "bio": "Bio must be 200 characters max.",
         "location": "Location must be 70 characters max.",
         "description": "Description must be 200 characters max.",

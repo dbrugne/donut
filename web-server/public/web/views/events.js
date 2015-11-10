@@ -279,6 +279,7 @@ module.exports = Backbone.View.extend({
 
         var $previousEvent = $lastEventDisconnect.prevAll('div.block').not('hello').first();
 
+        // @todo yfuks don't call the client from here, pass via model.history() !!!
         if (that.model.get('type') !== 'room') {
           client.userHistory(that.model.get('id'), beforeLastDisconnectId, afterLastDisconnectId, null, function (event) {
             if (!event.err) {

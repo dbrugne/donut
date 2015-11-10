@@ -725,7 +725,7 @@
         "create": {
           "label": "Créez une communauté",
           "help": "Une communauté est un espace regroupant vos donut et permettant à votre communauté de devenir membre et d'accèder à un groupe de donuts.",
-          "help-name": "Entre 3 et 20 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement.<br>Attention le nom de la communauté ne sera plus modifiable.",
+          "help-name": "Entre 2 et 15 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement.<br>Attention le nom de la communauté ne sera plus modifiable.",
           "placeholder": "Nom de la communauté",
           "submit": "Créer la communauté"
         },
@@ -790,7 +790,7 @@
         },
         "create": {
           "label": "Créez un donut",
-          "help": "Entre 3 et 20 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement",
+          "help": "Entre 2 et 15 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement",
           "placeholder": "Nom du donut",
           "submit": "Créer le donut",
           "group": "Déjà propriétaire d'une communauté ? Vous voulez créer un espace dédié à vos utilisateurs ? Vous pouvez <a href=\"#\" class=\"open-group-create\">créer une communauté</a>.",
@@ -845,10 +845,20 @@
             "label": "Lieu",
             "placeholder": "Ville, pays où vous êtes",
             "help": "Facultatif"
+          },
+          "username": {
+            "label": "Nom d'utilisateur",
+            "info": "(non modifiable)"
+          },
+          "real-name": {
+            "label": "Nom complet",
+            "placeholder": "Nom et prénom",
+            "help": "Facultatif (entre 2 et 20 caractères, chiffres, lettres, espaces et tirets)"
           }
         }
       },
       "errors": {
+        "real-name-format": "Le nom complet est invalide",
         "bio": "La bio devrait contenir 200 caractères max.",
         "location": "Le lieu devrait contenir 70 caractères max.",
         "description": "La description devrait contenir 200 caractères max.",

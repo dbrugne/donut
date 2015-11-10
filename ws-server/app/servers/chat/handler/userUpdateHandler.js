@@ -10,6 +10,7 @@ var linkify = require('linkifyjs');
 var emailer = require('../../../../../shared/io/emailer');
 var conf = require('../../../../../config/index');
 var jwt = require('jsonwebtoken');
+var common = require('@dbrugne/donut-common/server');
 
 var Handler = function (app) {
   this.app = app;
@@ -36,6 +37,22 @@ handler.call = function (data, session, next) {
 
       var errors = {};
       var sanitized = {};
+
+      // realname
+      if (_.has(data.data, 'realname')) {
+        if (!common.validate.realname(data.data.realname)) {
+          errors.realname = 'real-name-format';
+        } else if (!validator.isLength(data.data.realname, 2, 20)) {
+          errors.realname = 'real-name-format';
+        } else {
+          var realname = data.data.realname;
+          realname = validator.trim(realname);
+          realname = validator.escape(realname);
+          if (realname !== user.realname) {
+            sanitized.realname = realname;
+          }
+        }
+      }
 
       // bio
       if (_.has(data.data, 'bio')) {
@@ -317,6 +334,12 @@ handler.call = function (data, session, next) {
 
   ], function (err) {
     if (err) {
+      if (_.isObject(err)) { // errors function validate
+        _.each(err, function (e) {
+          logger.warn('[user:updated] ' + e);
+        });
+        return next(null, { code: 400, err: err });
+      }
       return errors.getHandler('user:updated', next)(err);
     }
 

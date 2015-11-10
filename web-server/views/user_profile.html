@@ -18,7 +18,7 @@
             <p class="discuss"><a class="dc-back dc-text-contrast" href="<% if (!user) { %><%= _user.discuss %><% } else { %><%= _user.chat %><% } %>" ><%= t('actions.discuss') %></a></p>
         </div>
         <div class="info">
-            <a href="<%= _user.url %>" class="username">@<%= _user.username %></a>
+            <a href="<%= _user.url %>" class="username"><% if (_user.realname) { %><%= _user.realname %>&nbsp;<span class="othername">@<%= _user.username %></span><% } else { %>@<%= _user.username %><% } %></a>
             <div class="share ">
                 <%= t('chat.share.label') %>
                 <i class="facebook icon icon-facebook-square" data-url="<%- _user.url %>" data-name="<%- _user.username %>" data-avatar="<%- _user.avatar %>"></i>
