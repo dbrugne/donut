@@ -78,13 +78,15 @@ var SearchPageView = Backbone.View.extend({
   },
   onKeyup: function (event) {
     event.preventDefault();
+    this.cardsView.pending();
+
     var what = $(event.currentTarget).data('type');
     if (!what) {
       return;
     }
 
     this.$options.find('li').removeClass('active');
-    $(event.currentTarget).parent('li').addClass('active');
+    $(event.currentTarget).addClass('active');
 
     clearTimeout(this.timeout);
     this.timeout = setTimeout(_.bind(function () {

@@ -5,6 +5,7 @@ var urls = require('../../../../shared/util/url');
 
 var CardsView = Backbone.View.extend({
   template: require('../templates/cards.html'),
+  templateSpinner: require('../templates/spinner.html'),
 
   events: {
     'click a.join, .open-room-profile, .open-user-profile': 'onClose'
@@ -97,6 +98,10 @@ var CardsView = Backbone.View.extend({
 
   _remove: function () {
     this.remove();
+  },
+
+  pending: function () {
+    this.$el.html(this.templateSpinner);
   }
 
 });
