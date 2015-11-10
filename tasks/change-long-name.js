@@ -149,8 +149,6 @@ module.exports = function (grunt) {
 
     var longIterator = function (model, fn) {
 
-      var type = 'room';
-
       count.room.found++;
       if (model.name && model.name.length > 15) {
         count[type].bad++;
