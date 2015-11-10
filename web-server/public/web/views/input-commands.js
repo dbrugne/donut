@@ -467,7 +467,7 @@ var InputCommandsView = Backbone.View.extend({
   },
   random: function (paramString, parameters) {
     // in case of '/random letters'
-    if (paramString && !parameters) { // @todo yfuks add when user do '/rand 20 letters'
+    if (paramString && !parameters) {
       return this.errorCommand('random', 'parameters');
     }
 

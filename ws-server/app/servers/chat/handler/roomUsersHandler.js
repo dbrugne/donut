@@ -21,7 +21,7 @@ handler.call = function (data, session, next) {
 
   var that = this;
 
-  var searchTypes = [
+  var _searchTypes = [
     'all',              // users + ban
     'users',            // users
     'op',               // op + owner
@@ -32,7 +32,13 @@ handler.call = function (data, session, next) {
     'devoice'           // devoice
   ];
 
-  var searchTypesThatNeedPower = ['allowed', 'allowedPending', 'ban', 'devoice'];
+  var _searchTypesThatNeedPower = ['allowed', 'allowedPending', 'ban', 'devoice'];
+
+  var _statusTypes = [
+    'online',           // only online users
+    'offline',          // only offline users
+    'onoff'             // all online + some offline
+  ];
 
   /**
    * @param room_id (@mandatory)
@@ -45,7 +51,8 @@ handler.call = function (data, session, next) {
    *      start: index to start
    *      length: number of result
    *   }
-   *   status: (online or offline)
+   *   status: (online, offline or onoff)
+   *   maxOffline: (in case of onoff search, max offline users to send to client)
    * }
    * @returns users, count
    */
@@ -65,7 +72,7 @@ handler.call = function (data, session, next) {
         return callback('params');
       }
 
-      if (searchTypes.indexOf(data.attributes.type) === -1) {
+      if (_searchTypes.indexOf(data.attributes.type) === -1) {
         return callback('not-found');
       }
 
@@ -77,11 +84,11 @@ handler.call = function (data, session, next) {
         return callback('cannot make a regular search on an allowed room');
       }
 
-      if (data.attributes.status && data.attributes.status !== 'online' && data.attributes.status !== 'offline') {
+      if (data.attributes.status && _statusTypes.indexOf(data.attributes.status) === -1) {
         return callback('not-found');
       }
 
-      if ((searchTypesThatNeedPower.indexOf(data.attributes.type) !== -1) &&
+      if ((_searchTypesThatNeedPower.indexOf(data.attributes.type) !== -1) &&
       !room.isOwnerOrOp(user.id) && !user.admin) {
         return callback('not-found');
       }
@@ -103,7 +110,7 @@ handler.call = function (data, session, next) {
     },
 
     function selectByStatus (ids, callback) {
-      if (data.attributes.status !== 'online' && data.attributes.status !== 'offline') {
+      if (!data.attributes.status) {
         return callback(null, ids);
       }
 
@@ -112,9 +119,15 @@ handler.call = function (data, session, next) {
           return callback(err);
         }
         var idsTmp = [];
+
+        // max offline users send in case of an onoff search
+        var _maxOffline = data.attributes.maxOffline || 15;
+
         _.each(ids, function (id) {
           if ((results[id] && data.attributes.status === 'online') ||
-            (!(results[id]) && data.attributes.status === 'offline')) {
+            (!(results[id]) && data.attributes.status === 'offline') ||
+            (results[id] && data.attributes.status === 'onoff') ||
+            (!(results[id]) && data.attributes.status === 'onoff' && (_maxOffline-- > 0))) {
             idsTmp.push(id);
           }
         });

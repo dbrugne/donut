@@ -162,6 +162,10 @@ var NotificationsView = Backbone.View.extend({
       topic: (n.data.topic) ? common.markup.toText(n.data.topic) : ''
     });
 
+    if (['roomjoinrequest', 'groupjoinrequest', 'usermention'].indexOf(n.type) !== -1) {
+      var avatar = (n.data.by_user) ? n.data.by_user.avatar : n.data.user.avatar;
+      n.avatar = common.cloudinary.prepare(avatar, 90);
+    }
     if (n.type === 'roomjoinrequest') {
       n.href = '';
       n.css += 'open-room-access';
