@@ -2,8 +2,6 @@
 var logger = require('../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var _ = require('underscore');
 var NotificationModel = require('../../../../shared/models/notification');
-var HistoryOne = require('../../../../shared/models/historyone');
-var HistoryRoom = require('../../../../shared/models/historyroom');
 var RoomModel = require('../../../../shared/models/room');
 var conf = require('../../../../config');
 var async = require('async');
