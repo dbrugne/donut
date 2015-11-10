@@ -1189,7 +1189,7 @@
       "content": {
         "title": "Your access request to #__groupname__ have been refused",
         "disclaimer": "Don't worry you can make another request to join this community later !",
-        "action": "…and all of that thanks to ",
+        "action": "...and all of that thanks to ",
         "button": "Go to DONUT.me"
       }
     },
@@ -1198,6 +1198,7 @@
       "content": {
         "title": "You have been banned of community #__groupname__",
         "disclaimer": "",
+        "action": "...and all of that thanks to ",
         "button": "Back to DONUT"
       }
     },
@@ -1206,6 +1207,7 @@
       "content": {
         "title": "You are no longer banned from community #__groupname__",
         "disclaimer": "It looks like all is well that ends well!",
+        "action": "...and all of that thanks to ",
         "button": "Go to community"
       }
     },
