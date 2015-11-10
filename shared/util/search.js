@@ -104,7 +104,7 @@ module.exports = function (search, options, callback) {
         }
         searchResults.groups.count = count;
 
-        var q = GroupModel.find(criteria, 'name owner avatar color members op lastactivity_at');
+        var q = GroupModel.find(criteria, 'name owner avatar color members op lastactivity_at description');
         if (options.skip && options.skip.groups) {
           q.skip(options.skip.groups);
         }
@@ -294,7 +294,7 @@ module.exports = function (search, options, callback) {
             name: group.name,
             identifier: group.getIdentifier(),
             group_id: group.id,
-            disclaimer: group.disclaimer,
+            description: group.description,
             color: group.color,
             avatar: group._avatar(),
             users: count

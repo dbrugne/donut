@@ -63,9 +63,6 @@
                 </div>
                 <div class="actions flex-parent">
                     <div class="mode-ctn text-center">
-                        <div class="mode" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + (card.mode === 'public' ? 'public' : 'private' + (card.allow_user_request ? '-invites' : '') + (card.allow_group_member ? '-group' : ''))) %>">
-                            <%= t('global.mode.title.' + (card.mode === 'public' ? 'public' : 'private' + (card.allow_user_request ? '-invites' : '') + (card.allow_group_member ? '-group' : ''))) %>
-                        </div>
                         <div class="users">
                             <i class="icon icon-user-custom dc-text"></i> <%= card.users %>
                         </div>
