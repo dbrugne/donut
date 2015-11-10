@@ -162,6 +162,7 @@
     },
     "switchlanguage": "Language",
     "unknownerror": "Unknown error, please retry later",
+    "notconfirmed": "Your account has not beed confirmed, click here to manage your emails",
     "mode": {
       "title": {
         "private": "private",
