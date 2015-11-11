@@ -1,20 +1,10 @@
-var path = require('path');
+var getConfiguration = require('../shared/util/get-pomelo-configuration');
 
 module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-extend-config');
 
   grunt.registerTask('load-pomelo-configuration', function () {
-    var env = process.env.NODE_ENV || 'development';
-    var basePath = path.join(__dirname, '..', 'ws-server/config');
-    var configuration = {};
-
-    // master config
-    var masterConfig = require(basePath + '/master');
-    configuration.master = masterConfig[ env ];
-
-    // admin config
-    configuration.adminUser = require(basePath + '/adminUser');
-
+    var configuration = getConfiguration();
     grunt.config('pomelo', configuration);
   });
 };

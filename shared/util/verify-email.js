@@ -4,6 +4,7 @@ var jwt = require('jsonwebtoken');
 var emailer = require('../io/emailer');
 var conf = require('../../config/index');
 var User = require('../models/user');
+var pomeloBridge = require('../io/pomelo-bridge');
 
 var sendEmail = function (user, email, cb) {
   if (!user || !user.id || !user.emails || user.emails.length < 1) {
@@ -63,7 +64,17 @@ var validate = function (token, cb) {
       {$set: {'emails.$.confirmed': true, confirmed: true}},
       {}
       , function (err) {
-        return cb(err);
+        if (err) {
+          return cb(err);
+        }
+
+        if (user.confirmed) {
+          return cb(null);
+        }
+
+        pomeloBridge.notify('chat', 'confirmedNotifyTask.notify', {user_id: user.id}, function (err) {
+          return cb(err);
+        });
       });
   });
 };

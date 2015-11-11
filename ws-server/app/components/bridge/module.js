@@ -11,6 +11,7 @@ var logger = require('../../../../shared/util/logger').getLogger('donut', __file
 var _ = require('underscore');
 var adminNotifyTask = require('./tasks/adminNotifyTask');
 var createNotificationTask = require('./tasks/createNotificationTask');
+var confirmedNotifyTask = require('./tasks/confirmedNotifyTask');
 
 module.exports = function (opts) {
   return new Module(opts);
@@ -52,6 +53,14 @@ Module.prototype.retrieveTask = function (route) {
 
   if (route.indexOf('createNotificationTask') !== -1) {
     tasks = createNotificationTask(this.options);
+    method = route.substr(route.indexOf('.') + 1);
+    if (method && _.isFunction(tasks[method])) {
+      return _.bind(tasks[method], tasks);
+    }
+  }
+
+  if (route.indexOf('confirmedNotifyTask') !== -1) {
+    tasks = confirmedNotifyTask(this.options);
     method = route.substr(route.indexOf('.') + 1);
     if (method && _.isFunction(tasks[method])) {
       return _.bind(tasks[method], tasks);
@@ -180,7 +189,7 @@ Module.prototype.clientHandler = function (agent, query, fn) {
     case 'connector':
     case 'chat':
       var servers = agent.typeMap[query.target];
-      var server = servers[0];
+      var server = servers[0]; // @todo : improve dispatching
       if (query.type === 'request') {
         agent.request(server.id, moduleId, query, callback);
       } else {
