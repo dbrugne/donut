@@ -333,7 +333,7 @@
     "placeholder": "Déplacer ici",
     "createadonut": "Nouveau",
     "home": {
-      "roomstitle": "Voici les donuts existants, vous pouvez également en <a class='open-create-room'>créer un</a> :",
+      "roomstitle": "Bienvenue sur DONUT, voici quelques donuts actifs. Si vous n'en trouvez pas à votre goût, <a href=\"#\" class='open-create-room'>créez-en un !</a>",
       "userstitle": "Utilisateurs"
     },
     "search": {

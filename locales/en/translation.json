@@ -333,7 +333,7 @@
     "placeholder": "Place here",
     "createadonut": "Create a donut",
     "home": {
-      "roomstitle": "Here are the existing donuts, you can also <a class='open-create-room'>create one</a>:",
+      "roomstitle": "Welcome to DONUT, here are some active donuts. If you can not find one to your tastes, <a href=\"#\" class='open-create-room'> create one! </a>",
       "userstitle": "Users"
     },
     "search": {

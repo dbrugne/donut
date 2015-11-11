@@ -89,12 +89,14 @@ var SearchView = Backbone.View.extend({
     app.trigger('updateSearch', this.$search.val(), 'rooms');
   },
   search: function () {
-    this.$dropdownResults.html(require('../templates/spinner.html'));
-    this.$el.addClass('open');
     var s = this.$search.val();
     if (!s || s.length < 1) {
-      return this.onEmptyResults();
+      this.closeResults();
+      return;
     }
+
+    this.$dropdownResults.html(require('../templates/spinner.html'));
+    this.$el.addClass('open');
 
     var options = {
       users: true,
@@ -146,6 +148,7 @@ var SearchView = Backbone.View.extend({
   closeResults: function () {
     this.$el.removeClass('open');
     this.$dropdownResults.fadeOut();
+    clearTimeout(this.timeout);
   },
   getValue: function () {
     return this.$search.val();
