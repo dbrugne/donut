@@ -86,7 +86,7 @@ var SearchView = Backbone.View.extend({
     }, this), this.timeBufferBeforeSearch);
   },
   updateSearch: function () {
-    app.trigger('updateSearch', this.$search.val(), 'rooms');
+    app.trigger('updateSearch', this.$search.val(), 'default');
   },
   search: function () {
     var s = this.$search.val();

@@ -24,6 +24,15 @@ var SearchPageView = Backbone.View.extend({
   },
 
   render: function (data) {
+    if (data.what && data.what.users === false && data.what.rooms === false && data.what.groups === false) {
+      var types = this.getTypes();
+      if (types === null) {
+        data.what.rooms = true;
+      } else {
+        data.what = types;
+      }
+    }
+
     this.$el.html(this.template({data: data}));
     this.$options = this.$el.find('.search-options');
     this.cardsView = new CardsView({
@@ -61,11 +70,7 @@ var SearchPageView = Backbone.View.extend({
   onLoadMore: function () {
     this.cardsView.cleanupEmpty();
     var count = this.cardsView.count();
-    this.search(this.$search.val(), count, {
-      users: this.$options.find('li[data-type="users"]').hasClass('active'),
-      rooms: this.$options.find('li[data-type="rooms"]').hasClass('active'),
-      groups: this.$options.find('li[data-type="groups"]').hasClass('active')
-    });
+    this.search(this.$search.val(), count, this.getTypes());
   },
   onKeyup: function (event) {
     event.preventDefault();
@@ -90,11 +95,7 @@ var SearchPageView = Backbone.View.extend({
   },
   search: function (s, skip, opt) {
     skip = skip || null;
-    opt = opt || {
-        users: this.$options.find('li[data-type="users"]').hasClass('active'),
-        rooms: this.$options.find('li[data-type="rooms"]').hasClass('active'),
-        groups: this.$options.find('li[data-type="groups"]').hasClass('active')
-      };
+    opt = opt || this.getTypes();
 
     if (!s || s.length < 1) {
       return;
@@ -119,6 +120,17 @@ var SearchPageView = Backbone.View.extend({
       }
       this.onSearchResults(data);
     }, this));
+  },
+  getTypes: function () {
+    if (!this.$options) {
+      return null;
+    }
+
+    return {
+      users: this.$options.find('li[data-type="users"]').hasClass('active'),
+      rooms: this.$options.find('li[data-type="rooms"]').hasClass('active'),
+      groups: this.$options.find('li[data-type="groups"]').hasClass('active')
+    };
   }
 });
 
