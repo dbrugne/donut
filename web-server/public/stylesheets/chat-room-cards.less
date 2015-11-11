@@ -24,7 +24,14 @@
         .mode-ctn { display:none; }
       }
     }
-    &.card-group .actions .mode-ctn { .display-flex; .flex-flow(column nowrap); .align-items(center); .justify-content(center); }
+    &.card-group .design-room1 {
+      .group-type { position: absolute; right: 12px; top: 6px; font-weight: bold; color: #777777; }
+      > .ctn {
+        .name { margin-top:20px; text-align: left; }
+        .description {  max-height: 101px; }
+      }
+      .actions .mode-ctn { .display-flex; .flex-flow(column nowrap); .align-items(center); .justify-content(center); }
+    }
   }
   .spinner { text-align: center; width: 100%; }
 }

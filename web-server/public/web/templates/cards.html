@@ -52,16 +52,19 @@
 
             <div class="relative design-room1 dc-border">
                 <div class="ctn flex-parent column">
-                    <a class="user-avatar open-group-profile img-circle" href="<%= card.url %>" data-group-id="<%=card.group_id%>" style="background-image:url(<%= card.avatar %>)"></a>
-                    <div class="name">
-                        <a href="<%= card.join %>" class="open-group-profile flex-child flex-parent center jc-center" data-group-id="<%=card.group_id%>">
-                            <span class="value"><%=card.identifier.replace('#','')%></span>
-                        </a>
-                        <% if (card.owner_id) { %>
-                            <span class="owner flex-child flex-parent  center jc-center">
-                                <%= t('global.by') %> <a class="dc-text open-user-profile ml5" href="<%= card.owner_url %>" data-user-id="<%= card.owner_id %>">@<%= card.owner_username %></a>
-                            </span>
-                        <% } %>
+                    <span class="group-type"><%= t('global.group') %></span>
+                    <div class="flex-parent">
+                        <a class="user-avatar open-group-profile img-circle ml15 mr10" href="<%= card.url %>" data-group-id="<%=card.group_id%>" style="background-image:url(<%= card.avatar %>)"></a>
+                        <div class="name">
+                            <a href="<%= card.join %>" class="open-group-profile" data-group-id="<%=card.group_id%>">
+                                <span class="value"><%=card.identifier.replace('#','')%></span>
+                            </a>
+                            <% if (card.owner_id) { %>
+                                <span class="owner flex-child flex-parent  center jc-center">
+                                    <%= t('global.by') %> <a class="dc-text open-user-profile ml5" href="<%= card.owner_url %>" data-user-id="<%= card.owner_id %>">@<%= card.owner_username %></a>
+                                </span>
+                            <% } %>
+                        </div>
                     </div>
                     <div class="description flex-child">
                         <%= card.description %>

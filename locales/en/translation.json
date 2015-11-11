@@ -127,6 +127,7 @@
     "muted": "sound off"
   },
   "global": {
+    "group": "group",
     "view-profile": "view profile",
     "view-group": "view the groupe",
     "onetoones": "one to ones",
