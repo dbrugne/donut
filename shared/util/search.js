@@ -204,7 +204,7 @@ module.exports = function (search, options, callback) {
 
       var criteria = options.criteria || {username: _regexp};
 
-      var q = UserModel.find(criteria, 'username avatar color facebook bio ones location');
+      var q = UserModel.find(criteria, 'username realname avatar color facebook bio ones location');
       q.sort(options.sort || '-lastonline_at -lastoffline_at -avatar username');
       if (options.skip && options.skip.users) {
         q.skip(options.skip.users);
@@ -233,7 +233,6 @@ module.exports = function (search, options, callback) {
     function computeResults (callback) {
       if (options.rooms && rooms.length > 0) {
         _.each(rooms, function (room) {
-
           var r = {
             type: 'room',
             room_id: room.id,
@@ -295,6 +294,7 @@ module.exports = function (search, options, callback) {
             type: 'user',
             user_id: user.id,
             username: user.username,
+            realname: user.realname,
             location: user.location,
             avatar: user._avatar(),
             color: user.color,

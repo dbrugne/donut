@@ -47,7 +47,9 @@
         <% var color = item.color ? item.color.replace('#','').toLowerCase() : 'default' %>
         <li class="open-user-profile result dc-i-<%=color%>" data-user-id="<%=item.user_id%>">
             <img alt="<%= item.name %>" src="<%= item.avatar %>" class="mr5 dc-border">
-            <span class="name">@<%= item.username %></span>
+            <span class="name">
+                <% if (typeof item.realname !== "undefined") { %><%= item.realname %>&nbsp;<span class="othername">@<%= item.username %></span><% } else { %>@<%= item.username %><% } %>
+            </span>
             <span class="disclaimer"><%=item.bio%></span>
         </li>
     <% });%>
