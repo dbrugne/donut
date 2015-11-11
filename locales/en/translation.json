@@ -788,7 +788,7 @@
             "label": "Description",
             "placeholder": "Describe the donut in a few words",
             "help": "Optional",
-            "conditions": "This sentence will be displayed to any user requesting access"
+            "conditions": "Displayed tout any user on the access page_ selection criteria, password hint,..."
           },
           "visibility": {
             "label": "Visibility (admin only)",

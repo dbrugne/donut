@@ -788,7 +788,7 @@
             "label": "Description",
             "placeholder": "Décrivez le donut en quelques mots",
             "help": "Facultatif",
-            "conditions": "La phrase suivante sera affichée lorsqu'un utilisateur demandera un accès"
+            "conditions": "Affiché à tout utilisateur sur la page filtrant les accès critères de sélection, indice pour le mot de passe,..."
           },
           "visibility": {
             "label": "Visibilité (administrateur)",
