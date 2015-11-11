@@ -3,8 +3,10 @@
 <% } else { %>
     <% if(results.groups.list && results.groups.list.length > 0) { %>
         <li class="presentation">
-            <%= t('chat.search.groups_results', {length: results.groups.list.length, count:results.groups.count}) %>
-            <span class="go-to-search curp" data-type="groups" data-search="<%-search%>"><%= t('chat.search.see_all_results') %></span>
+            <%= t('chat.search.groups_results', {length: results.groups.list.length}) %>
+            <% if(results.groups.more) { %>
+                <span class="go-to-search curp" data-type="groups" data-search="<%-search%>"><%= t('chat.search.see_all_results') %></span>
+            <% } %>
         </li>
     <% } %>
     <% _.each(results.groups.list, function (item) { %>
@@ -18,8 +20,10 @@
 
     <% if(results.rooms.list && results.rooms.list.length > 0) { %>
         <li class="presentation">
-            <%= t('chat.search.rooms_results', {length: results.rooms.list.length, count:results.rooms.count}) %>
-            <span class="go-to-search curp" data-type="rooms" data-search="<%-search%>"><%= t('chat.search.see_all_results') %></span>
+            <%= t('chat.search.rooms_results', {length: results.rooms.list.length}) %>
+            <% if(results.rooms.more) { %>
+                <span class="go-to-search curp" data-type="rooms" data-search="<%-search%>"><%= t('chat.search.see_all_results') %></span>
+            <% } %>
         </li>
     <% } %>
     <% _.each(results.rooms.list, function (item) { %>
@@ -33,8 +37,10 @@
 
     <% if(results.users.list && results.users.list.length > 0) { %>
         <li class="presentation">
-            <%= t('chat.search.users_results', {length: results.users.list.length, count:results.users.count}) %>
-            <span class="go-to-search curp" data-type="users" data-search="<%-search%>"><%= t('chat.search.see_all_results') %></span>
+            <%= t('chat.search.users_results', {length: results.users.list.length}) %>
+            <% if(results.users.more) { %>
+                <span class="go-to-search curp" data-type="users" data-search="<%-search%>"><%= t('chat.search.see_all_results') %></span>
+            <% } %>
         </li>
     <% } %>
     <% _.each(results.users.list, function (item) { %>

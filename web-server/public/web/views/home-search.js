@@ -107,7 +107,16 @@ var SearchView = Backbone.View.extend({
       }
     };
     client.search(s, options, _.bind(function (data) {
-      if (data.groups.list.length + data.users.list.length + data.rooms.list.length === 0) {
+      var total = (data.groups && data.groups.list
+          ? data.groups.list.length
+          : 0) +
+        (data.rooms && data.rooms.list
+          ? data.rooms.list.length
+          : 0) +
+        (data.users && data.users.list
+          ? data.users.list.length
+          : 0);
+      if (total === 0) {
         return this.onEmptyResults();
       }
       _.each(_.union(

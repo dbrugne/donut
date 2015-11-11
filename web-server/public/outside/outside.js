@@ -50,19 +50,9 @@ if ($landing.length) {
             ? response.users.list
             : []);
 
-        var count = {
-          users: $landing.find('.results .cards .card.card-user').length,
-          rooms: $landing.find('.results .cards .card.card-room').length,
-          groups: $landing.find('.results .cards .card.card-group').length
-        };
-
         var more =
-          (response.rooms
-            ? response.rooms.count > count.rooms
-            : false) ||
-          (response.groups
-            ? response.groups.count > count.groups
-            : false);
+          (response.rooms && response.rooms.more) ||
+          (response.groups && response.groups.more);
 
         searchView.render({
           cards: list,

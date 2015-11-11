@@ -342,9 +342,9 @@
       "roomstitle": "Here are the donuts matching your request, you can also <a class='open-create-room'>create one</a> :",
       "userstitle": "Matching users",
       "see_all_results": "See all results",
-      "groups_results": "<strong>__length__ found communities</strong> out of <strong>__count__</strong>",
-      "rooms_results": "<strong>__length__ found donuts</strong> out of <strong>__count__</strong>",
-      "users_results": "<strong>__length__ found users</strong> out of <strong>__count__</strong>",
+      "groups_results": "<strong>__length__</strong> found communities",
+      "rooms_results": "<strong>__length__</strong> found donuts",
+      "users_results": "<strong>__length__</strong> found users",
       "search_in_users": "search for users",
       "search_in_rooms": "search for rooms",
       "search_in_groups": "search for communities"

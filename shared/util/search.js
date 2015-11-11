@@ -36,15 +36,15 @@ var common = require('@dbrugne/donut-common/server');
  * @return {
  *  users: {
  *    list: [],
- *    count: integer
+ *    more: boolean
  *  },
  *  rooms: {
  *    list: [],
- *    count: integer
+ *    more: boolean
  *  },
  *  groups: {
  *    list: [],
- *    count: integer
+ *    more: boolean
  *  },
  *  all: {
  *    list: [],
@@ -63,28 +63,22 @@ module.exports = function (search, options, callback) {
   var rooms = [];
   var groups = [];
 
-  var limit = options.limit || {  // @todo : to 25 (here and on client side)
-    users: 100,
-    groups: 100,
-    rooms: 100
-  };
+  var limit = options.limit || {users: 25, groups: 25, rooms: 25};
 
   var searchResults = {
     users: {
       list: [],
-      count: 0 // @todo : useless?
+      more: false
     },
     rooms: {
       list: [],
-      count: 0 // @todo : useless?
+      more: false
     },
     groups: {
       list: [],
-      count: 0 // @todo : useless?
+      more: false
     }
   };
-
-  // @todo : add a .more logic (get limit + 1 ...)
 
   async.waterfall([
 
@@ -94,34 +88,30 @@ module.exports = function (search, options, callback) {
         return callback(null);
       }
 
-      var criteria = options.criteria || {};
-      criteria.name = _regexp;
-      criteria.deleted = {$ne: true};
+      var criteria = options.criteria || {name: _regexp, deleted: {$ne: true}};
 
-      GroupModel.count(criteria, function (err, count) {
+      var q = GroupModel.find(criteria, 'name owner avatar color members op lastactivity_at description');
+      if (options.skip && options.skip.groups) {
+        q.skip(options.skip.groups);
+      }
+      if (limit.groups) {
+        q.limit(limit.groups + 1); // look for one more to handle "more" logic
+      }
+      q.sort(options.sort || '-lastactivity_at -members avatar name');
+      q.populate('owner', 'username');
+      q.exec(function (err, dbgroups) {
         if (err) {
           return callback(err);
         }
-        searchResults.groups.count = count;
 
-        var q = GroupModel.find(criteria, 'name owner avatar color members op lastactivity_at description');
-        if (options.skip && options.skip.groups) {
-          q.skip(options.skip.groups);
+        if (limit.groups && dbgroups.length === (limit.groups + 1)) {
+          searchResults.groups.more = true;
+          dbgroups.pop(); // remove last one
         }
-        if (limit.groups) {
-          q.limit(limit.groups);
-        }
-        q.sort(options.sort || '-lastactivity_at -members avatar name');
-        q.populate('owner', 'username');
-        q.exec(function (err, dbgroups) {
-          if (err) {
-            return callback(err);
-          }
 
-          groups = dbgroups;
+        groups = dbgroups;
 
-          return callback(null);
-        });
+        return callback(null);
       });
     },
 
@@ -132,15 +122,15 @@ module.exports = function (search, options, callback) {
       }
 
       GroupModel.find({name: options.group_name})// @todo : why searching on name? (and case sensitivity?)
-        .populate('members') // @todo why?
-        .populate('op') // @todo why?
+        .populate('members') // required to compare members user_id to current user_id for private rooms display pruposes
+        .populate('op') // required to compare members user_id to current user_id for private rooms display pruposes
         .populate('owner')
         .exec(function (err, models) {
           if (err || !models || models.length === 0) {
             return callback(err, null);
           }
 
-          return callback(null, models.pop()); // @todo : pop() ?
+          return callback(null, models.pop()); // .find retunrs a list of model (obviously only one cause name is unique), take the first one
         });
     },
 
@@ -150,9 +140,7 @@ module.exports = function (search, options, callback) {
         return callback(null, null);
       }
 
-      var criteria = options.criteria || {};
-      criteria.name = _regexp;
-      criteria.deleted = {$ne: true};
+      var criteria = options.criteria || {name: _regexp, deleted: {$ne: true}};
 
       // if group is defined, only search rooms inside that group
       if (group) {
@@ -170,44 +158,42 @@ module.exports = function (search, options, callback) {
         }
       }
 
-      RoomModel.count(criteria, function (err, count) {
+      var q;
+      if (!options.light) {
+        q = RoomModel.find(criteria, 'name owner group description topic avatar color users lastjoin_at lastactivity_at mode');
+        q.sort(options.sort || '-lastactivity_at -lastjoin_at -users avatar name');
+        if (options.skip && options.skip.rooms) {
+          q.skip(options.skip.rooms);
+        }
+        if (limit.rooms) {
+          q.limit(limit.rooms + 1); // handle "more" logic
+        }
+        q.populate('owner', 'username');
+        q.populate('group', 'name avatar color');
+      } else {
+        q = RoomModel.find(criteria, 'name group avatar color lastjoin_at lastactivity_at mode');
+        q.sort(options.sort || '-lastactivity_at -lastjoin_at avatar name');
+        if (options.skip && options.skip.rooms) {
+          q.skip(options.skip.rooms);
+        }
+        if (limit.rooms) {
+          q.limit(limit.rooms + 1); // handle "more" logic
+        }
+        q.populate('group', 'name avatar color');
+      }
+      q.exec(function (err, dbrooms) {
         if (err) {
           return callback(err);
         }
-        searchResults.rooms.count = count;
 
-        var q;
-        if (!options.light) {
-          q = RoomModel.find(criteria, 'name owner group description topic avatar color users lastjoin_at lastactivity_at mode');
-          q.sort(options.sort || '-lastactivity_at -lastjoin_at -users avatar name');
-          if (options.skip && options.skip.rooms) {
-            q.skip(options.skip.rooms);
-          }
-          if (limit.rooms) {
-            q.limit(limit.rooms);
-          }
-          q.populate('owner', 'username');
-          q.populate('group', 'name avatar color');
-        } else {
-          q = RoomModel.find(criteria, 'name group avatar color lastjoin_at lastactivity_at mode');
-          q.sort(options.sort || '-lastactivity_at -lastjoin_at avatar name');
-          if (options.skip && options.skip.rooms) {
-            q.skip(options.skip.rooms);
-          }
-          if (limit.rooms) {
-            q.limit(limit.rooms);
-          }
-          q.populate('group', 'name avatar color');
+        if (limit.rooms && dbrooms.length === (limit.rooms + 1)) {
+          searchResults.rooms.more = true;
+          dbrooms.pop(); // remove last one
         }
-        q.exec(function (err, dbrooms) {
-          if (err) {
-            return callback(err);
-          }
 
-          rooms = dbrooms;
+        rooms = dbrooms;
 
-          return callback(null, group);
-        });
+        return callback(null, group);
       });
     },
 
@@ -216,43 +202,37 @@ module.exports = function (search, options, callback) {
         return callback(false);
       }
 
-      var criteria = options.criteria || {};
-      criteria.username = _regexp;
+      var criteria = options.criteria || {username: _regexp};
 
-      UserModel.count(criteria, function (err, count) {
+      var q = UserModel.find(criteria, 'username avatar color facebook bio ones location');
+      q.sort(options.sort || '-lastonline_at -lastoffline_at -avatar username');
+      if (options.skip && options.skip.users) {
+        q.skip(options.skip.users);
+      }
+      if (limit.users) {
+        q.limit(limit.users + 1); // handle "more" logic
+      }
+      q.populate('ones', 'lastactivity_at');
+      q.populate('ones.user', 'id');
+      q.exec(function (err, dbusers) {
         if (err) {
           return callback(err);
         }
-        searchResults.users.count = count;
 
-        var q = UserModel.find(criteria, 'username avatar color facebook bio ones location');
-        q.sort(options.sort || '-lastonline_at -lastoffline_at -avatar username');
-        if (options.skip && options.skip.users) {
-          q.skip(options.skip.users);
+        if (limit.users && dbusers.length === (limit.users + 1)) {
+          searchResults.users.more = true;
+          dbusers.pop(); // remove last one
         }
-        if (limit.users) {
-          q.limit(limit.users);
-        }
-        q.populate('ones', 'lastactivity_at');
-        q.populate('ones.user', 'id');
-        q.exec(function (err, dbusers) {
-          if (err) {
-            return callback(err);
-          }
 
-          users = dbusers;
+        users = dbusers;
 
-          return callback(null);
-        });
+        return callback(null);
       });
     },
 
     function computeResults (callback) {
       if (options.rooms && rooms.length > 0) {
         _.each(rooms, function (room) {
-          var count = (room.users)
-            ? room.users.length
-            : 0;
 
           var r = {
             type: 'room',
@@ -274,7 +254,9 @@ module.exports = function (search, options, callback) {
           if (!options.light) {
             r.description = room.description;
             r.topic = room.topic;
-            r.users = count;
+            r.users = (room.users)
+              ? room.users.length
+              : 0;
             if (room.owner) {
               r.owner_id = room.owner.id;
               r.owner_username = room.owner.username;
@@ -287,8 +269,6 @@ module.exports = function (search, options, callback) {
 
       if (options.groups && groups.length > 0) {
         _.each(groups, function (group) {
-          var count = group.count();
-
           var _data = {
             type: 'group',
             name: group.name,
@@ -297,7 +277,7 @@ module.exports = function (search, options, callback) {
             description: group.description,
             color: group.color,
             avatar: group._avatar(),
-            users: count
+            users: group.count()
           };
 
           if (group.owner) {
@@ -324,7 +304,9 @@ module.exports = function (search, options, callback) {
             var a = _.find(user.get('ones'), function (item) {
               return item.user.id === options.user_id;
             });
-            r.lastactivity_at = a && a.lastactivity_at ? a.lastactivity_at : null;
+            r.lastactivity_at = a && a.lastactivity_at
+              ? a.lastactivity_at
+              : null;
           }
 
           searchResults.users.list.push(r);

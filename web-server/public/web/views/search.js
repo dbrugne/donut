@@ -12,7 +12,7 @@ var SearchPageView = Backbone.View.extend({
   timeout: 0,
   timeBufferBeforeSearch: 500,
   lastSearch: '',
-  limit: 100,
+  limit: 25,
 
   events: {
     'click .load-more': 'onLoadMore',
@@ -52,16 +52,7 @@ var SearchPageView = Backbone.View.extend({
     this.toggleMore(data);
   },
   toggleMore: function (data) {
-    var count = this.cardsView.count();
-    var more =
-      (data.rooms
-        ? data.rooms.count > count.rooms
-        : false) ||
-      (data.groups
-        ? data.groups.count > count.groups
-        : false);
-
-    if (more) {
+    if ((data.rooms && data.rooms.more) || (data.groups && data.groups.more) || (data.users && data.users.more)) {
       this.$searchMore.removeClass('hidden');
     } else {
       this.$searchMore.addClass('hidden');
@@ -99,8 +90,7 @@ var SearchPageView = Backbone.View.extend({
   },
   search: function (s, skip, opt) {
     skip = skip || null;
-    opt = opt
-      || {
+    opt = opt || {
         users: this.$options.find('li[data-type="users"]').hasClass('active'),
         rooms: this.$options.find('li[data-type="rooms"]').hasClass('active'),
         groups: this.$options.find('li[data-type="groups"]').hasClass('active')

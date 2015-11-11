@@ -342,9 +342,9 @@
       "roomstitle": "Voici les donuts correspondant à votre recherche, vous pouvez aussi en <a class='open-create-room'>créer un nouveau</a> :",
       "userstitle": "Utilisateurs correspondants",
       "see_all_results": "Voir tous les résultats",
-      "groups_results": "<strong>__length__ communautés</strong> trouvées sur un total de <strong>__count__</strong>",
-      "rooms_results": "<strong>__length__ donuts</strong> trouvés sur un total de <strong>__count__</strong>",
-      "users_results": "<strong>__length__ utilisateurs</strong> trouvés sur un total de <strong>__count__</strong>",
+      "groups_results": "<strong>__length__</strong> communautés trouvées",
+      "rooms_results": "<strong>__length__</strong> donuts trouvés",
+      "users_results": "<strong>__length__</strong> utilisateurs",
       "search_in_users": "chercher des utilisateurs",
       "search_in_rooms": "chercher des donuts",
       "search_in_groups": "chercher des communautés"
