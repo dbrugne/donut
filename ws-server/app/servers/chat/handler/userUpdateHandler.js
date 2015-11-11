@@ -7,9 +7,6 @@ var Room = require('../../../../../shared/models/room');
 var validator = require('validator');
 var cloudinary = require('../../../../../shared/util/cloudinary').cloudinary;
 var linkify = require('linkifyjs');
-var emailer = require('../../../../../shared/io/emailer');
-var conf = require('../../../../../config/index');
-var jwt = require('jsonwebtoken');
 var common = require('@dbrugne/donut-common/server');
 
 var Handler = function (app) {
@@ -179,44 +176,6 @@ handler.call = function (data, session, next) {
       }
 
       return callback(null, sanitized);
-    },
-
-    function email (sanitized, callback) {
-      if (!_.has(data.data, 'email')) {
-        return callback(null, sanitized);
-      }
-
-      // main email
-      var email = data.data.email.toLocaleLowerCase();
-
-      if (!validator.isEmail(email)) {
-        return callback('wrong-format');
-      }
-
-      if (!_.findWhere(user.emails, {email: email})) {
-        user.emails.push({email: email, confirmed: false});
-      }
-
-      var oldEmail = user.local.email;
-      user.local.email = email;
-      user.save(function (err) {
-        if (err) {
-          return callback(err);
-        }
-
-        emailer.emailChanged(oldEmail, function (err) {
-          if (err) {
-            return errors.getHandler('user:updated', next)(err);
-          }
-        });
-        var token = jwt.sign({id: user.id, email: email}, conf.verify.secret, {expiresIn: conf.verify.expire});
-        emailer.verify(email, token, function (err) {
-          if (err) {
-            return errors.getHandler('user:updated', next)(err);
-          }
-        });
-        return callback(null, sanitized);
-      });
     },
 
     function update (sanitized, callback) {

@@ -2,7 +2,6 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var client = require('../libs/client');
 var app = require('../libs/app');
-var i18next = require('i18next-client');
 
 var CurrentUserModel = Backbone.Model.extend({
   initialize: function (options) {
@@ -33,10 +32,6 @@ var CurrentUserModel = Backbone.Model.extend({
     this.set(data.user, {silent: true});
     this.setPreferences(data.preferences, {silent: true});
 
-    var html = '<a href=\"#\" class=\"open-user-account\">' + i18next.t('global.notconfirmed') + '</a>';
-    if (!this.isConfirmed()) {
-      app.trigger('alert', 'warning', html, true);
-    }
     this.trigger('change');
     app.trigger('muteview');
   },

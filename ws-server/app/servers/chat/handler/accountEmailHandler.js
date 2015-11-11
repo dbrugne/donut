@@ -3,11 +3,10 @@ var _ = require('underscore');
 var errors = require('../../../util/errors');
 var async = require('async');
 var User = require('../../../../../shared/models/user');
-var emailer = require('../../../../../shared/io/emailer');
+var verifyEmail = require('../../../../../shared/util/verify-email');
 var validator = require('validator');
-var jwt = require('jsonwebtoken');
-var conf = require('../../../../../config/index');
 var disposableDomains = require('disposable-email-domains');
+var emailer = require('../../../../../shared/io/emailer');
 
 var Handler = function (app) {
   this.app = app;
@@ -25,7 +24,8 @@ handler.call = function (data, session, next) {
   var methods = [
     'add',        // Add the email to the list of user emails
     'delete',     // Delete the email from the list of user emails
-    'validate'    // Send a validation email to user
+    'validate',   // Send a validation email to user
+    'main'        // Change main email of user
   ];
 
   if (!data.email) {
@@ -87,32 +87,7 @@ handler.add = function (email, user, next) {
 };
 
 handler.validate = function (email, user, next) {
-  async.waterfall([
-
-    function check (callback) {
-      if (_.findWhere(user.emails, {email: email, confirmed: true})) {
-        return callback('not-allowed');
-      }
-
-      return callback(null);
-    },
-
-    function sendMail (callback) {
-      var profile = {
-        id: user.id,
-        email: email
-      };
-      var token = jwt.sign(profile, conf.verify.secret, {expiresIn: conf.verify.expire});
-      emailer.verify(email, token, function (err) {
-        if (err) {
-          return callback(err);
-        }
-
-        return callback(null);
-      });
-    }
-
-  ], function (err) {
+  verifyEmail.sendEmail(user, email, function (err) {
     if (err) {
       return errors.getHandler('user:email:validate', next)(err);
     }
@@ -149,4 +124,31 @@ handler.delete = function (email, user, next) {
 
     return next(null, {success: true});
   });
+};
+
+handler.main = function (email, user, next) {
+  if (!_.findWhere(user.emails, {email: email})) {
+    user.emails.push({email: email, confirmed: false});
+  }
+
+  var oldEmail = user.local.email;
+  user.local.email = email;
+  user.save(_.bind(function (err) {
+    if (err) {
+      return errors.getHandler('user:email:main', next)(err);
+    }
+
+    emailer.emailChanged(oldEmail, _.bind(function (err) {
+      if (err) {
+        return errors.getHandler('user:email:main', next)(err);
+      }
+
+      // if address not validate, send an validation email
+      if (!_.findWhere(user.emails, {email: email, confirmed: true})) {
+        return this.validate(email, user, next);
+      }
+
+      return next(null, {success: true});
+    }, this));
+  }, this));
 };

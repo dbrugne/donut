@@ -75,7 +75,7 @@ var DrawerAccountEmailView = Backbone.View.extend({
     this.$spinner.show();
     this.$form.removeClass('has-error');
 
-    client.userUpdate({email: this.$input.val()}, function (data) {
+    client.accountEmail(this.$input.val(), 'main', function (data) {
       that.$spinner.hide();
       if (data.err) {
         return that.putError(data.err);

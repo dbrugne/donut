@@ -9,8 +9,8 @@ var conf = require('../../config/index');
 var User = require('../models/user');
 var emailer = require('../io/emailer');
 var i18next = require('../util/i18next');
+var verifyEmail = require('../util/verify-email');
 var keenio = require('../io/keenio');
-var jwt = require('jsonwebtoken');
 
 // keen.io tracking
 var keenIoTracking = function (user, type) {
@@ -115,24 +115,17 @@ passport.use('local-signup', new LocalStrategy(localStrategyOptions,
 
             // tracking
             keenIoTracking(newUser, 'email');
-
-            // email will be send on next tick but done() is called immediatly
-            // verification token with user profile inside
-            var profile = {
-              id: newUser.id,
-              email: newUser.local.email
-            };
-            var token = jwt.sign(profile, conf.verify.secret, {expiresIn: conf.verify.expire});
-
-            emailer.verify(newUser.local.email, token, function (err) {
+            // email will be send on next tick but done() is called immediately
+            verifyEmail.sendEmail(newUser, newUser.local.email, function (err) {
               if (err) {
                 return logger.error('Unable to sent verify email: ' + err);
               }
-            });
-            emailer.welcome(newUser.local.email, function (err) {
-              if (err) {
-                return logger.error('Unable to sent welcome email: ' + err);
-              }
+
+              emailer.welcome(newUser.local.email, function (err) {
+                if (err) {
+                  return logger.error('Unable to sent welcome email: ' + err);
+                }
+              });
             });
             return done(null, newUser);
           });

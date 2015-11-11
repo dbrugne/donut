@@ -35,6 +35,7 @@ var DrawerUserEditView = Backbone.View.extend({
   _remove: function () {
     this.emailView.remove();
     this.passwordView.remove();
+    this.manageEmailsView.remove();
     this.remove();
   },
   onResponse: function (user) {
@@ -53,7 +54,7 @@ var DrawerUserEditView = Backbone.View.extend({
       el: this.$('.password-container'),
       user: this.user
     });
-    this.passwordView = new ManageEmailsView({
+    this.manageEmailsView = new ManageEmailsView({
       el: this.$('.manage-email-container'),
       user: this.user
     });

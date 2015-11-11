@@ -27,18 +27,12 @@ var AlertView = Backbone.View.extend({
    * @param noDelay
    * @returns {AlertView}
    */
-  onAlert: function (type, message, noDelay) {
+  onAlert: function (type, message) {
     type = type || 'info';
     this.$message
       .html(message);
 
-    noDelay
-    ? this.$alert
-      .finish()
-      .removeClass('info warning error')
-      .addClass(type)
-      .slideDown('fast')
-    : this.$alert
+    this.$alert
       .finish()
       .removeClass('info warning error')
       .addClass(type)

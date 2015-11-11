@@ -46,7 +46,7 @@ var DrawerAccountManageEmailsView = Backbone.View.extend({
     $target.prop('checked', false);
 
     confirmationView.open({message: 'change-email', email: email}, _.bind(function () {
-      client.userUpdate({email: email}, _.bind(function (d) {
+      client.accountEmail(email, 'main', _.bind(function (d) {
         if (d.err) {
           return this.putError(d.err);
         }
