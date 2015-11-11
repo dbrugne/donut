@@ -3,11 +3,11 @@ var logger = require('../../../../../shared/util/logger').getLogger('donut', __f
 var common = require('@dbrugne/donut-common/server');
 var _ = require('underscore');
 var async = require('async');
+var RoomModel = require('../../../../../shared/models/room');
 var NotificationModel = require('../../../../../shared/models/notification');
 var HistoryRoomModel = require('../../../../../shared/models/historyroom');
 var emailer = require('../../../../../shared/io/emailer');
 var utils = require('./../utils');
-var moment = require('../../../../../shared/util/moment');
 var conf = require('../../../../../config/index');
 
 module.exports = function (facade) {
@@ -205,4 +205,36 @@ Notification.prototype.sendEmail = function (model, done) {
     }
 
   ], done);
+};
+
+Notification.prototype.populateNotification = function (notification, done) {
+  if (!notification || !notification.data || !notification.data.event) {
+    return done('roomMessage population error: params');
+  }
+
+  HistoryRoomModel.findOne({_id: notification.data.event.toString()})
+    .populate('user', 'username avatar color facebook')
+    .populate('by_user', 'username avatar color facebook')
+    .populate('room', 'avatar color name group')
+    .exec(function (err, event) {
+      if (err) {
+        return done(err);
+      }
+      if (!event) {
+        return done(null);
+      }
+
+      RoomModel.populate(event, {
+        path: 'room.group',
+        model: 'Group',
+        select: 'name'
+      }, function (err, docs) {
+        if (err) {
+          return done(err);
+        }
+
+        notification.data.event = docs;
+        return done(null, notification);
+      });
+    });
 };

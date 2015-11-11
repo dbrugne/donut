@@ -5,7 +5,6 @@ var _ = require('underscore');
 var async = require('async');
 var utils = require('./../utils');
 var emailer = require('../../../../../shared/io/emailer');
-var moment = require('../../../../../shared/util/moment');
 var conf = require('../../../../../config/index');
 var NotificationModel = require('../../../../../shared/models/notification');
 var HistoryOneModel = require('../../../../../shared/models/historyone');
@@ -180,4 +179,25 @@ Notification.prototype.sendEmail = function (model, done) {
     }
 
   ], done);
+};
+
+Notification.prototype.populateNotification = function (notification, done) {
+  if (!notification || !notification.data || !notification.data.event) {
+    return done('userMessage population error: params');
+  }
+
+  var q = HistoryOneModel.findOne({_id: notification.data.event.toString()})
+    .populate('from', 'username avatar color facebook')
+    .populate('to', 'username avatar color facebook');
+  q.exec(function (err, event) {
+    if (err) {
+      return done(err);
+    }
+    if (!event) {
+      return done(null);
+    }
+
+    notification.data.event = event;
+    return done(null, notification);
+  });
 };
