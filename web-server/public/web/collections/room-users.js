@@ -59,11 +59,7 @@ var RoomUsersCollection = Backbone.Collection.extend({
   },
   initialize: function (options) {
     this.parent = options.parent;
-
-    this.on('change:avatar', this.onChange);
-
-    // @todo yfuks same fix as models/user, reduce event propagation => listenTo('user:updated') => check that user is in this collection => change model + redraw
-    this.on('change:status', this.onChange);
+    this.listenTo(client, 'user:updated', this.onChange);
   },
 
   /**
@@ -74,7 +70,13 @@ var RoomUsersCollection = Backbone.Collection.extend({
    *
    * @source: http://www.garethelms.org/2012/02/backbone-js-collections-can-listen-to-its-models-changes/
    */
-  onChange: function (model, value, options) {
+  onChange: function (data) {
+    var model = this.get(data.user_id);
+    if (!model) {
+      return;
+    }
+
+    model.onUpdated(data);
     this.sort(); // for 'status' attribute
     this.trigger('users-redraw');
   },
