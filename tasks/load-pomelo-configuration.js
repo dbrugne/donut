@@ -1,4 +1,4 @@
-var getConfiguration = require('../shared/util/get-pomelo-configuration');
+var getConfiguration = require('../shared/util/pomelo-configuration');
 
 module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-extend-config');

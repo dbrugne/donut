@@ -1,5 +1,5 @@
 'use strict';
-var configuration = require('../util/get-pomelo-configuration')();
+var configuration = require('../util/pomelo-configuration')();
 var Bridge = require('../../ws-server/app/components/bridge').Bridge;
 
 var client = Bridge({
