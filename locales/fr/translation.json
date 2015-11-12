@@ -434,6 +434,8 @@
         "disallowuser": "Vous allez supprimer l'accès à @__username__",
         "ban-group-user": "Vous allez bannir l'utilisateur @__username__ de cette communauté",
         "deban-group-user": "Vous allez débannir l'utilisateur @__username__ de cette communauté",
+        "op-group-user": "Vous êtes sur le point de nommer @__username__ modérateur de la communauté. Cet utilisateur pourra accepter ou refuser les demandes d'adhésions, inviter des utilisateurs à devenir membre et bannir un utilisateur du groupe.",
+        "deop-group-user": "Vous allez retirer @__username__ des modérateurs.",
         "invite": "Vous allez autoriser l'accès à @__username__. Une notification va lui être adressée pour l'inviter à rejoindre #__name__.",
         "requestallowance": "<strong>Demander à devenir membre.</strong><br>Le créateur de la communauté va avoir accès à votre vrai nom et votre e-mail."
       }
