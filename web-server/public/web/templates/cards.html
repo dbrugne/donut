@@ -11,7 +11,7 @@
                     <div class="user-avatar dc-border-darker open-user-profile" style="background-image:url(<%= card.avatar %>)" data-user-id="<%=card.user_id%>"></div>
                 </div>
                 <span class="name flex-parent column">
-                   <a href="<%= card.url %>" class="open-user-profile" data-user-id="<%=card.user_id%>">
+                   <a href="<%= card.chat %>" class="open-user-profile" data-user-id="<%=card.user_id%>">
                        <span class="username">@<%= card.username %></span>
                    </a>
                    <% if (card.location) { %>
@@ -21,11 +21,11 @@
                 <div class="flex-child"></div>
                 <div class="actions flex-parent jc-center">
                     <% if(card.join) { %>
-                    <a class="first clean flex-child" href="<%= card.join %>" data-dismiss="modal"><%= t('actions.discuss') %></a>
+                        <a class="first clean flex-child" href="<%= card.join %>" data-dismiss="modal"><%= t('actions.discuss') %></a>
                     <% } else { %>
-                    <span class="first empty clean flex-child"></span>
+                        <span class="first empty clean flex-child"></span>
                     <% } %>
-                    <a class="last clean flex-child open-user-profile" data-dismiss="modal" href="<%=card.url%>" data-user-id="<%=card.user_id%>">
+                    <a class="last clean flex-child open-user-profile" data-dismiss="modal" href="<%=card.chat%>" data-user-id="<%=card.user_id%>">
                         <%= t('global.view-profile') %>
                     </a>
                 </div>

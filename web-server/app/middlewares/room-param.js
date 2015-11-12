@@ -76,8 +76,8 @@ module.exports = function (req, res, next, roomname) {
                 username: model.owner.username,
                 avatar: model.owner._avatar(80),
                 color: model.owner.color,
-                url: (model.owner.username)
-                  ? req.protocol + '://' + conf.fqdn + urls(model.owner, 'user', 'url')
+                chat: (model.owner.username)
+                  ? req.protocol + '://' + conf.fqdn + urls(model.owner, 'user', 'chat')
                   : '',
                 isOwner: true,
                 isOp: false // could not be both
@@ -98,8 +98,8 @@ module.exports = function (req, res, next, roomname) {
                   username: _model.username,
                   avatar: _model._avatar(80),
                   color: _model.color,
-                  url: (_model.username)
-                    ? req.protocol + '://' + conf.fqdn + urls(_model, 'user', 'url')
+                  chat: (_model.username)
+                    ? req.protocol + '://' + conf.fqdn + urls(_model, 'user', 'chat')
                     : '',
                   isOp: true,
                   isOwner: false
@@ -127,8 +127,8 @@ module.exports = function (req, res, next, roomname) {
                   username: _model.username,
                   avatar: _model._avatar(80),
                   color: _model.color,
-                  url: (_model.username)
-                    ? req.protocol + '://' + conf.fqdn + urls(_model, 'user', 'url')
+                  chat: (_model.username)
+                    ? req.protocol + '://' + conf.fqdn + urls(_model, 'user', 'chat')
                     : '',
                   isOp: false,
                   isOwner: false
