@@ -7,7 +7,7 @@
         <img class="avatar img-circle" src="<%= room.avatar %>" alt="<%= room.name %> avatar">
         <% if (room.isOwner || room.isAdmin) { %>
         <span class="overlay open-room-edit img-circle" data-room-id="<%= room.room_id %>"></span>
-        <span class="overlay-text open-room-edit" data-room-id="<%= room.room_id %>"><%= t('profile.user.edit') %></span>
+        <span class="overlay-text open-room-edit" data-room-id="<%= room.room_id %>"><%= t('profile.common.editlink') %></span>
         <% } %>
     </div>
 

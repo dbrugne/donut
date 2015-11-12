@@ -182,9 +182,7 @@
             > .relative { max-width:450px; }
             input { height: 28px; max-width: 450px; padding: 6px 24px 6px 12px;
               .border-radius(0);
-              &:focus {
-                .box-shadow(none);
-              }
+              &:focus { .box-shadow(none); }
             }
             i.icon-search { position: absolute; right: 9px; z-index: 2; display: block; top: 7px; }
           }
@@ -237,6 +235,7 @@
                 margin-right: 10px;
                 overflow: hidden;
               }
+              .status { padding-top:2px; margin-right: 4px; }
               &:nth-of-type(odd) {
                 background-color: #f9f9f9;
               }
@@ -1390,20 +1389,10 @@
     .alert.error { background-color: @cl-error; }
   }
 
-  .status {
-    font-size: 14px;
-    font-weight: bold;
-    color: @cl-background;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: @cl-background;
-    &.contrast {
-      -webkit-text-stroke-color: @cl-subtext20;
-    }
-  }
   .status { color: transparent; }
-  .online>.status, .status.online { color: @cl-green_sea; }
+  .online>.status, .status.online { color: @cl-success; }
   .connecting>.status, .status.connecting { color: @cl-warning; }
-  .offline>.status, .status.offline { color: @cl-pomegranate; }
+  .offline>.status, .status.offline { color: @cl-subtext15; }
   .error>.status, .status.error { color: @cl-pomegranate; }
 
   .block { margin: 0;

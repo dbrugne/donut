@@ -51,7 +51,7 @@
                                 <img class="mr5 dc-border-darker" src="<%= user.avatar %>" alt="@<%- user.username %> avatar">
                                 <span class="mr5 dc-text-contrast">@<%- user.username %></span>
                                 <span class="connection mr5">
-                                    <i class="icon icon-circle status online" title="<%= t('global.online') %>"></i>
+                                    <i class="icon icon-dot-circle-o status online" title="<%= t('global.online') %>"></i>
                                 </span>
                             <% } %>
 
@@ -93,10 +93,6 @@
                             <%= t('profile.room.disclaimer.before') %>
                             <a class="dct" href="<%= room.url %>"><%= room.name %></a>
                             <%= t('profile.room.disclaimer.after') %>
-                        <% } else if (typeof _user !== "undefined") { %>
-                            <%= t('profile.user.disclaimer.before') %>
-                            <a class="dct" href="<%= _user.url %>">@<%= _user.username %></a>
-                            <%= t('profile.user.disclaimer.after') %>
                         <% } %>
 
                     </div>

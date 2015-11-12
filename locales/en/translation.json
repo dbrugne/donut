@@ -284,14 +284,8 @@
     },
     "user": {
       "hisrooms": "Active in these donuts",
-      "disclaimer": {
-        "before": "This page is the profile of the user ",
-        "after": "on the chat platform <a href=\"/\">DONUT.me</a>. On <a href=\"/\">DONUT.me</a> you can join or create a thematic chat room (a donut) about whatever you like. You can chat with people who share your interests."
-      },
-      "permalink": "Permalink of this profile",
       "signuped": "Signed up on",
-      "onlined": "online __time__ ago",
-      "edit": "Edit"
+      "onlined": "online __time__ ago"
     }
   },
   "chat": {
@@ -451,6 +445,8 @@
         "disallowuser": "You are about to disallow @__username__",
         "ban-group-user": "You are about to ban user @__username__ from this community",
         "deban-group-user": "You are about to deban user @__username__ from this community",
+        "op-group-user": "Your are about to promote @__username__ moderator from this community. As moderator this user would be able to manage membership requests, invite users to become members and ban members from the group.",
+        "deop-group-user": "You are about to remove as moderateur @__username__ from this community.",
         "invite": "You are about to authorize @__username__. A notification will be sent to invite @__username__ to join #__name__.",
         "requestallowance": "<strong>Membership request.</strong><br>The community creator will have access to your real name and email.",
         "add-email": "New mail address :",

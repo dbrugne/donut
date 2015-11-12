@@ -85,7 +85,6 @@ app.use(require('./app/authentication/verify'));
 // public routes
 app.use(require('./app/routes/seo'));
 app.use(require('./app/routes/landing'));
-app.use(require('./app/routes/user-profile'));
 app.use(require('./app/routes/room-profile'));
 app.use(require('./app/routes/group-profile'));
 app.use(require('./app/routes/chat'));
