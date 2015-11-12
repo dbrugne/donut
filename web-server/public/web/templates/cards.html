@@ -12,20 +12,26 @@
                 <div class="ctn flex-parent column">
                     <a class="user-avatar open-user-profile" href="<%= card.chat %>" data-user-id="<%=card.user_id%>" style="background-image:url(<%= card.avatar %>)"></a>
                     <div class="name">
-                        <a href="<%= card.join %>" class="open-user-profile flex-child flex-parent center jc-center" data-user-id="<%=card.user_id%>">
-                            <span class="value">
-                                <% if (card.realname) { %><%= card.realname %><br><span class="othername">@<%= card.username %></span><% } else { %>@<%= card.username %><% } %>
-                            </span>
-                        </a>
+                        <% if (card.realname) { %>
+                            <span class="value"><%= card.realname %></span>
+                            <a href="<%= card.join %>" class="open-user-profile flex-child flex-parent center jc-center" data-user-id="<%=card.user_id%>">
+                                <span class="othername">@<%= card.username %></span>
+                            </a>
+                        <% } else { %>
+                            <a href="<%= card.join %>" class="open-user-profile flex-child flex-parent center jc-center" data-user-id="<%=card.user_id%>">
+                                <span class="value">@<%= card.username %></span>
+                            </a>
+                        <% } %>
                         <% if (card.location) { %>
                             <span class="owner flex-child flex-parent  center jc-center">
                                 <%=card.location%>
                             </span>
                         <% } %>
                     </div>
-                    <div class="description flex-child">
+                    <div class="description">
                         <%= card.bio %>
                     </div>
+                    <div class="flex-child blank"></div>
                     <div class="actions flex-parent">
                         <div class="mode-ctn text-center">
                             <div class="users">
