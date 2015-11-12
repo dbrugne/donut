@@ -199,6 +199,13 @@ function facebookCallback (req, token, refreshToken, profile, done) {
           req.flash('error', i18next.t('account.facebook.error.alreadylinked')));
       }
 
+      // user is not logged and try to authenticate with already used Facebook account
+      if (!req.user && existingUser) {
+        return done(null, existingUser);
+      }
+
+      // user is or is not logged, and try to authenticate with a not used Facebook account
+      // link user to this Facebook account, or create a new user
       var user = req.user || User.getNewUser();
 
       user.facebook.id = profile.id;

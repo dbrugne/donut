@@ -26,6 +26,7 @@ var DiscussionInputView = Backbone.View.extend({
   initialize: function (options) {
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(currentUser, 'change:avatar', this.onAvatar);
+    this.listenTo(currentUser, 'change:confirmed', this.render);
     this.listenTo(this.model, 'inputFocus', this.onFocus);
     this.listenTo(this.model, 'inputActive', this.onInputActiveChange);
 

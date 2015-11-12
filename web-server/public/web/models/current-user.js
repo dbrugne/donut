@@ -75,7 +75,9 @@ var CurrentUserModel = Backbone.Model.extend({
 
     this.set('preferences', newPreferences, options);
   },
-
+  setConfirmed: function () {
+    this.set('confirmed', true);
+  },
   discussionMode: function () {
     var preferences = this.get('preferences');
 
