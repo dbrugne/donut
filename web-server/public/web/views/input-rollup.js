@@ -202,6 +202,7 @@ var InputRollupView = Backbone.View.extend({
           groups: 15,
           rooms: 15
         };
+        options.starts = true;
         client.search(search, options, function (data) {
           _.each(_.union(data.groups.list, data.rooms.list), function (d) {
             d.avatarUrl = common.cloudinary.prepare(d.avatar);
@@ -219,6 +220,7 @@ var InputRollupView = Backbone.View.extend({
           groups: 15,
           rooms: 15
         };
+        options.starts = true;
         client.search(roomSearch, options, function (data) {
           _.each(data.rooms.list, function (d) {
             d.avatarUrl = common.cloudinary.prepare(d.avatar);
@@ -236,6 +238,7 @@ var InputRollupView = Backbone.View.extend({
       options.limit = {
         users: 15
       };
+      options.starts = true;
       client.search(search, options, function (data) {
         _.each(data.users.list, function (d) {
           d.avatarUrl = common.cloudinary.prepare(d.avatar);

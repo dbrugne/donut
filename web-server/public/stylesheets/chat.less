@@ -181,8 +181,7 @@
           .input-group { width: 100%;
             > .relative { max-width:450px; }
             input { height: 28px; max-width: 450px; padding: 6px 24px 6px 12px;
-              .border-radius(4px);
-              border-width: 2px;
+              .border-radius(0);
               &:focus {
                 .box-shadow(none);
               }
@@ -190,7 +189,8 @@
             i.icon-search { position: absolute; right: 9px; z-index: 2; display: block; top: 7px; }
           }
           &.open .input-group input {
-            .border-radiuses(4px, 0, 0, 4px);
+            border-width: 2px;
+            border-style: solid;
             border-bottom-color: transparent;
           }
           .results {

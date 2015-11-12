@@ -111,8 +111,7 @@ var SearchPageView = Backbone.View.extend({
         rooms: this.limit,
         groups: this.limit
       },
-      skip: skip,
-      mix: true
+      skip: skip
     };
     client.search(s, options, _.bind(function (data) {
       if (skip !== null) {

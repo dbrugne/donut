@@ -14,7 +14,7 @@
                     <div class="name">
                         <a href="<%= card.join %>" class="open-user-profile flex-child flex-parent center jc-center" data-user-id="<%=card.user_id%>">
                             <span class="value">
-                                <% if (typeof card.realname !== "undefined") { %><%= card.realname %>&nbsp;<span class="othername">@<%= card.username %></span><% } else { %>@<%= card.username %><% } %>
+                                <% if (card.realname) { %><%= card.realname %><br><span class="othername">@<%= card.username %></span><% } else { %>@<%= card.username %><% } %>
                             </span>
                         </a>
                         <% if (card.location) { %>

@@ -24,12 +24,10 @@ var common = require('@dbrugne/donut-common/server');
  *      rooms: integer, // nb of rooms results to skip
  *      groups: integer, // nb of groups results to skip
  *    } // skip some results, for pagination purpose
- *    sort: {  } // change sort order by this one if defined
  *    group_name // when looking for rooms or users, name of the group, optional
- *    user_id: integer // Id of the user who triggered the search, optional, used  when looking for specific rooms
- *    light: boolean // juste fetch minimal informations
- *    criteria // if required to apply specific criterias on search
- *    mix: boolean // if results needs to be merged and ordered
+ *    user_id: integer // Id of the user who triggered the search, optional, used when looking for specific rooms
+ *    light: boolean // just fetch minimal information
+ *    starts: boolean // look for search at the begining of the searched field
  * }
  * @param callback
  *
@@ -45,19 +43,32 @@ var common = require('@dbrugne/donut-common/server');
  *  groups: {
  *    list: [],
  *    more: boolean
- *  },
- *  all: {
- *    list: [],
- *    count: integer
  *  }
  * }
  */
 module.exports = function (search, options, callback) {
+  // whitelist allowed options
+  options = _.pick(options, [
+    'users',
+    'rooms',
+    'groups',
+    'limit',
+    'skip',
+    'group_name',
+    'light',
+    'starts'
+  ]);
+
   // remove diacritic, @ and #
   search = search.replace(/([@#])/g, '');
   search = diacritics(search);
 
-  var _regexp = common.regexp.contains(search);
+  var _regexp;
+  if (search) {
+    _regexp = (options.starts === true)
+      ? common.regexp.starts(search)
+      : common.regexp.contains(search);
+  }
 
   var users = [];
   var rooms = [];
@@ -88,7 +99,10 @@ module.exports = function (search, options, callback) {
         return callback(null);
       }
 
-      var criteria = options.criteria || {name: _regexp, deleted: {$ne: true}};
+      var criteria = {deleted: {$ne: true}};
+      if (_regexp) {
+        criteria.name = _regexp;
+      }
 
       var q = GroupModel.find(criteria, 'name owner avatar color members op lastactivity_at description');
       if (options.skip && options.skip.groups) {
@@ -97,7 +111,7 @@ module.exports = function (search, options, callback) {
       if (limit.groups) {
         q.limit(limit.groups + 1); // look for one more to handle "more" logic
       }
-      q.sort(options.sort || '-lastactivity_at -members avatar name');
+      q.sort('-lastactivity_at -members avatar name');
       q.populate('owner', 'username');
       q.exec(function (err, dbgroups) {
         if (err) {
@@ -121,17 +135,7 @@ module.exports = function (search, options, callback) {
         return callback(null, null);
       }
 
-      GroupModel.find({name: options.group_name})// @todo : why searching on name? (and case sensitivity?)
-        .populate('members') // required to compare members user_id to current user_id for private rooms display pruposes
-        .populate('op') // required to compare members user_id to current user_id for private rooms display pruposes
-        .populate('owner')
-        .exec(function (err, models) {
-          if (err || !models || models.length === 0) {
-            return callback(err, null);
-          }
-
-          return callback(null, models.pop()); // .find retunrs a list of model (obviously only one cause name is unique), take the first one
-        });
+      GroupModel.findByName(options.group_name).exec(callback);
     },
 
     // when looking for rooms, eventually inside a group
@@ -140,47 +144,39 @@ module.exports = function (search, options, callback) {
         return callback(null, null);
       }
 
-      var criteria = options.criteria || {name: _regexp, deleted: {$ne: true}};
+      var criteria = {deleted: {$ne: true}};
+      if (_regexp) {
+        criteria.name = _regexp;
+      }
 
       // if group is defined, only search rooms inside that group
       if (group) {
         criteria.group = {$eq: group._id};
-        // no user_id defined (landing) only search in public rooms of specified group
-        var allowedUsers = _.union(group.get('members'), group.get('op'), [group.owner]);
-        if (!options.user_id || (!_.find(allowedUsers,
-            function (user) {
-              return options.user_id === user.id;
-            }))) {
+
+        if (!(options.user_id && group.isMember(options.user_id))) {
           criteria.mode = {$eq: 'public'};
-        }
-        if (search === '') { // empty search, list all rooms of a group
-          delete criteria.name;
         }
       }
 
-      var q;
-      if (!options.light) {
-        q = RoomModel.find(criteria, 'name owner group description topic avatar color users lastjoin_at lastactivity_at mode');
-        q.sort(options.sort || '-lastactivity_at -lastjoin_at -users avatar name');
-        if (options.skip && options.skip.rooms) {
-          q.skip(options.skip.rooms);
-        }
-        if (limit.rooms) {
-          q.limit(limit.rooms + 1); // handle "more" logic
-        }
-        q.populate('owner', 'username');
-        q.populate('group', 'name avatar color');
-      } else {
-        q = RoomModel.find(criteria, 'name group avatar color lastjoin_at lastactivity_at mode');
-        q.sort(options.sort || '-lastactivity_at -lastjoin_at avatar name');
-        if (options.skip && options.skip.rooms) {
-          q.skip(options.skip.rooms);
-        }
-        if (limit.rooms) {
-          q.limit(limit.rooms + 1); // handle "more" logic
-        }
-        q.populate('group', 'name avatar color');
+      var select = (options.light)
+        ? 'name group avatar color lastjoin_at lastactivity_at mode'
+        : 'name owner group description avatar color users lastjoin_at lastactivity_at mode';
+
+      var q = RoomModel.find(criteria, select)
+        .sort('-lastactivity_at -lastjoin_at -users avatar name');
+
+      if (options.skip && options.skip.rooms) {
+        q.skip(options.skip.rooms);
       }
+      if (limit.rooms) {
+        q.limit(limit.rooms + 1); // handle "more" logic
+      }
+
+      q.populate('group', 'name avatar color')
+      if (!options.light) {
+        q.populate('owner', 'username');
+      }
+
       q.exec(function (err, dbrooms) {
         if (err) {
           return callback(err);
@@ -202,10 +198,13 @@ module.exports = function (search, options, callback) {
         return callback(false);
       }
 
-      var criteria = options.criteria || {username: _regexp};
+      var criteria = {deleted: {$ne: true}};
+      if (_regexp) {
+        criteria.username = _regexp;
+      }
 
       var q = UserModel.find(criteria, 'username realname avatar color facebook bio ones location');
-      q.sort(options.sort || '-lastonline_at -lastoffline_at -avatar username');
+      q.sort('-lastonline_at -lastoffline_at -avatar username');
       if (options.skip && options.skip.users) {
         q.skip(options.skip.users);
       }
@@ -229,6 +228,8 @@ module.exports = function (search, options, callback) {
         return callback(null);
       });
     },
+
+    // @todo user status
 
     function computeResults (callback) {
       if (options.rooms && rooms.length > 0) {
@@ -310,60 +311,6 @@ module.exports = function (search, options, callback) {
           }
 
           searchResults.users.list.push(r);
-        });
-      }
-
-      if (options.mix) {
-        searchResults.all = {
-          list: _.union(searchResults.users.list, searchResults.rooms.list, searchResults.groups.list)
-        };
-
-        searchResults.all.list.sort(function (a, b) {
-          // order by last_activity, descending
-          if (a.lastactivity_at !== b.lastactivity_at) {
-            return (b.lastactivity_at - a.lastactivity_at);
-          }
-
-          // order by lastjoin_at
-          if (a.lastjoin_at && b.lastjoin_at && (a.lastjoin_at !== b.lastjoin_at)) {
-            return (b.lastjoin_at - a.lastjoin_at);
-          }
-
-          // order by nb users / nb members
-          var aCount = a.users
-            ? a.users.length
-            : a.members
-            ? a.members.length + a.op.length
-            : 0;
-          var bCount = b.users
-            ? b.users.length
-            : b.members
-            ? b.members.length + b.op.length
-            : 0;
-          if (aCount !== bCount) {
-            // b - a == descending
-            return (bCount - aCount);
-          }
-
-          // order by avatar
-          if (a.avatar && !b.avatar) {
-            return -1;
-          } else if (!a.avatar && b.avatar) {
-            return 1;
-          }
-
-          // finally order by name
-          var aName = a.name
-            ? a.name
-            : a.username
-            ? a.username
-            : '';
-          var bName = b.name
-            ? b.name
-            : b.username
-            ? b.username
-            : '';
-          return aName.toLowerCase().localeCompare(bName.toLowerCase());
         });
       }
 

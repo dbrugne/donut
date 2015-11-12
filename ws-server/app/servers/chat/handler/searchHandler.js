@@ -26,21 +26,9 @@ handler.call = function (data, session, next) {
     return next(null, {});
   }
 
-  var options = _.pick(data.options, [
-    'users',
-    'rooms',
-    'groups',
-    'limit',
-    'skip',
-    'sort',
-    'group_name',
-    'light',
-    'criteria',
-    'mix'
-  ]);
-  options.user_id = user.id;
+  data.options.user_id = user.id;
 
-  search(data.search, options, function (err, results) {
+  search(data.search, data.options, function (err, results) {
     if (err) {
       logger('[search] ' + err);
       return next(null, {code: 500, err: 'internal'});
