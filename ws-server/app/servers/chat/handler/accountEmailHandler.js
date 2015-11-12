@@ -38,7 +38,7 @@ handler.call = function (data, session, next) {
     return errors.getHandler('user:email', next)('wrong-format');
   }
 
-  var domain = data.email.split('@')[1];
+  var domain = data.email.split('@')[1].toLowerCase();
   if (disposableDomains.indexOf(domain) !== -1) {
     return errors.getHandler('user:email', next)('domain');
   }
