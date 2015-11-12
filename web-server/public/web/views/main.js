@@ -1,6 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
+var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
 var app = require('../libs/app');
 var client = require('../libs/client');
@@ -40,6 +41,7 @@ var NavRoomsView = require('./nav-rooms');
 var NotificationsView = require('./notifications');
 var ConfirmationView = require('./modal-confirmation');
 var MuteView = require('./mute');
+var SearchView = require('./home-search');
 
 var debug = donutDebug('donut:main');
 
@@ -117,6 +119,12 @@ var MainView = Backbone.View.extend({
     this.welcomeView = new WelcomeModalView();
     this.notificationsView = new NotificationsView();
     this.muteView = new MuteView();
+    this.searchView = new SearchView({
+      el: this.$('#navbar .search')
+    });
+
+    this.$dropdownResults = this.$('.search .results');
+    this.$search = this.$('.search');
 
     // @debug
     // @todo dbr : mount only on debug mode
@@ -627,7 +635,7 @@ var MainView = Backbone.View.extend({
   },
 
   goToSearch: function (event) {
-    app.trigger('goToSearch');
+    app.trigger('goToSearch', event);
   },
 
   switchLanguage: function (event) {
