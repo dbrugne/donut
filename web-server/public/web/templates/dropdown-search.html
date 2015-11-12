@@ -50,6 +50,7 @@
             <span class="name">
                 <% if (typeof item.realname !== "undefined") { %><%= item.realname %>&nbsp;<span class="othername">@<%= item.username %></span><% } else { %>@<%= item.username %><% } %>
             </span>
+            <i class="icon status icon-dot-circle-o <%=item.status%>" title="offline"></i>
             <span class="disclaimer"><%=item.bio%></span>
         </li>
     <% });%>
