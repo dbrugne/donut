@@ -1021,6 +1021,7 @@
       "content": {
         "title": "Vous avez été expulsé de __roomname__",
         "disclaimer": "Ca ne doit pas être si grave, faites-vous un gros câlin et on oublie ça!",
+        "action": "... et tout ça grâce à ",
         "button": "Accéder à la discussion"
       }
     },
@@ -1029,6 +1030,7 @@
       "content": {
         "title": "Vous avez été banni de __roomname__",
         "disclaimer": "On dirait bien que vous n'étiez pas faits l'un pour l'autre.<br/>Rassurez-vous, ça ne s'applique qu'à __roomname__. Il vous reste l'immensité de DONUT à découvrir. J'espère que vous avez de l'appétit !",
+        "action": "... et tout ça grâce à ",
         "button": "Retourner sur DONUT"
       }
     },

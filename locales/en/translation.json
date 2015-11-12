@@ -1021,6 +1021,7 @@
       "content": {
         "title": "You were kicked out of __roomname__ by @__username__",
         "disclaimer": "That can't be a big deal. The two of you just give a big hug and everything will be fine again!",
+        "action": "...and all of that thanks to ",
         "button": "Go to chat"
       }
     },
@@ -1029,6 +1030,7 @@
       "content": {
         "title": "You were banned from __roomname__ by @__username__",
         "disclaimer": "It looks like you were not meant to be together...<br/>But you'll be fine, one lost ten found. Just pick another donut!",
+        "action": "...and all of that thanks to ",
         "button": "Return to DONUT"
       }
     },
@@ -1038,7 +1040,7 @@
         "title": "You are no longer banned from __roomname__",
         "disclaimer": "You are no longer banned from ",
         "disclaimer2": "It looks like all is well that ends well!",
-        "action": "…and all of that thanks to ",
+        "action": "...and all of that thanks to ",
         "button": "Go to chat"
       }
     },
