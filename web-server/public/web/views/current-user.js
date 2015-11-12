@@ -1,4 +1,5 @@
 var $ = require('jquery');
+var client = require('../libs/client');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
 var currentUser = require('../models/current-user');
@@ -10,6 +11,7 @@ var CurrentUserView = Backbone.View.extend({
 
   initialize: function (options) {
     this.listenTo(this.model, 'change', this.render);
+    this.listenTo(client, 'user:confirmed', this.userConfirmed);
   },
   render: function () {
     if (!currentUser.get('user_id')) {
@@ -26,6 +28,10 @@ var CurrentUserView = Backbone.View.extend({
     this.initializeTooltips();
 
     return this;
+  },
+  userConfirmed: function () {
+    this.model.setConfirmed();
+    this.render();
   },
 
   initializeTooltips: function () {

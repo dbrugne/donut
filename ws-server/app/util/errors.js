@@ -45,6 +45,7 @@ var errors = {
   'oped': 403,                        // User is op in the room
   'allow-pending': 403,               // User is in allowed pending list (private room)
   'group-members-only': 403,          // Donut is accessible only for group members
+  'not-confirmed': 403,               // User is not confirmed
   'not-allowed': 403,                 // == GENERAL TAG ==
 
   // NOT FOUND ERROR (404)
@@ -66,7 +67,8 @@ var errors = {
 
   // UNPROCESSABLE ENTITY (422)
   'wrong-password': 422,              // User type a wrong password
-  'expired-time': 422                 // Expired time
+  'expired-time': 422,                // Expired time
+  'domain': 422                       // Email domain is garbage
 };
 
 module.exports = {

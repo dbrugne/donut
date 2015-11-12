@@ -247,7 +247,7 @@ handler.call = function (data, session, next) {
       return callback(null, event);
     },
 
-    function broadcastOneToOnes (event, callback) {
+    function broadcastOneToOnes (event, callback) { // @todo refacto => use globalChannelService.pushMessageToRelatedUsers (see yfuks)
       if (!event) {
         return callback(null, event);
       }

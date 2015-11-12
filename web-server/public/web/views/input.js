@@ -26,6 +26,7 @@ var DiscussionInputView = Backbone.View.extend({
   initialize: function (options) {
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(currentUser, 'change:avatar', this.onAvatar);
+    this.listenTo(currentUser, 'change:confirmed', this.render);
     this.listenTo(this.model, 'inputFocus', this.onFocus);
     this.listenTo(this.model, 'inputActive', this.onInputActiveChange);
 
@@ -63,7 +64,8 @@ var DiscussionInputView = Backbone.View.extend({
   render: function () {
     this.$el.html(this.template({
       avatar: common.cloudinary.prepare(currentUser.get('avatar'), 80),
-      bannedMessage: i18next.t('chat.actions.bannedMessage.__type__'.replace('__type__', this.model.get('type')))
+      bannedMessage: i18next.t('chat.actions.bannedMessage.__type__'.replace('__type__', this.model.get('type'))),
+      confirmed: currentUser.isConfirmed()
     }));
 
     this.$editable = this.$('.editable');

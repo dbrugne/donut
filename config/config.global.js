@@ -38,6 +38,10 @@ module.exports = {
     secret: 'QmFzZTY0DQoNCkJhc2U2NCBpcyBhIGdlbmVyaWMgdGVybSBmb3IgYSBudW1iZ',
     expire: 6 * 60 * 60 // 6 hours, in seconds
   },
+  verify: {
+    secret: 'GwTiZFkkX8XoC4HqaUobXBhFUODxz7RNkYyIx8KCEsUkcEeir88UBX1AJBpyOiOI',
+    expire: 7 * 24 * 3600 // 1 week, in seconds
+  },
   email: {
     fake: 'donutmetest+__name__@gmail.com',
     from: {

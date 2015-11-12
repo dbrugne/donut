@@ -1,0 +1,55 @@
+<div class="error">
+    <span class="alert-danger" aria-hidden="true"></span>
+    <span class="alert-danger error-label"></span>
+</div>
+<div class="success">
+    <span class="alert-success" aria-hidden="true"></span>
+    <span class="alert-success success-label"><%= t('account.email.success') %></span>
+</div>
+<table class="table table-striped table-emails">
+    <thead>&darr;<%= t('account.manageemail.main') %></thead>
+    <% _.each(emails, function(e, index) { %>
+    <tr>
+        <td class="main-mail text-center">
+            <label style="margin-bottom: 0">
+                <% if (e.confirmed || e.main) { %>
+                    <input type="radio" class="savable" name="main" data-email="<%= e.email %>" value="" <% if (e.main) { print('checked'); } %>>
+                <% } %>
+            </label>
+        </td>
+        <td class="username">
+            <span class="email"><%- e.email %></span>
+        </td>
+        <td class="actions pull-right" style="text-align: right; width: 64px; display: flex">
+            <% if (e.confirmed) { %>
+            <div class="flex-parent" title="<%= t('account.manageemail.verified') %>">
+                <i class="icon icon-fw icon-check curp" data-toggle="tooltip" data-placement="top" title="<%= t('account.manageemail.verified') %>"></i>
+            </div>
+            <% } else { %>
+            <div class="flex-parent" title="<%= t('account.manageemail.notverified') %>">
+                <i class="icon icon-fw icon-times curp" data-toggle="tooltip" data-placement="top" title="<%= t('account.manageemail.notverified') %>"></i>
+            </div>
+            <div class="flex-parent send-validation-email" data-email="<%= e.email %>" title="<%= t('account.manageemail.send') %>">
+                <i class="icon icon-fw icon-envelope curp" data-toggle="tooltip" data-placement="top" title="<%= t('account.manageemail.send') %>"></i>
+            </div>
+            <% } %>
+            <% if (e.facebook) { %>
+            <div class="flex-parent" title="<%= t('account.manageemail.facebook') %>">
+                <i class="icon icon-fw icon-facebook-square curp" data-toggle="tooltip" data-placement="top" title="<%= t('account.manageemail.facebook') %>"></i>
+            </div>
+            <% } %>
+            <% if (!e.facebook && !e.main) { %>
+            <div class="flex-parent delete-email" data-email="<%= e.email %>" title="<%= t('global.delete') %>">
+                <i class="icon icon-fw icon-trash curp" data-email="<%= e.email %>" data-toggle="tooltip" data-placement="top" title="<%= t('account.manageemail.delete') %>"></i>
+            </div>
+            <% } %>
+        </td>
+        <%}); %>
+        <% if (typeof emails === 'undefined' || !emails.length) { %>
+        <td><%= t('account.manageemail.noresult') %></td>
+        <% } %>
+    </tr>
+</table>
+<div class="container-fluid">
+    <input type="submit" class="btn btn-success add-email pull-right" value="<%= t('account.manageemail.add') %>">
+</div>

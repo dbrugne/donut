@@ -108,7 +108,7 @@ var OneToOneModel = Backbone.Model.extend({
     this.trigger('viewed', data);
   },
   isInputActive: function () {
-    return !(this.get('i_am_banned') === true);
+    return !(this.get('i_am_banned') === true || !currentUser.isConfirmed());
   }
 });
 
