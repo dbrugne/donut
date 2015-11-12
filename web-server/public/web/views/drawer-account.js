@@ -1,10 +1,9 @@
-var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');
 var EmailView = require('./drawer-account-email');
 var PasswordView = require('./drawer-account-password');
+var ManageEmailsView = require('./drawer-account-manage-emails');
 
 var DrawerUserEditView = Backbone.View.extend({
   template: require('../templates/drawer-account.html'),
@@ -36,6 +35,7 @@ var DrawerUserEditView = Backbone.View.extend({
   _remove: function () {
     this.emailView.remove();
     this.passwordView.remove();
+    this.manageEmailsView.remove();
     this.remove();
   },
   onResponse: function (user) {
@@ -54,9 +54,12 @@ var DrawerUserEditView = Backbone.View.extend({
       el: this.$('.password-container'),
       user: this.user
     });
+    this.manageEmailsView = new ManageEmailsView({
+      el: this.$('.manage-email-container'),
+      user: this.user
+    });
   }
 
 });
-
 
 module.exports = DrawerUserEditView;

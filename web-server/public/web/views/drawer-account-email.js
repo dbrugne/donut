@@ -1,9 +1,6 @@
-var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var client = require('../libs/client');
-var currentUser = require('../models/current-user');
 
 var DrawerAccountEmailView = Backbone.View.extend({
   template: require('../templates/drawer-account-email.html'),
@@ -59,9 +56,9 @@ var DrawerAccountEmailView = Backbone.View.extend({
     this.$link.show();
     this.$errorLabel.text('');
     this.$form.removeClass('has-error');
-    this.$input.val((this.user.account && this.user.account.email) ?
-      this.user.account.email :
-      '');
+    this.$input.val((this.user.account && this.user.account.email)
+      ? this.user.account.email
+      : '');
   },
 
   onSubmit: function (event) {
@@ -78,7 +75,7 @@ var DrawerAccountEmailView = Backbone.View.extend({
     this.$spinner.show();
     this.$form.removeClass('has-error');
 
-    client.accountEmail(this.$input.val(), function (data) {
+    client.accountEmail(this.$input.val(), 'main', function (data) {
       that.$spinner.hide();
       if (data.err) {
         return that.putError(data.err);
@@ -106,6 +103,5 @@ var DrawerAccountEmailView = Backbone.View.extend({
   }
 
 });
-
 
 module.exports = DrawerAccountEmailView;

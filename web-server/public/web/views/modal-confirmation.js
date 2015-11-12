@@ -136,6 +136,15 @@ var ConfirmationModalView = Backbone.View.extend({
         this.$message.text(i18next.t('chat.confirmation.message.op-group-user', {username: this.options.username}));
       } else if (this.options.message === 'deop-group-user') {
         this.$message.text(i18next.t('chat.confirmation.message.deop-group-user', {username: this.options.username}));
+      } else if (this.options.message === 'add-email') {
+        this.$message.text(i18next.t('chat.confirmation.message.add-email'));
+        this.$input.attr('placeholder', '');
+      } else if (this.options.message === 'send-email') {
+        this.$message.text(i18next.t('chat.confirmation.message.send-email', {email: this.options.email}));
+      } else if (this.options.message === 'delete-email') {
+        this.$message.text(i18next.t('chat.confirmation.message.delete-email', {email: this.options.email}));
+      } else if (this.options.message === 'change-email') {
+        this.$message.text(i18next.t('chat.confirmation.message.change-email', {email: this.options.email}));
       }
     }
     // bind 'enter' only when showing popin

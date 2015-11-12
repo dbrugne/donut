@@ -6,6 +6,7 @@ var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
 var i18next = require('i18next-client');
 var urls = require('../../../../shared/util/url');
+var currentUser = require('../models/current-user');
 
 var DrawerGroupCreateView = Backbone.View.extend({
   template: require('../templates/drawer-group-create.html'),
@@ -21,7 +22,7 @@ var DrawerGroupCreateView = Backbone.View.extend({
     this.render();
   },
   render: function (name) {
-    var html = this.template();
+    var html = this.template({confirmed: currentUser.isConfirmed()});
     this.$el.html(html);
     this.$input = this.$el.find('input[name=input-create]');
     this.$errors = this.$el.find('.errors');
@@ -70,6 +71,10 @@ var DrawerGroupCreateView = Backbone.View.extend({
     return common.validate.group(name);
   },
   submit: function () {
+    if (!currentUser.isConfirmed()) {
+      return;
+    }
+
     this.reset();
     // name
     if (!this._valid()) {
