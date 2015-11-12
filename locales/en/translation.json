@@ -127,7 +127,9 @@
     "muted": "sound off"
   },
   "global": {
-    "view-profile": "View profile",
+    "group": "group",
+    "view-profile": "view profile",
+    "view-group": "view the groupe",
     "onetoones": "one to ones",
     "donuts": "Donuts",
     "group": "community",
@@ -332,14 +334,21 @@
     "placeholder": "Place here",
     "createadonut": "Create a donut",
     "home": {
-      "roomstitle": "Here are the existing donuts, you can also <a class='open-create-room'>create one</a>:",
+      "roomstitle": "Welcome to DONUT, here are some active donuts. If you can not find one to your tastes, <a href=\"#\" class='open-create-room'> create one! </a>",
       "userstitle": "Users"
     },
     "search": {
-      "placeholder": "Search donut or user here",
+      "placeholder": "Search donut, community or user here",
       "noresults": "No match found",
       "roomstitle": "Here are the donuts matching your request, you can also <a class='open-create-room'>create one</a> :",
-      "userstitle": "Matching users"
+      "userstitle": "Matching users",
+      "see_all_results": "See all results",
+      "groups_results": "<strong>__length__</strong> found communities",
+      "rooms_results": "<strong>__length__</strong> found donuts",
+      "users_results": "<strong>__length__</strong> found users",
+      "search_in_users": "search for users",
+      "search_in_rooms": "search for rooms",
+      "search_in_groups": "search for communities"
     },
     "userscount": "<strong>__count__</strong> user in this donut",
     "userscount_plural": "<strong>__count__</strong> users in this donut",

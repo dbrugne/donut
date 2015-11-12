@@ -6,7 +6,8 @@ var common = require('@dbrugne/donut-common/browser');
 var UsersView = Backbone.View.extend({
   template: require('../templates/home-users.html'),
 
-  initialize: function (options) {},
+  initialize: function (options) {
+  },
   render: function (data) {
     var users = [];
     _.each(data.users.list, function (user) {
@@ -24,6 +25,10 @@ var UsersView = Backbone.View.extend({
     this.initializeTooltips();
 
     return this;
+  },
+
+  count: function () {
+    return this.$('.list .item').length;
   },
 
   initializeTooltips: function () {
