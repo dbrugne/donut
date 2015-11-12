@@ -35,7 +35,7 @@ var CardsView = Backbone.View.extend({
         case 'user':
           card.avatar = common.cloudinary.prepare(card.avatar, 135);
           card.join = urls(card, 'user', 'uri');
-          card.url = urls(card, 'user', 'url');
+          card.chat = urls(card, 'user', 'chat');
           card.owner_url = urls(card, 'user', 'chat');
           break;
         case 'room':

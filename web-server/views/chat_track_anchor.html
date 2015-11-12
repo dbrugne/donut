@@ -4,19 +4,16 @@
 <script>
     (function () {
         var to = window.location.protocol + '//' + window.location.host;
-        var regex = /(!#u\/[-a-zA-Z0-9\._]{3,15})|(!#g\/[-a-zA-Z0-9_]{3,20})|(!#[-a-zA-Z0-9_]{3,20}\/[-a-zA-Z0-9_]{3,20})|(!#[-a-zA-Z0-9_]{3,20})$/;
+        var regex = /(!#g\/[-a-zA-Z0-9_]{3,20})|(!#[-a-zA-Z0-9_]{3,20}\/[-a-zA-Z0-9_]{3,20})|(!#[-a-zA-Z0-9_]{3,20})$/;
         var matches = regex.exec(window.location.href);
         if (regex.test(window.location.href)) {
-            if (typeof (matches[1]) !== 'undefined') { // capture user pattern
-                to += '/u/discuss/'+ window.location.hash.replace('#u/', '');
-                to += '?redirect=true';
-            } else if (typeof (matches[2]) !== 'undefined') { // capture group pattern
+            if (typeof (matches[1]) !== 'undefined') { // capture group pattern
                 to += '/g/join/'+ window.location.hash.replace('#g/', '');
                 to += '?redirect=true';
-            } else if (typeof (matches[3]) !== 'undefined') { // capture room in group pattern
+            } else if (typeof (matches[2]) !== 'undefined') { // capture room in group pattern
                 to += '/r/join/'+ window.location.hash.replace('#', '');
                 to += '?redirect=true';
-            } else if (typeof (matches[4]) !== 'undefined') { // capture room outside group pattern
+            } else if (typeof (matches[3]) !== 'undefined') { // capture room outside group pattern
                 to += '/r/join/'+ window.location.hash.replace('#', '');
                 to += '?redirect=true';
             } else {

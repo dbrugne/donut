@@ -274,14 +274,8 @@
     },
     "user": {
       "hisrooms": "Ses donuts",
-      "disclaimer": {
-        "before": "Cette page est le profil de l'utilisateur",
-        "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. <a href=\"/\">DONUT.me</a> vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
-      },
-      "permalink": "Permalien de ce profil",
       "signuped": "inscrit le",
-      "onlined": "connecté il y a __time__",
-      "edit": "Editer"
+      "onlined": "connecté il y a __time__"
     }
   },
   "chat": {

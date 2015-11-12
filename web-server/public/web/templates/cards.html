@@ -10,7 +10,7 @@
 
             <div class="relative design-room1 dc-border">
                 <div class="ctn flex-parent column">
-                    <a class="user-avatar open-user-profile" href="<%= card.url %>" data-user-id="<%=card.user_id%>" style="background-image:url(<%= card.avatar %>)"></a>
+                    <a class="user-avatar open-user-profile" href="<%= card.chat %>" data-user-id="<%=card.user_id%>" style="background-image:url(<%= card.avatar %>)"></a>
                     <div class="name">
                         <a href="<%= card.join %>" class="open-user-profile flex-child flex-parent center jc-center" data-user-id="<%=card.user_id%>">
                             <span class="value">
@@ -39,7 +39,7 @@
                                 <i class="icon icon-in dc-text"></i>
                             </a>
                             <% } else { %>
-                            <a class="btn btn-default open-user-profile" data-dismiss="modal" href="<%=card.url%>" data-user-id="<%=card.user_id%>">
+                            <a class="btn btn-default open-user-profile" data-dismiss="modal" href="<%=card.chat%>" data-user-id="<%=card.user_id%>">
                                 <%= t('global.view-profile') %>
                             </a>
                             <% } %>

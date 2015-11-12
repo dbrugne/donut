@@ -48,7 +48,7 @@ router.get('/', [require('csurf')()], function (req, res) {
           case 'user':
             card.avatar = common.cloudinary.prepare(card.avatar, 135);
             card.join = urls(card, 'user', 'chat');
-            card.url = urls(card, 'user', 'url');
+            card.chat = urls(card, 'user', 'chat');
             break;
           case 'room':
             card.avatar = common.cloudinary.prepare(card.avatar, 135);
