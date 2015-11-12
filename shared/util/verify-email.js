@@ -59,11 +59,9 @@ var validate = function (token, cb) {
       return cb('already-validate');
     }
     User.update(
-      {_id: payload.id,
-        'emails.email': payload.email},
-      {$set: {'emails.$.confirmed': true, confirmed: true}},
-      {}
-      , function (err) {
+      { _id: payload.id, 'emails.email': payload.email },
+      { $set: {'emails.$.confirmed': true, confirmed: true} },
+      function (err) {
         if (err) {
           return cb(err);
         }
@@ -72,9 +70,7 @@ var validate = function (token, cb) {
           return cb(null);
         }
 
-        pomeloBridge.notify('chat', 'confirmedNotifyTask.notify', {user_id: user.id}, function (err) {
-          return cb(err);
-        });
+        pomeloBridge.notify('chat', 'confirmedNotifyTask.notify', {user_id: user.id}, cb);
       });
   });
 };
