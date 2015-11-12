@@ -33,18 +33,9 @@ var common = require('@dbrugne/donut-common/server');
  * @param callback
  *
  * @return {
- *  users: {
- *    list: [],
- *    more: boolean
- *  },
- *  rooms: {
- *    list: [],
- *    more: boolean
- *  },
- *  groups: {
- *    list: [],
- *    more: boolean
- *  }
+ *  users: { list: [], more: boolean },
+ *  rooms: { list: [], more: boolean },
+ *  groups: { list: [], more: boolean },
  * }
  */
 module.exports = function (search, options, callback) {
