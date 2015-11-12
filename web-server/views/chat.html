@@ -8,37 +8,50 @@
                 <img class="close-btn" src="/images/svg/close-r.svg" alt="close icon">
             </div>
         </div>
-        <div id="color-default"></div>
+        <!--<div id="color-default"></div>-->
         <nav id="color" class="navbar navbar-default navbar-fixed-top dc-back">
             <div class="container">
                 <div id="navbar">
                     <a class="navbar-brand-a hidden-xs hidden-sm" href="/!#"><img class="logo" src="/images/logo-bordered-small.png" alt="<%= t('title.chat') %>"></a>
-
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="icontop help">
-                            <span id="block-current-user">
-                                <img class="mr5" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
-                                <span class="mr5 dc-text-contrast">@<%- user.username %></span>
-                                <span class="connection"> <i class="icon icon-circle status"></i></span>
-                                <a href="#" class="dropdown-toggle toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    <i class="icon icon-chevron-down dc-text-contrast hover"></i>
-                                </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li class="arrow-up"></li>
-                                    <li><a href="/!#donut/help"><%= t('chat.help') %></a></li>
-                                    <li><a href="/faq" target="_blank"><%= t('page.faq.title') %></a></li>
-                                    <li><a data-toggle="contactform"><%= t('page.contact.title') %></a></li>
-                                    <li><a href="/eutc" target="_blank"><%= t('page.eutc.title') %></a></li>
-                                    <li><a href="/legals" target="_blank"><%=t('landing.legals')%></a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li class="dropdown-header"><%= t('global.switchlanguage') %></li>
-                                    <li class="colored"><a href="" data-language="fr" class="switch">Français</a></li>
-                                    <li class="colored"><a href="" data-language="en" class="switch">English</a></li>
-                                </ul>
-                            </span>
-                        </li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
+                    <div class="search">
+                        <div class="input-group relative">
+                            <div class="relative">
+                                <input type="text" class="form-control dc-border-darker" placeholder="<%= t('chat.search.placeholder') %>">
+                                <i class="icon icon-search dc-text curp"></i>
+                            </div>
+                            <ul class="results dc-border-darker" style="display: none"></ul>
+                        </div>
+                        <div class="search-results">
+                            <div class="title flex-child hidden"><!--Search title--></div>
+                            <div class="nothing mt20 mb20 hidden"><%= t('chat.search.noresults') %></div>
+                        </div>
+                    </div>
+                    <div class="navbar-top">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="icontop help">
+                                <span id="block-current-user">
+                                    <img class="mr5" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
+                                    <span class="mr5 dc-text-contrast">@<%- user.username %></span>
+                                    <span class="connection"> <i class="icon icon-dot-circle-o status"></i></span>
+                                    <a href="#" class="dropdown-toggle toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                        <i class="icon icon-chevron-down dc-text-contrast hover"></i>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li class="arrow-up"></li>
+                                        <li><a href="/!#donut/help"><%= t('chat.help') %></a></li>
+                                        <li><a href="/faq" target="_blank"><%= t('page.faq.title') %></a></li>
+                                        <li><a data-toggle="contactform"><%= t('page.contact.title') %></a></li>
+                                        <li><a href="/eutc" target="_blank"><%= t('page.eutc.title') %></a></li>
+                                        <li><a href="/legals" target="_blank"><%=t('landing.legals')%></a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li class="dropdown-header"><%= t('global.switchlanguage') %></li>
+                                        <li class="colored"><a href="" data-language="fr" class="switch">Français</a></li>
+                                        <li class="colored"><a href="" data-language="en" class="switch">English</a></li>
+                                    </ul>
+                                </span>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
                         <li class="icontop">
                             <a href="/!#" class="toggle dc-text-contrast">
                                 <i class="icon icon-home dc-text-contrast hover"></i>
@@ -71,11 +84,6 @@
                         </li>
                         <li class="icontop">
                             <div class="toggle">
-                                <i class="go-to-search icon icon-search dc-text-contrast hover"></i>
-                            </div>
-                        </li>
-                        <li class="icontop">
-                            <div class="toggle">
                                 <i class="open-create-room icon icon-plus dc-text-contrast hover"></i>
                             </div>
                         </li>
@@ -85,6 +93,7 @@
                             </a>
                         </li>
                     </ul>
+                    </div>
                 </div><!--/.nav-collapse -->
             </div>
         </nav>
@@ -115,13 +124,8 @@
                 </div>
                 <div id="home" class="flex-parent column">
                     <div class="left">
-                        <div class="search">
-                            <input type="text" placeholder="<%= t('chat.search.placeholder') %>">
-                            <i class="icon icon-search"></i>
-                            <div class="search-results">
-                                <div class="title flex-child hidden"><!--Search title--></div>
-                                <div class="nothing mt20 mb20 hidden"><%= t('chat.search.noresults') %></div>
-                            </div>
+                        <div class="disclaimer">
+                            <%= t('chat.home.roomstitle') %>
                         </div>
                         <div class="cards"><!--cards list--></div>
                         <button class="load-more button center-block mt20 mb20 hidden"><%= t('landing.loadmore') %></button>
@@ -130,6 +134,7 @@
                         <div class="users"><!--user list--></div>
                     </div>
                 </div>
+                <div id="search"><!-- Search content --></div>
             </div><!-- /#center -->
         </div><!-- /.row -->
     </div><!-- /#chat -->

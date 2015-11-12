@@ -1,0 +1,16 @@
+<div class="search">
+    <div class="center-block">
+        <ul class="nav nav-pills search-options flex-parent center jc-center">
+            <li role="presentation" class="curp <% if ( data && data.what && data.what.users  ) { print('active') } %>" data-type="users"  ><a href="#"   data-type="users"  ><%= t('chat.search.search_in_users') %></a></li>
+            <li role="presentation" class="curp <% if ( data && data.what && data.what.rooms  ) { print('active') } %>" data-type="rooms"  ><a href="#"   data-type="rooms"  ><%= t('chat.search.search_in_rooms') %></a></li>
+            <li role="presentation" class="curp <% if ( data && data.what && data.what.groups ) { print('active') } %>" data-type="groups" ><a href="#" data-type="groups" ><%= t('chat.search.search_in_groups') %></a></li>
+        </ul>
+    </div>
+
+    <div class="search-results">
+        <div class="title flex-child hidden"><!--Search title--></div>
+        <div class="nothing mt20 mb20 hidden"><%= t('chat.search.noresults') %></div>
+    </div>
+</div>
+<div class="cards"><!--cards list--></div>
+<button class="load-more button center-block mt20 mb20 hidden"><%= t('landing.loadmore') %></button>

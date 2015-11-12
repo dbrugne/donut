@@ -127,7 +127,9 @@
     "muted": "son désactivé"
   },
   "global": {
-    "view-profile": "Voir le profil",
+    "group": "groupe",
+    "view-profile": "voir le profil",
+    "view-group": "voir le groupe",
     "onetoones": "tête-à-tête",
     "donuts": "donuts",
     "group": "communauté",
@@ -272,14 +274,8 @@
     },
     "user": {
       "hisrooms": "Ses donuts",
-      "disclaimer": {
-        "before": "Cette page est le profil de l'utilisateur",
-        "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. <a href=\"/\">DONUT.me</a> vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
-      },
-      "permalink": "Permalien de ce profil",
       "signuped": "inscrit le",
-      "onlined": "connecté il y a __time__",
-      "edit": "Editer"
+      "onlined": "connecté il y a __time__"
     }
   },
   "chat": {
@@ -332,14 +328,21 @@
     "placeholder": "Déplacer ici",
     "createadonut": "Nouveau",
     "home": {
-      "roomstitle": "Voici les donuts existants, vous pouvez également en <a class='open-create-room'>créer un</a> :",
+      "roomstitle": "Bienvenue sur DONUT, voici quelques donuts actifs. Si vous n'en trouvez pas à votre goût, <a href=\"#\" class='open-create-room'>créez-en un !</a>",
       "userstitle": "Utilisateurs"
     },
     "search": {
-      "placeholder": "Recherchez un donut ou un utilisateur ici",
+      "placeholder": "Recherchez un donut, une communauté ou un utilisateur ici",
       "noresults": "Aucun résultat de recherche",
       "roomstitle": "Voici les donuts correspondant à votre recherche, vous pouvez aussi en <a class='open-create-room'>créer un nouveau</a> :",
-      "userstitle": "Utilisateurs correspondants"
+      "userstitle": "Utilisateurs correspondants",
+      "see_all_results": "Voir tous les résultats",
+      "groups_results": "<strong>__length__</strong> communautés trouvées",
+      "rooms_results": "<strong>__length__</strong> donuts trouvés",
+      "users_results": "<strong>__length__</strong> utilisateurs",
+      "search_in_users": "chercher des utilisateurs",
+      "search_in_rooms": "chercher des donuts",
+      "search_in_groups": "chercher des communautés"
     },
     "userscount": "<strong>__count__</strong> <span>utilisateur dans ce donut</span>",
     "userscount_plural": "<strong>__count__</strong> <span>utilisateurs dans ce donut</span>",
@@ -431,6 +434,8 @@
         "disallowuser": "Vous allez supprimer l'accès à @__username__",
         "ban-group-user": "Vous allez bannir l'utilisateur @__username__ de cette communauté",
         "deban-group-user": "Vous allez débannir l'utilisateur @__username__ de cette communauté",
+        "op-group-user": "Vous êtes sur le point de nommer @__username__ modérateur de la communauté. Cet utilisateur pourra accepter ou refuser les demandes d'adhésions, inviter des utilisateurs à devenir membre et bannir un utilisateur du groupe.",
+        "deop-group-user": "Vous allez retirer @__username__ des modérateurs.",
         "invite": "Vous allez autoriser l'accès à @__username__. Une notification va lui être adressée pour l'inviter à rejoindre #__name__.",
         "requestallowance": "<strong>Demander à devenir membre.</strong><br>Le créateur de la communauté va avoir accès à votre vrai nom et votre e-mail."
       }

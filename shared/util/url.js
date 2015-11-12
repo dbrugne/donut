@@ -21,10 +21,8 @@ module.exports = function (model, type, what) {
   }
   if (type === 'user' && model.username) {
     data = {
-      url: '/u/' + model.username.toLocaleLowerCase(),
       uri: '!#u/' + model.username,
-      chat: '/!#u/' + model.username,
-      discuss: '/u/discuss/' + model.username
+      chat: '/!#u/' + model.username
     };
   }
 

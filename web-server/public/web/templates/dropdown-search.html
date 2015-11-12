@@ -1,0 +1,57 @@
+<% if (typeof(results) === 'undefined') { %>
+    <li class="empty"><a href="#"><%= t('chat.search.noresults') %></a></li>
+<% } else { %>
+    <% if(results.groups.list && results.groups.list.length > 0) { %>
+        <li class="presentation">
+            <%= t('chat.search.groups_results', {length: results.groups.list.length}) %>
+            <% if(results.groups.more) { %>
+                <span class="go-to-search curp" data-type="groups" data-search="<%-search%>"><%= t('chat.search.see_all_results') %></span>
+            <% } %>
+        </li>
+    <% } %>
+    <% _.each(results.groups.list, function (item) { %>
+        <% var color = item.color ? item.color.replace('#','').toLowerCase() : 'default' %>
+        <li class="open-group-profile result dc-i-<%=color%>" data-group-id="<%=item.group_id%>">
+            <img alt="<%= item.name %>" src="<%= item.avatar %>" class="mr5 dc-border">
+            <span class="name">#<%= item.name %></span>
+            <span class="disclaimer"><%=item.description%></span>
+        </li>
+    <% });%>
+
+    <% if(results.rooms.list && results.rooms.list.length > 0) { %>
+        <li class="presentation">
+            <%= t('chat.search.rooms_results', {length: results.rooms.list.length}) %>
+            <% if(results.rooms.more) { %>
+                <span class="go-to-search curp" data-type="rooms" data-search="<%-search%>"><%= t('chat.search.see_all_results') %></span>
+            <% } %>
+        </li>
+    <% } %>
+    <% _.each(results.rooms.list, function (item) { %>
+        <% var color = item.color ? item.color.replace('#','').toLowerCase() : 'default' %>
+        <li class="open-room-profile result dc-i-<%=color%>" data-room-id="<%=item.room_id%>">
+            <img alt="<%= item.name %>" src="<%= item.avatar %>" class="mr5 dc-border">
+            <span class="name"><%= item.identifier %></span>
+            <span class="disclaimer"><%=item.description%></span>
+        </li>
+    <% });%>
+
+    <% if(results.users.list && results.users.list.length > 0) { %>
+        <li class="presentation">
+            <%= t('chat.search.users_results', {length: results.users.list.length}) %>
+            <% if(results.users.more) { %>
+                <span class="go-to-search curp" data-type="users" data-search="<%-search%>"><%= t('chat.search.see_all_results') %></span>
+            <% } %>
+        </li>
+    <% } %>
+    <% _.each(results.users.list, function (item) { %>
+        <% var color = item.color ? item.color.replace('#','').toLowerCase() : 'default' %>
+        <li class="open-user-profile result dc-i-<%=color%>" data-user-id="<%=item.user_id%>">
+            <img alt="<%= item.name %>" src="<%= item.avatar %>" class="mr5 dc-border">
+            <span class="name">
+                <% if (typeof item.realname !== "undefined") { %><%= item.realname %>&nbsp;<span class="othername">@<%= item.username %></span><% } else { %>@<%= item.username %><% } %>
+            </span>
+            <i class="icon status icon-dot-circle-o <%=item.status%>" title="offline"></i>
+            <span class="disclaimer"><%=item.bio%></span>
+        </li>
+    <% });%>
+<% } %>

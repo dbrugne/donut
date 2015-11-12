@@ -1,0 +1,39 @@
+@card-height: 250px;
+@card-width: 300px;
+.cards { .scrollbar-grey-thin; overflow: auto; .display-flex; .flex-flow(row wrap); margin: 15px;
+  .card { margin: 5px; height: @card-height; width: @card-width; float: left; border:1px solid @cl-subtext5; background-color: #FFF;
+    &.empty { box-shadow:none; height: 1px; margin: 0 20px; }
+    .design-room1 { height: @card-height; border-width:10px 0 0; border-style:solid;
+      > .ctn { height:100%; overflow: hidden; border-left: 1px solid @cl-border; border-right: 1px solid @cl-border; border-bottom: 1px solid @cl-border;
+        .user-avatar { display:block; border:4px solid rgb(225, 232, 237); background-size: 75px; background-repeat: no-repeat; background-position: center center; width: 75px; height: 75px; margin: 10px auto 0; }
+        .name { line-height: 1.9rem; word-break: normal; overflow: hidden; text-overflow: ellipsis; margin: 0 10px; text-align: center;
+          .value { white-space: nowrap; font-size: 1.9rem; .ft-raleway-heavy; }
+          .othername { color: @cl-subtext20; font-weight: normal; }
+        }
+        .description { max-height: 62px; line-height: 2rem; margin: 5px 10px 5px; overflow: hidden; text-overflow: ellipsis; font-style: italic; }
+        .actions { margin:5px 10px 10px 5px;
+          .mode-ctn { width: 50%; font-size: 1rem; font-weight:normal; }
+          .btn i { vertical-align: sub; }
+        }
+      }
+    }
+
+    &.card-user .design-room1 {
+      > .ctn {
+        .description { max-height: 45px; }
+      }
+      .actions { margin:5px 10px 10px 5px;
+        .mode-ctn { display:none; }
+      }
+    }
+    &.card-group .design-room1 {
+      .group-type { position: absolute; right: 12px; top: 6px; font-weight: bold; color: #777777; }
+      > .ctn {
+        .name { margin-top:20px; text-align: left; }
+        .description {  max-height: 101px; }
+      }
+      .actions .mode-ctn { .display-flex; .flex-flow(column nowrap); .align-items(center); .justify-content(center); }
+    }
+  }
+  .spinner { text-align: center; width: 100%; }
+}

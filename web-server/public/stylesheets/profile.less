@@ -44,22 +44,6 @@
           }
         } // .body-chat.body-profile #chat #center .discussion .content .header.room .info
       }
-      &.user {
-        .overlay-ctn { float: left; width: 169px;
-          .avatar { width: 160px; height: 160px; position: relative; float: left; }
-        }
-        .bio { margin-bottom:5px; }
-        .info { margin-left: 170px;
-          .username { font-size: 42px; margin: 0;
-            .othername { font-size: 0.7em; }
-            &:hover { text-decoration:none; }
-          }
-          .owner, .separation, .website, .location { font-size: 18px; }
-          .bio { margin-top: 20px; margin-bottom: 20px; max-width: 500px;
-            .bio-content { font-size: 15px; font-style: italic; font-weight: 300; }
-          }
-        } // .body-chat.body-profile #chat #center .discussion .content .header.user .info
-      } // .body-chat.body-profile #chat #center .discussion .content .header.user
     } // .body-chat.body-profile #chat #center .discussion .content .header
     .input .text-container .overlay { display:block; cursor:default;
       .overlay-text { text-transform: capitalize; cursor:default;
@@ -89,12 +73,6 @@
   }
 
 }
-.user-profile {
-  > .text {
-    .username { font-size: 3.6em; vertical-align: sub; }
-    .location { font-size: 1.3em; font-weight: bold; }
-  }
-}
 
 @media screen and (max-width: @screen-md-min) {
   .body-chat.body-profile #chat #center .discussion .content { padding-top: 0; padding-left: 0; }
@@ -102,15 +80,12 @@
   .body-chat.body-profile #chat #center .discussion .content .header .info { min-height: initial; margin-left: 0; }
   .body-chat.body-profile #chat #center .discussion .content .header.room .overlay-ctn .avatar { width: 30px; height: 30px; float:none; position:absolute; }
   .body-chat.body-profile #chat #center .discussion .content .header.room .topic { padding: 5px 15px 5px 15px; }
-  .body-chat.body-profile #chat #center .discussion .content .header.user .avatar { height:30px; width:30px; }
-  .body-chat.body-profile #chat #center .discussion .content .header.user .info { margin-left:0; }
-  .body-chat.body-profile #chat #center .discussion .content .header.user { min-height:0; }
   .body-chat.body-profile #chat #center .discussion .content .events { margin-top:0; padding-top:0; }
 }
 
 @media screen and (max-width: @screen-lg-min) {
   .body-chat.body-profile #chat #center .discussion .content { padding-top:15px; padding-left:15px; padding-bottom:0;
-    .header.room, .header.user { min-height: 180px;
+    .header.room { min-height: 180px;
       .overlay-ctn { width: 120px;
         .avatar { width: 120px; height: 120px; }
         .joinroom, .discuss { top: 130px;
