@@ -1,7 +1,7 @@
 'use strict';
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
-var search = require('../../../../../shared/util/search');
 var _ = require('underscore');
+var search = require('../../../../../shared/util/search');
 
 var Handler = function (app) {
   this.app = app;
@@ -26,9 +26,11 @@ handler.call = function (data, session, next) {
     return next(null, {});
   }
 
-  data.options.user_id = user.id;
+  var options = _.clone(data.options);
+  options.app = this.app;
+  options.user_id = user.id;
 
-  search(data.search, data.options, function (err, results) {
+  search(data.search, options, function (err, results) {
     if (err) {
       logger('[search] ' + err);
       return next(null, {code: 500, err: 'internal'});

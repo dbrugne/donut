@@ -28,6 +28,7 @@ var common = require('@dbrugne/donut-common/server');
  *    user_id: integer // Id of the user who triggered the search, optional, used when looking for specific rooms
  *    light: boolean // just fetch minimal information
  *    starts: boolean // look for search at the begining of the searched field
+ *    app: {Pomelo app instance}
  * }
  * @param callback
  *
@@ -56,7 +57,8 @@ module.exports = function (search, options, callback) {
     'skip',
     'group_name',
     'light',
-    'starts'
+    'starts',
+    'app'
   ]);
 
   // remove diacritic, @ and #
@@ -73,6 +75,7 @@ module.exports = function (search, options, callback) {
   var users = [];
   var rooms = [];
   var groups = [];
+  var statuses;
 
   var limit = options.limit || {users: 25, groups: 25, rooms: 25};
 
@@ -229,7 +232,21 @@ module.exports = function (search, options, callback) {
       });
     },
 
-    // @todo user status
+    function decorateUserStatus (callback) {
+      if (!options.users || !users.length || !options.app) {
+        return callback(null);
+      }
+
+      var usersId = _.map(users, 'id');
+      options.app.statusService.getStatusByUids(usersId, function (err, results) {
+        if (err) {
+          return callback(err);
+        }
+
+        statuses = results;
+        return callback(null);
+      });
+    },
 
     function computeResults (callback) {
       if (options.rooms && rooms.length > 0) {
@@ -301,6 +318,11 @@ module.exports = function (search, options, callback) {
             color: user.color,
             bio: user.bio
           };
+          if (statuses) {
+            r.status = (statuses[user.id] === true)
+              ? 'online'
+              : 'offline';
+          }
           if (options.user_id) {
             var a = _.find(user.get('ones'), function (item) {
               return item.user.id === options.user_id;
