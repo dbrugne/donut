@@ -8,7 +8,6 @@ var conf = require('../../config/index');
 var mailgunTransport = require('nodemailer-mailgun-transport');
 var urls = require('../util/url');
 
-var protocol = 'https'; // @todo yls retrieve that a better way...
 var emailer = {};
 module.exports = emailer;
 
@@ -136,8 +135,8 @@ emailer.roomOp = function (to, data, callback) {
     },
     subject: i18next.t('email.roomop.subject', {roomname: data.roomname}),
     roomlink: {
-      url: protocol + '://' + conf.fqdn + urls(data, 'room', 'url'),
-      chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')
+      url: conf.url + urls(data, 'room', 'url'),
+      chat: conf.url + urls(data, 'room', 'chat')
     }
   }, callback);
 };
@@ -152,7 +151,7 @@ emailer.roomDeop = function (to, data, callback) {
       action: i18next.t('email.roomdeop.content.action')
     },
     subject: i18next.t('email.roomdeop.subject', {roomname: data.roomname}),
-    roomlink: {chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')}
+    roomlink: {chat: conf.url + urls(data, 'room', 'chat')}
   }, callback);
 };
 
@@ -164,7 +163,7 @@ emailer.roomKick = function (to, data, callback) {
     reason: data.reason,
     title: i18next.t('email.roomkick.content.title', {roomname: data.roomname}),
     subject: i18next.t('email.roomkick.subject', {roomname: data.roomname}),
-    roomlink: {chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')},
+    roomlink: {chat: conf.url + urls(data, 'room', 'chat')},
     email_heading_action: {
       action: i18next.t('email.roomkick.content.action')
     }
@@ -196,8 +195,8 @@ emailer.roomDeban = function (to, data, callback) {
     },
     subject: i18next.t('email.roomdeban.subject', {roomname: data.roomname}),
     roomlink: {
-      url: protocol + '://' + conf.fqdn + urls(data, 'room', 'url'),
-      chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')
+      url: conf.url + urls(data, 'room', 'url'),
+      chat: conf.url + urls(data, 'room', 'chat')
     }
   }, callback);
 };
@@ -212,7 +211,7 @@ emailer.roomVoice = function (to, data, callback) {
       action: i18next.t('email.roomvoice.content.action')
     },
     subject: i18next.t('email.roomvoice.subject', {roomname: data.roomname}),
-    roomlink: {chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')}
+    roomlink: {chat: conf.url + urls(data, 'room', 'chat')}
   }, callback);
 };
 
@@ -227,7 +226,7 @@ emailer.roomDevoice = function (to, data, callback) {
       action: i18next.t('email.roomdevoice.content.action')
     },
     subject: i18next.t('email.roomdevoice.subject', {roomname: data.roomname}),
-    roomlink: {url: protocol + '://' + conf.fqdn + urls(data, 'room', 'url')}
+    roomlink: {url: conf.url + urls(data, 'room', 'url')}
   }, callback);
 };
 
@@ -252,7 +251,7 @@ emailer.roomJoin = function (to, from, room, callback) {
       username: from,
       roomname: room
     }),
-    roomlink: {chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')},
+    roomlink: {chat: conf.url + urls(data, 'room', 'chat')},
     email_heading_action: false
   }, callback);
 };
@@ -267,7 +266,7 @@ emailer.roomJoinRequest = function (to, data, callback) {
       username: data.username
     }),
     subject: i18next.t('email.roomjoinrequest.subject', {roomname: data.roomname}),
-    roomlink: {chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')},
+    roomlink: {chat: conf.url + urls(data, 'room', 'chat')},
     email_heading_action: false
   }, callback);
 };
@@ -282,7 +281,7 @@ emailer.roomAllow = function (to, data, callback) {
       username: data.username
     }),
     subject: i18next.t('email.roomallow.subject', {roomname: data.roomname}),
-    roomlink: {chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')},
+    roomlink: {chat: conf.url + urls(data, 'room', 'chat')},
     email_heading_action: {
       action: i18next.t('email.roomallow.content.action')
     }
@@ -302,7 +301,7 @@ emailer.roomRefuse = function (to, data, callback) {
     email_heading_action: {
       action: i18next.t('email.roomrefuse.content.action')
     },
-    roomlink: {chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')}
+    roomlink: {chat: conf.url + urls(data, 'room', 'chat')}
   }, callback);
 };
 
@@ -319,7 +318,7 @@ emailer.roomInvite = function (to, data, callback) {
       roomname: data.roomname,
       username: data.username
     }),
-    roomlink: {chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')},
+    roomlink: {chat: conf.url + urls(data, 'room', 'chat')},
     email_heading_action: false
   }, callback);
 };
@@ -340,7 +339,7 @@ emailer.roomDelete = function (to, data, callback) {
     email_heading_action: {
       action: i18next.t('email.roomdelete.content.action')
     },
-    grouplink: {chat: protocol + '://' + conf.fqdn + urls(data, 'group', 'chat')}
+    grouplink: {chat: conf.url + urls(data, 'group', 'chat')}
   }, callback);
 };
 
@@ -357,7 +356,7 @@ emailer.roomCreate = function (to, data, callback) {
       roomname: data.roomname,
       username: data.username
     }),
-    roomlink: {chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')},
+    roomlink: {chat: conf.url + urls(data, 'room', 'chat')},
     email_heading_action: false
   }, callback);
 };
@@ -376,7 +375,7 @@ emailer.roomTopic = function (to, from, room, topic, callback) {
       username: from,
       roomname: room
     }),
-    roomlink: {chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')},
+    roomlink: {chat: conf.url + urls(data, 'room', 'chat')},
     email_heading_action: false
   }, callback);
 };
@@ -395,7 +394,7 @@ emailer.userMention = function (to, events, from, room, callback) {
       username: from,
       roomname: room
     }),
-    roomlink: {chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')},
+    roomlink: {chat: conf.url + urls(data, 'room', 'chat')},
     email_heading_action: false
   }, callback);
 };
@@ -423,8 +422,8 @@ emailer.roomMessage = function (to, events, roomName, roomAvatar, callback) {
     title: i18next.t('email.roommessage.content.title', {roomname: roomName}),
     subject: i18next.t('email.roommessage.subject', {roomname: roomName}),
     roomlink: {
-      url: protocol + '://' + conf.fqdn + urls(data, 'room', 'url'),
-      chat: protocol + '://' + conf.fqdn + urls(data, 'room', 'chat')
+      url: conf.url + urls(data, 'room', 'url'),
+      chat: conf.url + urls(data, 'room', 'chat')
     },
     email_heading_action: false
   }, callback);
@@ -440,7 +439,7 @@ emailer.groupJoinRequest = function (to, data, callback) {
       username: data.username
     }),
     subject: i18next.t('email.groupjoinrequest.subject', {groupname: data.groupname.replace('#', '')}),
-    grouplink: {chat: protocol + '://' + conf.fqdn + urls(data, 'group', 'chat')},
+    grouplink: {chat: conf.url + urls(data, 'group', 'chat')},
     email_heading_action: false
   }, callback);
 };
@@ -455,7 +454,7 @@ emailer.groupAllow = function (to, data, callback) {
       username: data.username
     }),
     subject: i18next.t('email.groupallow.subject', {groupname: data.groupname}),
-    grouplink: {chat: protocol + '://' + conf.fqdn + urls(data, 'group', 'chat')},
+    grouplink: {chat: conf.url + urls(data, 'group', 'chat')},
     email_heading_action: {
       action: i18next.t('email.groupallow.content.action')
     }
@@ -472,7 +471,7 @@ emailer.groupDisallow = function (to, data, callback) {
       username: data.username
     }),
     subject: i18next.t('email.groupdisallow.subject', {groupname: data.groupname}),
-    grouplink: {chat: protocol + '://' + conf.fqdn + urls(data, 'group', 'chat')},
+    grouplink: {chat: conf.url + urls(data, 'group', 'chat')},
     email_heading_action: {
       action: i18next.t('email.groupdisallow.content.action')
     }
@@ -492,7 +491,7 @@ emailer.groupInvite = function (to, data, callback) {
       groupname: data.groupname,
       username: data.username
     }),
-    grouplink: {chat: protocol + '://' + conf.fqdn + urls(data, 'group', 'chat')},
+    grouplink: {chat: conf.url + urls(data, 'group', 'chat')},
     email_heading_action: false
   }, callback);
 };
@@ -513,7 +512,7 @@ emailer.groupRefuse = function (to, data, callback) {
     email_heading_action: {
       action: i18next.t('email.grouprefuse.content.action')
     },
-    grouplink: {chat: protocol + '://' + conf.fqdn + urls(data, 'group', 'chat')}
+    grouplink: {chat: conf.url + urls(data, 'group', 'chat')}
   }, callback);
 };
 
@@ -524,7 +523,7 @@ emailer.groupBan = function (to, data, callback) {
     groupname: data.groupname.replace('#', ''),
     title: i18next.t('email.groupban.content.title', {groupname: data.groupname.replace('#', '')}),
     subject: i18next.t('email.groupban.subject', {groupname: data.groupname.replace('#', '')}),
-    grouplink: {chat: protocol + '://' + conf.fqdn + urls(data, 'group', 'chat')},
+    grouplink: {chat: conf.url + urls(data, 'group', 'chat')},
     email_heading_action: {
       action: i18next.t('email.groupban.content.action')
     }
@@ -538,7 +537,7 @@ emailer.groupDeban = function (to, data, callback) {
     groupname: data.groupname.replace('#', ''),
     title: i18next.t('email.groupdeban.content.title', {groupname: data.groupname.replace('#', '')}),
     subject: i18next.t('email.groupdeban.subject', {groupname: data.groupname.replace('#', '')}),
-    grouplink: {chat: protocol + '://' + conf.fqdn + urls(data, 'group', 'chat')},
+    grouplink: {chat: conf.url + urls(data, 'group', 'chat')},
     email_heading_action: {
       action: i18next.t('email.groupdeban.content.action')
     }
@@ -553,8 +552,8 @@ emailer.groupOp = function (to, data, callback) {
     title: i18next.t('email.groupop.content.title', {groupname: data.groupname.replace('#', '')}),
     subject: i18next.t('email.groupop.subject', {groupname: data.groupname.replace('#', '')}),
     grouplink: {
-      chat: protocol + '://' + conf.fqdn + urls(data, 'group', 'chat'),
-      url: protocol + '://' + conf.fqdn + urls(data, 'group', 'url')
+      chat: conf.url + urls(data, 'group', 'chat'),
+      url: conf.url + urls(data, 'group', 'url')
     },
     email_heading_action: {
       action: i18next.t('email.groupop.content.action')
@@ -570,8 +569,8 @@ emailer.groupDeop = function (to, data, callback) {
     title: i18next.t('email.groupdeop.content.title', {groupname: data.groupname.replace('#', '')}),
     subject: i18next.t('email.groupdeop.subject', {groupname: data.groupname.replace('#', '')}),
     grouplink: {
-      chat: protocol + '://' + conf.fqdn + urls(data, 'group', 'chat'),
-      url: protocol + '://' + conf.fqdn + urls(data, 'group', 'url')
+      chat: conf.url + urls(data, 'group', 'chat'),
+      url: conf.url + urls(data, 'group', 'url')
     },
     email_heading_action: {
       action: i18next.t('email.groupdeop.content.action')

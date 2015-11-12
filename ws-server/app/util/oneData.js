@@ -16,6 +16,11 @@ module.exports = function (app, user, users, fn) {
     single = true;
   }
 
+  // robustness code, when a .ones points on a deleted user
+  users = _.filter(users, function (u) {
+    return (u && u.user && u.user.id);
+  });
+
   async.waterfall([
 
     function status (callback) {

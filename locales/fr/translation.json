@@ -127,7 +127,9 @@
     "muted": "son désactivé"
   },
   "global": {
-    "view-profile": "Voir le profil",
+    "group": "groupe",
+    "view-profile": "voir le profil",
+    "view-group": "voir le groupe",
     "onetoones": "tête-à-tête",
     "donuts": "donuts",
     "group": "communauté",
@@ -326,14 +328,21 @@
     "placeholder": "Déplacer ici",
     "createadonut": "Nouveau",
     "home": {
-      "roomstitle": "Voici les donuts existants, vous pouvez également en <a class='open-create-room'>créer un</a> :",
+      "roomstitle": "Bienvenue sur DONUT, voici quelques donuts actifs. Si vous n'en trouvez pas à votre goût, <a href=\"#\" class='open-create-room'>créez-en un !</a>",
       "userstitle": "Utilisateurs"
     },
     "search": {
-      "placeholder": "Recherchez un donut ou un utilisateur ici",
+      "placeholder": "Recherchez un donut, une communauté ou un utilisateur ici",
       "noresults": "Aucun résultat de recherche",
       "roomstitle": "Voici les donuts correspondant à votre recherche, vous pouvez aussi en <a class='open-create-room'>créer un nouveau</a> :",
-      "userstitle": "Utilisateurs correspondants"
+      "userstitle": "Utilisateurs correspondants",
+      "see_all_results": "Voir tous les résultats",
+      "groups_results": "<strong>__length__</strong> communautés trouvées",
+      "rooms_results": "<strong>__length__</strong> donuts trouvés",
+      "users_results": "<strong>__length__</strong> utilisateurs",
+      "search_in_users": "chercher des utilisateurs",
+      "search_in_rooms": "chercher des donuts",
+      "search_in_groups": "chercher des communautés"
     },
     "userscount": "<strong>__count__</strong> <span>utilisateur dans ce donut</span>",
     "userscount_plural": "<strong>__count__</strong> <span>utilisateurs dans ce donut</span>",
@@ -1006,6 +1015,7 @@
       "content": {
         "title": "Vous avez été expulsé de __roomname__",
         "disclaimer": "Ca ne doit pas être si grave, faites-vous un gros câlin et on oublie ça!",
+        "action": "... et tout ça grâce à ",
         "button": "Accéder à la discussion"
       }
     },
@@ -1014,6 +1024,7 @@
       "content": {
         "title": "Vous avez été banni de __roomname__",
         "disclaimer": "On dirait bien que vous n'étiez pas faits l'un pour l'autre.<br/>Rassurez-vous, ça ne s'applique qu'à __roomname__. Il vous reste l'immensité de DONUT à découvrir. J'espère que vous avez de l'appétit !",
+        "action": "... et tout ça grâce à ",
         "button": "Retourner sur DONUT"
       }
     },

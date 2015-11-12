@@ -279,24 +279,13 @@ module.exports = Backbone.View.extend({
 
         var $previousEvent = $lastEventDisconnect.prevAll('div.block').not('hello').first();
 
-        // @todo yfuks don't call the client from here, pass via model.history() !!!
-        if (that.model.get('type') !== 'room') {
-          client.userHistory(that.model.get('id'), beforeLastDisconnectId, afterLastDisconnectId, null, function (event) {
-            if (!event.err) {
-              that.engine.replaceLastDisconnectBlock($lastEventDisconnect, $previousEvent, event.history);
-            }
-            $lastEventDisconnect = that.$el.find('.realtime div.block.disconnect:last');
-            return callback(null);
-          });
-        } else {
-          client.roomHistory(that.model.get('id'), beforeLastDisconnectId, afterLastDisconnectId, null, function (event) {
-            if (!event.err) {
-              that.engine.replaceLastDisconnectBlock($lastEventDisconnect, $previousEvent, event.history);
-            }
-            $lastEventDisconnect = that.$el.find('.realtime div.block.disconnect:last');
-            return callback(null);
-          });
-        }
+        that.model.history(beforeLastDisconnectId, afterLastDisconnectId, function (event) {
+          if (!event.err) {
+            that.engine.replaceLastDisconnectBlock($lastEventDisconnect, $previousEvent, event.history);
+          }
+          $lastEventDisconnect = that.$el.find('.realtime div.block.disconnect:last');
+          return callback(null);
+        });
       },
       function back (err) {
         return err;

@@ -1,5 +1,6 @@
 'use strict';
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var _ = require('underscore');
 var search = require('../../../../../shared/util/search');
 
 var Handler = function (app) {
@@ -13,27 +14,23 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
-  if (!data.search && !data.with_group) {
+  var user = session.__currentUser__;
+
+  // at least look into something
+  if (!(data.options.users || data.options.rooms || data.options.groups)) {
     return next(null, {});
   }
 
-  var searchInUsers = (data.users && data.users === true);
-  var searchInRooms = (data.rooms && data.rooms === true);
-  if (!searchInUsers && !searchInRooms) {
+  // at least look for something
+  if (!(data.search || data.options.group_name)) {
     return next(null, {});
   }
 
-  var withGroups = (data.with_group && data.rooms) ? data.with_group : false;
+  var options = _.clone(data.options);
+  options.app = this.app;
+  options.user_id = user.id;
 
-  var lightSearch = (data.light && data.light === true);
-
-  var limit = (data.limit) ? data.limit : 150;
-
-  var skip = (data.skip) ? data.skip : 0;
-
-  var withPrivateRoomsInGroup = (data.private_group_rooms && data.rooms);
-
-  search(data.search, searchInUsers, searchInRooms, withGroups, limit, skip, lightSearch, withPrivateRoomsInGroup, function (err, results) {
+  search(data.search, options, function (err, results) {
     if (err) {
       logger('[search] ' + err);
       return next(null, {code: 500, err: 'internal'});

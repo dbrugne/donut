@@ -127,7 +127,9 @@
     "muted": "sound off"
   },
   "global": {
-    "view-profile": "View profile",
+    "group": "group",
+    "view-profile": "view profile",
+    "view-group": "view the groupe",
     "onetoones": "one to ones",
     "donuts": "Donuts",
     "group": "community",
@@ -326,14 +328,21 @@
     "placeholder": "Place here",
     "createadonut": "Create a donut",
     "home": {
-      "roomstitle": "Here are the existing donuts, you can also <a class='open-create-room'>create one</a>:",
+      "roomstitle": "Welcome to DONUT, here are some active donuts. If you can not find one to your tastes, <a href=\"#\" class='open-create-room'> create one! </a>",
       "userstitle": "Users"
     },
     "search": {
-      "placeholder": "Search donut or user here",
+      "placeholder": "Search donut, community or user here",
       "noresults": "No match found",
       "roomstitle": "Here are the donuts matching your request, you can also <a class='open-create-room'>create one</a> :",
-      "userstitle": "Matching users"
+      "userstitle": "Matching users",
+      "see_all_results": "See all results",
+      "groups_results": "<strong>__length__</strong> found communities",
+      "rooms_results": "<strong>__length__</strong> found donuts",
+      "users_results": "<strong>__length__</strong> found users",
+      "search_in_users": "search for users",
+      "search_in_rooms": "search for rooms",
+      "search_in_groups": "search for communities"
     },
     "userscount": "<strong>__count__</strong> user in this donut",
     "userscount_plural": "<strong>__count__</strong> users in this donut",
@@ -1006,6 +1015,7 @@
       "content": {
         "title": "You were kicked out of __roomname__ by @__username__",
         "disclaimer": "That can't be a big deal. The two of you just give a big hug and everything will be fine again!",
+        "action": "...and all of that thanks to ",
         "button": "Go to chat"
       }
     },
@@ -1014,6 +1024,7 @@
       "content": {
         "title": "You were banned from __roomname__ by @__username__",
         "disclaimer": "It looks like you were not meant to be together...<br/>But you'll be fine, one lost ten found. Just pick another donut!",
+        "action": "...and all of that thanks to ",
         "button": "Return to DONUT"
       }
     },
@@ -1023,7 +1034,7 @@
         "title": "You are no longer banned from __roomname__",
         "disclaimer": "You are no longer banned from ",
         "disclaimer2": "It looks like all is well that ends well!",
-        "action": "…and all of that thanks to ",
+        "action": "...and all of that thanks to ",
         "button": "Go to chat"
       }
     },
