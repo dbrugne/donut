@@ -15,11 +15,11 @@
                         <% if (card.realname) { %>
                             <span class="value"><%= card.realname %></span>
                             <a href="<%= card.join %>" class="open-user-profile flex-child flex-parent center jc-center" data-user-id="<%=card.user_id%>">
-                                <span class="othername">@<%= card.username %></span>
+                                <span class="othername">@<%= card.username %><i class="ml5 fs15 icon icon-dot-circle-o status <%=card.status%>" title="<%= t('global.' + card.status) %>"></i></span>
                             </a>
                         <% } else { %>
                             <a href="<%= card.join %>" class="open-user-profile flex-child flex-parent center jc-center" data-user-id="<%=card.user_id%>">
-                                <span class="value">@<%= card.username %></span>
+                                <span class="value">@<%= card.username %><i class="ml5 fs15 icon icon-dot-circle-o status <%=card.status%>" title="<%= t('global.' + card.status) %>"></i></span>
                             </a>
                         <% } %>
                         <% if (card.location) { %>
