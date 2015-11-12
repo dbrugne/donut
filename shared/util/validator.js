@@ -11,7 +11,7 @@ expressValidator.validator.extend('isUsername', function (str) {
   return common.validate.username(str);
 });
 
-expressValidator.validator.extend('isEmailDomainValid', function (str) {
+expressValidator.validator.extend('isEmailDomainAllowed', function (str) {
   var domain = str.split('@')[1];
   return (disposableDomains.indexOf(domain) === -1);
 });
