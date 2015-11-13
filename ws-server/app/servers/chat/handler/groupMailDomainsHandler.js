@@ -48,13 +48,13 @@ handler.call = function (data, session, next) {
     return errors.getHandler('group:mail:domain', next)('domain');
   }
 
-  this[data.method](data.domain, group, next);
+  this[data.method](data.domain.toLowerCase(), group, next);
 };
 
 handler.add = function (domain, group, next) {
   async.waterfall([
     function check (callback) {
-      if (group.allowed_domains.indexOf(domain.toLowerCase()) !== -1) {
+      if (group.allowed_domains.indexOf(domain) !== -1) {
         return callback('mail-already-exist');
       }
 
@@ -62,7 +62,7 @@ handler.add = function (domain, group, next) {
     },
 
     function addDomain (callback) {
-      group.update({$addToSet: { allowed_domains: domain.toLowerCase() }}, function (err) {
+      group.update({$addToSet: { allowed_domains: domain }}, function (err) {
         return callback(err);
       });
     }
@@ -78,7 +78,7 @@ handler.add = function (domain, group, next) {
 handler.delete = function (domain, group, next) {
   async.waterfall([
     function check (callback) {
-      if (group.allowed_domains.indexOf(domain.toLowerCase()) === -1) {
+      if (group.allowed_domains.indexOf(domain) === -1) {
         return callback('not-found');
       }
 
@@ -86,7 +86,7 @@ handler.delete = function (domain, group, next) {
     },
 
     function deleteDomain (callback) {
-      group.update({$pull: { allowed_domains: domain.toLowerCase() }}, function (err) {
+      group.update({$pull: {allowed_domains: domain}}, function (err) {
         return callback(err);
       });
     }
