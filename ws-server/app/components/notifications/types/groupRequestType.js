@@ -40,6 +40,14 @@ Notification.prototype.create = function (user, group, event, done) {
       });
     },
 
+    function checkPreferences (userModel, groupModel, status, callback) {
+      if (that.type === 'groupinvite' && !userModel.preferencesValue('notif:invite')) {
+        logger.debug('groupInviteType.create no notification due to user preferences');
+        return callback(true);
+      }
+      return callback(null, userModel, groupModel, status);
+    },
+
     function save (userModel, groupModel, status, callback) {
       var data = {
         by_user: event.by_user_id,

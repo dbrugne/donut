@@ -40,6 +40,14 @@ Notification.prototype.create = function (user, room, event, done) {
       });
     },
 
+    function checkPreferences (userModel, roomModel, status, callback) {
+      if (that.type === 'roominvite' && !userModel.preferencesValue('notif:invite')) {
+        logger.debug('roomInviteType.create no notification due to user preferences');
+        return callback(true);
+      }
+      return callback(null, userModel, roomModel, status);
+    },
+
     function save (userModel, roomModel, status, callback) {
       var data = {
         by_user: event.by_user_id,

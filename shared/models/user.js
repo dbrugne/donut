@@ -277,7 +277,7 @@ userSchema.statics.preferencesKeys = function () {
     'notif:channels:mobile': {default: true},
 
     'notif:usermessage': {default: true},
-    'notif:roominvite': {default: true},
+    'notif:invite': {default: true},
     'chatmode:compact': {default: false},
 
     'room:notif:nothing:__what__': {default: false},
