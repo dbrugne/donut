@@ -41,7 +41,7 @@ Notification.prototype.create = function (user, room, event, done) {
     },
 
     function checkPreferences (userModel, roomModel, status, callback) {
-      if (that.type === 'roominvite' && !userModel.preferencesValue('notif:roominvite')) {
+      if (that.type === 'roominvite' && !userModel.preferencesValue('notif:invite')) {
         logger.debug('roomInviteType.create no notification due to user preferences');
         return callback(true);
       }

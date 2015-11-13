@@ -1359,8 +1359,8 @@
           "label": "when a user sends me a private message",
           "help": ""
         },
-        "roominvite": {
-          "label": "when a user invites me to join a donut",
+        "invite": {
+          "label": "when a user invites me to join a donut or a community",
           "help": ""
         },
         "roommessage": {
