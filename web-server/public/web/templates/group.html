@@ -44,7 +44,7 @@
                 </ul>
             </div>
             
-            <% if (!isMember && !isBanned) { %>
+            <% if (!isMember && !isBanned && !group.can_join) { %>
                 <span class="curp btn btn-primary pull-right request-allowance"><%= t('group.ask-membership') %></span>
                 <div class="clearfix"></div>
             <% } %>
@@ -52,7 +52,7 @@
         </div>
         <div class="info">
             <div class="disclaimer fs18">
-                <% if (!isMember) { %>
+                <% if (!isMember && !group.can_join) { %>
                     <%= group.disclaimer %>
                 <% } else { %>
                     <%= group.description %>
@@ -70,8 +70,11 @@
             <% } %>
             <% } %>
         </div>
-        <% if (group.has_password && !isMember && !isBanned) { %>
+        <% if (group.has_password && !isMember && !isBanned && !group.can_join) { %>
         <span class="curp btn btn-primary send-password pull-right password-div"><%= t('actions.direct-access') %></span>
+        <% } %>
+        <% if (group.can_join && !isMember && !isBanned) { %>
+        <span class="curp btn btn-primary group-join pull-right"><%= t('actions.direct-access') %></span>
         <% } %>
     </div>
 

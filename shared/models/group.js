@@ -146,6 +146,26 @@ groupSchema.methods.isOwnerOrOp = function (userId) {
   return (this.isOwner(userId) || this.isOp(userId));
 };
 
+groupSchema.methods.canUserJoin = function (userId, userEmails) {
+  if (this.isMember(userId)) {
+    return true;
+  }
+
+  if (this.isBanned(userId)) {
+    return false;
+  }
+
+  if (!this.allowed_domains || this.allowed_domains.length < 1) {
+    return false;
+  }
+
+  var found = _.find(userEmails, _.bind(function (e) {
+    var domain = '@' + e.email.split('@')[1].toLowerCase();
+    return (this.allowed_domains.indexOf(domain) !== -1 && e.confirmed);
+  }, this));
+  return (typeof found !== 'undefined');
+};
+
 groupSchema.methods._avatar = function (size) {
   return cloudinary.roomAvatar(this.avatar, this.color, size);
 };

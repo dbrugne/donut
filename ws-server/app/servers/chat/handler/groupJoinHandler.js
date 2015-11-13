@@ -28,16 +28,12 @@ handler.call = function (data, session, next) {
         return callback('message-wrong-format');
       }
 
-      if (!data.password) {
-        return callback('params-password');
-      }
-
-      if (!group.password) {
-        return callback('params-password');
-      }
-
       if (!group) {
         return callback('group-not-found');
+      }
+
+      if ((!group.password || !data.password) && !group.canUserJoin(user.id, user.emails)) {
+        return callback('params-password');
       }
 
       if (group.isMember(user.id)) {
@@ -52,7 +48,7 @@ handler.call = function (data, session, next) {
     },
 
     function checkPassword (callback) {
-      if (!group.validPassword(data.password)) {
+      if (!group.validPassword(data.password) && !group.canUserJoin(user.id, user.emails)) {
         return callback('wrong-password');
       } else {
         return callback(null);

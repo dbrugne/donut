@@ -19,7 +19,8 @@ var GroupView = Backbone.View.extend({
 
   events: {
     'click .request-allowance': 'onRequestAllowance',
-    'click .send-password': 'onSendPassword'
+    'click .send-password': 'onSendPassword',
+    'click .group-join': 'onJoinGroup'
   },
 
   initialize: function (options) {
@@ -147,6 +148,15 @@ var GroupView = Backbone.View.extend({
           app.trigger('joinGroup', {name: this.model.get('name'), popin: false});
         }
       }, this));
+    }, this));
+  },
+  onJoinGroup: function () {
+    client.groupJoin(this.model.get('group_id'), null, _.bind(function (response) {
+      if (response.err) {
+        app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+      } else if (response.success) {
+        app.trigger('joinGroup', {name: this.model.get('name'), popin: false});
+      }
     }, this));
   },
   initializeTooltips: function () {

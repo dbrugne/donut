@@ -49,7 +49,8 @@ handler.call = function (data, session, next) {
         disclaimer: group.disclaimer,
         created: group.created_at,
         members: [],
-        has_password: (!!group.password)
+        has_password: (!!group.password),
+        can_join: group.canUserJoin(user.id, user.emails)
       };
 
       // owner
