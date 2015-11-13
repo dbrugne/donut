@@ -39,7 +39,7 @@ handler.call = function (data, session, next) {
     return errors.getHandler('group:mail:domain', next)('params');
   }
 
-  if (!group.isOwner() && !user.admin) {
+  if (!group.isOwner(user.id) && !user.admin) {
     return errors.getHandler('group:mail:domain', next)('not-allowed');
   }
 
