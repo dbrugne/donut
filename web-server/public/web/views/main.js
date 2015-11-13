@@ -614,7 +614,7 @@ var MainView = Backbone.View.extend({
       return;
     }
 
-    ConfirmationView.open({}, _.bind(function () {
+    ConfirmationView.open({message: 'ban-user'}, _.bind(function () {
       client.userBan(userId);
       app.trigger('userBan');
     }, this));
@@ -628,7 +628,7 @@ var MainView = Backbone.View.extend({
       return;
     }
 
-    ConfirmationView.open({}, _.bind(function () {
+    ConfirmationView.open({message: 'deban-user'}, _.bind(function () {
       client.userDeban(userId);
       app.trigger('userDeban');
     }, this));
