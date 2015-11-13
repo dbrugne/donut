@@ -1367,8 +1367,8 @@
           "label": "quand un utilisateur m'envoie un message privé",
           "help": ""
         },
-        "roominvite": {
-          "label": "quand un utilisateur m'invite à rejoindre un donut",
+        "invite": {
+          "label": "quand un utilisateur m'invite à rejoindre un donut ou une communauté.",
           "help": ""
         },
         "roommessage": {
