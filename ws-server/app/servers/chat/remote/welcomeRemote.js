@@ -52,6 +52,7 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, data, globalCall
             user_id: user._id.toString(),
             username: user.username,
             realname: user.realname,
+            confirmed: user.confirmed,
             avatar: user._avatar()
           };
 

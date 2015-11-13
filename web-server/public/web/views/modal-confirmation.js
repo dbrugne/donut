@@ -113,6 +113,10 @@ var ConfirmationModalView = Backbone.View.extend({
     if (this.options.message) {
       if (this.options.message === 'mode-change') {
         this.$message.text(i18next.t('chat.confirmation.message.modechange'));
+      } else if (this.options.message === 'ban-user') {
+        this.$message.text(i18next.t('chat.confirmation.message.banuser'));
+      } else if (this.options.message === 'deban-user') {
+        this.$message.text(i18next.t('chat.confirmation.message.debanuser'));
       } else if (this.options.message === 'refuse-user') {
         this.$message.text(i18next.t('chat.confirmation.message.refuseuser', {username: this.options.username}));
       } else if (this.options.message === 'accept-user') {
@@ -132,6 +136,19 @@ var ConfirmationModalView = Backbone.View.extend({
         this.$message.html(i18next.t('chat.confirmation.message.requestallowance'));
       } else if (this.options.message === 'request-allowance-password') {
         this.$message.text(i18next.t('group.blocked'));
+      } else if (this.options.message === 'op-group-user') {
+        this.$message.text(i18next.t('chat.confirmation.message.op-group-user', {username: this.options.username}));
+      } else if (this.options.message === 'deop-group-user') {
+        this.$message.text(i18next.t('chat.confirmation.message.deop-group-user', {username: this.options.username}));
+      } else if (this.options.message === 'add-email') {
+        this.$message.text(i18next.t('chat.confirmation.message.add-email'));
+        this.$input.attr('placeholder', '');
+      } else if (this.options.message === 'send-email') {
+        this.$message.text(i18next.t('chat.confirmation.message.send-email', {email: this.options.email}));
+      } else if (this.options.message === 'delete-email') {
+        this.$message.text(i18next.t('chat.confirmation.message.delete-email', {email: this.options.email}));
+      } else if (this.options.message === 'change-email') {
+        this.$message.text(i18next.t('chat.confirmation.message.change-email', {email: this.options.email}));
       }
     }
     // bind 'enter' only when showing popin

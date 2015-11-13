@@ -73,8 +73,8 @@ var RoomModel = Backbone.Model.extend({
       this.set(key, value);
     }, this));
   },
-  history: function (start, end, callback) {
-    client.roomHistory(this.get('room_id'), start, end, 100, function (data) {
+  history: function (start, end, limit, callback) {
+    client.roomHistory(this.get('room_id'), start, end, limit, function (data) {
       return callback(data);
     });
   },
@@ -96,7 +96,7 @@ var RoomModel = Backbone.Model.extend({
     this.trigger('viewed', data);
   },
   isInputActive: function () {
-    return !(this.users.isUserDevoiced(currentUser.get('user_id')));
+    return !(this.users.isUserDevoiced(currentUser.get('user_id')) || !currentUser.isConfirmed());
   }
 
 });

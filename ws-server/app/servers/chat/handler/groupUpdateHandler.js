@@ -224,11 +224,11 @@ handler.call = function (data, session, next) {
         data: sanitizedToNotify
       };
       var ids = group.getIdsByType('members');
-      async.each(ids, function (id, fn) {
-        that.app.globalChannelService.pushMessage('connector', 'group:updated', event, 'user:' + id, {}, fn);
-      }, function (err) {
-        return callback(err);
+      var channelsName = [];
+      _.each(ids, function (uid) {
+        channelsName.push('user:' + uid);
       });
+      that.app.globalChannelService.pushMessageToMultipleChannels('connector', 'group:updated', event, channelsName, {}, callback);
     }
 
   ], function (err) {

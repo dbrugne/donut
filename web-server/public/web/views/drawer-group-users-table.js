@@ -51,12 +51,16 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
     }
 
     var userId = $(event.currentTarget).data('userId');
-    if (!userId) {
+    var userName = $(event.currentTarget).data('username');
+    if (!userId || !userName) {
       return;
     }
 
     var that = this;
-    confirmationView.open({}, function () {
+    confirmationView.open({
+      message: 'op-group-user',
+      username: userName
+    }, function () {
       client.groupOp(that.model.get('id'), userId, function () {
         that.trigger('redraw'); // will render again drawer group users
         that.model.refreshUsers();
@@ -70,12 +74,16 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
     }
 
     var userId = $(event.currentTarget).data('userId');
-    if (!userId) {
+    var userName = $(event.currentTarget).data('username');
+    if (!userId || !userName) {
       return;
     }
 
     var that = this;
-    confirmationView.open({}, function () {
+    confirmationView.open({
+      message: 'deop-group-user',
+      username: userName
+    }, function () {
       client.groupDeop(that.model.get('id'), userId, function () {
         that.trigger('redraw'); // will render again drawer group users
         that.model.refreshUsers();

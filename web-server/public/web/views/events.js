@@ -279,7 +279,7 @@ module.exports = Backbone.View.extend({
 
         var $previousEvent = $lastEventDisconnect.prevAll('div.block').not('hello').first();
 
-        that.model.history(beforeLastDisconnectId, afterLastDisconnectId, function (event) {
+        that.model.history(beforeLastDisconnectId, afterLastDisconnectId, null, function (event) {
           if (!event.err) {
             that.engine.replaceLastDisconnectBlock($lastEventDisconnect, $previousEvent, event.history);
           }

@@ -124,7 +124,8 @@
     "discuss": "discuter",
     "account": "mon compte",
     "mute": "son actif",
-    "muted": "son désactivé"
+    "muted": "son désactivé",
+    "verify": "Verification de votre email"
   },
   "global": {
     "discover": "découvrir",
@@ -167,6 +168,7 @@
     "french": "Français",
     "english": "Anglais",
     "unknownerror": "Erreur inconnue, veuillez réessayer",
+    "notconfirmed": "Votre compte n'a pas été validé, cliquer ici pour gérer vos emails",
     "mode": {
       "title": {
         "private": "privé",
@@ -204,6 +206,14 @@
     "error": {
       "notexists": "Désolé, ce compte n'existe pas",
       "expired": "Le jeton de changement de mot de passe a déjà été utilisé ou a éxpiré, veuillez recommencer la procédure"
+    }
+  },
+  "verify": {
+    "success": "Votre email a été validé avec succès",
+    "error": {
+      "expired": "Le jeton de validation de l'adresse mail a déjà été utilisé ou a éxpiré, veuillez recommencer la procédure",
+      "invalid": "Le jeton de validation de l'adresse mail est invalide, veuillez recommencer la procédure",
+      "already-validate": "Cette adresse mail a déjà été validée"
     }
   },
   "signup": {
@@ -328,7 +338,8 @@
       "banned": "Vous avez bloqué cet utilisateur",
       "bannedMessage": {
         "onetoone": "Vous avez été bloqué par cet utilisateur",
-        "room": "Vous êtes muet dans ce donut à la demande d'un modérateur"
+        "room": "Vous êtes muet dans ce donut à la demande d'un modérateur",
+        "confirm": "Votre compte n'est pas validé, vous ne pouvez pas faire cela"
       },
       "unlock": "(Cliquez ici pour le débloquer)"
     },
@@ -437,13 +448,21 @@
       "confirm": "OK",
       "message": {
         "modechange": " ATTENTION cette action est irréversible.",
+        "banuser": "Vous allez bloquer cet utilisateur.",
+        "debanuser": "Vous allez débloquer cet utilisateur.",
         "refuseuser": "Vous allez refuser l'accès à @__username__",
         "acceptuser": "Vous allez autoriser l'accès à @__username__",
         "disallowuser": "Vous allez supprimer l'accès à @__username__",
         "ban-group-user": "Vous allez bannir l'utilisateur @__username__ de cette communauté",
         "deban-group-user": "Vous allez débannir l'utilisateur @__username__ de cette communauté",
+        "op-group-user": "Vous êtes sur le point de nommer @__username__ modérateur de la communauté. Cet utilisateur pourra accepter ou refuser les demandes d'adhésions, inviter des utilisateurs à devenir membre et bannir un utilisateur du groupe.",
+        "deop-group-user": "Vous allez retirer @__username__ des modérateurs.",
         "invite": "Vous allez autoriser l'accès à @__username__. Une notification va lui être adressée pour l'inviter à rejoindre #__name__.",
-        "requestallowance": "<strong>Demander à devenir membre.</strong><br>Le créateur de la communauté va avoir accès à votre vrai nom et votre e-mail."
+        "requestallowance": "<strong>Demander à devenir membre.</strong><br>Le créateur de la communauté va avoir accès à votre vrai nom et votre e-mail.",
+        "add-email": "Nouvelle adresse électronique :",
+        "send-email": "Un email de confirmation va être envoyé à __email__",
+        "delete-email": "__email__ va être supprimé de vos adresses mails",
+        "change-email": "__email__ va devenir votre adresse mail principale, elle vous servira pour vous connecter et pour revecoir tous les mails de la part de Donut.me"
       }
     },
     "commands": {
@@ -871,7 +890,8 @@
         "not-admin-owner-groupowner": "Action non autorisée.",
         "not-admin-owner": "Action non autorisée.",
         "not-allowed": "Action non autorisée.",
-        "group-banned": "Vous êtes banni de la communauté"
+        "group-banned": "Vous êtes banni de la communauté",
+        "not-confirmed": "Votre compte n'a pas été validé vous ne pouvez pas faire ça"
       }
     },
     "members": "Vous êtes maintenant membre de la communauté #__name__",
@@ -902,7 +922,8 @@
       "error": {
         "format": "Cette adresse email n'est pas valide",
         "alreadyexists": "Cette adresse email est déjà utilisée par un autre compte",
-        "alreadyyours": "Vous utilisez déjà cette adresse mail"
+        "alreadyyours": "Vous utilisez déjà cette adresse mail",
+        "domain": "Ce domaine d'emails est invalide"
       },
       "new": "Nouvel email",
       "confirm": "Confirmer"
@@ -940,6 +961,25 @@
     },
     "delete": {
       "success": "Compte supprimé avec succés, à bientôt !"
+    },
+    "manageemail": {
+      "label": "Gérer vos emails",
+      "facebook": "Adresse lié au compte facebook",
+      "verified": "Adresse mail vérifié",
+      "notverified": "Adresse mail non vérifié",
+      "send": "Renvoyer un email de validation",
+      "delete": "Supprimer",
+      "noresult": "Aucunes adresse mail trouvées",
+      "main": "Principal",
+      "add": "Ajouter une adresse",
+      "errors": {
+        "wrong-format": "L'addresse mail n'est pas valide",
+        "mail-already-exist": "Cette adresse mail est déjà utilisé",
+        "not-allowed": "Cette adresse mail à déjà été validée",
+        "not-found": "Cette adresse mail n'a pas été trouvée",
+        "permanent": "Cette addresse mail ne peut pas être supprimer",
+        "domain": "Ce domaine d'emails est invalide"
+      }
     }
   },
   "page": {
@@ -980,6 +1020,14 @@
         "disclaimer": "Vous avez demandé à changer de mot de passe. Cliquez sur le lien suivant pour définir un nouveau mot de passe",
         "button": "Réinitialiser votre mot de passe",
         "info": "Si vous ne faîtes rien, votre mot de passe restera inchangé"
+      }
+    },
+    "verify": {
+      "subject": "Valider votre email DONUT.me",
+      "content": {
+        "title": "Valider votre email",
+        "disclaimer": "Pour activer votre email cliquer sur le lien ci-dessous",
+        "button": "Valider votre email"
       }
     },
     "passwordchanged": {

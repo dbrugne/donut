@@ -37,7 +37,7 @@ module.exports = Backbone.View.extend({
       : first.attr('id');
 
     var that = this;
-    this.model.history(null, end, function (data) {
+    this.model.history(null, end, 50, function (data) {
       data.history.reverse();
       that.trigger('addBatchEvents', {
         history: data.history,

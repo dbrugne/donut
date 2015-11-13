@@ -124,7 +124,8 @@
     "discuss": "chat",
     "account": "my account",
     "mute": "sound on",
-    "muted": "sound off"
+    "muted": "sound off",
+    "verify": "Verification of your email"
   },
   "global": {
     "discover": "discover",
@@ -167,6 +168,7 @@
     "french": "French",
     "english": "English",
     "unknownerror": "Unknown error, please retry later",
+    "notconfirmed": "Your account has not beed confirmed, click here to manage your emails",
     "mode": {
       "title": {
         "private": "private",
@@ -204,6 +206,14 @@
     "error": {
       "notexists": "No account with that email address exists.",
       "expired": "Please restart the process. This token has expired or has already been used."
+    }
+  },
+  "verify": {
+    "success": "Your email have been validate",
+    "error": {
+      "expired": "Please restart the process. This token has expired or has already been used.",
+      "invalid": "Please restart the process. This token his not valid.",
+      "already-validate": "This mail address is already validated"
     }
   },
   "signup": {
@@ -328,7 +338,8 @@
       "banned": "You have blocked this user",
       "bannedMessage": {
         "onetoone": "You have been blocked by this user",
-        "room": "You are mute in this donut as requested by a moderator"
+        "room": "You are mute in this donut as requested by a moderator",
+        "confirm": "Your account is not validate, your can't do this"
       },
       "unlock": "(Click here to unblock)"
     },
@@ -437,13 +448,21 @@
       "confirm": "OK",
       "message": {
         "modechange": "WARNING this action is irreversible.",
+        "banuser": "You are about to block this user.",
+        "debanuser": "You are about to unblock this user.",
         "refuseuser": "You are about to refuse @__username__",
         "acceptuser": "You are about to authorize @__username__",
         "disallowuser": "You are about to disallow @__username__",
         "ban-group-user": "You are about to ban user @__username__ from this community",
         "deban-group-user": "You are about to deban user @__username__ from this community",
+        "op-group-user": "Your are about to promote @__username__ moderator from this community. As moderator this user would be able to manage membership requests, invite users to become members and ban members from the group.",
+        "deop-group-user": "You are about to remove as moderateur @__username__ from this community.",
         "invite": "You are about to authorize @__username__. A notification will be sent to invite @__username__ to join #__name__.",
-        "requestallowance": "<strong>Membership request.</strong><br>The community creator will have access to your real name and email."
+        "requestallowance": "<strong>Membership request.</strong><br>The community creator will have access to your real name and email.",
+        "add-email": "New mail address :",
+        "send-email": "A confirmation mail gonna be send to __email__",
+        "delete-email": "__email__ will be deleted of your address",
+        "change-email": "__email__ is going to be your main address, she will be used for your login and to received mails from Donut.me"
       }
     },
     "commands": {
@@ -871,7 +890,8 @@
         "not-admin-owner-groupowner": "Unauthorized action.",
         "not-admin-owner": "Unauthorized action.",
         "not-allowed": "Unauthorized action.",
-        "group-banned": "You were banned from community"
+        "group-banned": "You were banned from community",
+        "not-confirmed": "You can't do that, your account is not confirmed yet"
       }
     },
     "members": "You are now a member of #__name__",
@@ -902,7 +922,8 @@
       "error": {
         "format": "Invalid e-mail",
         "alreadyexists": "This e-mail is already used by another account",
-        "alreadyyours": "You already use this e-mail"
+        "alreadyyours": "You already use this e-mail",
+        "domain": "This email domain is invalid"
       },
       "new": "New E-mail",
       "confirm": "Confirm"
@@ -940,6 +961,25 @@
     },
     "delete": {
       "success": "Account successfully deleted, see you soon!"
+    },
+    "manageemail": {
+      "label": "Manage your mails",
+      "facebook": "Address link to facebook account",
+      "verified": "Address verified",
+      "notverified": "Address not verified",
+      "send": "Re-send validation email",
+      "delete": "Delete",
+      "noresult": "No mails found",
+      "main": "Main",
+      "add": "Add an address",
+      "errors": {
+        "wrong-format": "Mail address is not valid",
+        "mail-already-exist": "This mail address is already used",
+        "not-allowed": "This mail address is already verified",
+        "not-found": "This mail address cannot be found",
+        "permanent": "This mail address can't be deleted",
+        "domain": "This email domain is invalid"
+      }
     }
   },
   "page": {
@@ -980,6 +1020,14 @@
         "disclaimer": "You are receiving this e-mail because you have requested a password reset. Please click on the following link to complete the process",
         "button": "Reset your password",
         "info": "If you ignore this e-mail your password will remain unchanged"
+      }
+    },
+    "verify": {
+      "subject": "Email validation on DONUT.me",
+      "content": {
+        "title": "Validate email on DONUT.me",
+        "disclaimer": "To activate your email you should click on the link below",
+        "button": "Valid your email"
       }
     },
     "passwordchanged": {

@@ -8,6 +8,7 @@ var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
 var client = require('../libs/client');
 var ConfirmationView = require('./modal-confirmation');
+var currentUser = require('../models/current-user');
 
 var RoomBlockedView = Backbone.View.extend({
   tagName: 'div',
@@ -60,7 +61,7 @@ var RoomBlockedView = Backbone.View.extend({
     });
 
     // render
-    var html = this.template({data: data});
+    var html = this.template({data: data, confirmed: currentUser.isConfirmed()});
     this.$el.attr('data-identifier', this.model.get('identifier'));
     this.$el.html(html);
     this.$error = this.$('.error');
@@ -88,6 +89,10 @@ var RoomBlockedView = Backbone.View.extend({
     }
   },
   onRequestAllowance: function (event) {
+    if (!currentUser.isConfirmed()) {
+      return;
+    }
+
     event.preventDefault();
 
     ConfirmationView.open({message: 'request-allowance', area: true}, _.bind(function (message) {

@@ -357,7 +357,7 @@ var MainView = Backbone.View.extend({
   openUserAccount: function (event) {
     event.preventDefault();
     var view = new DrawerUserAccountView();
-    this.drawerView.setSize('380px').setView(view).open();
+    this.drawerView.setSize('450px').setView(view).open();
   },
   onOpenUserNotifications: function(event) {
     event.preventDefault();
@@ -626,7 +626,7 @@ var MainView = Backbone.View.extend({
       return;
     }
 
-    ConfirmationView.open({}, _.bind(function () {
+    ConfirmationView.open({message: 'ban-user'}, _.bind(function () {
       client.userBan(userId);
       app.trigger('userBan');
     }, this));
@@ -640,7 +640,7 @@ var MainView = Backbone.View.extend({
       return;
     }
 
-    ConfirmationView.open({}, _.bind(function () {
+    ConfirmationView.open({message: 'deban-user'}, _.bind(function () {
       client.userDeban(userId);
       app.trigger('userDeban');
     }, this));
