@@ -8,16 +8,24 @@
                 <img class="close-btn" src="/images/svg/close-r.svg" alt="close icon">
             </div>
         </div>
-        <!--<div id="color-default"></div>-->
-        <nav id="color" class="navbar navbar-default navbar-fixed-top dc-back">
-            <div class="container">
+
+        <div class="row">
+            <div id="left">
+
+                <div id="block-current-user">
+                    <span href="#" class="dropdown-toggle toggle flex-parent center" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <img class="mr5" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
+                        <span class="mr5 ml5 dc-text-contrast username flex-child"><% if (user.realname) { print (user.realname) } else { print ('@'+user.username) } %></span>
+                        <i class="icon icon-fw icon-chevron-down hover"></i>
+                    </span>
+                </div>
+
                 <div id="navbar">
-                    <a class="navbar-brand-a hidden-xs hidden-sm" href="/!#"><img class="logo" src="/images/logo-bordered-small.png" alt="<%= t('title.chat') %>"></a>
-                    <div class="search">
+                    <div class="search flex-parent column">
                         <div class="input-group relative">
                             <div class="relative">
-                                <input type="text" class="form-control dc-border-darker" placeholder="<%= t('chat.search.placeholder') %>">
-                                <i class="icon icon-search dc-text curp"></i>
+                                <input type="text" class="form-control" placeholder="<%= t('chat.search.placeholder') %>">
+                                <i class="icon icon-search curp"></i>
                             </div>
                             <ul class="results dc-border-darker" style="display: none"></ul>
                         </div>
@@ -26,87 +34,18 @@
                             <div class="nothing mt20 mb20 hidden"><%= t('chat.search.noresults') %></div>
                         </div>
                     </div>
-                    <div class="navbar-top">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="icontop help">
-                                <span id="block-current-user">
-                                    <img class="mr5" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
-                                    <span class="mr5 dc-text-contrast">@<%- user.username %></span>
-                                    <span class="connection"> <i class="icon icon-dot-circle-o status"></i></span>
-                                    <a href="#" class="dropdown-toggle toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                        <i class="icon icon-chevron-down dc-text-contrast hover"></i>
-                                    </a>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li class="arrow-up"></li>
-                                        <li><a href="/!#donut/help"><%= t('chat.help') %></a></li>
-                                        <li><a href="/faq" target="_blank"><%= t('page.faq.title') %></a></li>
-                                        <li><a data-toggle="contactform"><%= t('page.contact.title') %></a></li>
-                                        <li><a href="/eutc" target="_blank"><%= t('page.eutc.title') %></a></li>
-                                        <li><a href="/legals" target="_blank"><%=t('landing.legals')%></a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li class="dropdown-header"><%= t('global.switchlanguage') %></li>
-                                        <li class="colored"><a href="" data-language="fr" class="switch">Français</a></li>
-                                        <li class="colored"><a href="" data-language="en" class="switch">English</a></li>
-                                    </ul>
-                                </span>
-                            </li>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                        <li class="icontop">
-                            <a href="/!#" class="toggle dc-text-contrast">
-                                <i class="icon icon-home dc-text-contrast hover"></i>
-                            </a>
-                        </li>
-                        <li id="notifications" class="icontop dropdown empty">
-                            <a href="#" class="dropdown-toggle toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                <i class="icon icon-globe dc-text-contrast hover"></i>
-                                <span class="badge hide-empty dc-border-darker dc-text"></span>
-                            </a>
-                            <div class="dropdown-menu p0" role="menu">
-                                <div class="arrow-up colored"></div>
-                                <div class="unread-count">
-                                    <span class="show-empty text-center">
-                                        <span><%= t('chat.notifications.empty') %></span>
-                                    </span>
-                                    <span class="hide-empty">
-                                        <span><%= t('chat.notifications.count') %></span>
-                                        <span class="pull-right action-tag-as-read"><%= t('chat.notifications.tag-as-read') %></span>
-                                    </span>
-                                </div>
-                                <div class="messages-list-ctn">
-                                    <div class="messages-list" id="main-navbar-messages"><!-- Loaded dynamically --></div>
-                                    <div class="actions">
-                                        <div class="read-more"><%= t('chat.notifications.read-more') %></div>
-                                        <div class="loading hidden"><i class="icon icon-spinner icon-spin"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="icontop">
-                            <div class="toggle">
-                                <i class="open-create-room icon icon-plus dc-text-contrast hover"></i>
-                            </div>
-                        </li>
-                        <li class="icontop" id="mute">
-                            <a href="#" class="toggle">
-                                <i class="icon icon-volume-up dc-text-contrast hover"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    </div>
                 </div><!--/.nav-collapse -->
-            </div>
-        </nav>
-        <div class="row">
-            <div id="left">
+
                 <ul class="page-sidebar-menu">
-                    <li id="ones">
+                    <li id="ones" class="mb20">
                         <a class="title" href=".collapse-ones" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-ones"><%= t('global.onetoones') %></a>
                         <ul class="list collapse-ones collapse in"><!--ones--></ul>
-                        <div class="separator"><hr></div>
                     </li>
                     <li id="rooms">
-                        <a class="title" href=".collapse-rooms" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-rooms"><%= t('global.donuts') %></a>
+                        <span class="flex-parent">
+                            <a class="title flex-child" href=".collapse-rooms" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-rooms"> <%= t('global.donuts') %> </a>
+                            <a href="#" class="open-create-room mr5 "><i class="icon icon-fw icon-plus hover"></i></a>
+                        </span>
                         <ul class="list collapse-rooms collapse in"><!--rooms--></ul>
                         <ul class="empty">
                             <li><%= t('chat.noroomopened') %> <a class="go-to-search dc-text" href="#"><%= t('chat.actions.search').toLowerCase() %></a> <%= t('global.or') %> <a class="open-create-room dc-text" href="#"><%= t('chat.actions.create') %></a> <%= t('global.one') %>.</li>

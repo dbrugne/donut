@@ -127,6 +127,7 @@
     "muted": "sound off"
   },
   "global": {
+    "discover": "discover",
     "group": "group",
     "view-profile": "view profile",
     "view-group": "view the groupe",
@@ -154,6 +155,7 @@
     "offline": "offline",
     "connecting": "connection ...",
     "permalink": "permalink",
+    "links": "links",
     "search": "search",
     "by": "by",
     "one": "one",
@@ -162,6 +164,8 @@
       "after": "?"
     },
     "switchlanguage": "Language",
+    "french": "French",
+    "english": "English",
     "unknownerror": "Unknown error, please retry later",
     "mode": {
       "title": {
@@ -302,6 +306,10 @@
     },
     "loading": "Loading",
     "actions": {
+      "volume": {
+        "up": "Increase volume",
+        "down": "Decrease volume"
+      },
       "search": "Search",
       "searchuser": "Invite a user",
       "banuser": "Ban a user",

@@ -127,6 +127,7 @@
     "muted": "son désactivé"
   },
   "global": {
+    "discover": "découvrir",
     "group": "groupe",
     "view-profile": "voir le profil",
     "view-group": "voir le groupe",
@@ -154,6 +155,7 @@
     "offline": "hors ligne",
     "connecting": "connexion ...",
     "permalink": "permalien",
+    "links": "liens",
     "search": "Recherche",
     "by": "par",
     "one": "un",
@@ -162,6 +164,8 @@
       "after": " ?"
     },
     "switchlanguage": "Langue",
+    "french": "Français",
+    "english": "Anglais",
     "unknownerror": "Erreur inconnue, veuillez réessayer",
     "mode": {
       "title": {
@@ -302,6 +306,10 @@
     },
     "loading": "Chargement ",
     "actions": {
+      "volume": {
+        "up": "Augmenter le volume",
+        "down": "Baisser le volume"
+      },
       "search": "Chercher",
       "searchuser": "Inviter un utilisateur",
       "banuser": "Bannir un utilisateur",

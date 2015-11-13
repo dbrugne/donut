@@ -46,4 +46,19 @@
         <h2><%= t('account.profile.label') %></h2>
         <p class="values"><%= t('account.profile.help') %> <a class="open-user-edit"><%= t('account.profile.link') %></a>.</p>
     </div>
+
+    <div class="group block">
+        <h2><%= t('global.switchlanguage') %></h2>
+        <p class="values"><a href="" data-language="fr" class="switch"><%= t('global.french') %></a></p>
+        <p class="values"><a href="" data-language="en" class="switch"><%= t('global.english') %></a></p>
+    </div>
+
+    <div class="group block">
+        <h2><%= t('global.links') %></h2>
+        <p class="values"><a href="/!#donut/help"><%= t('chat.help') %></a></p>
+        <p class="values"><a href="/faq" target="_blank"><%= t('page.faq.title') %></a></p>
+        <p class="values"><a data-toggle="contactform"><%= t('page.contact.title') %></a></p>
+        <p class="values"><a href="/eutc" target="_blank"><%= t('page.eutc.title') %></a></p>
+        <p class="values"><a href="/legals" target="_blank"><%=t('landing.legals')%></a></p>
+    </div>
 </div>

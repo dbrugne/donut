@@ -2,6 +2,7 @@ var $ = require('jquery');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
 var currentUser = require('../models/current-user');
+var MuteView = require('./mute');
 
 var CurrentUserView = Backbone.View.extend({
   el: $('#block-current-user'),
@@ -19,9 +20,12 @@ var CurrentUserView = Backbone.View.extend({
     var data = currentUser.toJSON();
 
     data.avatar = common.cloudinary.prepare(currentUser.get('avatar'), 60);
+    data.realname = currentUser.get('realname');
 
     var html = this.template(data);
     this.$el.html(html);
+
+    this.muteView = new MuteView();
 
     this.initializeTooltips();
 

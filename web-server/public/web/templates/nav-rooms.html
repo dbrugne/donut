@@ -34,7 +34,7 @@ if (item.group_id && item.group_id === lastGroup) {
         </a>
     </li>
 <% } %>
-<li class="<% if(count >= toggleCount) { %>collapse collapse-<%-lastGroup%><%}%> <% if (item.focused) { %> active <% } %>" data-type="<%= item.type %>" data-room-id="<%= item.id %>">
+<li class="room-type <% if (item.group_id) { %> grouped <% } else { %> ungrouped <% } %> <% if(count >= toggleCount) { %>collapse collapse-<%-lastGroup%><%}%> <% if (item.focused) { %> active <% } %>" data-type="<%= item.type %>" data-room-id="<%= item.id %>">
     <span class="item flex-parent center <% if (item.group_id) { %> grouped <% } %> <% if (item.blocked) { %> blocked <% } %>">
         <a class="clean name-ctn hidden-xs hidden-sm" href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
             <% if (item.group_id) { %>
@@ -44,7 +44,7 @@ if (item.group_id && item.group_id === lastGroup) {
             <% } %>
         </a>
         <% if (item.unviewed === true) { %>
-            <span class="icon icon-circle unread cl-peter_river fs10"></span>
+            <span class="icon icon-circle unread cl-sun_flower fs10"></span>
         <% } %>
     </span>
 </li>

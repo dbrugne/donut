@@ -69,11 +69,11 @@ var NotificationsView = Backbone.View.extend({
     if (count > 0) {
       this.$badge.text(count);
       this.$count.html(count);
-      this.el.classList.remove('empty');
-      this.el.classList.add('full');
+      //this.el.classList.remove('empty');
+      //this.el.classList.add('full');
     } else {
-      this.el.classList.add('empty');
-      this.el.classList.remove('full');
+      //this.el.classList.add('empty');
+      //this.el.classList.remove('full');
     }
     this.unread = count;
   },
@@ -194,6 +194,7 @@ var NotificationsView = Backbone.View.extend({
   },
   // User clicks on the notification icon in the header
   onShow: function (event) {
+
     this.scrollTop();
     if (this.countNotificationsInDropdown()) {
       this.markHasRead = setTimeout(_.bind(function () {

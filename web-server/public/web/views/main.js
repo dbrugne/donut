@@ -29,6 +29,7 @@ var DrawerGroupProfileView = require('./drawer-group-profile');
 var DrawerGroupAccessView = require('./drawer-group-access');
 var DrawerGroupUsersView = require('./drawer-group-users');
 var DrawerUserProfileView = require('./drawer-user-profile');
+var DrawerUserNotificationsView = require('./drawer-user-notifications');
 var DrawerUserEditView = require('./drawer-user-edit');
 var DrawerUserPreferencesView = require('./drawer-user-preferences');
 var DrawerUserAccountView = require('./drawer-account');
@@ -69,6 +70,7 @@ var MainView = Backbone.View.extend({
     'click .open-user-preferences': 'openUserPreferences',
     'click .open-user-account': 'openUserAccount',
     'click .open-user-profile': 'onOpenUserProfile',
+    'click .open-user-notifications': 'onOpenUserNotifications',
     'click .action-user-ban': 'userBan',
     'click .action-user-deban': 'userDeban',
     'dblclick .dbl-open-user-profile': 'onOpenUserProfile',
@@ -355,6 +357,16 @@ var MainView = Backbone.View.extend({
   openUserAccount: function (event) {
     event.preventDefault();
     var view = new DrawerUserAccountView();
+    this.drawerView.setSize('380px').setView(view).open();
+  },
+  onOpenUserNotifications: function(event) {
+    event.preventDefault();
+
+    var userId = $(event.currentTarget).data('userId');
+    if (!userId) {
+      return;
+    }
+    var view = new DrawerUserProfileView({user_id: userId});
     this.drawerView.setSize('380px').setView(view).open();
   },
   onOpenUserProfile: function (event) {
