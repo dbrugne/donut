@@ -14,9 +14,11 @@
                     <div class="actions text-center">
                         <% if (user) { %>
                         <a class="flex-child" href="/!"><%= t('logged.chat') %></a>
+                        <span class="divider-vertical"></span>
                         <a class="flex-child" href="/logout"><%= t('logged.logout') %></a>
                         <% } else { %>
                         <a href="/signup" class="flex-child"><%= t('landing.signup') %></a>
+                        <span class="divider-vertical"></span>
                         <a href="/login"  class="flex-child"><%= t('landing.login') %></a>
                         <% } %>
                     </div>
