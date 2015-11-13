@@ -415,7 +415,7 @@ emailer.userMessage = function (to, username, events, callback) {
     title: i18next.t('email.usermessage.content.title', {username: username}),
     subject: i18next.t('email.usermessage.subject', {username: username}),
     userlink: {
-      chat: protocol + '://' + conf.fqdn + urls(data, 'user', 'chat')
+      chat: conf.url + urls(data, 'user', 'chat')
     },
     email_heading_action: false
   }, callback);
