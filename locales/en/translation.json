@@ -440,6 +440,8 @@
       "confirm": "OK",
       "message": {
         "modechange": "WARNING this action is irreversible.",
+        "banuser": "You are about to block this user.",
+        "debanuser": "You are about to unblock this user.",
         "refuseuser": "You are about to refuse @__username__",
         "acceptuser": "You are about to authorize @__username__",
         "disallowuser": "You are about to disallow @__username__",

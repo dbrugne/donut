@@ -124,7 +124,7 @@ var DrawerUserProfileView = Backbone.View.extend({
   },
   onUserBanChange: function () {
     this.render();
-    client.userRead(this.userId, null, _.bind(function (data) {
+    client.userRead(this.userId, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }
