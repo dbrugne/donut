@@ -89,8 +89,8 @@ var OneToOneModel = Backbone.Model.extend({
     // add event to discussion
     this.trigger('freshEvent', 'user:deban', data);
   },
-  history: function (start, end, callback) {
-    client.userHistory(this.get('user_id'), start, end, 100, function (data) {
+  history: function (start, end, limit, callback) {
+    client.userHistory(this.get('user_id'), start, end, limit, function (data) {
       return callback(data);
     });
   },

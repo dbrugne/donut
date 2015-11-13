@@ -441,6 +441,8 @@
       "confirm": "OK",
       "message": {
         "modechange": " ATTENTION cette action est irréversible.",
+        "banuser": "Vous allez bloquer cet utilisateur.",
+        "debanuser": "Vous allez débloquer cet utilisateur.",
         "refuseuser": "Vous allez refuser l'accès à @__username__",
         "acceptuser": "Vous allez autoriser l'accès à @__username__",
         "disallowuser": "Vous allez supprimer l'accès à @__username__",
