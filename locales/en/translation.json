@@ -435,6 +435,7 @@
     "confirmation": {
       "placeholder": "Explain why, visible in the donut (optional)",
       "placeholderarea": "200 characters maximum",
+      "placeholder-domain": "example: @donut.me",
       "label": "Explain why (optional)",
       "cancel": "Cancel",
       "confirm": "OK",
@@ -452,7 +453,9 @@
         "add-email": "New mail address :",
         "send-email": "A confirmation mail gonna be send to __email__",
         "delete-email": "__email__ will be deleted of your address",
-        "change-email": "__email__ is going to be your main address, she will be used for your login and to received mails from Donut.me"
+        "change-email": "__email__ is going to be your main address, she will be used for your login and to received mails from Donut.me",
+        "add-domain": "You are about to add an email domain to the allowed domain, an user with the given email could join this community without previous invitation",
+        "delete-domain": "You are about to delete the email domain __domain__ to the allowed domain, a new user with the given email could no more join this community without previous invitation, old user with this email domain will remain members"
       }
     },
     "commands": {
@@ -724,8 +727,10 @@
       },
       "group-form": {
         "mode": {
+          "domain": "Allowed email domains",
           "disclaimer": {
-            "group-password": "Users with the password can join this community without prior invitation."
+            "group-password": "Users with the password can join this community without prior invitation.",
+            "domain": "Users with the given email domain can join this community without prior invitation."
           }
         },
         "create": {
@@ -881,7 +886,8 @@
         "not-admin-owner": "Unauthorized action.",
         "not-allowed": "Unauthorized action.",
         "group-banned": "You were banned from community",
-        "not-confirmed": "You can't do that, your account is not confirmed yet"
+        "not-confirmed": "You can't do that, your account is not confirmed yet",
+        "domain": "This domain is not valid"
       }
     },
     "members": "You are now a member of #__name__",

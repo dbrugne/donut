@@ -435,6 +435,7 @@
     "confirmation": {
       "placeholder": "Expliquez pourquoi, visible dans le donut (optionnel)",
       "placeholderarea": "200 caractères maximum",
+      "placeholder-domain": "exemple: @donut.me",
       "label": "Expliquez pourquoi (optionnel)",
       "cancel": "Annuler",
       "confirm": "OK",
@@ -452,7 +453,9 @@
         "add-email": "Nouvelle adresse électronique :",
         "send-email": "Un email de confirmation va être envoyé à __email__",
         "delete-email": "__email__ va être supprimé de vos adresses mails",
-        "change-email": "__email__ va devenir votre adresse mail principale, elle vous servira pour vous connecter et pour revecoir tous les mails de la part de Donut.me"
+        "change-email": "__email__ va devenir votre adresse mail principale, elle vous servira pour vous connecter et pour revecoir tous les mails de la part de Donut.me",
+        "add-domain": "Vous êtes sur le point de rajouter un domaine dans les domaines d'email autorisé, tout utilisateur ayant une addresse mail avec ce domaine pourra rejoindre cette communauté sans avoir besoin de faire une demande d'adhésion ou d'être invité.",
+        "delete-domain": "Vous êtes sur le point de supprimer le domaine __domain__ dans les domains d'email autorisé, un nouvel utilisateur ayant une addresse mail avec ce domaine ne pourra pas rejoindre cette communauté sans avoir fait une demande d'adhésion ou y être invité. Les membres qui ont rejoins cette communauté via ce domaine resterons membres."
       }
     },
     "commands": {
@@ -724,8 +727,10 @@
       },
       "group-form": {
         "mode": {
+          "domain": "Domaines d'e-mails autorisés",
           "disclaimer": {
-            "group-password": "Le mot de passe suffit pour rejoindre la communauté (sans invitation)."
+            "group-password": "Le mot de passe suffit pour rejoindre la communauté (sans invitation).",
+            "domain": "Un utilisateur avec un certain domaine d'e-mail pourra rejoindre la communauté sans invitation."
           }
         },
         "create": {
@@ -881,7 +886,8 @@
         "not-admin-owner": "Action non autorisée.",
         "not-allowed": "Action non autorisée.",
         "group-banned": "Vous êtes banni de la communauté",
-        "not-confirmed": "Votre compte n'a pas été validé vous ne pouvez pas faire ça"
+        "not-confirmed": "Votre compte n'a pas été validé vous ne pouvez pas faire ça",
+        "domain": "Ce nom de domaine est invalide"
       }
     },
     "members": "Vous êtes maintenant membre de la communauté #__name__",

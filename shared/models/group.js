@@ -22,6 +22,7 @@ var groupSchema = mongoose.Schema({
     reason: String,
     banned_at: {type: Date, default: Date.now}
   }],
+  allowed_domains: [{type: String}],
   password: String,
   password_indication: String,
   avatar: String,

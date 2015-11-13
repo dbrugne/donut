@@ -7,6 +7,7 @@ var app = require('../libs/app');
 var client = require('../libs/client');
 var ConfirmationView = require('./modal-confirmation');
 var TableView = require('./drawer-group-access-table');
+var TableDomainView = require('./drawer-group-access-domain-table');
 var i18next = require('i18next-client');
 var currentUser = require('../models/current-user');
 
@@ -107,13 +108,18 @@ var GroupAccessView = Backbone.View.extend({
       el: this.$('.allowed'),
       model: this.model
     });
-    this.renderTables();
+    this.tableDomain = new TableDomainView({
+      el: this.$('.domain-allowed'),
+      model: this.model
+    });
+    this.renderTables(data);
 
     this.initializeTooltips();
   },
-  renderTables: function () {
+  renderTables: function (data) {
     this.tablePending.render('pending');
     this.tableAllowed.render('allowed');
+    this.tableDomain.render(data);
   },
   renderPendingTable: function () {
     this.tablePending.render('pending');
@@ -146,6 +152,9 @@ var GroupAccessView = Backbone.View.extend({
     }
     if (this.tableAllowed) {
       this.tableAllowed.remove();
+    }
+    if (this.tableDomain) {
+      this.tableDomain.remove();
     }
     this.remove();
   },

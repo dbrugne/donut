@@ -147,6 +147,7 @@ handler.call = function (data, session, next) {
 
       if (group.isOwner(user.id) || session.settings.admin === true) {
         read.password = group.password;
+        read.allowed_domains = group.allowed_domains;
       }
 
       if (session.settings.admin === true) {

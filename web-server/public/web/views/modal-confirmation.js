@@ -144,7 +144,12 @@ var ConfirmationModalView = Backbone.View.extend({
       } else if (this.options.message === 'delete-email') {
         this.$message.text(i18next.t('chat.confirmation.message.delete-email', {email: this.options.email}));
       } else if (this.options.message === 'change-email') {
-        this.$message.text(i18next.t('chat.confirmation.message.change-email', {email: this.options.email}));
+        this.$message.text(i18next.t('chat.confirmation.message.', {email: this.options.email}));
+      } else if (this.options.message === 'add-domain') {
+        this.$message.text(i18next.t('chat.confirmation.message.add-domain'));
+        this.$input.attr('placeholder', i18next.t('chat.confirmation.placeholder-domain'));
+      } else if (this.options.message === 'delete-domain') {
+        this.$message.text(i18next.t('chat.confirmation.message.delete-domain', {domain: this.options.domain}));
       }
     }
     // bind 'enter' only when showing popin
