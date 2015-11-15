@@ -12,7 +12,7 @@
         <div class="row">
             <div id="left">
 
-                <div id="block-current-user">
+                <div id="block-current-user" class="flex-parent column">
                     <span href="#" class="dropdown-toggle toggle flex-parent center" data-toggle="dropdown" role="button" aria-expanded="false">
                         <img class="mr5" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
                         <span class="mr5 ml5 dc-text-contrast username flex-child"><% if (user.realname) { print (user.realname) } else { print ('@'+user.username) } %></span>

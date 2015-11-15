@@ -1,5 +1,5 @@
 <a href="#" class="clean dropdown-toggle toggle flex-parent center" data-toggle="dropdown" role="button" aria-expanded="false">
-    <% if (confirmed === false) { %><i class="icon-ban not-confirmed"></i><% } %>
+    <% if (typeof confirmed === 'undefined' || confirmed === false) { %><i class="icon-ban not-confirmed"></i><% } %>
     <img class="mr5 dc-border-darker curp" src="<%= avatar %>" alt="<%= username %> avatar">
     <span class="mr5 ml5 dc-text-contrast username flex-child">
         <% if (realname) { print (realname) } else { print ('@'+username) } %>

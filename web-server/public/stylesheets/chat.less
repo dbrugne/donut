@@ -170,7 +170,7 @@
 
   #left {float: left; width: @size-left; height: 100%; background-color: @cl-nav-left-back; color:@cl-nav-left-text; z-index: 12; position: relative; font-size: 14px; overflow: visible; .scrollbar-white;
     #block-current-user { margin: 1rem; padding: 0.5rem; cursor: pointer; overflow: hidden; .border-radius(4px); .transition(max-height 200ms); max-height: 40px;
-      .not-confirmed { z-index: 1; position: absolute; top: 2px; font-size: 36px; left: -1px; color: black}
+      .not-confirmed {     z-index: 1; position: absolute; top: 15px; font-size: 28px; left: 17px; color: @cl-pomegranate; opacity: 0.7; }
       i { color:@cl-nav-left-text-lighter; }
       img { width: 28px; height: 28px; }
       &.open { .transition(max-height 400ms); max-height: 600px; }
@@ -1383,10 +1383,6 @@
   }
 
   .date-ctn { padding: 0 12px 10px 0; position: absolute; width: 100%; background-color: white; z-index: 2; min-height: 22px }
-
-  #block-current-user { .display-flex; .align-items(center);  height: 40px;
-    img { width: 28px; height: 28px; }
-  }
 
   @import './drawer';
 }
