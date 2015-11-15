@@ -37,16 +37,14 @@
                 </div><!--/.nav-collapse -->
 
                 <ul class="page-sidebar-menu">
-                    <li id="ones" class="mb20">
-                        <a class="title" href=".collapse-ones" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-ones"><%= t('global.onetoones') %></a>
-                        <ul class="list collapse-ones collapse in"><!--ones--></ul>
+                    <li id="ones" class="mb10" >
+                        <ul class="list"><!--ones--></ul>
                     </li>
                     <li id="rooms">
-                        <span class="flex-parent">
-                            <a class="title flex-child" href=".collapse-rooms" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-rooms"> <%= t('global.donuts') %> </a>
+                        <div class="text-right">
                             <a href="#" class="open-create-room mr20 "><%= t('actions.create') %></a>
-                        </span>
-                        <ul class="list collapse-rooms collapse in"><!--rooms--></ul>
+                        </div>
+                        <ul class="list"><!--rooms--></ul>
                         <ul class="empty">
                             <li><%= t('chat.noroomopened') %> <a class="go-to-search dc-text" data-type="rooms" href="#"><%= t('chat.actions.search').toLowerCase() %></a> <%= t('global.or') %> <a class="open-create-room dc-text" href="#"><%= t('chat.actions.create') %></a> <%= t('global.one') %>.</li>
                         </ul>
