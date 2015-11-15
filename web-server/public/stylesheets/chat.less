@@ -652,15 +652,15 @@
     } // #chat #center #home
     .content { height: 100%; position: relative; margin-left: 20px; .display-flex; .flex-flow(column nowrap);
       .header { padding-top: 18px; padding-right: 20px;
-        .info { padding-left: 110px; }
-        &.room { min-height: 117px;
+        .info { padding-left: 80px; }
+        &.room { min-height: 90px;
           .overlay-ctn {
-            .avatar { position: absolute; width: 100px; height: 100px; .border-shadow; } // #chat #center .discussion .content .header.room .overlay-ctn .avatar
-            .overlay { height: 100px; width: 100px; top:0; .border-radius(50%); }
-            .overlay-text { width: 100px; top: 40px; }
-          } // #chat #center .discussion .content .header.room .overlay-ctn
+            .avatar { position: absolute; width: 70px; height: 70px; .border-shadow; } // #chat #center .discussion .content .header.room .overlay-ctn .avatar
+            .overlay { height: 70px; width: 70px; top:0; .border-radius(50%); }
+            .overlay-text { width: 70px; top: 25px; }
+          }
           .info {
-            .name { margin-top: 2px; font-size: 2.7rem; .display-inline-flex; }
+            .name { margin-top: 2px; font-size: 2rem; .display-inline-flex; }
             #chat #center .discussion .content .header.room .info .name .owner { display: inline-block; font-size: 1.2em; }
             .dropdown { display: inline-block; position: relative;
               .dropdown-menu>li>a { color: @cl-subtext40; }
@@ -758,7 +758,7 @@
           &.is-banned .avatar::after { .icon-ban; position: absolute; font-size: 100px; color: rgba(119, 119, 119, 0.75); top: 0; line-height: 100px; left:10px; }
         }
         .header {
-          .info .share { display: inline-block;
+          .info .share {
             i { font-size: 16px; color: @cl-text; margin-left: 3px; vertical-align: middle; cursor: pointer;
               &.facebook { color: #3b5998; }
               &.twitter { color: #4099FF; }
@@ -766,17 +766,11 @@
             }
           }
           &.room {
-            .topic { min-height: 32px; margin-top: 4px; padding: 5px 15px 5px 110px;
-              .topic-current { .txt-bubble; overflow: hidden; text-overflow: ellipsis; padding: 0.6em 1.2em; display: inline-block; white-space: nowrap; max-width: 100%; width: 100%;
-                label { font-size: 13px; display: block; width: 90px; float: left; margin: 0; color: @cl-subtext40; }
-                .txt { display: block; font-size: 13px; margin-left: 90px; overflow: hidden; }
-                .default { color: @cl-subtext20;
-                  &:hover { color: @cl-subtext50; }
-                }
-              }
+            .topic { padding-left: 80px;
+              .topic-current { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 1.5rem; }
               .topic-form { display: none;
                 .input-group { .display-flex; .flex-flow(row nowrap); }
-                input[type=text] { width: 100%; }
+                input[type=text] { width: 100%; height: 28px; }
               }
             } // #chat #center .discussion .content .header.room .topic
           }

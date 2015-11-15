@@ -29,21 +29,13 @@
         <div class="info hidden-xs hidden-sm">
             <div class="name open-room-profile" data-room-id="<%= data.room_id %>">
                 <%= data.identifier %>
+            </div>
+
+            <div class="flex-parent pull-right">
                 <span class="room-profile label label-default label-sm" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + (data.mode === 'public' ? 'public' : 'private' + (data.allow_user_request ? '-invites' : '') + (data.allow_group_member ? '-group' : ''))) %>">
                     <%= t('global.mode.title.' + (data.mode === 'public' ? 'public' : 'private' + (data.allow_user_request ? '-invites' : '') + (data.allow_group_member ? '-group' : ''))) %>
                 </span>
-            </div>
-
-            <%= dropdown %>
-
-            <% if (data.owner_id) { %>
-            <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= data.owner_id %>">@<%= data.owner_username %></a></span>
-            <% } %>
-            <div class="share hidden-xs hidden-sm">
-                <%= t('chat.share.label') %>
-                <i class="facebook icon icon-facebook-square"></i>
-                <i class="twitter icon icon-twitter-square"></i>
-                <i class="googleplus icon icon-google-plus-square"></i>
+                <%= dropdown %>
             </div>
         </div>
         <div class="topic"><!-- topic view --></div>

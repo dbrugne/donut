@@ -66,6 +66,28 @@
   filter: blur(5px);
 }
 
+.don-button-variant(@cl-start, @cl-end, @cl-text, @cl-border) {
+  border: 1px solid @cl-border;
+  .border-radius(4px);
+  .align-items(flex-start);
+  background-color: @cl-end;
+  background-image: linear-gradient(@cl-start, @cl-end);
+  background-origin: padding-box;
+  background-repeat: no-repeat;
+  color: @cl-text;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1.3rem;
+  font-weight: bold;
+  padding: 3px 11px 5px;
+  text-align: center;
+  &:hover {
+    background-color: @cl-border;
+    background-image: linear-gradient(@cl-end,@cl-start);
+    border-color: @cl-border;
+  }
+}
+
 /*******************************************************************************
 
                                   Flex

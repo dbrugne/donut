@@ -217,31 +217,20 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
 }
 
 .btn {
-  &.btn-success { .button-variant(@cl-clouds; @cl-emerald; @cl-green_sea); }
-  &.btn-primary { .button-variant(@cl-clouds; @cl-first; @cl-first-dark-10); }
-  &.btn-default {
-    border: 1px solid @cl-border;
-    .border-radius(4px);
-    align-items: flex-start;
-    background-attachment: scroll;
-    background-clip: border-box;
-    background-color: rgb(245, 248, 250);
-    background-image: linear-gradient(rgb(255, 255, 255), rgb(245, 248, 250));
-    background-origin: padding-box;
-    background-repeat: no-repeat;
-    color: rgb(41, 47, 51);
-    cursor: pointer;
-    display: inline-block;
-    font-size: 13px;
-    font-weight: bold;
-    padding: 3px 11px 5px;
-    text-align: center;
-    &:hover {
-      background-color: @cl-border;
-      background-image: linear-gradient(#fff,@cl-border);
-      border-color: @cl-border;
-    }
+  &.btn-success {
+    .don-button-variant(@cl-emerald, @cl-green_sea, #FFF, @cl-green_sea );
   }
+  &.btn-pink {
+    .don-button-variant(@cl-first, @cl-first-dark-10, #FFF, @cl-first-dark-10 );
+  }
+  &.btn-primary {
+    .don-button-variant(@cl-nav-left-back, @cl-nav-left-back-darker, @cl-clouds, @cl-nav-left-back-darker );
+  }
+  &.btn-default {
+    .don-button-variant(#FFF, rgb(245, 248, 250), rgb(41, 47, 51), @cl-border );
+  }
+  &.btn-big { font-size:1.8rem; }
+  &.btn-sm { font-size:1rem; }
 }
 
 .button { padding: 10px 15px; text-transform: uppercase; background-color: @cl-first; border: 0; color: #fff; text-decoration:none; text-align: center; .display-flex; .align-items(baseline);
