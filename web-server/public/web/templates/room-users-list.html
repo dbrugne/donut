@@ -2,10 +2,10 @@
 <% _.each(list, function(user) { %>
     <li>
         <% previous = user.status; %>
-        <div class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %> <% if (user.is_devoice === true) { %> devoice<% }; %> <%= user.status %>">
+        <div class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %> <% if (user.is_devoice === true) { %> devoice<% }; %> <%= user.status %>" title="@<%- user.username %>" data-toggle="tooltip" data-placement="left" >
             <span class="infos relative">
                 <span class="userstatus <%= user.status %>" title="<%= user.status %>"></span>
-                <span class="avatar relative" title="<% if (user.is_op === true) { %><%= t('chat.op.is') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.is') %><% }; %>" title="@<%= user.username %>" data-toggle="tooltip" data-placement="left">
+                <span class="avatar relative" title="<% if (user.is_op === true) { %><%= t('chat.op.is') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.is') %><% }; %>">
 
                     <span class="background" style="background-image: url(<%= user.avatar %>)"></span>
 
