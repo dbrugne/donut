@@ -84,9 +84,6 @@ var RoomModel = Backbone.Model.extend({
   viewedElements: function (elements) {
     client.roomViewed(this.get('room_id'), elements);
   },
-  joinRoom: function (cb) {
-    client.roomJoin(this.get('room_id'), cb);
-  },
   onViewed: function (data) {
     if (this.get('unviewed')) {
       this.set('unviewed', false);
