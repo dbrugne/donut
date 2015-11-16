@@ -600,26 +600,6 @@
         } // #chat #center #home .right .users
       } // #chat #center #home .right
     } // #chat #center #home
-    .content { height: 100%; position: relative; margin-left: 20px; .display-flex; .flex-flow(column nowrap);
-      .header { padding-top: 18px; padding-right: 20px;
-        .info { padding-left: 80px; }
-        &.room { min-height: 90px;
-          .overlay-ctn {
-            .avatar { position: absolute; width: 70px; height: 70px; .border-shadow; } // #chat #center .discussion .content .header.room .overlay-ctn .avatar
-            .overlay { height: 70px; width: 70px; top:0; .border-radius(50%); }
-            .overlay-text { width: 70px; top: 25px; }
-          }
-          .info { .justify-content(space-between);
-            .name { font-size: 2rem; .display-inline-flex; }
-            .room-profile { min-height:initial; min-width:initial; margin:auto; }
-            .dropdown { display: inline-block; position: relative;
-              .dropdown-menu>li>a { color: @cl-subtext40; }
-              button { font-size: 24px; border: none; background-color: transparent; }
-            }
-          } // #chat #center .discussion .content .header.room .info
-        } // #chat #center .discussion .content .header.room
-      } // #chat #center .discussion .content .header
-    }
     .side { float: right; width: @size-right; height: 100%; margin: 0; padding: 0;
       @header-height: 35px; @size-user-item: 205px;
       hr { margin-left: 0; margin-right: 0; }
@@ -694,7 +674,11 @@
       .content .ctn-results { overflow-y: auto; overflow-x: hidden; }
     }
     .discussion { background-color: @cl-background; height: 100%;
-      .content {
+      .content { height: 100%; position: relative; margin-left: 20px; .display-flex; .flex-flow(column nowrap);
+        .header { padding-top: 18px; padding-right: 20px;
+          .info { padding-left: 80px; }
+        } // #chat #center .discussion .content .header
+
         &.blocked { .align-items(center);  .justify-content(center); position:relative;
           .header .info { padding:0; }
           .password-form { max-width: 555px; margin-left: auto; margin-right: auto;}
@@ -708,36 +692,46 @@
           &.is-banned .avatar::after { .icon-ban; position: absolute; font-size: 100px; color: rgba(119, 119, 119, 0.75); top: 0; line-height: 100px; left:10px; }
         }
         .header {
-          .info .share {
-            i { font-size: 16px; color: @cl-text; margin-left: 3px; vertical-align: middle; cursor: pointer;
-              &.facebook { color: #3b5998; }
-              &.twitter { color: #4099FF; }
-              &.googleplus { color: #dd4b39; }
-            }
+          .info { .justify-content(space-between); }
+          .name { font-size: 2rem; .display-inline-flex;
+            .ft-raleway-heavy;
+            line-height: 1.2;
+            word-break: break-all;
           }
-          &.room {
+          &.room { min-height: 90px;
+            .overlay-ctn {
+              .avatar { position: absolute; width: 70px; height: 70px; .border-shadow; }
+              .overlay { height: 70px; width: 70px; top:0; .border-radius(50%); }
+              .overlay-text { width: 70px; top: 25px; }
+            }
+            .info {
+              .room-profile { min-height:initial; min-width:initial; margin:auto; }
+              .dropdown { display: inline-block; position: relative;
+                .dropdown-menu>li>a { color: @cl-subtext40; }
+                button { font-size: 24px; border: none; background-color: transparent; }
+              }
+              .share i { font-size: 14px; vertical-align: middle; cursor: pointer; }
+            }
             .topic { padding-left: 80px;
               .topic-current { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 1.5rem; }
               .topic-form { display: none;
                 .input-group { .display-flex; .flex-flow(row nowrap); }
                 input[type=text] { width: 100%; height: 28px; }
               }
-            } // #chat #center .discussion .content .header.room .topic
+            }
           }
-          &.user { min-height: 135px; position: relative;
-            .avatar { position: absolute; width: 100px; height: 100px;
+          &.user {
+            .avatar { position: absolute; width: 70px; height: 70px;
               img { width:100%; }
             }
             .banned-status { color: rgb(255, 78, 78); font-style: italic; }
-            .info { font-size: 1.2em;
-              .username { display: inline-block; margin-top: 12px; margin-right: 4px; font-size: 2em; }
+            .info {
               .othername { color: @cl-subtext20; font-weight: normal; }
-              .location, .website { }
               .dropdown { display: inline-block; position: relative;
                 button { font-size: 24px; border: none; background-color: transparent; }
               }
             } // #chat #center .discussion .content .header.user .info
-            .status-block { font-size: 1.2em; margin-left: 110px;
+            .status-block { font-size: 1.2em; margin-left: 80px;
               i { font-size: 0.9em; }
               .ago { display: none; font-size: 0.9em; font-style: italic; }
               &.online {

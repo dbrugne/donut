@@ -65,6 +65,10 @@ var SearchView = Backbone.View.extend({
       return;
     }
 
+    if (key.key === keyboard.LEFT ||key.key === keyboard.RIGHT || key.key === keyboard.TAB) {
+      return;
+    }
+
     if (key.key === keyboard.RETURN) {
       current = this.$dropdownResults.find('.result.active');
       if (current.length !== 0) {

@@ -649,7 +649,7 @@
         "<p>Cette conversation est privée donc uniquement accessible aux utilisateurs autorisés de même que l'historique.</p>",
         "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
       ],
-      "onetoone": "<p><strong>@__username__</strong> n'est pas en ligne, les nouveaux messages lui seront remis à sa prochaine connexion.</p>"
+      "onetoone": "les nouveaux messages lui seront remis à sa prochaine connexion."
     },
     "connection": {
       "connected": "Connecté ! Chargement de l'interface ...",

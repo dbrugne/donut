@@ -366,7 +366,7 @@ var MainView = Backbone.View.extend({
     if (!userId) {
       return;
     }
-    var view = new DrawerUserProfileView({user_id: userId});
+    var view = new DrawerUserNotificationsView({user_id: userId});
     this.drawerView.setSize('380px').setView(view).open();
   },
   onOpenUserProfile: function (event) {
