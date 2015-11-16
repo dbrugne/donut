@@ -363,11 +363,8 @@
       "search_in_rooms": "search for rooms",
       "search_in_groups": "search for communities"
     },
-    "userscount": "<strong>__count__</strong> user in this donut",
-    "userscount_plural": "<strong>__count__</strong> users in this donut",
-    "usersonlinecount": "<strong>__count__</strong> <span>user online in this donut</span>",
-    "usersonlinecount_plural": "<strong>__count__</strong> <span>users online in this donut</span>",
-    "usersoffline": "Offline users",
+    "userscount": "<strong>__count__</strong> user",
+    "userscount_plural": "<strong>__count__</strong> users",
     "topic": {
       "label": "Currently",
       "placeholder": "Enter the conversation topic, the mood,...",
@@ -593,7 +590,7 @@
       "users": "User",
       "users_plural": "Users",
       "link": "User list",
-      "label": "See all users",
+      "label": "See all",
       "search": "search a username in this donut",
       "search-group": "search a username in this community",
       "type": {

@@ -363,11 +363,8 @@
       "search_in_rooms": "chercher des donuts",
       "search_in_groups": "chercher des communautés"
     },
-    "userscount": "<strong>__count__</strong> <span>utilisateur dans ce donut</span>",
-    "userscount_plural": "<strong>__count__</strong> <span>utilisateurs dans ce donut</span>",
-    "usersonlinecount": "<strong>__count__</strong> <span>utilisateur en ligne dans ce donut</span>",
-    "usersonlinecount_plural": "<strong>__count__</strong> <span>utilisateurs en ligne dans ce donut</span>",
-    "usersoffline": "Utilisateurs hors ligne",
+    "userscount": "<strong>__count__</strong> utilisateur",
+    "userscount_plural": "<strong>__count__</strong> utilisateurs",
     "topic": {
       "label": "En ce moment",
       "placeholder": "Entrez ici le sujet de la conversation, l'humeur, l'ambiance ...",
@@ -593,7 +590,7 @@
       "users": "Utilisateur",
       "users_plural": "Utilisateurs",
       "link": "Liste des utilisateurs",
-      "label": "Voir tous les utilisateurs",
+      "label": "Voir tous",
       "search": "rechercher des utilisateurs dans ce donut",
       "search-group": "rechercher des utilisateurs dans cette community",
       "type": {

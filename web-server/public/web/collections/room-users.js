@@ -114,7 +114,7 @@ var RoomUsersCollection = Backbone.Collection.extend({
     client.roomUsers(this.parent.get('room_id'), {
       type: 'users',
       status: 'onoff',
-      maxOffline: 15
+      maxOffline: 52
     }, _.bind(function (data) {
       this.reset();
 
@@ -130,7 +130,7 @@ var RoomUsersCollection = Backbone.Collection.extend({
       var usersOfflineDisplayed = 0;
       _.find(data.users, _.bind(function (user) {
         // add only one offline user if there is more than 15 users online
-        if (usersDisplayed < 15 || !usersOfflineDisplayed) {
+        if (usersDisplayed < 52 || !usersOfflineDisplayed) {
           // false: avoid automatic sorting on each model .add()
           this.addUser(user, false);
           usersDisplayed += 1;
