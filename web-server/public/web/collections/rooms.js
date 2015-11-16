@@ -298,12 +298,11 @@ var RoomsCollection = Backbone.Collection.extend({
     model.users.onExpulsion(what, data);
   },
   onAllow: function (data) {
-    var model;
-    if (!data || !data.room_id || !(model = this.get(data.room_id))) {
+    if (!data || !data.room_id || !(this.get(data.room_id))) {
       return;
     }
 
-    model.joinRoom();
+    client.roomJoin(data.room_id);
   },
   onDeban: function (data) {
     var model;
@@ -312,7 +311,7 @@ var RoomsCollection = Backbone.Collection.extend({
     }
 
     if (currentUser.get('user_id') === data.user_id) {
-      model.joinRoom(_.bind(function () {
+      client.roomJoin(data.room_id, null, _.bind(function () {
         if (data.room_mode === 'private') {
           var isFocused = model.get('focused');
           var modelTmp = model.attributes;
