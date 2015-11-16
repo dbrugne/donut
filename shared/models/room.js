@@ -372,7 +372,7 @@ roomSchema.methods.isUserBlocked = function (userId, password) {
   if (this.group && this.allow_group_member && !this.allow_user_request) {
     return 'group-members-only';
   }
-  if (password) {
+  if (this.password && password) {
     return this.isGoodPassword(userId, password);
   }
 

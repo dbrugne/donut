@@ -282,7 +282,8 @@ var RoomUsersCollection = Backbone.Collection.extend({
     // check that target is in model.users
     var user = this.get(data.user_id);
     if (!user) {
-      return;
+      console.log(_.map(this.models, 'user_id'));
+      return console.log('unable to find user', data.user_id);
     }
 
     this.remove(user);

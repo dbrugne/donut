@@ -28,10 +28,6 @@ handler.call = function (data, session, next) {
   if (!room) {
     return next(null, {code: 404, err: 'room-not-found'});
   }
-  if ((data.password || data.password === '') && room.password &&
-    (room.isGoodPassword(user.id, data.password)) === true) {
-    return this.joinPass(user, room, next);
-  }
 
   blocked = room.isUserBlocked(user.id, data.password);
   if (blocked === false) {
@@ -68,39 +64,6 @@ handler.blocked = function (user, room, blocked, next) {
   });
 };
 
-handler.joinPass = function (user, room, next) {
-  var that = this;
-  async.waterfall([
-    function persist (callback) {
-      room.lastjoin_at = Date.now();
-      room.users.addToSet(user._id);
-      room.allowed.addToSet(user._id);
-      room.save(function (err) {
-        return callback(err);
-      });
-    },
-
-    function removeBlocked (callback) {
-      user.update({$pull: {blocked: room._id}}, function (err) {
-        return callback(err);
-      });
-    },
-
-    function removeAllowedPending (callback) {
-      room.update({$pull: {allowed_pending: {user: user._id}}}, function (err) {
-        return callback(err);
-      });
-    }
-
-  ], function (err) {
-    if (err) {
-      return errors.getHandler('room:join', next)(err);
-    }
-
-    that.join(user, room, next);
-  });
-};
-
 handler.join = function (user, room, next) {
   var that = this;
   async.waterfall([
@@ -117,9 +80,32 @@ handler.join = function (user, room, next) {
       roomEmitter(that.app, user, room, 'room:in', event, callback);
     },
 
-    function persist (eventData, callback) {
+    function persistUser (callback) {
+      user.update({$pull: {blocked: room._id}}, function (err) {
+        return callback(err);
+      });
+    },
+
+    function persistRoom (eventData, callback) {
       room.lastjoin_at = Date.now();
       room.users.addToSet(user._id);
+
+      // private room only
+      if (room.mode === 'private') {
+        room.allowed.addToSet(user._id);
+        var sub = _.find(room.allowed_pending, function (s) {
+          return (s.user.id === user.id);
+        });
+        if (sub) {
+          // @source: http://stackoverflow.com/a/23255415
+          room.allowed_pending.id(sub.id).remove();
+        }
+
+        //room.update({$pull: {allowed_pending: {user: user._id}}}, function (err) {
+        //  return callback(err);
+        //});
+      }
+
       room.save(function (err) {
         return callback(err, eventData);
       });

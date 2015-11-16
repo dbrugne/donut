@@ -27,6 +27,9 @@ var RoomModel = Backbone.Model.extend({
       parent: this
     });
   },
+  unbindUsers: function () {
+    this.users.stopListening();
+  },
   getIdentifier: function () {
     return this.get('name');
   },
