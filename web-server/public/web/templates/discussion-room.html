@@ -26,12 +26,12 @@
             <div class="overlay open-room-profile" data-room-id="<%= data.room_id %>" ></div>
             <span class="overlay-text open-room-profile" data-room-id="<%= data.room_id %>" ><%= t('chat.actions.see') %></span>
         </div>
-        <div class="info hidden-xs hidden-sm">
+        <div class="info hidden-xs hidden-sm flex-parent center">
             <div class="name open-room-profile" data-room-id="<%= data.room_id %>">
                 <%= data.identifier %>
             </div>
 
-            <div class="flex-parent pull-right">
+            <div class="flex-parent">
                 <span class="room-profile label label-default label-sm" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + (data.mode === 'public' ? 'public' : 'private' + (data.allow_user_request ? '-invites' : '') + (data.allow_group_member ? '-group' : ''))) %>">
                     <%= t('global.mode.title.' + (data.mode === 'public' ? 'public' : 'private' + (data.allow_user_request ? '-invites' : '') + (data.allow_group_member ? '-group' : ''))) %>
                 </span>

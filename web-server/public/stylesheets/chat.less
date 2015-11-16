@@ -609,9 +609,9 @@
             .overlay { height: 70px; width: 70px; top:0; .border-radius(50%); }
             .overlay-text { width: 70px; top: 25px; }
           }
-          .info {
-            .name { margin-top: 2px; font-size: 2rem; .display-inline-flex; }
-            #chat #center .discussion .content .header.room .info .name .owner { display: inline-block; font-size: 1.2em; }
+          .info { .justify-content(space-between);
+            .name { font-size: 2rem; .display-inline-flex; }
+            .room-profile { min-height:initial; min-width:initial; margin:auto; }
             .dropdown { display: inline-block; position: relative;
               .dropdown-menu>li>a { color: @cl-subtext40; }
               button { font-size: 24px; border: none; background-color: transparent; }
@@ -720,7 +720,7 @@
               .topic-current { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 1.5rem; }
               .topic-form { display: none;
                 .input-group { .display-flex; .flex-flow(row nowrap); }
-                input[type=text] { width: 100%; page-sidebar-menuheight: 28px; }
+                input[type=text] { width: 100%; height: 28px; }
               }
             } // #chat #center .discussion .content .header.room .topic
           }
