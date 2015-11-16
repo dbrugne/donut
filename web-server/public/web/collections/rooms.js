@@ -302,7 +302,7 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    client.roomJoin(data.room_id);
+    app.trigger('joinRoom', data.identifier, true);
   },
   onDeban: function (data) {
     var model;
@@ -311,19 +311,7 @@ var RoomsCollection = Backbone.Collection.extend({
     }
 
     if (currentUser.get('user_id') === data.user_id) {
-      client.roomJoin(data.room_id, null, _.bind(function () {
-        if (data.room_mode === 'private') {
-          var isFocused = model.get('focused');
-          var modelTmp = model.attributes;
-          this.remove(model);
-          this.addModel(modelTmp, true);
-          app.trigger('redrawNavigationRooms');
-          this.trigger('allowed', {
-            model: this.get(data.room_id),
-            wasFocused: isFocused
-          }); // focus + alert
-        }
-      }, this));
+      app.trigger('joinRoom', data.identifier, true);
     }
 
     model.users.onDeban(data);

@@ -65,7 +65,8 @@ handler.call = function (data, session, next) {
         user_id: user._id,
         username: user.username,
         avatar: user._avatar(),
-        room_id: room.id
+        room_id: room.id,
+        identifier: room.getIdentifier()
       };
       callback(null, event);
     },
