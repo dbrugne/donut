@@ -171,7 +171,7 @@
   #left {float: left; width: @size-left; height: 100%; background-color: @cl-nav-left-back; color:@cl-nav-left-text; z-index: 12; position: relative; font-size: 14px; overflow: visible; .scrollbar-white;
     #block-current-user { margin: 1rem; padding: 0.5rem; cursor: pointer; overflow: hidden; .border-radius(4px); .transition(max-height 200ms); max-height: 40px;
       .not-confirmed {     z-index: 1; position: absolute; top: 15px; font-size: 28px; left: 17px; color: @cl-pomegranate; opacity: 0.7; }
-      i { color:@cl-nav-left-text-lighter; }
+      i, .username { color:@cl-nav-left-text-lighter; }
       img { width: 28px; height: 28px; }
       &.open { .transition(max-height 400ms); max-height: 600px; }
       &.open, &:hover { background-color: rgba(255,255,255,.2); }
@@ -685,12 +685,6 @@
           .close-room { position: absolute; top: 20px; right: 20px; font-size: 1.4rem; }
         }
         .cover { text-align: center; }
-        .user {
-          .show-if-banned { display:none; }
-          &.is-banned .show-if-banned { display:initial; }
-          &.is-banned .show-if-unbanned { display:none; }
-          &.is-banned .avatar::after { .icon-ban; position: absolute; font-size: 100px; color: rgba(119, 119, 119, 0.75); top: 0; line-height: 100px; left:10px; }
-        }
         .header {
           .info { .justify-content(space-between); }
           .name { font-size: 2rem; .display-inline-flex;
@@ -725,26 +719,26 @@
               img { width:100%; }
             }
             .banned-status { color: rgb(255, 78, 78); font-style: italic; }
+            .show-if-banned { display:none; }
+            &.is-banned .show-if-banned { display:initial; }
+            &.is-banned .show-if-unbanned { display:none; }
+            &.is-banned .avatar::after { .icon-ban; position: absolute; font-size: 69px; color: rgba(119, 119, 119, 0.75); top: -4px; line-height: 70px; left:0; }
             .info {
               .othername { color: @cl-subtext20; font-weight: normal; }
               .dropdown { display: inline-block; position: relative;
                 button { font-size: 24px; border: none; background-color: transparent; }
               }
             } // #chat #center .discussion .content .header.user .info
-            .status-block { font-size: 1.2em; margin-left: 80px;
+            .status-block { font-size: 1.2em; margin-left: 80px; font-style: italic;
               i { font-size: 0.9em; }
               .ago { display: none; font-size: 0.9em; font-style: italic; }
               &.online {
-                .display-online { display: inline-block; }
+                .display-online { display: inline; }
                 .display-offline { display: none; }
-                .visible-online { visibility: visible; }
-                .visible-offline { visibility: hidden; }
               }
               &.offline {
                 .display-online { display: none; }
-                .display-offline { display: inline-block; }
-                .visible-online { visibility: hidden; }
-                .visible-offline { visibility: visible; }
+                .display-offline { display: inline; }
               }
             } // #chat #center .discussion .content .header.user .status-block
           } // #chat #center .discussion .content .header.user

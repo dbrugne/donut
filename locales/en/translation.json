@@ -649,7 +649,7 @@
         "<p>This is private conversation and its history are only accessible to allowed users.</p>",
         "<p>Say 'hi' to engage in the discussion.</p>"
       ],
-      "onetoone": "<strong>@__username__</strong> isn't online, he will get your messages on his next connection."
+      "onetoone": "he will get your messages on his next connection"
     },
     "connection": {
       "connected": "Connected, loading interface...",
