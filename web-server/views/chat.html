@@ -1,5 +1,6 @@
 <%- partial('head') %>
 <body class="body-chat dc-default">
+    <ul id="results-search" class="results dc-border-darker" style="display: none"></ul>
     <div id="fb-root"></div>
     <div id="chat">
         <div id="alert" role="banner">
@@ -10,46 +11,47 @@
         </div>
 
         <div class="row">
-            <div id="left">
+            <div id="left" class="flex-parent column">
+                <div class="scrollable flex-child">
+                    <div id="block-current-user" class="flex-parent column">
+                        <span href="#" class="dropdown-toggle toggle flex-parent center" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <img class="mr5" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
+                            <span class="mr5 ml5 dc-text-contrast username flex-child"><% if (user.realname) { print (user.realname) } else { print ('@'+user.username) } %></span>
+                            <i class="icon icon-fw icon-chevron-down hover"></i>
+                        </span>
+                    </div>
 
-                <div id="block-current-user" class="flex-parent column">
-                    <span href="#" class="dropdown-toggle toggle flex-parent center" data-toggle="dropdown" role="button" aria-expanded="false">
-                        <img class="mr5" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
-                        <span class="mr5 ml5 dc-text-contrast username flex-child"><% if (user.realname) { print (user.realname) } else { print ('@'+user.username) } %></span>
-                        <i class="icon icon-fw icon-chevron-down hover"></i>
-                    </span>
+                    <div id="navbar">
+                        <div class="search flex-parent column">
+                            <div class="input-group relative">
+                                <div class="relative">
+                                    <input type="text" class="form-control" placeholder="<%= t('chat.search.placeholder') %>">
+                                    <i class="icon icon-search curp"></i>
+                                </div>
+                            </div>
+                            <div class="search-results">
+                                <div class="title flex-child hidden"><!--Search title--></div>
+                                <div class="nothing mt20 mb20 hidden"><%= t('chat.search.noresults') %></div>
+                            </div>
+                        </div>
+                    </div><!--/.nav-collapse -->
+
+                    <ul class="page-sidebar-menu">
+                        <li id="ones" class="mb10" >
+                            <ul class="list"><!--ones--></ul>
+                        </li>
+                        <li id="rooms">
+                            <ul class="list"><!--rooms--></ul>
+                            <ul class="empty">
+                                <li><%= t('chat.noroomopened') %> <a class="go-to-search dc-text" data-type="rooms" href="#"><%= t('chat.actions.search').toLowerCase() %></a> <%= t('global.or') %> <a class="open-create-room dc-text" href="#"><%= t('chat.actions.create') %></a> <%= t('global.one') %>.</li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
 
-                <div id="navbar">
-                    <div class="search flex-parent column">
-                        <div class="input-group relative">
-                            <div class="relative">
-                                <input type="text" class="form-control" placeholder="<%= t('chat.search.placeholder') %>">
-                                <i class="icon icon-search curp"></i>
-                            </div>
-                            <ul class="results dc-border-darker" style="display: none"></ul>
-                        </div>
-                        <div class="search-results">
-                            <div class="title flex-child hidden"><!--Search title--></div>
-                            <div class="nothing mt20 mb20 hidden"><%= t('chat.search.noresults') %></div>
-                        </div>
-                    </div>
-                </div><!--/.nav-collapse -->
-
-                <ul class="page-sidebar-menu">
-                    <li id="ones" class="mb10" >
-                        <ul class="list"><!--ones--></ul>
-                    </li>
-                    <li id="rooms">
-                        <div class="text-right">
-                            <a href="#" class="open-create-room mr20 "><%= t('actions.create') %></a>
-                        </div>
-                        <ul class="list"><!--rooms--></ul>
-                        <ul class="empty">
-                            <li><%= t('chat.noroomopened') %> <a class="go-to-search dc-text" data-type="rooms" href="#"><%= t('chat.actions.search').toLowerCase() %></a> <%= t('global.or') %> <a class="open-create-room dc-text" href="#"><%= t('chat.actions.create') %></a> <%= t('global.one') %>.</li>
-                        </ul>
-                    </li>
-                </ul>
+                <div class="create-ctn">
+                    <a href="#" class="open-create-room btn btn-pink"><%= t('actions.create') %></a>
+                </div>
             </div><!-- /#left -->
             <div id="center">
                 <div id="drawer">

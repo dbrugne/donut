@@ -1,3 +1,4 @@
+var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var client = require('../libs/client');
@@ -20,7 +21,7 @@ var SearchView = Backbone.View.extend({
 
   initialize: function (options) {
     this.$search = this.$('input[type=text]').first();
-    this.$dropdownResults = this.$('.results');
+    this.$dropdownResults = $('#results-search');
     this.listenTo(app, 'goToSearch', this.closeResults);
   },
   render: function (data) {

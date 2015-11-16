@@ -317,8 +317,8 @@
     "loading": "Chargement ",
     "actions": {
       "volume": {
-        "up": "Augmenter le volume",
-        "down": "Baisser le volume"
+        "up": "jouer tous les sons",
+        "down": "ne jouer aucun sons"
       },
       "search": "Chercher",
       "searchuser": "Inviter un utilisateur",
