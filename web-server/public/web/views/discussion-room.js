@@ -57,7 +57,7 @@ var RoomView = Backbone.View.extend({
       model: this.model
     });
     this.usersView = new UsersView({
-      el: this.$('.side .users'),
+      el: this.$('.side'),
       model: this.model,
       collection: this.model.users
     });

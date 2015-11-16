@@ -11,15 +11,21 @@ var RoomUsersView = Backbone.View.extend({
 
   listTemplate: require('../templates/room-users-list.html'),
 
+  events: {
+    'click .compact-mode': 'compact'
+  },
+
   initialize: function () {
     this.listenTo(this.collection, 'users-redraw', this.render);
+
+    this.$users = this.$('.users');
 
     this.initialRender();
   },
   initialRender: function () {
     var html = this.template({});
-    this.$el.html(html);
-    this.$list = this.$el.find('.list');
+    this.$users.html(html);
+    this.$list = this.$users.find('.list');
   },
   render: function () {
     debug.start('room-users' + this.model.get('name'));
@@ -46,7 +52,7 @@ var RoomUsersView = Backbone.View.extend({
     });
     this.$list.html(html);
 
-    this.$count = this.$el.find('.count');
+    this.$count = this.$users.find('.count');
     var countHtml = i18next.t('chat.userscount', {count: this.model.get('users_number')});
     this.$count.html(countHtml);
 
@@ -62,6 +68,9 @@ var RoomUsersView = Backbone.View.extend({
     this.$('[data-toggle="tooltip"]').tooltip({
       container: 'body'
     });
+  },
+  compact: function () {
+    this.$el.toggleClass('compact');
   }
 
 });
