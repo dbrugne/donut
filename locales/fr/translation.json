@@ -344,7 +344,9 @@
       "unlock": "(Cliquez ici pour le débloquer)"
     },
     "help": "Aide",
-    "placeholder": "Déplacer ici",
+    "room-discussion": {
+      "input-placeholder": "cliquez ici pour taper un message"
+    },
     "createadonut": "Nouveau",
     "home": {
       "roomstitle": "Bienvenue sur DONUT, voici quelques donuts actifs. Si vous n'en trouvez pas à votre goût, <a href=\"#\" class='open-create-room'>créez-en un !</a>",

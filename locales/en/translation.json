@@ -344,7 +344,9 @@
       "unlock": "(Click here to unblock)"
     },
     "help": "Help",
-    "placeholder": "Place here",
+    "room-discussion": {
+      "input-placeholder": "click here to type a message"
+    },
     "createadonut": "Create a donut",
     "home": {
       "roomstitle": "Welcome to DONUT, here are some active donuts. If you can not find one to your tastes, <a href=\"#\" class='open-create-room'> create one! </a>",

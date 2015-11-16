@@ -1120,27 +1120,31 @@
             }
             .text {
               position: relative;
-              padding: 12px 95px 12px 85px;
-              border: 1px solid @cl-subtext10;
+              padding: 5px 95px 5px 45px;
+              border: 1px solid @cl-subtext15;
               background-color: @cl-background;
+              .border-radius(4px);
               .avatar {
                 position: absolute;
-                left: 14px; top: 12px;
-                width: 60px;
-                height: 60px;
+                left: 8px;
+                top: 7px;
+                width: 30px;
+                height: 30px;
               }
               .actions {
                 position: absolute;
-                top: 0; right: 74px;
-                font-size: 20px;
+                top: -3px;
+                right: 45px;
                 text-align: center;
+                height: 46px;
+                width: 40px;
                 a {
-                  display: block;
+                  display: inline-block;
                   color: @cl-subtext30;
                 }
                 .images.add-image { margin-top: 5px; }
                 .images {
-                  font-size: 2rem;
+                  font-size: 1.5rem;
                 }
               }
               .mentions { padding: 0; font-size: 13px; }
@@ -1155,7 +1159,7 @@
                 width: 100%;
                 padding: 0;
                 display: block;
-                min-height: 65px;
+                min-height: 30px;
                 border: none;
                 overflow: auto;
                 outline: none;
@@ -1163,34 +1167,22 @@
                 .box-shadow(none);
                 font-size: 13px;
               }
-              .send {
-                position: absolute;
-                top:0; bottom: 0; right:0;
-                width: 65px;
-                margin: 0;
-                border: 0;
-                padding-top: 20px;
-                padding-left: 5px;
-                display: inline-block;
-                text-align: center;
-                img {
-                  width: 35px;
-                  height: 40px;
-                }
+              .send { position: absolute; top: 0; bottom: 0; right: 0; width: 40px; margin: 0; border: 0; padding-top: 12px; padding-left: 2px; display: inline-block; text-align: center;
+                img { width: 15px; height: 17px; }
                 .arrow-bottom:after {
                   content: "";
                   position: absolute;
-                  bottom: -13px;
-                  left: 19px;
+                  bottom: -8px;
+                  left: 12px;
                   border-style: solid;
-                  border-width: 15px 15px 0;
+                  border-width: 8px 8px 0;
                   border-right-color: transparent;
                   border-left-color: transparent;
                   border-top-color: inherit;
                   border-bottom-color: inherit;
                   display: block;
                   width: 0;
-                  z-index: 1;
+                  z-index: 2;
                 }
               }
             }
@@ -1248,6 +1240,29 @@
                 color: @cl-subtext20;
               }
             }
+          }
+          &.open {
+            .text-container .text { .border-radiuses(0, 4px, 4px, 0); padding: 4px 94px 4px 44px; border: 2px solid @cl-nav-left-back;
+              .avatar { left: 7px; top: 6px; }
+              .actions { top: -4px; right: 44px; }
+              .send { padding-top: 11px; padding-left: 4px;
+                .arrow-bottom:after { left: 13px; border-width: 9px 9px 0; }
+                .arrow-bottom:before { content: "";
+                  position: absolute;
+                  bottom: -11px;
+                  left: 12px;
+                  border-style: solid;
+                  border-width: 10px 10px 0;
+                  border-right-color: transparent;
+                  border-left-color: transparent;
+                  border-top-color: @cl-nav-left-back;
+                  border-bottom-color: @cl-nav-left-back;
+                  display: block;
+                  width: 0;
+                  z-index: 1; }
+              }
+            }
+            .rollup-container .ctn { border: 2px solid @cl-nav-left-back; .border-radiuses(4px, 0, 0, 4px); bottom:-2px; }
           }
         }
       } // #chat #center .discussion .content
