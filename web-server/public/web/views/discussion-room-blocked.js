@@ -136,11 +136,7 @@ var RoomBlockedView = Backbone.View.extend({
     });
   },
   onRejoin: function (event) {
-    client.roomJoin(this.model.get('id'), null, function (response) {
-      if (response.err) {
-        app.trigger('alert', 'error', i18next.t('global.unknownerror'));
-      }
-    });
+    app.trigger('joinRoom', this.model.get('identifier'), true);
   },
   onCloseRoom: function (event) {
     event.preventDefault();

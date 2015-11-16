@@ -59,7 +59,7 @@ var DrawerRoomUsersView = Backbone.View.extend({
   },
 
   onResponse: function (data) {
-    data.isOwner = currentUser.get('id') === data.owner_id;
+    data.isOwner = currentUser.get('user_id') === data.owner_id;
     data.isAdmin = currentUser.get('admin');
     data.isOp = _.find(data.ops, currentUser.get('user_id'));
 

@@ -102,8 +102,6 @@ var MainView = Backbone.View.extend({
     this.listenTo(rooms, 'remove', this.onRemoveDiscussion);
     this.listenTo(onetoones, 'add', this.addView);
     this.listenTo(onetoones, 'remove', this.onRemoveDiscussion);
-    this.listenTo(rooms, 'allowed', this.roomAllowed);
-    this.listenTo(rooms, 'join', this.roomJoin);
     this.listenTo(rooms, 'deleted', this.roomDeleted);
     this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
     this.listenTo(app, 'openGroupProfile', this.openGroupProfile);
@@ -271,22 +269,6 @@ var MainView = Backbone.View.extend({
     event.stopPropagation();
   },
 
-  /**
-   * Trigger when currentUser is kicked or banned from a room to handle focus
-   * and notification
-   * @param event
-   * @returns {boolean}
-   */
-  roomAllowed: function (event) {
-    if (event.wasFocused) { // if remove model was focused, focused the new one
-      app.trigger('focus', event.model);
-    }
-  },
-  roomJoin: function (event) {
-    if (event.wasFocused) { // if remove model was focused, focused the new one
-      app.trigger('focus', event.model);
-    }
-  },
   roomDeleted: function (data) {
     if (data.was_focused) {
       app.trigger('focus');

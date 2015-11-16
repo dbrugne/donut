@@ -135,13 +135,13 @@ var DonutRouter = Backbone.Router.extend({
     this.focusRoom(identifier);
   },
 
-  focusRoom: function (identifier) {
+  focusRoom: function (identifier, forceRedraw) {
     var model = rooms.iwhere('identifier', identifier);
-    if (typeof model !== 'undefined') {
+    if (typeof model !== 'undefined' && !forceRedraw) {
       return this.focus(model);
     }
 
-    // not already open
+    // not already open or force redraw
     this.nextFocus = identifier;
     client.roomId(identifier, function (responseRoom) {
       if (responseRoom.code === 404) {
@@ -158,8 +158,16 @@ var DonutRouter = Backbone.Router.extend({
         } else if (response.code === 404) {
           return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', {name: identifier}));
         } else if (response.code === 403) {
+          if (model) {
+            var isFocused = model.get('focused');
+            rooms.remove(model);
+          }
           rooms.addModel(response.room, response.err);
           app.trigger('redrawNavigationRooms'); // also trigger a redraw when displaying a room blocked
+
+          if (model && isFocused) {
+            app.trigger('focus', model); // focus new one
+          }
           return;
         } else if (response.code === 500) {
           return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
