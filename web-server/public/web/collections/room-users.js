@@ -150,7 +150,7 @@ var RoomUsersCollection = Backbone.Collection.extend({
     this.parent.set('users_number', this.parent.get('users_number') + 1);
     this.trigger('users-redraw');
 
-    app.trigger('newEvent', 'room:in', data, this);
+    app.trigger('newEvent', 'room:in', data, this.parent);
 
     data.unviewed = (currentUser.get('user_id') !== data.user_id);
     this.parent.trigger('freshEvent', 'room:in', data);
