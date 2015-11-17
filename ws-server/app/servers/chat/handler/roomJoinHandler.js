@@ -67,6 +67,13 @@ handler.blocked = function (user, room, blocked, next) {
 handler.join = function (user, room, next) {
   var that = this;
   async.waterfall([
+
+    function persistUser (callback) {
+      user.update({$pull: {blocked: room._id}}, function (err) {
+        return callback(err);
+      });
+    },
+
     function broadcast (callback) {
       // this step happen BEFORE user/room persistence and room subscription
       // to avoid noisy notifications
@@ -78,12 +85,6 @@ handler.join = function (user, room, next) {
       };
 
       roomEmitter(that.app, user, room, 'room:in', event, callback);
-    },
-
-    function persistUser (callback) {
-      user.update({$pull: {blocked: room._id}}, function (err) {
-        return callback(err);
-      });
     },
 
     function persistRoom (eventData, callback) {
