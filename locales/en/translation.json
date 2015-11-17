@@ -426,7 +426,7 @@
       }
     },
     "password": {
-      "wrong-password": "Wrong password",
+      "wrong-password": "Wrong password, retry ask for an access",
       "spam-password": "You have made ​​too many tests ! Wait or ask for an access​",
       "invalid-password": "Invalid password",
       "group-banned": "You were ban from this donut community",

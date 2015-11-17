@@ -427,7 +427,7 @@
     },
     "password": {
       "spam-password": "Vous avez fait trop d'essais! Patienter ou faites une demande d'accès",
-      "wrong-password": "Mot de passe erroné",
+      "wrong-password": "Mot de passe erroné, réessayer ou faites une demande d'accès",
       "invalid-password": "Mot de passe invalide",
       "group-banned": "Vous avez été banni de la communauté",
       "error": "Une erreur est survenue"
