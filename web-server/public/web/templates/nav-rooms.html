@@ -2,51 +2,51 @@
 <% var count = 0; %>
 <% var more = false; %>
 <% _.each(list, function(item) { %>
-<% if(more && ( !item.group_id || ( item.group_id && item.group_id !== lastGroup ) )) { %>
-    <% more = false; %>
-    <li class="less collapse collapse-<%-lastGroup%>">
-        <a class="inverse" role="button" href=".collapse-<%-lastGroup%>" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-<%-lastGroup%>">
-            <%= t('chat.navroom.seeless') %>
-        </a>
-    </li>
-<% } %>
-<% if (item.group_id && item.group_id !== lastGroup) { %>
-    <li class="group" data-type="group" data-group-id="<%= item.group_id %>">
-        <span class="item flex-parent center <% if (item.focused) { %> active <% } %>">
-            <a class="clean flex-child" href="#g/<%- item.group_name %>" data-group-id="<%- item.group_id %>">
-                #<%= item.group_name %>
+    <% if(more && ( !item.group_id || ( item.group_id && item.group_id !== lastGroup ) )) { %>
+        <% more = false; %>
+        <li class="less collapse collapse-<%-lastGroup%>">
+            <a class="inverse" role="button" href=".collapse-<%-lastGroup%>" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-<%-lastGroup%>">
+                <%= t('chat.navroom.seeless') %>
             </a>
+        </li>
+    <% } %>
+    <% if (item.group_id && item.group_id !== lastGroup) { %>
+        <li class="group" data-type="group" data-group-id="<%= item.group_id %>">
+            <span class="item flex-parent center <% if (item.focused) { %> active <% } %>">
+                <a class="clean flex-child" href="#g/<%- item.group_name %>" data-group-id="<%- item.group_id %>">
+                    #<%= item.group_name %>
+                </a>
+            </span>
+        </li>
+    <% } %>
+    <%
+    if (item.group_id && item.group_id === lastGroup) {
+        count++;
+    } else {
+        count = 0;
+    }
+    %>
+    <% if(count === toggleCount) { %>
+        <% more = true; %>
+        <li class="more">
+            <a class="inverse" role="button" href=".collapse-<%-lastGroup%>" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-<%-lastGroup%>">
+                <%= t('chat.navroom.seemore') %>
+            </a>
+        </li>
+    <% } %>
+    <li class="room-type <% if (item.group_id) { %> grouped <% } else { %> ungrouped <% } %> <% if(count >= toggleCount) { %>collapse collapse-<%-lastGroup%><%}%> <% if (item.focused) { %> active <% } %>" data-type="<%= item.type %>" data-room-id="<%= item.id %>">
+        <span class="item flex-parent center <% if (item.group_id) { %> grouped <% } %> <% if (item.blocked) { %> blocked <% } %>">
+            <a class="clean name-ctn hidden-xs hidden-sm" href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
+                <% if (item.group_id) { %>
+                    <span class="name">/<%= item.name %></span>
+                <% } else { %>
+                    <span class="name"><span>#</span><%= item.name %></span>
+                <% } %>
+            </a>
+            <% if (item.unviewed === true) { %>
+                <span class="icon icon-circle unread cl-sun_flower fs10"></span>
+            <% } %>
         </span>
     </li>
-<% } %>
-<%
-if (item.group_id && item.group_id === lastGroup) {
-    count++;
-} else {
-    count = 0;
-}
-%>
-<% if(count === toggleCount) { %>
-    <% more = true; %>
-    <li class="more">
-        <a class="inverse" role="button" href=".collapse-<%-lastGroup%>" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-<%-lastGroup%>">
-            <%= t('chat.navroom.seemore') %>
-        </a>
-    </li>
-<% } %>
-<li class="room-type <% if (item.group_id) { %> grouped <% } else { %> ungrouped <% } %> <% if(count >= toggleCount) { %>collapse collapse-<%-lastGroup%><%}%> <% if (item.focused) { %> active <% } %>" data-type="<%= item.type %>" data-room-id="<%= item.id %>">
-    <span class="item flex-parent center <% if (item.group_id) { %> grouped <% } %> <% if (item.blocked) { %> blocked <% } %>">
-        <a class="clean name-ctn hidden-xs hidden-sm" href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
-            <% if (item.group_id) { %>
-                <span class="name">/<%= item.name %></span>
-            <% } else { %>
-                <span class="name"><span>#</span><%= item.name %></span>
-            <% } %>
-        </a>
-        <% if (item.unviewed === true) { %>
-            <span class="icon icon-circle unread cl-sun_flower fs10"></span>
-        <% } %>
-    </span>
-</li>
-<% lastGroup = item.group_id; %>
+    <% lastGroup = item.group_id; %>
 <% }); %>
