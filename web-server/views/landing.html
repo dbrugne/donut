@@ -38,7 +38,7 @@
                     </span>
                     <p class="text-center"><%= t('logged.text') %></p>
                     <p class="actions flex-parent column jc-center center">
-                        <a class="chat button button-gray" href="/!"><%= t('logged.chat') %></a>
+                        <a class="chat btn btn-default" href="/!"><%= t('logged.chat') %></a>
                         <a class="logout flex-end mt10" href="/logout"><%= t('logged.logout') %></a>
                     </p>
                 </div>
@@ -72,7 +72,7 @@
 
                         <div class="flex-parent links-ctn">
                             <span class="blank flex-child"></span>
-                            <input class="button button-first" type="submit" value="<%= t('home.signup.etvoila') %>" tabindex="3">
+                            <input class="btn btn-pink" type="submit" value="<%= t('home.signup.etvoila') %>" tabindex="3">
                         </div>
 
                         <div class="text-center mt10 fs11">
@@ -92,9 +92,9 @@
                     <input id="search-field" type="text" placeholder="<%= t('landing.yourinterests') %>">
                     <i class="icon icon-search"></i>
                 </div>
-                <button class="button button-white button-small ml10 flex-center"><%= t('chat.actions.search') %></button>
+                <button class="btn btn-default ml10 flex-center"><%= t('chat.actions.search') %></button>
                 <span class="ml10"><%= t('global.or') %></span>
-                <a href="/create" class="button button-white button-small ml10 mr5 flex-center"><%= t('actions.create') %></a>
+                <a href="/create" class="btn btn-default ml10 mr5 flex-center"><%= t('actions.create') %></a>
             </form>
         </div>
         <div class="results">
@@ -102,7 +102,7 @@
                 <%= cardsHtml %>
             </div>
             <% visibility = (more && more === true) ? '' : 'hidden' %>
-            <button class="load-more button center-block mt20 mb20 <%= visibility %>"><%= t('landing.loadmore') %></button>
+            <button class="load-more btn btn-pink btn-big center-block mt20 mb20 <%= visibility %>"><%= t('landing.loadmore') %></button>
         </div>
     </div>
 

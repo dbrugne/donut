@@ -51,9 +51,9 @@
 
         <div class="block flex-parent jc-center center">
             <% if (user.status == 'online') { %>
-            <p class="discuss"><a href="<%= user.uri %>" class="dc-back dc-back-hover dc-text-contrast button button-big fs15"><%= t('actions.discuss') %></a></p>
+            <p class="discuss"><a href="<%= user.uri %>" class="btn btn-default btn-big"><%= t('actions.discuss') %></a></p>
             <% } else { %>
-            <p class="offline"><a href="<%= user.uri %>" class="dc-back dc-back-hover dc-text-contrast button button-big fs15"><%= t('global.offline') %></a></p>
+            <p class="offline"><a href="<%= user.uri %>" class="btn btn-default btn-big"><%= t('global.offline') %></a></p>
             <% }; %>
         </div>
 

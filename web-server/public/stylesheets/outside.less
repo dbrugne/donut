@@ -1,3 +1,12 @@
+.btn-facebook { margin-top: 10px; position: relative; margin-bottom: 15px; background-color: #4a649d; color: @cl-background; text-transform: uppercase; border-radius: 25px; padding: 11px 20px; .ft-raleway-medium; font-size: 1.3rem;
+  span { margin-left: 7px; color: @cl-background; }
+  i { font-size: 1.4em; margin-right: 2px; vertical-align: middle; color: @cl-background; }
+  &:hover { color: @cl-background;
+    i { color: @cl-background; }
+    span { color: @cl-background; }
+  }
+}
+
 .header-out { border-bottom: 3px solid @cl-first; background-color: #FFF;
   .navbar { margin-bottom:0; border:0;
     .mini-header {
@@ -260,7 +269,8 @@
         border-left: 1px solid #333;
         margin: 0 15px 0 11px;
       }
-      a { color: #333; }
+      a { color: @cl-text; }
+      a.btn-facebook { color:#FFF; }
     }
   }
   .input-icon > i { z-index: 3; color: #ccc; display: block; position: absolute; margin: 8px 2px 4px 10px; width: 16px; font-size: 16px; text-align: center; left: 0; height: initial; line-height: initial; }
