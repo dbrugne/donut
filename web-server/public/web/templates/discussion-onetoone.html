@@ -1,23 +1,14 @@
 <div class="side oneside dc-back <% if (!poster) { %>poster-empty<% } %>" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>"></div>
 <div class="content" id="onetoone">
-    <div class="visible-xs visible-sm">
-        <div class="mini-header user <% if (banned === true) { %> is-banned <% } %>">
-            <div class="avatar relative open-user-profile" data-user-id="<%= user_id %>">
-                <img class="dc-border-lighter" src="<%= avatar %>" alt="<%= username %> avatar">
-            </div>
-            <span class="name open-user-profile dc-text-contrast" data-user-id="<%= user_id %>"><%= username %></span>
-            <div class="info mt5"><%= dropdown %></div>
-        </div>
-    </div>
     <div class="header user <% if (banned === true) { %> is-banned <% } %>">
-        <div class="avatar relative open-user-profile border-shadow hidden-xs hidden-sm" data-user-id="<%= user_id %>">
+        <div class="avatar relative open-user-profile border-shadow" data-user-id="<%= user_id %>">
             <img src="<%= avatar %>" alt="<%= username %> avatar">
         </div>
-        <div class="info hidden-xs hidden-sm flex-parent center">
+        <div class="info   flex-parent center">
             <span class="name open-user-profile" data-user-id="<%= user_id %>"><% if (typeof realname !== "undefined") { %><%= realname %>&nbsp;<span class="othername">@<%= username %></span><% } else { %>@<%= username %><% } %></span>
 
             <div class="flex-parent">
-                <span class="hidden-xs hidden-sm flex-parent center">
+                <span class="  flex-parent center">
                     <span class="location"><%= location %></span>
                 </span>
                 <%= dropdown %>
@@ -34,10 +25,10 @@
                 </span>
             </em>
             <span class="ago display-offline">(<%= t('profile.user.onlined', {time: '<span data-time="'+onlined+'"></span>'}) %>)</span>
-            <span class="hello-block hidden-xs hidden-sm display-offline">
+            <span class="hello-block   display-offline">
                 <%= t('chat.welcome.onetoone') %>
             </span>
-            <span class="show-if-banned hidden-xs hidden-sm">
+            <span class="show-if-banned  ">
                 <span class="banned-status">
                     &nbsp;-&nbsp;<%= t('chat.actions.banned') %>&nbsp;
                     <span class="action-user-deban" data-user-id="<%= user_id %>" style="cursor: pointer; text-decoration: underline;">

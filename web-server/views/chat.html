@@ -14,11 +14,33 @@
             <div id="left" class="flex-parent column">
                 <div class="scrollable flex-child">
                     <div id="block-current-user" class="flex-parent column">
-                        <span href="#" class="dropdown-toggle toggle flex-parent center" data-toggle="dropdown" role="button" aria-expanded="false">
-                            <img class="mr5" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
-                            <span class="mr5 ml5 dc-text-contrast username flex-child"><% if (user.realname) { print (user.realname) } else { print ('@'+user.username) } %></span>
-                            <i class="icon icon-fw icon-chevron-down hover"></i>
-                        </span>
+
+                        <a href="#" class="clean dropdown-toggle toggle flex-parent center" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <img class="mr5 dc-border-darker curp" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
+                            <span class="mr5 ml5 dc-text-contrast username flex-child">
+                                <% if (user.realname) { print (user.realname) } else { print ('@'+user.username) } %>
+                            </span>
+                            <i class="icon icon-chevron-down fs20 dc-text-contrast hover"></i>
+                        </a>
+
+                        <ul class="dropdown-menu" role="menu">
+                            <li id="notifications" class="empty" role="presentation">
+                                <a href="#" class="empty open-user-notifications">
+                                    <i class="icon icon-fw icon-globe"></i> <%= t('chat.actions.notifications') %>
+                                    <span class="unread-count badge pull-right"></span>
+                                </a>
+                            </li>
+                            <li class="curp" role="presentation"><a href="/!#"><i class="icon icon-fw icon-home"></i> <%= t('global.discover') %></a></li>
+                            <li class="curp" role="presentation"><a href="#" class="open-create-room"><i class="icon icon-fw icon-plus"></i> <%= t('chat.actions.create') %> <%= t('chat.actions.adonut') %></a></li>
+                            <li role="presentation" class="divider"></li>
+                            <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-current-user-profile"><i class="icon icon-fw icon-eye"></i> <%= t('global.view-profile') %></a></li>
+                            <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-user-account"><i class="icon icon-fw icon-lock"></i> <%= t('chat.actions.account') %></a></li>
+                            <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-user-edit"><i class="icon icon-fw icon-pencil"></i> <%= t('chat.actions.edit') %></a></li>
+                            <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-user-preferences"><i class="icon icon-fw icon-check"></i> <%= t('chat.actions.preferences') %></a></li>
+                            <li class="curp" role="presentation" id="mute"><a role="menuitem" tabindex="-1" class="toggle"><i class="icon icon-fw icon-volume-up"></i> <%= t('chat.actions.volume.up') %></a></li>
+                            <li role="presentation" class="divider"></li>
+                            <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" href="/logout"><i class="icon icon-fw icon-power-off"></i> <%= t('actions.logout') %></a></li>
+                        </ul>
                     </div>
 
                     <div id="navbar">
@@ -152,12 +174,7 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <%- partial('contact') %>
-    <div class="responsive">
-        <div class="device-xs visible-xs visible-xs-block"></div>
-        <div class="device-sm visible-sm visible-sm-block"></div>
-        <div class="device-md visible-md visible-md-block"></div>
-        <div class="device-lg visible-lg visible-lg-block"></div>
-    </div><!-- /.responsive -->
+
     <script src="/javascripts/old-browser-update.js"></script>
     <script src="//widget.cloudinary.com/global/all.js"></script>
     <script src='https://www.google.com/recaptcha/api.js' async defer></script>

@@ -6,7 +6,7 @@ var currentUser = require('../models/current-user');
 var MuteView = require('./mute');
 
 var CurrentUserView = Backbone.View.extend({
-  el: $('#block-current-user'),
+  el: $('#block-current-user>.dropdown-toggle'),
 
   template: require('../templates/current-user.html'),
 
@@ -25,23 +25,15 @@ var CurrentUserView = Backbone.View.extend({
     data.realname = currentUser.get('realname');
 
     var html = this.template(data);
-    this.$el.html(html);
+    this.$el.replaceWith(html);
 
     this.muteView = new MuteView();
-
-    this.initializeTooltips();
 
     return this;
   },
   userConfirmed: function () {
     this.model.setConfirmed();
     this.render();
-  },
-
-  initializeTooltips: function () {
-    this.$el.find('[data-toggle="tooltip"]').tooltip({
-      container: 'body'
-    });
   }
 });
 

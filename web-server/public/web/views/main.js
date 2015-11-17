@@ -70,6 +70,7 @@ var MainView = Backbone.View.extend({
     'click .open-user-preferences': 'openUserPreferences',
     'click .open-user-account': 'openUserAccount',
     'click .open-user-profile': 'onOpenUserProfile',
+    'click .open-current-user-profile': 'onOpenCurrentUserProfile',
     'click .open-user-notifications': 'onOpenUserNotifications',
     'click .action-user-ban': 'userBan',
     'click .action-user-deban': 'userDeban',
@@ -341,14 +342,9 @@ var MainView = Backbone.View.extend({
     var view = new DrawerUserAccountView();
     this.drawerView.setSize('450px').setView(view).open();
   },
-  onOpenUserNotifications: function(event) {
+  onOpenUserNotifications: function (event) {
     event.preventDefault();
-
-    var userId = $(event.currentTarget).data('userId');
-    if (!userId) {
-      return;
-    }
-    var view = new DrawerUserNotificationsView({user_id: userId});
+    var view = new DrawerUserNotificationsView({user_id: currentUser.get('user_id')});
     this.drawerView.setSize('380px').setView(view).open();
   },
   onOpenUserProfile: function (event) {
@@ -359,6 +355,17 @@ var MainView = Backbone.View.extend({
     if (!userId) {
       return;
     }
+    var view = new DrawerUserProfileView({user_id: userId});
+    this.drawerView.setSize('380px').setView(view).open();
+  },
+  onOpenCurrentUserProfile: function (event) {
+    event.preventDefault();
+
+    var userId = currentUser.get('user_id');
+    if (!userId) {
+      return;
+    }
+
     var view = new DrawerUserProfileView({user_id: userId});
     this.drawerView.setSize('380px').setView(view).open();
   },
