@@ -89,12 +89,6 @@ handler.call = function (data, session, next) {
       roomEmitter(that.app, user, room, 'room:kick', event, callback);
     },
 
-    /* function broadcastToKickedUser (sentEvent, callback) {
-      that.app.globalChannelService.pushMessage('connector', 'room:kick', event, 'user:' + kickedUser.id, {}, function (reponse) {
-        callback(null, sentEvent);
-      });
-    },*/
-
     /**
      * /!\ .unsubscribeClients come after .historizeAndEmit to allow kicked user to receive message
      */

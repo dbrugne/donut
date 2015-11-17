@@ -101,10 +101,6 @@ handler.join = function (user, room, next) {
           // @source: http://stackoverflow.com/a/23255415
           room.allowed_pending.id(sub.id).remove();
         }
-
-        //room.update({$pull: {allowed_pending: {user: user._id}}}, function (err) {
-        //  return callback(err);
-        //});
       }
 
       room.save(function (err) {
