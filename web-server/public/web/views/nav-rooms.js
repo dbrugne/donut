@@ -57,17 +57,23 @@ module.exports = Backbone.View.extend({
   highlightFocused: function () {
     this.$list.find('.active').each(function (item) {
       $(this).removeClass('active');
+      $(this).parents('.group-block').removeClass('highlighted');
     });
     var that = this;
     _.find(rooms.models, function (room) {
       if (room.get('focused') === true) {
-        that.$list.find('[data-room-id="' + room.get('id') + '"]').addClass('active');
+        var elt = that.$list.find('[data-room-id="' + room.get('id') + '"]');
+        elt.addClass('active');
+        elt.parents('.group-block').addClass('highlighted');
         return true;
       }
     });
   },
   highlightGroup: function (data) {
-    this.$list.find('[data-type="group"][data-group-id="' + data.group_id + '"]').addClass('active');
+    var elt = this.$list.find('[data-type="group"][data-group-id="' + data.group_id + '"]');
+    elt.addClass('active');
+    elt.parents('.group-block').addClass('highlighted');
+
     if (data.popin) {
       var $popin = $('#popin');
       $popin.find('.modal-title').html(i18next.t('popins.group-create.title'));

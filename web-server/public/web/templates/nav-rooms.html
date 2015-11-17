@@ -10,13 +10,24 @@
             </a>
         </li>
     <% } %>
-    <% if (item.group_id && item.group_id !== lastGroup) { %>
-        <li class="group" data-type="group" data-group-id="<%= item.group_id %>">
-            <span class="item flex-parent center <% if (item.focused) { %> active <% } %>">
-                <a class="clean flex-child" href="#g/<%- item.group_name %>" data-group-id="<%- item.group_id %>">
-                    #<%= item.group_name %>
-                </a>
-            </span>
+    <% if (item.group_id && item.group_id !== lastGroup) { %> <!--new group block-->
+        <% if (lastGroup !== null) { %> <!--new group block, not first one : close last one-->
+            </ul>
+        </li>
+        <% } %>
+
+        <li class="group-block">
+            <ul>
+                <li class="group" data-type="group" data-group-id="<%= item.group_id %>">
+                    <span class="item flex-parent center <% if (item.focused) { %> active <% } %>">
+                        <a class="clean flex-child" href="#g/<%- item.group_name %>" data-group-id="<%- item.group_id %>">
+                            #<%= item.group_name %>
+                        </a>
+                    </span>
+                </li>
+    <% } %>
+    <% if (!item.group_id && lastGroup !== null) { %>  <!--no more groups and at least one group to close -->
+           </ul>
         </li>
     <% } %>
     <%

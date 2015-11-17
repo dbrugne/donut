@@ -461,13 +461,8 @@
         a { color:@cl-nav-left-text-lighter; }
         ul { padding-left: 0;
           &.empty li { padding: 0 5px 0 10px; font-style: italic; color: @cl-subtext20; }
-          li.group+li.room-type.ungrouped, li.room-type.grouped+li.room-type.ungrouped { margin-top: 15px; } // spacing between groups
 
-
-          //li.group { background-color: rgba(255,255,255,0.2); .border-radiuses(0, 0, 5px, 5px); }
-          //li.room-type~li.group { .border-radiuses(0, 0, 0, 5px); }
-          //li.group+li.room-type { background-color: rgba(255,255,255,0.2); .border-radiuses(0, 0, 5px, 0); }
-          //li.room-type.grouped+li.room-type.grouped { background-color: rgba(255,255,255,0.2); .border-radiuses(0, 0, 5px, 0); }
+          li.group-block+li.room-type.ungrouped, li.group-block+li.group-block { margin-top: 15px; } // spacing between groups
 
           li { list-style: none; margin-left: 5px; padding: 3px 0; .border-radiuses(0, 0, 5px, 5px);
             &.group { margin-top: 15px;
@@ -505,6 +500,7 @@
               &.group a, .item .name-ctn .name { color:@cl-text; }
               .close-discussion  i { color:@cl-nav-left-back; }
             }
+            &.highlighted.group-block { background-color: rgba(255,255,255,0.2); }
           }
         }
       }
