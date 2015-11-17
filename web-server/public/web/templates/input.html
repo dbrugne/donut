@@ -2,7 +2,11 @@
 <div class="text-container">
     <div class="overlay">
         <span class="overlay-text">
+            <% if (confirmed === true) { %>
             <%= bannedMessage %>
+            <%} else { %>
+            <%= t('chat.actions.bannedMessage.confirm') %>
+            <% } %>
         </span>
     </div>
     <div class="text">

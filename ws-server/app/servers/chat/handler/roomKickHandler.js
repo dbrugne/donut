@@ -59,7 +59,7 @@ handler.call = function (data, session, next) {
     },
 
     function persist (callback) {
-      room.update({$pull: { users: kickedUser._id }}, function (err) {
+      room.update({$pull: { users: kickedUser.id }}, function (err) {
         return callback(err);
       });
     },
@@ -87,12 +87,6 @@ handler.call = function (data, session, next) {
       }
 
       roomEmitter(that.app, user, room, 'room:kick', event, callback);
-    },
-
-    function broadcastToKickedUser (sentEvent, callback) {
-      that.app.globalChannelService.pushMessage('connector', 'room:kick', event, 'user:' + kickedUser.id, {}, function (reponse) {
-        callback(null, sentEvent);
-      });
     },
 
     /**

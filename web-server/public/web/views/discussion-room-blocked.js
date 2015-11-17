@@ -8,6 +8,7 @@ var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
 var client = require('../libs/client');
 var ConfirmationView = require('./modal-confirmation');
+var currentUser = require('../models/current-user');
 
 var RoomBlockedView = Backbone.View.extend({
   tagName: 'div',
@@ -33,8 +34,8 @@ var RoomBlockedView = Backbone.View.extend({
     this.render();
   },
   render: function () {
-    // @todo : handle groupban and groupdisallow blocked values
-    // @todo : persist blocked room on user on groupban and groupdisallow blocked values
+    // @todo dbr : handle groupban and groupdisallow blocked values
+    // @todo dbr : persist blocked room on user on groupban and groupdisallow blocked values
 
     var data = this.model.toJSON();
 
@@ -60,7 +61,7 @@ var RoomBlockedView = Backbone.View.extend({
     });
 
     // render
-    var html = this.template({data: data});
+    var html = this.template({data: data, confirmed: currentUser.isConfirmed()});
     this.$el.attr('data-identifier', this.model.get('identifier'));
     this.$el.html(html);
     this.$error = this.$('.error');
@@ -88,6 +89,10 @@ var RoomBlockedView = Backbone.View.extend({
     }
   },
   onRequestAllowance: function (event) {
+    if (!currentUser.isConfirmed()) {
+      return;
+    }
+
     event.preventDefault();
 
     ConfirmationView.open({message: 'request-allowance', area: true}, _.bind(function (message) {
@@ -123,19 +128,13 @@ var RoomBlockedView = Backbone.View.extend({
       }
 
       that.$error.show();
-      if (response.err === 'wrong-password' || response.err === 'spam-password') {
-        that.$error.text(i18next.t('chat.password.' + response.err));
-      } else if (response.err) {
-        that.$error.text(i18next.t('chat.password.error'));
+      if (response.err) {
+        that.$error.text(i18next.t('chat.password.wrong-password'));
       }
     });
   },
   onRejoin: function (event) {
-    client.roomJoin(this.model.get('id'), null, function (response) {
-      if (response.err) {
-        app.trigger('alert', 'error', i18next.t('global.unknownerror'));
-      }
-    });
+    app.trigger('joinRoom', this.model.get('identifier'), true);
   },
   onCloseRoom: function (event) {
     event.preventDefault();

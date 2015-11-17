@@ -5,6 +5,7 @@ var urls = require('../../../../shared/util/url');
 
 var CardsView = Backbone.View.extend({
   template: require('../templates/cards.html'),
+  templateSpinner: require('../templates/spinner.html'),
 
   events: {
     'click a.join, .open-room-profile, .open-user-profile': 'onClose'
@@ -15,7 +16,9 @@ var CardsView = Backbone.View.extend({
   },
   render: function (data) {
     var cards = [];
-    var list = _.union(
+    var list = data.all
+      ? data.all.list // if cards have been mixed
+      : _.union( // cards have not been mixed
       data.rooms
         ? data.rooms.list
         : [],
@@ -24,14 +27,15 @@ var CardsView = Backbone.View.extend({
         : [],
       data.users
         ? data.users.list
-        : []);
+        : []
+    );
 
     _.each(list, function (card) {
       switch (card.type) {
         case 'user':
           card.avatar = common.cloudinary.prepare(card.avatar, 135);
           card.join = urls(card, 'user', 'uri');
-          card.url = urls(card, 'user', 'url');
+          card.chat = urls(card, 'user', 'chat');
           card.owner_url = urls(card, 'user', 'chat');
           break;
         case 'room':
@@ -81,7 +85,11 @@ var CardsView = Backbone.View.extend({
   },
 
   count: function () {
-    return this.$('.card').length;
+    return {
+      rooms: this.$('.card.card-room').length,
+      groups: this.$('.card.card-group').length,
+      users: this.$('.card.card-user').length
+    };
   },
 
   onClose: function (event) {
@@ -90,6 +98,10 @@ var CardsView = Backbone.View.extend({
 
   _remove: function () {
     this.remove();
+  },
+
+  pending: function () {
+    this.$el.html(this.templateSpinner);
   }
 
 });

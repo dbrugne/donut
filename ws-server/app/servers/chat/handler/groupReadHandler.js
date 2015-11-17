@@ -60,7 +60,8 @@ handler.call = function (data, session, next) {
           username: group.owner.username,
           avatar: group.owner._avatar(),
           color: group.owner.color,
-          is_owner: true
+          is_owner: true,
+          status: (group.owner.online) ? 'online' : 'offline'
         };
         read.members.push(owner);
         read.owner_id = owner.user_id;
@@ -84,7 +85,8 @@ handler.call = function (data, session, next) {
             username: op.username,
             avatar: op._avatar(),
             color: op.color,
-            is_op: true
+            is_op: true,
+            status: (op.online) ? 'online' : 'offline'
           };
           read.members.push(el);
           alreadyIn.push(el.user_id);
@@ -109,7 +111,8 @@ handler.call = function (data, session, next) {
             user_id: u.id,
             username: u.username,
             avatar: u._avatar(),
-            color: u.color
+            color: u.color,
+            status: u.online ? ('online') : 'offline'
           };
           read.members.push(el);
 

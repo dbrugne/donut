@@ -51,8 +51,8 @@ module.exports = function (req, res, next, groupname) {
             username: model.owner.username,
             avatar: model.owner._avatar(80),
             color: model.owner.color,
-            url: (model.owner.username)
-              ? req.protocol + '://' + conf.fqdn + urls(model.owner, 'user', 'url')
+            chat: (model.owner.username)
+              ? req.protocol + '://' + conf.fqdn + urls(model.owner, 'user', 'chat')
               : '',
             is_owner: true,
             is_op: false // could not be both
@@ -73,8 +73,8 @@ module.exports = function (req, res, next, groupname) {
               username: _model.username,
               avatar: _model._avatar(80),
               color: _model.color,
-              url: (_model.username)
-                ? req.protocol + '://' + conf.fqdn + urls(_model, 'user', 'url')
+              chat: (_model.username)
+                ? req.protocol + '://' + conf.fqdn + urls(_model, 'user', 'chat')
                 : '',
               is_op: true,
               is_owner: false
@@ -132,7 +132,7 @@ module.exports = function (req, res, next, groupname) {
                 user_id: r.owner.id,
                 username: r.owner.username,
                 is_owner: true,
-                url: req.protocol + '://' + conf.fqdn + urls(r.owner, 'user', 'url')
+                chat: req.protocol + '://' + conf.fqdn + urls(r.owner, 'user', 'chat')
               };
             }
 

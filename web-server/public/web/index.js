@@ -10,6 +10,7 @@ require('bootstrap/js/transition');
 require('bootstrap/js/dropdown');
 require('bootstrap/js/modal');
 require('bootstrap/js/tooltip');
+require('bootstrap/js/button');
 require('bootstrap/js/popover');
 require('bootstrap/js/collapse');
 

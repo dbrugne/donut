@@ -4,7 +4,7 @@
         <td align="center">
             <div style="line-height: 30px;">
                 <span style="font-family: Arial, Helvetica, sans-serif; font-size: 17px; color: #34495e;">
-                    <%= t('email.groupban.content.disclaimer', {grouname: groupname}) %><br/>
+                    <%= t('email.groupban.content.disclaimer', {groupname: groupname}) %><br/>
                 </span>
             </div>
             <div style="height: 35px; line-height: 35px; font-size: 10px;">&nbsp;</div>
@@ -17,7 +17,7 @@
                 <table border="0" cellpadding="0" cellspacing="0" class="emailButton" style="-webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; background-color:#EE2763;">
                     <tr>
                         <td align="center" valign="middle" class="emailButtonContent" style="padding-top:10px; padding-right:30px; padding-bottom:10px; padding-left:30px;">
-                            <a href="<%= grouplink.chat %>" target="_blank" style="color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;" alt="<%= t('email.groupban.content.button') %>"><%= t('email.groupban.content.button') %></a>
+                            <a href="<%= url %>" target="_blank" style="color:#FFFFFF; font-family:Helvetica, Arial, sans-serif; font-size:16px; font-weight:bold; text-decoration:none;" alt="<%= t('email.groupban.content.button') %>"><%= t('email.groupban.content.button') %></a>
                         </td>
                     </tr>
                 </table>

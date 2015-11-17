@@ -86,7 +86,8 @@ handler.call = function (data, session, next) {
         by_avatar: user._avatar(),
         user_id: bannedUser.id,
         username: bannedUser.username,
-        avatar: bannedUser._avatar()
+        avatar: bannedUser._avatar(),
+        identifier: room.getIdentifier()
       };
 
       roomEmitter(that.app, user, room, 'room:deban', event, callback);

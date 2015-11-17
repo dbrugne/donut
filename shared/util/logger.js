@@ -1,6 +1,6 @@
 'use strict';
 /**
- * @todo : remove direct require() of this file in ws-server/ will be possible
+ * @todo dbr : remove direct require() of this file in ws-server/ will be possible
  *         once the interns are on node 4.0 and NPM 3.3 with flat node_modules
  *         structure
  *

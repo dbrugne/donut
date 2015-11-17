@@ -23,9 +23,16 @@ var RoomModel = Backbone.Model.extend({
     };
   },
   initialize: function () {
-    this.users = new RoomUsersCollection({
-      parent: this
-    });
+    if (!this.get('blocked')) {
+      this.users = new RoomUsersCollection({
+        parent: this
+      });
+    }
+  },
+  unbindUsers: function () {
+    if (!this.get('blocked')) {
+      this.users.stopListening();
+    }
   },
   getIdentifier: function () {
     return this.get('name');
@@ -73,8 +80,8 @@ var RoomModel = Backbone.Model.extend({
       this.set(key, value);
     }, this));
   },
-  history: function (start, end, callback) {
-    client.roomHistory(this.get('room_id'), start, end, 100, function (data) {
+  history: function (start, end, limit, callback) {
+    client.roomHistory(this.get('room_id'), start, end, limit, function (data) {
       return callback(data);
     });
   },
@@ -87,13 +94,13 @@ var RoomModel = Backbone.Model.extend({
   onViewed: function (data) {
     if (this.get('unviewed')) {
       this.set('unviewed', false);
-      // @todo: why triggering a full redraw? We should just ask for a CSS class removing
+      // @todo yls: why triggering a full redraw? We should just ask for a CSS class removing
       app.trigger('redrawNavigationRooms');
     }
     this.trigger('viewed', data);
   },
   isInputActive: function () {
-    return !(this.users.isUserDevoiced(currentUser.get('user_id')));
+    return !(this.users.isUserDevoiced(currentUser.get('user_id')) || !currentUser.isConfirmed());
   }
 
 });

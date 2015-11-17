@@ -109,7 +109,7 @@ var encodeBatch = function (msgs) {
  * MESSAGE PER SOCKET LIMITER
  */
 Socket.prototype.limiterAdd = function () {
-  this.__limiter__.push(Date.now()); // @todo : take event type in consideration: if message or room creation create 5 lines, else 1 line. Increase LIMITER_MAX
+  this.__limiter__.push(Date.now()); // @todo dbr : take event type in consideration: if message or room creation create 5 lines, else 1 line. Increase LIMITER_MAX
 };
 Socket.prototype.limiterCleanup = function () {
   // cleanup blocked status

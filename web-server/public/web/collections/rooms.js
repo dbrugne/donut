@@ -124,6 +124,9 @@ var RoomsCollection = Backbone.Collection.extend({
     var ids = _.map(data.rooms, 'id').concat(_.map(data.blocked, 'id'));
     _.each(modelsIds, _.bind(function (modelId) {
       if (ids.indexOf(modelId) === -1) {
+        if (this.get(modelId)) {
+          this.get(modelId).unbindUsers();
+        }
         this.remove(modelId);
       }
     }, this));
@@ -234,19 +237,21 @@ var RoomsCollection = Backbone.Collection.extend({
   },
   onUserOnline: function (data) {
     var model;
-    if (!data || !data.room_id || !(model = this.get(data.room_id))) {
-      return;
-    }
 
-    model.users.onUserOnline(data);
+    _.each(data.rooms_id, _.bind(function (roomId) {
+      if ((model = this.get(roomId))) {
+        model.users.onUserOnline(data);
+      }
+    }, this));
   },
   onUserOffline: function (data) {
     var model;
-    if (!data || !data.room_id || !(model = this.get(data.room_id))) {
-      return;
-    }
 
-    model.users.onUserOffline(data);
+    _.each(data.rooms_id, _.bind(function (roomId) {
+      if ((model = this.get(roomId))) {
+        model.users.onUserOffline(data);
+      }
+    }, this));
   },
   onKick: function (data) {
     this._onExpulsion('kick', data);
@@ -269,38 +274,38 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    // if i'm the "targeted user" destroy the model/view
-    if (currentUser.get('user_id') === data.user_id) {
-      var isFocused = model.get('focused');
-      var blocked = (what === 'ban')
-        ? 'banned'
-        : (what === 'kick')
-        ? 'kicked'
-        : true;
-      var modelTmp = model.attributes;
-      if (data.banned_at) {
-        modelTmp.banned_at = data.banned_at;
-      }
-      if (data.reason) {
-        modelTmp.reason = data.reason;
-      }
-      this.remove(model); // remove existing view
-      this.addModel(modelTmp, blocked);
-      app.trigger('redrawNavigationRooms');
-      if (isFocused) {
-        app.trigger('focus', this.get(data.room_id));
-      }
-      return;
+    if (currentUser.get('user_id') !== data.user_id) {
+      return model.users.onExpulsion(what, data);
     }
 
-    model.users.onExpulsion(what, data);
+    // if i'm the "targeted user" destroy the model/view
+    var isFocused = model.get('focused');
+    var blocked = (what === 'ban')
+      ? 'banned'
+      : (what === 'kick')
+      ? 'kicked'
+      : true;
+    var modelTmp = model.attributes;
+    if (data.banned_at) {
+      modelTmp.banned_at = data.banned_at;
+    }
+    if (data.reason) {
+      modelTmp.reason = data.reason;
+    }
+    model.unbindUsers();
+    this.remove(model); // remove existing view
+    this.addModel(modelTmp, blocked);
+    app.trigger('redrawNavigationRooms');
+    if (isFocused) {
+      app.trigger('focus', this.get(data.room_id));
+    }
   },
   onAllow: function (data) {
     if (!data || !data.room_id || !(this.get(data.room_id))) {
       return;
     }
 
-    client.roomJoin(data.room_id); // @todo : anti-pattern!
+    app.trigger('joinRoom', data.identifier, true);
   },
   onDeban: function (data) {
     var model;
@@ -309,20 +314,7 @@ var RoomsCollection = Backbone.Collection.extend({
     }
 
     if (currentUser.get('user_id') === data.user_id) {
-      // @todo : anti-pattern!
-      client.roomJoin(data.room_id, null, _.bind(function () {
-        if (data.room_mode === 'private') {
-          var isFocused = model.get('focused');
-          var modelTmp = model.attributes;
-          this.remove(model);
-          this.addModel(modelTmp, true);
-          app.trigger('redrawNavigationRooms');
-          this.trigger('allowed', {
-            model: this.get(data.room_id),
-            wasFocused: isFocused
-          }); // focus + alert
-        }
-      }, this));
+      app.trigger('joinRoom', data.identifier, true);
     }
 
     model.users.onDeban(data);

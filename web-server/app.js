@@ -30,7 +30,7 @@ var app = express();
 app.enable('trust proxy'); // nginx
 
 app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use(cors()); // allow requests from mobile client (@todo: whitelist allowed origins URLs)
+app.use(cors()); // allow requests from mobile client (@todo dbr: whitelist allowed origins URLs)
 app.use(less(__dirname + '/public', { force: conf.less.force }));
 app.use(express.static(path.join(__dirname, '../node_modules/socket.io-client'))); // => require('socket.io-client');
 app.use(express.static(path.join(__dirname, 'public')));
@@ -80,11 +80,11 @@ app.use(require('./app/authentication/login'));
 app.use(require('./app/authentication/link'));
 app.use(require('./app/authentication/forgot'));
 app.use(require('./app/authentication/username'));
+app.use(require('./app/authentication/verify'));
 
 // public routes
 app.use(require('./app/routes/seo'));
 app.use(require('./app/routes/landing'));
-app.use(require('./app/routes/user-profile'));
 app.use(require('./app/routes/room-profile'));
 app.use(require('./app/routes/group-profile'));
 app.use(require('./app/routes/chat'));

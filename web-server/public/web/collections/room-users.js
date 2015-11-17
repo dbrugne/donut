@@ -59,11 +59,7 @@ var RoomUsersCollection = Backbone.Collection.extend({
   },
   initialize: function (options) {
     this.parent = options.parent;
-
-    this.on('change:avatar', this.onChange);
-
-    // @todo dbr same fix as model/user, reduce event propagation
-    this.on('change:status', this.onChange);
+    this.listenTo(client, 'user:updated', this.onChange);
   },
 
   /**
@@ -73,11 +69,14 @@ var RoomUsersCollection = Backbone.Collection.extend({
    * Usefull for 'redraw-pattern' views.
    *
    * @source: http://www.garethelms.org/2012/02/backbone-js-collections-can-listen-to-its-models-changes/
-   * @param model
-   * @param value
-   * @param options
    */
-  onChange: function (model, value, options) {
+  onChange: function (data) {
+    var model = this.get(data.user_id);
+    if (!model) {
+      return;
+    }
+
+    model.onUpdated(data);
     this.sort(); // for 'status' attribute
     this.trigger('users-redraw');
   },
@@ -112,40 +111,24 @@ var RoomUsersCollection = Backbone.Collection.extend({
     return model;
   },
   fetchUsers: function (callback) {
-    // @todo : bad pattern, client should do only one call and received a complete list
     client.roomUsers(this.parent.get('room_id'), {
-      type: 'users',
-      status: 'online'
+      type: 'users'
     }, _.bind(function (data) {
       this.reset();
 
-      _.each(data.users, _.bind(function (element, key, list) {
+      _.each(data.users, _.bind(function (user) {
         // false: avoid automatic sorting on each model .add()
-        this.addUser(element, false);
+        this.addUser(user, false);
       }, this));
 
-      var maxOfflineUsersToDisplay = (15 - data.count > 0)
-        ? 15 - data.count
-        : 2;
-      var searchAttributes = {
-        type: 'users',
-        status: 'offline',
-        selector: {start: 0, length: maxOfflineUsersToDisplay}
-      };
-      client.roomUsers(this.parent.get('room_id'), searchAttributes, _.bind(function (data) {
-        _.each(data.users, _.bind(function (element, key, list) {
-          // false: avoid automatic sorting on each model .add()
-          this.addUser(element, false);
-        }, this));
+      // sort after batch addition to collection to avoid performance issue
+      this.sort();
 
-        // sort after batch addition to collection to avoid performance issue
-        this.sort();
+      this.trigger('users-redraw');
 
-        this.trigger('users-redraw');
-        if (callback) {
-          return callback();
-        }
-      }, this));
+      if (callback) {
+        return callback();
+      }
     }, this));
   },
   isUserDevoiced: function (userId) {
@@ -159,7 +142,7 @@ var RoomUsersCollection = Backbone.Collection.extend({
     this.parent.set('users_number', this.parent.get('users_number') + 1);
     this.trigger('users-redraw');
 
-    app.trigger('newEvent', 'room:in', data, this);
+    app.trigger('newEvent', 'room:in', data, this.parent);
 
     data.unviewed = (currentUser.get('user_id') !== data.user_id);
     this.parent.trigger('freshEvent', 'room:in', data);

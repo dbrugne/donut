@@ -14,7 +14,8 @@ var DrawerRoomDeleteView = Backbone.View.extend({
 
   events: {
     'keyup input[name=input-delete]': 'onKeyup',
-    'click .submit': 'onSubmit'
+    'click .submit': 'onSubmit',
+    'click .cancel-lnk': 'onClose'
   },
 
   initialize: function (options) {
@@ -93,6 +94,10 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     if (event.type === 'keyup' && key.key === keyboard.RETURN) {
       return this.onSubmit(event);
     }
+  },
+  onClose: function (event) {
+    event.preventDefault();
+    this.trigger('close');
   },
   _valid: function () {
     var name = this.$input.val();

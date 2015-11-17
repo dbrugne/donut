@@ -56,9 +56,9 @@ Filter.prototype.before = function (data, session, next) {
         return callback('params-group-id');
       }
 
-      // @todo : need all this population for each route??
+      // @todo yls : need all this population for each route??
       GroupModel.findOne({ _id: data.group_id })
-        .populate('owner', 'username avatar color facebook')
+        .populate('owner', 'username avatar color facebook online')
         .populate('op', 'username avatar color facebook')
         .populate('bans.user', 'username avatar color facebook')
         .populate('members', 'username avatar color facebook')
