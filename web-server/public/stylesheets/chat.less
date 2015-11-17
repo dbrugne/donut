@@ -249,7 +249,13 @@
         .not-confirmed {     z-index: 1; position: absolute; top: 15px; font-size: 28px; left: 17px; color: @cl-pomegranate; opacity: 0.7; }
         i, .username { color:@cl-nav-left-text-lighter; }
         img { width: 28px; height: 28px; }
-        &.open { .transition(max-height 400ms); max-height: 600px; }
+        &.open { .transition(max-height 400ms); max-height: 600px;
+          #notifications .unread-count {
+            position: initial;
+            top: initial;
+            right: initial;
+          }
+        }
         &.open, &:hover { background-color: rgba(255,255,255,.2); }
         .dropdown-menu { width: 100%; display: block;
           position:relative;
@@ -264,13 +270,13 @@
             &.dropdown-header { color:@cl-nav-left-text-lighter; cursor:default; padding:3px 20px 3px 10px;
               &:hover { background-color: transparent; }
             }
-            a { color:@cl-clouds; padding:3px 11px 3px 15px;
+            a { color:@cl-clouds; padding:3px 2px 3px 15px;
               &:hover, &:focus { background-color:transparent; }
             }
           }
         }
         .dropdown-toggle { width: 100%; padding: 0;
-          .username { max-width: 158px; text-overflow: ellipsis; overflow: hidden; font-size:1.8rem; }
+          .username { max-width: 132px; text-overflow: ellipsis; overflow: hidden; font-size:1.8rem; }
         }
         #notifications {
           &.empty {
@@ -290,6 +296,10 @@
             }
           }
           .unread-count {
+            position: absolute;
+            top: -24px;
+            right: -1px;
+
             margin-top: 2px;
             padding: 1px 5px;
             font-size: 1rem;
