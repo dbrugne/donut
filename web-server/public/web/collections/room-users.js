@@ -7,6 +7,9 @@ var UserModel = require('../models/user');
 
 var RoomUsersCollection = Backbone.Collection.extend({
   model: UserModel,
+
+  maxDisplayedUsers: 52,
+
   comparator: function (model1, model2) {
     // create strings (sortable as string: aabfoobar)
     var string1 = '';
@@ -116,9 +119,14 @@ var RoomUsersCollection = Backbone.Collection.extend({
     }, _.bind(function (data) {
       this.reset();
 
-      _.each(data.users, _.bind(function (user) {
+      var count = 0;
+      _.find(data.users, _.bind(function (user) {
         // false: avoid automatic sorting on each model .add()
         this.addUser(user, false);
+        count ++;
+        if (count === this.maxDisplayedUsers) {
+          return true;
+        }
       }, this));
 
       // sort after batch addition to collection to avoid performance issue
