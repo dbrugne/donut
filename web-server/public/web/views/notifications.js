@@ -47,6 +47,7 @@ var NotificationsView = Backbone.View.extend({
   render: function () {
     this.$dropdown = this.$('.dropdown-toggle');
     this.$badge = this.$('.badge').first();
+    this.$badgeResponsive = $('.hover-menu-notifications');
     this.$count = this.$('.unread-count .nb').first();
     this.$menu = this.$('.dropdown-menu #main-navbar-messages');
     this.$scrollable = this.$('.dropdown-menu .messages-list-ctn');
@@ -67,7 +68,7 @@ var NotificationsView = Backbone.View.extend({
   },
   setUnreadCount: function (count) {
     if (count > 0) {
-      this.$badge.text(count);
+      this.updateCount(count);
       this.$count.html(count);
       //this.el.classList.remove('empty');
       //this.el.classList.add('full');
@@ -151,7 +152,9 @@ var NotificationsView = Backbone.View.extend({
       n.title = n.data.by_user.username;
     }
 
-    n.username = (n.data.by_user) ? n.data.by_user.username : n.data.user.username;
+    n.username = (n.data.by_user)
+      ? n.data.by_user.username
+      : n.data.user.username;
     var message = (n.data.message)
       ? common.markup.toText(n.data.message)
       : '';
@@ -159,23 +162,31 @@ var NotificationsView = Backbone.View.extend({
       name: n.name,
       username: n.username,
       message: message,
-      topic: (n.data.topic) ? common.markup.toText(n.data.topic) : ''
+      topic: (n.data.topic)
+        ? common.markup.toText(n.data.topic)
+        : ''
     });
 
     if (['roomjoinrequest', 'groupjoinrequest', 'usermention'].indexOf(n.type) !== -1) {
-      var avatar = (n.data.by_user) ? n.data.by_user.avatar : n.data.user.avatar;
+      var avatar = (n.data.by_user)
+        ? n.data.by_user.avatar
+        : n.data.user.avatar;
       n.avatar = common.cloudinary.prepare(avatar, 90);
     }
     if (n.type === 'roomjoinrequest') {
       n.href = '';
       n.css += 'open-room-access';
-      var roomId = (n.data.room._id) ? n.data.room._id : n.data.room.id;
+      var roomId = (n.data.room._id)
+        ? n.data.room._id
+        : n.data.room.id;
       n.html += 'data-room-id="' + roomId + '"';
       n.username = null;
     } else if (n.type === 'groupjoinrequest') {
       n.href = '';
       n.css += 'open-group-access';
-      var groupId = (n.data.group._id) ? n.data.group._id : n.data.group.id;
+      var groupId = (n.data.group._id)
+        ? n.data.group._id
+        : n.data.group.id;
       n.html += 'data-group-id="' + groupId + '"';
       n.username = null;
     } else if (n.type === 'roomdelete') {
@@ -357,6 +368,10 @@ var NotificationsView = Backbone.View.extend({
   },
   countNotificationsInDropdown: function () {
     return this.$menu.find('.message').length;
+  },
+  updateCount: function (count) {
+    this.$badge.text(count);
+    this.$badgeResponsive.text(count);
   }
 });
 
