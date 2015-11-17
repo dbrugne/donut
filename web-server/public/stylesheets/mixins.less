@@ -21,9 +21,10 @@
   opacity: 		@opacity;
 }
 
-.transition (@transition) {
-  -webkit-transition: @transition;
-  transition:         @transition;
+.transition (...) {
+  @props: ~`"@{arguments}".replace(/[\[\]]/g, '')`;
+  -webkit-transition: @props;
+  transition:         @props;
 }
 .transform(@string){
   -webkit-transform: @string;
