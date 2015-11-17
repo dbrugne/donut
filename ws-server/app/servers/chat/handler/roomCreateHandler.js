@@ -59,6 +59,10 @@ handler.call = function (data, session, next) {
         return callback('not-admin-owner-groupowner');
       }
 
+      if (user.confirmed === false) {
+        return callback('not-confirmed');
+      }
+
       return callback(null);
     },
 

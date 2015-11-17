@@ -29,9 +29,8 @@ var CurrentUserModel = Backbone.Model.extend({
   },
 
   onWelcome: function (data) {
-    this.set(data.user, {silent: true});
-    this.setPreferences(data.preferences, {silent: true});
-    this.trigger('change');
+    this.set(data.user);
+    this.setPreferences(data.preferences);
     app.trigger('muteview');
   },
 
@@ -74,7 +73,9 @@ var CurrentUserModel = Backbone.Model.extend({
 
     this.set('preferences', newPreferences, options);
   },
-
+  setConfirmed: function () {
+    this.set('confirmed', true);
+  },
   discussionMode: function () {
     var preferences = this.get('preferences');
 
@@ -117,6 +118,10 @@ var CurrentUserModel = Backbone.Model.extend({
 
   isAdmin: function () {
     return (this.get('admin') === true);
+  },
+
+  isConfirmed: function () {
+    return (this.get('confirmed') === true);
   }
 });
 

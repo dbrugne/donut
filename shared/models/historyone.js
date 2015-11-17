@@ -94,12 +94,11 @@ historySchema.methods.toClientJSON = function (userViewed) {
   if (this.from) {
     data.from_user_id = this.from._id.toString();
     data.from_username = this.from.username;
+    data.from_realname = this.from.realname;
     data.from_avatar = this.from._avatar();
   }
   if (this.to) {
     data.to_user_id = this.to._id.toString();
-    data.to_username = this.to.username;
-    data.to_avatar = this.to._avatar();
   }
   if (this.edited === true) {
     data.edited = this.edited;

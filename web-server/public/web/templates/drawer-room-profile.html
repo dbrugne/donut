@@ -7,7 +7,7 @@
         <img class="avatar img-circle" src="<%= room.avatar %>" alt="<%= room.name %> avatar">
         <% if (room.isOwner || room.isAdmin) { %>
         <span class="overlay open-room-edit img-circle" data-room-id="<%= room.room_id %>"></span>
-        <span class="overlay-text open-room-edit" data-room-id="<%= room.room_id %>"><%= t('profile.user.edit') %></span>
+        <span class="overlay-text open-room-edit" data-room-id="<%= room.room_id %>"><%= t('profile.common.editlink') %></span>
         <% } %>
     </div>
 
@@ -31,11 +31,11 @@
         <% if (room.isOwner || room.isAdmin) { %><p class="edit left"><i class="icon icon-fw icon-pencil dc-text"></i> <a class="colored open-room-edit dc-text" data-room-id="<%= room.room_id %>"> <%= t('profile.common.editlink') %></a><p><% }; %>
         <% if (room.isOwner || room.isOp || room.isAdmin) { %><p class="left"><i class="icon icon-fw icon-users dc-text left"></i> <a class="colored open-room-users dc-text" data-room-id="<%= room.room_id %>"><%= t('profile.room.editusers') %></a></p><% }; %>
         <% if ((room.isOwner || room.isAdmin) && !room.isDefault) { %><p class="left dc-text"><i class="icon icon-fw icon-public"></i> <a role="menuitem" tabindex="-1" class="colored open-room-access dc-text" data-room-id="<%= room.room_id %>"><%= t('chat.access.link') %></a></p><% }; %>
-        <% if (room.isGroupOwner || room.isOwner || room.isAdmin) { %><p class="left dc-text"><i class="icon icon-fw icon-trash"></i> <a role="menuitem" tabindex="-1" class="colored open-room-delete dc-text" data-room-id="<%= room.room_id %>"><%= t('chat.form.room-form.profile.delete') %></a></p><% }; %>
+        <% if ((room.isGroupOwner || room.isOwner || room.isAdmin) && !room.isDefault) { %><p class="left dc-text"><i class="icon icon-fw icon-trash"></i> <a role="menuitem" tabindex="-1" class="colored open-room-delete dc-text" data-room-id="<%= room.room_id %>"><%= t('chat.form.room-form.profile.delete') %></a></p><% }; %>
     </div>
 
     <div class="block flex-parent jc-center center">
-        <a href="<%= room.uri %>" class="dc-back dc-back-hover dc-text-contrast button button-big fs20">
+        <a href="<%= room.uri %>" class="dc-back dc-back-hover dc-text-contrast button button-big fs15">
             <%= t('actions.join') %>
             <% if (room.users && room.users.length > 0) { print(room.users_count); } %>
             <i class="icon icon-fw icon-user-custom cl-warning"></i>

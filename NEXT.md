@@ -5,6 +5,11 @@
 grunt migration-room-hash
 ```
 
+* Change long room name:
+```
+grunt change-long-name
+```
+
 * Migrate onetoones to the new format:
 ```
 grunt migration-onetoones
@@ -14,6 +19,16 @@ grunt migration-onetoones
 ```
 db.getCollection('history-room').update({'data.images': {$exists: true }}, {$rename: {'data.images': 'data.files'}}, {multi:true})
 db.getCollection('history-one').update({'data.images': {$exists: true }}, {$rename: {'data.images': 'data.files'}}, {multi:true})
+```
+
+* Migrate users.preference.notif:roominvite->.notif:invite
+```
+db.getCollection('users').update({'preferences.notif:roominvite': {$exists: true }}, {$rename: {'preferences.notif:roominvite': 'preferences.notif:invite'}}, {multi:true})
+```
+
+* Remove name in user model
+```
+db.getCollection('users').update({'name': {$exists: true}}, {$unset: {'name': true}}, {multi: true})
 ```
 
 * Remove position in user model (Branch 477/610)
@@ -68,4 +83,9 @@ db[ 'history-one' ].dropIndex({
   'to': 1,
   'time': -1
 });
+```
+
+* Set all users to confirmed and add email to emails field
+```
+grunt migration-emails-confirmed
 ```

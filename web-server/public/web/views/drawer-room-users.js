@@ -48,7 +48,7 @@ var DrawerRoomUsersView = Backbone.View.extend({
   reload: function () {
     var what = {
       more: true,
-      users: false,
+      users: true,
       admin: true
     };
     client.roomRead(this.roomId, what, _.bind(function (data) {
@@ -59,9 +59,9 @@ var DrawerRoomUsersView = Backbone.View.extend({
   },
 
   onResponse: function (data) {
-    data.isOwner = currentUser.get('id') === data.owner_id;
+    data.isOwner = currentUser.get('user_id') === data.owner_id;
     data.isAdmin = currentUser.get('admin');
-    data.isOp = _.find(data.ops, currentUser.get('user_id'));
+    data.isOp = data.ops.indexOf(currentUser.get('user_id')) !== -1;
 
     if (data.mode !== 'private' || (!data.isOwner && !data.isAdmin && !data.isOp)) {
       this.types = _.without(this.types, 'allowed');

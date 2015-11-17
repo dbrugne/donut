@@ -58,11 +58,7 @@ exports.prototype.insertBottom = function (type, data) {
 
   // new message block
   if (this.block(event, previous)) {
-    html += require('../templates/event/block-user.html')({
-      user_id: event.data.user_id,
-      username: event.data.username,
-      avatar: common.cloudinary.prepare(event.data.avatar, 30)
-    });
+    html += this.renderBlockUser(event);
   }
 
   // render event
@@ -97,11 +93,7 @@ exports.prototype.insertTop = function (events) {
 
     // new message block
     if (this.block(event, previous)) {
-      _html = require('../templates/event/block-user.html')({
-        user_id: event.data.user_id,
-        username: event.data.username,
-        avatar: common.cloudinary.prepare(event.data.avatar, 30)
-      }) + _html;
+      _html = this.renderBlockUser(event) + _html;
     }
 
     // new date block
@@ -154,11 +146,7 @@ exports.prototype.replaceLastDisconnectBlock = function ($lastDisconnectBlock, $
 
     // new message block
     if ((previous && this.block(event, previous)) || (!previous && event.data.user_id !== $previousEventDiv.data('userId'))) {
-      _html = require('../templates/event/block-user.html')({
-        user_id: event.data.user_id,
-        username: event.data.username,
-        avatar: common.cloudinary.prepare(event.data.avatar, 30)
-      }) + _html;
+        _html = this.renderBlockUser(event) + _html;
     }
 
     // new date block
@@ -233,6 +221,7 @@ exports.prototype._data = function (type, data) {
   // ones
   if (type === 'user:message') {
     data.user_id = data.from_user_id;
+    data.realname = data.from_realname;
     data.username = data.from_username;
     data.avatar = data.from_avatar;
     data.color = data.from_color;
@@ -293,6 +282,16 @@ exports.prototype._data = function (type, data) {
     data: data
   };
 };
+
+exports.prototype.renderBlockUser = function (event) {
+  var html = '';
+  try {
+    html = require('../templates/event/block-user.html')(event);
+  } catch (e) {
+    console.error('render exception: ' + event.type, e);
+  }
+  return html;
+}
 
 exports.prototype._renderEvent = function (event) {
   try {

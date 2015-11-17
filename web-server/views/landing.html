@@ -32,10 +32,10 @@
                 <% if (user) { %>
                 <h2><%= t('logged.title') %></h2>
                 <div class="logged mt25 flex-parent column">
-                    <a class="profile flex-parent column" href="<%= user.url %>" target="_blank">
+                    <span class="profile flex-parent column">
                         <img class="avatar" src="<%= user.avatar %>" alt="<%= user.username %> avatar">
                         <% if (user.username) { %><p class="text-center">@<%= user.username %></p><% } %>
-                    </a>
+                    </span>
                     <p class="text-center"><%= t('logged.text') %></p>
                     <p class="actions flex-parent column jc-center center">
                         <a class="chat button button-gray" href="/!"><%= t('logged.chat') %></a>

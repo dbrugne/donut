@@ -13,6 +13,11 @@
     </div>
 
     <div class="block">
+        <h2><%= t('account.manageemail.label') %></h2>
+        <div class="manage-email-container"></div>
+    </div>
+
+    <div class="block">
         <h2><%= t('account.facebook.label') %></h2>
         <% if (user.account.facebook && user.account.facebook.token) { %>
             <p class="values"><%= t('account.facebook.help') %></p>

@@ -40,6 +40,14 @@ Notification.prototype.create = function (user, room, event, done) {
       });
     },
 
+    function checkPreferences (userModel, roomModel, status, callback) {
+      if (that.type === 'roominvite' && !userModel.preferencesValue('notif:invite')) {
+        logger.debug('roomInviteType.create no notification due to user preferences');
+        return callback(true);
+      }
+      return callback(null, userModel, roomModel, status);
+    },
+
     function save (userModel, roomModel, status, callback) {
       var data = {
         by_user: event.by_user_id,
@@ -180,4 +188,44 @@ Notification.prototype.sendEmail = function (model, done) {
     }
 
   ], done);
+};
+
+Notification.prototype.populateNotification = function (notification, done) {
+  if (!notification || !notification._id) {
+    return done('roomRequest population error: params');
+  }
+
+  NotificationModel.findOne({_id: notification._id})
+    .populate({
+      path: 'data.user',
+      model: 'User',
+      select: 'facebook username local avatar color'})
+    .populate({
+      path: 'data.by_user',
+      model: 'User',
+      select: 'facebook username local avatar color'})
+    .populate({
+      path: 'data.room',
+      model: 'Room',
+      select: 'avatar color name group'})
+    .exec(function (err, n) {
+      if (err) {
+        return done(err);
+      }
+      if (!n) {
+        return done(null);
+      }
+
+      NotificationModel.populate(n, {
+        path: 'data.room.group',
+        model: 'Group',
+        select: 'name'
+      }, function (err, docs) {
+        if (err) {
+          return done(err);
+        }
+
+        return done(null, n);
+      });
+    });
 };

@@ -40,6 +40,14 @@ Notification.prototype.create = function (user, group, event, done) {
       });
     },
 
+    function checkPreferences (userModel, groupModel, status, callback) {
+      if (that.type === 'groupinvite' && !userModel.preferencesValue('notif:invite')) {
+        logger.debug('groupInviteType.create no notification due to user preferences');
+        return callback(true);
+      }
+      return callback(null, userModel, groupModel, status);
+    },
+
     function save (userModel, groupModel, status, callback) {
       var data = {
         by_user: event.by_user_id,
@@ -200,4 +208,30 @@ Notification.prototype.sendEmail = function (model, done) {
     }
 
   ], done);
+};
+
+Notification.prototype.populateNotification = function (notification, done) {
+  if (!notification || !notification._id) {
+    return done('groupRequest population error: params');
+  }
+
+  NotificationModel.findOne({_id: notification._id})
+    .populate({
+      path: 'data.by_user',
+      model: 'User',
+      select: 'facebook username local avatar color'})
+    .populate({
+      path: 'data.group',
+      model: 'Group',
+      select: 'avatar color name'})
+    .exec(function (err, n) {
+      if (err) {
+        return done(err);
+      }
+      if (!notification) {
+        return done(null);
+      }
+
+      return done(null, n);
+    });
 };

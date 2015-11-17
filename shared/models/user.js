@@ -8,10 +8,15 @@ var cloudinary = require('../util/cloudinary');
 
 var userSchema = mongoose.Schema({
   username: String,
-  name: String,
+  realname: String,
+  emails: [{
+    email: {type: String},
+    confirmed: {type: Boolean, default: false}
+  }],
   admin: {type: Boolean, default: false},
   deleted: {type: Boolean, default: false},
   suspended: {type: Boolean, default: false},
+  confirmed: {type: Boolean, default: false},
   bio: String,
   location: String,
   website: mongoose.Schema.Types.Mixed,
@@ -272,7 +277,7 @@ userSchema.statics.preferencesKeys = function () {
     'notif:channels:mobile': {default: true},
 
     'notif:usermessage': {default: true},
-    'notif:roominvite': {default: true},
+    'notif:invite': {default: true},
     'chatmode:compact': {default: false},
 
     'room:notif:nothing:__what__': {default: false},

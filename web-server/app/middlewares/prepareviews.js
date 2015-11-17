@@ -11,9 +11,6 @@ module.exports = function () {
     if (req.user) {
       res.locals.user = req.user.toObject(); // .toObject() avoid modification on original req.user object (like avatar)
       res.locals.user.avatar = req.user._avatar(80);
-      if (req.user.username) {
-        res.locals.user.url = req.protocol + '://' + conf.fqdn + urls(req.user, 'user', 'url');
-      }
     } else {
       res.locals.user = false;
     }

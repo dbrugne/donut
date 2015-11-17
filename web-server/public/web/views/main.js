@@ -1,6 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
+var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
 var app = require('../libs/app');
 var client = require('../libs/client');
@@ -40,6 +41,7 @@ var NavRoomsView = require('./nav-rooms');
 var NotificationsView = require('./notifications');
 var ConfirmationView = require('./modal-confirmation');
 var MuteView = require('./mute');
+var SearchView = require('./home-search');
 
 var debug = donutDebug('donut:main');
 
@@ -98,8 +100,6 @@ var MainView = Backbone.View.extend({
     this.listenTo(rooms, 'remove', this.onRemoveDiscussion);
     this.listenTo(onetoones, 'add', this.addView);
     this.listenTo(onetoones, 'remove', this.onRemoveDiscussion);
-    this.listenTo(rooms, 'allowed', this.roomAllowed);
-    this.listenTo(rooms, 'join', this.roomJoin);
     this.listenTo(rooms, 'deleted', this.roomDeleted);
     this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
     this.listenTo(app, 'openGroupProfile', this.openGroupProfile);
@@ -117,6 +117,12 @@ var MainView = Backbone.View.extend({
     this.welcomeView = new WelcomeModalView();
     this.notificationsView = new NotificationsView();
     this.muteView = new MuteView();
+    this.searchView = new SearchView({
+      el: this.$('#navbar .search')
+    });
+
+    this.$dropdownResults = this.$('.search .results');
+    this.$search = this.$('.search');
 
     // @debug
     // @todo dbr : mount only on debug mode
@@ -261,22 +267,6 @@ var MainView = Backbone.View.extend({
     event.stopPropagation();
   },
 
-  /**
-   * Trigger when currentUser is kicked or banned from a room to handle focus
-   * and notification
-   * @param event
-   * @returns {boolean}
-   */
-  roomAllowed: function (event) {
-    if (event.wasFocused) { // if remove model was focused, focused the new one
-      app.trigger('focus', event.model);
-    }
-  },
-  roomJoin: function (event) {
-    if (event.wasFocused) { // if remove model was focused, focused the new one
-      app.trigger('focus', event.model);
-    }
-  },
   roomDeleted: function (data) {
     if (data.was_focused) {
       app.trigger('focus');
@@ -347,7 +337,7 @@ var MainView = Backbone.View.extend({
   openUserAccount: function (event) {
     event.preventDefault();
     var view = new DrawerUserAccountView();
-    this.drawerView.setSize('380px').setView(view).open();
+    this.drawerView.setSize('450px').setView(view).open();
   },
   onOpenUserProfile: function (event) {
     this.$el.find('.tooltip').tooltip('hide');
@@ -606,7 +596,7 @@ var MainView = Backbone.View.extend({
       return;
     }
 
-    ConfirmationView.open({}, _.bind(function () {
+    ConfirmationView.open({message: 'ban-user'}, _.bind(function () {
       client.userBan(userId);
       app.trigger('userBan');
     }, this));
@@ -620,14 +610,14 @@ var MainView = Backbone.View.extend({
       return;
     }
 
-    ConfirmationView.open({}, _.bind(function () {
+    ConfirmationView.open({message: 'deban-user'}, _.bind(function () {
       client.userDeban(userId);
       app.trigger('userDeban');
     }, this));
   },
 
   goToSearch: function (event) {
-    app.trigger('goToSearch');
+    app.trigger('goToSearch', event);
   },
 
   switchLanguage: function (event) {

@@ -6,6 +6,7 @@ var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
 var i18next = require('i18next-client');
 var urls = require('../../../../shared/util/url');
+var currentUser = require('../models/current-user');
 
 var DrawerRoomCreateView = Backbone.View.extend({
   template: require('../templates/drawer-room-create.html'),
@@ -23,7 +24,7 @@ var DrawerRoomCreateView = Backbone.View.extend({
     this.render(options.name);
   },
   render: function (name) {
-    var html = this.template({name: name, group_id: this.group_id, group_name: this.group_name});
+    var html = this.template({name: name, group_id: this.group_id, group_name: this.group_name, confirmed: currentUser.isConfirmed()});
     this.$el.html(html);
     this.$input = this.$el.find('input[name=input-create]');
     this.$errors = this.$el.find('.errors');
@@ -79,6 +80,10 @@ var DrawerRoomCreateView = Backbone.View.extend({
     return (common.validate.mode(this._getMode()));
   },
   submit: function () {
+    if (!currentUser.isConfirmed()) {
+      return;
+    }
+
     this.reset();
     // name
     if (!this._valid()) {

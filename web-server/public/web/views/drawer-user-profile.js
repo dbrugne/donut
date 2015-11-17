@@ -49,11 +49,8 @@ var DrawerUserProfileView = Backbone.View.extend({
     }
 
     user.isCurrent = (user.user_id === currentUser.get('user_id'));
-
     user.avatar = common.cloudinary.prepare(user.avatar, 90);
-
-    user.uri = '#u/' + user.username;
-    user.url = urls(user, 'user', 'url');
+    user.uri = urls(user, 'user', 'uri');
 
     this._rooms(user); // decorate user object with rooms_list
 
@@ -127,7 +124,7 @@ var DrawerUserProfileView = Backbone.View.extend({
   },
   onUserBanChange: function () {
     this.render();
-    client.userRead(this.userId, null, _.bind(function (data) {
+    client.userRead(this.userId, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }

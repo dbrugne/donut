@@ -55,6 +55,10 @@ handler.call = function (data, session, next) {
         return callback('group-banned');
       }
 
+      if (user.confirmed === false) {
+        return callback('not-confirmed');
+      }
+
       return callback(null);
     },
 

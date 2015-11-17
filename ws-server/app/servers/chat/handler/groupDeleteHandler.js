@@ -83,11 +83,11 @@ handler.call = function (data, session, next) {
         avatar: group.owner._avatar()
       };
       var ids = group.getIdsByType('members');
-      async.eachLimit(ids, 10, function (id, fn) {
-        that.app.globalChannelService.pushMessage('connector', 'group:leave', event, 'user:' + id, {}, fn);
-      }, function (err) {
-        return callback(err);
+      var channelsName = [];
+      _.each(ids, function (uid) {
+        channelsName.push('user:' + uid);
       });
+      that.app.globalChannelService.pushMessageToMultipleChannels('connector', 'group:leave', event, channelsName, {}, callback);
     },
 
     function persist (callback) {

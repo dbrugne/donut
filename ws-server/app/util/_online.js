@@ -185,7 +185,7 @@ module.exports = function (app, msg, session, next) {
         welcome,
         function (err) {
           if (err) {
-            logger.error('Error while statusRemote.online: ' + err);
+            logger.error('Error while statusRemote.online', err);
           }
         }
       );

@@ -15,7 +15,7 @@
             <ul class="list">
 
                 <li>
-                    <a href="<%= room.owner.url%>" class="item owner">
+                    <a href="<%= room.owner.chat%>" class="item owner">
                         <span class="infos">
                             <span class="avatar open-user-profile" data-user-id="<%= room.owner.user_id %>" style="background-image: url(<%= room.owner.avatar %>)" title="<%= t('chat.owner.is') %>"></span>
                             <span class="username open-user-profile dc-text-contrast" data-user-id="<%= room.owner.user_id %>">@<%= room.owner.username %></span>
@@ -24,7 +24,7 @@
                 </li>
                 <% _.each(room.op, function(user) { %>
                 <li>
-                    <a href="<%= user.url%>" class="item op">
+                    <a href="<%= user.chat%>" class="item op">
                         <span class="infos">
                             <span class="avatar open-user-profile" data-user-id="<%= user.user_id %>" style="background-image: url(<%= user.avatar %>)" title="<%= t('chat.op.is') %>"></span>
                             <span class="username open-user-profile dc-text-contrast" data-user-id="<%= user.user_id %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></span>
@@ -34,7 +34,7 @@
                 <% }); %>
                 <% _.each(room.users, function(user) { %>
                 <li>
-                    <a href="<%= user.url%>" class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %> <% if (user.is_devoice === true) { %> devoice<% }; %> <%= user.status %>">
+                    <a href="<%= user.chat%>" class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %> <% if (user.is_devoice === true) { %> devoice<% }; %> <%= user.status %>">
                         <span class="infos">
                             <span class="avatar open-user-profile" data-user-id="<%= user.user_id %>" style="background-image: url(<%= user.avatar %>)" title=""></span>
                             <span class="username open-user-profile dc-text-contrast" data-user-id="<%= user.user_id %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></span>
@@ -83,7 +83,7 @@
             <% if (room.owner && room.owner.username) { %>
                 <br>
                 <span class="owner">
-                    <%= t('global.by') %>&nbsp;<a class="dc-text" href="<%= room.owner.url %>">@<%= room.owner.username %></a>
+                    <%= t('global.by') %>&nbsp;<a class="dc-text" href="<%= room.owner.chat %>">@<%= room.owner.username %></a>
                 </span>
             <% } %>
             <% if (room.website && room.website.href) { %>
@@ -108,7 +108,7 @@
             <p class="title"><%= t('profile.room.ownerops') %></p>
             <p class="flex-parent flex-row-wrap">
                 <% _.each(_.union([room.owner], room.op, room.users), function(u) { %>
-                    <a class="mr10 mb10 fs20" href="<%=u.url%>">@<%=u.username%></a>
+                    <a class="mr10 mb10 fs20" href="<%=u.chat%>">@<%=u.username%></a>
                 <% }); %>
             </p>
         </div>

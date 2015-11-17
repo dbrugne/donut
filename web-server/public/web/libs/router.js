@@ -1,3 +1,4 @@
+var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('./app');
@@ -7,6 +8,7 @@ var rooms = require('../collections/rooms');
 var onetoones = require('../collections/onetoones');
 var i18next = require('i18next-client');
 var HomeView = require('../views/home');
+var SearchView = require('../views/search');
 
 var DonutRouter = Backbone.Router.extend({
 
@@ -15,6 +17,7 @@ var DonutRouter = Backbone.Router.extend({
     '_=_': 'root', // workaround for facebook redirect uri bug https://github.com/jaredhanson/passport-facebook/issues/12#issuecomment-5913711
     'u/:user': 'focusOne',
     'g/:group': 'focusGroup',
+    'search': 'search',
     ':group(/:room)': 'identifierRoom',
     '*default': 'default'
   },
@@ -24,6 +27,7 @@ var DonutRouter = Backbone.Router.extend({
   nextFocus: null,
 
   homeView: null,
+  searchView: null,
 
   initialize: function (options) {
     var that = this;
@@ -38,12 +42,14 @@ var DonutRouter = Backbone.Router.extend({
     this.listenTo(app, 'focus', this.focus);
     this.listenTo(app, 'joinRoom', this.focusRoom);
     this.listenTo(app, 'joinOnetoone', this.focusOne);
-    this.listenTo(app, 'joinGroup', this.focusGroup);
+    this.listenTo(app, 'joinGroup', this.joinGroup);
     this.listenTo(app, 'viewAdded', this.viewAdded);
-    this.listenTo(app, 'goToSearch', this.focusOnSearch);
+    this.listenTo(app, 'goToSearch', this.goToSearch);
+    this.listenTo(app, 'updateSearch', this.search);
 
     // static views
     this.homeView = new HomeView({});
+    this.searchView = new SearchView({});
   },
 
   root: function () {
@@ -53,12 +59,49 @@ var DonutRouter = Backbone.Router.extend({
     Backbone.history.navigate('#'); // just change URI, not run route action
   },
 
+  goToSearch: function (event) {
+    if (event) {
+      var elt = $(event.currentTarget);
+      if (elt && elt.data('search') && elt.data('type')) {
+        return this.search(elt.data('search'), elt.data('type'));
+      }
+    }
+    this.root();
+  },
+
+  search: function (search, type) {
+    if (!search || !type) {
+      return this.root();
+    }
+
+    var data = {
+      search: search,
+      skip: null,
+      what: {
+        users: type === 'users',
+        groups: type === 'groups',
+        rooms: type === 'rooms'
+      }
+    };
+
+    this.unfocusAll();
+    app.trigger('redrawNavigation');
+    app.trigger('drawerClose');
+    this.searchView.render(data);
+    Backbone.history.navigate('search'); // just change URI, not run route action
+  },
+
   focusGroup: function (name) {
+    this.joinGroup({name: name, popin: false});
+  },
+
+  joinGroup: function (data) {
+    var name = data.name;
     var model = groups.iwhere('name', name);
 
     client.groupId(name, _.bind(function (response) {
       if (response.code === 404) {
-        return app.trigger('alert', 'error', i18next.t('chat.groupnotexists', { name: name }));
+        return app.trigger('alert', 'error', i18next.t('chat.groupnotexists', {name: name}));
       } else if (response.code === 500) {
         return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
       }
@@ -72,7 +115,11 @@ var DonutRouter = Backbone.Router.extend({
           model = groups.addModel(response);
           this.focus(model);
           model.trigger('redraw');
-          app.trigger('nav-active-group', response.group_id);
+          app.trigger('nav-active-group', {
+            group_id: response.group_id,
+            group_name: name,
+            popin: data.popin
+          });
         }
       }, this));
     }, this));
@@ -88,28 +135,40 @@ var DonutRouter = Backbone.Router.extend({
     this.focusRoom(identifier);
   },
 
-  focusRoom: function (identifier) {
+  focusRoom: function (identifier, forceRedraw) {
     var model = rooms.iwhere('identifier', identifier);
-    if (typeof model !== 'undefined') {
+    if (typeof model !== 'undefined' && !forceRedraw) {
       return this.focus(model);
     }
 
-    // not already open
+    // not already open or force redraw
     this.nextFocus = identifier;
     client.roomId(identifier, function (responseRoom) {
       if (responseRoom.code === 404) {
-        return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', { name: identifier }));
+        return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', {name: identifier}));
       } else if (responseRoom.code === 500) {
         return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
       }
       client.roomJoin(responseRoom.room_id, null, _.bind(function (response) {
         if (response.err === 'group-members-only') {
-          return app.trigger('alert', 'error', i18next.t('chat.groupmembersonly', { name: identifier, group_name: responseRoom.group.name }));
+          return app.trigger('alert', 'error', i18next.t('chat.groupmembersonly', {
+            name: identifier,
+            group_name: responseRoom.group.name
+          }));
         } else if (response.code === 404) {
-          return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', { name: identifier }));
+          return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', {name: identifier}));
         } else if (response.code === 403) {
+          if (model) {
+            var isFocused = model.get('focused');
+            model.unbindUsers();
+            rooms.remove(model);
+          }
           rooms.addModel(response.room, response.err);
           app.trigger('redrawNavigationRooms'); // also trigger a redraw when displaying a room blocked
+
+          if (model && isFocused) {
+            app.trigger('focus', model); // focus new one
+          }
           return;
         } else if (response.code === 500) {
           return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
@@ -150,12 +209,6 @@ var DonutRouter = Backbone.Router.extend({
     Backbone.history.navigate('#', {trigger: true}); // redirect on home
   },
 
-  focusOnSearch: function () {
-    this.root();
-    this.homeView.searchView.$search.focus();
-    app.trigger('drawerClose');
-  },
-
   unfocusAll: function () {
     groups.each(function (o) {
       o.set('focused', false);
@@ -169,6 +222,7 @@ var DonutRouter = Backbone.Router.extend({
 
     // static pages
     this.homeView.$el.hide();
+    this.searchView.$el.hide();
   },
 
   focus: function (model) {

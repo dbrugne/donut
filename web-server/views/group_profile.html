@@ -11,8 +11,8 @@
                         <% _.each(_.union([group.owner], group.op), function(user) { %>
                         <div class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %><%= user.status %>">
                             <span class="infos">
-                                <a href="<%=user.url%>" class="avatar open-user-profile" data-user-id="<%= user.user_id %>" style="background-image: url(<%= user.avatar %>)" title="<% if (user.is_op === true) { %><%= t('chat.op.is') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.is') %><% }; %>"></a>
-                                <a href="<%=user.url%>" class="username open-user-profile" data-user-id="<%= user.user_id %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></a>
+                                <a href="<%=user.chat%>" class="avatar open-user-profile" data-user-id="<%= user.user_id %>" style="background-image: url(<%= user.avatar %>)" title="<% if (user.is_op === true) { %><%= t('chat.op.is') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.is') %><% }; %>"></a>
+                                <a href="<%=user.chat%>" class="username open-user-profile" data-user-id="<%= user.user_id %>" title="<%= t('global.'+user.status) %>">@<%= user.username %></a>
                             </span>
                         </div>
                         <% }) %>
@@ -41,7 +41,7 @@
                 <% if (group.owner && group.owner.username) { %>
                 <br>
                 <span class="owner">
-                    <%= t('global.by') %>&nbsp;<a class="dc-text" href="<%= group.owner.url %>">@<%= group.owner.username %></a>
+                    <%= t('global.by') %>&nbsp;<a class="dc-text" href="<%= group.owner.chat %>">@<%= group.owner.username %></a>
                 </span>
                 <% } %>
                 <div class="description">
