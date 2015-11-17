@@ -124,6 +124,9 @@ var RoomsCollection = Backbone.Collection.extend({
     var ids = _.map(data.rooms, 'id').concat(_.map(data.blocked, 'id'));
     _.each(modelsIds, _.bind(function (modelId) {
       if (ids.indexOf(modelId) === -1) {
+        if (this.get(modelId)) {
+          this.get(modelId).unbindUsers();
+        }
         this.remove(modelId);
       }
     }, this));
@@ -271,31 +274,31 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    // if i'm the "targeted user" destroy the model/view
-    if (currentUser.get('user_id') === data.user_id) {
-      var isFocused = model.get('focused');
-      var blocked = (what === 'ban')
-        ? 'banned'
-        : (what === 'kick')
-        ? 'kicked'
-        : true;
-      var modelTmp = model.attributes;
-      if (data.banned_at) {
-        modelTmp.banned_at = data.banned_at;
-      }
-      if (data.reason) {
-        modelTmp.reason = data.reason;
-      }
-      this.remove(model); // remove existing view
-      this.addModel(modelTmp, blocked);
-      app.trigger('redrawNavigationRooms');
-      if (isFocused) {
-        app.trigger('focus', this.get(data.room_id));
-      }
-      return;
+    if (currentUser.get('user_id') !== data.user_id) {
+      return model.users.onExpulsion(what, data);
     }
 
-    model.users.onExpulsion(what, data);
+    // if i'm the "targeted user" destroy the model/view
+    var isFocused = model.get('focused');
+    var blocked = (what === 'ban')
+      ? 'banned'
+      : (what === 'kick')
+      ? 'kicked'
+      : true;
+    var modelTmp = model.attributes;
+    if (data.banned_at) {
+      modelTmp.banned_at = data.banned_at;
+    }
+    if (data.reason) {
+      modelTmp.reason = data.reason;
+    }
+    model.unbindUsers();
+    this.remove(model); // remove existing view
+    this.addModel(modelTmp, blocked);
+    app.trigger('redrawNavigationRooms');
+    if (isFocused) {
+      app.trigger('focus', this.get(data.room_id));
+    }
   },
   onAllow: function (data) {
     if (!data || !data.room_id || !(this.get(data.room_id))) {

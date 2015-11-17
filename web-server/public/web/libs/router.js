@@ -160,6 +160,7 @@ var DonutRouter = Backbone.Router.extend({
         } else if (response.code === 403) {
           if (model) {
             var isFocused = model.get('focused');
+            model.unbindUsers();
             rooms.remove(model);
           }
           rooms.addModel(response.room, response.err);

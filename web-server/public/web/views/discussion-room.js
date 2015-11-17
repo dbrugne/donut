@@ -177,7 +177,7 @@ var RoomView = Backbone.View.extend({
       return;
     }
     var that = this;
-    confirmationView.open({}, function () {
+    confirmationView.open({message: 'op-room-user'}, function () {
       client.roomOp(that.model.get('id'), userId, function (err) {
         if (err) {
           return;
@@ -195,7 +195,7 @@ var RoomView = Backbone.View.extend({
       return;
     }
     var that = this;
-    confirmationView.open({}, function () {
+    confirmationView.open({message: 'deop-room-user'}, function () {
       client.roomDeop(that.model.get('id'), userId, function (err) {
         if (err) {
           return;
@@ -213,7 +213,7 @@ var RoomView = Backbone.View.extend({
       return;
     }
     var that = this;
-    confirmationView.open({input: true}, function (reason) {
+    confirmationView.open({message: 'kick-room-user', input: true}, function (reason) {
       client.roomKick(that.model.get('id'), userId, reason);
     });
   },
@@ -227,7 +227,7 @@ var RoomView = Backbone.View.extend({
       return;
     }
     var that = this;
-    confirmationView.open({input: true}, function (reason) {
+    confirmationView.open({message: 'ban-room-user', input: true}, function (reason) {
       client.roomBan(that.model.get('id'), userId, reason);
     });
   },
@@ -252,7 +252,7 @@ var RoomView = Backbone.View.extend({
       return;
     }
     var that = this;
-    confirmationView.open({input: true}, function (reason) {
+    confirmationView.open({message: 'devoice-room-user', input: true}, function (reason) {
       client.roomDevoice(that.model.get('id'), userId, reason);
     });
   },

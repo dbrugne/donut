@@ -149,6 +149,18 @@ var ConfirmationModalView = Backbone.View.extend({
         this.$message.text(i18next.t('chat.confirmation.message.delete-email', {email: this.options.email}));
       } else if (this.options.message === 'change-email') {
         this.$message.text(i18next.t('chat.confirmation.message.change-email', {email: this.options.email}));
+      } else if (this.options.message === 'op-room-user') {
+        this.$message.text(i18next.t('chat.confirmation.message.op-room-user'));
+      } else if (this.options.message === 'deop-room-user') {
+        this.$message.text(i18next.t('chat.confirmation.message.deop-room-user'));
+      } else if (this.options.message === 'ban-room-user') {
+        this.$message.text(i18next.t('chat.confirmation.message.ban-room-user'));
+      } else if (this.options.message === 'deban-room-user') {
+        this.$message.text(i18next.t('chat.confirmation.message.deban-room-user'));
+      } else if (this.options.message === 'kick-room-user') {
+        this.$message.text(i18next.t('chat.confirmation.message.kick-room-user'));
+      } else if (this.options.message === 'devoice-room-user') {
+        this.$message.text(i18next.t('chat.confirmation.message.devoice-room-user'));
       }
     }
     // bind 'enter' only when showing popin

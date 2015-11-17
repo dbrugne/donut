@@ -23,9 +23,16 @@ var RoomModel = Backbone.Model.extend({
     };
   },
   initialize: function () {
-    this.users = new RoomUsersCollection({
-      parent: this
-    });
+    if (!this.get('blocked')) {
+      this.users = new RoomUsersCollection({
+        parent: this
+      });
+    }
+  },
+  unbindUsers: function () {
+    if (!this.get('blocked')) {
+      this.users.stopListening();
+    }
   },
   getIdentifier: function () {
     return this.get('name');
