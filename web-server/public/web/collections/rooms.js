@@ -119,14 +119,13 @@ var RoomsCollection = Backbone.Collection.extend({
         : true);
     }, this));
 
-    var model;
     // remove when user no more in
     var modelsIds = _.map(this.models, 'id');
     var ids = _.map(data.rooms, 'id').concat(_.map(data.blocked, 'id'));
     _.each(modelsIds, _.bind(function (modelId) {
       if (ids.indexOf(modelId) === -1) {
-        if ((model = this.get(modelId)) && !model.get('blocked')) {
-          model.unbindUsers();
+        if (this.get(modelId)) {
+          this.get(modelId).unbindUsers();
         }
         this.remove(modelId);
       }
@@ -276,8 +275,7 @@ var RoomsCollection = Backbone.Collection.extend({
     }
 
     if (currentUser.get('user_id') !== data.user_id) {
-      model.users.onExpulsion(what, data);
-      return;
+      return model.users.onExpulsion(what, data);
     }
 
     // if i'm the "targeted user" destroy the model/view
