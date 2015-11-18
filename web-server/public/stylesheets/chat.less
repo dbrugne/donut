@@ -1,79 +1,4 @@
 .body-chat { height: 100%; overflow-y: hidden; .ft-opensans; }
-#results-search {
-  width: 450px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  position: absolute;
-  top: 2px;
-  left: 262px;
-  z-index: 3;
-  background: #FFF;
-  border: 1px solid @cl-nav-left-back-darker;
-  .border-radius(4px);
-  li.result {
-    color: @cl-text;
-    height: 44px;
-    .display-flex;
-    .flex-flow(row nowrap);
-    .align-items(center);
-    overflow: hidden;
-    img {
-      width: 40px;
-      height: 40px;
-      margin-left: 2px;
-      .border-radius(3px);
-      border-style: solid;
-      border-width: 1px;
-    }
-    .name {
-      .ft-opensans-extra-bold;
-      font-size: 1.4rem;
-      margin-right: 5px;
-      .othername { color: @cl-subtext20; font-weight: normal; }
-    }
-    .disclaimer {
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      width: 100%;
-      flex: 1;
-      color: @cl-subtext30;
-      font-style: italic;
-      margin-right: 10px;
-      overflow: hidden;
-    }
-    .status { padding-top:2px; margin-right: 4px; }
-    &:nth-of-type(odd) {
-      background-color: #f9f9f9;
-    }
-    &:hover {
-      outline: 1px solid #c7c7c7;
-      background-color: #f0f0f0 !important;
-    }
-    &:last-child {
-      .border-radiuses(0, 4px, 4px, 0);
-    }
-    &.active {
-      background: #439fe0; color: #fff!important; border-bottom-color: #2a80b9;
-    }
-  }
-  .spinner, .empty {
-    padding: 5px 15px;
-    min-height: 40px;
-    text-align: center;
-  }
-  .presentation {
-    &:first-child { .border-radiuses(4px, 0, 0, 4px); }
-    background-color: #CCC;
-    color: @cl-text;
-    padding: 5px 15px 5px 10px;
-    span {
-      float: right;
-      color: @cl-text;
-      text-decoration: underline;
-    }
-  }
-}
 .tooltip-home-users { padding: 0 !important; margin-left: 0 !important; margin-top: -2px;
   .tooltip-inner { background-color: transparent; padding: 0; border: 0; max-width: initial; border-radius: 0;
     .username { max-width: 200px; padding: 3px 8px; color: #fff; line-height: 24px; font-size: 12px; text-align: center; }
@@ -331,6 +256,80 @@
           }
           i.icon-search { position: absolute; right: 9px; z-index: 2; display: block; top: 7px; color:@cl-nav-left-back-darker; }
         }
+        &.open .input-group input { width: 450px; border: 1px solid @cl-nav-left-back-darker; border-bottom:0; }
+        .search-results {
+          width: 450px;
+          margin: 0;
+          padding: 0;
+          list-style: none;
+          position: absolute;
+          z-index: 3;
+          background: #FFF;
+          border: 1px solid @cl-nav-left-back-darker;
+          border-top: 0;
+          .border-radiuses(0, 4px, 4px, 0);
+          li.result {
+            color: @cl-text;
+            height: 44px;
+            .display-flex;
+            .flex-flow(row nowrap);
+            .align-items(center);
+            overflow: hidden;
+            img {
+              width: 40px;
+              height: 40px;
+              margin-left: 2px;
+              .border-radius(3px);
+              border-style: solid;
+              border-width: 1px;
+            }
+            .name {
+              .ft-opensans-extra-bold;
+              font-size: 1.4rem;
+              margin-right: 5px;
+              .othername { color: @cl-subtext20; font-weight: normal; }
+            }
+            .disclaimer {
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              width: 100%;
+              flex: 1;
+              color: @cl-subtext30;
+              font-style: italic;
+              margin-right: 10px;
+              overflow: hidden;
+            }
+            .status { padding-top:2px; margin-right: 4px; }
+            &:nth-of-type(odd) {
+              background-color: #f9f9f9;
+            }
+            &:hover {
+              outline: 1px solid #c7c7c7;
+              background-color: #f0f0f0 !important;
+            }
+            &:last-child {
+              .border-radiuses(0, 4px, 4px, 0);
+            }
+            &.active {
+              background: #439fe0; color: #fff!important; border-bottom-color: #2a80b9;
+            }
+          }
+          .spinner, .empty {
+            padding: 5px 15px;
+            min-height: 40px;
+            text-align: center;
+          }
+          .presentation {
+            background-color: #CCC;
+            color: @cl-text;
+            padding: 5px 15px 5px 10px;
+            span {
+              float: right;
+              color: @cl-text;
+              text-decoration: underline;
+            }
+          }
+        }
       }
     }
     .scrollable { .align-self(flex-start); width: 100%; .flex(1 1 0); .scrollbar-white; overflow: auto;
@@ -387,7 +386,6 @@
       #ones li .item .name { font-weight:bold; }
     }
     .logo {
-      z-index: 10;
       background-image: url('@{img-path}/logo-onecolor-gr.svg');
       background-repeat: no-repeat;
       background-position: center center;

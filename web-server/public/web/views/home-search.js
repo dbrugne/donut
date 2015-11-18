@@ -21,7 +21,7 @@ var SearchView = Backbone.View.extend({
 
   initialize: function (options) {
     this.$search = this.$('input[type=text]').first();
-    this.$dropdownResults = $('#results-search');
+    this.$dropdownResults = this.$('.search-results');
     this.listenTo(app, 'goToSearch', this.closeResults);
   },
   render: function (data) {
