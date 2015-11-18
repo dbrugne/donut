@@ -20,8 +20,8 @@ var RoomUsersView = Backbone.View.extend({
 
   events: {
     'click .compact-mode': 'compact',
-    'mouseenter .users > .list > li': 'fillPopin',
-    'mouseleave .users > .list > li': 'hidePopin',
+    'mouseenter .users > .list > li.li-user': 'fillPopin',
+    'mouseleave .users > .list > li.li-user': 'hidePopin'
   },
 
   initialize: function () {
