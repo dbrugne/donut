@@ -70,6 +70,7 @@ var MainView = Backbone.View.extend({
     'click .open-user-account': 'openUserAccount',
     'click .open-user-profile': 'onOpenUserProfile',
     'click .open-current-user-profile': 'onOpenCurrentUserProfile',
+    'click .toggle-current-user-sounds': 'onToggleCurrentUserSounds',
     'click .open-user-notifications': 'onOpenUserNotifications',
     'click .action-user-ban': 'userBan',
     'click .action-user-deban': 'userDeban',
@@ -378,6 +379,10 @@ var MainView = Backbone.View.extend({
 
     var view = new DrawerUserProfileView({user_id: userId});
     this.drawerView.setSize('380px').setView(view).open();
+  },
+  onToggleCurrentUserSounds: function (event) {
+    event.preventDefault();
+    this.muteView.toggle();
   },
   openUserProfile: function (data) {
     var view = new DrawerUserProfileView({data: data});
