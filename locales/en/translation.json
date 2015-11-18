@@ -374,6 +374,7 @@
       "users": "User's list of this Donut"
     },
     "owner": {
+      "state": "owner",
       "is": "This user is the creator of this donut.",
       "isgroup": "This user is the creator of this community"
     },
@@ -387,6 +388,7 @@
       "infobox": "Remove"
     },
     "op": {
+      "state": "moderator",
       "is": "This user is the moderator of this donut.",
       "isgroup": "This user is a moderator of this community",
       "infobox": "Make moderator"
@@ -417,6 +419,7 @@
       "infobox": "Unmute this user"
     },
     "devoice": {
+      "state": "devoiced",
       "infobox": "Mute this user"
     },
     "profile": {

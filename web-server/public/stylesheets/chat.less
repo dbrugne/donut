@@ -86,6 +86,47 @@
     }
   }
 }
+
+#popin-user { width: 300px; bottom: initial; overflow: visible; z-index: 2; // below drawer
+  .arrow-right:before {
+    z-index: 2;
+    content: "";
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 0 10px 7px;
+    border-color: transparent transparent transparent #fff;
+    position: absolute;
+    right: -7px;
+    top: 4px;
+  }
+  .arrow-right:after {
+    z-index: 1;
+    content: "";
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 12px 0 12px 8px;
+    border-color: transparent transparent transparent #B8B8B8;
+    position: absolute;
+    right: -8px;
+    top: 2px;
+  }
+  .modal-dialog { margin:0; }
+  .names-ctn { max-width:158px;
+    .username { .ft-opensans-extra-bold; overflow: hidden; text-overflow: ellipsis; }
+    .othername { .ft-opensans-extra-bold; overflow: hidden; text-overflow: ellipsis; }
+    .username + .othername { .ft-opensans; color: @cl-subtext20; }
+  }
+  p { margin:0; display:inline; }
+  .status { border-top: 1px solid @cl-subtext10; border-bottom: 1px solid @cl-subtext10; }
+  .states { }
+  .avatar { width:100px; height:100px; display: block; .border-radius(4px); }
+  .modal-footer {
+    > a { float:left; clear:both; margin-right:5px; cursor:pointer; width: 100%; text-align: left; }
+  }
+}
+
 #welcome {
   .modal-dialog {
     z-index: 1041; // fix .modal-dialog behind .modal-backdrop for unknown reason

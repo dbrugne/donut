@@ -374,10 +374,12 @@
       "users": "Liste des utilisateurs de ce donut"
     },
     "owner": {
+      "state": "créateur",
       "is": "Cet utilisateur est le créateur de ce donut",
       "isgroup": "Cet utilisateur est le créateur de cette communauté"
     },
     "op": {
+      "state": "modérateur",
       "is": "Cet utilisateur est modérateur de ce donut",
       "isgroup": "Cet utilisateur est modérateur de cette communauté",
       "infobox": "Faire modérateur"
@@ -417,6 +419,7 @@
       "infobox": "Rendre la parole"
     },
     "devoice": {
+      "state": "muet",
       "infobox": "Rendre muet"
     },
     "profile": {

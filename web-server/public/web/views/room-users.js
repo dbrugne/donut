@@ -1,3 +1,4 @@
+var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
@@ -11,14 +12,30 @@ var RoomUsersView = Backbone.View.extend({
 
   listTemplate: require('../templates/room-users-list.html'),
 
+  userPreviewTemplate: require('../templates/user-preview.html'),
+
+  timeBuffer: 200,
+  timeoutShow: 0,
+  timeoutHide: 0,
+
   events: {
-    'click .compact-mode': 'compact'
+    'click .compact-mode': 'compact',
+    'mouseenter .users > .list > li': 'fillPopin',
+    'mouseleave .users > .list > li': 'hidePopin',
   },
 
   initialize: function () {
     this.listenTo(this.collection, 'users-redraw', this.render);
 
     this.$users = this.$('.users');
+    this.$popinUsers = $('#popin-user');
+
+    this.$popinUsers.mouseenter(_.bind(function () {
+      clearTimeout(this.timeoutHide);
+    }, this));
+    this.$popinUsers.mouseleave(_.bind(function () {
+      this.hidePopin();
+    }, this));
 
     this.initialRender();
   },
@@ -71,8 +88,52 @@ var RoomUsersView = Backbone.View.extend({
   },
   compact: function () {
     this.$el.toggleClass('compact');
-  }
+  },
+  fillPopin: function (event) {
+    clearTimeout(this.timeoutShow);
 
+    this.timeoutShow = setTimeout(_.bind(function () {
+      var elt = $(event.currentTarget);
+      var offset = elt.offset();
+
+      var classes = elt.data('devoice')
+        ? ' devoice'
+        : '' + elt.data('owner')
+        ? ' owner'
+        : '' + elt.data('op')
+        ? ' op'
+        : '';
+
+      var data = {
+        uri: elt.data('uri'),
+        classes: classes,
+        status: elt.data('status'),
+        user_id: elt.data('user-id'),
+        avatar: elt.data('avatar'),
+        username: elt.data('username'),
+        realname: elt.data('realname'),
+        user_is_owner: elt.data('owner'),
+        user_is_devoice: elt.data('devoice'),
+        user_is_op: elt.data('op'),
+        isOwner: this.model.currentUserIsOwner(),
+        isOp: this.model.currentUserIsOp(),
+        isAdmin: this.model.currentUserIsAdmin()
+      };
+
+      this.$popinUsers.html(this.userPreviewTemplate(data));
+      this.$popinUsers.modal({backdrop: false});
+      this.$popinUsers.css('left', (offset.left - this.$popinUsers.find('.modal-dialog').width()));
+      this.$popinUsers.css('top', offset.top);
+
+      this.$popinUsers.show();
+    }, this), this.timeBuffer);
+  },
+  hidePopin: function () {
+    clearTimeout(this.timeoutHide);
+    this.timeoutHide = setTimeout(_.bind(function () {
+      this.$popinUsers.hide();
+    }, this), this.timeBuffer);
+  }
 });
 
 module.exports = RoomUsersView;

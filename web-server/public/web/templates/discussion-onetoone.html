@@ -4,7 +4,7 @@
         <div class="avatar relative open-user-profile border-shadow" data-user-id="<%= user_id %>">
             <img src="<%= avatar %>" alt="<%= username %> avatar">
         </div>
-        <div class="info   flex-parent center">
+        <div class="info flex-parent center">
             <span class="name open-user-profile" data-user-id="<%= user_id %>"><% if (typeof realname !== "undefined") { %><%= realname %>&nbsp;<span class="othername">@<%= username %></span><% } else { %>@<%= username %><% } %></span>
 
             <div class="flex-parent">
