@@ -39,7 +39,6 @@ var RoomViewBlocked = require('./discussion-room-blocked');
 var OneToOneView = require('./discussion-onetoone');
 var NavOnesView = require('./nav-ones');
 var NavRoomsView = require('./nav-rooms');
-var NotificationsView = require('./notifications');
 var ConfirmationView = require('./modal-confirmation');
 var MuteView = require('./mute');
 var SearchView = require('./home-search');
@@ -97,6 +96,7 @@ var MainView = Backbone.View.extend({
     this.listenTo(client, 'welcome', this.onWelcome);
     this.listenTo(client, 'admin:message', this.onAdminMessage);
     this.listenTo(client, 'disconnect', this.onDisconnect);
+    this.listenTo(client, 'notification:new', this.onNewNotification);
     this.listenTo(groups, 'add', this.addView);
     this.listenTo(groups, 'remove', this.onRemoveGroupView);
     this.listenTo(rooms, 'add', this.addView);
@@ -118,7 +118,6 @@ var MainView = Backbone.View.extend({
     this.alertView = new AlertView();
     this.connectionView = new ConnectionModalView();
     this.welcomeView = new WelcomeModalView();
-    this.notificationsView = new NotificationsView();
     this.muteView = new MuteView();
     this.searchView = new SearchView({
       el: this.$('#navbar .search')
@@ -166,9 +165,10 @@ var MainView = Backbone.View.extend({
       $('#block-discussions').show();
     }
 
-    // Notifications
-    if (data.notifications) {
-      this.notificationsView.initializeNotificationState(data.notifications);
+    // update notification count on welcome
+    if (data.notifications && data.notifications.unread) {
+      $('#notifications').find('.unread-count').text(data.notifications.unread).addClass('bounce');
+      $('.hover-menu-notifications').text(data.notifications.unread);
     }
 
     // Run routing only when everything in interface is ready
@@ -190,6 +190,16 @@ var MainView = Backbone.View.extend({
         view.eventsView.$realtime.append('<div class="block disconnect"></div>');
       }
     });
+  },
+  onNewNotification: function () {
+    var badge = $('#notifications').find('.unread-count');
+    var count = (badge.text() === '' || !_.isNumber(badge.text())
+      ? 1
+      : parseInt(badge.text()) + 1);
+
+    badge.text(count);
+    badge.addClass('bounce');
+    $('.hover-menu-notifications').text(count);
   },
 
   _color: function (color) {

@@ -1,80 +1,339 @@
+var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');
+var i18next = require('i18next-client');
 var date = require('../libs/date');
 var urls = require('../../../../shared/util/url');
 
-var DrawerUserProfileView = Backbone.View.extend({
+var DrawerUserNotificationsView = Backbone.View.extend({
   template: require('../templates/drawer-user-notifications.html'),
 
-  id: 'user-profile',
+  id: 'user-notifications',
 
-  events: {},
+  shouldScrollTopOnNextShow: false,
+
+  isThereMoreNotifications: false,
+
+  timeToMarkAsRead: 1500, // mark notifications as read after n seconds
+
+  events: {
+    'click .actions .read-more': 'onReadMore',
+    'click .action-tag-as-read': 'onTagAsRead',
+    'click .action-tag-as-done': 'onTagAsDone'
+  },
+
+  unread: 0,
+
+  more: false,
 
   initialize: function (options) {
     this.userId = options.user_id;
 
-    // show spinner as temp content
-    this.render();
+    this.listenTo(client, 'notification:new', this.onNewNotification);
+    this.listenTo(client, 'notification:done', this.onDoneNotification);
 
-    //if (options.data) {
-    //  this.onResponse(options.data);
-    //  return;
-    //}
-    //
-    //var that = this;
-    //client.userRead(this.userId, function (data) {
-    //  if (data.err === 'user-not-found') {
-    //    return;
-    //  }
-    //  if (!data.err) {
-    //    that.onResponse(data);
-    //  }
-    //});
+    this.$badge = $('#notifications').find('.unread-count').first();
+    this.$badgeResponsive = $('.hover-menu-notifications');
+
+    this.render(); // show spinner as temp content
+
+    client.notificationRead(null, null, 10, _.bind(function (data) {
+      this.$el.html(this.template({}));
+
+      this.$unreadCount = this.$('.unread-count');
+      this.$count = this.$unreadCount.find('.nb');
+      this.$menu = this.$('#main-navbar-messages');
+      this.$scrollable = this.$('.messages-list-ctn');
+      this.$actions = this.$scrollable.find('.actions');
+      this.$readMore = this.$actions.find('.read-more');
+      this.$loader = this.$actions.find('.loading');
+
+      var html = '';
+      var unread = 0;
+      _.each(data.notifications, _.bind(function (element) {
+        html += this.renderNotification(element);
+        if (element.viewed === false) {
+          unread++;
+        }
+      }, this));
+      this.$menu.html(this.$menu.html() + html);
+      if (this.unread !== unread) {
+        this.unread += unread;
+        this.setUnreadCount(this.unread);
+      }
+
+      var that = this;
+      this.markHasRead = setTimeout(function () {
+        that.clearNotifications();
+      }, this.timeToMarkAsRead);
+      this.toggleReadMore();
+    }, this));
   },
   render: function () {
-    // render spinner only
-    //this.$el.html(require('../templates/spinner.html'));
-    this.$el.html(this.template);
+    this.$el.html(require('../templates/spinner.html'));
     return this;
   },
-  onResponse: function (user) {
-    //if (!user.username) {
-    //  return app.trigger('drawerClose');
-    //}
-    //
-    //user.isCurrent = (user.user_id === currentUser.get('user_id'));
-    //user.avatar = common.cloudinary.prepare(user.avatar, 90);
-    //user.uri = urls(user, 'user', 'uri');
-    //
-    //this._rooms(user); // decorate user object with rooms_list
-    //
-    //var html = this.template({user: user});
-    //this.$el.html(html);
-    //date.from('date', this.$('.created span'));
-    //date.from('fromnow', this.$('.onlined span'));
-    //
-    //if (user.color) {
-    //  this.trigger('color', user.color);
-    //}
-    //
-    //this.initializeTooltips();
+  setUnreadCount: function (count) {
+    this.updateCount(count);
+    if (count > 0) {
+      this.$count.html(count); // update count in drawer
+      this.$unreadCount.removeClass('empty');
+      this.$unreadCount.addClass('full');
+    } else {
+      this.$unreadCount.addClass('empty');
+      this.$unreadCount.removeClass('full');
+    }
+    this.unread = count;
   },
-  initializeTooltips: function () {
-    //this.$el.find('[data-toggle="tooltip"][data-type="rooms"]').tooltip({
-    //  html: true,
-    //  animation: false,
-    //  container: 'body',
-    //  template: '<div class="tooltip tooltip-home-users" role="tooltip"><div class="tooltip-inner right"></div></div>',
-    //  title: function () {
-    //    return '<div class="username" style="' + this.dataset.bgcolor + '">' + this.dataset.username + '</div>';
-    //  }
-    //});
-  }
+  // A new Notification is pushed from server
+  onNewNotification: function (data) {
+    // Update Badge & Count
+    this.setUnreadCount(this.unread + 1);
 
+    // Highlight Badge
+    this.$badge.addClass('bounce');
+    var that = this;
+    setTimeout(function () {
+      that.$badge.removeClass('bounce');
+    }, 1500); // Remove class after animation to trigger animation later if needed
+
+    // Insert new notification in dropdown
+    this.$menu.html(this.renderNotification(data) + this.$menu.html());
+
+    // Set Timeout to clear new notification
+    this.markHasRead = setTimeout(function () {
+      that.clearNotifications();
+    }, this.timeToMarkAsRead);
+
+    // if more than 10 notifications in notification center
+    this.isThereMoreNotifications = true;
+
+    this.toggleReadMore();
+    this.$scrollable.scrollTop(0);
+    this._createDesktopNotify(data);
+  },
+  _createDesktopNotify: function (data) {
+    var msg = (data.data.message)
+      ? common.markup.toText(data.data.message)
+      : '';
+    var message = i18next.t('chat.notifications.messages.' + data.type, {
+      name: (data.data.room)
+        ? data.data.room.name
+        : (data.data.group)
+        ? data.data.group.name
+        : '',
+      username: (data.data.by_user)
+        ? data.data.by_user.username
+        : data.data.user.username,
+      message: msg,
+      topic: (data.data.topic)
+        ? common.markup.toText(data.data.topic)
+        : ''
+    });
+
+    message = message.replace(/<\/*span>/g, '');
+    message = message.replace(/<\/*br>/g, '');
+    app.trigger('desktopNotification', message, '');
+  },
+  renderNotification: function (n) {
+    n.css = '';
+    n.href = '';
+    n.name = '';
+    n.html = '';
+    if (n.data.room) {
+      n.avatar = common.cloudinary.prepare(n.data.room.avatar, 90);
+      n.title = n.data.room.name;
+      n.name = n.data.room.name;
+      n.href = n.name;
+    } else if (n.data.group) {
+      n.avatar = common.cloudinary.prepare(n.data.group.avatar, 90);
+      n.title = n.data.group.name;
+      n.name = n.data.group.name;
+      n.href = '#g/' + n.name;
+    } else if (n.data.by_user) {
+      n.avatar = common.cloudinary.prepare(n.data.by_user.avatar, 90);
+      n.title = n.data.by_user.username;
+    }
+
+    n.username = (n.data.by_user)
+      ? n.data.by_user.username
+      : n.data.user.username;
+    var message = (n.data.message)
+      ? common.markup.toText(n.data.message)
+      : '';
+    n.message = i18next.t('chat.notifications.messages.' + n.type, {
+      name: n.name,
+      username: n.username,
+      message: message,
+      topic: (n.data.topic)
+        ? common.markup.toText(n.data.topic)
+        : ''
+    });
+
+    if (['roomjoinrequest', 'groupjoinrequest', 'usermention'].indexOf(n.type) !== -1) {
+      var avatar = (n.data.by_user)
+        ? n.data.by_user.avatar
+        : n.data.user.avatar;
+      n.avatar = common.cloudinary.prepare(avatar, 90);
+    }
+    if (n.type === 'roomjoinrequest') {
+      n.href = '';
+      n.css += 'open-room-access';
+      var roomId = (n.data.room._id)
+        ? n.data.room._id
+        : n.data.room.id;
+      n.html += 'data-room-id="' + roomId + '"';
+      n.username = null;
+    } else if (n.type === 'groupjoinrequest') {
+      n.href = '';
+      n.css += 'open-group-access';
+      var groupId = (n.data.group._id)
+        ? n.data.group._id
+        : n.data.group.id;
+      n.html += 'data-group-id="' + groupId + '"';
+      n.username = null;
+    } else if (n.type === 'roomdelete') {
+      n.href = '';
+    }
+
+    if (n.viewed === false) {
+      n.css += ' unread';
+    }
+
+    return require('../templates/notification.html')({
+      data: n,
+      from_now: date.dayMonthTime(n.time),
+      from_now_short: date.shortDayMonthTime(n.time)
+    });
+  },
+  clearNotifications: function () {
+    var unreadNotifications = this.$menu.find('.message.unread');
+    var that = this;
+    var ids = [];
+    _.each(unreadNotifications, function (elt) {
+      ids.push(elt.dataset.notificationId);
+    });
+
+    // Only call Client if at least something to tag as viewed
+    if (ids.length === 0) {
+      this.setUnreadCount(0);
+      return;
+    }
+
+    client.notificationViewed(ids, false, _.bind(function (data) {
+      // For each notification in the list, tag them as read
+      _.each(unreadNotifications, function (notification) {
+        notification.classList.remove('unread');
+      });
+
+      // Update Badge & Count
+      this.setUnreadCount(that.unread - ids.length);
+
+      that.markHasRead = null;
+    }, this));
+  },
+  // When user clicks on the read more link in the notification dropdown
+  onReadMore: function (event) {
+    event.stopPropagation(); // Cancel dropdown close behaviour
+    this.$readMore.addClass('hidden');
+    this.$loader.removeClass('hidden');
+
+    client.notificationRead(null, this.lastNotifDisplayedTime(), 10, _.bind(function (data) {
+      this.isThereMoreNotifications = data.more;
+      var previousContent = this.$menu.html();
+      var html = '';
+      _.each(data.notifications, _.bind(function (element) {
+        html += this.renderNotification(element);
+      }, this));
+
+      this.$menu.html(previousContent + html);
+      this.$readMore.removeClass('hidden');
+      this.$loader.addClass('hidden');
+
+      var that = this;
+      this.markHasRead = setTimeout(function () {
+        that.clearNotifications();
+      }, this.timeToMarkAsRead);
+
+      if (data.more) {
+        this.$actions.removeClass('hidden');
+      } else {
+        this.$actions.addClass('hidden')
+      }
+    }, this));
+  },
+  lastNotifDisplayedTime: function () {
+    var last = this.$menu.find('.message').last();
+    var time = (!last || last.length < 1)
+      ? null
+      : last.data('time');
+    return time;
+  },
+  toggleReadMore: function () {
+    // Only display if at least 10 messages displayed, and more messages to display on server
+    if (this.countNotificationsInDropdown() < 10) {
+      return this.$actions.addClass('hidden');
+    }
+
+    if (!this.toggleReadMore) {
+      this.$actions.addClass('hidden');
+    } else {
+      this.$actions.removeClass('hidden');
+    }
+  },
+  onTagAsRead: function (event) {
+    // Ask server to set notifications as viewed, and wait for response to set them likewise
+    client.notificationViewed([], true, _.bind(function (data) {
+      // For each notification in the list, tag them as read
+      _.each(this.$menu.find('.message.unread'), function (notification) {
+        notification.classList.remove('unread');
+      });
+
+      // Update Badge & Count
+      this.setUnreadCount(0);
+    }, this));
+  },
+  onTagAsDone: function (event) {
+    event.preventDefault();
+    var message = $(event.currentTarget).parents('.message');
+    client.notificationDone(message.data('notification-id'), true);
+    return false;
+  },
+  // A Notification is tagged as done on the server
+  onDoneNotification: function (data) {
+    clearTimeout(this.markHasRead);
+
+    var message = $('.message[data-notification-id=' + data.notification + ']');
+
+    if (message.hasClass('unread')) {
+      this.unread--;
+    }
+
+    message.fadeOut(500, function () {
+      $(this).remove();
+    });
+
+    var that = this;
+    this.markHasRead = setTimeout(function () {
+      that.clearNotifications();
+    }, this.timeToMarkAsRead);
+
+    this.toggleReadMore();
+  },
+  countNotificationsInDropdown: function () {
+    return this.$menu.find('.message').length;
+  },
+  updateCount: function (count) {
+    this.$badge.text(count);  // update badge in left navigation
+    if (count === 0) {
+      this.$badge.text('');
+    }
+    this.$badgeResponsive.text(count); // update badge in left navigation on responsive mode
+  }
 });
 
-module.exports = DrawerUserProfileView;
+module.exports = DrawerUserNotificationsView;

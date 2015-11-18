@@ -1,14 +1,28 @@
-<div class="relative">     <span class="close icon icon-times"></span> </div>
+<div class="relative">
+    <span class="close icon icon-times"></span>
+</div>
 
 <div class="title">
     <%= t('chat.actions.notifications') %>
-
 </div>
 
 <div class="ctn-drawer">
-    <div class="errors block mb20"></div>
-
-    <form class="user-form" role="form">
-
-    </form>
+    <div class="ctn" role="menu">
+        <div class="mb10 unread-count empty">
+            <span class="show-empty text-center">
+                <span><%= t('chat.notifications.empty') %></span>
+            </span>
+            <span class="hide-empty">
+                <span><%= t('chat.notifications.count') %></span>
+                <span class="pull-right action-tag-as-read"><%= t('chat.notifications.tag-as-read') %></span>
+            </span>
+        </div>
+        <div class="messages-list-ctn">
+            <div class="messages-list" id="main-navbar-messages"><!-- Loaded dynamically --></div>
+            <div class="actions flex-parent mt5 jc-center">
+                <div class="read-more btn btn-default"><%= t('chat.notifications.read-more') %></div>
+                <div class="loading hidden"><i class="icon icon-spinner icon-spin"></i></div>
+            </div>
+        </div>
+    </div>
 </div>

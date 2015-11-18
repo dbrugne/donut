@@ -438,4 +438,10 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   &.error { .box-shadow(inset 0 0 0 5px @cl-pomegranate); }
 }
 
+.show-loading { display:none; }
+.loading {
+  .show-loading { display:block; }
+  .hide-loading { display:none; }
+}
+
 table tr:hover { outline: 1px solid @cl-subtext15; background-color: @cl-subtext5 !important; }
