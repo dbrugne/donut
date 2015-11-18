@@ -17,14 +17,25 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="signup">
-                        <a href="/signup"><%= t('landing.signup') %></a>
-                    </li>
-                    <li class="divider-vertical"></li>
-                    <li class="nav-divider"></li>
-                    <li class="login">
-                        <a href="/login"><%= t('landing.login') %></a>
-                    </li>
+                    <% if (user) { %>
+                        <li class="signup">
+                            <a href="/!"><%= t('logged.chat') %></a>
+                        </li>
+                        <li class="divider-vertical"></li>
+                        <li class="nav-divider"></li>
+                        <li class="login">
+                            <a href="/logout"><%= t('logged.logout') %></a>
+                        </li>
+                    <% } else { %>
+                        <li class="signup">
+                            <a href="/signup"><%= t('landing.signup') %></a>
+                        </li>
+                        <li class="divider-vertical"></li>
+                        <li class="nav-divider"></li>
+                        <li class="login">
+                            <a href="/login"><%= t('landing.login') %></a>
+                        </li>
+                    <% } %>
                     <li class="help">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             <i class="icon icon-menu dc-text-contrast"></i>
