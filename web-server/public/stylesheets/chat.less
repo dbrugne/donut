@@ -6,7 +6,7 @@
   list-style: none;
   position: absolute;
   top: 2px;
-  left: 232px;
+  left: 262px;
   z-index: 3;
   background: #FFF;
   border: 1px solid @cl-nav-left-back-darker;
@@ -284,56 +284,56 @@
     width: 100%;
   }
 
-  #left { float: left; width: @size-left; background-color: @cl-nav-left-back; color:@cl-nav-left-text; z-index: 12; position: relative; font-size: 14px; overflow: auto; height:100%; padding-bottom:70px; .scrollbar-white; .transition(margin-left 300ms);
+  #left { float: left; width: @size-left; background-color: @cl-nav-left-back; color:@cl-nav-left-text; z-index: 12; position: relative; font-size: 14px; height:100%; .transition(margin-left 300ms);
     .hover-menu { display: none; }
-    .scrollable { .align-self(flex-start); width: 100%;
-      #block-current-user { margin: 1rem; padding: 0.5rem; cursor: pointer; overflow: hidden; .border-radius(4px); .transition(max-height 200ms); max-height: 40px;
-        .not-confirmed {     z-index: 1; position: absolute; top: 15px; font-size: 28px; left: 17px; color: @cl-pomegranate; opacity: 0.7; }
-        i, .username { color:@cl-nav-left-text-lighter; }
-        img { width: 28px; height: 28px; }
-        &.open { .transition(max-height 400ms); max-height: 600px; }
-        &.open, &:hover { background-color: rgba(255,255,255,.2); }
-        .dropdown-menu { width: 100%; display: block;
-          position:relative;
-          background-color: transparent;
-          .box-shadow(none);
-          border:0;
-          li {
-            &:hover {
-              background-color: rgba(255,255,255,.2);
-              .border-radius(4px);
-            }
-            &.dropdown-header { color:@cl-nav-left-text-lighter; cursor:default; padding:3px 20px 3px 10px;
-              &:hover { background-color: transparent; }
-            }
-            a { color:@cl-clouds; padding:3px 2px 3px 15px;
-              &:hover, &:focus { background-color:transparent; }
-            }
+    #block-current-user { margin: 1rem; padding: 0.5rem; cursor: pointer; overflow: hidden; .border-radius(4px); .transition(max-height 200ms); max-height: 40px;
+      .not-confirmed {     z-index: 1; position: absolute; top: 15px; font-size: 28px; left: 17px; color: @cl-pomegranate; opacity: 0.7; }
+      i, .username { color:@cl-nav-left-text-lighter; }
+      img { width: 28px; height: 28px; }
+      &.open { .transition(max-height 400ms); max-height: 600px; }
+      &.open, &:hover { background-color: rgba(255,255,255,.2); }
+      .dropdown-menu { width: 100%; display: block;
+        position:relative;
+        background-color: transparent;
+        .box-shadow(none);
+        border:0;
+        li {
+          &:hover {
+            background-color: rgba(255,255,255,.2);
+            .border-radius(4px);
           }
-        }
-        .dropdown-toggle { width: 100%; padding: 0;
-          .username { max-width: 165px; text-overflow: ellipsis; overflow: hidden; font-size:1.8rem; }
-        }
-      }
-      #navbar { margin: 1rem;
-        .links { .display-flex; .flex-flow(row nowrap); .align-items(center);
-          > #notifications > a, a { color: @cl-nav-left-text-lighter;
-            i { font-size: 1.8rem; }
+          &.dropdown-header { color:@cl-nav-left-text-lighter; cursor:default; padding:3px 20px 3px 10px;
+            &:hover { background-color: transparent; }
           }
-          #notifications .unread-count { position: absolute; top: -6px; left: 10px; padding: 1px 5px; font-size: 1rem; font-weight: bold; color: #FFF; line-height: 1.4rem; vertical-align: middle; white-space: nowrap; text-align: center; border-radius: 10px; background-color: @cl-sun_flower; }
-        }
-        .search { .flex(1); height: 28px; margin-left: 5px;
-          position: relative;
-          .input-group { width: 100%;
-            > .relative { max-width:450px; }
-            input { height: 28px; max-width: 450px; padding: 6px 24px 6px 12px; .transition(width 200ms);
-              .border-radius(0);
-              &:focus { .box-shadow(none); }
-            }
-            i.icon-search { position: absolute; right: 9px; z-index: 2; display: block; top: 7px; color:@cl-nav-left-back-darker; }
+          a { color:@cl-clouds; padding:3px 2px 3px 15px;
+            &:hover, &:focus { background-color:transparent; }
           }
         }
       }
+      .dropdown-toggle { width: 100%; padding: 0;
+        .username { max-width: 165px; text-overflow: ellipsis; overflow: hidden; font-size:1.8rem; }
+      }
+    }
+    #navbar { margin: 1rem;
+      .links { .display-flex; .flex-flow(row nowrap); .align-items(center);
+        > #notifications > a, a { color: @cl-nav-left-text-lighter;
+          i { font-size: 1.8rem; }
+        }
+        #notifications .unread-count { position: absolute; top: -6px; left: 10px; padding: 1px 5px; font-size: 1rem; font-weight: bold; color: #FFF; line-height: 1.4rem; vertical-align: middle; white-space: nowrap; text-align: center; border-radius: 10px; background-color: @cl-sun_flower; }
+      }
+      .search { .flex(1); height: 28px; margin-left: 5px;
+        position: relative;
+        .input-group { width: 100%;
+          > .relative { max-width:450px; }
+          input { height: 28px; max-width: 450px; padding: 6px 24px 6px 12px;
+            .border-radius(0);
+            &:focus { .box-shadow(none); }
+          }
+          i.icon-search { position: absolute; right: 9px; z-index: 2; display: block; top: 7px; color:@cl-nav-left-back-darker; }
+        }
+      }
+    }
+    .scrollable { .align-self(flex-start); width: 100%; .flex(1 1 0); .scrollbar-white; overflow: auto;
       .page-sidebar-menu { padding: 0; margin:0; .display-flex; .flex-flow(column nowrap); width: 100%; }
       #ones {display: none;}
       #ones, #rooms { padding: 0; margin: 0;
@@ -386,17 +386,20 @@
       }
       #ones li .item .name { font-weight:bold; }
     }
-    .create-ctn { width: (@size-left - 10);
-      padding: 10px 0 10px 10px;
-      position: fixed;
-      bottom: 0;
+    .logo {
       z-index: 10;
-      background-color: @cl-nav-left-back;
-      > a { display: block; }
+      background-image: url('@{img-path}/logo-onecolor-gr.svg');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 70%;
+      width: 184px;
+      min-height: 45px;
+      height: 45px;
+      .align-self(flex-end);
     }
   }
 
-  #center { height: 100%; z-index: 5; margin-left: @size-left; font-size: 12px; background-color: @cl-subtext0; background-image: url('@{img-path}/logo-onecolor-gr.svg'); background-repeat: no-repeat; background-position: center center; background-size: 60%; .transition(margin-left 300ms);
+  #center { height: 100%; z-index: 5; margin-left: @size-left; font-size: 12px; background-color: @cl-subtext0; background-image: url('@{img-path}/logo-onecolor-gr.svg'); background-repeat: no-repeat; background-position: center center; background-size: 60%;
     .user-list { height: 100%;
       .list { overflow-y: auto; overflow-x: hidden; height: 100%; .scrollbar-white;
         .item { .pull-left; position: relative; margin-top: 10px; margin-right: 10px;
@@ -478,7 +481,7 @@
       .blur { width: @size-right-mid; position: relative; color: @cl-background; font-size: 1.1em; .scrollbar-grey; height: 100%; overflow-y: auto; .transition(width 300ms);
         .users { position: relative; padding: 10px 0 30px; height: 100%; background-color: rgba(0, 0, 0, 0.2);
           > hr { position: absolute; left: 14px; right: 14px; top: @header-height; }
-          .list { list-style: none; margin: 0 10px 150px; overflow-y: auto; padding: 5px; background-repeat: no-repeat; background-position: left top; position: relative; .scrollbar-white; .justify-content(space-around); overflow-x: hidden;
+          .list { list-style: none; margin: 0 10px 0; overflow-y: auto; padding: 5px; background-repeat: no-repeat; background-position: left top; position: relative; .scrollbar-white; .justify-content(space-around); overflow-x: hidden;
             > li { margin: 5px; float:left; }
             .clearfix { width:100%; height:5px; }
             .li-title { margin: 0;

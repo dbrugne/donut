@@ -15,55 +15,53 @@
                 <div class="hover-menu">
                     <div class="hover-menu-notifications"></div>
                 </div>
-                <div class="scrollable flex-child">
-                    <div id="block-current-user" class="flex-parent column">
 
-                        <a href="#" class="clean dropdown-toggle toggle flex-parent center" data-toggle="dropdown" role="button" aria-expanded="false">
-                            <img class="mr5 dc-border-darker curp" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
+                <div id="block-current-user" class="flex-parent column">
+                    <a href="#" class="clean dropdown-toggle toggle flex-parent center" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <img class="mr5 dc-border-darker curp" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
                             <span class="mr5 ml5 dc-text-contrast username flex-child">
                                 <% if (user.realname) { print (user.realname) } else { print ('@'+user.username) } %>
                             </span>
-                            <i class="icon icon-chevron-down fs20 dc-text-contrast hover"></i>
-                        </a>
+                        <i class="icon icon-chevron-down fs20 dc-text-contrast hover"></i>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-current-user-profile"><i class="icon icon-fw icon-eye"></i> <%= t('global.view-profile') %></a></li>
+                        <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-user-account"><i class="icon icon-fw icon-lock"></i> <%= t('chat.actions.account') %></a></li>
+                        <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-user-edit"><i class="icon icon-fw icon-pencil"></i> <%= t('chat.actions.edit') %></a></li>
+                        <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-user-preferences"><i class="icon icon-fw icon-check"></i> <%= t('chat.actions.preferences') %></a></li>
+                        <li role="presentation" class="divider"></li>
+                        <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" href="/logout"><i class="icon icon-fw icon-power-off"></i> <%= t('actions.logout') %></a></li>
+                    </ul>
+                </div>
 
-                        <ul class="dropdown-menu" role="menu">
-                            <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-current-user-profile"><i class="icon icon-fw icon-eye"></i> <%= t('global.view-profile') %></a></li>
-                            <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-user-account"><i class="icon icon-fw icon-lock"></i> <%= t('chat.actions.account') %></a></li>
-                            <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-user-edit"><i class="icon icon-fw icon-pencil"></i> <%= t('chat.actions.edit') %></a></li>
-                            <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-user-preferences"><i class="icon icon-fw icon-check"></i> <%= t('chat.actions.preferences') %></a></li>
-                            <li role="presentation" class="divider"></li>
-                            <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" href="/logout"><i class="icon icon-fw icon-power-off"></i> <%= t('actions.logout') %></a></li>
-                        </ul>
-
-                    </div>
-
-                    <div id="navbar">
-                        <div class="links">
-                            <a href="/!#"><i class="icon icon-fw icon-home"></i></a>
+                <div id="navbar">
+                    <div class="links">
+                        <a href="/!#"><i class="icon icon-fw icon-home"></i></a>
                             <span id="notifications" class="empty" role="presentation">
                                 <a href="#" class="empty open-user-notifications relative">
                                     <i class="icon icon-fw icon-globe"></i>
                                     <span class="unread-count badge pull-right"></span>
                                 </a>
                             </span>
-                            <a href="#" class="open-create-room"><i class="icon icon-fw icon-plus"></i></a>
-                            <a role="menuitem" tabindex="-1" class="toggle-current-user-sounds" id="mute"><i class="icon icon-fw icon-volume-up"></i></a>
+                        <a href="#" class="open-create-room"><i class="icon icon-fw icon-plus"></i></a>
+                        <a role="menuitem" tabindex="-1" class="toggle-current-user-sounds" id="mute"><i class="icon icon-fw icon-volume-up"></i></a>
 
-                            <div class="search flex-parent column">
-                                <div class="input-group relative">
-                                    <div class="relative">
-                                        <input type="text" class="form-control" placeholder="<%= t('chat.search.placeholder') %>">
-                                        <i class="icon icon-search curp"></i>
-                                    </div>
-                                </div>
-                                <div class="search-results">
-                                    <div class="title flex-child hidden"><!--Search title--></div>
-                                    <div class="nothing mt20 mb20 hidden"><%= t('chat.search.noresults') %></div>
+                        <div class="search flex-parent column">
+                            <div class="input-group relative">
+                                <div class="relative">
+                                    <input type="text" class="form-control" placeholder="<%= t('chat.search.placeholder') %>">
+                                    <i class="icon icon-search curp"></i>
                                 </div>
                             </div>
+                            <div class="search-results">
+                                <div class="title flex-child hidden"><!--Search title--></div>
+                                <div class="nothing mt20 mb20 hidden"><%= t('chat.search.noresults') %></div>
+                            </div>
                         </div>
-                    </div><!--/.nav-collapse -->
+                    </div>
+                </div><!--/.nav-collapse -->
 
+                <div class="scrollable flex-child">
                     <ul class="page-sidebar-menu">
                         <li id="ones" class="mb10" >
                             <ul class="list"><!--ones--></ul>
@@ -77,9 +75,7 @@
                     </ul>
                 </div>
 
-                <div class="create-ctn">
-                    <a href="#" class="open-create-room btn btn-default"><%= t('actions.create') %></a>
-                </div>
+                <div class="logo"></div>
             </div><!-- /#left -->
             <div id="center">
                 <div id="drawer">
