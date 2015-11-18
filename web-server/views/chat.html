@@ -27,36 +27,39 @@
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
-                            <li id="notifications" class="empty" role="presentation">
-                                <a href="#" class="empty open-user-notifications">
-                                    <i class="icon icon-fw icon-globe"></i> <%= t('chat.actions.notifications') %>
-                                    <span class="unread-count badge pull-right"></span>
-                                </a>
-                            </li>
-                            <li class="curp" role="presentation"><a href="/!#"><i class="icon icon-fw icon-home"></i> <%= t('global.discover') %></a></li>
-                            <li class="curp" role="presentation"><a href="#" class="open-create-room"><i class="icon icon-fw icon-plus"></i> <%= t('chat.actions.create') %> <%= t('chat.actions.adonut') %></a></li>
-                            <li role="presentation" class="divider"></li>
                             <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-current-user-profile"><i class="icon icon-fw icon-eye"></i> <%= t('global.view-profile') %></a></li>
                             <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-user-account"><i class="icon icon-fw icon-lock"></i> <%= t('chat.actions.account') %></a></li>
                             <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-user-edit"><i class="icon icon-fw icon-pencil"></i> <%= t('chat.actions.edit') %></a></li>
                             <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-user-preferences"><i class="icon icon-fw icon-check"></i> <%= t('chat.actions.preferences') %></a></li>
-                            <li class="curp" role="presentation" id="mute"><a role="menuitem" tabindex="-1" class="toggle"><i class="icon icon-fw icon-volume-up"></i> <%= t('chat.actions.volume.up') %></a></li>
                             <li role="presentation" class="divider"></li>
                             <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" href="/logout"><i class="icon icon-fw icon-power-off"></i> <%= t('actions.logout') %></a></li>
                         </ul>
+
                     </div>
 
                     <div id="navbar">
-                        <div class="search flex-parent column">
-                            <div class="input-group relative">
-                                <div class="relative">
-                                    <input type="text" class="form-control" placeholder="<%= t('chat.search.placeholder') %>">
-                                    <i class="icon icon-search curp"></i>
+                        <div class="links">
+                            <a href="/!#"><i class="icon icon-fw icon-home"></i></a>
+                            <span id="notifications" class="empty" role="presentation">
+                                <a href="#" class="empty open-user-notifications relative">
+                                    <i class="icon icon-fw icon-globe"></i>
+                                    <span class="unread-count badge pull-right"></span>
+                                </a>
+                            </span>
+                            <a href="#" class="open-create-room"><i class="icon icon-fw icon-plus"></i></a>
+                            <a role="menuitem" tabindex="-1" class="toggle"><i class="icon icon-fw icon-volume-up"></i></a>
+
+                            <div class="search flex-parent column">
+                                <div class="input-group relative">
+                                    <div class="relative">
+                                        <input type="text" class="form-control" placeholder="<%= t('chat.search.placeholder') %>">
+                                        <i class="icon icon-search curp"></i>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="search-results">
-                                <div class="title flex-child hidden"><!--Search title--></div>
-                                <div class="nothing mt20 mb20 hidden"><%= t('chat.search.noresults') %></div>
+                                <div class="search-results">
+                                    <div class="title flex-child hidden"><!--Search title--></div>
+                                    <div class="nothing mt20 mb20 hidden"><%= t('chat.search.noresults') %></div>
+                                </div>
                             </div>
                         </div>
                     </div><!--/.nav-collapse -->
