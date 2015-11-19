@@ -94,27 +94,17 @@ var RoomUsersView = Backbone.View.extend({
 
     this.timeoutShow = setTimeout(_.bind(function () {
       var elt = $(event.currentTarget);
-      var offset = elt.offset();
+      if (!elt.data('user-id')) {
+        return;
+      }
 
-      var classes = elt.data('devoice')
-        ? ' devoice'
-        : '' + elt.data('owner')
-        ? ' owner'
-        : '' + elt.data('op')
-        ? ' op'
-        : '';
+      var offset = elt.offset();
+      var user = this.collection.get(elt.data('user-id')).toJSON();
+      user.avatar = common.cloudinary.prepare(user.avatar, 100);
+      user.uri = urls(user, 'user', 'uri');
 
       var data = {
-        uri: elt.data('uri'),
-        classes: classes,
-        status: elt.data('status'),
-        user_id: elt.data('user-id'),
-        avatar: elt.data('avatar'),
-        username: elt.data('username'),
-        realname: elt.data('realname'),
-        user_is_owner: elt.data('owner'),
-        user_is_devoice: elt.data('devoice'),
-        user_is_op: elt.data('op'),
+        user: user,
         isOwner: this.model.currentUserIsOwner(),
         isOp: this.model.currentUserIsOp(),
         isAdmin: this.model.currentUserIsAdmin()

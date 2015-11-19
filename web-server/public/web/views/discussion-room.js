@@ -28,6 +28,7 @@ var RoomView = Backbone.View.extend({
     'click .ban-user': 'banUser',
     'click .voice-user': 'voiceUser',
     'click .devoice-user': 'devoiceUser',
+
     'click .share .facebook': 'shareFacebook',
     'click .share .twitter': 'shareTwitter',
     'click .share .googleplus': 'shareGoogle'

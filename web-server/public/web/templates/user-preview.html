@@ -1,8 +1,8 @@
-<%  var classes = user_is_devoice
+<%  var classes = user.is_devoice
     ? ' devoice'
-    : '' + user_is_owner
+    : '' + user.is_owner
     ? ' owner'
-    : '' + user_is_op
+    : '' + user.is_op
     ? ' op'
     : '';
 %>
@@ -13,24 +13,24 @@
         <div class="modal-body">
             <div class="flex-parent column">
                 <div class="flex-parent">
-                    <div class="avatar" style="background-image: url(<%= avatar %>)"></div>
+                    <div class="avatar" style="background-image: url(<%=user.avatar %>)"></div>
                     <div class="names-ctn ml10 mt5 flex-child">
-                        <% if(realname) { %>
-                            <div class="username fs16 open-user-profile" data-user-id="<%=user_id%>"><%=realname%></div>
+                        <% if(user.realname) { %>
+                            <div class="username fs16 open-user-profile" data-user-id="<%=user.user_id%>"><%=user.realname%></div>
                         <% } %>
-                        <div class="othername fs16 open-user-profile" data-user-id="<%=user_id%>">@<%=username%></div>
+                        <div class="othername fs16 open-user-profile" data-user-id="<%=user.user_id%>">@<%=user.username%></div>
                         <div class="status mt5">
-                            <span class="userstatus <%=status%>" title="<%=status%>"></span>
-                            <em><%= t('global.'+status) %></em>
+                            <span class="userstatus <%=user.status%>" title="<%=user.status%>"></span>
+                            <em><%= t('global.'+user.status) %></em>
                         </div>
                         <div class="mt5 states">
-                            <% if(user_is_owner) { %>
+                            <% if(user.is_owner) { %>
                                 <i class="icon icon-fw icon-owner"></i><p><%= t('chat.owner.state') %></p>
                             <% } %>
-                            <% if(user_is_op) { %>
+                            <% if(user.is_op) { %>
                                 <i class="icon icon-fw icon-op"></i><p><%= t('chat.op.state') %></p>
                             <% } %>
-                            <% if(user_is_devoice) { %>
+                            <% if(user.is_devoice) { %>
                                 <i class="icon icon-fw icon-microphone-slash cl-error"></i><p><%= t('chat.devoice.state') %></p>
                             <% } %>
                         </div>
@@ -41,33 +41,33 @@
 
         <% if (isAdmin === true || isOwner === true || isOp === true) { %>
             <div class="modal-footer">
-                <% if (!user_is_owner || isAdmin === true) { %>
-                    <% if (user_is_op === true) { %>
-                        <a role="menuitem" tabindex="-1" class="deop deop-user" data-user-id="<%= user_id %>">
+                <% if (!user.is_owner || isAdmin === true) { %>
+                    <% if (user.is_op === true) { %>
+                        <a role="menuitem" tabindex="-1" class="deop deop-user" data-user-id="<%=user.user_id %>">
                             <i class="icon icon-fw icon-op cl-neutral"></i><p><%= t('chat.deop.infobox') %></p>
                         </a>
                     <% } else { %>
-                        <a role="menuitem" tabindex="-1" class="op op-user" data-user-id="<%= user_id %>">
+                        <a role="menuitem" tabindex="-1" class="op op-user" data-user-id="<%=user.user_id %>">
                             <i class="icon icon-fw icon-op"></i><p><%= t('chat.op.infobox') %></p>
                         </a>
                     <% }; %>
                 <% }; %>
 
-                <% if (!user_is_owner || isAdmin === true) { %>
-                    <% if (!user_is_devoice) { %>
-                        <a role="menuitem" tabindex="-1" class="devoice devoice-user" data-user-id="<%= user_id %>">
+                <% if (!user.is_owner || isAdmin === true) { %>
+                    <% if (!user.is_devoice) { %>
+                        <a role="menuitem" tabindex="-1" class="devoice devoice-user" data-user-id="<%=user.user_id %>">
                             <i class="icon icon-fw icon-microphone-slash"></i><p><%= t('chat.devoice.infobox') %></p>
                         </a>
                     <% } else { %>
-                        <a role="menuitem" tabindex="-1" class="voice voice-user" data-user-id="<%= user_id %>">
+                        <a role="menuitem" tabindex="-1" class="voice voice-user" data-user-id="<%=user.user_id %>">
                             <i class="icon icon-fw icon-microphone"></i><p><%= t('chat.voice.infobox') %></p>
                         </a>
                     <% } %>
 
-                    <a role="menuitem" tabindex="-1" class="kick kick-user" data-user-id="<%= user_id %>">
+                    <a role="menuitem" tabindex="-1" class="kick kick-user" data-user-id="<%=user.user_id %>">
                         <i class="icon icon-fw icon-kick"></i><p><%= t('chat.kick.infobox') %></p>
                     </a>
-                    <a role="menuitem" tabindex="-1" class="ban ban-user" data-user-id="<%= user_id %>">
+                    <a role="menuitem" tabindex="-1" class="ban ban-user" data-user-id="<%=user.user_id %>">
                         <i class="icon icon-fw icon-ban"></i><p><%= t('chat.ban.infobox') %></p>
                     </a>
                 <% }; %>
