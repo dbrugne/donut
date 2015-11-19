@@ -1,5 +1,5 @@
 <% if (typeof(results) === 'undefined') { %>
-    <li class="empty"><a href="#"><%= t('chat.search.noresults') %></a></li>
+    <li class="empty"><span><%= t('chat.search.noresults') %></span></li>
 <% } else { %>
     <% if(results.groups.list && results.groups.list.length > 0) { %>
         <li class="presentation">
