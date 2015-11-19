@@ -888,6 +888,7 @@
         "not-admin-owner-groupowner": "Action non autorisée.",
         "not-admin-owner": "Action non autorisée.",
         "not-allowed": "Action non autorisée.",
+        "not-confirmed": "Action autorisée seulement pour les comptes validés. Validez votre e-mail.",
         "group-banned": "Vous êtes banni de la communauté",
         "not-confirmed": "Votre compte n'a pas été validé vous ne pouvez pas faire ça"
       }
