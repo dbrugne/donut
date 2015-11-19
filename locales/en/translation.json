@@ -339,7 +339,7 @@
       "bannedMessage": {
         "onetoone": "You have been blocked by this user",
         "room": "You are mute in this donut as requested by a moderator",
-        "confirm": "Your account is not validate, your can't do this"
+        "confirm": "Action authorized to verified accounts only. Verifiy your e-mail."
       },
       "unlock": "(Click here to unblock)"
     },
@@ -898,8 +898,8 @@
         "not-admin-owner-groupowner": "Unauthorized action.",
         "not-admin-owner": "Unauthorized action.",
         "not-allowed": "Unauthorized action.",
-        "group-banned": "You were banned from community",
-        "not-confirmed": "You can't do that, your account is not confirmed yet"
+        "not-confirmed": "Action authorized to verified accounts only. Verifiy your e-mail.",
+        "group-banned": "You were banned from community"
       }
     },
     "members": "You are now a member of #__name__",
@@ -972,6 +972,7 @@
     },
     "manageemail": {
       "label": "Manage your mails",
+      "info": "Some communities require e-mail authentication (e.g: me@university.edu). Link your emails to this account to be automatically cleared.",
       "facebook": "Address link to facebook account",
       "verified": "Address verified",
       "notverified": "Address not verified",

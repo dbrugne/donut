@@ -56,7 +56,7 @@ var validate = function (token, cb) {
       return cb('invalid');
     }
     if (_.findWhere(user.emails, {email: payload.email, confirmed: true})) {
-      return cb('already-validate');
+      return cb(null);
     }
     User.update(
       { _id: payload.id, 'emails.email': payload.email },
