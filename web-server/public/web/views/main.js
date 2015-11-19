@@ -1,7 +1,6 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
 var app = require('../libs/app');
 var client = require('../libs/client');
@@ -72,8 +71,6 @@ var MainView = Backbone.View.extend({
     'click .open-current-user-profile': 'onOpenCurrentUserProfile',
     'click .toggle-current-user-sounds': 'onToggleCurrentUserSounds',
     'click .open-user-notifications': 'onOpenUserNotifications',
-    'click .action-user-ban': 'userBan',
-    'click .action-user-deban': 'userDeban',
     'dblclick .dbl-open-user-profile': 'onOpenUserProfile',
     'click .open-room-profile': 'onOpenRoomProfile',
     'click .open-room-edit': 'openRoomEdit',
@@ -88,7 +85,17 @@ var MainView = Backbone.View.extend({
     'click .open-group-users': 'openGroupUsers',
     'click .close-discussion': 'onCloseDiscussion',
     'click .open-room-access': 'openRoomAccess',
-    'click .switch[data-language]': 'switchLanguage'
+    'click .switch[data-language]': 'switchLanguage',
+
+    'click .action-user-ban': 'userBan',
+    'click .action-user-deban': 'userDeban',
+
+    'click .op-user': 'opUser',
+    'click .deop-user': 'deopUser',
+    'click .kick-user': 'kickUser',
+    'click .ban-user': 'banUser',
+    'click .voice-user': 'voiceUser',
+    'click .devoice-user': 'devoiceUser'
   },
 
   initialize: function () {
@@ -202,7 +209,6 @@ var MainView = Backbone.View.extend({
     badge.addClass('bounce');
     $('.hover-menu-notifications').text(count);
   },
-
   _color: function (color) {
     $('body').removeClass(function (index, css) {
       return (css.match(/(dc-\S+)+/g) || []).join(' ');
@@ -222,7 +228,6 @@ var MainView = Backbone.View.extend({
   onChangeColor: function (color, temporary, reset) {
     this.color(color, temporary, reset);
   },
-
   viewportIs: function (expression) {
     var pattern = /^(<|>|=)(xs|sm|md|lg)$/;
     if (!pattern.test(expression)) {
@@ -272,7 +277,6 @@ var MainView = Backbone.View.extend({
       }
     }
   },
-
   _handleAction: function (event) {
     if (!event) {
       return false;
@@ -280,7 +284,6 @@ var MainView = Backbone.View.extend({
     event.preventDefault();
     event.stopPropagation();
   },
-
   roomDeleted: function (data) {
     if (data.was_focused) {
       app.trigger('focus');
@@ -552,7 +555,6 @@ var MainView = Backbone.View.extend({
     this.$discussionsPanelsContainer.append(view.$el);
     app.trigger('viewAdded', model, collection);
   },
-
   onCloseDiscussion: function (event) {
     this._handleAction(event);
 
@@ -603,7 +605,6 @@ var MainView = Backbone.View.extend({
       Backbone.history.navigate('#', {trigger: true});
     }
   },
-
   onRemoveGroupView: function (model, collection) {
     var view = this.views[model.get('id')];
     if (view === undefined) {
@@ -621,7 +622,6 @@ var MainView = Backbone.View.extend({
       Backbone.history.navigate('#', {trigger: true});
     }
   },
-
   userBan: function (event) {
     event.preventDefault();
 
@@ -635,7 +635,6 @@ var MainView = Backbone.View.extend({
       app.trigger('userBan');
     }, this));
   },
-
   userDeban: function (event) {
     event.preventDefault();
 
@@ -650,10 +649,72 @@ var MainView = Backbone.View.extend({
     }, this));
   },
 
+  _userRoomActions: function (event, key, confirm, input, method) {
+    event.preventDefault();
+    var elt = $(event.currentTarget);
+
+    // check that required params are set
+    if (!elt || !elt.data('user-id') || !elt.data('room-id')) {
+      return null;
+    }
+
+    // check that rooms exists in my rooms
+    var room = rooms.get(elt.data('room-id'));
+    if (!room) {
+      return null;
+    }
+
+    // check that I am op or owner or admin
+    if (!room.currentUserIsOp() && !room.currentUserIsOwner() && !room.currentUserIsAdmin()) {
+      return null;
+    }
+
+    // check that user exists in this room
+    var user = room.users.get(elt.data('user-id'));
+    if (!user) {
+      return null;
+    }
+
+    if (!_.isFunction(client[method])) {
+      return;
+    }
+
+    if (confirm) {
+      if (input) {
+        ConfirmationView.open({message: key}, function () {
+          client[method](room.get('id'), user.get('id'));
+        });
+      } else {
+        ConfirmationView.open({message: key, input: true}, function (reason) {
+          client[method](room.get('id'), user.get('id'), reason);
+        });
+      }
+    } else {
+      client[method](room.get('id'), user.get('id'));
+    }
+  },
+  opUser: function (event) {
+    return this._userRoomActions(event, 'op-room-user', true, false, 'roomOp');
+  },
+  deopUser: function (event) {
+    return this._userRoomActions(event, 'deop-room-user', true, false, 'roomDeop');
+  },
+  kickUser: function (event) {
+    return this._userRoomActions(event, 'kick-room-user', true, true, 'roomKick');
+  },
+  banUser: function (event) {
+    return this._userRoomActions(event, 'ban-room-user', true, true, 'roomBan');
+  },
+  voiceUser: function (event) {
+    return this._userRoomActions(event, '', false, false, 'roomVoice');
+  },
+  devoiceUser: function (event) {
+    return this._userRoomActions(event, 'devoice-room-user', true, true, 'roomDevoice');
+  },
+
   goToSearch: function (event) {
     app.trigger('goToSearch', event);
   },
-
   switchLanguage: function (event) {
     event.preventDefault();
     var language = $(event.currentTarget).data('language');

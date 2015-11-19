@@ -958,9 +958,9 @@
           .add-image, .add-file, .add-smiley {
             cursor: pointer;
           }
-          .text-container { padding-bottom: 10px; position:relative;
-            .overlay { display:none; background-color: black; height: 91px;   width: 100%;   position: absolute;   top: 0;   cursor: pointer; z-index: 2; .opacity(0.2);
-              .overlay-text { color: white;   position: absolute; top: 33px;   width: 100%;   text-align: center;   cursor: pointer; font-size: 20px;}
+          .text-container { margin-bottom: 10px; position:relative;
+            .overlay { display:none; background-color: black; height: 100%; width: 100%; position: absolute;   top: 0;   cursor: pointer; z-index: 2; .opacity(0.2);
+              .overlay-text { color: white; width: 100%;   text-align: center;   cursor: pointer; font-size: 20px;}
               &::after { content: ""; position: absolute; bottom: -15px; right: 17px; border-style: solid; border-width: 15px 15px 0; border-right-color: transparent; border-left-color: transparent; border-top-color: black; border-bottom-color: black; display: block; width: 0; z-index: 1; }
             }
             .text {
@@ -1024,7 +1024,7 @@
             }
           }
           &.inactive .text-container {
-            .overlay, .overlay::after { display:block; }
+            .overlay, .overlay::after { .display-flex; .align-items(center); }
           }
           .typing-container {
             position: absolute;

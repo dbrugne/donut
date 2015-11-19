@@ -14,6 +14,7 @@ var RoomUsersView = Backbone.View.extend({
 
   userPreviewTemplate: require('../templates/user-preview.html'),
 
+  maxDisplayedUsers: 52,
   timeBuffer: 200,
   timeoutShow: 0,
   timeoutHide: 0,
@@ -47,10 +48,12 @@ var RoomUsersView = Backbone.View.extend({
   render: function () {
     debug.start('room-users' + this.model.get('name'));
 
+    var models = this.collection.first(this.maxDisplayedUsers);
+
     // redraw user list
     var listJSON = [];
     var that = this;
-    _.each(this.collection.models, function (o) {
+    _.each(models, function (o) {
       var u = o.toJSON();
 
       // avatar
@@ -105,6 +108,7 @@ var RoomUsersView = Backbone.View.extend({
 
       var data = {
         user: user,
+        room_id: this.model.get('id'),
         isOwner: this.model.currentUserIsOwner(),
         isOp: this.model.currentUserIsOp(),
         isAdmin: this.model.currentUserIsAdmin()
