@@ -331,7 +331,7 @@
       "bannedMessage": {
         "onetoone": "Vous avez été bloqué par cet utilisateur",
         "room": "Vous êtes muet dans ce donut à la demande d'un modérateur",
-        "confirm": "Votre compte n'est pas validé, vous ne pouvez pas faire cela"
+        "confirm": "Action autorisée seulement pour les comptes validés. Validez votre e-mail."
       },
       "unlock": "(Cliquez ici pour le débloquer)"
     },
@@ -889,8 +889,7 @@
         "not-admin-owner": "Action non autorisée.",
         "not-allowed": "Action non autorisée.",
         "not-confirmed": "Action autorisée seulement pour les comptes validés. Validez votre e-mail.",
-        "group-banned": "Vous êtes banni de la communauté",
-        "not-confirmed": "Votre compte n'a pas été validé vous ne pouvez pas faire ça"
+        "group-banned": "Vous êtes banni de la communauté"
       }
     },
     "members": "Vous êtes maintenant membre de la communauté #__name__",
@@ -963,7 +962,6 @@
     },
     "manageemail": {
       "label": "Gérer vos emails",
-      "info": "Certaines communautés requièrent une authentification par e-mail. (ex : moi@universite.edu). Liez vos e-mails à votre compte pour être authentifié automatiquement.",
       "facebook": "Adresse lié au compte facebook",
       "verified": "Adresse mail vérifié",
       "notverified": "Adresse mail non vérifié",
