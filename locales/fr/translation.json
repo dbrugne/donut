@@ -331,7 +331,7 @@
       "bannedMessage": {
         "onetoone": "Vous avez été bloqué par cet utilisateur",
         "room": "Vous êtes muet dans ce donut à la demande d'un modérateur",
-        "confirm": "Votre compte n'est pas validé, vous ne pouvez pas faire cela"
+        "confirm": "Action autorisée seulement pour les comptes validés. Validez votre e-mail."
       },
       "unlock": "(Cliquez ici pour le débloquer)"
     },
@@ -888,8 +888,8 @@
         "not-admin-owner-groupowner": "Action non autorisée.",
         "not-admin-owner": "Action non autorisée.",
         "not-allowed": "Action non autorisée.",
-        "group-banned": "Vous êtes banni de la communauté",
-        "not-confirmed": "Votre compte n'a pas été validé vous ne pouvez pas faire ça"
+        "not-confirmed": "Action autorisée seulement pour les comptes validés. Validez votre e-mail.",
+        "group-banned": "Vous êtes banni de la communauté"
       }
     },
     "members": "Vous êtes maintenant membre de la communauté #__name__",

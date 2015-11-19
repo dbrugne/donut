@@ -49,7 +49,7 @@ handler.call = function (data, session, next) {
         return callback('not-allowed');
       }
 
-      if (user.confirmed === false) {
+      if (user.confirmed === false && room.mode !== 'public') {
         return callback('not-confirmed');
       }
 

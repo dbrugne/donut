@@ -80,10 +80,6 @@ var DrawerRoomCreateView = Backbone.View.extend({
     return (common.validate.mode(this._getMode()));
   },
   submit: function () {
-    if (!currentUser.isConfirmed()) {
-      return;
-    }
-
     this.reset();
     // name
     if (!this._valid()) {
@@ -105,6 +101,8 @@ var DrawerRoomCreateView = Backbone.View.extend({
         var uri;
         if (response.err === 'group-name-already-exist') {
           uri = urls({name: name}, 'group', 'uri');
+        } else if (response.err === 'not-confirmed') {
+          return this.setError(i18next.t('chat.form.errors.' + response.err));
         } else {
           uri = urls({group_name: this.group_name, name: name}, 'room', 'uri');
         }

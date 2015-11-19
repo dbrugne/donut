@@ -37,16 +37,20 @@ handler.call = function (data, session, next) {
 
       // realname
       if (_.has(data.data, 'realname')) {
-        if (!common.validate.realname(data.data.realname)) {
-          errors.realname = 'real-name-format';
-        } else if (!validator.isLength(data.data.realname, 2, 20)) {
-          errors.realname = 'real-name-format';
+        if (data.data.realname.length === 0) {
+          sanitized.realname = '';
         } else {
-          var realname = data.data.realname;
-          realname = validator.trim(realname);
-          realname = validator.escape(realname);
-          if (realname !== user.realname) {
-            sanitized.realname = realname;
+          if (!common.validate.realname(data.data.realname)) {
+            errors.realname = 'real-name-format';
+          } else if (!validator.isLength(data.data.realname, 2, 20)) {
+            errors.realname = 'real-name-format';
+          } else {
+            var realname = data.data.realname;
+            realname = validator.trim(realname);
+            realname = validator.escape(realname);
+            if (realname !== user.realname) {
+              sanitized.realname = realname;
+            }
           }
         }
       }

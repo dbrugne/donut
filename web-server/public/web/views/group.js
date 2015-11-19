@@ -118,6 +118,8 @@ var GroupView = Backbone.View.extend({
         if (response.err) {
           if (response.err === 'allow-pending' || response.err === 'message-wrong-format') {
             app.trigger('alert', 'error', i18next.t('chat.allowed.error.' + response.err));
+          } else if (response.err === 'not-confirmed') {
+            app.trigger('alert', 'error', i18next.t('chat.form.errors.' + response.err));
           } else {
             app.trigger('alert', 'error', i18next.t('global.unknownerror'));
           }
