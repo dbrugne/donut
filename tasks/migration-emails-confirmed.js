@@ -13,6 +13,7 @@ module.exports = function (grunt) {
       }
       if (user.facebook && user.facebook.email) {
         emails.push({email: user.facebook.email, confirmed: true});
+        user.local.email = user.facebook.email;
       }
       user.emails = emails;
       user.confirmed = true;
