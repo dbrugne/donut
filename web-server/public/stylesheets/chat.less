@@ -516,8 +516,11 @@
 
     .group { height: 100%; background-color: @cl-background2; overflow-y: auto; .scrollbar-grey-thin;
       .content {position: relative; margin: 0 20px; .display-flex; .flex-flow(column nowrap);
-        .header { padding-top: 18px; min-height: 200px;
-          .overlay-ctn  .avatar { width:150px; height:150px; .border-shadow; }
+        .header {  background-color: #FFF; margin-top: 20px; padding: 20px; min-height: 200px; border:1px solid #e1e8ed;
+          .overlay-ctn  {
+            .avatar { width:150px; height:150px; .border-shadow; }
+            .members { padding:10px; }
+          }
           .info { .justify-content(space-between); .flex(1 1 auto); font-size: 1.3rem; margin-left:15px;
             .name { font-size: 2rem; .display-inline-flex; .ft-opensans-extra-bold; line-height: 1.2; word-break: break-all; }
             .dropdown { display: inline-block; position: relative;
@@ -529,7 +532,7 @@
           .actions .btn { white-space: nowrap; }
         }
         .reason, .disclaimer { text-align: justify; font-size:1.6rem; margin-bottom:10px; }
-        .title { color:@cl-text; .ft-opensans-bold; font-size: 1.5rem; }
+        .title { color:@cl-text; .ft-opensans-bold; font-size: 2rem; text-transform: capitalize; }
         .user-list {
           .list { overflow: hidden;
             &.scrollable { overflow-y: auto; overflow-x: hidden; max-height: 90px; .scrollbar-grey-thin; }

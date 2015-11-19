@@ -128,6 +128,7 @@
     "verify": "Verification de votre email"
   },
   "global": {
+    "members": "membres",
     "discover": "découvrir",
     "group": "groupe",
     "view-profile": "voir le profil",
@@ -914,8 +915,11 @@
     "administrator": "Administrateurs",
     "users": "Utilisateurs",
     "invite": "Inviter",
-    "ask-membership": "Devenir membre",
-    "blocked": "Saisissez le mot de passe d'accès direct à la communauté"
+    "ask-membership": "demander à rejoindre la communauté",
+    "blocked": "Saisissez le mot de passe d'accès direct à la communauté",
+    "default-disclaimer": "Vous n'êtes pas encore membre de cette communauté. Cliquez sur \"demander à rejoindre la communauté\" pour en faire la demande.",
+    "disclaimer-start": "Vous n'êtes pas encore membre de cette communauté. ",
+    "disclaimer-end": " a décrit les conditions d'accès ci-dessous :"
   },
   "account": {
     "error": {

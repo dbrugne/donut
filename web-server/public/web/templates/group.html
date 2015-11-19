@@ -3,7 +3,7 @@
         <div class="overlay-ctn  ">
             <img class="avatar group open-group-profile curp" data-group-id="<%= group.group_id %>" src="<%= group.avatarUrl %>" alt="<%= group.identifier %> avatar">
             <div class="members fs20 text-center">
-                <i class="icon icon-user-custom dc-text"></i> <%=group.members.length%>
+                <strong><%=group.members.length%></strong> <%= t('global.members') %>
             </div>
         </div>
         <div class="info">
@@ -63,13 +63,6 @@
                 <% if(!isBanned) { %>
                     <span class="curp open-create-room btn-block btn btn-primary" data-group-id="<%=group.group_id%>" data-group-name="<%=group.name%>"><%= t('actions.create') %></span>
                 <% } %>
-            <% } else { %>
-                <% if (!isBanned) { %>
-                    <span class="curp btn btn-block btn-primary request-allowance"><%= t('group.ask-membership') %></span>
-                    <% if (group.has_password) { %>
-                        <span class="curp btn btn-block btn-primary send-password mb5 password-div"><%= t('actions.direct-access') %></span>
-                    <% } %>
-                <% } %>
             <% } %>
 
             <% if (isOwner || isOp || isAdmin) { %>
@@ -80,7 +73,20 @@
 
     <% if (!isMember && !isBanned) { %>
         <div class="disclaimer mt10 alert alert-warning" role="alert">
-            <%= group.disclaimer %>
+            <% if (group.disclaimer) { %>
+                <p><%= t('group.disclaimer-start') %><strong><span class="open-user-profile fs15 dc-text" data-user-id="<%=group.owner_id %>">@<%=group.owner_username%></span></strong><%= t('group.disclaimer-end') %></p>
+                <p class="mt10"><i class="icon icon-quote"></i> <em><%= group.disclaimer %></em></p>
+            <% } else { %>
+                <p><%= t('group.default-disclaimer') %></p>
+            <% } %>
+
+            <div class="pull-right mt5">
+                <span class="curp btn btn-block btn-primary request-allowance"><%= t('group.ask-membership') %></span>
+                <% if (group.has_password) { %>
+                    <span class="curp btn btn-block btn-primary send-password mb5 password-div"><%= t('actions.direct-access') %></span>
+                <% } %>
+            </div>
+
         </div>
     <% } %>
 

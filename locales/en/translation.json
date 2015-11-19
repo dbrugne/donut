@@ -128,6 +128,7 @@
     "verify": "Verification of your email"
   },
   "global": {
+    "members": "members",
     "discover": "discover",
     "group": "group",
     "view-profile": "view profile",
@@ -914,8 +915,11 @@
     "administrator": "Administrators",
     "users": "Users",
     "invite": "Invite",
-    "ask-membership": "Request membership",
-    "blocked": "This community is blocked by a password, to join we invite you to type it"
+    "ask-membership": "request to join the community",
+    "blocked": "This community is blocked by a password, to join we invite you to type it",
+    "default-disclaimer": "You are not yet a member of this community. Click \"request to join the community\" to apply for.",
+    "disclaimer-start": "You are not yet a member of this community.",
+    "disclaimer-end": " described the access conditions below :"
   },
   "account": {
     "error": {
