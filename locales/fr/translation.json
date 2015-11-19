@@ -128,6 +128,7 @@
     "verify": "Verification de votre email"
   },
   "global": {
+    "discover": "découvrir",
     "group": "groupe",
     "view-profile": "voir le profil",
     "view-group": "voir le groupe",
@@ -155,6 +156,7 @@
     "offline": "hors ligne",
     "connecting": "connexion ...",
     "permalink": "permalien",
+    "links": "liens",
     "search": "Recherche",
     "by": "par",
     "one": "un",
@@ -163,6 +165,8 @@
       "after": " ?"
     },
     "switchlanguage": "Langue",
+    "french": "Français",
+    "english": "Anglais",
     "unknownerror": "Erreur inconnue, veuillez réessayer",
     "notconfirmed": "Votre compte n'a pas été validé, cliquer ici pour gérer vos emails",
     "mode": {
@@ -312,6 +316,10 @@
     },
     "loading": "Chargement ",
     "actions": {
+      "volume": {
+        "up": "jouer tous les sons",
+        "down": "ne jouer aucun sons"
+      },
       "search": "Chercher",
       "searchuser": "Inviter un utilisateur",
       "banuser": "Bannir un utilisateur",
@@ -321,7 +329,7 @@
       "edit": "mon profil",
       "notifications": "notifications",
       "close": "quitter la discussion",
-      "preferences": "préférences & notifications",
+      "preferences": "préférences & notifs",
       "bannedusers": "utilisateurs bloqués",
       "update": "Editer",
       "see": "Voir",
@@ -336,14 +344,16 @@
       "unlock": "(Cliquez ici pour le débloquer)"
     },
     "help": "Aide",
-    "placeholder": "Déplacer ici",
+    "room-discussion": {
+      "input-placeholder": "cliquez ici pour taper un message"
+    },
     "createadonut": "Nouveau",
     "home": {
       "roomstitle": "Bienvenue sur DONUT, voici quelques donuts actifs. Si vous n'en trouvez pas à votre goût, <a href=\"#\" class='open-create-room'>créez-en un !</a>",
       "userstitle": "Utilisateurs"
     },
     "search": {
-      "placeholder": "Recherchez un donut, une communauté ou un utilisateur ici",
+      "placeholder": "Recherchez",
       "noresults": "Aucun résultat de recherche",
       "roomstitle": "Voici les donuts correspondant à votre recherche, vous pouvez aussi en <a class='open-create-room'>créer un nouveau</a> :",
       "userstitle": "Utilisateurs correspondants",
@@ -355,11 +365,8 @@
       "search_in_rooms": "chercher des donuts",
       "search_in_groups": "chercher des communautés"
     },
-    "userscount": "<strong>__count__</strong> <span>utilisateur dans ce donut</span>",
-    "userscount_plural": "<strong>__count__</strong> <span>utilisateurs dans ce donut</span>",
-    "usersonlinecount": "<strong>__count__</strong> <span>utilisateur en ligne dans ce donut</span>",
-    "usersonlinecount_plural": "<strong>__count__</strong> <span>utilisateurs en ligne dans ce donut</span>",
-    "usersoffline": "Utilisateurs hors ligne",
+    "userscount": "<strong>__count__</strong> utilisateur",
+    "userscount_plural": "<strong>__count__</strong> utilisateurs",
     "topic": {
       "label": "En ce moment",
       "placeholder": "Entrez ici le sujet de la conversation, l'humeur, l'ambiance ...",
@@ -367,10 +374,12 @@
       "users": "Liste des utilisateurs de ce donut"
     },
     "owner": {
+      "state": "créateur",
       "is": "Cet utilisateur est le créateur de ce donut",
       "isgroup": "Cet utilisateur est le créateur de cette communauté"
     },
     "op": {
+      "state": "modérateur",
       "is": "Cet utilisateur est modérateur de ce donut",
       "isgroup": "Cet utilisateur est modérateur de cette communauté",
       "infobox": "Faire modérateur"
@@ -410,6 +419,7 @@
       "infobox": "Rendre la parole"
     },
     "devoice": {
+      "state": "muet",
       "infobox": "Rendre muet"
     },
     "profile": {
@@ -591,7 +601,7 @@
       "users": "Utilisateur",
       "users_plural": "Utilisateurs",
       "link": "Liste des utilisateurs",
-      "label": "Voir tous les utilisateurs",
+      "label": "Voir tous",
       "search": "rechercher des utilisateurs dans ce donut",
       "search-group": "rechercher des utilisateurs dans cette community",
       "type": {
@@ -647,7 +657,7 @@
         "<p>Cette conversation est privée donc uniquement accessible aux utilisateurs autorisés de même que l'historique.</p>",
         "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
       ],
-      "onetoone": "<p><strong>@__username__</strong> n'est pas en ligne, les nouveaux messages lui seront remis à sa prochaine connexion.</p>"
+      "onetoone": ", les nouveaux messages lui seront remis à sa prochaine connexion"
     },
     "connection": {
       "connected": "Connecté ! Chargement de l'interface ...",
@@ -968,7 +978,7 @@
       "notverified": "Adresse mail non vérifié",
       "send": "Renvoyer un email de validation",
       "delete": "Supprimer",
-      "noresult": "Aucunes adresse mail trouvées",
+      "noresult": "Aucune adresse mail trouvée",
       "main": "Principal",
       "add": "Ajouter une adresse",
       "errors": {

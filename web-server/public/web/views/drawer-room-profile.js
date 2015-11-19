@@ -41,7 +41,6 @@ var DrawerRoomProfileView = Backbone.View.extend({
   render: function () {
     // render spinner only
     this.$el.html(require('../templates/spinner.html'));
-
     return this;
   },
   onResponse: function (room) {
@@ -88,6 +87,10 @@ var DrawerRoomProfileView = Backbone.View.extend({
         return '<div class="username" style="' + this.dataset.bgcolor + '">@' + this.dataset.username + '</div>';
       }
     });
+  },
+  updateCount: function (count) {
+    this.$badge.text(count);
+    this.$badgeResponsive.text(count);
   }
 
 });

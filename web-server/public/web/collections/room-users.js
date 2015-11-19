@@ -7,6 +7,7 @@ var UserModel = require('../models/user');
 
 var RoomUsersCollection = Backbone.Collection.extend({
   model: UserModel,
+
   comparator: function (model1, model2) {
     // create strings (sortable as string: aabfoobar)
     var string1 = '';
@@ -116,7 +117,7 @@ var RoomUsersCollection = Backbone.Collection.extend({
     }, _.bind(function (data) {
       this.reset();
 
-      _.each(data.users, _.bind(function (user) {
+      _.find(data.users, _.bind(function (user) {
         // false: avoid automatic sorting on each model .add()
         this.addUser(user, false);
       }, this));

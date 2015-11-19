@@ -1,83 +1,94 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var i18next = require('i18next-client');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
+var currentUser = require('../models/current-user');
+var i18next = require('i18next-client');
 var date = require('../libs/date');
+var urls = require('../../../../shared/util/url');
 
-var NotificationsView = Backbone.View.extend({
-  el: $('#notifications'),
+var DrawerUserNotificationsView = Backbone.View.extend({
+  template: require('../templates/drawer-user-notifications.html'),
 
-  dropdownIsShown: false,
+  id: 'user-notifications',
 
   shouldScrollTopOnNextShow: false,
 
   isThereMoreNotifications: false,
 
-  events: {
-    'click .dropdown-menu .actions': 'onReadMore',
-    'click .action-tag-as-read': 'onTagAsRead',
-    'click .action-tag-as-done': 'onTagAsDone',
-    'show.bs.dropdown': 'onShow',
-    'shown.bs.dropdown': 'onShown',
-    'hide.bs.dropdown': 'onHide'
-  },
-
   timeToMarkAsRead: 1500, // mark notifications as read after n seconds
 
-  markHasRead: null,
+  events: {
+    'click .actions .read-more': 'onReadMore',
+    'click .action-tag-as-read': 'onTagAsRead',
+    'click .action-tag-as-done': 'onTagAsDone'
+  },
+
+  unread: 0,
+
+  more: false,
 
   initialize: function (options) {
+    this.userId = options.user_id;
+
     this.listenTo(client, 'notification:new', this.onNewNotification);
     this.listenTo(client, 'notification:done', this.onDoneNotification);
 
-    this.unread = 0;
-    this.more = false;
-    this.render();
-  },
-  initializeNotificationState: function (data) {
-    this.$menu.html('');
-    this.$dropdown.parent().removeClass('open');
-    if (data.unread) {
-      this.setUnreadCount(data.unread);
-    }
+    this.$badge = $('#notifications').find('.unread-count').first();
+    this.$badgeResponsive = $('.hover-menu-notifications');
+
+    this.render(); // show spinner as temp content
+
+    client.notificationRead(null, null, 10, _.bind(function (data) {
+      this.$el.html(this.template({}));
+
+      this.$unreadCount = this.$('.unread-count');
+      this.$count = this.$unreadCount.find('.nb');
+      this.$menu = this.$('#main-navbar-messages');
+      this.$scrollable = this.$('.messages-list-ctn');
+      this.$actions = this.$scrollable.find('.actions');
+      this.$readMore = this.$actions.find('.read-more');
+      this.$loader = this.$actions.find('.loading');
+
+      var html = '';
+      var unread = 0;
+      _.each(data.notifications, _.bind(function (element) {
+        html += this.renderNotification(element);
+        if (element.viewed === false) {
+          unread++;
+        }
+      }, this));
+      this.$menu.html(this.$menu.html() + html);
+      if (this.unread !== unread) {
+        this.unread += unread;
+        this.setUnreadCount(this.unread);
+      }
+
+      var that = this;
+      this.markHasRead = setTimeout(function () {
+        that.clearNotifications();
+      }, this.timeToMarkAsRead);
+      this.toggleReadMore();
+    }, this));
   },
   render: function () {
-    this.$dropdown = this.$('.dropdown-toggle');
-    this.$badge = this.$('.badge').first();
-    this.$count = this.$('.unread-count .nb').first();
-    this.$menu = this.$('.dropdown-menu #main-navbar-messages');
-    this.$scrollable = this.$('.dropdown-menu .messages-list-ctn');
-    this.$actions = this.$('.dropdown-menu .messages-list-ctn .actions');
-    this.$readMore = this.$actions.find('.read-more');
-    this.$loader = this.$actions.find('.loading');
-
-    this.$dropdown.dropdown();
-
+    this.$el.html(require('../templates/spinner.html'));
     return this;
   },
-  scrollTop: function () {
-    if (this.dropdownIsShown || this.shouldScrollTopOnNextShow) {
-      this.$scrollable.scrollTop(0);
-    } else {
-      this.shouldScrollTopOnNextShow = true;
-    }
-  },
   setUnreadCount: function (count) {
+    this.updateCount(count);
     if (count > 0) {
-      this.$badge.text(count);
-      this.$count.html(count);
-      this.el.classList.remove('empty');
-      this.el.classList.add('full');
+      this.$count.html(count); // update count in drawer
+      this.$unreadCount.removeClass('empty');
+      this.$unreadCount.addClass('full');
     } else {
-      this.el.classList.add('empty');
-      this.el.classList.remove('full');
+      this.$unreadCount.addClass('empty');
+      this.$unreadCount.removeClass('full');
     }
     this.unread = count;
   },
-
   // A new Notification is pushed from server
   onNewNotification: function (data) {
     // Update Badge & Count
@@ -93,19 +104,16 @@ var NotificationsView = Backbone.View.extend({
     // Insert new notification in dropdown
     this.$menu.html(this.renderNotification(data) + this.$menu.html());
 
-    // Dropdown is opened
-    if (this.el.classList.contains('open')) {
-      // Set Timeout to clear new notification
-      this.markHasRead = setTimeout(function () {
-        that.clearNotifications();
-      }, this.timeToMarkAsRead);
-    }
+    // Set Timeout to clear new notification
+    this.markHasRead = setTimeout(function () {
+      that.clearNotifications();
+    }, this.timeToMarkAsRead);
 
     // if more than 10 notifications in notification center
     this.isThereMoreNotifications = true;
 
     this.toggleReadMore();
-    this.scrollTop();
+    this.$scrollable.scrollTop(0);
     this._createDesktopNotify(data);
   },
   _createDesktopNotify: function (data) {
@@ -151,7 +159,9 @@ var NotificationsView = Backbone.View.extend({
       n.title = n.data.by_user.username;
     }
 
-    n.username = (n.data.by_user) ? n.data.by_user.username : n.data.user.username;
+    n.username = (n.data.by_user)
+      ? n.data.by_user.username
+      : n.data.user.username;
     var message = (n.data.message)
       ? common.markup.toText(n.data.message)
       : '';
@@ -159,23 +169,31 @@ var NotificationsView = Backbone.View.extend({
       name: n.name,
       username: n.username,
       message: message,
-      topic: (n.data.topic) ? common.markup.toText(n.data.topic) : ''
+      topic: (n.data.topic)
+        ? common.markup.toText(n.data.topic)
+        : ''
     });
 
     if (['roomjoinrequest', 'groupjoinrequest', 'usermention'].indexOf(n.type) !== -1) {
-      var avatar = (n.data.by_user) ? n.data.by_user.avatar : n.data.user.avatar;
+      var avatar = (n.data.by_user)
+        ? n.data.by_user.avatar
+        : n.data.user.avatar;
       n.avatar = common.cloudinary.prepare(avatar, 90);
     }
     if (n.type === 'roomjoinrequest') {
       n.href = '';
       n.css += 'open-room-access';
-      var roomId = (n.data.room._id) ? n.data.room._id : n.data.room.id;
+      var roomId = (n.data.room._id)
+        ? n.data.room._id
+        : n.data.room.id;
       n.html += 'data-room-id="' + roomId + '"';
       n.username = null;
     } else if (n.type === 'groupjoinrequest') {
       n.href = '';
       n.css += 'open-group-access';
-      var groupId = (n.data.group._id) ? n.data.group._id : n.data.group.id;
+      var groupId = (n.data.group._id)
+        ? n.data.group._id
+        : n.data.group.id;
       n.html += 'data-group-id="' + groupId + '"';
       n.username = null;
     } else if (n.type === 'roomdelete') {
@@ -192,48 +210,6 @@ var NotificationsView = Backbone.View.extend({
       from_now_short: date.shortDayMonthTime(n.time)
     });
   },
-  // User clicks on the notification icon in the header
-  onShow: function (event) {
-    this.scrollTop();
-    if (this.countNotificationsInDropdown()) {
-      this.markHasRead = setTimeout(_.bind(function () {
-        this.clearNotifications();
-      }, this), this.timeToMarkAsRead);
-    }
-
-    if (this.countNotificationsInDropdown() >= 10) {
-      return;
-    }
-
-    client.notificationRead(null, this.lastNotifDisplayedTime(), 10, _.bind(function (data) {
-      this.isThereMoreNotifications = data.more;
-      var html = '';
-      _.each(data.notifications, _.bind(function (element) {
-        html += this.renderNotification(element);
-      }, this));
-      this.$menu.html(this.$menu.html() + html);
-      this.toggleReadMore();
-    }, this));
-
-    if (!this.countNotificationsInDropdown()) {
-      this.markHasRead = setTimeout(_.bind(function () {
-        this.clearNotifications();
-      }, this), this.timeToMarkAsRead);
-    }
-  },
-  onShown: function (event) {
-    this.dropdownIsShown = false;
-    if (this.shouldScrollTopOnNextShow) {
-      this.scrollTop();
-      this.shouldScrollTopOnNextShow = false;
-    }
-  },
-
-  onHide: function (event) {
-    this.dropdownIsShown = false;
-    clearTimeout(this.markHasRead);
-  },
-
   clearNotifications: function () {
     var unreadNotifications = this.$menu.find('.message.unread');
     var that = this;
@@ -260,11 +236,6 @@ var NotificationsView = Backbone.View.extend({
       that.markHasRead = null;
     }, this));
   },
-
-  redraw: function () {
-    return this.render();
-  },
-
   // When user clicks on the read more link in the notification dropdown
   onReadMore: function (event) {
     event.stopPropagation(); // Cancel dropdown close behaviour
@@ -288,10 +259,13 @@ var NotificationsView = Backbone.View.extend({
         that.clearNotifications();
       }, this.timeToMarkAsRead);
 
-      this.toggleReadMore();
+      if (data.more) {
+        this.$actions.removeClass('hidden');
+      } else {
+        this.$actions.addClass('hidden')
+      }
     }, this));
   },
-
   lastNotifDisplayedTime: function () {
     var last = this.$menu.find('.message').last();
     var time = (!last || last.length < 1)
@@ -299,20 +273,18 @@ var NotificationsView = Backbone.View.extend({
       : last.data('time');
     return time;
   },
-
   toggleReadMore: function () {
     // Only display if at least 10 messages displayed, and more messages to display on server
     if (this.countNotificationsInDropdown() < 10) {
       return this.$actions.addClass('hidden');
     }
 
-    if (!this.isThereMoreNotifications) {
+    if (!this.toggleReadMore) {
       this.$actions.addClass('hidden');
     } else {
       this.$actions.removeClass('hidden');
     }
   },
-
   onTagAsRead: function (event) {
     // Ask server to set notifications as viewed, and wait for response to set them likewise
     client.notificationViewed([], true, _.bind(function (data) {
@@ -325,14 +297,12 @@ var NotificationsView = Backbone.View.extend({
       this.setUnreadCount(0);
     }, this));
   },
-
   onTagAsDone: function (event) {
     event.preventDefault();
     var message = $(event.currentTarget).parents('.message');
     client.notificationDone(message.data('notification-id'), true);
     return false;
   },
-
   // A Notification is tagged as done on the server
   onDoneNotification: function (data) {
     clearTimeout(this.markHasRead);
@@ -356,7 +326,14 @@ var NotificationsView = Backbone.View.extend({
   },
   countNotificationsInDropdown: function () {
     return this.$menu.find('.message').length;
+  },
+  updateCount: function (count) {
+    this.$badge.text(count);  // update badge in left navigation
+    if (count === 0) {
+      this.$badge.text('');
+    }
+    this.$badgeResponsive.text(count); // update badge in left navigation on responsive mode
   }
 });
 
-module.exports = NotificationsView;
+module.exports = DrawerUserNotificationsView;

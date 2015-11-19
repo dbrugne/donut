@@ -36,6 +36,8 @@ h6 { font-size: 1.1rem; font-style: normal; font-weight: normal; line-height:1.1
 
 *******************************************************************************/
 
+.cl-nav-left-back         { color: @cl-nav-left-back !important; }
+
 //.cl-background            { color: @cl-background !important ;}
 //.cl-first                 { color: @cl-first !important ;}
 //.cl-first-dark-15         { color: @cl-first-dark-15 !important ;}
@@ -66,7 +68,7 @@ h6 { font-size: 1.1rem; font-style: normal; font-weight: normal; line-height:1.1
 //.cl-wisteria              { color: @cl-wisteria !important ;}
 //.cl-wet_asphalt           { color: @cl-wet_asphalt !important ;}
 //.cl-midnight_blue         { color: @cl-midnight_blue !important ;}
-//.cl-sun_flower            { color: @cl-sun_flower !important ;}
+.cl-sun_flower            { color: @cl-sun_flower !important ;}
 //.cl-orange                { color: @cl-orange !important ;}
 //.cl-carrot                { color: @cl-carrot !important ;}
 //.cl-pumpkin               { color: @cl-pumpkin !important ;}
@@ -128,7 +130,7 @@ h6 { font-size: 1.1rem; font-style: normal; font-weight: normal; line-height:1.1
   }
 }
 
-.drawer-btn { display: inline-block; margin-bottom: 0; text-align: center; vertical-align: middle; touch-action: manipulation; cursor: pointer; background-image: none; white-space: nowrap; padding: 6px 12px; font-size: 14px; line-height: 1.42857143; .border-radius(90px); .user-select(none); font-family: 'Raleway',sans-serif; font-weight: 500; text-transform: uppercase; border: 4px solid @cl-subtext40; background-color: #fff; color: @cl-subtext40; text-decoration: none !important;
+.drawer-btn { display: inline-block; margin-bottom: 0; text-align: center; vertical-align: middle; touch-action: manipulation; cursor: pointer; background-image: none; white-space: nowrap; padding: 6px 12px; font-size: 14px; line-height: 1.42857143; .border-radius(90px); .user-select(none); .ft-opensans-bold; text-transform: uppercase; border: 4px solid @cl-subtext40; background-color: #fff; color: @cl-subtext40; text-decoration: none !important;
   &:hover { color: @cl-text; text-decoration: none; }
 }
 
@@ -205,77 +207,30 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
     background-color: #f5f5f5;
   }
 }
-.big-button-light { color:@cl-text; border-color:@cl-text; background: transparent; .user-select(none); background-image: none; border-style:solid; border-width:4px; .border-radius(90px); box-sizing: border-box; cursor: pointer; display: inline-block; .ft-raleway-medium; font-size: 12px; font-weight: 500; line-height: 21px; margin: 0; padding: 5px 10px; text-align: center; text-decoration: none; text-transform: uppercase; touch-action: manipulation; vertical-align: middle; white-space: nowrap;
-  &:hover { text-decoration:underline; }
-  &.cl-first { color:@cl-first; border-color:@cl-first; background-color: #FFF;
-    &:hover { color: @cl-first; }
-  }
-}
 
 .btn {
-  &.btn-success { .button-variant(@cl-clouds; @cl-emerald; @cl-green_sea); }
-  &.btn-primary { .button-variant(@cl-clouds; @cl-first; @cl-first-dark-10); }
+  &.btn-success {
+    .don-button-variant(@cl-emerald, @cl-green_sea, #FFF, @cl-green_sea );
+  }
+  &.btn-pink {
+    .don-button-variant(@cl-first, @cl-first-dark-10, #FFF, @cl-first-dark-10 );
+  }
+  &.btn-primary {
+    .don-button-variant(@cl-nav-left-back, @cl-nav-left-back-darker, @cl-clouds, @cl-nav-left-back-darker );
+  }
   &.btn-default {
-    border: 1px solid @cl-border;
-    .border-radius(4px);
-    align-items: flex-start;
-    background-attachment: scroll;
-    background-clip: border-box;
-    background-color: rgb(245, 248, 250);
-    background-image: linear-gradient(rgb(255, 255, 255), rgb(245, 248, 250));
-    background-origin: padding-box;
-    background-repeat: no-repeat;
-    color: rgb(41, 47, 51);
-    cursor: pointer;
-    display: inline-block;
-    font-size: 13px;
-    font-weight: bold;
-    padding: 3px 11px 5px;
-    text-align: center;
-    &:hover {
-      background-color: @cl-border;
-      background-image: linear-gradient(#fff,@cl-border);
-      border-color: @cl-border;
-    }
+    .don-button-variant(#FFF, rgb(245, 248, 250), rgb(41, 47, 51), @cl-border );
   }
-}
-
-.button { padding: 10px 15px; text-transform: uppercase; background-color: @cl-first; border: 0; color: #fff; text-decoration:none; text-align: center; .display-flex; .align-items(baseline);
-  &:hover { text-decoration: none; background-color: lighten(@cl-first, 10%); }
-  &.square { .border-radius(0); }
-
-  &.button-blue { background: @cl-second;
-    &:hover { background-color: lighten(@cl-second, 10%); }
-  }
-
-  &.button-gray { background: @cl-subtext20;
-    &:hover { background-color: darken(@cl-subtext20, 10%); }
-  }
-
-  &.button-white { background: #FFF; color:@cl-subtext50;
-    &:hover { background-color: @cl-clouds; }
-  }
-
-  &.button-small { padding: 7px 12px; font-size: 1.3rem; display: flex; }
-  &.button-big { padding: 12px 20px; font-size: 1.5rem; display: flex; }
+  &.btn-big { font-size:1.8rem; padding: 10px 18px; }
+  &.btn-sm { font-size:1rem; padding: 3px 11px 3px; }
 
   &.loading { position:relative; .opacity(0.65); background-color: @cl-subtext15; cursor: not-allowed; color: #FFFFFF; padding: 10px 15px 10px 35px;
     &:after { .icon-spinner; .spin; position: absolute; left: 10px; font-size: inherit; margin-top: 1px; }
-    &.button-big {  padding: 12px 20px 12px 40px;
-      &:after { margin-top: 2px; }
-    }
     &:hover { background-color:@cl-subtext15 !important; }
   }
 }
-
-.big-button { padding: 12px 20px; .ft-raleway-medium; font-size: 1.7em; text-transform:uppercase; .border-radius(90px); }
-.btn-facebook { margin-top: 10px; position: relative; margin-bottom: 15px; background-color: #4a649d; color: @cl-background; text-transform: uppercase; border-radius: 25px; padding: 11px 20px; .ft-raleway-medium; font-size: 1.3rem;
-  span { margin-left: 7px; color: @cl-background; }
-  i { font-size: 1.4em; margin-right: 2px; vertical-align: middle; color: @cl-background; }
-  &:hover { color: @cl-background;
-    i { color: @cl-background; }
-    span { color: @cl-background; }
-  }
+.offline .btn {
+  .don-button-variant(@cl-subtext20, @cl-subtext20, #FFF, @cl-subtext30 );
 }
 
 .nav.nav-pills {
@@ -344,7 +299,7 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
     .img-circle;
   }
   .name {
-    .ft-raleway-heavy;
+    .ft-opensans-extra-bold;
     font-size: 2.0em;
     line-height: 1.2;
     word-break: break-all;
@@ -376,7 +331,7 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   .join {
     a {
       position: relative;
-      .ft-raleway-medium;
+      .ft-opensans-bold;
       .border-radius(100px);
       text-transform: uppercase;
       padding: 15px 20px;
@@ -391,42 +346,15 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   }
 }
 
-/* User profiles common style */
 .user {
   p { margin-bottom: 0; }
   .username {
-    .ft-raleway-heavy;
+    .ft-opensans-extra-bold;
     font-size: 2.0em;
     line-height: 1.2;
   }
   .othername { color: @cl-subtext20; font-weight: normal; }
   .bio { .ft-opensans; font-size: 1em; margin-bottom: 20px; }
-  .website {}
-  .discuss {
-    a {
-      text-transform: uppercase;
-      padding: 15px 18px;
-      font-size: 14px;
-      i {
-        color: @cl-warning;
-      }
-    }
-  }
-  .discuss:hover, .offline:hover {
-    a {
-      text-decoration: none;
-    }
-  }
-  .offline {
-    a {
-      background-color: @cl-neutral;
-      color: #ffffff;
-      .ft-raleway-medium;
-      .border-radius(100px);
-      padding: 0.9em 1.2em;
-      text-transform: uppercase;
-    }
-  }
 }
 
 .method-facebook {   background-color: rgb(70, 107, 166); color: #FFF; .border-radius(5px);
@@ -499,4 +427,21 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
 
 .bordered-left { border-left: 5px solid @cl-subtext15; padding-left: 10px; }
 
+.userstatus { width: 12px; height: 12px; background-color: #fff; .border-radius(50%); display: inline-block; border: 2px solid #FFF;
+  &.online { .box-shadow(inset 0 0 0 5px @cl-success); }
+  &.offline { .box-shadow(inset 0 0 0 5px @cl-subtext15); }
+  &.connecting { .box-shadow(inset 0 0 0 5px @cl-warning); }
+  &.error { .box-shadow(inset 0 0 0 5px @cl-pomegranate); }
+}
+
+.show-loading { display:none; }
+.loading {
+  .show-loading { display:block; }
+  .hide-loading { display:none; }
+}
+
 table tr:hover { outline: 1px solid @cl-subtext15; background-color: @cl-subtext5 !important; }
+
+.tooltip {
+  .transition(none);
+}

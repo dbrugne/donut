@@ -2,7 +2,7 @@
 
 <div class="group">
     <div class="side roomside">
-        <div class="users hidden-sm hidden-xs">
+        <div class="users  ">
             <div class="scrollable">
                 <div class="title dc-text-contrast"><%= t('group.administrator') %></div>
                 <div class="list op">
@@ -24,11 +24,11 @@
 
     <div class="content">
         <div class="header room">
-            <div class="overlay-ctn hidden-xs hidden-sm">
+            <div class="overlay-ctn  ">
                 <img class="avatar group open-group-profile curp" data-group-id="<%= group.group_id %>" src="<%= group.avatar %>" alt="<%= group.name %> avatar">
                 <p class="joinroom"><a class="dc-back dc-text-contrast" href="<% if (!user) { %><%= group.join %><% } else { %><%= group.chat %><% } %>"><%= t('actions.join') %> <% if (group.membersCount) { %><%= group.membersCount %><% } %> <i class="icon icon-user-custom"></i></a></p>
             </div>
-            <div class="info hidden-xs hidden-sm">
+            <div class="info  ">
                 <div class="name open-group-profile curp" data-group-id="<%= group.group_id %>">
                     #<%= group.name %>
                 </div>

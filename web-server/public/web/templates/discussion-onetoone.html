@@ -1,38 +1,34 @@
 <div class="side oneside dc-back <% if (!poster) { %>poster-empty<% } %>" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>"></div>
 <div class="content" id="onetoone">
-    <div class="visible-xs visible-sm">
-        <div class="mini-header user <% if (banned === true) { %> is-banned <% } %>">
-            <div class="avatar relative open-user-profile" data-user-id="<%= user_id %>">
-                <img class="dc-border-lighter" src="<%= avatar %>" alt="<%= username %> avatar">
-            </div>
-            <span class="name open-user-profile dc-text-contrast" data-user-id="<%= user_id %>"><%= username %></span>
-            <div class="info mt5"><%= dropdown %></div>
-        </div>
-    </div>
     <div class="header user <% if (banned === true) { %> is-banned <% } %>">
-        <div class="avatar relative open-user-profile  hidden-xs hidden-sm" data-user-id="<%= user_id %>">
+        <div class="avatar relative open-user-profile border-shadow" data-user-id="<%= user_id %>">
             <img src="<%= avatar %>" alt="<%= username %> avatar">
         </div>
-        <div class="info hidden-xs hidden-sm">
-            <span class="username open-user-profile" data-user-id="<%= user_id %>"><% if (typeof realname !== "undefined") { %><%= realname %>&nbsp;<span class="othername">@<%= username %></span><% } else { %>@<%= username %><% } %></span>
+        <div class="info flex-parent center">
+            <span class="name open-user-profile" data-user-id="<%= user_id %>"><% if (typeof realname !== "undefined") { %><%= realname %>&nbsp;<span class="othername">@<%= username %></span><% } else { %>@<%= username %><% } %></span>
 
-            <%= dropdown %>
-
-            <span class="hidden-xs hidden-sm">
-                <span class="location"><%= location %></span><% if (location && website) { print(', '); } %>
-                <% if (website) { %>
-                <a class="website dc-text" href="<%= website.href %>" target="_blank" title="<%= website.title %>"><%= website.title %></a>
-                <% } %>
-            </span>
+            <div class="flex-parent">
+                <span class="  flex-parent center">
+                    <span class="location"><%= location %></span>
+                </span>
+                <%= dropdown %>
+            </div>
         </div>
         <div class="status-block">
             <i class="icon icon-dot-circle-o status contrast"></i>
             <em>
-                <span class="display-online"><%= t('global.online') %></span>
-                <span class="display-offline"><%= t('global.offline') %></span>
+                <span class="display-online">
+                    <%= t('global.online') %>
+                </span>
+                <span class="display-offline">
+                    <%= t('global.offline') %>
+                </span>
             </em>
-            <span class="ago visible-offline">(<%= t('profile.user.onlined', {time: '<span data-time="'+onlined+'"></span>'}) %>)</span>
-            <span class="show-if-banned hidden-xs hidden-sm">
+            <span class="ago display-offline">(<%= t('profile.user.onlined', {time: '<span data-time="'+onlined+'"></span>'}) %>)</span>
+            <span class="hello-block   display-offline">
+                <%= t('chat.welcome.onetoone') %>
+            </span>
+            <span class="show-if-banned  ">
                 <span class="banned-status">
                     &nbsp;-&nbsp;<%= t('chat.actions.banned') %>&nbsp;
                     <span class="action-user-deban" data-user-id="<%= user_id %>" style="cursor: pointer; text-decoration: underline;">
@@ -40,9 +36,6 @@
                     </span>
                 </span>
             </span>
-            <div class="hello-block hidden-xs hidden-sm visible-offline">
-                <%= t('chat.welcome.onetoone', {username: username}) %>
-            </div>
         </div>
     </div>
     <div class="date-ctn hidden"></div>
