@@ -972,6 +972,7 @@
     },
     "manageemail": {
       "label": "Gérer vos emails",
+      "info": "Certaines communautés requièrent une authentification par e-mail. (ex : moi@universite.edu). Liez vos e-mails à votre compte pour être authentifié automatiquement.",
       "facebook": "Adresse lié au compte facebook",
       "verified": "Adresse mail vérifié",
       "notverified": "Adresse mail non vérifié",
