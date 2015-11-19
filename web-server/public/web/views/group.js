@@ -65,7 +65,8 @@ var GroupView = Backbone.View.extend({
       isOwner: isOwner,
       isAdmin: isAdmin,
       isBanned: !!this.bannedObject,
-      group: group
+      group: group,
+      created: date.longDate(group.created)
     };
     if (typeof this.bannedObject !== 'undefined') {
       data.banned_at = date.longDate(this.bannedObject.banned_at);
@@ -88,11 +89,10 @@ var GroupView = Backbone.View.extend({
     });
 
     this.groupUsersView = new GroupUsersView({
-      el: this.$('.side .users'),
+      el: this.$('.users.user-list'),
       model: this.model
     });
 
-    this.initializeTooltips();
     return this;
   },
   removeView: function () {
@@ -151,20 +151,6 @@ var GroupView = Backbone.View.extend({
       }, this));
     }, this));
   },
-  initializeTooltips: function () {
-    this.$('[data-toggle="tooltip"][data-type="room-mode"]').tooltip({
-      container: 'body'
-    });
-    this.$('[data-toggle="tooltip"][data-type="room-users"]').tooltip({
-      html: true,
-      animation: false,
-      container: 'body',
-      template: '<div class="tooltip tooltip-home-users" role="tooltip"><div class="tooltip-inner left" style="margin-top:3px;"></div></div>',
-      title: function () {
-        return '<div class="username" style="' + this.dataset.bgcolor + '">@' + this.dataset.username + '</div>';
-      }
-    });
-  },
   changeColor: function () {
     if (this.model.get('focused')) {
       app.trigger('changeColor', this.model.get('color'));
@@ -185,7 +171,6 @@ var GroupView = Backbone.View.extend({
   },
   refreshUsers: function () {
     this.groupUsersView.render();
-    this.initializeTooltips();
   }
 });
 

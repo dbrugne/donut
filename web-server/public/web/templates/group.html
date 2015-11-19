@@ -1,16 +1,15 @@
-<div class="side roomside poster-empty">
-    <div class="users  "></div>
-</div><!-- /.side -->
 <div class="content">
-    <div class="header room">
+    <div class="header room flex-parent">
         <div class="overlay-ctn  ">
             <img class="avatar group open-group-profile curp" data-group-id="<%= group.group_id %>" src="<%= group.avatarUrl %>" alt="<%= group.identifier %> avatar">
-        </div>
-        <div class="info  ">
-            <div class="name open-group-profile curp" data-group-id="<%= group.group_id %>">
-                <%= group.identifier %>
+            <div class="members fs20 text-center">
+                <i class="icon icon-user-custom dc-text"></i> <%=group.members.length%>
             </div>
-
+        </div>
+        <div class="info">
+            <div class="name open-group-profile curp" data-group-id="<%= group.group_id %>">
+                <%= group.name %>
+            </div>
             <div class="dropdown">
                 <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                     <i class="icon icon-chevron-down"></i>
@@ -42,46 +41,63 @@
                     <% }; %>
                 </ul>
             </div>
-            
-            <% if (!isMember && !isBanned) { %>
-                <span class="curp btn btn-primary pull-right request-allowance"><%= t('group.ask-membership') %></span>
-                <div class="clearfix"></div>
-            <% } %>
 
-        </div>
-        <div class="info">
-            <div class="disclaimer fs18">
-                <% if (!isMember) { %>
-                    <%= group.disclaimer %>
-                <% } else { %>
-                    <%= group.description %>
-                <% } %>
+            <div class="owner mt5">
+                <i class="icon icon-fw icon-clock-o dc-text left"></i> <%= t('profile.group.createdat') %><span class="ml5"><%= created %></span> <%= t('global.by') %> <strong><span class="open-user-profile fs15 dc-text" data-user-id="<%=group.owner_id %>">@<%=group.owner_username%></span></strong>
             </div>
-            <% if(isBanned) { %>
-                <div class="mt20">
-                    <%= t('chat.blocked.groupbanned', {at: banned_at}) %>
+
+            <% if(group.website) { %>
+                <div class="permalink mt5">
+                    <i class="icon icon-fw icon-link dc-text"></i> <a class="colored dc-text" href="<%= group.website.href %>" target="_blank"><%= group.website.title %></a>
                 </div>
-            <% if (typeof reason !== 'undefined') { %>
-            <p class="reason">
-                <span class="title"><%= t('chat.blocked.reason') %></span>
-                <span class="reason"><i class="icon icon-quote"></i><%- reason %></span>
-            </p>
             <% } %>
+
+            <div class="description fs18 mt5">
+                <%= group.description %>
+            </div>
+
+        </div>
+
+        <div class="actions">
+            <% if (isMember) { %>
+                <% if(!isBanned) { %>
+                    <span class="curp open-create-room btn-block btn btn-primary" data-group-id="<%=group.group_id%>" data-group-name="<%=group.name%>"><%= t('actions.create') %></span>
+                <% } %>
+            <% } else { %>
+                <% if (!isBanned) { %>
+                    <span class="curp btn btn-block btn-primary request-allowance"><%= t('group.ask-membership') %></span>
+                    <% if (group.has_password) { %>
+                        <span class="curp btn btn-block btn-primary send-password mb5 password-div"><%= t('actions.direct-access') %></span>
+                    <% } %>
+                <% } %>
+            <% } %>
+
+            <% if (isOwner || isOp || isAdmin) { %>
+                <input type="button" class="btn btn-block btn-primary open-group-access" data-group-id="<%= group.group_id %>" value="<%= t('group.invite') %>" />
             <% } %>
         </div>
-        <% if (group.has_password && !isMember && !isBanned) { %>
-        <span class="curp btn btn-primary send-password pull-right password-div"><%= t('actions.direct-access') %></span>
-        <% } %>
     </div>
 
-    <div class="flex-parent center mt100">
-        <% if (isMember && !isBanned) { %>
-        <h2 class="vcentered"><%= t('global.donuts') %></h2>
-        <span class="open-create-room btn btn-primary ml20 curp" data-group-id="<%=group.group_id%>" data-group-name="<%=group.name%>"><%= t('actions.create') %></span>
-        <% } %>
-    </div>
-    <div class="cards mt30 mb30"><!--Cards list--></div>
+    <% if (!isMember && !isBanned) { %>
+        <div class="disclaimer mt10 alert alert-warning" role="alert">
+            <%= group.disclaimer %>
+        </div>
+    <% } %>
+
+    <% if(isBanned) { %>
+        <div class="reason mt10 alert alert-danger">
+            <strong><%= t('chat.blocked.groupbanned', {at: banned_at}) %></strong>
+            <% if (typeof reason !== 'undefined') { %>
+                <br/>
+                <span class="title"><%= t('chat.blocked.reason') %></span>
+                <span class="reason"><em><%- reason %></em></span>
+            <% } %>
+        </div>
+    <% } %>
+
+
+    <div class="user-list users mt10"></div>
+    <div class="mt10 title"><%= t('global.donuts') %></div>
+    <div class="cards mt10 mb30"><!--Cards list--></div>
 </div>
-
-<hr>
 

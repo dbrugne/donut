@@ -510,45 +510,59 @@
       &.poster-full .dc-text-contrast { color:#fff; }
       &.poster-full .blur .users .list .item.dc-back-darker { background-color: transparent; border-style: solid; border-width: 1px 0; border-color:#FFF; margin: 0 14px; width: 187px; }
     }
-    .group { background-color: @cl-background; height: 100%;
-      .side { border-left:1px solid @cl-subtext15; width: 330px;
-        .users {
-          .scrollable {overflow-y: auto; overflow-x: hidden; height: 100%; .scrollbar-white;}
-          .title { font-size: 2rem; padding: 10px 0; margin: 0 20px; color:@cl-title; }
-          .user-list { height: auto;
-            .list { .display-flex; .flex-flow(row wrap); .justify-content(flex-start);
-              .item { width: auto; padding:0;
-                .infos { .display-flex; .flex-flow(column nowrap); .align-items(center); }
-                .avatar { background-size: contain; width: 30px; height:30px; }
-              }
+
+    .group { height: 100%; background-color: @cl-background2; overflow-y: auto; .scrollbar-grey-thin;
+      .content {position: relative; margin: 0 20px; .display-flex; .flex-flow(column nowrap);
+        .header { padding-top: 18px; min-height: 200px;
+          .overlay-ctn  .avatar { width:150px; height:150px; .border-shadow; }
+          .info { .justify-content(space-between); .flex(1 1 auto); font-size: 1.3rem; margin-left:15px;
+            .name { font-size: 2rem; .display-inline-flex; .ft-opensans-extra-bold; line-height: 1.2; word-break: break-all; }
+            .dropdown { display: inline-block; position: relative;
+              .dropdown-menu>li>a { color: @cl-subtext40; }
+              button { font-size: 24px; border: none; background-color: transparent; }
             }
+            .owner {  }
           }
-          .list { position: relative; padding: 0 20px;
-            &.op {
-              .ctn { position:relative; .display-flex; .flex-flow(row wrap); .align-items(center);  .justify-content(flex-start);
-                .background { background-color: #FFF; .opacity(0.4); top:0; left:0; height:100%; width:100%; position: absolute; .border-radius(3px); }
-                .item { width: 94px; padding: 10px;
-                  .infos { .display-flex; .flex-flow(column nowrap); .align-items(center);  }
-                  .avatar { background-size: contain; width: 50px; height:50px; }
-                  &.owner .avatar::before { font-size: 2rem; left: 13px !important; top: -16px !important; }
-                  &.op .avatar::before { font-size: 2rem; width: 12px; height: 17px; background-color: #FFF; }
+          .actions .btn { white-space: nowrap; }
+        }
+        .reason, .disclaimer { text-align: justify; font-size:1.6rem; margin-bottom:10px; }
+        .title { color:@cl-text; .ft-opensans-bold; font-size: 1.5rem; }
+        .user-list {
+          .item { position: relative; font-size: 0.9em; font-weight: bold; white-space: nowrap; display: block; height: 34px;
+            .avatar { display: inline-block; width: 34px; height: 34px; background-size: 34px; background-position: center center; .border-radius(4px); border: 2px solid #FFF;
+              &:hover {
+                .dropdown>.dropdown-toggle {
+                  display: block;
                 }
               }
+            }
+            .userstatus { position: absolute; top: -12px; left: -5px; z-index: 1; }
+            .dropdown { position: absolute; width: 34px; height: 34px; top: 0;
+              .dropdown-toggle { display:none; width: 34px; height: 34px; }
+              .dropdown-menu { left:initial; right:0; }
+            }
+            &.op {
+              .avatar { border-color:@cl-success; }
+              .avatar::before { z-index: 5; position: absolute; .icon-op; color:@cl-success; top: -6px; left: -4px; width: 12px; height: 16px; background-size: 12px 16px; }
+            }
+            &.devoice {
+              .avatar { border-color:@cl-error; }
+              &::after { content: '\f037'; display: inline-block; font: normal normal normal 14px/1 'Donut'; text-rendering: auto; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; transform: translate(0, 0); right: -1px; bottom: -1px; position: absolute; color: @cl-error; font-size: 19px; border-radius: 50%; }
+            }
+            &.owner {
+              .avatar { border-color:@cl-warning; }
+              .avatar::before { z-index: 5; position: absolute; .icon-owner; color:@cl-warning; top: -9px !important; left: 10px !important; }
             }
           }
         }
       }
-      .content .header {
-        .overlay-ctn .avatar { width:150px; height:150px; }
-        .info { padding-left:160px; }
-      }
-      .content .ctn-results { overflow-y: auto; overflow-x: hidden; }
     }
+
     .discussion { background-color: @cl-background; height: 100%;
       .content { height: 100%; position: relative; margin-left: 20px; .display-flex; .flex-flow(column nowrap);
         .header { padding-top: 18px; padding-right: 20px;
           .info { padding-left: 80px; }
-        } // #chat #center .discussion .content .header
+        }
         &.blocked { .align-items(center);  .justify-content(center); position:relative;
           .header .info { padding:0; }
           .password-form { max-width: 555px; margin-left: auto; margin-right: auto;}
