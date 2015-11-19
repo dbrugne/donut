@@ -108,6 +108,11 @@
                        <a href="<%= card.join %>" class="open-room-profile flex-child flex-parent center jc-center" data-room-id="<%=card.room_id%>">
                            <span class="value"><%=card.identifier%></span>
                        </a>
+                        <div class="mode" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + (card.mode === 'public' ? 'public' : 'private' + (card.allow_user_request ? '-invites' : '') + (card.allow_group_member ? '-group' : ''))) %>">
+                            <span class="label label-default label-sm">
+                                <%= t('global.mode.title.' + (card.mode === 'public' ? 'public' : 'private' + (card.allow_user_request ? '-invites' : '') + (card.allow_group_member ? '-group' : ''))) %>
+                            </span>
+                        </div>
                        <% if (card.owner_id) { %>
                             <span class="owner flex-child flex-parent  center jc-center">
                                 <%= t('global.by') %> <a class="dc-text open-user-profile ml5" href="<%= card.owner_url %>" data-user-id="<%= card.owner_id %>">@<%= card.owner_username %></a>
@@ -119,10 +124,7 @@
                     </div>
                     <div class="actions flex-parent">
                         <div class="mode-ctn text-center">
-                            <div class="mode" data-toggle="tooltip" data-placement="top" title="<%= t('global.mode.description.' + (card.mode === 'public' ? 'public' : 'private' + (card.allow_user_request ? '-invites' : '') + (card.allow_group_member ? '-group' : ''))) %>">
-                                <%= t('global.mode.title.' + (card.mode === 'public' ? 'public' : 'private' + (card.allow_user_request ? '-invites' : '') + (card.allow_group_member ? '-group' : ''))) %>
-                            </div>
-                            <div class="users">
+                            <div class="users fs20">
                                 <i class="icon icon-user-custom dc-text"></i> <%= card.users %>
                             </div>
                         </div>
@@ -147,3 +149,4 @@
         </div>
     <% }); %>
 <% } %>
+

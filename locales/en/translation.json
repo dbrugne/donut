@@ -128,6 +128,8 @@
     "verify": "Verification of your email"
   },
   "global": {
+    "members": "members",
+    "discover": "discover",
     "group": "group",
     "view-profile": "view profile",
     "view-group": "view the groupe",
@@ -155,6 +157,7 @@
     "offline": "offline",
     "connecting": "connection ...",
     "permalink": "permalink",
+    "links": "links",
     "search": "search",
     "by": "by",
     "one": "one",
@@ -163,6 +166,8 @@
       "after": "?"
     },
     "switchlanguage": "Language",
+    "french": "French",
+    "english": "English",
     "unknownerror": "Unknown error, please retry later",
     "notconfirmed": "Your account has not beed confirmed, click here to manage your emails",
     "mode": {
@@ -312,6 +317,10 @@
     },
     "loading": "Loading",
     "actions": {
+      "volume": {
+        "up": "Increase volume",
+        "down": "Decrease volume"
+      },
       "search": "Search",
       "searchuser": "Invite a user",
       "banuser": "Ban a user",
@@ -321,7 +330,7 @@
       "edit": "my profile",
       "notifications": "notifications",
       "close": "quit the discussion",
-      "preferences": "settings and notifications",
+      "preferences": "settings and notifs",
       "bannedusers": "locked users",
       "update": "Edit",
       "see": "See",
@@ -336,7 +345,9 @@
       "unlock": "(Click here to unblock)"
     },
     "help": "Help",
-    "placeholder": "Place here",
+    "room-discussion": {
+      "input-placeholder": "click here to type a message"
+    },
     "createadonut": "Create a donut",
     "home": {
       "roomstitle": "Welcome to DONUT, here are some active donuts. If you can not find one to your tastes, <a href=\"#\" class='open-create-room'> create one! </a>",
@@ -355,11 +366,8 @@
       "search_in_rooms": "search for rooms",
       "search_in_groups": "search for communities"
     },
-    "userscount": "<strong>__count__</strong> user in this donut",
-    "userscount_plural": "<strong>__count__</strong> users in this donut",
-    "usersonlinecount": "<strong>__count__</strong> <span>user online in this donut</span>",
-    "usersonlinecount_plural": "<strong>__count__</strong> <span>users online in this donut</span>",
-    "usersoffline": "Offline users",
+    "userscount": "<strong>__count__</strong> user",
+    "userscount_plural": "<strong>__count__</strong> users",
     "topic": {
       "label": "Currently",
       "placeholder": "Enter the conversation topic, the mood,...",
@@ -367,6 +375,7 @@
       "users": "User's list of this Donut"
     },
     "owner": {
+      "state": "owner",
       "is": "This user is the creator of this donut.",
       "isgroup": "This user is the creator of this community"
     },
@@ -380,6 +389,7 @@
       "infobox": "Remove"
     },
     "op": {
+      "state": "moderator",
       "is": "This user is the moderator of this donut.",
       "isgroup": "This user is a moderator of this community",
       "infobox": "Make moderator"
@@ -410,6 +420,7 @@
       "infobox": "Unmute this user"
     },
     "devoice": {
+      "state": "devoiced",
       "infobox": "Mute this user"
     },
     "profile": {
@@ -591,7 +602,7 @@
       "users": "User",
       "users_plural": "Users",
       "link": "User list",
-      "label": "See all users",
+      "label": "See all",
       "search": "search a username in this donut",
       "search-group": "search a username in this community",
       "type": {
@@ -647,7 +658,7 @@
         "<p>This is private conversation and its history are only accessible to allowed users.</p>",
         "<p>Say 'hi' to engage in the discussion.</p>"
       ],
-      "onetoone": "<strong>@__username__</strong> isn't online, he will get your messages on his next connection."
+      "onetoone": "he will get your messages on his next connection"
     },
     "connection": {
       "connected": "Connected, loading interface...",
@@ -904,8 +915,11 @@
     "administrator": "Administrators",
     "users": "Users",
     "invite": "Invite",
-    "ask-membership": "Request membership",
-    "blocked": "This community is blocked by a password, to join we invite you to type it"
+    "ask-membership": "request to join the community",
+    "blocked": "This community is blocked by a password, to join we invite you to type it",
+    "default-disclaimer": "You are not yet a member of this community. Click \"request to join the community\" to apply for.",
+    "disclaimer-start": "You are not yet a member of this community.",
+    "disclaimer-end": " described the access conditions below :"
   },
   "account": {
     "error": {

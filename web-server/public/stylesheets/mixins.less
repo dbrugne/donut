@@ -21,13 +21,20 @@
   opacity: 		@opacity;
 }
 
-.transition (@transition) {
-  -webkit-transition: @transition;
-  transition:         @transition;
+.transition (...) {
+  @props: ~`"@{arguments}".replace(/[\[\]]/g, '')`;
+  -webkit-transition: @props;
+  transition:         @props;
 }
 .transform(@string){
   -webkit-transform: @string;
   -ms-transform: 	 @string;
+}
+.rotate (@deg) {
+  -webkit-transform: rotate(@deg);
+  -moz-transform: 	 rotate(@deg);
+  -ms-transform: 		 rotate(@deg);
+  -o-transform: 		 rotate(@deg);
 }
 
 .user-select(@value) {
@@ -64,6 +71,31 @@
   -ms-filter: blur(@value);
   -o-filter: blur(5px);
   filter: blur(5px);
+}
+
+.don-button-variant(@cl-start, @cl-end, @cl-text, @cl-border) {
+  border: 1px solid @cl-border;
+  .border-radius(4px);
+  .align-items(flex-start);
+  background-color: @cl-end;
+  background-image: linear-gradient(@cl-start, @cl-end);
+  background-origin: padding-box;
+  background-repeat: no-repeat;
+  color: @cl-text;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1.3rem;
+  font-weight: bold;
+  padding: 3px 11px 5px;
+  text-align: center;
+  font-style: initial;
+  white-space: normal;
+  &:hover {
+    background-color: @cl-border;
+    background-image: linear-gradient(@cl-end,@cl-start);
+    border-color: @cl-border;
+    color: @cl-text;
+  }
 }
 
 /*******************************************************************************
@@ -477,7 +509,6 @@
     .dc-text-contrast { .color-text(@color); }
     .dc-border { border-color: @color; }
     .dc-border-darker { border-color: darken(@color, 10%); }
-    .dc-gradient { background: linear-gradient(to bottom, rgba(red(@color), green(@color), blue(@color),0) 15%,rgba(red(@color), green(@color), blue(@color),0) 37%,rgba(red(@color), green(@color), blue(@color),1) 100%); }
   }
 
   .dc-i-@{code} {
@@ -490,7 +521,6 @@
     .dc-text-contrast { .color-text(@color) !important; }
     .dc-border { border-color: @color !important; }
     .dc-border-darker { border-color: darken(@color, 10%) !important; }
-    .dc-gradient { background: linear-gradient(to bottom, rgba(red(@color), green(@color), blue(@color),0) 15%,rgba(red(@color), green(@color), blue(@color),0) 37%,rgba(red(@color), green(@color), blue(@color),1) 100%)  !important; }
   }
 
   .color-loop (@index - 1);
