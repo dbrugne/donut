@@ -962,6 +962,7 @@
     },
     "manageemail": {
       "label": "Manage your mails",
+      "info": "Some communities require e-mail authentication (e.g: me@university.edu). Link your emails to this account to be automatically cleared.",
       "facebook": "Address link to facebook account",
       "verified": "Address verified",
       "notverified": "Address not verified",
