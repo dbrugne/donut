@@ -3,7 +3,7 @@
         <div class="overlay-ctn  ">
             <img class="avatar group open-group-profile curp" data-group-id="<%= group.group_id %>" src="<%= group.avatarUrl %>" alt="<%= group.identifier %> avatar">
             <div class="members fs20 text-center">
-                <strong><%=group.members.length%></strong> <%= t('global.members') %>
+                <%= t('global.members', { count: group.members.length }) %>
             </div>
         </div>
         <div class="info">
@@ -95,7 +95,7 @@
             <strong><%= t('chat.blocked.groupbanned', {at: banned_at}) %></strong>
             <% if (typeof reason !== 'undefined') { %>
                 <br/>
-                <span class="title"><%= t('chat.blocked.reason') %></span>
+                <%= t('chat.blocked.reason') %>
                 <span class="reason"><em><%- reason %></em></span>
             <% } %>
         </div>

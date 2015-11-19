@@ -128,7 +128,8 @@
     "verify": "Verification de votre email"
   },
   "global": {
-    "members": "membres",
+    "members": "<strong>__count__</strong> membre",
+    "members_plural": "<strong>__count__</strong> membres",
     "discover": "découvrir",
     "group": "groupe",
     "view-profile": "voir le profil",
