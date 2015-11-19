@@ -5,10 +5,9 @@
     &.empty { box-shadow:none; height: 1px; margin: 0 20px; }
     .design-room1 { height: @card-height; border-width:0 0 0 3px; border-style:solid;
       > .ctn { height:100%; overflow: hidden; border-left: 1px solid @cl-border; border-right: 1px solid @cl-border; border-bottom: 1px solid @cl-border;
-        .user-avatar { display:block; background-size: 85px; background-repeat: no-repeat; background-position: center center; width: 85px; height: 85px; margin: 10px auto; }
+        .user-avatar { .border-shadow; display:block; background-size: 85px; background-repeat: no-repeat; background-position: center center; width: 85px; height: 85px; margin: 10px auto; }
         .name { line-height: 1.9rem; word-break: normal; overflow: hidden; text-overflow: ellipsis; margin: 0 10px; text-align: center;
           .value { white-space: nowrap; font-size: 1.9rem; .ft-opensans-extra-bold; }
-          .mode {  }
           .othername { color: @cl-subtext20; font-weight: normal; }
         }
         .description { line-height: 2rem; margin: 15px 10px 15px; overflow: hidden; text-overflow: ellipsis; max-height: 75px; }
