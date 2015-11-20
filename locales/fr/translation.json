@@ -120,7 +120,7 @@
     "orsignup": "ou créer un compte",
     "forgot": "mot de passe oublié",
     "join": "rejoindre",
-    "direct-access": "accès direct",
+    "direct-access": "j'ai le mot de passe",
     "discuss": "discuter",
     "account": "mon compte",
     "mute": "son actif",
@@ -128,6 +128,7 @@
     "verify": "Verification de votre email"
   },
   "global": {
+    "collapse": "réduire",
     "members": "<strong>__count__</strong> membre",
     "members_plural": "<strong>__count__</strong> membres",
     "discover": "découvrir",

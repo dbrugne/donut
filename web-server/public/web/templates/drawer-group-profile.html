@@ -3,12 +3,16 @@
 </div>
 
 <div class="block">
-    <div class="overlay-ctn">
-        <img class="avatar img-circle" src="<%= group.avatar %>" alt="<%= group.name %> avatar">
+    <div class="overlay-ctn relative">
+        <span class="avatar img-circle relative" style="background-image:url(<%= group.avatar %>)">
+            <span class="group-type img-circle dc-back dc-text-contrast">
+                <i class="icon icon-star"></i>
+            </span>
+        </span>
     </div>
 
     <div class="roomname text-center block flex-parent column center">
-        #<%= group.name %>
+        <%= group.name %>
     </div>
     <div class="owner text-center">
         <%= t('global.by') %> <a class="colored open-user-profile dc-text" data-user-id="<%= group.owner_id %>">@<%= group.owner_username %></a>

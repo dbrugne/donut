@@ -120,7 +120,7 @@
     "orsignup": "or signup",
     "forgot": "forgotten password",
     "join": "join",
-    "direct-access": "direct access",
+    "direct-access": "I have the password",
     "discuss": "chat",
     "account": "my account",
     "mute": "sound on",
@@ -128,6 +128,7 @@
     "verify": "Verification of your email"
   },
   "global": {
+    "collapse": "collapse",
     "members": "<strong>__count__</strong> member",
     "members_plural": "<strong>__count__</strong> members",
     "discover": "discover",

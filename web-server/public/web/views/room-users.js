@@ -1,6 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
+var client = require('../libs/client');
 var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
@@ -14,7 +15,7 @@ var RoomUsersView = Backbone.View.extend({
 
   userPreviewTemplate: require('../templates/user-preview.html'),
 
-  maxDisplayedUsers: 52,
+  maxDisplayedUsers: 20,
   timeBuffer: 200,
   timeoutShow: 0,
   timeoutHide: 0,
@@ -120,6 +121,15 @@ var RoomUsersView = Backbone.View.extend({
       this.$popinUsers.css('top', offset.top);
 
       this.$popinUsers.show();
+
+      client.userRead(user.user_id, _.bind(function (user) {
+        if (user.err) {
+          return;
+        }
+        if (user.location) {
+          this.$popinUsers.find('.location').removeClass('hidden').find('.ctn').html(user.location);
+        }
+      }, this));
     }, this), this.timeBuffer);
   },
   hidePopin: function () {

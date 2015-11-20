@@ -13,15 +13,20 @@
         <div class="modal-body">
             <div class="flex-parent column">
                 <div class="flex-parent">
-                    <div class="avatar" style="background-image: url(<%=user.avatar %>)"></div>
+                    <div class="flex-parent column">
+                        <div class="avatar open-user-profile curp" data-user-id="<%=user.user_id%>" style="background-image: url(<%=user.avatar %>)"></div>
+                        <div class="status text-center">
+                            <i class="icon icon-fw icon-dot-circle-o status contrast <%=user.status%>"></i>
+                            <em><%= t('global.'+user.status) %></em>
+                        </div>
+                    </div>
                     <div class="names-ctn ml10 mt5 flex-child">
                         <% if(user.realname) { %>
-                            <div class="username fs16 open-user-profile" data-user-id="<%=user.user_id%>"><%=user.realname%></div>
+                            <div class="username fs20 open-user-profile curp" data-user-id="<%=user.user_id%>"><%=user.realname%></div>
                         <% } %>
-                        <div class="othername fs16 open-user-profile" data-user-id="<%=user.user_id%>">@<%=user.username%></div>
-                        <div class="status mt5">
-                            <span class="userstatus <%=user.status%>" title="<%=user.status%>"></span>
-                            <em><%= t('global.'+user.status) %></em>
+                        <div class="othername fs20 open-user-profile curp" data-user-id="<%=user.user_id%>">@<%=user.username%></div>
+                        <div class="location mt5 hidden">
+                            <i class="icon icon-fw icon-map-marker"></i> <span class="ctn"></span>
                         </div>
                         <div class="mt5 states">
                             <% if(user.is_owner) { %>
@@ -34,6 +39,14 @@
                                 <i class="icon icon-fw icon-microphone-slash cl-error"></i><p><%= t('chat.devoice.state') %></p>
                             <% } %>
                         </div>
+                    </div>
+                </div>
+                <div class="flex-parent row mt10">
+                    <div class="col-md-6">
+                        <span class="btn btn-block btn-default btn-sm open-user-profile" data-user-id="<%=user.user_id%>"><%= t('global.view-profile') %></span>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="<%=user.uri%>" class="btn btn-block btn-default btn-sm"><%= t('actions.discuss') %></a>
                     </div>
                 </div>
             </div>

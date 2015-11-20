@@ -12,20 +12,20 @@
   }
 }
 
-#popin-user { width: 300px; bottom: initial; overflow: visible; z-index: 2; .transition(none);
+#popin-user { width: 350px; bottom: initial; overflow: visible; z-index: 2; .transition(none);
   .arrow-right:before { z-index: 2; content: ""; width: 0; height: 0; border-style: solid; border-width: 10px 0 10px 7px; border-color: transparent transparent transparent #fff; position: absolute; right: -7px; top: 4px; }
   .arrow-right:after { z-index: 1; content: ""; width: 0; height: 0; border-style: solid; border-width: 12px 0 12px 8px; border-color: transparent transparent transparent #B8B8B8; position: absolute; right: -8px; top: 2px; }
-  .modal-dialog { margin:0; .transition(none); }
-  .names-ctn { max-width:158px;
-    .username { .ft-opensans-extra-bold; overflow: hidden; text-overflow: ellipsis; }
-    .othername { .ft-opensans-extra-bold; overflow: hidden; text-overflow: ellipsis; }
+  .modal-dialog { margin:0; .transition(none); width: 350px; }
+  .names-ctn { max-width:208px;
+    .username, .othername { .ft-opensans-extra-bold; overflow: hidden; text-overflow: ellipsis; padding-left: 2px; }
     .username + .othername { .ft-opensans; color: @cl-subtext20; }
+    .location { overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      i { color:@cl-subtext30; }
+    }
   }
   p { margin:0; display:inline; }
-  .status { border-top: 1px solid @cl-subtext10; border-bottom: 1px solid @cl-subtext10; }
-  .states { }
   .avatar { width:100px; height:100px; display: block; .border-radius(4px); }
-  .modal-footer {
+  .modal-footer { border:0; background-color:@cl-subtext5;
     > a { float:left; clear:both; margin-right:5px; cursor:pointer; width: 100%; text-align: left; }
   }
 }
@@ -250,6 +250,7 @@
           border-top: 0;
           .border-radiuses(0, 4px, 4px, 0);
           li.result {
+            i.group-type { font-size: 1.5rem; line-height: 1.5rem; top: 0px; position: absolute; left: 0px; border-width: 1px; border-style: solid; }
             color: @cl-text;
             height: 44px;
             .display-flex;
@@ -321,8 +322,10 @@
           &.empty li { padding: 0 5px 0 10px; font-style: italic; color: @cl-subtext20; }
 
           li.group-block+li.room-type.ungrouped, li.group-block+li.group-block { margin-top: 15px; } // spacing between groups
-
           li { list-style: none; margin-left: 5px; padding: 3px 0; .border-radiuses(0, 0, 5px, 5px);
+            &.group-block { padding: 0;
+
+            }
             &.group { margin-top: 15px;
               &:first-child { margin-top: 0; }
               a { color:@cl-nav-left-text-lighter; }
@@ -350,7 +353,7 @@
               }
             }
             &:hover { background-color: rgba(255,255,255,0.2);
-              .item { margin-left: 2px; .transition(margin-left 200ms); }
+              &.group-block { background-color: transparent; }
               .close-discussion + .unread { display:none; }
               .close-discussion { display:block; }
             }
@@ -455,28 +458,21 @@
     } // #chat #center #home
     .side { float: right; width: (@size-color + @size-right-mid); height: 100%; margin: 0; padding: 0; background-repeat: no-repeat; background-position: left top; .transition(width 300ms);
       @header-height: 35px; @size-user-item: 205px;
-      .blur { width: @size-right-mid; position: relative; color: @cl-background; font-size: 1.1em; .scrollbar-grey; height: 100%; overflow-y: auto; .transition(width 300ms);
-        .users { position: relative; padding: 10px 0 30px; height: 100%; background-color: rgba(0, 0, 0, 0.2);
-          > hr { position: absolute; left: 14px; right: 14px; top: @header-height; }
-          .list { list-style: none; margin: 0 10px 0; overflow-y: auto; padding: 5px; background-repeat: no-repeat; background-position: left top; position: relative; .scrollbar-white; .justify-content(space-around); overflow-x: hidden;
-            > li { margin: 5px; float:left; }
-            .clearfix { width:100%; height:5px; }
+      .blur { width: @size-right-mid; position: relative; color: @cl-background; font-size: 1.1em; height: 100%; overflow-y: auto; .transition(width 300ms);
+        .users { position: relative; padding: 10px 0 30px; height: 100%; background-color: rgba(0, 0, 0, 0.2); overflow-y: auto; .scrollbar-grey;
+          .list { list-style: none; margin: 0 10px 0; overflow-y: auto; background-repeat: no-repeat; background-position: left top; position: relative; .justify-content(space-around); overflow-x: hidden; padding:0;
+            > li { margin: 5px 0; float:left; width: 100%; }
+            .clearfix { width:100%; height:5px; clear: both; float: none; }
             .li-title { margin: 0;
-              .item { .border-radius(4px); font-weight: normal; height: initial; }
+              .col-md-6 { padding: 0 5px;
+                i {  height: auto; }
+              }
             }
             .item { position: relative; font-size: 0.9em; font-weight: bold; white-space: nowrap; display: block; height: 34px;
-              .avatar { display: inline-block; width: 34px; height: 34px;
+              .infos { .display-flex; .flex-flow(row nowrap); .align-items(center); }
+              .avatar { display: inline-block; width: 34px; height: 34px; margin-left:5px;
                 .background { background-position: center center; background-size: 34px 34px; .border-radius(4px); width: 34px; height: 34px; display: inline-block; border: 2px solid #FFF; }
-                &:hover {
-                  .dropdown>.dropdown-toggle {
-                    display: block;
-                  }
-                }
-              }
-              .userstatus { position: absolute; top: -12px; left: -5px; z-index: 1; }
-              .dropdown { position: absolute; width: 34px; height: 34px; top: 0;
-                .dropdown-toggle { display:none; width: 34px; height: 34px; }
-                .dropdown-menu { left:initial; right:0; }
+                &:hover .dropdown > .dropdown-toggle { display: block; }
               }
               &.op {
                 .background { border-color:@cl-success; }
@@ -495,17 +491,8 @@
           .count { float:left; padding: 3px 8px; font-weight: normal; }
         }
       }
-      &.compact { width:70px !important;
-        .blur { width:70px; background-image: initial !important;
-          .users { background-color: initial;
-            .list { margin: 0 6px;
-              .item { white-space: initial; }
-            }
-          }
-        }
-        .hidden-compact { display:none; }
-        .compact-mode:after { content:"<"; }
-      }
+      .visible-compact { display:none; }
+      &.compact { .compact-sidebar; } // see mixin for shared compact sidebar
       &.oneside { width:@size-right-mid; }
       &.poster-empty {
         &.roomside { width:@size-right-mid; }
@@ -514,11 +501,14 @@
       &.poster-full .blur .users .list .item.dc-back-darker { background-color: transparent; border-style: solid; border-width: 1px 0; border-color:#FFF; margin: 0 14px; width: 187px; }
     }
 
-    .group { height: 100%; background-color: @cl-background2; overflow-y: auto; .scrollbar-grey-thin;
+    > .group { height: 100%; background-color: @cl-background2; overflow-y: auto; .scrollbar-grey-thin;
       .content {position: relative; margin: 0 20px; .display-flex; .flex-flow(column nowrap);
         .header {  background-color: #FFF; margin-top: 20px; padding: 20px; min-height: 200px; border:1px solid @cl-border;
           .overlay-ctn  {
             .avatar { width:150px; height:150px; .border-shadow; }
+            .group-type { padding: 3px 3px 3px 3px; top: 0; position: absolute; left: 0; border: 3px solid @cl-border;
+              i { font-size: 3rem; line-height: 3rem; }
+            }
             .members { padding:10px; }
           }
           .info { .justify-content(space-between); .flex(1 1 auto); font-size: 1.3rem; margin-left:15px;
@@ -531,10 +521,11 @@
           }
           .actions .btn { white-space: nowrap; }
         }
-        .reason, .disclaimer { text-align: justify; font-size:1.6rem; margin-bottom:10px; }
+        .reason, .disclaimer { text-align: justify; font-size:1.6rem; margin-bottom:0; }
         .title { color:@cl-text; .ft-opensans-bold; font-size: 2rem; text-transform: capitalize; }
-        .user-list {
+        .user-list { min-height:auto;
           .list { overflow: hidden;
+            &.op { padding-top: 5px; }
             &.scrollable { overflow-y: auto; overflow-x: hidden; max-height: 90px; .scrollbar-grey-thin; }
             .item { position: relative; font-size: 0.9em; font-weight: bold; white-space: nowrap; display: block; height: 34px; margin:5px;
               .avatar { display: inline-block; width: 34px; height: 34px; background-size: 34px; background-position: center center; .border-radius(4px); border: 2px solid #FFF;
@@ -782,12 +773,12 @@
                     }
                   }
                 }
-                .block.user { padding-top: 23px; padding-left: 40px; clear: both; /*border-top: 1px solid @cl-subtext0;*/
+                .block.user { margin-top: 7px; padding-top: 23px; padding-left: 40px; clear: both; /*border-top: 1px solid @cl-subtext0;*/
                   .avatar { position: absolute; top: 5px; left: 5px; border: none; width: 30px; height: 30px; background-position: center center; background-size: 30px 30px; }
                   .username { position: absolute; top: 5px; left: 45px; .ft-opensans-bold; font-size: 1em; }
                   .othername { color: @cl-subtext20; font-weight: normal; }
                 }
-                .block.message { position: relative; padding-left: 45px; border-top: 0;
+                .block.message { position: relative; padding: 4px 0 4px 45px; border-top: 0;
                   .text-spammed { display:none; }
                   .date {
                     position: absolute;
@@ -940,6 +931,7 @@
                   font-style: italic;
                   color: @cl-subtext30;
                 }
+                .block.user+.block.message { padding-top:0; }
                 &.compact {
                   .block { .display-flex; z-index: 1; padding-left:0;
                     &.user { padding-top: 5px; border-top: 1px solid @cl-subtext0; margin-top: 5px;
@@ -1180,14 +1172,8 @@
     .alert.error { background-color: @cl-error; }
   }
 
-  .status { color: transparent; }
-  .online>.status, .status.online { color: @cl-success; }
-  .connecting>.status, .status.connecting { color: @cl-warning; }
-  .offline>.status, .status.offline { color: @cl-subtext15; }
-  .error>.status, .status.error { color: @cl-pomegranate; }
-
   .block { margin: 0;
-    &.date { margin-top: 16px; margin-bottom: 10px; clear: both; border-top: 0; height: 1px; background-color: @cl-subtext10; text-align: center;
+    &.date { margin-top: 25px; margin-bottom: 25px; clear: both; border-top: 0; height: 1px; background-color: @cl-subtext10; text-align: center;
       .moment { position: relative; top: -0.7em; background-color: @cl-background; text-align: center; font-size: 1.5rem; font-weight: bold; color: @cl-subtext30; padding: 0 10px; text-transform: capitalize; }
     }
   }

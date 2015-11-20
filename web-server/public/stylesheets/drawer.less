@@ -221,13 +221,16 @@
     }
   }
   .overlay-ctn {
-    width: 90px;
-    height: 90px;
+    width: 100px;
+    height: 100px;
     margin: 0 auto;
-    .avatar {
+    .avatar { background-size: 100px; background-position: center; display: block;
       .border-shadow;
       width: 100px;
       height: 100px;
+      .group-type { padding: 3px 3px 3px 3px; top: -7px; position: absolute; left: -7px; border: 2px solid @cl-border;
+        i { font-size: 2rem; line-height: 2rem; }
+      }
     }
     .overlay {
       top: 0;

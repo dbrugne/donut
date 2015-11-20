@@ -177,6 +177,8 @@ var MainView = Backbone.View.extend({
     if (data.notifications && data.notifications.unread) {
       $('#notifications').find('.unread-count').text(data.notifications.unread).addClass('bounce');
       $('.hover-menu-notifications').text(data.notifications.unread);
+    } else {
+      $('.hover-menu-notifications').text('>');
     }
 
     // Run routing only when everything in interface is ready

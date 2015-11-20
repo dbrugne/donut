@@ -1,8 +1,11 @@
 <div class="content">
     <div class="header room flex-parent">
-        <div class="overlay-ctn  ">
+        <div class="overlay-ctn relative">
             <img class="avatar group open-group-profile curp" data-group-id="<%= group.group_id %>" src="<%= group.avatarUrl %>" alt="<%= group.identifier %> avatar">
-            <div class="members fs20 text-center">
+            <span class="group-type img-circle dc-back dc-text-contrast">
+                <i class="icon icon-star"></i>
+            </span>
+            <div class="members fs16 text-center">
                 <%= t('global.members', { count: group.members.length }) %>
             </div>
         </div>
@@ -81,9 +84,9 @@
             <% } %>
 
             <div class="pull-right mt5">
-                <span class="curp btn btn-block btn-primary request-allowance"><%= t('group.ask-membership') %></span>
+                <span class="curp btn btn-primary request-allowance"><%= t('group.ask-membership') %></span>
                 <% if (group.has_password) { %>
-                    <span class="curp btn btn-block btn-primary send-password mb5 password-div"><%= t('actions.direct-access') %></span>
+                    <span class="curp btn btn-primary send-password password-div"><%= t('actions.direct-access') %></span>
                 <% } %>
             </div>
 
@@ -102,7 +105,7 @@
     <% } %>
 
 
-    <div class="user-list users mt10"></div>
+    <div class="user-list users mt10 header"></div>
     <div class="mt10 title"><%= t('global.donuts') %></div>
     <div class="cards mt10 mb30"><!--Cards list--></div>
 </div>

@@ -1,7 +1,7 @@
 {
   "development": {
     "chat": [
-      {"id": "chat-server-1", "host": "127.0.0.1", "port": 6050, "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"}
+      {"id": "chat-server-1", "host": "127.0.0.1", "port": 6050, "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn", "args": " --debug=32312 "}
     ],
     "history": [
       {"id": "history-server-1", "host": "127.0.0.1", "port": 5050, "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"}

@@ -329,10 +329,11 @@ var DrawerUserNotificationsView = Backbone.View.extend({
   },
   updateCount: function (count) {
     this.$badge.text(count);  // update badge in left navigation
+    this.$badgeResponsive.text(count); // update badge in left navigation on responsive mode
     if (count === 0) {
       this.$badge.text('');
+      this.$badgeResponsive.text('>');
     }
-    this.$badgeResponsive.text(count); // update badge in left navigation on responsive mode
   }
 });
 

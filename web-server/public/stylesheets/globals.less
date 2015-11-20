@@ -1,5 +1,6 @@
 .p0 { padding:0; }
 .curp { cursor:pointer; }
+.w100 { width:100%; }
 
 h6 { font-size: 1.1rem; font-style: normal; font-weight: normal; line-height:1.1rem; }
 
@@ -445,6 +446,9 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
 
 table tr:hover { outline: 1px solid @cl-subtext15; background-color: @cl-subtext5 !important; }
 
-.tooltip {
-  .transition(none);
-}
+.tooltip { .transition(none); }
+
+.online>.status, .status.online { color: @cl-success; }
+.connecting>.status, .status.connecting { color: @cl-warning; }
+.offline>.status, .status.offline { color: @cl-subtext15; }
+.error>.status, .status.error { color: @cl-pomegranate; }
