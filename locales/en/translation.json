@@ -19,11 +19,7 @@
     "cgu": "EUTC",
     "legals": "Legals",
     "signup-self": "Sign up",
-    "login-self": "Log in",
-    "carousel": {
-      "heading": "chatroom network ",
-      "slogan": "Talk about your interests. <br/>Get in touch with people in your universe. <br> Create and animate your own community."
-    }
+    "login-self": "Log in"
   },
   "forms": {
     "username-required": "username is required",
