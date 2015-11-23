@@ -10,7 +10,6 @@ require('../javascripts/jquery.socialify');
 require('../javascripts/jquery.contactform');
 var common = require('@dbrugne/donut-common/browser');
 var i18next = require('i18next-client');
-var SearchView = require('./search');
 
 // Contact form
 $('[data-toggle="contactform"]').contactform({});
@@ -18,77 +17,8 @@ $('[data-toggle="contactform"]').contactform({});
 // Landing Page
 var $landing = $('#landing');
 if ($landing.length) {
-  var searchView = new SearchView({el: $landing.find('.results .cards')});
-  var limit = 20; // default limit on landing page (1st load)
-
   var emailPattern = /[\w.+-]+@[\w.-]+\.[a-z]{2,4}/i;
   var passwordPattern = /(.{4,255})$/i;
-
-  var searchFunction = function (search, skip, replace) {
-
-    var skipParam = '';
-    if (skip && skip.users) {
-      skipParam += '&skip_users=' + skip.users;
-    }
-    if (skip && skip.rooms) {
-      skipParam += '&skip_rooms=' + skip.rooms;
-    }
-    if (skip && skip.groups) {
-      skipParam += '&skip_groups=' + skip.groups;
-    }
-
-    $.ajax(window.location.protocol + '//' + window.location.host + '/rest/search?limit=' + limit + skipParam + '&q=' + search, {
-      success: function (response) {
-        var list = _.union(
-          response.rooms
-            ? response.rooms.list
-            : [],
-          response.groups
-            ? response.groups.list
-            : [],
-          response.users
-            ? response.users.list
-            : []);
-
-        var more =
-          (response.rooms && response.rooms.more) ||
-          (response.groups && response.groups.more);
-
-        searchView.render({
-          cards: list,
-          title: false,
-          search: false,
-          more: more,
-          replace: replace
-        });
-      }
-    });
-  };
-
-  // Click load more button
-  $landing.find('.load-more').click(function (e) {
-    var search = $landing.find('#search-field').val();
-    var count = {
-      users: $landing.find('.results .cards .card.card-user').length,
-      rooms: $landing.find('.results .cards .card.card-room').length,
-      groups: $landing.find('.results .cards .card.card-group').length
-    };
-    searchFunction(search, count, false);
-  });
-
-  // click search button (responsive)
-  $landing
-    .find('.searchbar .action-search').click(function (e) {
-      var search = $landing.find('.searchbar input').val();
-      searchFunction(search, {}, true);
-    });
-
-  // submit form (search results) on non responsive
-  $landing.find('.form-search').submit(function (e) {
-    var search = $landing.find('#search-field').val();
-    e.preventDefault();
-    searchFunction(search, {}, true);
-  });
 
   // validate signup form
   var $formSignup = $('form#signup');

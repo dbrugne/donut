@@ -2,111 +2,224 @@
 <body>
 <div id="landing" class="flex-parent column">
 
-    <%- partial('header') %>
+    <%- partial('header-landing') %>
 
-    <input type="hidden" id="last-search" value="" />
-    <div id="carousel-landing" class="carousel slide  " data-ride="carousel">
-
-        <!-- Wrapper for slides -->
-        <div class="relative">
-            <div class="carousel-inner" role="listbox">
-                <div class="item item-1 active">
-                    <div class="container relative">
-                        <div class="disclaimer">
-                            <h1><%= t('landing.carousel.heading') %><span class="blink">|</span></h1>
-                            <p><%= t('landing.carousel.slogan') %></p>
-                            <p class="more">
-                                <a href="/create"><%= t('home.cover.knowmore') %></a>
+    <div class="first">
+        <div class="container">
+            <div class="flex-parent">
+                <div class="disclaimer hidden-xs">
+                    <div class="part-1 title">
+                        <%= t('landing.first.part-1') %>
+                    </div>
+                    <div class="part-2">
+                        <%= t('landing.first.part-2') %>
+                    </div>
+                </div>
+                <div class="authenticate">
+                    <div class="background"></div>
+                    <% if (user) { %>
+                        <h2><%= t('logged.title') %></h2>
+                        <div class="logged mt25 flex-parent column">
+                            <span class="profile flex-parent column">
+                                <img class="avatar" src="<%= user.avatar %>" alt="<%= user.username %> avatar">
+                                <% if (user.username) { %><p class="text-center">@<%= user.username %></p><% } %>
+                            </span>
+                            <p class="text-center"><%= t('logged.text') %></p>
+                            <p class="actions flex-parent column jc-center center">
+                                <a class="chat btn btn-default" href="/!"><%= t('logged.chat') %></a>
+                                <a class="logout flex-end mt10" href="/logout"><%= t('logged.logout') %></a>
                             </p>
                         </div>
-                    </div>
-                    <div class="img" style="background-image:url('/images/couverture.jpg');"></div>
+                    <% } else { %>
+                        <div class="flex-parent column">
+                            <div class="method-facebook-or">
+                                <div class="outer"><div class="inner"><%= t('landing.signup-self') %></div></div>
+                            </div>
+                            <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | &nbsp;<%= t('login.withfacebook') %></span></a>
+                            <p class="logic"><span><%= t('global.or') %></span></p>
+                            <form id="signup" action="/signup" method="post" role="form" class="form mt10">
+                                <input type="hidden" name="_csrf" value="<%= token %>">
+
+                                <div class="form-group mb10">
+                                    <input type="text" id="signin-email" class="form-control" name="email" placeholder="<%= t('landing.email-placeholder') %>" tabindex="1">
+                                    <img src="/images/arrow.svg">
+                                    <p class="help-block"></p>
+                                </div>
+
+                                <div class="form-group mb10">
+                                    <input type="password" id="signin-password" class="form-control" name="password" placeholder="<%= t('landing.password-placeholder') %>" tabindex="2">
+                                    <img src="/images/arrow.svg">
+                                    <p class="help-block"></p>
+                                </div>
+
+                                <div class="form-group mb10">
+                                    <input type="text" id="signin-username" class="form-control" name="username" placeholder="<%= t('landing.username-placeholder') %>" tabindex="3">
+                                    <img src="/images/arrow.svg">
+                                    <p class="help-block"></p>
+                                </div>
+
+                                <div class="flex-parent links-ctn">
+                                    <span class="blank flex-child"></span>
+                                    <input class="btn btn-pink" type="submit" value="<%= t('home.signup.etvoila') %>" tabindex="3">
+                                </div>
+
+                                <div class="text-center mt10 fs11">
+                                    <%= t('signup.disclaimer') %>
+                                </div>
+                            </form>
+                        </div>
+                    <% } %>
                 </div>
-            </div>
-        </div>
-
-        <div class="ctn-baseline container flex-parent column">
-
-            <div class="authenticate">
-                <div class="background"></div>
-                <% if (user) { %>
-                <h2><%= t('logged.title') %></h2>
-                <div class="logged mt25 flex-parent column">
-                    <span class="profile flex-parent column">
-                        <img class="avatar" src="<%= user.avatar %>" alt="<%= user.username %> avatar">
-                        <% if (user.username) { %><p class="text-center">@<%= user.username %></p><% } %>
-                    </span>
-                    <p class="text-center"><%= t('logged.text') %></p>
-                    <p class="actions flex-parent column jc-center center">
-                        <a class="chat btn btn-default" href="/!"><%= t('logged.chat') %></a>
-                        <a class="logout flex-end mt10" href="/logout"><%= t('logged.logout') %></a>
-                    </p>
-                </div>
-                <% } else { %>
-                <div class="flex-parent column">
-                    <div class="method-facebook-or">
-                        <div class="outer"><div class="inner"><%= t('landing.signup-self') %></div></div>
-                    </div>
-                    <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | &nbsp;<%= t('login.withfacebook') %></span></a>
-                    <p class="logic"><span><%= t('global.or') %></span></p>
-                    <form id="signup" action="/signup" method="post" role="form" class="form mt10">
-                        <input type="hidden" name="_csrf" value="<%= token %>">
-
-                        <div class="form-group mb10">
-                            <input type="text" id="signin-email" class="form-control" name="email" placeholder="<%= t('landing.email-placeholder') %>" tabindex="1">
-                            <img src="/images/arrow.svg">
-                            <p class="help-block"></p>
-                        </div>
-
-                        <div class="form-group mb10">
-                            <input type="password" id="signin-password" class="form-control" name="password" placeholder="<%= t('landing.password-placeholder') %>" tabindex="2">
-                            <img src="/images/arrow.svg">
-                            <p class="help-block"></p>
-                        </div>
-
-                        <div class="form-group mb10">
-                            <input type="text" id="signin-username" class="form-control" name="username" placeholder="<%= t('landing.username-placeholder') %>" tabindex="3">
-                            <img src="/images/arrow.svg">
-                            <p class="help-block"></p>
-                        </div>
-
-                        <div class="flex-parent links-ctn">
-                            <span class="blank flex-child"></span>
-                            <input class="btn btn-pink" type="submit" value="<%= t('home.signup.etvoila') %>" tabindex="3">
-                        </div>
-
-                        <div class="text-center mt10 fs11">
-                            <%= t('signup.disclaimer') %>
-                        </div>
-                    </form>
-                </div>
-                <% } %>
             </div>
         </div>
     </div>
-
-    <div class="container ctn-results flex-child">
-        <div class="search   mb10">
-            <form method="post" action="" class="form-search flex-parent">
-                <div class="input-ctn flex-child relative flex-child-3">
-                    <input id="search-field" type="text" placeholder="<%= t('landing.yourinterests') %>">
-                    <i class="icon icon-search"></i>
+    <!--<div class="second row-fluid flex-parent">-->
+        <!--<div class="col-md-6"></div>-->
+        <!--<div class="col-md-6 flex-child flex-parent column">-->
+            <!--<div class="flex-parent center jc-center flex-child">-->
+                <!--<div class="title text-center fs25"><strong><%= t('landing.second.title') %></strong></div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div class="third">
+        <div class="container">
+            <div class="title text-center mb20 mt100"><%= t('landing.third.title') %></div>
+            <div class="row mt50">
+                <div class="col-md-6">
+                    <div class="flex-parent">
+                        <div class="image image-1"></div>
+                        <div class="text flex-parent column">
+                            <div class="sub-title mt20"><strong><%= t('landing.third.block-1.title') %></strong></div>
+                            <div class="description mt10"><%= t('landing.third.block-1.description') %></div>
+                        </div>
+                    </div>
                 </div>
-                <button class="btn btn-default ml10 flex-center"><%= t('chat.actions.search') %></button>
-                <span class="ml10"><%= t('global.or') %></span>
-                <a href="/create" class="btn btn-default ml10 mr5 flex-center"><%= t('actions.create') %></a>
-            </form>
-        </div>
-        <div class="results">
-            <div class="cards">
-                <%= cardsHtml %>
+                <div class="col-md-6">
+                    <div class="flex-parent">
+                        <div class="image image-2"></div>
+                        <div class="text flex-parent column">
+                            <div class="sub-title mt20"><strong><%= t('landing.third.block-2.title') %></strong></div>
+                            <div class="description mt10"><%= t('landing.third.block-2.description') %></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12"></div>
+                <div class="col-md-6">
+                    <div class="flex-parent">
+                        <div class="image image-3"></div>
+                        <div class="text flex-parent column">
+                            <div class="sub-title mt20"><strong><%= t('landing.third.block-3.title') %></strong></div>
+                            <div class="description mt10"><%= t('landing.third.block-3.description') %></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="flex-parent">
+                        <div class="image image-4"></div>
+                        <div class="text flex-parent column">
+                            <div class="sub-title mt20"><strong><%= t('landing.third.block-4.title') %></strong></div>
+                            <div class="description mt10"><%= t('landing.third.block-4.description') %></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12"></div>
+                <div class="col-md-6">
+                    <div class="flex-parent">
+                        <div class="image image-5"></div>
+                        <div class="text flex-parent column">
+                            <div class="sub-title mt20"><strong><%= t('landing.third.block-5.title') %></strong></div>
+                            <div class="description mt10"><%= t('landing.third.block-5.description') %></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="flex-parent">
+                        <div class="image image-6"></div>
+                        <div class="text flex-parent column">
+                            <div class="sub-title mt20"><strong><%= t('landing.third.block-6.title') %></strong></div>
+                            <div class="description mt10"><%= t('landing.third.block-6.description') %></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <% visibility = (more && more === true) ? '' : 'hidden' %>
-            <button class="load-more btn btn-pink btn-big center-block mt20 mb20 <%= visibility %>"><%= t('landing.loadmore') %></button>
+
+            <div class="flex-parent jc-center center mt20 mb20">
+                <div class="title text-center fs25"><strong><%= t('landing.third.sub-title') %></strong></div>
+                <% if (!user) { %>
+                    <div class="authenticate">
+                        <div class="background"></div>
+                        <div class="flex-parent column">
+                            <div class="method-facebook-or">
+                                <div class="outer"><div class="inner"><%= t('landing.signup-self') %></div></div>
+                            </div>
+                            <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | &nbsp;<%= t('login.withfacebook') %></span></a>
+                            <p class="logic"><span><%= t('global.or') %></span></p>
+                            <form id="signup" action="/signup" method="post" role="form" class="form mt10">
+                                <input type="hidden" name="_csrf" value="<%= token %>">
+
+                                <div class="form-group mb10">
+                                    <input type="text" id="signin-email" class="form-control" name="email" placeholder="<%= t('landing.email-placeholder') %>" tabindex="1">
+                                    <img src="/images/arrow.svg">
+                                    <p class="help-block"></p>
+                                </div>
+
+                                <div class="form-group mb10">
+                                    <input type="password" id="signin-password" class="form-control" name="password" placeholder="<%= t('landing.password-placeholder') %>" tabindex="2">
+                                    <img src="/images/arrow.svg">
+                                    <p class="help-block"></p>
+                                </div>
+
+                                <div class="form-group mb10">
+                                    <input type="text" id="signin-username" class="form-control" name="username" placeholder="<%= t('landing.username-placeholder') %>" tabindex="3">
+                                    <img src="/images/arrow.svg">
+                                    <p class="help-block"></p>
+                                </div>
+
+                                <div class="flex-parent links-ctn">
+                                    <span class="blank flex-child"></span>
+                                    <input class="btn btn-pink" type="submit" value="<%= t('home.signup.etvoila') %>" tabindex="3">
+                                </div>
+
+                                <div class="text-center mt10 fs11">
+                                    <%= t('signup.disclaimer') %>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="fourth flex-parent column">
+        <div class="container flex-child flex-parent center jc-center">
+            <blockquote class="text-justify">
+                <%= t('landing.fourth.blockquote') %>
+                <strong class="pull-right"><%= t('landing.fourth.donut-team') %></strong>
+            </blockquote>
+        </div>
+    </div>
+
+    <div class="fifth">
+        <div class="mt50 mb50 container">
+            <div class="row-fluid flex-parent center hidden-sm hidden-xs">
+                <div class="title fs18 col-md-3"><%= t('landing.fifth.partners') %></div>
+                <div class="col-md-3 partner partner-1"></div>
+                <div class="col-md-3 partner partner-2"></div>
+                <div class="col-md-3 partner partner-3"></div>
+            </div>
         </div>
     </div>
 
     <footer>
+        <div class="container flex-parent center jc-center mt10 mb10">
+            <a class="inverse ml10" href="/!#donut/help"><%= t('chat.help') %></a>
+            <a class="inverse ml10" href="/faq" target="_blank"><%= t('page.faq.title') %></a>
+            <a class="inverse ml10" data-toggle="contactform"><%= t('page.contact.title') %></a>
+            <a class="inverse ml10" href="/eutc" target="_blank"><%= t('page.eutc.title') %></a>
+            <a class="inverse ml10" href="/legals" target="_blank"><%=t('landing.legals')%></a>
+        </div>
         <div class="container flex-parent">
             <div class="fb-like flex-child" data-href="https://www.facebook.com/donutdotme" data-layout="standard" data-action="like" data-show-faces="true" data-share="true" data-ref="landing"></div>
             <div class="text-center">Copyright DONUT</div>
