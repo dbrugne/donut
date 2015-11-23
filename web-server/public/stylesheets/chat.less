@@ -170,7 +170,6 @@
   }
 }
 
-.drawer-open #chat #left { box-shadow: rgba(0, 0, 0, 0.6) 0 1px 10px 0; }
 #chat {
   .container-fluid;
   height: 100%;
@@ -220,7 +219,7 @@
         i { .transition(all 300ms ease); }
       }
     }
-    #navbar { margin: 1rem;
+    #navbar { margin: 1rem 1rem 0 1rem; border-bottom: 1px solid @cl-nav-left-back-lighten; padding-bottom: 1rem;
       .links { .display-flex; .flex-flow(row nowrap); .align-items(center);
         > #notifications > a, a { color: @cl-nav-left-text-lighter;
           i { font-size: 1.8rem; }
@@ -314,9 +313,9 @@
         }
       }
     }
-    .scrollable { .align-self(flex-start); width: 100%; .flex(1 1 0); .scrollbar-white; overflow: auto;
+    .scrollable { .align-self(flex-start); width: 100%; .flex(1 1 0); .scrollbar-grey-thin; overflow: auto;
       .page-sidebar-menu { padding: 0; margin:0; .display-flex; .flex-flow(column nowrap); width: 100%; }
-      #ones {display: none;}
+      #ones { display: inline-block; }
       #ones, #rooms { padding: 0; margin: 0;
         .open-create-room { text-transform: lowercase; font-style: italic; }
         a { color:@cl-nav-left-text-lighter; }
@@ -350,7 +349,7 @@
                 }
               }
               .close-discussion { font-size: 1.6rem; margin:auto; }
-              &.blocked { span.name { color: @cl-error; } }
+              &.blocked { span.name { text-decoration: line-through; } }
               &.grouped {
                 a { padding-left:5px;
                   .name { padding-left: 5px; font-weight: normal; }
@@ -778,7 +777,7 @@
                     }
                   }
                 }
-                .block.user { margin-top: 7px; padding-top: 23px; padding-left: 40px; clear: both; /*border-top: 1px solid @cl-subtext0;*/
+                .block.user { margin-top: 7px; padding-top: 23px; padding-left: 40px; clear: both; border-top: 1px solid @cl-subtext0;
                   .avatar { position: absolute; top: 5px; left: 5px; border: none; width: 30px; height: 30px; background-position: center center; background-size: 30px 30px; }
                   .username { position: absolute; top: 5px; left: 45px; .ft-opensans-bold; font-size: 1em; }
                   .othername { color: @cl-subtext20; font-weight: normal; }
