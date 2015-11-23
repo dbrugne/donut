@@ -46,12 +46,18 @@ var GroupUsersView = Backbone.View.extend({
       group_id: this.model.get('group_id')
     });
     this.$el.html(html);
+    this.initializeTooltips();
 
     debug.end('group-users' + this.model.get('name'));
     return this;
   },
   _remove: function () {
     this.remove();
+  },
+  initializeTooltips: function () {
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
   }
 
 });

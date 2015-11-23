@@ -19,7 +19,9 @@
                         <span class="relative dc-i-<%=_color%>">
                             <img class="avatar_ctn" src="<%= result.avatarUrl %>">
                             <% if (result.type === 'group') { %>
-                                <i class="icon icon-star img-circle dc-back dc-text-contrast"></i>
+                                <span class="group-type img-circle dc-back dc-text-contrast">
+                                    <i class="icon icon-users"></i>
+                                </span>
                             <% } %>
                         </span>
                         <% if (result.type === 'group') { %>

@@ -1,3 +1,4 @@
+var $ = require('jquery');
 var Backbone = require('backbone');
 var client = require('../libs/client');
 var currentUser = require('../models/current-user');
@@ -58,6 +59,8 @@ var DrawerUserEditView = Backbone.View.extend({
       el: this.$('.manage-email-container'),
       user: this.user
     });
+
+    $('[data-toggle="contactform"]').contactform({});
   }
 
 });

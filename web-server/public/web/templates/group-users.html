@@ -5,7 +5,7 @@
             <% _.each(op, function(user) { %>
                 <div class="item <% if (user.is_op === true) { %>op <% }; %> <% if (user.is_owner === true) { %>owner <% }; %><%= user.status %>">
                     <span class="infos">
-                        <span class="avatar open-user-profile" data-user-id="<%= user.user_id %>" style="background-image: url(<%= user.avatar %>)" title="<% if (user.is_op === true) { %><%= t('chat.op.isgroup') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.isgroup') %><% }; %>"></span>
+                        <span class="avatar open-user-profile" data-toggle="tooltip" data-placement="top" data-user-id="<%= user.user_id %>" style="background-image: url(<%= user.avatar %>)" data-html="true" title="@<%=user.username%><br/> <% if (user.is_op === true) { %><%= t('chat.op.isgroup') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.isgroup') %><% }; %>"></span>
                     </span>
                 </div>
             <% }) %>
@@ -22,7 +22,7 @@
             <div class="user-list block">
                 <div class="list scrollable">
                     <% _.each(members, function(user) { %>
-                        <div class="item open-user-profile <% if (user.is_owner) { %>owner<% }; %> <% if (user.is_op) { %>op<% }; %>"data-user-id="<%= user.user_id %>">
+                        <div class="item open-user-profile <% if (user.is_owner) { %>owner<% }; %> <% if (user.is_op) { %>op<% }; %>" title="@<%=user.username%>" data-toggle="tooltip" data-placement="top" data-user-id="<%= user.user_id %>">
                             <div class="avatar" style="background-image:url(<%= user.avatar %>)"></div>
                         </div>
                     <% }); %>

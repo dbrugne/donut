@@ -55,7 +55,7 @@ handler.call = function (data, session, next) {
           group.name = data.group_name;
           group.owner = user.id;
           group.color = conf.room.default.color;
-          group.visibility = false; // not visible on home until admin change this value
+          group.visibility = true; // always visible one homepage by default
           group.priority = 0;
 
           group.save(function (err) {

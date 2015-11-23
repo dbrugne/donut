@@ -159,7 +159,10 @@ emailer.roomDeop = function (to, data, callback) {
       action: i18next.t('email.roomdeop.content.action')
     },
     subject: i18next.t('email.roomdeop.subject', {roomname: data.roomname}),
-    roomlink: {chat: conf.url + urls(data, 'room', 'chat')}
+    roomlink: {
+      url: conf.url + urls(data, 'room', 'url'),
+      chat: conf.url + urls(data, 'room', 'chat')
+    }
   }, callback);
 };
 
@@ -171,7 +174,10 @@ emailer.roomKick = function (to, data, callback) {
     reason: data.reason,
     title: i18next.t('email.roomkick.content.title', {roomname: data.roomname}),
     subject: i18next.t('email.roomkick.subject', {roomname: data.roomname}),
-    roomlink: {chat: conf.url + urls(data, 'room', 'chat')},
+    roomlink: {
+      url: conf.url + urls(data, 'room', 'url'),
+      chat: conf.url + urls(data, 'room', 'chat')
+    },
     email_heading_action: {
       action: i18next.t('email.roomkick.content.action')
     }
@@ -185,6 +191,10 @@ emailer.roomBan = function (to, data, callback) {
     reason: data.reason,
     title: i18next.t('email.roomban.content.title', {roomname: data.roomname}),
     subject: i18next.t('email.roomban.subject', {roomname: data.roomname}),
+    roomlink: {
+      url: conf.url + urls(data, 'room', 'url'),
+      chat: conf.url + urls(data, 'room', 'chat')
+    },
     email_heading_action: {
       action: i18next.t('email.roomban.content.action')
     }
@@ -219,7 +229,10 @@ emailer.roomVoice = function (to, data, callback) {
       action: i18next.t('email.roomvoice.content.action')
     },
     subject: i18next.t('email.roomvoice.subject', {roomname: data.roomname}),
-    roomlink: {chat: conf.url + urls(data, 'room', 'chat')}
+    roomlink: {
+      url: conf.url + urls(data, 'room', 'url'),
+      chat: conf.url + urls(data, 'room', 'chat')
+    }
   }, callback);
 };
 
@@ -234,7 +247,10 @@ emailer.roomDevoice = function (to, data, callback) {
       action: i18next.t('email.roomdevoice.content.action')
     },
     subject: i18next.t('email.roomdevoice.subject', {roomname: data.roomname}),
-    roomlink: {url: conf.url + urls(data, 'room', 'url')}
+    roomlink: {
+      url: conf.url + urls(data, 'room', 'url'),
+      chat: conf.url + urls(data, 'room', 'chat')
+    }
   }, callback);
 };
 
@@ -259,7 +275,10 @@ emailer.roomJoin = function (to, from, room, callback) {
       username: from,
       roomname: room
     }),
-    roomlink: {chat: conf.url + urls(data, 'room', 'chat')},
+    roomlink: {
+      url: conf.url + urls(data, 'room', 'url'),
+      chat: conf.url + urls(data, 'room', 'chat')
+    },
     email_heading_action: false
   }, callback);
 };
@@ -274,7 +293,10 @@ emailer.roomJoinRequest = function (to, data, callback) {
       username: data.username
     }),
     subject: i18next.t('email.roomjoinrequest.subject', {roomname: data.roomname}),
-    roomlink: {chat: conf.url + urls(data, 'room', 'chat')},
+    roomlink: {
+      url: conf.url + urls(data, 'room', 'url'),
+      chat: conf.url + urls(data, 'room', 'chat')
+    },
     email_heading_action: false
   }, callback);
 };
@@ -289,7 +311,10 @@ emailer.roomAllow = function (to, data, callback) {
       username: data.username
     }),
     subject: i18next.t('email.roomallow.subject', {roomname: data.roomname}),
-    roomlink: {chat: conf.url + urls(data, 'room', 'chat')},
+    roomlink: {
+      url: conf.url + urls(data, 'room', 'url'),
+      chat: conf.url + urls(data, 'room', 'chat')
+    },
     email_heading_action: {
       action: i18next.t('email.roomallow.content.action')
     }
@@ -309,7 +334,10 @@ emailer.roomRefuse = function (to, data, callback) {
     email_heading_action: {
       action: i18next.t('email.roomrefuse.content.action')
     },
-    roomlink: {chat: conf.url + urls(data, 'room', 'chat')}
+    roomlink: {
+      url: conf.url + urls(data, 'room', 'url'),
+      chat: conf.url + urls(data, 'room', 'chat')
+    }
   }, callback);
 };
 
@@ -326,7 +354,10 @@ emailer.roomInvite = function (to, data, callback) {
       roomname: data.roomname,
       username: data.username
     }),
-    roomlink: {chat: conf.url + urls(data, 'room', 'chat')},
+    roomlink: {
+      url: conf.url + urls(data, 'room', 'url'),
+      chat: conf.url + urls(data, 'room', 'chat')
+    },
     email_heading_action: false
   }, callback);
 };
@@ -347,7 +378,10 @@ emailer.roomDelete = function (to, data, callback) {
     email_heading_action: {
       action: i18next.t('email.roomdelete.content.action')
     },
-    grouplink: {chat: conf.url + urls(data, 'group', 'chat')}
+    grouplink: {
+      chat: conf.url + urls(data, 'group', 'chat'),
+      url: conf.url + urls(data, 'group', 'url')
+    }
   }, callback);
 };
 
@@ -364,7 +398,10 @@ emailer.roomCreate = function (to, data, callback) {
       roomname: data.roomname,
       username: data.username
     }),
-    roomlink: {chat: conf.url + urls(data, 'room', 'chat')},
+    roomlink: {
+      url: conf.url + urls(data, 'room', 'url'),
+      chat: conf.url + urls(data, 'room', 'chat')
+    },
     email_heading_action: false
   }, callback);
 };
@@ -383,7 +420,10 @@ emailer.roomTopic = function (to, from, room, topic, callback) {
       username: from,
       roomname: room
     }),
-    roomlink: {chat: conf.url + urls(data, 'room', 'chat')},
+    roomlink: {
+      url: conf.url + urls(data, 'room', 'url'),
+      chat: conf.url + urls(data, 'room', 'chat')
+    },
     email_heading_action: false
   }, callback);
 };
@@ -402,7 +442,10 @@ emailer.userMention = function (to, events, from, room, callback) {
       username: from,
       roomname: room
     }),
-    roomlink: {chat: conf.url + urls(data, 'room', 'chat')},
+    roomlink: {
+      url: conf.url + urls(data, 'room', 'url'),
+      chat: conf.url + urls(data, 'room', 'chat')
+    },
     email_heading_action: false
   }, callback);
 };
@@ -415,7 +458,7 @@ emailer.userMessage = function (to, username, events, callback) {
     title: i18next.t('email.usermessage.content.title', {username: username}),
     subject: i18next.t('email.usermessage.subject', {username: username}),
     userlink: {
-      chat: protocol + '://' + conf.fqdn + urls(data, 'user', 'chat')
+      chat: conf.url + urls(data, 'user', 'chat')
     },
     email_heading_action: false
   }, callback);
@@ -447,11 +490,13 @@ emailer.groupJoinRequest = function (to, data, callback) {
       username: data.username
     }),
     subject: i18next.t('email.groupjoinrequest.subject', {groupname: data.groupname.replace('#', '')}),
-    grouplink: {chat: conf.url + urls(data, 'group', 'chat')},
+    grouplink: {
+      chat: conf.url + urls(data, 'group', 'chat'),
+      url: conf.url + urls(data, 'group', 'url')
+    },
     email_heading_action: false
   }, callback);
 };
-
 emailer.groupAllow = function (to, data, callback) {
   data.name = data.groupname;
   sendEmail(to, 'emails/group-allow.html', {
@@ -468,7 +513,6 @@ emailer.groupAllow = function (to, data, callback) {
     }
   }, callback);
 };
-
 emailer.groupDisallow = function (to, data, callback) {
   data.name = data.groupname;
   sendEmail(to, 'emails/group-disallow.html', {
@@ -479,13 +523,15 @@ emailer.groupDisallow = function (to, data, callback) {
       username: data.username
     }),
     subject: i18next.t('email.groupdisallow.subject', {groupname: data.groupname}),
-    grouplink: {chat: conf.url + urls(data, 'group', 'chat')},
+    grouplink: {
+      chat: conf.url + urls(data, 'group', 'chat'),
+      url: conf.url + urls(data, 'group', 'url')
+    },
     email_heading_action: {
       action: i18next.t('email.groupdisallow.content.action')
     }
   }, callback);
 };
-
 emailer.groupInvite = function (to, data, callback) {
   data.name = data.groupname;
   sendEmail(to, 'emails/group-invite.html', {
@@ -499,11 +545,13 @@ emailer.groupInvite = function (to, data, callback) {
       groupname: data.groupname,
       username: data.username
     }),
-    grouplink: {chat: conf.url + urls(data, 'group', 'chat')},
+    grouplink: {
+      chat: conf.url + urls(data, 'group', 'chat'),
+      url: conf.url + urls(data, 'group', 'url')
+    },
     email_heading_action: false
   }, callback);
 };
-
 emailer.groupRefuse = function (to, data, callback) {
   data.name = data.groupname;
   sendEmail(to, 'emails/group-refuse.html', {
@@ -520,10 +568,12 @@ emailer.groupRefuse = function (to, data, callback) {
     email_heading_action: {
       action: i18next.t('email.grouprefuse.content.action')
     },
-    grouplink: {chat: conf.url + urls(data, 'group', 'chat')}
+    grouplink: {
+      chat: conf.url + urls(data, 'group', 'chat'),
+      url: conf.url + urls(data, 'group', 'url')
+    }
   }, callback);
 };
-
 emailer.groupBan = function (to, data, callback) {
   data.name = data.groupname;
   sendEmail(to, 'emails/group-ban.html', {
@@ -531,13 +581,15 @@ emailer.groupBan = function (to, data, callback) {
     groupname: data.groupname.replace('#', ''),
     title: i18next.t('email.groupban.content.title', {groupname: data.groupname.replace('#', '')}),
     subject: i18next.t('email.groupban.subject', {groupname: data.groupname.replace('#', '')}),
-    grouplink: {chat: conf.url + urls(data, 'group', 'chat')},
+    grouplink: {
+      chat: conf.url + urls(data, 'group', 'chat'),
+      url: conf.url + urls(data, 'group', 'url')
+    },
     email_heading_action: {
       action: i18next.t('email.groupban.content.action')
     }
   }, callback);
 };
-
 emailer.groupDeban = function (to, data, callback) {
   data.name = data.groupname;
   sendEmail(to, 'emails/group-deban.html', {
@@ -545,13 +597,15 @@ emailer.groupDeban = function (to, data, callback) {
     groupname: data.groupname.replace('#', ''),
     title: i18next.t('email.groupdeban.content.title', {groupname: data.groupname.replace('#', '')}),
     subject: i18next.t('email.groupdeban.subject', {groupname: data.groupname.replace('#', '')}),
-    grouplink: {chat: conf.url + urls(data, 'group', 'chat')},
+    grouplink: {
+      chat: conf.url + urls(data, 'group', 'chat'),
+      url: conf.url + urls(data, 'group', 'url')
+    },
     email_heading_action: {
       action: i18next.t('email.groupdeban.content.action')
     }
   }, callback);
 };
-
 emailer.groupOp = function (to, data, callback) {
   data.name = data.groupname;
   sendEmail(to, 'emails/group-op.html', {
@@ -568,7 +622,6 @@ emailer.groupOp = function (to, data, callback) {
     }
   }, callback);
 };
-
 emailer.groupDeop = function (to, data, callback) {
   data.name = data.groupname;
   sendEmail(to, 'emails/group-deop.html', {

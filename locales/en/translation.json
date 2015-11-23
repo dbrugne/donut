@@ -20,9 +20,49 @@
     "legals": "Legals",
     "signup-self": "Sign up",
     "login-self": "Log in",
-    "carousel": {
-      "heading": "chatroom network ",
-      "slogan": "Talk about your interests. <br/>Get in touch with people in your universe. <br> Create and animate your own community."
+    "first": {
+      "part-1": ["<p>The (almost) official</p>", "<p>discussion space of your university</p>"],
+      "part-2": ["<p>Hang out and chat whatever the sizz of your community. Instant messaging smartly scaled for your campus, your organizations, your Meetups?</p>"]
+    },
+    "second": {
+      "title": "Your community is growing throughout all its discussions."
+    },
+    "third": {
+      "title": "DONUT brings you comfort to organize discussions among your members",
+      "block-1": {
+        "title": "Your own space",
+        "description": "Gather your community members and all their discussions in a dedicated space. Everyone can easily find each other."
+      },
+      "block-2": {
+        "title": "Your members are independent",
+        "description": "They are free to create private or public discussions, to exchange documents ... Your community lives by itself"
+      },
+      "block-3": {
+        "title": "Carefree access Management",
+        "description": "Define access rules (public or private, custom criteria) and we automatically detect your members. End with one by one validation."
+      },
+      "block-4": {
+        "title": "Members: no limit",
+        "description": "Engage your community whether it has 30 or 100,000 members. DONUT is made for it !"
+      },
+      "block-5": {
+        "title": "Always zen",
+        "description": "Your team moderators have a superpowers to prevent trolling."
+      },
+      "block-6": {
+        "title": "Keyboard-friendly",
+        "description": "DONUT is available both on mobile and on computer. Because we think about the comfort of your eyes and your ten lovely fingers."
+      },
+      "sub-title": "So create a space that looks like your community on DONUT"
+    },
+    "fourth": {
+      "blockquote": ["<p>We draw much of our inspiration in IRC, the chat system which allowed early Internet adopters to meet in on-line communities. We have nostalgia for that time and this vision of the Internet. Where, as in real life, we can chat with people around us, no matter if we are already \ "friends \" or not. From the origin of this project we've wanted to revive this heyday of chat with our generation, and to introduce it the younger.</p>",
+        "<p>Furthermore we admire the the quality of instant messaging app enabling to chat with friends (Whatsapp, Viber, Facebook Messenger ...) or colleagues (Slack, HipChat ...). These tools are unfortunately not suitable for communities discussions.</p>",
+        "<p>Our mission at DONUT is to provide communities, and especially university campuses, the best experience of instant chat.</p>"],
+      "donut-team": "The DONUT team"
+    },
+    "fifth": {
+      "partners": "Partners"
     }
   },
   "forms": {
@@ -120,7 +160,7 @@
     "orsignup": "or signup",
     "forgot": "forgotten password",
     "join": "join",
-    "direct-access": "direct access",
+    "direct-access": "I have the password",
     "discuss": "chat",
     "account": "my account",
     "mute": "sound on",
@@ -128,7 +168,9 @@
     "verify": "Verification of your email"
   },
   "global": {
-    "members": "members",
+    "collapse": "collapse",
+    "members": "<strong>__count__</strong> member",
+    "members_plural": "<strong>__count__</strong> members",
     "discover": "discover",
     "group": "group",
     "view-profile": "view profile",
@@ -244,9 +286,6 @@
     "info": "Enter a new password and confirm it:"
   },
   "home": {
-    "cover": {
-      "knowmore": "Know more"
-    },
     "description": {
       "title1": "tasty",
       "title2": "chatrooms"

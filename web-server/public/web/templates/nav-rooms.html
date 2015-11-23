@@ -4,10 +4,10 @@
 <% _.each(list, function(item) { %>
     <% if(more && ( !item.group_id || ( item.group_id && item.group_id !== lastGroup ) )) { %>
         <% more = false; %>
-        <li class="less collapse collapse-<%-lastGroup%>">
-            <a class="inverse" role="button" href=".collapse-<%-lastGroup%>" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-<%-lastGroup%>">
+        <li class="less">
+            <span class="inverse" role="button">
                 <%= t('chat.navroom.seeless') %>
-            </a>
+            </span>
         </li>
     <% } %>
     <% if (item.group_id && item.group_id !== lastGroup) { %> <!--new group block-->
@@ -40,12 +40,12 @@
     <% if(count === toggleCount) { %>
         <% more = true; %>
         <li class="more">
-            <a class="inverse" role="button" href=".collapse-<%-lastGroup%>" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-<%-lastGroup%>">
+            <span class="inverse" role="button">
                 <%= t('chat.navroom.seemore') %>
-            </a>
+            </span>
         </li>
     <% } %>
-    <li class="room-type <% if (item.group_id) { %> grouped <% } else { %> ungrouped <% } %> <% if(count >= toggleCount) { %>collapse collapse-<%-lastGroup%><%}%> <% if (item.focused) { %> active <% } %>" data-type="<%= item.type %>" data-room-id="<%= item.id %>">
+    <li class="room-type <% if (item.group_id) { %> grouped <% } else { %> ungrouped <% } %> <% if (item.focused) { %> active <% } %>" data-type="<%= item.type %>" data-room-id="<%= item.id %>">
         <span class="item flex-parent center <% if (item.group_id) { %> grouped <% } %> <% if (item.blocked) { %> blocked <% } %>">
             <a class="clean name-ctn  " href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
                 <% if (item.group_id) { %>

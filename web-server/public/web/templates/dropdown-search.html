@@ -11,8 +11,11 @@
     <% } %>
     <% _.each(results.groups.list, function (item) { %>
         <% var color = item.color ? item.color.replace('#','').toLowerCase() : 'default' %>
-        <li class="open-group-profile li-group result dc-i-<%=color%>" data-group-id="<%=item.group_id%>">
+        <li class="open-group-profile relative li-group result dc-i-<%=color%>" data-group-id="<%=item.group_id%>">
             <img alt="<%= item.name %>" src="<%= item.avatar %>" class="mr5 img-circle">
+            <span class="group-type img-circle dc-back dc-text-contrast">
+                <i class="icon icon-users"></i>
+            </span>
             <span class="name">#<%= item.name %></span>
             <span class="disclaimer"><%=item.description%></span>
         </li>

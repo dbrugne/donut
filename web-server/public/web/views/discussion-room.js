@@ -3,10 +3,8 @@ var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
-var client = require('../libs/client');
 var EventsView = require('./events');
 var InputView = require('./input');
-var confirmationView = require('./modal-confirmation');
 var TopicView = require('./room-topic');
 var UsersView = require('./room-users');
 

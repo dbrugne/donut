@@ -34,10 +34,8 @@ var GroupAccessView = Backbone.View.extend({
     'click .search-user-banned .dropdown-menu>li': 'onBanUser',
 
     'click input.save-access': 'onSubmit',
-    'click input.save-conditions': 'onSubmitConditions',
     'change [type="checkbox"]': 'onChoosePassword',
-    'click .random-password': 'onRandomPassword',
-    'keyup #conditions-area': 'onTypeConditions'
+    'click .random-password': 'onRandomPassword'
   },
 
   initialize: function (options) {
@@ -70,9 +68,6 @@ var GroupAccessView = Backbone.View.extend({
     this.currentPassword = data.password;
     this.group_name = data.name;
 
-    if (data.disclaimer) {
-      data.disclaimer = _.escape(data.disclaimer);
-    }
     var html = this.template({
       group: data,
       password: data.password
@@ -92,11 +87,6 @@ var GroupAccessView = Backbone.View.extend({
     this.$randomPassword = this.$('.random-password');
     this.$countConditions = this.$('.counter');
     this.$conditions = this.$('#conditions-area');
-
-    if (data.disclaimer) {
-      this.$conditions.html(data.disclaimer);
-      this.onTypeConditions();
-    }
 
     this.tablePending = new TableView({
       el: this.$('.allow-pending'),
@@ -295,19 +285,6 @@ var GroupAccessView = Backbone.View.extend({
     }
 
     client.groupUpdate(this.model.get('group_id'), {password: this.getPassword()}, _.bind(function (data) {
-      if (data.err) {
-        return this.setError(i18next.t('chat.form.errors.' + data.err, {defaultValue: i18next.t('global.unknownerror')}));
-      }
-      this.trigger('close');
-    }, this));
-  },
-  onTypeConditions: function (event) {
-    this.$countConditions.html(i18next.t('chat.form.common.edit.left', {count: 200 - this.$conditions.val().length}));
-  },
-  onSubmitConditions: function (event) {
-    this.reset();
-
-    client.groupUpdate(this.model.get('group_id'), {disclaimer: this.$conditions.val()}, _.bind(function (data) {
       if (data.err) {
         return this.setError(i18next.t('chat.form.errors.' + data.err, {defaultValue: i18next.t('global.unknownerror')}));
       }

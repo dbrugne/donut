@@ -94,8 +94,7 @@ var RoomModel = Backbone.Model.extend({
   onViewed: function (data) {
     if (this.get('unviewed')) {
       this.set('unviewed', false);
-      // @todo yls: why triggering a full redraw? We should just ask for a CSS class removing
-      app.trigger('redrawNavigationRooms');
+      app.trigger('nav-viewed');
     }
     this.trigger('viewed', data);
   },

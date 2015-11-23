@@ -162,17 +162,6 @@
 
 *******************************************************************************/
 
-.blink {
-  animation: blink 1s steps(5, start) infinite;
-  -webkit-animation: blink 1s steps(5, start) infinite;
-}
-@keyframes blink {
-  to { visibility: hidden; }
-}
-@-webkit-keyframes blink {
-  to { visibility: hidden; }
-}
-
 .bounce {
   animation-name: bounce;
   animation-duration: 1s;
@@ -528,3 +517,39 @@
 
 .color-text (@a) when (lightness(@a) >= 60%) { color: @cl-text; }
 .color-text (@a) when (lightness(@a) < 60%)  { color: @cl-subtext0; }
+
+/*******************************************************************************
+
+                              REUSABLE CODE
+
+*******************************************************************************/
+
+.compact-sidebar () { width:70px !important;
+  .blur { width:70px;
+    .users { position: relative; padding: 10px 0 30px; height: 100%; background-color: rgba(0, 0, 0, 0.2);
+      .list { list-style: none; padding: 5px; background-repeat: no-repeat; background-position: left top; position: relative; .scrollbar-white; .justify-content(space-around); margin: 0 6px;
+        overflow: visible;
+        height: 100%;
+        > li { margin: 5px 0; float:left; }
+        .clearfix { width:100%; height:5px; clear: both; float: none; }
+        .li-title { margin: 0;
+          .col-md-6 { width:100%; padding: 0; margin-top:5px; }
+        }
+        .item { position: relative; font-size: 0.9em; font-weight: bold; display: block; height: 34px; padding-left: 0;
+          .avatar { display: inline-block; width: 34px; height: 34px;
+            .background { background-position: center center; background-size: 34px 34px; .border-radius(4px); width: 34px; height: 34px; display: inline-block; }
+            &:hover {
+              .dropdown>.dropdown-toggle {
+                display: block;
+              }
+            }
+          }
+          .userstatus { position: absolute; top: 10px; z-index: 1; }
+          .username { display:none; }
+        }
+      }
+    }
+  }
+  .hidden-compact { display:none; }
+  .visible-compact { display:inline; }
+}

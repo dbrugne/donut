@@ -31,9 +31,16 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function prepare (notifications, more, callback) {
+    function retrieveUnreadCount (notifications, more, callback) {
+      Notifications(that.app).retrieveUserNotificationsUnviewedCount(user.id, function (err, count) {
+        return callback(err, notifications, more, count);
+      });
+    },
+
+    function prepare (notifications, more, count, callback) {
       var event = {
         notifications: [],
+        unread: count,
         more: more
       };
       _.each(notifications, function (notification) {
