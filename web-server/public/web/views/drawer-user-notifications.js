@@ -4,10 +4,8 @@ var Backbone = require('backbone');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
 var client = require('../libs/client');
-var currentUser = require('../models/current-user');
 var i18next = require('i18next-client');
 var date = require('../libs/date');
-var urls = require('../../../../shared/util/url');
 
 var DrawerUserNotificationsView = Backbone.View.extend({
   template: require('../templates/drawer-user-notifications.html'),
@@ -20,13 +18,13 @@ var DrawerUserNotificationsView = Backbone.View.extend({
 
   timeToMarkAsRead: 1500, // mark notifications as read after n seconds
 
+  unread: 0,
+
   events: {
     'click .actions .read-more': 'onReadMore',
     'click .action-tag-as-read': 'onTagAsRead',
     'click .action-tag-as-done': 'onTagAsDone'
   },
-
-  unread: 0,
 
   more: false,
 
@@ -53,23 +51,18 @@ var DrawerUserNotificationsView = Backbone.View.extend({
       this.$loader = this.$actions.find('.loading');
 
       var html = '';
-      var unread = 0;
       _.each(data.notifications, _.bind(function (element) {
         html += this.renderNotification(element);
-        if (element.viewed === false) {
-          unread++;
-        }
       }, this));
-      this.$menu.html(this.$menu.html() + html);
-      if (this.unread !== unread) {
-        this.unread += unread;
-        this.setUnreadCount(this.unread);
-      }
 
-      var that = this;
-      this.markHasRead = setTimeout(function () {
-        that.clearNotifications();
-      }, this.timeToMarkAsRead);
+      this.unread = data.unread;
+
+      this.$menu.html(this.$menu.html() + html);
+
+      this.markHasRead = setTimeout(_.bind(function () {
+        this.clearNotifications();
+      }, this), this.timeToMarkAsRead);
+
       this.toggleReadMore();
     }, this));
   },
@@ -78,66 +71,27 @@ var DrawerUserNotificationsView = Backbone.View.extend({
     return this;
   },
   setUnreadCount: function (count) {
-    this.updateCount(count);
-    if (count > 0) {
-      this.$count.html(count); // update count in drawer
+    this.unread = count;
+
+    if (this.unread > 0) {
+      this.$count.html(this.unread); // update count in drawer
       this.$unreadCount.removeClass('empty');
       this.$unreadCount.addClass('full');
     } else {
       this.$unreadCount.addClass('empty');
       this.$unreadCount.removeClass('full');
     }
-    this.unread = count;
   },
   // A new Notification is pushed from server
   onNewNotification: function (data) {
-    // Update Badge & Count
     this.setUnreadCount(this.unread + 1);
-
-    // Highlight Badge
-    this.$badge.addClass('bounce');
-    var that = this;
-    setTimeout(function () {
-      that.$badge.removeClass('bounce');
-    }, 1500); // Remove class after animation to trigger animation later if needed
-
-    // Insert new notification in dropdown
     this.$menu.html(this.renderNotification(data) + this.$menu.html());
+    this.$scrollable.scrollTop(0);
 
     // Set Timeout to clear new notification
-    this.markHasRead = setTimeout(function () {
-      that.clearNotifications();
-    }, this.timeToMarkAsRead);
-
-    // if more than 10 notifications in notification center
-    this.isThereMoreNotifications = true;
-
-    this.toggleReadMore();
-    this.$scrollable.scrollTop(0);
-    this._createDesktopNotify(data);
-  },
-  _createDesktopNotify: function (data) {
-    var msg = (data.data.message)
-      ? common.markup.toText(data.data.message)
-      : '';
-    var message = i18next.t('chat.notifications.messages.' + data.type, {
-      name: (data.data.room)
-        ? data.data.room.name
-        : (data.data.group)
-        ? data.data.group.name
-        : '',
-      username: (data.data.by_user)
-        ? data.data.by_user.username
-        : data.data.user.username,
-      message: msg,
-      topic: (data.data.topic)
-        ? common.markup.toText(data.data.topic)
-        : ''
-    });
-
-    message = message.replace(/<\/*span>/g, '');
-    message = message.replace(/<\/*br>/g, '');
-    app.trigger('desktopNotification', message, '');
+    this.markHasRead = setTimeout(_.bind(function () {
+      this.clearNotifications();
+    }, this), this.timeToMarkAsRead);
   },
   renderNotification: function (n) {
     n.css = '';
@@ -232,6 +186,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
 
       // Update Badge & Count
       this.setUnreadCount(that.unread - ids.length);
+      app.trigger('notification:decreaseCount', ids.length); // update badge in notification view & responsive view
 
       that.markHasRead = null;
     }, this));
@@ -262,7 +217,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
       if (data.more) {
         this.$actions.removeClass('hidden');
       } else {
-        this.$actions.addClass('hidden')
+        this.$actions.addClass('hidden');
       }
     }, this));
   },
@@ -295,6 +250,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
 
       // Update Badge & Count
       this.setUnreadCount(0);
+      app.trigger('notification:readAll'); // update badge in notification view & responsive view
     }, this));
   },
   onTagAsDone: function (event) {
@@ -310,7 +266,8 @@ var DrawerUserNotificationsView = Backbone.View.extend({
     var message = $('.message[data-notification-id=' + data.notification + ']');
 
     if (message.hasClass('unread')) {
-      this.unread--;
+      this.setUnreadCount(this.unread - 1);
+      app.trigger('notification:decreaseCount', 1); // update badge in notification view & responsive view
     }
 
     message.fadeOut(500, function () {
@@ -326,14 +283,6 @@ var DrawerUserNotificationsView = Backbone.View.extend({
   },
   countNotificationsInDropdown: function () {
     return this.$menu.find('.message').length;
-  },
-  updateCount: function (count) {
-    this.$badge.text(count);  // update badge in left navigation
-    this.$badgeResponsive.text(count); // update badge in left navigation on responsive mode
-    if (count === 0) {
-      this.$badge.text('');
-      this.$badgeResponsive.text('>');
-    }
   }
 });
 

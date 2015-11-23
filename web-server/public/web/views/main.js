@@ -29,6 +29,7 @@ var DrawerGroupAccessView = require('./drawer-group-access');
 var DrawerGroupUsersView = require('./drawer-group-users');
 var DrawerUserProfileView = require('./drawer-user-profile');
 var DrawerUserNotificationsView = require('./drawer-user-notifications');
+var NotificationsView = require('./notifications');
 var DrawerUserEditView = require('./drawer-user-edit');
 var DrawerUserPreferencesView = require('./drawer-user-preferences');
 var DrawerUserAccountView = require('./drawer-account');
@@ -104,7 +105,6 @@ var MainView = Backbone.View.extend({
     this.listenTo(client, 'welcome', this.onWelcome);
     this.listenTo(client, 'admin:message', this.onAdminMessage);
     this.listenTo(client, 'disconnect', this.onDisconnect);
-    this.listenTo(client, 'notification:new', this.onNewNotification);
     this.listenTo(groups, 'add', this.addView);
     this.listenTo(groups, 'remove', this.onRemoveGroupView);
     this.listenTo(rooms, 'add', this.addView);
@@ -127,6 +127,7 @@ var MainView = Backbone.View.extend({
     this.connectionView = new ConnectionModalView();
     this.welcomeView = new WelcomeModalView();
     this.muteView = new MuteView();
+    this.notificationsView = new NotificationsView();
     this.searchView = new SearchView({
       el: this.$('#navbar .search')
     });
@@ -146,13 +147,7 @@ var MainView = Backbone.View.extend({
       main: this
     };
 
-    this.initializeCollapse();
-
     client.connect();
-  },
-
-  initializeCollapse: function () {
-    this.$('[data-toggle="collapse"]').collapse();
   },
 
   /**
@@ -173,13 +168,7 @@ var MainView = Backbone.View.extend({
       $('#block-discussions').show();
     }
 
-    // update notification count on welcome
-    if (data.notifications && data.notifications.unread) {
-      $('#notifications').find('.unread-count').text(data.notifications.unread).addClass('bounce');
-      $('.hover-menu-notifications').text(data.notifications.unread);
-    } else {
-      $('.hover-menu-notifications').text('>');
-    }
+    this.notificationsView.updateCount(data.notifications.unread);
 
     // Run routing only when everything in interface is ready
     this.firstConnection = false;
@@ -200,16 +189,6 @@ var MainView = Backbone.View.extend({
         view.eventsView.$realtime.append('<div class="block disconnect"></div>');
       }
     });
-  },
-  onNewNotification: function () {
-    var badge = $('#notifications').find('.unread-count');
-    var count = (badge.text() === '' || !_.isNumber(badge.text())
-      ? 1
-      : parseInt(badge.text()) + 1);
-
-    badge.text(count);
-    badge.addClass('bounce');
-    $('.hover-menu-notifications').text(count);
   },
   _color: function (color) {
     $('body').removeClass(function (index, css) {
