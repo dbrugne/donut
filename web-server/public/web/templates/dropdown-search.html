@@ -13,7 +13,9 @@
         <% var color = item.color ? item.color.replace('#','').toLowerCase() : 'default' %>
         <li class="open-group-profile relative li-group result dc-i-<%=color%>" data-group-id="<%=item.group_id%>">
             <img alt="<%= item.name %>" src="<%= item.avatar %>" class="mr5 img-circle">
-            <i class="icon icon-star group-type img-circle dc-back dc-text-contrast"></i>
+            <span class="group-type img-circle dc-back dc-text-contrast">
+                <i class="icon icon-users"></i>
+            </span>
             <span class="name">#<%= item.name %></span>
             <span class="disclaimer"><%=item.description%></span>
         </li>
