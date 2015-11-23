@@ -322,11 +322,14 @@
         a { color:@cl-nav-left-text-lighter; }
         ul { padding-left: 0;
           &.empty li { padding: 0 5px 0 10px; font-style: italic; color: @cl-subtext20; }
-
           li.group-block+li.room-type.ungrouped, li.group-block+li.group-block { margin-top: 15px; } // spacing between groups
           li { list-style: none; margin-left: 5px; padding: 3px 0; .border-radiuses(0, 0, 5px, 5px);
-            &.group-block { padding: 0;
-
+            &.group-block { padding: 0; overflow: hidden; max-height: initial;
+              .more { display:none; }
+              &.collapsed { max-height: 155px;
+                .less { display:none; }
+                .more { display:block; }
+              }
             }
             &.group { margin-top: 15px;
               &:first-child { margin-top: 0; }

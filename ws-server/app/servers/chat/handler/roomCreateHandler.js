@@ -98,6 +98,7 @@ handler.call = function (data, session, next) {
       room.visibility = true; // always visible one homepage by default
       room.priority = 0;
       room.mode = data.mode;
+      room.lastactivity_at = Date.now();
       if (data.group_id) {
         room.group = group.id;
       }

@@ -12,14 +12,17 @@ module.exports = Backbone.View.extend({
   template: require('../templates/nav-rooms.html'),
 
   events: {
-    'click .more': 'onToggleMore',
-    'click .less': 'onToggleLess'
+    'click .more': 'onToggleCollapse',
+    'click .less': 'onToggleCollapse'
   },
+
+  toggleCount: 4,
 
   initialize: function (options) {
     this.listenTo(app, 'redrawNavigation', this.render);
     this.listenTo(app, 'redrawNavigationRooms', this.render);
     this.listenTo(app, 'nav-active', this.highlightFocused);
+    this.listenTo(app, 'nav-viewed', this.setViewed);
     this.listenTo(app, 'nav-active-group', this.highlightGroup);
 
     this.$list = this.$('.list');
@@ -39,32 +42,40 @@ module.exports = Backbone.View.extend({
       data.push(json);
     });
 
-    var html = this.template({list: data, toggleCount: 4});
+    var html = this.template({list: data, toggleCount: this.toggleCount, expand: true});
     this.$list.html(html);
 
     this.initializeCollapse();
     return this;
   },
   initializeCollapse: function () {
-    this.$('[data-toggle="collapse"]').collapse();
+    var that = this;
+    this.$list.find('.group-block').each(function () {
+      if ($(this).find('li.room-type').length > that.toggleCount) {
+        $(this).addClass('collapsed');
+      }
+    });
   },
-  onToggleMore: function (event) {
-    $(event.currentTarget).hide();
-  },
-  onToggleLess: function (event) {
-    $(event.currentTarget).prevAll('.more:first').show();
+  onToggleCollapse: function (event) {
+    $(event.currentTarget).parents('.group-block').toggleClass('collapsed');
   },
   highlightFocused: function () {
+    var that = this;
     this.$list.find('.active').each(function (item) {
       $(this).removeClass('active');
-      $(this).parents('.group-block').removeClass('highlighted');
+      var group = $(this).parents('.group-block');
+      group.removeClass('highlighted');
+      if (group.find('li.room-type').length > that.toggleCount) {
+        group.addClass('collapsed');
+      }
     });
-    var that = this;
     _.find(rooms.models, function (room) {
       if (room.get('focused') === true) {
         var elt = that.$list.find('[data-room-id="' + room.get('id') + '"]');
         elt.addClass('active');
-        elt.parents('.group-block').addClass('highlighted');
+        var group = elt.parents('.group-block');
+        group.addClass('highlighted');
+        group.removeClass('collapsed'); // always expand a group when one of its room is selected
         return true;
       }
     });
@@ -77,8 +88,16 @@ module.exports = Backbone.View.extend({
     if (data.popin) {
       var $popin = $('#popin');
       $popin.find('.modal-title').html(i18next.t('popins.group-create.title'));
-      $popin.find('.modal-body').html(i18next.t('popins.group-create.content', {groupname: data.group_name, groupid: data.group_id}));
+      $popin.find('.modal-body').html(i18next.t('popins.group-create.content', {
+        groupname: data.group_name,
+        groupid: data.group_id
+      }));
       $popin.modal('show');
     }
+  },
+  setViewed: function () {
+    this.$list.find('span.unread').each(function () {
+      $(this).remove();
+    });
   }
 });

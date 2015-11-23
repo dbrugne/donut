@@ -90,6 +90,7 @@ handler.join = function (user, room, next) {
     function persistRoom (eventData, callback) {
       room.lastjoin_at = Date.now();
       room.users.addToSet(user._id);
+      room.lastactivity_at = Date.now();
 
       // private room only
       if (room.mode === 'private') {
