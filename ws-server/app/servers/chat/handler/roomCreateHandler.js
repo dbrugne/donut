@@ -95,7 +95,7 @@ handler.call = function (data, session, next) {
       room.name = data.room_name;
       room.owner = user.id;
       room.color = conf.room.default.color;
-      room.visibility = false; // not visible on home until admin change this value
+      room.visibility = true; // always visible one homepage by default
       room.priority = 0;
       room.mode = data.mode;
       if (data.group_id) {
