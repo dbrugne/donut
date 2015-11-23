@@ -56,7 +56,7 @@
       "sub-title": "So create a space that looks like your community on DONUT"
     },
     "fourth": {
-      "blockquote": ["<p>We draw much of our inspiration in IRC, the chat system which allowed early Internet adopters to meet in on-line communities. We have nostalgia for that time and this vision of the Internet. Where, as in real life, we can chat with people around us, no matter if we are already \ "friends \" or not. From the origin of this project we've wanted to revive this heyday of chat with our generation, and to introduce it the younger.</p>",
+      "blockquote": ["<p>We draw much of our inspiration in IRC, the chat system which allowed early Internet adopters to meet in on-line communities. We have nostalgia for that time and this vision of the Internet. Where, as in real life, we can chat with people around us, no matter if we are already \"friends \" or not. From the origin of this project we've wanted to revive this heyday of chat with our generation, and to introduce it the younger.</p>",
         "<p>Furthermore we admire the the quality of instant messaging app enabling to chat with friends (Whatsapp, Viber, Facebook Messenger ...) or colleagues (Slack, HipChat ...). These tools are unfortunately not suitable for communities discussions.</p>",
         "<p>Our mission at DONUT is to provide communities, and especially university campuses, the best experience of instant chat.</p>"],
       "donut-team": "The DONUT team"

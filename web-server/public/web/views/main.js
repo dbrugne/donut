@@ -156,6 +156,10 @@ var MainView = Backbone.View.extend({
    * @param data
    */
   onWelcome: function (data) {
+    currentUser.onWelcome(data);
+    onetoones.onWelcome(data);
+    rooms.onWelcome(data);
+
     // Only on first connection
     if (this.firstConnection) { // show if true or if undefined
       // Welcome message

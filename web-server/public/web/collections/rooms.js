@@ -77,7 +77,6 @@ var RoomsCollection = Backbone.Collection.extend({
   },
 
   initialize: function () {
-    this.listenTo(client, 'welcome', this.onWelcome);
     this.listenTo(client, 'room:in', this.onIn);
     this.listenTo(client, 'room:out', this.onOut);
     this.listenTo(client, 'room:topic', this.onTopic);
