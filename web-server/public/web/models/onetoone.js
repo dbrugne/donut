@@ -103,8 +103,7 @@ var OneToOneModel = Backbone.Model.extend({
   onViewed: function (data) {
     if (this.get('unviewed') === true) {
       this.set('unviewed', false);
-      // @todo yls: why triggering a full redraw? We should just ask for a CSS class removing
-      app.trigger('redrawNavigationOnes');
+      app.trigger('viewedEvent', this);
     }
     this.trigger('viewed', data);
   },
