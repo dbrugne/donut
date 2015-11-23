@@ -22,7 +22,10 @@
     "login-self": "Se connecter",
     "first": {
       "part-1": ["<p>L'espace de discussion</p>", "<p>(presque) officiel de votre université</p>"],
-      "part-2": ["<p>DONUT vous permet de vous retrouver pour discuter quelle que soit la taille de votre communauté.</p>", "<p>La messagerie instantanée pensée à l'échelle de cotre campus, vos associations, vos Meetups?</p>"]
+      "part-2": ["<p>DONUT vous permet de vous retrouver pour discuter quelle que soit la taille de votre communauté. La messagerie instantanée pensée à l'échelle de cotre campus, vos associations, vos Meetups?</p>"]
+    },
+    "second": {
+      "title": "Votre communauté se renforce au fil de toutes ses discussions."
     },
     "third": {
       "title": "DONUT vous apporte le confort pour organiser les discussions entre vos membres",
@@ -57,6 +60,9 @@
                      "<p>Par ailleurs nous sommes admiratifs de la qualité des messageries instatantanées pour discuter entre amis (Whatsapp, Viber, Facebook Messenger...) ou entre collègues (Slack, Hipchat...). Ces outils ne sont malheureusement pas adaptés aux discussions de communautés.</p>",
                      "<p>Notre mission chez DONUT, c'est d'offrir aux communautés, et en particularité aux campus universitaires, une expérience de discussion instantanée sur-mesure.</p>"],
       "donut-team": "L'équipe DONUT"
+    },
+    "fifth": {
+      "partners": "Partenaires"
     }
   },
   "forms": {
@@ -280,9 +286,6 @@
     "info": "Veuillez saisir un nouveau mot de passe et le confirmer :"
   },
   "home": {
-    "cover": {
-      "knowmore": "en savoir plus"
-    },
     "description": {
       "title1": "tasty",
       "title2": "chatrooms"

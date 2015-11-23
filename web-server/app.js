@@ -90,8 +90,6 @@ app.use(require('./app/routes/group-profile'));
 app.use(require('./app/routes/chat'));
 app.use(require('./app/routes/contact-form'));
 app.use(require('./app/routes/static'));
-app.use(require('./app/routes/create'));
-app.use(require('./app/routes/rest'));
 
 app.use(errors('404'));
 app.use(errors('500', app));
