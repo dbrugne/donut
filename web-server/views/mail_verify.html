@@ -10,17 +10,22 @@
 
                     <%= partial('errors') %>
                     <%= partial('success') %>
+
                     <% if (user) { %>
                     <div class="actions-chat text-center">
-                        <a class="flex-child button" href="/!"><%= t('logged.chat') %></a>
+                        <a class="flex-child btn btn-default" href="/!"><%= t('logged.chat') %></a>
                     </div>
                     <% } else { %>
-                    <div class="actions text-center">
-                        <a href="/signup" class="flex-child"><%= t('landing.signup') %></a>
-                        <span class="divider-vertical"></span>
-                        <a href="/login"  class="flex-child"><%= t('landing.login') %></a>
+                    <div class="actions row-fluid">
+                        <div class="col-md-6 flex-parent jc-center center">
+                            <a href="/signup" class="btn btn-default"><%= t('landing.signup') %></a>
+                        </div>
+                        <div class="col-md-6 flex-parent jc-center center">
+                            <a href="/login"  class="btn btn-default"><%= t('landing.login') %></a>
+                        </div>
                     </div>
                     <% } %>
+
                     <div class="clearfix"></div>
                 </form>
             </div>
