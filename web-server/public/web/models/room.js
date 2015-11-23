@@ -92,16 +92,15 @@ var RoomModel = Backbone.Model.extend({
     client.roomViewed(this.get('room_id'), elements);
   },
   onViewed: function (data) {
-    if (this.get('unviewed')) {
+    if (this.get('unviewed') === true) {
       this.set('unviewed', false);
-      app.trigger('nav-viewed');
+      app.trigger('viewedEvent', this);
     }
     this.trigger('viewed', data);
   },
   isInputActive: function () {
     return !(this.users.isUserDevoiced(currentUser.get('user_id')) || (!currentUser.isConfirmed() && this.get('mode') !== 'public'));
   }
-
 });
 
 module.exports = RoomModel;

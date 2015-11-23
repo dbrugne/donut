@@ -22,8 +22,8 @@ module.exports = Backbone.View.extend({
     this.listenTo(app, 'redrawNavigation', this.render);
     this.listenTo(app, 'redrawNavigationRooms', this.render);
     this.listenTo(app, 'nav-active', this.highlightFocused);
-    this.listenTo(app, 'nav-viewed', this.setViewed);
     this.listenTo(app, 'nav-active-group', this.highlightGroup);
+    this.listenTo(app, 'viewedEvent', this.setAsViewed);
 
     this.$list = this.$('.list');
     this.$empty = this.$('.empty');
@@ -95,9 +95,9 @@ module.exports = Backbone.View.extend({
       $popin.modal('show');
     }
   },
-  setViewed: function () {
-    this.$list.find('span.unread').each(function () {
-      $(this).remove();
-    });
+  setAsViewed: function (model) {
+    this.$list
+      .find('[data-room-id="' + model.get('id') + '"] span.unread')
+      .remove();
   }
 });
