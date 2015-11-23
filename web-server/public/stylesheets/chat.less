@@ -603,8 +603,8 @@
             }
           }
           &.user {
-            .avatar { position: absolute; width: 70px; height: 70px;
-              img { width:100%; }
+            .avatar { position: absolute; width: 70px; height: 70px; .border-radius(4px);
+              img { width:100%; .border-radius(4px); }
             }
             .banned-status { color: rgb(255, 78, 78); font-style: italic; }
             .show-if-banned { display:none; }
@@ -681,6 +681,7 @@
                     background-position: center center;
                     background-size: 20px 20px;
                     vertical-align: middle;
+                    .border-radius(3px);
                   }
                   .username { font-weight: bold; }
                   .detail { font-weight: normal; }
@@ -706,7 +707,6 @@
                       font-style: normal;
                     }
                   }
-
                   &.promote {
                     &.unviewed {
                       &::before {
@@ -778,11 +778,11 @@
                   }
                 }
                 .block.user { margin-top: 7px; padding-top: 23px; padding-left: 40px; clear: both; border-top: 1px solid @cl-subtext0;
-                  .avatar { position: absolute; top: 5px; left: 5px; border: none; width: 30px; height: 30px; background-position: center center; background-size: 30px 30px; }
-                  .username { position: absolute; top: 5px; left: 45px; .ft-opensans-bold; font-size: 1em; }
+                  .avatar { position: absolute; top: 5px; left: 5px; border: none; width: 35px; height: 35px; background-position: center center; background-size: 35px 35px; .border-radius(4px); }
+                  .username { position: absolute; top: 5px; left: 55px; .ft-opensans-bold; font-size: 1em; }
                   .othername { color: @cl-subtext20; font-weight: normal; }
                 }
-                .block.message { position: relative; padding: 4px 0 4px 45px; border-top: 0;
+                .block.message { position: relative; padding: 2px 0 2px 55px; border-top: 0;
                   .text-spammed { display:none; }
                   .date {
                     position: absolute;
@@ -994,6 +994,7 @@
                 top: 7px;
                 width: 30px;
                 height: 30px;
+                .border-radius(4px);
               }
               .actions { position: absolute; top: 5px; right: 45px; text-align: center; height: 46px; width: 60px;
                 a { display: inline-block; margin-right: 3px; }

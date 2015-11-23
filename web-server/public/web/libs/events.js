@@ -234,10 +234,10 @@ exports.prototype._data = function (type, data) {
 
   // avatar
   if (data.avatar) {
-    data.avatar = common.cloudinary.prepare(data.avatar, 30);
+    data.avatar = common.cloudinary.prepare(data.avatar, 40);
   }
   if (data.by_avatar) {
-    data.by_avatar = common.cloudinary.prepare(data.by_avatar, 30);
+    data.by_avatar = common.cloudinary.prepare(data.by_avatar, 40);
   }
 
   if (data.message || data.topic) {
