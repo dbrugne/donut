@@ -22,7 +22,7 @@
     "login-self": "Se connecter",
     "first": {
       "part-1": ["<p>L'espace de discussion</p>", "<p>(presque) officiel de votre université</p>"],
-      "part-2": ["<p>DONUT vous permet de vous retrouver pour discuter quelle que soit la taille de votre communauté. La messagerie instantanée pensée à l'échelle de cotre campus, vos associations, vos Meetups?</p>"]
+      "part-2": ["<p>DONUT vous permet de vous retrouver pour discuter quelle que soit la taille de votre communauté. La messagerie instantanée pensée à l'échelle de cotre campus, vos associations, vos Meetups</p>"]
     },
     "second": {
       "title": "Votre communauté se renforce au fil de toutes ses discussions."
@@ -57,8 +57,8 @@
     },
     "fourth": {
       "blockquote": ["<p>Nous puisons une grande part de notre inspiration dans IRC, le système de chat qui a permis aux tous premiers internautes de se retrouver par communautés. Nous avons la nostalgie de cette époque et de cette vision d'Internet. Un Internet où, comme dans la vraie vie, on peut discuter avec ceux qui se trouvent au même endroit que soi, qu'on soit déjà \"amis\" ou non. A l'origine de ce projet il y a la volonté de faire revivre ces grandes heures du chat à notre génération, et les faire découvrir aux plus jeunes.</p>",
-                     "<p>Par ailleurs nous sommes admiratifs de la qualité des messageries instatantanées pour discuter entre amis (Whatsapp, Viber, Facebook Messenger...) ou entre collègues (Slack, Hipchat...). Ces outils ne sont malheureusement pas adaptés aux discussions de communautés.</p>",
-                     "<p>Notre mission chez DONUT, c'est d'offrir aux communautés, et en particularité aux campus universitaires, une expérience de discussion instantanée sur-mesure.</p>"],
+        "<p>Par ailleurs nous sommes admiratifs de la qualité des messageries instantantanées pour discuter entre amis (Whatsapp, Viber, Facebook Messenger...) ou entre collègues (Slack, Hipchat...). Ces outils ne sont malheureusement pas adaptés aux discussions de communautés.</p>",
+        "<p>Notre mission chez DONUT, c'est d'offrir aux communautés, et en particularité aux campus universitaires, la meilleure expérience de discussion instantanée.</p>"],
       "donut-team": "L'équipe DONUT"
     },
     "fifth": {

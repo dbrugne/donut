@@ -21,8 +21,8 @@
     "signup-self": "Sign up",
     "login-self": "Log in",
     "first": {
-      "part-1": ["<p>The discussion area</p>", "<p>(almost) official of your university</p>"],
-      "part-2": ["<p>DONUT enables you to find mates to discuss whatever the size of your community. Instant messaging thinked across campus cutter, your associations, your Meetups?</p>"]
+      "part-1": ["<p>The (almost) official</p>", "<p>discussion space of your university</p>"],
+      "part-2": ["<p>Hang out and chat whatever the sizz of your community. Instant messaging smartly scaled for your campus, your organizations, your Meetups?</p>"]
     },
     "second": {
       "title": "Your community is growing throughout all its discussions."
@@ -30,35 +30,35 @@
     "third": {
       "title": "DONUT brings you comfort to organize discussions among your members",
       "block-1": {
-        "title": "Yout own space",
-        "description": "You look at your community and all its discussions in a space reserved for it. Everyone can easily find each other."
+        "title": "Your own space",
+        "description": "Gather your community members and all their discussions in a dedicated space. Everyone can easily find each other."
       },
       "block-2": {
         "title": "Your members are independent",
         "description": "They are free to create private or public discussions, to exchange documents ... Your community lives by itself"
       },
       "block-3": {
-        "title": "Access management carefree",
-        "description": "You define the public or private access and according to your criteria, we automatically detect your members."
+        "title": "Carefree access Management",
+        "description": "Define access rules (public or private, custom criteria) and we automatically detect your members. End with one by one validation."
       },
       "block-4": {
-        "title": "Members No limit",
-        "description": "DONUT helps you to animate your community wether it has 30 or 100,000 members. It is made for !"
+        "title": "Members: no limit",
+        "description": "Engage your community whether it has 30 or 100,000 members. DONUT is made for it !"
       },
       "block-5": {
-        "title": "Environment lways zen",
-        "description": "Moderators your team have a full panoply of superpowers."
+        "title": "Always zen",
+        "description": "Your team moderators have a superpowers to prevent trolling."
       },
       "block-6": {
         "title": "Keyboard-friendly",
-        "description": "DONUT works on mobile, but also on computer. Because we think about the comfort of your ten fingers and your little eyes."
+        "description": "DONUT is available both on mobile and on computer. Because we think about the comfort of your eyes and your ten lovely fingers."
       },
-      "sub-title": "So create space for discussion that looks like your community through DONUT"
+      "sub-title": "So create a space that looks like your community on DONUT"
     },
     "fourth": {
-      "blockquote": ["<p>We draw much of our inspiration in IRC chat system which allowed all users to first meet with communities. We have nostalgia for that time and this vision of the Internet. Internet where, as in real life, we can discuss with those who are in the same place itself, that is already \ "friends \" or not. The origin of this project there is the will to revive the heyday of chat to our generation, and to introduce younger.</p>",
-        "<p>Furthermore we are appreciative of the quality of instatantanées messaging to chat with friends (Whatsapp, Viber, Facebook Messenger ...) or colleagues (Slack, HipChat ...). These tools are unfortunately not suitable for communities discussions.</p>",
-        "<p>Our mission at DONUT is to provide communities, and special university campus experience instant chat customized.</p>"],
+      "blockquote": ["<p>We draw much of our inspiration in IRC, the chat system which allowed early Internet adopters to meet in on-line communities. We have nostalgia for that time and this vision of the Internet. Where, as in real life, we can chat with people around us, no matter if we are already \ "friends \" or not. From the origin of this project we've wanted to revive this heyday of chat with our generation, and to introduce it the younger.</p>",
+        "<p>Furthermore we admire the the quality of instant messaging app enabling to chat with friends (Whatsapp, Viber, Facebook Messenger ...) or colleagues (Slack, HipChat ...). These tools are unfortunately not suitable for communities discussions.</p>",
+        "<p>Our mission at DONUT is to provide communities, and especially university campuses, the best experience of instant chat.</p>"],
       "donut-team": "The DONUT team"
     },
     "fifth": {
