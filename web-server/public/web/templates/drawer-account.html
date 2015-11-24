@@ -54,16 +54,20 @@
 
     <div class="group block">
         <h2><%= t('global.switchlanguage') %></h2>
-        <p class="values"><a href="" data-language="fr" class="switch"><%= t('global.french') %></a></p>
-        <p class="values"><a href="" data-language="en" class="switch"><%= t('global.english') %></a></p>
+        <ul class="link-ctn">
+            <li><a href="" data-language="fr" class="switch"><%= t('global.french') %></a></li>
+            <li><a href="" data-language="en" class="switch"><%= t('global.english') %></a></li>
+        </ul>
     </div>
 
     <div class="group block">
         <h2><%= t('global.links') %></h2>
-        <p class="values"><a href="/!#donut/help"><%= t('chat.help') %></a></p>
-        <p class="values"><a href="/faq" target="_blank"><%= t('page.faq.title') %></a></p>
-        <p class="values"><a data-toggle="contactform"><%= t('page.contact.title') %></a></p>
-        <p class="values"><a href="/eutc" target="_blank"><%= t('page.eutc.title') %></a></p>
-        <p class="values"><a href="/legals" target="_blank"><%=t('landing.legals')%></a></p>
+        <ul class="link-ctn">
+            <li><a href="/!#donut/help"><%= t('chat.help') %></a></li>
+            <li><a href="/faq" target="_blank"><%= t('page.faq.title') %></a></li>
+            <li><a data-toggle="contactform"><%= t('page.contact.title') %></a></li>
+            <li><a href="/eutc" target="_blank"><%= t('page.eutc.title') %></a></li>
+            <li><a href="/legals" target="_blank"><%=t('landing.legals')%></a></li>
+        </ul>
     </div>
 </div>
