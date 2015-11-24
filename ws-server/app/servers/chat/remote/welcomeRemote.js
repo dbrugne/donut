@@ -51,8 +51,9 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, data, globalCall
           welcomeEvent.user = {
             user_id: user._id.toString(),
             username: user.username,
-            avatar: user._avatar(),
-            confirmed: user.confirmed
+            realname: user.realname,
+            confirmed: user.confirmed,
+            avatar: user._avatar()
           };
 
           if (user.admin === true) {

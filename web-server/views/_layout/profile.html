@@ -12,7 +12,7 @@
     <nav id="color" class="navbar navbar-fixed-top dc-back">
         <div class="container">
             <div id="navbar">
-                <a class="navbar-brand-a hidden-xs hidden-sm" href="/"><img class="logo" src="/images/logo-bordered-small.png" alt="<%= t('title.chat') %>"> <span class="beta dc-text-contrast">alpha</span></a>
+                <a class="navbar-brand-a  " href="/"><img class="logo" src="/images/logo-bordered-small.png" alt="<%= t('title.chat') %>"> <span class="beta dc-text-contrast">alpha</span></a>
                 <ul class="nav navbar-nav navbar-right">
 
                     <% if (typeof user === 'undefined' || typeof user.avatar === 'undefined') { %>
@@ -35,12 +35,6 @@
                     <li class="icontop">
                         <a href="/" class="toggle">
                             <i class="go-to-search icon icon-search dc-text-contrast hover"></i>
-                        </a>
-                    </li>
-
-                    <li class="icontop">
-                        <a href="/create" class="toggle">
-                            <i class="open-create-room icon icon-plus dc-text-contrast hover"></i>
                         </a>
                     </li>
 
@@ -87,7 +81,7 @@
             <ul class="page-sidebar-menu">
 
                 <li id="block-discussions" style="padding: 15px; text-align: left;">
-                    <div class="list hidden-sm hidden-xs">
+                    <div class="list  ">
 
                         <% if (typeof room !== "undefined") { %>
                             <%= t('profile.room.disclaimer.before') %>

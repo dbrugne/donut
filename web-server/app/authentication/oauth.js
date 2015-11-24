@@ -10,9 +10,11 @@ var jwt = require('jsonwebtoken');
 var User = require('../../../shared/models/user');
 var expressValidator = require('express-validator');
 var keenio = require('../../../shared/io/keenio');
+var verifyEmail = require('../../../shared/util/verify-email');
 var conf = require('../../../config/');
 var common = require('@dbrugne/donut-common/server');
 var noCache = require('../middlewares/nocache');
+var crypto = require('crypto');
 
 // @source: https://github.com/auth0/socketio-jwt#example-usage
 
@@ -285,7 +287,7 @@ router.route('/oauth/signup')
       },
 
       function checkExistingAccount (callback) {
-        User.findOne({'local.email': email}, function (err, user) {
+        User.findOne({$or: [{'local.email': email}, {'emails.email': email}]}, function (err, user) {
           if (err) {
             return callback({err: 'internal', detail: err});
           }
@@ -315,6 +317,7 @@ router.route('/oauth/signup')
         user.local.password = user.generateHash(password);
         user.username = username;
         user.lastlogin_at = Date.now();
+        user.emails.push({email: email});
         user.save(function (err) {
           if (err) {
             return callback({err: 'internal', detail: err});
@@ -324,10 +327,15 @@ router.route('/oauth/signup')
       },
 
       function email (user, callback) {
-        emailer.welcome(user.local.email, function (err) {
+        verifyEmail.sendEmail(user, user.local.email, function (err) {
           if (err) {
-            return logger.error('Unable to sent welcome email: ' + err);
+            return logger.error('Unable to sent verify email: ' + err);
           }
+          emailer.welcome(user.local.email, function (err) {
+            if (err) {
+              return logger.error('Unable to sent welcome email: ' + err);
+            }
+          });
         });
         return callback(null, user);
       },
@@ -373,4 +381,81 @@ router.route('/oauth/signup')
     });
   });
 
+/**
+ * Route handler - forgot password with email
+ *
+ * Used by mobile client
+ *
+ * @post email
+ * @response {}
+ */
+router.route('/oauth/forgot')
+  .post(function (req, res) {
+    var email = req.body.email;
+
+    async.waterfall([
+
+      function checkData (callback) {
+        if (!email) {
+          return callback('no-email');
+        }
+
+        if (!expressValidator.validator.isEmail(email)) {
+          return callback('invalid-email');
+        }
+
+        // lowercase email
+        email = email.toLowerCase();
+
+        return callback(null);
+      },
+
+      function createToken (callback) {
+        crypto.randomBytes(20, function (err, buf) {
+          var token = buf.toString('hex');
+          return callback(err, token);
+        });
+      },
+
+      function checkExistingAccount (token, callback) {
+        User.findOne({'local.email': email}, function (err, user) {
+          if (err) {
+            return callback({err: 'internal', detail: err});
+          }
+          if (!user) {
+            return callback('user-not-found');
+          }
+
+          user.local.resetToken = token;
+          user.local.resetExpires = Date.now() + 3600000; // 1 hour
+
+          user.save(function (err) {
+            return callback(err, token, user);
+          });
+        });
+      },
+
+      function email (token, user, callback) {
+        emailer.forgot(user.local.email, token, function (err) {
+          if (err) {
+            logger.error('Unable to sent forgot email: ' + err);
+          }
+
+          return callback(null);
+        });
+      }
+
+    ], function (err) {
+      if (_.isObject(err)) {
+        logger.error('Error while forgot email mobile user: ' + err.detail);
+        return res.json({err: err.err});
+      } else if (err) {
+        return res.json({err: err});
+      }
+
+      return res.json({success: true});
+    });
+  });
+
 module.exports = router;
+

@@ -2,7 +2,6 @@
 
 <div class="title">
     <%= t('chat.actions.account') %>
-    @<%= user.username %>
 </div>
 
 <div class="ctn-drawer">
@@ -13,6 +12,7 @@
     </div>
 
     <div class="block">
+        <span class="email-info"><%= t('account.manageemail.info') %></span>
         <h2><%= t('account.manageemail.label') %></h2>
         <div class="manage-email-container"></div>
     </div>
@@ -50,5 +50,24 @@
     <div class="group block">
         <h2><%= t('account.profile.label') %></h2>
         <p class="values"><%= t('account.profile.help') %> <a class="open-user-edit"><%= t('account.profile.link') %></a>.</p>
+    </div>
+
+    <div class="group block">
+        <h2><%= t('global.switchlanguage') %></h2>
+        <ul class="link-ctn">
+            <li><a href="" data-language="fr" class="switch"><%= t('global.french') %></a></li>
+            <li><a href="" data-language="en" class="switch"><%= t('global.english') %></a></li>
+        </ul>
+    </div>
+
+    <div class="group block">
+        <h2><%= t('global.links') %></h2>
+        <ul class="link-ctn">
+            <li><a href="/!#donut/help"><%= t('chat.help') %></a></li>
+            <li><a href="/faq" target="_blank"><%= t('page.faq.title') %></a></li>
+            <li><a data-toggle="contactform"><%= t('page.contact.title') %></a></li>
+            <li><a href="/eutc" target="_blank"><%= t('page.eutc.title') %></a></li>
+            <li><a href="/legals" target="_blank"><%=t('landing.legals')%></a></li>
+        </ul>
     </div>
 </div>

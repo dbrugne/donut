@@ -128,19 +128,13 @@ var RoomBlockedView = Backbone.View.extend({
       }
 
       that.$error.show();
-      if (response.err === 'wrong-password' || response.err === 'spam-password') {
-        that.$error.text(i18next.t('chat.password.' + response.err));
-      } else if (response.err) {
-        that.$error.text(i18next.t('chat.password.error'));
+      if (response.err) {
+        that.$error.text(i18next.t('chat.password.wrong-password'));
       }
     });
   },
   onRejoin: function (event) {
-    client.roomJoin(this.model.get('id'), null, function (response) {
-      if (response.err) {
-        app.trigger('alert', 'error', i18next.t('global.unknownerror'));
-      }
-    });
+    app.trigger('joinRoom', this.model.get('identifier'), true);
   },
   onCloseRoom: function (event) {
     event.preventDefault();

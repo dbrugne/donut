@@ -1,7 +1,6 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
 var app = require('../libs/app');
 var client = require('../libs/client');
@@ -29,6 +28,8 @@ var DrawerGroupProfileView = require('./drawer-group-profile');
 var DrawerGroupAccessView = require('./drawer-group-access');
 var DrawerGroupUsersView = require('./drawer-group-users');
 var DrawerUserProfileView = require('./drawer-user-profile');
+var DrawerUserNotificationsView = require('./drawer-user-notifications');
+var NotificationsView = require('./notifications');
 var DrawerUserEditView = require('./drawer-user-edit');
 var DrawerUserPreferencesView = require('./drawer-user-preferences');
 var DrawerUserAccountView = require('./drawer-account');
@@ -38,7 +39,6 @@ var RoomViewBlocked = require('./discussion-room-blocked');
 var OneToOneView = require('./discussion-onetoone');
 var NavOnesView = require('./nav-ones');
 var NavRoomsView = require('./nav-rooms');
-var NotificationsView = require('./notifications');
 var ConfirmationView = require('./modal-confirmation');
 var MuteView = require('./mute');
 var SearchView = require('./home-search');
@@ -69,8 +69,9 @@ var MainView = Backbone.View.extend({
     'click .open-user-preferences': 'openUserPreferences',
     'click .open-user-account': 'openUserAccount',
     'click .open-user-profile': 'onOpenUserProfile',
-    'click .action-user-ban': 'userBan',
-    'click .action-user-deban': 'userDeban',
+    'click .open-current-user-profile': 'onOpenCurrentUserProfile',
+    'click .toggle-current-user-sounds': 'onToggleCurrentUserSounds',
+    'click .open-user-notifications': 'onOpenUserNotifications',
     'dblclick .dbl-open-user-profile': 'onOpenUserProfile',
     'click .open-room-profile': 'onOpenRoomProfile',
     'click .open-room-edit': 'openRoomEdit',
@@ -85,7 +86,17 @@ var MainView = Backbone.View.extend({
     'click .open-group-users': 'openGroupUsers',
     'click .close-discussion': 'onCloseDiscussion',
     'click .open-room-access': 'openRoomAccess',
-    'click .switch[data-language]': 'switchLanguage'
+    'click .switch[data-language]': 'switchLanguage',
+
+    'click .action-user-ban': 'userBan',
+    'click .action-user-deban': 'userDeban',
+
+    'click .op-user': 'opUser',
+    'click .deop-user': 'deopUser',
+    'click .kick-user': 'kickUser',
+    'click .ban-user': 'banUser',
+    'click .voice-user': 'voiceUser',
+    'click .devoice-user': 'devoiceUser'
   },
 
   initialize: function () {
@@ -100,8 +111,6 @@ var MainView = Backbone.View.extend({
     this.listenTo(rooms, 'remove', this.onRemoveDiscussion);
     this.listenTo(onetoones, 'add', this.addView);
     this.listenTo(onetoones, 'remove', this.onRemoveDiscussion);
-    this.listenTo(rooms, 'allowed', this.roomAllowed);
-    this.listenTo(rooms, 'join', this.roomJoin);
     this.listenTo(rooms, 'deleted', this.roomDeleted);
     this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
     this.listenTo(app, 'openGroupProfile', this.openGroupProfile);
@@ -117,8 +126,8 @@ var MainView = Backbone.View.extend({
     this.alertView = new AlertView();
     this.connectionView = new ConnectionModalView();
     this.welcomeView = new WelcomeModalView();
-    this.notificationsView = new NotificationsView();
     this.muteView = new MuteView();
+    this.notificationsView = new NotificationsView();
     this.searchView = new SearchView({
       el: this.$('#navbar .search')
     });
@@ -138,13 +147,7 @@ var MainView = Backbone.View.extend({
       main: this
     };
 
-    this.initializeCollapse();
-
     client.connect();
-  },
-
-  initializeCollapse: function () {
-    this.$('[data-toggle="collapse"]').collapse();
   },
 
   /**
@@ -153,6 +156,10 @@ var MainView = Backbone.View.extend({
    * @param data
    */
   onWelcome: function (data) {
+    currentUser.onWelcome(data);
+    onetoones.onWelcome(data);
+    rooms.onWelcome(data);
+
     // Only on first connection
     if (this.firstConnection) { // show if true or if undefined
       // Welcome message
@@ -165,10 +172,7 @@ var MainView = Backbone.View.extend({
       $('#block-discussions').show();
     }
 
-    // Notifications
-    if (data.notifications) {
-      this.notificationsView.initializeNotificationState(data.notifications);
-    }
+    this.notificationsView.updateCount(data.notifications.unread);
 
     // Run routing only when everything in interface is ready
     this.firstConnection = false;
@@ -190,7 +194,6 @@ var MainView = Backbone.View.extend({
       }
     });
   },
-
   _color: function (color) {
     $('body').removeClass(function (index, css) {
       return (css.match(/(dc-\S+)+/g) || []).join(' ');
@@ -210,7 +213,6 @@ var MainView = Backbone.View.extend({
   onChangeColor: function (color, temporary, reset) {
     this.color(color, temporary, reset);
   },
-
   viewportIs: function (expression) {
     var pattern = /^(<|>|=)(xs|sm|md|lg)$/;
     if (!pattern.test(expression)) {
@@ -260,30 +262,12 @@ var MainView = Backbone.View.extend({
       }
     }
   },
-
   _handleAction: function (event) {
     if (!event) {
       return false;
     }
     event.preventDefault();
     event.stopPropagation();
-  },
-
-  /**
-   * Trigger when currentUser is kicked or banned from a room to handle focus
-   * and notification
-   * @param event
-   * @returns {boolean}
-   */
-  roomAllowed: function (event) {
-    if (event.wasFocused) { // if remove model was focused, focused the new one
-      app.trigger('focus', event.model);
-    }
-  },
-  roomJoin: function (event) {
-    if (event.wasFocused) { // if remove model was focused, focused the new one
-      app.trigger('focus', event.model);
-    }
   },
   roomDeleted: function (data) {
     if (data.was_focused) {
@@ -357,6 +341,11 @@ var MainView = Backbone.View.extend({
     var view = new DrawerUserAccountView();
     this.drawerView.setSize('450px').setView(view).open();
   },
+  onOpenUserNotifications: function (event) {
+    event.preventDefault();
+    var view = new DrawerUserNotificationsView({user_id: currentUser.get('user_id')});
+    this.drawerView.setSize('380px').setView(view).open();
+  },
   onOpenUserProfile: function (event) {
     this.$el.find('.tooltip').tooltip('hide');
     event.preventDefault();
@@ -367,6 +356,21 @@ var MainView = Backbone.View.extend({
     }
     var view = new DrawerUserProfileView({user_id: userId});
     this.drawerView.setSize('380px').setView(view).open();
+  },
+  onOpenCurrentUserProfile: function (event) {
+    event.preventDefault();
+
+    var userId = currentUser.get('user_id');
+    if (!userId) {
+      return;
+    }
+
+    var view = new DrawerUserProfileView({user_id: userId});
+    this.drawerView.setSize('380px').setView(view).open();
+  },
+  onToggleCurrentUserSounds: function (event) {
+    event.preventDefault();
+    this.muteView.toggle();
   },
   openUserProfile: function (data) {
     var view = new DrawerUserProfileView({data: data});
@@ -536,7 +540,6 @@ var MainView = Backbone.View.extend({
     this.$discussionsPanelsContainer.append(view.$el);
     app.trigger('viewAdded', model, collection);
   },
-
   onCloseDiscussion: function (event) {
     this._handleAction(event);
 
@@ -587,7 +590,6 @@ var MainView = Backbone.View.extend({
       Backbone.history.navigate('#', {trigger: true});
     }
   },
-
   onRemoveGroupView: function (model, collection) {
     var view = this.views[model.get('id')];
     if (view === undefined) {
@@ -605,7 +607,6 @@ var MainView = Backbone.View.extend({
       Backbone.history.navigate('#', {trigger: true});
     }
   },
-
   userBan: function (event) {
     event.preventDefault();
 
@@ -619,7 +620,6 @@ var MainView = Backbone.View.extend({
       app.trigger('userBan');
     }, this));
   },
-
   userDeban: function (event) {
     event.preventDefault();
 
@@ -634,10 +634,72 @@ var MainView = Backbone.View.extend({
     }, this));
   },
 
+  _userRoomActions: function (event, key, confirm, input, method) {
+    event.preventDefault();
+    var elt = $(event.currentTarget);
+
+    // check that required params are set
+    if (!elt || !elt.data('user-id') || !elt.data('room-id')) {
+      return null;
+    }
+
+    // check that rooms exists in my rooms
+    var room = rooms.get(elt.data('room-id'));
+    if (!room) {
+      return null;
+    }
+
+    // check that I am op or owner or admin
+    if (!room.currentUserIsOp() && !room.currentUserIsOwner() && !room.currentUserIsAdmin()) {
+      return null;
+    }
+
+    // check that user exists in this room
+    var user = room.users.get(elt.data('user-id'));
+    if (!user) {
+      return null;
+    }
+
+    if (!_.isFunction(client[method])) {
+      return;
+    }
+
+    if (confirm) {
+      if (input) {
+        ConfirmationView.open({message: key}, function () {
+          client[method](room.get('id'), user.get('id'));
+        });
+      } else {
+        ConfirmationView.open({message: key, input: true}, function (reason) {
+          client[method](room.get('id'), user.get('id'), reason);
+        });
+      }
+    } else {
+      client[method](room.get('id'), user.get('id'));
+    }
+  },
+  opUser: function (event) {
+    return this._userRoomActions(event, 'op-room-user', true, false, 'roomOp');
+  },
+  deopUser: function (event) {
+    return this._userRoomActions(event, 'deop-room-user', true, false, 'roomDeop');
+  },
+  kickUser: function (event) {
+    return this._userRoomActions(event, 'kick-room-user', true, true, 'roomKick');
+  },
+  banUser: function (event) {
+    return this._userRoomActions(event, 'ban-room-user', true, true, 'roomBan');
+  },
+  voiceUser: function (event) {
+    return this._userRoomActions(event, '', false, false, 'roomVoice');
+  },
+  devoiceUser: function (event) {
+    return this._userRoomActions(event, 'devoice-room-user', true, true, 'roomDevoice');
+  },
+
   goToSearch: function (event) {
     app.trigger('goToSearch', event);
   },
-
   switchLanguage: function (event) {
     event.preventDefault();
     var language = $(event.currentTarget).data('language');

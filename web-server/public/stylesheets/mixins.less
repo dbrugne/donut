@@ -21,13 +21,20 @@
   opacity: 		@opacity;
 }
 
-.transition (@transition) {
-  -webkit-transition: @transition;
-  transition:         @transition;
+.transition (...) {
+  @props: ~`"@{arguments}".replace(/[\[\]]/g, '')`;
+  -webkit-transition: @props;
+  transition:         @props;
 }
 .transform(@string){
   -webkit-transform: @string;
   -ms-transform: 	 @string;
+}
+.rotate (@deg) {
+  -webkit-transform: rotate(@deg);
+  -moz-transform: 	 rotate(@deg);
+  -ms-transform: 		 rotate(@deg);
+  -o-transform: 		 rotate(@deg);
 }
 
 .user-select(@value) {
@@ -64,6 +71,31 @@
   -ms-filter: blur(@value);
   -o-filter: blur(5px);
   filter: blur(5px);
+}
+
+.don-button-variant(@cl-start, @cl-end, @cl-text, @cl-border) {
+  border: 1px solid @cl-border;
+  .border-radius(4px);
+  .align-items(flex-start);
+  background-color: @cl-end;
+  background-image: linear-gradient(@cl-start, @cl-end);
+  background-origin: padding-box;
+  background-repeat: no-repeat;
+  color: @cl-text;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1.3rem;
+  font-weight: bold;
+  padding: 3px 11px 5px;
+  text-align: center;
+  font-style: initial;
+  white-space: normal;
+  &:hover {
+    background-color: @cl-border;
+    background-image: linear-gradient(@cl-end,@cl-start);
+    border-color: @cl-border;
+    color: @cl-text;
+  }
 }
 
 /*******************************************************************************
@@ -129,17 +161,6 @@
                                   Animation
 
 *******************************************************************************/
-
-.blink {
-  animation: blink 1s steps(5, start) infinite;
-  -webkit-animation: blink 1s steps(5, start) infinite;
-}
-@keyframes blink {
-  to { visibility: hidden; }
-}
-@-webkit-keyframes blink {
-  to { visibility: hidden; }
-}
 
 .bounce {
   animation-name: bounce;
@@ -477,7 +498,6 @@
     .dc-text-contrast { .color-text(@color); }
     .dc-border { border-color: @color; }
     .dc-border-darker { border-color: darken(@color, 10%); }
-    .dc-gradient { background: linear-gradient(to bottom, rgba(red(@color), green(@color), blue(@color),0) 15%,rgba(red(@color), green(@color), blue(@color),0) 37%,rgba(red(@color), green(@color), blue(@color),1) 100%); }
   }
 
   .dc-i-@{code} {
@@ -490,7 +510,6 @@
     .dc-text-contrast { .color-text(@color) !important; }
     .dc-border { border-color: @color !important; }
     .dc-border-darker { border-color: darken(@color, 10%) !important; }
-    .dc-gradient { background: linear-gradient(to bottom, rgba(red(@color), green(@color), blue(@color),0) 15%,rgba(red(@color), green(@color), blue(@color),0) 37%,rgba(red(@color), green(@color), blue(@color),1) 100%)  !important; }
   }
 
   .color-loop (@index - 1);
@@ -498,3 +517,39 @@
 
 .color-text (@a) when (lightness(@a) >= 60%) { color: @cl-text; }
 .color-text (@a) when (lightness(@a) < 60%)  { color: @cl-subtext0; }
+
+/*******************************************************************************
+
+                              REUSABLE CODE
+
+*******************************************************************************/
+
+.compact-sidebar () { width:70px !important;
+  .blur { width:70px;
+    .users { position: relative; padding: 10px 0 30px; height: 100%; background-color: rgba(0, 0, 0, 0.2);
+      .list { list-style: none; padding: 5px; background-repeat: no-repeat; background-position: left top; position: relative; .scrollbar-white; .justify-content(space-around); margin: 0 6px;
+        overflow: visible;
+        height: 100%;
+        > li { margin: 5px 0; float:left; }
+        .clearfix { width:100%; height:5px; clear: both; float: none; }
+        .li-title { margin: 0;
+          .col-md-6 { width:100%; padding: 0; margin-top:5px; }
+        }
+        .item { position: relative; font-size: 0.9em; font-weight: bold; display: block; height: 34px; padding-left: 0;
+          .avatar { display: inline-block; width: 34px; height: 34px;
+            .background { background-position: center center; background-size: 34px 34px; .border-radius(4px); width: 34px; height: 34px; display: inline-block; }
+            &:hover {
+              .dropdown>.dropdown-toggle {
+                display: block;
+              }
+            }
+          }
+          .userstatus { position: absolute; top: 10px; z-index: 1; }
+          .username { display:none; }
+        }
+      }
+    }
+  }
+  .hidden-compact { display:none; }
+  .visible-compact { display:inline; }
+}

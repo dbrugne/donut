@@ -16,6 +16,7 @@ module.exports = Backbone.View.extend({
     this.listenTo(app, 'redrawNavigation', this.render);
     this.listenTo(app, 'redrawNavigationOnes', this.render);
     this.listenTo(app, 'nav-active', this.highlightFocused);
+    this.listenTo(app, 'viewedEvent', this.setAsViewed);
     this.listenTo(onetoones, 'change:avatar', this.render);
     this.$list = this.$('.list');
   },
@@ -47,5 +48,10 @@ module.exports = Backbone.View.extend({
         that.$list.find('[data-one-id="' + one.get('id') + '"]').addClass('active');
       }
     });
+  },
+  setAsViewed: function (model) {
+    this.$list
+      .find('[data-one-id="' + model.get('id') + '"] span.unread')
+      .remove();
   }
 });

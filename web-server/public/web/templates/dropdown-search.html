@@ -1,5 +1,5 @@
 <% if (typeof(results) === 'undefined') { %>
-    <li class="empty"><a href="#"><%= t('chat.search.noresults') %></a></li>
+    <li class="empty"><span><%= t('chat.search.noresults') %></span></li>
 <% } else { %>
     <% if(results.groups.list && results.groups.list.length > 0) { %>
         <li class="presentation">
@@ -11,8 +11,11 @@
     <% } %>
     <% _.each(results.groups.list, function (item) { %>
         <% var color = item.color ? item.color.replace('#','').toLowerCase() : 'default' %>
-        <li class="open-group-profile result dc-i-<%=color%>" data-group-id="<%=item.group_id%>">
-            <img alt="<%= item.name %>" src="<%= item.avatar %>" class="mr5 dc-border">
+        <li class="open-group-profile relative li-group result dc-i-<%=color%>" data-group-id="<%=item.group_id%>">
+            <img alt="<%= item.name %>" src="<%= item.avatar %>" class="mr5 img-circle">
+            <span class="group-type img-circle dc-back dc-text-contrast">
+                <i class="icon icon-users"></i>
+            </span>
             <span class="name">#<%= item.name %></span>
             <span class="disclaimer"><%=item.description%></span>
         </li>
@@ -28,8 +31,8 @@
     <% } %>
     <% _.each(results.rooms.list, function (item) { %>
         <% var color = item.color ? item.color.replace('#','').toLowerCase() : 'default' %>
-        <li class="open-room-profile result dc-i-<%=color%>" data-room-id="<%=item.room_id%>">
-            <img alt="<%= item.name %>" src="<%= item.avatar %>" class="mr5 dc-border">
+        <li class="open-room-profile li-room result dc-i-<%=color%>" data-room-id="<%=item.room_id%>">
+            <img alt="<%= item.name %>" src="<%= item.avatar %>" class="mr5 img-circle">
             <span class="name"><%= item.identifier %></span>
             <span class="disclaimer"><%=item.description%></span>
         </li>
@@ -45,8 +48,8 @@
     <% } %>
     <% _.each(results.users.list, function (item) { %>
         <% var color = item.color ? item.color.replace('#','').toLowerCase() : 'default' %>
-        <li class="open-user-profile result dc-i-<%=color%>" data-user-id="<%=item.user_id%>">
-            <img alt="<%= item.name %>" src="<%= item.avatar %>" class="mr5 dc-border">
+        <li class="open-user-profile li-user result dc-i-<%=color%>" data-user-id="<%=item.user_id%>">
+            <img alt="<%= item.name %>" src="<%= item.avatar %>" class="mr5 ">
             <span class="name">
                 <% if (typeof item.realname !== "undefined") { %><%= item.realname %>&nbsp;<span class="othername">@<%= item.username %></span><% } else { %>@<%= item.username %><% } %>
             </span>

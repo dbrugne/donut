@@ -3,10 +3,8 @@ var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
-var client = require('../libs/client');
 var EventsView = require('./events');
 var InputView = require('./input');
-var confirmationView = require('./modal-confirmation');
 var TopicView = require('./room-topic');
 var UsersView = require('./room-users');
 
@@ -22,12 +20,6 @@ var RoomView = Backbone.View.extend({
   template: require('../templates/discussion-room.html'),
 
   events: {
-    'click .op-user': 'opUser',
-    'click .deop-user': 'deopUser',
-    'click .kick-user': 'kickUser',
-    'click .ban-user': 'banUser',
-    'click .voice-user': 'voiceUser',
-    'click .devoice-user': 'devoiceUser',
     'click .share .facebook': 'shareFacebook',
     'click .share .twitter': 'shareTwitter',
     'click .share .googleplus': 'shareGoogle'
@@ -57,7 +49,7 @@ var RoomView = Backbone.View.extend({
       model: this.model
     });
     this.usersView = new UsersView({
-      el: this.$('.side .users'),
+      el: this.$('.side'),
       model: this.model,
       collection: this.model.users
     });
@@ -155,106 +147,6 @@ var RoomView = Backbone.View.extend({
     this.eventsView.replaceDisconnectBlocks();
     this.eventsView.scrollDown();
     this.model.users.fetchUsers();
-  },
-
-  /**
-   * User actions methods
-   */
-
-  _showUserListModal: function () {
-    if (this.topicView.isUserModelRequired()) {
-      this.topicView.loadUserModal();
-    }
-  },
-
-  opUser: function (event) {
-    event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
-      return false;
-    }
-    var userId = $(event.currentTarget).data('userId');
-    if (!userId) {
-      return;
-    }
-    var that = this;
-    confirmationView.open({}, function () {
-      client.roomOp(that.model.get('id'), userId, function (err) {
-        if (err) {
-          return;
-        }
-      });
-    });
-  },
-  deopUser: function (event) {
-    event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
-      return false;
-    }
-    var userId = $(event.currentTarget).data('userId');
-    if (!userId) {
-      return;
-    }
-    var that = this;
-    confirmationView.open({}, function () {
-      client.roomDeop(that.model.get('id'), userId, function (err) {
-        if (err) {
-          return;
-        }
-      });
-    });
-  },
-  kickUser: function (event) {
-    event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
-      return false;
-    }
-    var userId = $(event.currentTarget).data('userId');
-    if (!userId) {
-      return;
-    }
-    var that = this;
-    confirmationView.open({input: true}, function (reason) {
-      client.roomKick(that.model.get('id'), userId, reason);
-    });
-  },
-  banUser: function (event) {
-    event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
-      return false;
-    }
-    var userId = $(event.currentTarget).data('userId');
-    if (!userId) {
-      return;
-    }
-    var that = this;
-    confirmationView.open({input: true}, function (reason) {
-      client.roomBan(that.model.get('id'), userId, reason);
-    });
-  },
-  voiceUser: function (event) {
-    event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
-      return false;
-    }
-    var userId = $(event.currentTarget).data('userId');
-    if (!userId) {
-      return;
-    }
-    client.roomVoice(this.model.get('id'), userId);
-  },
-  devoiceUser: function (event) {
-    event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
-      return false;
-    }
-    var userId = $(event.currentTarget).data('userId');
-    if (!userId) {
-      return;
-    }
-    var that = this;
-    confirmationView.open({input: true}, function (reason) {
-      client.roomDevoice(that.model.get('id'), userId, reason);
-    });
   },
 
   /**

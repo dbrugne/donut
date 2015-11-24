@@ -36,7 +36,6 @@ var OnetoonesCollection = Backbone.Collection.extend({
   },
 
   initialize: function () {
-    this.listenTo(client, 'welcome', this.onWelcome);
     this.listenTo(client, 'user:message', this.onMessage);
     this.listenTo(client, 'user:updated', this.onUpdated);
     this.listenTo(client, 'user:online', this.onUserOnline);

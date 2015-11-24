@@ -20,9 +20,49 @@
     "legals": "Mentions légales",
     "signup-self": "S'inscrire",
     "login-self": "Se connecter",
-    "carousel": {
-      "heading": "chatroom network ",
-      "slogan": "Discutez autour de vos centres d'intérêt.<br>Entrez en relation avec des gens de votre univers.<br>Créez et animez votre propre communauté."
+    "first": {
+      "part-1": ["<p>L'espace de discussion</p>", "<p>(presque) officiel de votre université</p>"],
+      "part-2": ["<p>DONUT vous permet de vous retrouver pour discuter quelle que soit la taille de votre communauté. La messagerie instantanée pensée à l'échelle de cotre campus, vos associations, vos Meetups</p>"]
+    },
+    "second": {
+      "title": "Votre communauté se renforce au fil de toutes ses discussions."
+    },
+    "third": {
+      "title": "DONUT vous apporte le confort pour organiser les discussions entre vos membres",
+      "block-1": {
+        "title": "Votre espace à vous",
+        "description": "Vous regroupez votre communauté et toutes ses discussions au sein d'un espace qui lui est réservé. Chacun peut facilement y retrouver les autres."
+      },
+      "block-2": {
+        "title": "Vos membres sont autonomes",
+        "description": "Libre à eux de créer des discussions privées ou publiques, de s'échanger des documents,... Votre communauté vit par elle-même"
+      },
+      "block-3": {
+        "title": "Gestion d'accès sans souci",
+        "description": "Vous définissez l'accès public ou privé, et selon vos critères, et nous détectons automatiquement vos membres."
+      },
+      "block-4": {
+        "title": "Membres No limit",
+        "description": "DONUT vous aide à animer votre communauté qu'elle ait 30 ou 100.000 membres. C'est fait pour !"
+      },
+      "block-5": {
+        "title": "Ambiance toujours zen",
+        "description": "Les modérateurs de votre équipe disposent d'une panoplie complète de super-pouvoirs."
+      },
+      "block-6": {
+        "title": "Clavier-friendly",
+        "description": "DONUT existe sur mobile certes, mais également sur ordinateur. Parce qu'on pense au confort de vos dix doigts et de vos petits yeux."
+      },
+      "sub-title": "Alors, créez l'espace de discussion qui ressemble à votre communauté grâce à DONUT"
+    },
+    "fourth": {
+      "blockquote": ["<p>Nous puisons une grande part de notre inspiration dans IRC, le système de chat qui a permis aux tous premiers internautes de se retrouver par communautés. Nous avons la nostalgie de cette époque et de cette vision d'Internet. Un Internet où, comme dans la vraie vie, on peut discuter avec ceux qui se trouvent au même endroit que soi, qu'on soit déjà \"amis\" ou non. A l'origine de ce projet il y a la volonté de faire revivre ces grandes heures du chat à notre génération, et les faire découvrir aux plus jeunes.</p>",
+        "<p>Par ailleurs nous sommes admiratifs de la qualité des messageries instantantanées pour discuter entre amis (Whatsapp, Viber, Facebook Messenger...) ou entre collègues (Slack, Hipchat...). Ces outils ne sont malheureusement pas adaptés aux discussions de communautés.</p>",
+        "<p>Notre mission chez DONUT, c'est d'offrir aux communautés, et en particularité aux campus universitaires, la meilleure expérience de discussion instantanée.</p>"],
+      "donut-team": "L'équipe DONUT"
+    },
+    "fifth": {
+      "partners": "Partenaires"
     }
   },
   "forms": {
@@ -120,7 +160,7 @@
     "orsignup": "ou créer un compte",
     "forgot": "mot de passe oublié",
     "join": "rejoindre",
-    "direct-access": "accès direct",
+    "direct-access": "j'ai le mot de passe",
     "discuss": "discuter",
     "account": "mon compte",
     "mute": "son actif",
@@ -128,6 +168,10 @@
     "verify": "Verification de votre email"
   },
   "global": {
+    "collapse": "réduire",
+    "members": "<strong>__count__</strong> membre",
+    "members_plural": "<strong>__count__</strong> membres",
+    "discover": "découvrir",
     "group": "groupe",
     "view-profile": "voir le profil",
     "view-group": "voir le groupe",
@@ -155,6 +199,7 @@
     "offline": "hors ligne",
     "connecting": "connexion ...",
     "permalink": "permalien",
+    "links": "liens",
     "search": "Recherche",
     "by": "par",
     "one": "un",
@@ -163,6 +208,8 @@
       "after": " ?"
     },
     "switchlanguage": "Langue",
+    "french": "Français",
+    "english": "Anglais",
     "unknownerror": "Erreur inconnue, veuillez réessayer",
     "notconfirmed": "Votre compte n'a pas été validé, cliquer ici pour gérer vos emails",
     "mode": {
@@ -239,9 +286,6 @@
     "info": "Veuillez saisir un nouveau mot de passe et le confirmer :"
   },
   "home": {
-    "cover": {
-      "knowmore": "en savoir plus"
-    },
     "description": {
       "title1": "tasty",
       "title2": "chatrooms"
@@ -312,6 +356,10 @@
     },
     "loading": "Chargement ",
     "actions": {
+      "volume": {
+        "up": "jouer tous les sons",
+        "down": "ne jouer aucun sons"
+      },
       "search": "Chercher",
       "searchuser": "Inviter un utilisateur",
       "banuser": "Bannir un utilisateur",
@@ -321,7 +369,7 @@
       "edit": "mon profil",
       "notifications": "notifications",
       "close": "quitter la discussion",
-      "preferences": "préférences & notifications",
+      "preferences": "préférences & notifs",
       "bannedusers": "utilisateurs bloqués",
       "update": "Editer",
       "see": "Voir",
@@ -331,19 +379,21 @@
       "bannedMessage": {
         "onetoone": "Vous avez été bloqué par cet utilisateur",
         "room": "Vous êtes muet dans ce donut à la demande d'un modérateur",
-        "confirm": "Votre compte n'est pas validé, vous ne pouvez pas faire cela"
+        "confirm": "Action autorisée seulement pour les comptes validés. Validez votre e-mail."
       },
       "unlock": "(Cliquez ici pour le débloquer)"
     },
     "help": "Aide",
-    "placeholder": "Déplacer ici",
+    "room-discussion": {
+      "input-placeholder": "cliquez ici pour taper un message"
+    },
     "createadonut": "Nouveau",
     "home": {
       "roomstitle": "Bienvenue sur DONUT, voici quelques donuts actifs. Si vous n'en trouvez pas à votre goût, <a href=\"#\" class='open-create-room'>créez-en un !</a>",
       "userstitle": "Utilisateurs"
     },
     "search": {
-      "placeholder": "Recherchez un donut, une communauté ou un utilisateur ici",
+      "placeholder": "Recherchez",
       "noresults": "Aucun résultat de recherche",
       "roomstitle": "Voici les donuts correspondant à votre recherche, vous pouvez aussi en <a class='open-create-room'>créer un nouveau</a> :",
       "userstitle": "Utilisateurs correspondants",
@@ -355,11 +405,8 @@
       "search_in_rooms": "chercher des donuts",
       "search_in_groups": "chercher des communautés"
     },
-    "userscount": "<strong>__count__</strong> <span>utilisateur dans ce donut</span>",
-    "userscount_plural": "<strong>__count__</strong> <span>utilisateurs dans ce donut</span>",
-    "usersonlinecount": "<strong>__count__</strong> <span>utilisateur en ligne dans ce donut</span>",
-    "usersonlinecount_plural": "<strong>__count__</strong> <span>utilisateurs en ligne dans ce donut</span>",
-    "usersoffline": "Utilisateurs hors ligne",
+    "userscount": "<strong>__count__</strong> utilisateur",
+    "userscount_plural": "<strong>__count__</strong> utilisateurs",
     "topic": {
       "label": "En ce moment",
       "placeholder": "Entrez ici le sujet de la conversation, l'humeur, l'ambiance ...",
@@ -367,10 +414,12 @@
       "users": "Liste des utilisateurs de ce donut"
     },
     "owner": {
+      "state": "créateur",
       "is": "Cet utilisateur est le créateur de ce donut",
       "isgroup": "Cet utilisateur est le créateur de cette communauté"
     },
     "op": {
+      "state": "modérateur",
       "is": "Cet utilisateur est modérateur de ce donut",
       "isgroup": "Cet utilisateur est modérateur de cette communauté",
       "infobox": "Faire modérateur"
@@ -410,6 +459,7 @@
       "infobox": "Rendre la parole"
     },
     "devoice": {
+      "state": "muet",
       "infobox": "Rendre muet"
     },
     "profile": {
@@ -427,7 +477,7 @@
     },
     "password": {
       "spam-password": "Vous avez fait trop d'essais! Patienter ou faites une demande d'accès",
-      "wrong-password": "Mot de passe erroné",
+      "wrong-password": "Mot de passe erroné, réessayer ou faites une demande d'accès",
       "invalid-password": "Mot de passe invalide",
       "group-banned": "Vous avez été banni de la communauté",
       "error": "Une erreur est survenue"
@@ -446,6 +496,12 @@
         "refuseuser": "Vous allez refuser l'accès à @__username__",
         "acceptuser": "Vous allez autoriser l'accès à @__username__",
         "disallowuser": "Vous allez supprimer l'accès à @__username__",
+        "op-room-user": "Vous êtes sur le point de nommer cet utilisateur modérateur de ce donut. Cet utilisateur pourra accepter ou refuser les demandes d'adhésions, inviter des utilisateurs à devenir membre et bannir un utilisateur du donut.",
+        "deop-room-user": "Vous allez retirer cet utilisateur des modérateurs.",
+        "ban-room-user": "Vous allez bannir cet utilisateur de ce donut.",
+        "deban-room-user": "Vous allez débannir cet utilisateur de ce donut.",
+        "kick-room-user": "Vous allez expulser cet utilisateur de ce donut.",
+        "devoice-room-user": "Vous allez rendre muet cet utilisateur.",
         "ban-group-user": "Vous allez bannir l'utilisateur @__username__ de cette communauté",
         "deban-group-user": "Vous allez débannir l'utilisateur @__username__ de cette communauté",
         "op-group-user": "Vous êtes sur le point de nommer @__username__ modérateur de la communauté. Cet utilisateur pourra accepter ou refuser les demandes d'adhésions, inviter des utilisateurs à devenir membre et bannir un utilisateur du groupe.",
@@ -588,7 +644,7 @@
       "users": "Utilisateur",
       "users_plural": "Utilisateurs",
       "link": "Liste des utilisateurs",
-      "label": "Voir tous les utilisateurs",
+      "label": "Voir tous",
       "search": "rechercher des utilisateurs dans ce donut",
       "search-group": "rechercher des utilisateurs dans cette community",
       "type": {
@@ -644,7 +700,7 @@
         "<p>Cette conversation est privée donc uniquement accessible aux utilisateurs autorisés de même que l'historique.</p>",
         "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
       ],
-      "onetoone": "<p><strong>@__username__</strong> n'est pas en ligne, les nouveaux messages lui seront remis à sa prochaine connexion.</p>"
+      "onetoone": ", les nouveaux messages lui seront remis à sa prochaine connexion"
     },
     "connection": {
       "connected": "Connecté ! Chargement de l'interface ...",
@@ -887,8 +943,8 @@
         "not-admin-owner-groupowner": "Action non autorisée.",
         "not-admin-owner": "Action non autorisée.",
         "not-allowed": "Action non autorisée.",
+        "not-confirmed": "Action autorisée seulement pour les comptes validés. Validez votre e-mail.",
         "group-banned": "Vous êtes banni de la communauté",
-        "not-confirmed": "Votre compte n'a pas été validé vous ne pouvez pas faire ça",
         "domain": "Ce nom de domaine est invalide"
       }
     },
@@ -904,8 +960,11 @@
     "administrator": "Administrateurs",
     "users": "Utilisateurs",
     "invite": "Inviter",
-    "ask-membership": "Devenir membre",
-    "blocked": "Saisissez le mot de passe d'accès direct à la communauté"
+    "ask-membership": "demander à rejoindre la communauté",
+    "blocked": "Saisissez le mot de passe d'accès direct à la communauté",
+    "default-disclaimer": "Vous n'êtes pas encore membre de cette communauté. Cliquez sur \"demander à rejoindre la communauté\" pour en faire la demande.",
+    "disclaimer-start": "Vous n'êtes pas encore membre de cette communauté. ",
+    "disclaimer-end": " a décrit les conditions d'accès ci-dessous :"
   },
   "account": {
     "error": {
@@ -962,12 +1021,13 @@
     },
     "manageemail": {
       "label": "Gérer vos emails",
+      "info": "Certaines communautés requièrent une authentification par e-mail. (ex : moi@universite.edu). Liez vos e-mails à votre compte pour être authentifié automatiquement.",
       "facebook": "Adresse lié au compte facebook",
       "verified": "Adresse mail vérifié",
       "notverified": "Adresse mail non vérifié",
       "send": "Renvoyer un email de validation",
       "delete": "Supprimer",
-      "noresult": "Aucunes adresse mail trouvées",
+      "noresult": "Aucune adresse mail trouvée",
       "main": "Principal",
       "add": "Ajouter une adresse",
       "errors": {

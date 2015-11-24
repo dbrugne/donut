@@ -29,62 +29,12 @@ router.get('/', [require('csurf')()], function (req, res) {
     type: 'website'
   };
 
-  async.waterfall([
-
-    function retrieveRooms (callback) {
-      featuredRooms(null, callback);
-    },
-
-    function renderTemplate (featured, callback) {
-      var data = {
-        cards: [],
-        title: false,
-        fill: true,
-        search: false,
-        more: false
-      };
-      _.each(featured, function (card) {
-        switch (card.type) {
-          case 'user':
-            card.avatar = common.cloudinary.prepare(card.avatar, 135);
-            card.join = urls(card, 'user', 'chat');
-            card.chat = urls(card, 'user', 'chat');
-            break;
-          case 'room':
-            card.avatar = common.cloudinary.prepare(card.avatar, 135);
-            card.join = urls(card, 'room', 'chat');
-            card.url = urls(card, 'room', 'url');
-            card.owner_url = urls({username: card.owner_username}, 'user', 'chat');
-            if (card.group_id) {
-              card.group_url = urls({name: card.group_name}, 'group', 'chat');
-              card.group_avatar = common.cloudinary.prepare(card.group_avatar, 200);
-            }
-            break;
-          case 'group':
-            card.avatar = common.cloudinary.prepare(card.avatar, 200);
-            card.join = urls(card, 'group', 'chat');
-            card.url = urls(card, 'group', 'url');
-            card.owner_url = urls({username: card.owner_username}, 'user', 'chat');
-            break;
-        }
-        data.cards.push(card);
-      });
-      renderer.render('../public/web/templates/cards.html', data, callback);
-    }
-  ], function (err, html) {
-    if (err) {
-      console.error(err.stack);
-      return res.status(500);
-    }
-
-    return res.render('landing', {
-      token: req.csrfToken(),
-      meta: meta,
-      title: false,
-      search: false,
-      cardsHtml: html,
-      more: false
-    });
+  return res.render('landing', {
+    token: req.csrfToken(),
+    meta: meta,
+    title: false,
+    search: false,
+    cardsHtml: renderer.render('../public/web/templates/cards.html')
   });
 });
 

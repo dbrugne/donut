@@ -55,7 +55,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
     }
 
     var that = this;
-    confirmationView.open({}, function () {
+    confirmationView.open({message: 'op-room-user'}, function () {
       client.roomOp(that.data.room_id, userId, function (err) {
         if (err) {
           return;
@@ -75,7 +75,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
     }
 
     var that = this;
-    confirmationView.open({}, function () {
+    confirmationView.open({message: 'deop-room-user'}, function () {
       client.roomDeop(that.data.room_id, userId, function (err) {
         if (err) {
           return;
@@ -95,7 +95,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
     }
 
     var that = this;
-    confirmationView.open({ input: true }, function (reason) {
+    confirmationView.open({message: 'kick-room-user', input: true}, function (reason) {
       client.roomKick(that.data.room_id, userId, reason);
     });
   },
@@ -111,7 +111,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
     }
 
     var that = this;
-    confirmationView.open({ input: true }, function (reason) {
+    confirmationView.open({message: 'ban-room-user', input: true}, function (reason) {
       client.roomBan(that.data.room_id, userId, reason);
     });
   },
@@ -127,7 +127,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
     }
 
     var that = this;
-    confirmationView.open({}, function () {
+    confirmationView.open({message: 'deban-room-user'}, function () {
       client.roomDeban(that.data.room_id, userId);
     });
   },
@@ -143,7 +143,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
     }
 
     var that = this;
-    confirmationView.open({}, function () {
+    confirmationView.open({message: 'voice-room-user'}, function () {
       client.roomVoice(that.data.room_id, userId);
     });
   },
@@ -159,7 +159,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
     }
 
     var that = this;
-    confirmationView.open({}, function () {
+    confirmationView.open({message: 'devoice-room-user'}, function () {
       client.roomDevoice(that.data.room_id, userId);
     });
   },

@@ -8,13 +8,11 @@ var MuteView = Backbone.View.extend({
   el: $('#mute'),
 
   events: {
-    'click .toggle': 'onToggle'
   },
 
   initialize: function (options) {
     this.listenTo(client, 'preferences:update', this.render);
     this.listenTo(app, 'muteview', this.render);
-
     this.$icon = this.$('.icon');
   },
 
@@ -29,9 +27,7 @@ var MuteView = Backbone.View.extend({
     return this;
   },
 
-  onToggle: function (event) {
-    event.preventDefault();
-    app.trigger('drawerClose');
+  toggle: function () {
     client.userPreferencesUpdate({
       'browser:sounds': !currentUser.shouldPlaySound()
     });

@@ -103,7 +103,7 @@ var OneToOneModel = Backbone.Model.extend({
   onViewed: function (data) {
     if (this.get('unviewed') === true) {
       this.set('unviewed', false);
-      app.trigger('redrawNavigationOnes');
+      app.trigger('viewedEvent', this);
     }
     this.trigger('viewed', data);
   },
