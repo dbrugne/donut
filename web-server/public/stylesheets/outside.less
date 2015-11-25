@@ -70,7 +70,9 @@
       }
     }
   }
-  .second { width: 100%; height: 500px; }
+  .second { width: 100%; min-height:100vh; background: transparent url('@{img-path}/background-second.jpg') no-repeat; background-size: cover; width: 100%; background-position: center center;
+    .gif { width: 100%; height:420px; background: transparent url('@{img-path}/background-second-gif.png') no-repeat; background-size: cover; width: 100%; background-position: center center; }
+  }
   .third {
     .image { background-size: contain; width: 200px; height: 200px; background-position: center center;
       &.image-1 { background: transparent url('@{img-path}/landing-1.jpg') no-repeat; }
