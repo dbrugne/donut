@@ -507,10 +507,10 @@
         "deop-group-user": "Vous allez retirer @__username__ des modérateurs.",
         "invite": "Vous allez autoriser l'accès à @__username__. Une notification va lui être adressée pour l'inviter à rejoindre #__name__.",
         "requestallowance": "<strong>Demander à devenir membre.</strong><br>Le créateur de la communauté va avoir accès à votre vrai nom et votre e-mail.",
-        "add-email": "Nouvelle adresse électronique :",
+        "add-email": "Nouvel e-mail :",
         "send-email": "Un email de confirmation va être envoyé à __email__",
         "delete-email": "__email__ va être supprimé de vos adresses mails",
-        "change-email": "__email__ va devenir votre adresse mail principale, elle vous servira pour vous connecter et pour revecoir tous les mails de la part de Donut.me"
+        "change-email": "Vous allez faire __email__ votre e-mail principal. Dorénavant vous vous connecterez avec cette e-mail et vous recevrez toutes les notifications dessus."
       }
     },
     "commands": {
@@ -788,7 +788,7 @@
         },
         "create": {
           "label": "Créez une communauté",
-          "help": "Une communauté est un espace regroupant vos donut et permettant à votre communauté de devenir membre et d'accèder à un groupe de donuts.",
+          "help": "Une communauté est un espace où vos membres se regroupent et créent des donuts pour y discuter entre eux et éventuellement avec d'autres utilisateurs.",
           "help-name": "Entre 2 et 15 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement.<br>Attention le nom de la communauté ne sera plus modifiable.",
           "placeholder": "Nom de la communauté",
           "submit": "Créer la communauté"
@@ -866,7 +866,7 @@
             "label": "Description",
             "placeholder": "Décrivez le donut en quelques mots",
             "help": "Facultatif",
-            "conditions": "Affiché à tout utilisateur sur la page filtrant les accès critères de sélection, indice pour le mot de passe,..."
+            "conditions": "Affiché à tout utilisateur sur la page filtrant les accès. Par exemple: critères de sélection, indice pour le mot de passe..."
           },
           "visibility": {
             "label": "Visibilité (administrateur)",
@@ -974,7 +974,7 @@
         "format": "Cette adresse email n'est pas valide",
         "alreadyexists": "Cette adresse email est déjà utilisée par un autre compte",
         "alreadyyours": "Vous utilisez déjà cette adresse mail",
-        "domain": "Ce domaine d'emails est invalide"
+        "domain": "Erreur - Utilisez un e-mail permanent"
       },
       "new": "Nouvel email",
       "confirm": "Confirmer"
@@ -1018,19 +1018,19 @@
       "info": "Certaines communautés requièrent une authentification par e-mail. (ex : moi@universite.edu). Liez vos e-mails à votre compte pour être authentifié automatiquement.",
       "facebook": "Adresse lié au compte facebook",
       "verified": "Adresse mail vérifié",
-      "notverified": "Adresse mail non vérifié",
+      "notverified": "e-mail non validé",
       "send": "Renvoyer un email de validation",
       "delete": "Supprimer",
       "noresult": "Aucune adresse mail trouvée",
       "main": "Principal",
-      "add": "Ajouter une adresse",
+      "add": "ajouter e-mail",
       "errors": {
         "wrong-format": "L'addresse mail n'est pas valide",
         "mail-already-exist": "Cette adresse mail est déjà utilisé",
         "not-allowed": "Cette adresse mail à déjà été validée",
         "not-found": "Cette adresse mail n'a pas été trouvée",
         "permanent": "Cette addresse mail ne peut pas être supprimer",
-        "domain": "Ce domaine d'emails est invalide"
+        "domain": "Erreur - Utilisez un e-mail permanent"
       }
     }
   },

@@ -168,7 +168,7 @@ Notification.prototype.sendEmail = function (model, done) {
       });
 
       if (model.user.getEmail()) {
-        emailer.userMessage(model.user.getEmail(), events[0].data.from_username, messages, callback);
+        emailer.userMessage(model.user.getEmail(), model.user.get('username'), messages, callback);
       }
     },
 

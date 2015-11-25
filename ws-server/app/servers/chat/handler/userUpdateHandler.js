@@ -251,47 +251,24 @@ handler.call = function (data, session, next) {
       return callback(null, event);
     },
 
-    function broadcastOneToOnes (event, callback) { // @todo refacto => use globalChannelService.pushMessageToRelatedUsers (see yfuks)
+    function broadcastToRelatedUSers (event, callback) {
       if (!event) {
         return callback(null, event);
       }
 
-      // inform onetoones
-      if (user.ones && user.ones.length > 0) {
-        _.each(user.ones, function (one) {
-          that.app.globalChannelService.pushMessage('connector', 'user:updated', event, 'user:' + one.user, {}, function (err) {
-            if (err) {
-              logger.error('Error while pushing user:updated message to ' + one.user + ' on user:update: ' + err);
-            }
-          });
-        });
-      }
-
-      return callback(null, event);
-    },
-
-    function broadcastRooms (event, callback) {
-      if (!event) {
-        return callback(null, event);
-      }
-
+      var onesId = _.map(user.ones, 'user');
+      var roomsId = [];
       Room.findByUser(user.id).exec(function (err, rooms) {
         if (err) {
           return callback(err);
         }
 
-        // inform rooms
-        if (rooms && rooms.length) {
-          _.each(rooms, function (room) {
-            that.app.globalChannelService.pushMessage('connector', 'user:updated', event, room.id, {}, function (err) {
-              if (err) {
-                logger.error('Error while pushing user:updated message to ' + room.name + ' on user:update: ' + err);
-              }
-            });
-          });
+        roomsId = _.map(rooms, '_id');
+        if ((!roomsId || roomsId.length < 1) && (!onesId || onesId.length < 1)) {
+          return callback(null);
         }
 
-        return callback(null);
+        that.app.globalChannelService.pushMessageToRelatedUsers('connector', roomsId, onesId, 'user:updated', event, user.id, {}, callback);
       });
     }
 

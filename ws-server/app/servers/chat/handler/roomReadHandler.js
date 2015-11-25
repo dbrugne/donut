@@ -57,6 +57,7 @@ handler.call = function (data, session, next) {
         read.allow_user_request = room.allow_user_request;
         read.allow_group_member = (room.group) ? room.allow_group_member : false;
       }
+      read.users_count = room.users ? room.users.length : 0;
 
       return callback(null);
     },
@@ -148,7 +149,6 @@ handler.call = function (data, session, next) {
         var max = 42;
         read.users = [];
         read.ops = [];
-        read.users_count = room.users.length;
         read.users_more = false;
 
         var alreadyIn = [];
