@@ -161,6 +161,11 @@ var ConfirmationModalView = Backbone.View.extend({
         this.$message.text(i18next.t('chat.confirmation.message.kick-room-user'));
       } else if (this.options.message === 'devoice-room-user') {
         this.$message.text(i18next.t('chat.confirmation.message.devoice-room-user'));
+      } else if (this.options.message === 'add-domain') {
+        this.$message.text(i18next.t('chat.confirmation.message.add-domain'));
+        this.$input.attr('placeholder', i18next.t('chat.confirmation.placeholder-domain'));
+      } else if (this.options.message === 'delete-domain') {
+        this.$message.text(i18next.t('chat.confirmation.message.delete-domain', {domain: this.options.domain}));
       }
     }
     // bind 'enter' only when showing popin

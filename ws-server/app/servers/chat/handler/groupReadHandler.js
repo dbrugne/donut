@@ -49,7 +49,8 @@ handler.call = function (data, session, next) {
         disclaimer: group.disclaimer,
         created: group.created_at,
         members: [],
-        has_password: (!!group.password)
+        has_password: (!!group.password),
+        can_join: group.canUserJoin(user.id, user.emails)
       };
 
       // owner
@@ -147,6 +148,7 @@ handler.call = function (data, session, next) {
 
       if (group.isOwner(user.id) || session.settings.admin === true) {
         read.password = group.password;
+        read.allowed_domains = group.allowed_domains;
       }
 
       if (session.settings.admin === true) {

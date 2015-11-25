@@ -19,7 +19,8 @@ var GroupView = Backbone.View.extend({
 
   events: {
     'click .request-allowance': 'onRequestAllowance',
-    'click .send-password': 'onSendPassword'
+    'click .send-password': 'onSendPassword',
+    'click .group-join': 'onJoinGroup'
   },
 
   initialize: function (options) {
@@ -47,8 +48,10 @@ var GroupView = Backbone.View.extend({
     var rooms = [];
     _.each(group.rooms, function (room) {
       room.avatar = common.cloudinary.prepare(room.avatar, 135);
-      room.owner_id = room.owner.user_id;
-      room.owner_username = room.owner.username;
+      if (room.owner) {
+        room.owner_id = room.owner.user_id;
+        room.owner_username = room.owner.username;
+      }
       room.group_id = group.group_id;
       room.group_name = group.name;
       room.identifier = '#' + room.name;
@@ -149,6 +152,15 @@ var GroupView = Backbone.View.extend({
           app.trigger('joinGroup', {name: this.model.get('name'), popin: false});
         }
       }, this));
+    }, this));
+  },
+  onJoinGroup: function () {
+    client.groupJoin(this.model.get('group_id'), null, _.bind(function (response) {
+      if (response.err) {
+        app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+      } else if (response.success) {
+        app.trigger('joinGroup', {name: this.model.get('name'), popin: false});
+      }
     }, this));
   },
   changeColor: function () {
