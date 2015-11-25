@@ -487,6 +487,7 @@
       "placeholderarea": "200 characters maximum",
       "placeholder-domain": "example: @donut.me",
       "label": "Explain why (optional)",
+      "label-requestallowance": "Explain why you request membership. (optional) ",
       "cancel": "Cancel",
       "confirm": "OK",
       "message": {

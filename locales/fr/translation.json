@@ -484,6 +484,7 @@
     },
     "confirmation": {
       "placeholder": "Expliquez pourquoi, visible dans le donut (optionnel)",
+      "label-requestallowance": "Expliquez lui pourquoi vous voulez devenir membre. (facultatif)",
       "placeholderarea": "200 caractères maximum",
       "placeholder-domain": "exemple: @donut.me",
       "label": "Expliquez pourquoi (optionnel)",
