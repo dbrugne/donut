@@ -507,7 +507,7 @@
         "deop-group-user": "You are about to remove as moderateur @__username__ from this community.",
         "invite": "You are about to authorize @__username__. A notification will be sent to invite @__username__ to join #__name__.",
         "requestallowance": "<strong>Membership request.</strong><br>The community creator will have access to your real name and email.",
-        "add-email": "New mail address :",
+        "add-email": "New email:",
         "send-email": "A confirmation mail gonna be send to __email__",
         "delete-email": "__email__ will be deleted of your address",
         "change-email": "You are about to make __email__ your main email. It will be your log-in e-mail and the only one we use to send you notifications."
@@ -974,7 +974,7 @@
         "format": "Invalid e-mail",
         "alreadyexists": "This e-mail is already used by another account",
         "alreadyyours": "You already use this e-mail",
-        "domain": "This email domain is invalid"
+        "domain": "Error - Use a permanent email"
       },
       "new": "New E-mail",
       "confirm": "Confirm"
@@ -1018,7 +1018,7 @@
       "info": "Some communities require e-mail authentication (e.g: me@university.edu). Link your emails to this account to be automatically cleared.",
       "facebook": "Address link to facebook account",
       "verified": "Address verified",
-      "notverified": "Address not verified",
+      "notverified": "email not verified",
       "send": "Re-send validation email",
       "delete": "Delete",
       "noresult": "No mails found",
@@ -1030,7 +1030,7 @@
         "not-allowed": "This mail address is already verified",
         "not-found": "This mail address cannot be found",
         "permanent": "This mail address can't be deleted",
-        "domain": "This email domain is invalid"
+        "domain": "Error - Use a permanent email"
       }
     }
   },

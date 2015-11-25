@@ -507,7 +507,7 @@
         "deop-group-user": "Vous allez retirer @__username__ des modérateurs.",
         "invite": "Vous allez autoriser l'accès à @__username__. Une notification va lui être adressée pour l'inviter à rejoindre #__name__.",
         "requestallowance": "<strong>Demander à devenir membre.</strong><br>Le créateur de la communauté va avoir accès à votre vrai nom et votre e-mail.",
-        "add-email": "Nouvelle adresse électronique :",
+        "add-email": "Nouvel e-mail :",
         "send-email": "Un email de confirmation va être envoyé à __email__",
         "delete-email": "__email__ va être supprimé de vos adresses mails",
         "change-email": "Vous allez faire __email__ votre e-mail principal. Dorénavant vous vous connecterez avec cette e-mail et vous recevrez toutes les notifications dessus."
@@ -974,7 +974,7 @@
         "format": "Cette adresse email n'est pas valide",
         "alreadyexists": "Cette adresse email est déjà utilisée par un autre compte",
         "alreadyyours": "Vous utilisez déjà cette adresse mail",
-        "domain": "Ce domaine d'emails est invalide"
+        "domain": "Erreur - Utilisez un e-mail permanent"
       },
       "new": "Nouvel email",
       "confirm": "Confirmer"
@@ -1018,7 +1018,7 @@
       "info": "Certaines communautés requièrent une authentification par e-mail. (ex : moi@universite.edu). Liez vos e-mails à votre compte pour être authentifié automatiquement.",
       "facebook": "Adresse lié au compte facebook",
       "verified": "Adresse mail vérifié",
-      "notverified": "Adresse mail non vérifié",
+      "notverified": "e-mail non validé",
       "send": "Renvoyer un email de validation",
       "delete": "Supprimer",
       "noresult": "Aucune adresse mail trouvée",
@@ -1030,7 +1030,7 @@
         "not-allowed": "Cette adresse mail à déjà été validée",
         "not-found": "Cette adresse mail n'a pas été trouvée",
         "permanent": "Cette addresse mail ne peut pas être supprimer",
-        "domain": "Ce domaine d'emails est invalide"
+        "domain": "Erreur - Utilisez un e-mail permanent"
       }
     }
   },
