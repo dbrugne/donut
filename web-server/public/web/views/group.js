@@ -48,8 +48,10 @@ var GroupView = Backbone.View.extend({
     var rooms = [];
     _.each(group.rooms, function (room) {
       room.avatar = common.cloudinary.prepare(room.avatar, 135);
-      room.owner_id = room.owner.user_id;
-      room.owner_username = room.owner.username;
+      if (room.owner) {
+        room.owner_id = room.owner.user_id;
+        room.owner_username = room.owner.username;
+      }
       room.group_id = group.group_id;
       room.group_name = group.name;
       room.identifier = '#' + room.name;
@@ -94,7 +96,6 @@ var GroupView = Backbone.View.extend({
       model: this.model
     });
 
-    this.initializeTooltips();
     return this;
   },
   removeView: function () {
