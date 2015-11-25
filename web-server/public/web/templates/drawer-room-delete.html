@@ -13,9 +13,20 @@
     </div>
 
     <div class="block">
-        <div class="field flex-parent jc-center">
-            <span class="hash dc-text colorize">#<% if (room.group_name) { %><%- room.group_name %>/<% } %></span>
-            <input type="text" name="input-delete" class="big-input dc-border flex-child colorize-border" placeholder="<%= t('chat.form.room-form.edit.room.delete.placeholder') %>" maxlength="24" />
+        <div class="field flex-parent jc-center column text-center">
+                <span class="hash dc-text colorize">
+                    <% if (room.group_name) { %>
+                        #<%- room.group_name %>
+                    <% } %>
+                </span>
+                <span class="hash dc-text colorize">
+                    <% if (room.group_name) { %>
+                        /
+                    <% } else { %>
+                        #
+                    <% } %>
+                    <input type="text" name="input-delete" class="big-input dc-border flex-child colorize-border" placeholder="<%= t('chat.form.room-form.edit.room.delete.placeholder') %>" maxlength="15" value="">
+                </span>
         </div>
     </div>
     <div class="field buttons mt15 flex-parent center jc-center block">

@@ -174,7 +174,7 @@
     "discover": "découvrir",
     "group": "groupe",
     "view-profile": "voir le profil",
-    "view-group": "voir le groupe",
+    "view-group": "voir communauté",
     "onetoones": "tête-à-tête",
     "donuts": "donuts",
     "group": "communauté",
@@ -266,7 +266,7 @@
     "title": "Il est temps de choisir un nom d'utilisateur !",
     "description": "Le nom d'utilisateur sera votre identité sur DONUT. Les autres utilisateurs le verront. Il n'est pas modifiable.",
     "help": [
-      "Entre 3 et 15 caractères.<br>",
+      "Entre 2 et 15 caractères.<br>",
       "Autorisés : lettres, chiffres et caractères spéciaux : <strong>-._</strong><br>",
       "Interdits : espaces, accents et caractères spéciaux non listés ci-dessus.<br>"
     ],
@@ -369,7 +369,7 @@
       "edit": "mon profil",
       "notifications": "notifications",
       "close": "quitter la discussion",
-      "preferences": "préférences & notifs",
+      "preferences": "préférences & notifications",
       "bannedusers": "utilisateurs bloqués",
       "update": "Editer",
       "see": "Voir",
@@ -393,7 +393,7 @@
       "userstitle": "Utilisateurs"
     },
     "search": {
-      "placeholder": "Recherchez",
+      "placeholder": "Rechercher",
       "noresults": "Aucun résultat de recherche",
       "roomstitle": "Voici les donuts correspondant à votre recherche, vous pouvez aussi en <a class='open-create-room'>créer un nouveau</a> :",
       "userstitle": "Utilisateurs correspondants",
@@ -495,7 +495,7 @@
         "refuseuser": "Vous allez refuser l'accès à @__username__",
         "acceptuser": "Vous allez autoriser l'accès à @__username__",
         "disallowuser": "Vous allez supprimer l'accès à @__username__",
-        "op-room-user": "Vous êtes sur le point de nommer cet utilisateur modérateur de ce donut. Cet utilisateur pourra accepter ou refuser les demandes d'adhésions, inviter des utilisateurs à devenir membre et bannir un utilisateur du donut.",
+        "op-room-user": "Vous allez promouvoir cet utilisateur modérateur de ce donut. Les modérateurs peuvent enlever/rendre la parole, expulser et bannir les autres utilisateurs.",
         "deop-room-user": "Vous allez retirer cet utilisateur des modérateurs.",
         "ban-room-user": "Vous allez bannir cet utilisateur de ce donut.",
         "deban-room-user": "Vous allez débannir cet utilisateur de ce donut.",
@@ -503,8 +503,8 @@
         "devoice-room-user": "Vous allez rendre muet cet utilisateur.",
         "ban-group-user": "Vous allez bannir l'utilisateur @__username__ de cette communauté",
         "deban-group-user": "Vous allez débannir l'utilisateur @__username__ de cette communauté",
-        "op-group-user": "Vous êtes sur le point de nommer @__username__ modérateur de la communauté. Cet utilisateur pourra accepter ou refuser les demandes d'adhésions, inviter des utilisateurs à devenir membre et bannir un utilisateur du groupe.",
-        "deop-group-user": "Vous allez retirer @__username__ des modérateurs.",
+        "op-group-user": "Vous allez promouvoir @__username__ modérateur de cette communauté. Les modérateurs peuvent gérer les demandes d'adhésion, inviter et bannir des membres.",
+        "deop-group-user": "@__username__ ne sera plus modérateur de cette communauté.",
         "invite": "Vous allez autoriser l'accès à @__username__. Une notification va lui être adressée pour l'inviter à rejoindre #__name__.",
         "requestallowance": "<strong>Demander à devenir membre.</strong><br>Le créateur de la communauté va avoir accès à votre vrai nom et votre e-mail.",
         "add-email": "Nouvel e-mail :",
@@ -916,7 +916,7 @@
           },
           "real-name": {
             "label": "Nom complet",
-            "placeholder": "Nom et prénom",
+            "placeholder": "Prénom et nom",
             "help": "Facultatif (entre 2 et 20 caractères, chiffres, lettres, espaces et tirets)"
           }
         }
@@ -951,14 +951,14 @@
     }
   },
   "group": {
-    "administrator": "Administrateurs",
+    "administrator": "Modérateurs",
     "users": "Utilisateurs",
     "invite": "Inviter",
-    "ask-membership": "demander à rejoindre la communauté",
+    "ask-membership": "devenir membre",
     "blocked": "Saisissez le mot de passe d'accès direct à la communauté",
-    "default-disclaimer": "Vous n'êtes pas encore membre de cette communauté. Cliquez sur \"demander à rejoindre la communauté\" pour en faire la demande.",
-    "disclaimer-start": "Vous n'êtes pas encore membre de cette communauté. ",
-    "disclaimer-end": " a décrit les conditions d'accès ci-dessous :"
+    "default-disclaimer": "Vous n'êtes pas encore membre de cette communauté. Cliquez sur \"devenir membre\" pour en faire la demande.",
+    "disclaimer-start": "Vous n'êtes pas encore membre de cette communauté. Vous pouvez pouvez y rejoindre les donuts publics et éventuellement demander l'accès à des donuts privés. Les membres d'une communauté ont des privilèges tels que l'accès direct à certains donuts privés et aux autres membres de la communauté.",
+    "disclaimer-end": " Avant de demander à devenir membre, jetez un oeil aux conditions d'accès de cette communauté :"
   },
   "account": {
     "error": {

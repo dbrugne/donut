@@ -17,6 +17,16 @@ $('[data-toggle="contactform"]').contactform({});
 // Landing Page
 var $landing = $('#landing');
 if ($landing.length) {
+  console.log('landing');
+  $(window).scroll(function () {
+    console.log('scrolling');
+    if ($(this).scrollTop() > 100) {
+      $landing.addClass('clean');
+    } else {
+      $landing.removeClass('clean');
+    }
+  });
+
   var emailPattern = /[\w.+-]+@[\w.-]+\.[a-z]{2,4}/i;
   var passwordPattern = /(.{4,255})$/i;
 

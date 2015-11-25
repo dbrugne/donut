@@ -73,14 +73,18 @@
             </div>
         </div>
     </div>
-    <!--<div class="second row-fluid flex-parent">-->
-        <!--<div class="col-md-6"></div>-->
-        <!--<div class="col-md-6 flex-child flex-parent column">-->
-            <!--<div class="flex-parent center jc-center flex-child">-->
-                <!--<div class="title text-center fs25"><strong><%= t('landing.second.title') %></strong></div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
+    <div class="second flex-parent column">
+        <div class="container row-fluid flex-parent flex-child">
+            <div class="col-md-6 flex-child flex-parent column jc-center">
+                <div class="gif"></div>
+            </div>
+            <div class="col-md-6 flex-child flex-parent column">
+                <div class="flex-parent center jc-center flex-child">
+                    <div class="title text-center fs35"><strong><%= t('landing.second.title') %></strong></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="third">
         <div class="container">
             <div class="title text-center mb20 mt50"><%= t('landing.third.title') %></div>
@@ -144,7 +148,7 @@
             </div>
 
             <div class="flex-parent jc-center center mt20 mb20">
-                <div class="title text-center fs25"><strong><%= t('landing.third.sub-title') %></strong></div>
+                <div class="title text-center fs25" style="padding-right: 50px;"><strong><%= t('landing.third.sub-title') %></strong></div>
                 <% if (!user) { %>
                     <div class="authenticate">
                         <div class="background"></div>
@@ -193,7 +197,8 @@
     </div>
 
     <div class="fourth flex-parent column">
-        <div class="container flex-child flex-parent center jc-center">
+        <div class="container flex-child flex-parent jc-center column">
+            <div class="title">Title</div>
             <blockquote class="text-justify">
                 <%= t('landing.fourth.blockquote') %>
                 <strong class="pull-right"><%= t('landing.fourth.donut-team') %></strong>
@@ -219,6 +224,10 @@
             <a class="inverse ml10" data-toggle="contactform"><%= t('page.contact.title') %></a>
             <a class="inverse ml10" href="/eutc" target="_blank"><%= t('page.eutc.title') %></a>
             <a class="inverse ml10" href="/legals" target="_blank"><%=t('landing.legals')%></a>
+            <span class="ml10"> - </span>
+            <a class="inverse ml10 switch" href="" data-language="fr" >Français</a>
+            <a class="inverse ml10 switch" href="" data-language="en" >English</a>
+
         </div>
         <div class="container flex-parent">
             <div class="fb-like flex-child" data-href="https://www.facebook.com/donutdotme" data-layout="standard" data-action="like" data-show-faces="true" data-share="true" data-ref="landing"></div>
