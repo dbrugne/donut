@@ -7,7 +7,7 @@
   }
 }
 
-.header-out { border-bottom: 3px solid @cl-first; background-color: #FFF;
+.header-out {  background-color: rgba(255,255,255, 0.5); height: 55px;
   .navbar { margin-bottom:0; border:0;
     .nav .open>a, .nav .open>a:hover, .nav .open>a:focus { background-color: transparent; }
     .nav>li>a { text-decoration:underline;
@@ -25,9 +25,9 @@
       }
     }
     .navbar-brand { .display-flex; .flex-flow(column nowrap); padding:0; margin-left:0;
-      .logo { height:40px; margin: auto 0; }
+      .logo { height:45px; margin: auto 0; }
     }
-    .signup a, .login a { font-size:1.5rem; color:@cl-text; .ft-opensans; text-decoration:none !important;
+    .signup a, .login a { font-size:1.6rem; color:@cl-text; .ft-opensans; text-decoration:none !important; font-weight: bold; text-transform: lowercase;
       &:hover { text-decoration:underline; }
     }
   }
@@ -53,13 +53,14 @@
 }
 
 #landing { background-color: #FFF; @height:500px;
-  .header-out { position: fixed; width: 100%; z-index: 100; }
+  .header-out { position: fixed; width: 100%; z-index: 100; .transition(background-color 300ms); border-bottom: 3px solid transparent; }
+  &.clean .header-out { background-color: #FFF; border-bottom: 3px solid @cl-first; }
   .title { font-size: 2.9rem; .ft-opensans; }
-  .first {     margin-top: 53px;     min-height: 100vh; background: transparent url('@{img-path}/background.jpg') no-repeat; background-size: cover; width: 100%; background-position: center center;
+  .first { min-height: 100vh; background: transparent url('@{img-path}/background.jpg') no-repeat; background-size: cover; width: 100%; background-position: center center;
     .container{ min-height: 100vh;
       > div { height: 100%; .align-items(center); .justify-content(flex-end); min-height: 100vh;
-        .disclaimer { color:#FFF;
-          .part-1 { margin-bottom: 100px;
+        .disclaimer { color:#FFF; margin-bottom:130px;
+          .part-1 { margin-bottom: 50px; font-weight:700; font-size:4rem;
             p { margin:0; }
           }
           .part-2 { font-size:2rem; font-weight:500; text-align:justify; padding-right:50px;
@@ -84,8 +85,9 @@
       .description { text-align:justify; color: #8e959c; font-size:1.6rem; }
     }
   }
-  .fourth { background-color:#f6f6f8; width: 100%; height: 500px;
-    blockquote { border-left:0; padding:10px; font-size: 1.6rem; line-height: 2.4rem; font-style: italic; }
+  .fourth { width: 100%; min-height:100vh; background: transparent url('@{img-path}/background-fourth.jpg') no-repeat; background-size: cover; width: 100%; background-position: center center;
+    .title { margin-left: 10px; font-size:4rem; }
+    blockquote { border-left:0; padding:10px; font-size: 2rem; line-height: 2.5rem; }
   }
   .fifth {
     .partner { background-size: contain; background-position: center center; height: 75px; background-repeat:no-repeat;
