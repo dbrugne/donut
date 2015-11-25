@@ -13,8 +13,7 @@ var DrawerGroupEditView = Backbone.View.extend({
 
   events: {
     'submit form.group-form': 'onSubmit',
-    'input #groupDescription': 'onTypingDescription',
-    'input #groupDisclaimer': 'onTypingDisclaimer'
+    'input #groupDescription': 'onTypingDescription'
   },
 
   initialize: function (options) {
@@ -67,13 +66,6 @@ var DrawerGroupEditView = Backbone.View.extend({
       this.$('.counter-description').html(i18next.t('chat.form.common.edit.left', {count: 200}));
     }
 
-    // disclaimer
-    if (group.disclaimer) {
-      this.$('.counter-disclaimer').html(i18next.t('chat.form.common.edit.left', {count: 200 - group.disclaimer.length}));
-    } else {
-      this.$('.counter-disclaimer').html(i18next.t('chat.form.common.edit.left', {count: 200}));
-    }
-
     // website
     this.$website = this.$('input[name=website]');
 
@@ -107,7 +99,6 @@ var DrawerGroupEditView = Backbone.View.extend({
 
     var updateData = {
       description: this.$('textarea[name=description]').val(),
-      disclaimer: this.$('textarea[name=disclaimer]').val(),
       website: this.$website.val(),
       color: this.$('input[name=color]').val()
     };
@@ -147,9 +138,6 @@ var DrawerGroupEditView = Backbone.View.extend({
     this.$('.counter-description').html(i18next.t('chat.form.common.edit.left', {count: 200 - this.$('#groupDescription').val().length}));
   },
 
-  onTypingDisclaimer: function (event) {
-    this.$('.counter-disclaimer').html(i18next.t('chat.form.common.edit.left', {count: 200 - this.$('#groupDisclaimer').val().length}));
-  },
 
   checkWebsite: function () {
     var website = this.$website.val();

@@ -130,6 +130,9 @@ var SearchPageView = Backbone.View.extend({
       rooms: this.$options.find('li[data-type="rooms"]').hasClass('active'),
       groups: this.$options.find('li[data-type="groups"]').hasClass('active')
     };
+  },
+  focusSearch: function () {
+    this.$search.focus();
   }
 });
 
