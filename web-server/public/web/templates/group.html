@@ -77,7 +77,7 @@
     <% if (!isMember && !isBanned) { %>
         <div class="disclaimer mt10 alert alert-warning" role="alert">
             <% if (group.disclaimer) { %>
-                <p><%= t('group.disclaimer-start') %><strong><span class="open-user-profile fs15 dc-text" data-user-id="<%=group.owner_id %>">@<%=group.owner_username%></span></strong><%= t('group.disclaimer-end') %></p>
+                <p><%= t('group.disclaimer-start') %><strong><span class="open-user-profile fs15 dc-text" data-user-id="<%=group.owner_id %>"></span></strong><%= t('group.disclaimer-end') %></p>
                 <p class="mt10"><i class="icon icon-quote"></i> <em><%= group.disclaimer %></em></p>
             <% } else { %>
                 <p><%= t('group.default-disclaimer') %></p>

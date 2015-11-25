@@ -174,7 +174,7 @@
     "discover": "découvrir",
     "group": "groupe",
     "view-profile": "voir le profil",
-    "view-group": "voir le groupe",
+    "view-group": "voir communauté",
     "onetoones": "tête-à-tête",
     "donuts": "donuts",
     "group": "communauté",
@@ -266,7 +266,7 @@
     "title": "Il est temps de choisir un nom d'utilisateur !",
     "description": "Le nom d'utilisateur sera votre identité sur DONUT. Les autres utilisateurs le verront. Il n'est pas modifiable.",
     "help": [
-      "Entre 3 et 15 caractères.<br>",
+      "Entre 2 et 15 caractères.<br>",
       "Autorisés : lettres, chiffres et caractères spéciaux : <strong>-._</strong><br>",
       "Interdits : espaces, accents et caractères spéciaux non listés ci-dessus.<br>"
     ],
@@ -369,7 +369,7 @@
       "edit": "mon profil",
       "notifications": "notifications",
       "close": "quitter la discussion",
-      "preferences": "préférences & notifs",
+      "preferences": "préférences & notifications",
       "bannedusers": "utilisateurs bloqués",
       "update": "Editer",
       "see": "Voir",
@@ -393,7 +393,7 @@
       "userstitle": "Utilisateurs"
     },
     "search": {
-      "placeholder": "Recherchez",
+      "placeholder": "Rechercher",
       "noresults": "Aucun résultat de recherche",
       "roomstitle": "Voici les donuts correspondant à votre recherche, vous pouvez aussi en <a class='open-create-room'>créer un nouveau</a> :",
       "userstitle": "Utilisateurs correspondants",
@@ -916,7 +916,7 @@
           },
           "real-name": {
             "label": "Nom complet",
-            "placeholder": "Nom et prénom",
+            "placeholder": "Prénom et nom",
             "help": "Facultatif (entre 2 et 20 caractères, chiffres, lettres, espaces et tirets)"
           }
         }
@@ -958,7 +958,7 @@
     "blocked": "Saisissez le mot de passe d'accès direct à la communauté",
     "default-disclaimer": "Vous n'êtes pas encore membre de cette communauté. Cliquez sur \"devenir membre\" pour en faire la demande.",
     "disclaimer-start": "Vous n'êtes pas encore membre de cette communauté. Vous pouvez pouvez y rejoindre les donuts publics et éventuellement demander l'accès à des donuts privés. Les membres d'une communauté ont des privilèges tels que l'accès direct à certains donuts privés et aux autres membres de la communauté.",
-    "disclaimer-end": "Avant de demander à devenir membre, jetez un oeil aux conditions d'accès de cette communauté :"
+    "disclaimer-end": " Avant de demander à devenir membre, jetez un oeil aux conditions d'accès de cette communauté :"
   },
   "account": {
     "error": {

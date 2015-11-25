@@ -174,7 +174,7 @@
     "discover": "discover",
     "group": "group",
     "view-profile": "view profile",
-    "view-group": "view the groupe",
+    "view-group": "view community",
     "onetoones": "one to ones",
     "donuts": "Donuts",
     "group": "community",
@@ -266,7 +266,7 @@
     "title": "It's time to choose a username!",
     "description": "This username will be your identity on DONUT and will be public. You cannot edit it later.",
     "help": [
-      "Between 3 and 15 characters.<br>",
+      "Between 2 and 15 characters.<br>",
       "Valid : letters, numbers and special characters: <strong>-._</strong><br>",
       "Invalid: spaces, accents and special characters not listed above.<br>"
     ],
@@ -369,7 +369,7 @@
       "edit": "my profile",
       "notifications": "notifications",
       "close": "quit the discussion",
-      "preferences": "settings and notifs",
+      "preferences": "settings & notifications",
       "bannedusers": "locked users",
       "update": "Edit",
       "see": "See",
@@ -393,7 +393,7 @@
       "userstitle": "Users"
     },
     "search": {
-      "placeholder": "Search donut, community or user here",
+      "placeholder": "Search",
       "noresults": "No match found",
       "roomstitle": "Here are the donuts matching your request, you can also <a class='open-create-room'>create one</a> :",
       "userstitle": "Matching users",
@@ -916,7 +916,7 @@
           },
           "real-name": {
             "label": "Real name",
-            "placeholder": "name and first name",
+            "placeholder": "First name and last name",
             "help": "Optional (between 2 and 20 characters, only letters, numbers, spaces and dashes)"
           }
         }
