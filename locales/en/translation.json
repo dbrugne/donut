@@ -684,7 +684,7 @@
       ],
       "invites": [
         "<p>Welcome !</p>",
-        "<p>This private conversation and its history are only accessible users authorized by <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a>.</p>",
+        "<p>This private conversation and its history are only accessible to users authorized by <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a>.</p>",
         "<p>Say 'hi' to engage in the discussion.</p>"
       ],
       "public": [
@@ -788,7 +788,7 @@
         },
         "create": {
           "label": "Create a community",
-          "help": "A community is a place grouping your donut and allowing your community to become a member and access a group of donuts.",
+          "help": "A community is a place where your members can gather and create donuts to chat with each other and external users if they want.",
           "help-name": "Between 2 and 15 characters, only letters, numbers, dashes (-) and underscores (_).<br>Caution the community name will no longer be editable.",
           "placeholder": "Group name",
           "submit": "Create"

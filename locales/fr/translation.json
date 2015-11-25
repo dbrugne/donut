@@ -788,7 +788,7 @@
         },
         "create": {
           "label": "Créez une communauté",
-          "help": "Une communauté est un espace regroupant vos donut et permettant à votre communauté de devenir membre et d'accèder à un groupe de donuts.",
+          "help": "Une communauté est un espace où vos membres se regroupent et créent des donuts pour y discuter entre eux et éventuellement avec d'autres utilisateurs.",
           "help-name": "Entre 2 et 15 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement.<br>Attention le nom de la communauté ne sera plus modifiable.",
           "placeholder": "Nom de la communauté",
           "submit": "Créer la communauté"
@@ -866,7 +866,7 @@
             "label": "Description",
             "placeholder": "Décrivez le donut en quelques mots",
             "help": "Facultatif",
-            "conditions": "Affiché à tout utilisateur sur la page filtrant les accès critères de sélection, indice pour le mot de passe,..."
+            "conditions": "Affiché à tout utilisateur sur la page filtrant les accès. Par exemple: critères de sélection, indice pour le mot de passe..."
           },
           "visibility": {
             "label": "Visibilité (administrateur)",
