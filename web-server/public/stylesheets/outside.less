@@ -53,10 +53,11 @@
 }
 
 #landing { background-color: #FFF; @height:500px;
-  .title { font-size: 3.5rem; .ft-opensans; }
-  .first { background: transparent url('@{img-path}/background.jpg') no-repeat; background-size: cover; width: 100%; height: @height; background-position: center center;
-    .container{ height:@height;
-      > div { height: 100%; .align-items(center); .justify-content(flex-end);
+  .header-out { position: fixed; width: 100%; z-index: 100; }
+  .title { font-size: 2.9rem; .ft-opensans; }
+  .first {     margin-top: 53px;     min-height: 100vh; background: transparent url('@{img-path}/background.jpg') no-repeat; background-size: cover; width: 100%; background-position: center center;
+    .container{ min-height: 100vh;
+      > div { height: 100%; .align-items(center); .justify-content(flex-end); min-height: 100vh;
         .disclaimer { color:#FFF;
           .part-1 { margin-bottom: 100px;
             p { margin:0; }
