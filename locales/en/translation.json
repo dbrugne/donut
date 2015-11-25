@@ -510,7 +510,7 @@
         "add-email": "New mail address :",
         "send-email": "A confirmation mail gonna be send to __email__",
         "delete-email": "__email__ will be deleted of your address",
-        "change-email": "__email__ is going to be your main address, she will be used for your login and to received mails from Donut.me"
+        "change-email": "You are about to make __email__ your main email. It will be your log-in e-mail and the only one we use to send you notifications."
       }
     },
     "commands": {
@@ -1023,7 +1023,7 @@
       "delete": "Delete",
       "noresult": "No mails found",
       "main": "Main",
-      "add": "Add an address",
+      "add": "add email",
       "errors": {
         "wrong-format": "Mail address is not valid",
         "mail-already-exist": "This mail address is already used",

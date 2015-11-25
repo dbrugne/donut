@@ -510,7 +510,7 @@
         "add-email": "Nouvelle adresse électronique :",
         "send-email": "Un email de confirmation va être envoyé à __email__",
         "delete-email": "__email__ va être supprimé de vos adresses mails",
-        "change-email": "__email__ va devenir votre adresse mail principale, elle vous servira pour vous connecter et pour revecoir tous les mails de la part de Donut.me"
+        "change-email": "Vous allez faire __email__ votre e-mail principal. Dorénavant vous vous connecterez avec cette e-mail et vous recevrez toutes les notifications dessus."
       }
     },
     "commands": {
@@ -1023,7 +1023,7 @@
       "delete": "Supprimer",
       "noresult": "Aucune adresse mail trouvée",
       "main": "Principal",
-      "add": "Ajouter une adresse",
+      "add": "ajouter e-mail",
       "errors": {
         "wrong-format": "L'addresse mail n'est pas valide",
         "mail-already-exist": "Cette adresse mail est déjà utilisé",
