@@ -66,7 +66,12 @@ var DonutRouter = Backbone.Router.extend({
         return this.search(elt.data('search'), elt.data('type'));
       }
     }
-    this.root();
+
+    this.unfocusAll();
+    app.trigger('redrawNavigation');
+    this.homeView.focus();
+    Backbone.history.navigate('#'); // just change URI, not run route action
+    this.searchView.focusSearch();
   },
 
   search: function (search, type) {
