@@ -485,7 +485,9 @@
     "confirmation": {
       "placeholder": "Explain why, visible in the donut (optional)",
       "placeholderarea": "200 characters maximum",
+      "placeholder-domain": "example: @donut.me",
       "label": "Explain why (optional)",
+      "label-requestallowance": "Explain why you request membership. (optional) ",
       "cancel": "Cancel",
       "confirm": "OK",
       "message": {
@@ -510,7 +512,9 @@
         "add-email": "New email:",
         "send-email": "A confirmation mail gonna be send to __email__",
         "delete-email": "__email__ will be deleted of your address",
-        "change-email": "You are about to make __email__ your main email. It will be your log-in e-mail and the only one we use to send you notifications."
+        "change-email": "You are about to make __email__ your main email. It will be your log-in e-mail and the only one we use to send you notifications.",
+        "add-domain": "You are about to add an email domain to the allowed domain, an user with the given email could join this community without previous invitation",
+        "delete-domain": "You are about to delete the email domain __domain__ to the allowed domain, a new user with the given email could no more join this community without previous invitation, old user with this email domain will remain members"
       }
     },
     "commands": {
@@ -782,8 +786,10 @@
       },
       "group-form": {
         "mode": {
+          "domain": "Allowed email domains",
           "disclaimer": {
-            "group-password": "Users with the password can join this community without prior invitation."
+            "group-password": "Users with the password can join this community without prior invitation.",
+            "domain": "Users with the given email domain can join this community without prior invitation."
           }
         },
         "create": {
@@ -939,7 +945,8 @@
         "not-admin-owner": "Unauthorized action.",
         "not-allowed": "Unauthorized action.",
         "not-confirmed": "Action authorized to verified accounts only. Verifiy your e-mail.",
-        "group-banned": "You were banned from community"
+        "group-banned": "You were banned from community",
+        "domain": "This domain is not valid"
       }
     },
     "members": "You are now a member of #__name__",
@@ -1452,7 +1459,7 @@
   "popins": {
     "group-create": {
       "title": "Community's creation",
-      "content": "Congrats ! This is your homepage where your members can see all the members, and all the donuts of your community. We created your first donut: <strong>#__groupname__/welcome</strong>. It is public so anyone (even non-members) can join it. Take a minute to <a href=\"#\" class=\"inverse open-group-profile\" data-group-id=\"__groupid__\" data-dismiss=\"modal\">customize your profile</a> and configure who can <a href=\"#\" class=\"inverse open-group-access\" data-group-id=\"__groupid__\" data-dismiss=\"modal\">access your community</a>"
+      "content": "Congrats ! This is your homepage where your members can see all the members, and all the donuts of your community.<br/><br/> We created your first donut: <strong>#__groupname__/welcome</strong>. It is public so anyone (even non-members) can join it. Take a minute to <a href=\"#\" class=\"inverse open-group-profile\" data-group-id=\"__groupid__\" data-dismiss=\"modal\">customize your profile</a> and configure who can <a href=\"#\" class=\"inverse open-group-access\" data-group-id=\"__groupid__\" data-dismiss=\"modal\">access your community</a>"
     }
   }
 }

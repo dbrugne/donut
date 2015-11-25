@@ -26,6 +26,7 @@ var ConfirmationModalView = Backbone.View.extend({
     this.$inputBlock = this.$('.input');
     this.$input = this.$inputBlock.find('input[type="text"]');
     this.$inputPass = this.$('input[type="password"]');
+    this.$bigInputLabel = this.$('.big-input-label');
     this.$bigInputArea = this.$('#big-input-textarea');
     this.$biginput = this.$('.big-input');
     this.$message = this.$('.message');
@@ -134,6 +135,7 @@ var ConfirmationModalView = Backbone.View.extend({
         }));
       } else if (this.options.message === 'request-allowance') {
         this.$message.html(i18next.t('chat.confirmation.message.requestallowance'));
+        this.$bigInputLabel.text(i18next.t('chat.confirmation.label-requestallowance'));
       } else if (this.options.message === 'request-allowance-password') {
         this.$message.text(i18next.t('group.blocked'));
       } else if (this.options.message === 'op-group-user') {
@@ -161,6 +163,11 @@ var ConfirmationModalView = Backbone.View.extend({
         this.$message.text(i18next.t('chat.confirmation.message.kick-room-user'));
       } else if (this.options.message === 'devoice-room-user') {
         this.$message.text(i18next.t('chat.confirmation.message.devoice-room-user'));
+      } else if (this.options.message === 'add-domain') {
+        this.$message.text(i18next.t('chat.confirmation.message.add-domain'));
+        this.$input.attr('placeholder', i18next.t('chat.confirmation.placeholder-domain'));
+      } else if (this.options.message === 'delete-domain') {
+        this.$message.text(i18next.t('chat.confirmation.message.delete-domain', {domain: this.options.domain}));
       }
     }
     // bind 'enter' only when showing popin

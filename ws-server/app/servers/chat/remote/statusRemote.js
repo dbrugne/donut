@@ -193,7 +193,9 @@ DisconnectRemote.prototype.offline = function (uid) {
             avatar: user._avatar(),
             rooms_id: roomsId
           };
-          that.app.globalChannelService.pushMessageToRelatedUsers('connector', roomsId, usersId, 'user:offline', event, uid, {}, callback);
+          that.app.globalChannelService.pushMessageToRelatedUsers('connector', roomsId, usersId, 'user:offline', event, uid, {}, function (err) {
+            return callback(err, user);
+          });
         });
       });
     }
@@ -207,7 +209,7 @@ DisconnectRemote.prototype.offline = function (uid) {
     } else {
       logger.debug('statusRemote.offline', {
         result: 'success',
-        username: user.username,
+        username: (user) ? user.username : 'not found',
         timeUsed: (Date.now() - start)
       });
     }

@@ -22,6 +22,7 @@ var groupSchema = mongoose.Schema({
     reason: String,
     banned_at: {type: Date, default: Date.now}
   }],
+  allowed_domains: [{type: String}],
   password: String,
   password_indication: String,
   avatar: String,
@@ -143,6 +144,26 @@ groupSchema.methods.isMemberOrOwner = function (userId) {
 
 groupSchema.methods.isOwnerOrOp = function (userId) {
   return (this.isOwner(userId) || this.isOp(userId));
+};
+
+groupSchema.methods.canUserJoin = function (userId, userEmails) {
+  if (this.isMember(userId)) {
+    return true;
+  }
+
+  if (this.isBanned(userId)) {
+    return false;
+  }
+
+  if (!this.allowed_domains || this.allowed_domains.length < 1) {
+    return false;
+  }
+
+  var found = _.find(userEmails, _.bind(function (e) {
+    var domain = '@' + e.email.split('@')[1].toLowerCase();
+    return (this.allowed_domains.indexOf(domain) !== -1 && e.confirmed);
+  }, this));
+  return (typeof found !== 'undefined');
 };
 
 groupSchema.methods._avatar = function (size) {

@@ -1,0 +1,14 @@
+<table class="table table-striped table-domain">
+    <% _.each(domain, function(d) { %>
+    <tr>
+        <td class="username">
+            <span class="domain-name"><%= d %></span>
+        </td>
+        <td class="actions" style="text-align: right; width: 1px;">
+            <div class="delete-domain" data-toggle="confirmation" data-domain="<%= d %>">
+                <i class="icon icon-fw icon-times curp" data-toggle="tooltip" data-placement="top" title="<%= t('chat.disallow.infobox') %>"></i>
+            </div>
+        </td>
+    </tr>
+    <%}); %>
+</table>
