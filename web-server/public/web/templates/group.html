@@ -88,6 +88,9 @@
                 <% if (group.has_password) { %>
                     <span class="curp btn btn-primary send-password password-div"><%= t('actions.direct-access') %></span>
                 <% } %>
+                <% if (group.can_join && !isMember && !isBanned) { %>
+                    <span class="curp btn btn-primary group-join pull-right"><%= t('actions.direct-access') %></span>
+                <% } %>
             </div>
 
         </div>
