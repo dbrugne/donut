@@ -31,10 +31,6 @@ handler.call = function (data, session, next) {
     return errors.getHandler('group:mail:domain', next)('group-not-found');
   }
 
-  if (disposableDomains.indexOf(data.domain) !== -1) {
-    return errors.getHandler('group:mail:domain', next)('domain');
-  }
-
   if (_methods.indexOf(data.method) === -1) {
     return errors.getHandler('group:mail:domain', next)('params');
   }
@@ -54,6 +50,10 @@ handler.call = function (data, session, next) {
 handler.add = function (domain, group, next) {
   async.waterfall([
     function check (callback) {
+      if (disposableDomains.indexOf(domain) !== -1) {
+        return callback('domain');
+      }
+
       if (group.allowed_domains.indexOf(domain) !== -1) {
         return callback('mail-already-exist');
       }
