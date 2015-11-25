@@ -252,11 +252,11 @@
     }
   },
   "verify": {
-    "success": "Votre email a été validé avec succès",
+    "success": "Votre e-mail a été vérifié",
     "error": {
       "expired": "Le jeton de validation de l'adresse mail a déjà été utilisé ou a éxpiré, veuillez recommencer la procédure",
       "invalid": "Le jeton de validation de l'adresse mail est invalide, veuillez recommencer la procédure",
-      "already-validate": "Cette adresse mail a déjà été validée"
+      "already-validate": "Votre e-mail a été vérifié."
     }
   },
   "signup": {
@@ -857,8 +857,8 @@
           "help": "Entre 2 et 15 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement",
           "placeholder": "Nom du donut",
           "submit": "Créer le donut",
-          "group": "Déjà propriétaire d'une communauté ? Vous voulez créer un espace dédié à vos utilisateurs ? Vous pouvez <a href=\"#\" class=\"open-group-create\">créer une communauté</a>.",
-          "description": "Vous êtes sur le point de créer un donut sur l'espace global, si vous voulez créer un donut dans une communauté auquel vous appartenez, aller sur la page de cette communauté et cliquer sur \"Créer un Donut\""
+          "group": "Vous animez déjà une communauté ? Vous voulez créer un espace dédié à vos utilisateurs ? <a href=\"#\" class=\"open-group-create\">Créer une communauté DONUT</a>.",
+          "description": "Votre donut est indépendant. Pour le lier à une communauté, allez dans votre communauté et cliquez sur le bouton \"Créer un Donut\""
         },
         "edit": {
           "othersettings": "Autres paramètres",

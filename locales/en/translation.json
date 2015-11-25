@@ -252,11 +252,11 @@
     }
   },
   "verify": {
-    "success": "Your email have been validate",
+    "success": "Your email has been verified",
     "error": {
       "expired": "Please restart the process. This token has expired or has already been used.",
       "invalid": "Please restart the process. This token his not valid.",
-      "already-validate": "This mail address is already validated"
+      "already-validate": "Your email has been verified"
     }
   },
   "signup": {
@@ -789,7 +789,7 @@
         "create": {
           "label": "Create a community",
           "help": "A community is a place where your members can gather and create donuts to chat with each other and external users if they want.",
-          "help-name": "Between 2 and 15 characters, only letters, numbers, dashes (-) and underscores (_).<br>Caution the community name will no longer be editable.",
+          "help-name": "Between 2 and 15 characters, only letters, numbers, dashes (-) and underscores (_).<br>Caution the community name cannot be changed.",
           "placeholder": "Group name",
           "submit": "Create"
         },
@@ -857,8 +857,8 @@
           "help": "Between 2 and 15 characters, only letters, numbers,  dashes (-) and underscores (_)",
           "placeholder": "Donut name",
           "submit": "Create",
-          "group": "Already owner of a community? Want to create a dedicated space for you users? You can <a href=\"#\" class=\"open-group-create\">create a community</a>",
-          "description": "You are about to create a donut in the global space, if you want to create a donut in a community you are a member of, go to the community page and click on \"Create a donut\""
+          "group": "Already lead a community ? Want your users to feel home ? <a href=\"#\" class=\"open-group-create\">Create a DONUT community</a>.",
+          "description": "Your donut is independent. To link it to a community, go to this community and click the \"create a donut\" button."
         },
         "edit": {
           "othersettings": "Other settings",
