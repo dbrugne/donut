@@ -239,7 +239,9 @@ var RoomsCollection = Backbone.Collection.extend({
 
     _.each(data.rooms_id, _.bind(function (roomId) {
       if ((model = this.get(roomId))) {
-        model.users.onUserOnline(data);
+        if (model.users) {
+          model.users.onUserOnline(data);
+        }
       }
     }, this));
   },
@@ -248,7 +250,9 @@ var RoomsCollection = Backbone.Collection.extend({
 
     _.each(data.rooms_id, _.bind(function (roomId) {
       if ((model = this.get(roomId))) {
-        model.users.onUserOffline(data);
+        if (model.users) {
+          model.users.onUserOffline(data);
+        }
       }
     }, this));
   },

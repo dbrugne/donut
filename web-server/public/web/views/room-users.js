@@ -122,7 +122,7 @@ var RoomUsersView = Backbone.View.extend({
 
       this.$popinUsers.show();
 
-      client.userRead(user.user_id, _.bind(function (user) {
+      client.userRead(user.user_id, {more: true}, _.bind(function (user) {
         if (user.err) {
           return;
         }

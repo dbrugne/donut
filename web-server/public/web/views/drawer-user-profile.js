@@ -29,7 +29,7 @@ var DrawerUserProfileView = Backbone.View.extend({
     }
 
     var that = this;
-    client.userRead(this.userId, function (data) {
+    client.userRead(this.userId, {more: true, admin: true, rooms: true}, function (data) {
       if (data.err === 'user-not-found') {
         return;
       }
@@ -124,7 +124,7 @@ var DrawerUserProfileView = Backbone.View.extend({
   },
   onUserBanChange: function () {
     this.render();
-    client.userRead(this.userId, _.bind(function (data) {
+    client.userRead(this.userId, {more: true, admin: true, admin: true}, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }

@@ -22,7 +22,7 @@ var DrawerUserEditView = Backbone.View.extend({
 
     // ask for data
     var that = this;
-    client.userRead(currentUser.get('user_id'), function (data) {
+    client.userRead(currentUser.get('user_id'), {more: true, admin: true}, function (data) {
       if (!data.err) {
         that.onResponse(data);
       }
@@ -49,9 +49,9 @@ var DrawerUserEditView = Backbone.View.extend({
     var html = this.template({user: user});
     this.$el.html(html);
 
-    // description
+    // bio
     if (user.bio) {
-      this.$('.counter').html(i18next.t('chat.form.common.edit.left', {count: 200 - user.bio}));
+      this.$('.counter').html(i18next.t('chat.form.common.edit.left', {count: 200 - user.bio.length}));
     } else {
       this.$('.counter').html(i18next.t('chat.form.common.edit.left', {count: 200}));
     }
