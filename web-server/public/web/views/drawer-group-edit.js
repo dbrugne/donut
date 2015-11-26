@@ -23,8 +23,6 @@ var DrawerGroupEditView = Backbone.View.extend({
     this.render();
 
     var what = {
-      more: true,
-      users: false,
       admin: true
     };
     client.groupRead(this.groupId, what, _.bind(function (data) {
@@ -49,7 +47,7 @@ var DrawerGroupEditView = Backbone.View.extend({
     }
 
     group.isOwner = (group.owner)
-      ? (group.owner.user_id === currentUser.get('user_id'))
+      ? (group.owner_id === currentUser.get('user_id'))
       : false;
 
     group.isAdmin = (currentUser.get('admin') === true);
@@ -137,7 +135,6 @@ var DrawerGroupEditView = Backbone.View.extend({
   onTypingDescription: function (event) {
     this.$('.counter-description').html(i18next.t('chat.form.common.edit.left', {count: 200 - this.$('#groupDescription').val().length}));
   },
-
 
   checkWebsite: function () {
     var website = this.$website.val();

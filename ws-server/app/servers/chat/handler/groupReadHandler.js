@@ -19,9 +19,9 @@ handler.call = function (data, session, next) {
   var group = session.__group__;
 
   var read = {};
-  var alreadyIn = [];
+  var what = data.what || {};
 
-  var what = data.what;
+  var alreadyIn = [];
 
   async.waterfall([
 
@@ -54,20 +54,27 @@ handler.call = function (data, session, next) {
       };
 
       // owner
-      var owner = {};
       if (group.owner) {
-        owner = {
-          user_id: group.owner.id,
-          username: group.owner.username,
-          avatar: group.owner._avatar(),
-          color: group.owner.color,
-          is_owner: true,
-          status: (group.owner.online) ? 'online' : 'offline'
-        };
-        read.members.push(owner);
-        read.owner_id = owner.user_id;
-        read.owner_username = owner.username;
-        alreadyIn.push(group.owner.id);
+        read.owner_id = group.owner.user_id;
+        read.owner_username = group.owner.username;
+      }
+
+      return callback(null);
+    },
+
+    function admin (callback) {
+      if (what.admin !== true) {
+        return callback(null);
+      }
+
+      if (group.isOwner(user.id) || session.settings.admin === true) {
+        read.password = group.password;
+        read.allowed_domains = group.allowed_domains;
+      }
+
+      if (session.settings.admin === true) {
+        read.visibility = group.visibility || false;
+        read.priority = group.priority || 0;
       }
 
       return callback(null);
@@ -78,6 +85,19 @@ handler.call = function (data, session, next) {
         return callback(null);
       }
 
+      // owner
+      if (group.owner) {
+        var owner = {
+          user_id: group.owner.id,
+          username: group.owner.username,
+          avatar: group.owner._avatar(),
+          color: group.owner.color,
+          is_owner: true
+        };
+        read.members.push(owner);
+        alreadyIn.push(group.owner.id);
+      }
+
       // op
       if (group.op && group.op.length > 0) {
         _.each(group.op, function (op) {
@@ -86,8 +106,7 @@ handler.call = function (data, session, next) {
             username: op.username,
             avatar: op._avatar(),
             color: op.color,
-            is_op: true,
-            status: (op.online) ? 'online' : 'offline'
+            is_op: true
           };
           read.members.push(el);
           alreadyIn.push(el.user_id);
@@ -112,8 +131,7 @@ handler.call = function (data, session, next) {
             user_id: u.id,
             username: u.username,
             avatar: u._avatar(),
-            color: u.color,
-            status: u.online ? ('online') : 'offline'
+            color: u.color
           };
           read.members.push(el);
 
@@ -136,24 +154,6 @@ handler.call = function (data, session, next) {
           };
           read.bans.push(el);
         });
-      }
-
-      return callback(null);
-    },
-
-    function admin (callback) {
-      if (what.admin !== true) {
-        return callback(null);
-      }
-
-      if (group.isOwner(user.id) || session.settings.admin === true) {
-        read.password = group.password;
-        read.allowed_domains = group.allowed_domains;
-      }
-
-      if (session.settings.admin === true) {
-        read.visibility = group.visibility || false;
-        read.priority = group.priority || 0;
       }
 
       return callback(null);
@@ -185,7 +185,7 @@ handler.call = function (data, session, next) {
 
             var room = {
               name: r.name,
-              identifier: '#' + r.name,
+              identifier: '#' + group.name + '/' + r.name,
               room_id: r.id,
               id: r.id,
               avatar: r._avatar(),
