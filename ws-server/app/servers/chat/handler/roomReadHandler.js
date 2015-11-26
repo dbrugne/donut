@@ -20,7 +20,7 @@ handler.call = function (data, session, next) {
   var room = session.__room__;
 
   var read = {};
-  var what = data.what;
+  var what = data.what || {};
 
   async.waterfall([
 
