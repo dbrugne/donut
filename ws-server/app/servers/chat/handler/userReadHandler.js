@@ -19,6 +19,7 @@ handler.call = function (data, session, next) {
   var readUser = session.__user__;
 
   var read = {};
+  var what = data.what || {};
 
   var that = this;
 

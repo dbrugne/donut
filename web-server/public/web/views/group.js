@@ -54,7 +54,6 @@ var GroupView = Backbone.View.extend({
       }
       room.group_id = group.group_id;
       room.group_name = group.name;
-      room.identifier = '#' + room.name;
       room.join = urls(room, 'room', 'uri');
       room.type = 'room';
       rooms.push(room);

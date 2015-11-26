@@ -48,7 +48,6 @@ var GroupAccessView = Backbone.View.extend({
   },
   render: function () {
     var what = {
-      more: true,
       users: true,
       admin: true
     };

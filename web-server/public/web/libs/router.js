@@ -110,12 +110,7 @@ var DonutRouter = Backbone.Router.extend({
       } else if (response.code === 500) {
         return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
       }
-      var what = {
-        users: true,
-        admin: true,
-        rooms: true
-      };
-      client.groupRead(response.group_id, what, _.bind(function (response) {
+      client.groupRead(response.group_id, {users: true, rooms: true}, _.bind(function (response) {
         if (!response.err) {
           model = groups.addModel(response);
           this.focus(model);
