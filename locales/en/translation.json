@@ -960,9 +960,10 @@
   "group": {
     "administrator": "Moderators",
     "users": "Users",
-    "invite": "Invite",
+    "invite": "Manage members",
     "ask-membership": "request membership",
     "blocked": "This community is blocked by a password, to join we invite you to type it",
+    "default-member": "You are a member of this community",
     "default-disclaimer": "You are not yet a member of this community. Click \"request membership\" to apply for.",
     "disclaimer-start": "You are not yet a member of this community You can join public donuts or request access to a private donut. Members have special priviledges such as direct access to certain private donuts and to other members of this community.",
     "disclaimer-end": "Before you request membership have a glance at this community access conditions :"

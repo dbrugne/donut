@@ -58,21 +58,24 @@
             <div class="description fs18 mt5">
                 <%= group.description %>
             </div>
-
-        </div>
-
-        <div class="actions">
-            <% if (isMember) { %>
-                <% if(!isBanned) { %>
-                    <span class="curp open-create-room btn-block btn btn-primary" data-group-id="<%=group.group_id%>" data-group-name="<%=group.name%>"><%= t('actions.create') %></span>
-                <% } %>
-            <% } %>
-
-            <% if (isOwner || isOp || isAdmin) { %>
-                <input type="button" class="btn btn-block btn-primary open-group-access" data-group-id="<%= group.group_id %>" value="<%= t('group.invite') %>" />
-            <% } %>
         </div>
     </div>
+
+    <% if (isMember && !isBanned) { %>
+    <div class="members mt10 alert alert-success">
+        <div class="actions">
+            <p><%= t('group.default-member') %></p>
+            <% if (isOwner || isOp || isAdmin) { %>
+                <div class="pull-right mt5 ml5">
+                    <input type="button" class="btn btn-block btn-primary open-group-access" data-group-id="<%= group.group_id %>" value="<%= t('group.invite') %>" />
+                </div>
+            <% } %>
+            <div class="pull-right mt5">
+                <span class="curp open-create-room btn-block btn btn-primary" data-group-id="<%=group.group_id%>" data-group-name="<%=group.name%>"><%= t('actions.create') %></span>
+            </div>
+        </div>
+    </div>
+    <% } %>
 
     <% if (!isMember && !isBanned) { %>
         <div class="disclaimer mt10 alert alert-warning" role="alert">
