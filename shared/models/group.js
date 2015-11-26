@@ -11,6 +11,7 @@ var groupSchema = mongoose.Schema({
   priority: Number,
   owner: {type: mongoose.Schema.ObjectId, ref: 'User'},
   op: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
+  allow_user_request: {type: Boolean, default: true},
   members: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
   members_pending: [{
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},

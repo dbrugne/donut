@@ -76,7 +76,7 @@ handler.call = function (data, session, next) {
         read.visibility = group.visibility || false;
         read.priority = group.priority || 0;
       }
-
+      read.allow_user_request = group.allow_user_request;
       return callback(null);
     },
 

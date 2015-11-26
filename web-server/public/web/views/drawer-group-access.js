@@ -38,7 +38,8 @@ var GroupAccessView = Backbone.View.extend({
     'click input.save-conditions': 'onSubmitConditions',
     'change [type="checkbox"]': 'onChoosePassword',
     'click .random-password': 'onRandomPassword',
-    'keyup #conditions-area': 'onTypeConditions'
+    'keyup #conditions-area': 'onTypeConditions',
+    'click #input-userrequest-checkbox': 'onChangeUsersRequest'
   },
 
   initialize: function (options) {
@@ -76,7 +77,8 @@ var GroupAccessView = Backbone.View.extend({
 
     var html = this.template({
       group: data,
-      password: data.password
+      password: data.password,
+      allow_user_request: data.allow_user_request || false
     });
     this.$el.html(html);
 
@@ -88,7 +90,7 @@ var GroupAccessView = Backbone.View.extend({
     this.$dropdownBan = this.$('.search-user-banned .dropdown');
 
     this.$toggleCheckbox = this.$('#input-password-checkbox');
-    this.$checkboxGroupAllow = this.$('#input-allowgroupmember-checkbox');
+    this.$checkboxUserRequest = this.$('#input-userrequest-checkbox');
     this.$password = this.$('.input-password');
     this.$randomPassword = this.$('.random-password');
     this.$countConditions = this.$('.counter');
@@ -284,6 +286,17 @@ var GroupAccessView = Backbone.View.extend({
     }
     this.$password.val(common.misc.randomString());
     this.$password.focus();
+  },
+  onChangeUsersRequest: function (event) {
+    if (this.$checkboxUserRequest.is(':checked')) {
+      client.groupUpdate(this.model.get('group_id'), { allow_user_request: true }, function (err) {
+        return (err);
+      });
+    } else {
+      client.groupUpdate(this.model.get('group_id'), { allow_user_request: false }, function (err) {
+        return (err);
+      });
+    }
   },
   reset: function () {
     this.$errors.html('').hide();

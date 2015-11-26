@@ -12,6 +12,13 @@
         <p><%= t('chat.blocked.disclaimer-group') %></p>
     </div>
 
+    <div class="field-userrequest radio block">
+        <div class="userrequest-block form-inline mt10 flex-parent baseline space-between">
+            <input type="checkbox" id="input-userrequest-checkbox" name="input-userrequest-checkbox" <% if (allow_user_request !== false) { %> checked <% } %> />
+            <label for="input-userrequest-checkbox"><%= t('chat.access.user-request-access') %></label>
+        </div>
+    </div>
+
     <div class="allow-pending block">
         <label><%= t('chat.access.labelpending') %></label>
         <div class="ctn"></div>

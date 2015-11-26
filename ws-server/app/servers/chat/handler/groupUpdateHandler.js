@@ -150,6 +150,10 @@ handler.call = function (data, session, next) {
         }
       }
 
+      if (_.has(data.data, 'allow_user_request')) {
+        sanitized.allow_user_request = data.data.allow_user_request;
+      }
+
       if (Object.keys(errors).length > 0) {
         return callback(errors); // object
       }
