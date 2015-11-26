@@ -38,12 +38,7 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
   render: function (type) {
     this.type = type;
     var searchAttributes = {
-      type: (type === 'pending'
-        ? 'pending'
-        : type === 'allowed'
-          ? 'members'
-          : 'bans'
-      ),
+      type: (type === 'pending' ? 'pending' : 'allowed'),
       selector: {start: (this.page - 1) * this.paginate, length: this.paginate}
     };
 

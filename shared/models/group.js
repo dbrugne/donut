@@ -12,6 +12,7 @@ var groupSchema = mongoose.Schema({
   owner: {type: mongoose.Schema.ObjectId, ref: 'User'},
   op: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
   allow_user_request: {type: Boolean, default: true},
+  allowed: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
   members: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
   members_pending: [{
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
@@ -89,6 +90,25 @@ groupSchema.methods.isInBanned = function (userId) {
 groupSchema.methods.isBanned = function (userId) {
   var doc = this.isInBanned(userId);
   return (typeof doc !== 'undefined');
+};
+
+groupSchema.methods.isAllowed = function (userId) {
+  if (this.isOwner(userId)) {
+    return true;
+  }
+
+  if (!this.allowed || !this.allowed.length) {
+    return false;
+  }
+
+  var subDocument = _.find(this.allowed, function (u) {
+    if (u._id) {
+      return (u.id === userId);
+    } else {
+      return (u.toString() === userId);
+    }
+  });
+  return (typeof subDocument !== 'undefined');
 };
 
 groupSchema.methods.isMember = function (userId) {
@@ -228,6 +248,10 @@ groupSchema.methods.getIdsByType = function (type) {
     } else {
       ids.push(this.owner.toString());
     }
+  } else if (type === 'allowed') {
+    _.each(this.allowed, function (u) {
+      ids.push(u.toString());
+    });
   } else if (type === 'pending') {
     _.each(this.members_pending, function (pen) {
       ids.push(pen.user.toString());

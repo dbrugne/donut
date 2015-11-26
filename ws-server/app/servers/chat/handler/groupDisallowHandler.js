@@ -54,7 +54,7 @@ handler.call = function (data, session, next) {
         return callback('owner');
       }
 
-      if (!group.isMember(targetUser.id)) {
+      if (!group.isAllowed(targetUser.id)) {
         return callback('not-allowed');
       }
 
@@ -64,7 +64,7 @@ handler.call = function (data, session, next) {
     function persistOnGroup (callback) {
       GroupModel.update(
         {_id: { $in: [group.id] }},
-        {$pull: {members: targetUser.id, op: targetUser.id}}, function (err) {
+        {$pull: {allowed: targetUser.id, members: targetUser.id, op: targetUser.id}}, function (err) {
           return callback(err);
         });
     },

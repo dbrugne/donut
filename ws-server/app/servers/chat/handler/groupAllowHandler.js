@@ -44,7 +44,7 @@ handler.call = function (data, session, next) {
         return callback('not-admin-owner');
       }
 
-      if (group.isMember(targetUser.id)) {
+      if (group.isAllowed(targetUser.id)) {
         return callback('allowed');
       }
 
@@ -80,13 +80,13 @@ handler.call = function (data, session, next) {
     function persist (eventData, callback) {
       Group.update(
         {_id: {$in: [group.id]}},
-        {$addToSet: {members: targetUser.id}},
+        {$addToSet: {allowed: targetUser.id}},
         function (err) {
           if (wasPending) {
             Group.update(
               {_id: {$in: [group.id]}},
-              {$pull: {members_pending: {user: targetUser.id}}},
-              function (err) {
+              {$pull: {members_pending: {user: targetUser.id}},
+              $addToSet: {members: targetUser.id}}, function (err) {
                 return callback(err, eventData);
               }
             );
