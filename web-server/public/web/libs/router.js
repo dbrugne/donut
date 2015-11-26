@@ -148,6 +148,7 @@ var DonutRouter = Backbone.Router.extend({
 
     // not already open or force redraw
     this.nextFocus = identifier;
+    var that = this;
     client.roomId(identifier, function (responseRoom) {
       if (responseRoom.code === 404) {
         return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', {name: identifier}));
@@ -172,7 +173,7 @@ var DonutRouter = Backbone.Router.extend({
           app.trigger('redrawNavigationRooms'); // also trigger a redraw when displaying a room blocked
 
           if (model && isFocused) {
-            app.trigger('focus', model); // focus new one
+            that.focus(model);
           }
           return;
         } else if (response.code === 500) {
