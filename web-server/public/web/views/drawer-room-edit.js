@@ -24,7 +24,6 @@ var DrawerRoomEditView = Backbone.View.extend({
 
     var what = {
       more: true,
-      users: false,
       admin: true
     };
     client.roomRead(this.roomId, what, _.bind(function (data) {

@@ -43,13 +43,16 @@ handler.call = function (data, session, next) {
       read.username = readUser.username;
       read.color = readUser.color;
       read.avatar = readUser._avatar();
-      read.poster = readUser._poster();
-      read.bio = readUser.bio;
-      read.location = readUser.location;
-      read.website = readUser.website;
-      read.registered = readUser.created_at;
       read.banned = user.isBanned(readUser.id); // for ban/deban menu
       read.i_am_banned = readUser.isBanned(user.id); // for input enable/disable
+
+      if (what.more) {
+        read.poster = readUser._poster();
+        read.bio = readUser.bio;
+        read.location = readUser.location;
+        read.website = readUser.website;
+        read.registered = readUser.created_at;
+      }
 
       return callback(null);
     },
@@ -72,6 +75,10 @@ handler.call = function (data, session, next) {
     },
 
     function rooms (callback) {
+      if (!what.rooms) {
+        return callback(null);
+      }
+
       Room.find({
         deleted: {$ne: true},
         $or: [
@@ -114,7 +121,7 @@ handler.call = function (data, session, next) {
     },
 
     function account (callback) {
-      if (readUser.id !== user.id) {
+      if (!what.admin || readUser.id !== user.id) {
         return callback(null);
       }
 

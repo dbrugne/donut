@@ -409,25 +409,12 @@ var InputCommandsView = Backbone.View.extend({
 
     var that = this;
     if ((/^#/.test(parameters[1]))) {
-      var what = {
-        more: true,
-        users: true,
-        admin: false
-      };
       client.roomId(parameters[1], function (response) {
         if (response.code === 404) {
           that.errorCommand('profile', 'invalidroom');
           return;
         }
-        client.roomRead(response.room_id, what, function (data) {
-          if (data.code === 404) {
-            that.errorCommand('profile', 'invalidroom');
-            return;
-          }
-          if (!data.err) {
-            app.trigger('openRoomProfile', data);
-          }
-        });
+        app.trigger('openRoomProfile', response.room_id);
       });
     } else {
       parameters[1] = parameters[1].replace(/^@/, '');
@@ -436,15 +423,7 @@ var InputCommandsView = Backbone.View.extend({
           that.errorCommand('profile', 'invalidusername');
           return;
         }
-        client.userRead(response.user_id, function (data) {
-          if (data.code === 404) {
-            that.errorCommand('profile', 'invalidusername');
-            return;
-          }
-          if (!data.err) {
-            app.trigger('openUserProfile', data);
-          }
-        });
+        app.trigger('openUserProfile', response.user_id);
       });
     }
   },

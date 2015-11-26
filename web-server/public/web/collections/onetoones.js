@@ -138,7 +138,7 @@ var OnetoonesCollection = Backbone.Collection.extend({
       withUser.key = key;
       model = this.addModel(withUser);
       app.trigger('redrawNavigationOnes');
-      client.userRead(withUser.user_id, null, function (data) {
+      client.userRead(withUser.user_id, {more: true}, function (data) {
         if (!data.err) {
           model.set(data);
         }
