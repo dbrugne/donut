@@ -20,8 +20,7 @@ router.get('/unlink/facebook', function (req, res) {
     return res.redirect('/');
   }
 
-  user.facebook.token = undefined;
-  user.save(function (err) {
+  user.update({$unset: {'facebook.token': true, 'facebook.id': true}}, function (err) {
     logger.debug(err);
     res.redirect('/!');
   });
