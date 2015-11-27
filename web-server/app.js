@@ -77,7 +77,6 @@ app.set('view engine', 'html');
 app.use(require('./app/authentication/oauth'));
 app.use(require('./app/authentication/signup'));
 app.use(require('./app/authentication/login'));
-app.use(require('./app/authentication/link'));
 app.use(require('./app/authentication/forgot'));
 app.use(require('./app/authentication/username'));
 app.use(require('./app/authentication/verify'));
