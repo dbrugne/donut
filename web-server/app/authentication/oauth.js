@@ -141,7 +141,30 @@ router.route('/oauth/check-token')
         return res.json({validity: false});
       }
 
-      return res.json({validity: true});
+      User.findOne({_id: decoded.id}, function (err, user) {
+        if (err) {
+          logger.info(err);
+          return res.json({validity: false});
+        }
+
+        if (!user) {
+          return res.json({validity: false});
+        }
+
+        var allowed = user.isAllowedToConnect();
+        if (allowed.allowed) {
+          return res.json({
+            validity: true
+          });
+        } else if (allowed.err === 'no-username') {
+          return res.json({
+            validity: true,
+            err: allowed.err
+          });
+        } else {
+          return res.json({validity: false});
+        }
+      });
     });
   });
 
