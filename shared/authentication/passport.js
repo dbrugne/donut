@@ -77,7 +77,7 @@ passport.use('local-signup', new LocalStrategy(localStrategyOptions,
 
       // find existing user with this email
       email = email.toLowerCase();
-      User.findOne({ $or: [{'local.email': email}, {'emails.email': email}] }, function (err, user) {
+      User.findOne({ $or: [{'local.email': email}, {'emails': {$elemMatch: {'email': email, 'confirmed': true}}}] }, function (err, user) {
         if (err) {
           return done(err);
         }
@@ -186,26 +186,22 @@ passport.use(new FacebookTokenStrategy({
 
 function facebookCallback (req, token, refreshToken, profile, done) {
   process.nextTick(function () {
-    // look for existing user with this profile.id
-    User.findOne({ 'facebook.id': profile.id }, function (err, existingUser) {
-      if (err) {
-        return done(err);
-      }
-
-      // user is logged and try to authenticate with already used Facebook account
-      if (req.user && req.user.id !== existingUser.id) {
-        console.warn('passport alreadylinked error');
-        return done(null, false,
-          req.flash('error', i18next.t('account.facebook.error.alreadylinked')));
+    var whenSearchIsDone = function (existingUser) {
+      // user is logged in and try to authenticate with already used Facebook account
+      if (existingUser && req.user && req.user.id !== existingUser.id) {
+        console.error('passport.facebookCallback.alreadylinked');
+        return done(null, false, 'alreadylinked');
       }
 
       // user is not logged and try to authenticate with already used Facebook account
+      // => Facebook login
       if (!req.user && existingUser) {
         return done(null, existingUser);
       }
 
-      // user is or is not logged, and try to authenticate with a not used Facebook account
-      // link user to this Facebook account, or create a new user
+      // User try to authenticate with a not known Facebook account
+      // he is not logged => Facebook signup
+      // he is logged => Facebook link
       var user = req.user || User.getNewUser();
 
       user.facebook.id = profile.id;
@@ -222,6 +218,33 @@ function facebookCallback (req, token, refreshToken, profile, done) {
 
       user.save(function (err) {
         done(err, user);
+      });
+    };
+
+    // look for existing user with this profile.id
+    User.findOne({ 'facebook.id': profile.id }, function (err, existingUser) {
+      if (err) {
+        return done(err);
+      }
+
+      // no user found by facebook.id
+      if (existingUser) {
+        return whenSearchIsDone(existingUser);
+      }
+
+      // we haven't a valid Facebook email
+      var facebookEmail = parseFacebookEmail(profile);
+      if (!facebookEmail) {
+        return whenSearchIsDone();
+      }
+
+      // look for existing user with this profile.email
+      User.findOne({ 'local.email': facebookEmail }, function (err, existingUser) {
+        if (err) {
+          return done(err);
+        }
+
+        whenSearchIsDone(existingUser);
       });
     });
   });
@@ -260,6 +283,14 @@ function parseFacebookRealname (profile) {
   return realname.substr(0, 20);
 }
 
+function parseFacebookEmail (profile) {
+  if (!profile.emails || !profile.emails[0] || !_.isString(profile.emails[0].value)) {
+    return;
+  }
+
+  return profile.emails[0].value.toLowerCase();
+}
+
 function decorateUserWithFacebookProfile (user, profile) {
   // name
   var realname = parseFacebookRealname(profile);
@@ -271,13 +302,14 @@ function decorateUserWithFacebookProfile (user, profile) {
   }
 
   // email
-  if (!profile.emails && !profile.emails[0] && !_.isString(profile.emails[0].value)) {
+  var _email = parseFacebookEmail(profile);
+  if (!_email) {
     return;
   }
 
-  var _email = profile.emails[0].value.toLowerCase();
   user.facebook.email = _email;
 
+  // only if user.local.email not already set
   if (user.local && !user.local.email) {
     user.local.email = _email;
   }

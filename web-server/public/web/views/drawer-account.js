@@ -19,7 +19,7 @@ var DrawerUserEditView = Backbone.View.extend({
 
     // ask for data
     var that = this;
-    client.userRead(currentUser.get('user_id'), function (data) {
+    client.userRead(currentUser.get('user_id'), {admin: true}, function (data) {
       if (data.err) {
         return;
       }
@@ -34,12 +34,21 @@ var DrawerUserEditView = Backbone.View.extend({
     return this;
   },
   _remove: function () {
-    this.emailView.remove();
-    this.passwordView.remove();
-    this.manageEmailsView.remove();
+    if (this.emailView) {
+      this.emailView.remove();
+    }
+    if (this.passwordView) {
+      this.passwordView.remove();
+    }
+    if (this.manageEmailsView) {
+      this.manageEmailsView.remove();
+    }
     this.remove();
   },
   onResponse: function (user) {
+    if (!user || !user.account) {
+      return this.trigger('close');
+    }
     if (user.color) {
       this.trigger('color', user.color);
     }

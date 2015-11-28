@@ -3,7 +3,6 @@ var errors = require('../../../util/errors');
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var async = require('async');
 var RoomModel = require('../../../../../shared/models/room');
-var roomEmitter = require('../../../util/roomEmitter');
 var _ = require('underscore');
 
 var Handler = function (app) {
@@ -87,16 +86,26 @@ handler.call = function (data, session, next) {
       _.each(ids, function (uid) {
         channelsName.push('user:' + uid);
       });
-      that.app.globalChannelService.pushMessageToMultipleChannels('connector', 'group:leave', event, channelsName, {}, callback);
-    },
-
-    function persist (callback) {
-      async.each(rooms, function (room, callback) {
-        room.deleted = true;
-        room.save(callback);
-      }, function (err) {
+      that.app.globalChannelService.pushMessageToMultipleChannels('connector', 'group:leave', event, channelsName, {}, function (err) {
         return callback(err);
       });
+    },
+
+    function persistRooms (callback) {
+      var roomIds = _.map(rooms, function (r) {
+        return r._id;
+      });
+      if (!roomIds.length) {
+        return callback(null);
+      }
+      RoomModel.update({
+        _id: {$in: roomIds}
+      }, {
+        $set: {deleted: true}
+      }, {multi: true}, callback);
+    },
+
+    function persistGroup (callback) {
       group.deleted = true;
       group.save(callback);
     }

@@ -24,7 +24,6 @@ var DrawerRoomEditView = Backbone.View.extend({
 
     var what = {
       more: true,
-      users: false,
       admin: true
     };
     client.roomRead(this.roomId, what, _.bind(function (data) {
@@ -48,12 +47,6 @@ var DrawerRoomEditView = Backbone.View.extend({
     if (room.color) {
       this.trigger('color', room.color);
     }
-
-    room.isOwner = (room.owner)
-      ? (room.owner.user_id === currentUser.get('user_id'))
-      : false;
-
-    room.isAdmin = (currentUser.get('admin') === true);
 
     var currentAvatar = room.avatar;
 

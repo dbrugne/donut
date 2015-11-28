@@ -357,6 +357,10 @@ var MainView = Backbone.View.extend({
     var view = new DrawerUserProfileView({user_id: userId});
     this.drawerView.setSize('380px').setView(view).open();
   },
+  openUserProfile: function (userId) {
+    var view = new DrawerUserProfileView({user_id: userId});
+    this.drawerView.setSize('380px').setView(view).open();
+  },
   onOpenCurrentUserProfile: function (event) {
     event.preventDefault();
 
@@ -371,10 +375,6 @@ var MainView = Backbone.View.extend({
   onToggleCurrentUserSounds: function (event) {
     event.preventDefault();
     this.muteView.toggle();
-  },
-  openUserProfile: function (data) {
-    var view = new DrawerUserProfileView({data: data});
-    this.drawerView.setSize('380px').setView(view).open();
   },
   onOpenGroupProfile: function (event) {
     this.$el.find('.tooltip').tooltip('hide');
@@ -419,8 +419,8 @@ var MainView = Backbone.View.extend({
     var view = new DrawerRoomProfileView({room_id: roomId});
     this.drawerView.setSize('380px').setView(view).open();
   },
-  openRoomProfile: function (data) {
-    var view = new DrawerRoomProfileView({data: data});
+  openRoomProfile: function (roomId) {
+    var view = new DrawerRoomProfileView({room_id: roomId});
     this.drawerView.setSize('380px').setView(view).open();
   },
   openRoomEdit: function (event) {

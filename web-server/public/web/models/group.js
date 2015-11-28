@@ -112,24 +112,14 @@ var GroupModel = Backbone.Model.extend({
     this.trigger('redraw'); // required to redraw all, as we now remove the room
   },
   refreshUsers: function () {
-    var what = {
-      users: true,
-      admin: false,
-      rooms: false
-    };
-    client.groupRead(this.get('group_id'), what, _.bind(function (response) {
+    client.groupRead(this.get('group_id'), { users: true }, _.bind(function (response) {
       if (!response.err) {
         this.set(response);
       }
     }, this));
   },
   refreshRooms: function () {
-    var what = {
-      users: false,
-      admin: false,
-      rooms: true
-    };
-    client.groupRead(this.get('group_id'), what, _.bind(function (response) {
+    client.groupRead(this.get('group_id'), { rooms: true }, _.bind(function (response) {
       if (!response.err) {
         this.set('rooms', response.rooms);
       }

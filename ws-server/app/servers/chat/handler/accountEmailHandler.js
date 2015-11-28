@@ -56,8 +56,7 @@ handler.add = function (email, user, next) {
   async.waterfall([
 
     function check (callback) {
-      // @todo yfuks on devrait ne rechercher QUE dans les emails "validés", sinon un compte utilisateur peut en bloquer plein d'autre (volontairement ou non)
-      User.findOne({'emails.email': email}).exec(function (err, user) {
+      User.findOne({'emails': {$elemMatch: {'email': email, 'confirmed': true}}}).exec(function (err, user) {
         if (err) {
           return callback(err);
         }
