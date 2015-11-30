@@ -955,6 +955,36 @@
     "navroom": {
       "seemore": "voir tout",
       "seeless": "voir moins"
+    },
+    "joingroup": {
+      "title": "Devenir membre de la communauté __name__",
+      "message": "Devenir membre d'une communauté vous permet d'y créer des donuts, de rejoindre les donuts privés de la communauté ou encore de consulter la liste des membres pour les contacter en message privé.",
+      "disclaimer": "__username__ a décrit les conditions d'accès à cette communauté:<br>__disclaimer__",
+      "options": {
+        "request": {
+          "button": "Je fais une demande",
+          "title": "Je fais une demande d'adhésion",
+          "info": "Vous pouvez faire une demande d'adhésion à la communauté et, si vous le souhaitez, ajouter un message qui sera transmis aux modérateurs de la communauté.",
+          "placeholder": "Optionnel, 200 caractères maximum",
+          "confirm": "Envoyer une demande d'adhésion",
+          "success": "La demande a bien été transmise aux modérateurs de la communauté __name__",
+          "error": "Vous avez déja envoyé une demande d'adhésion pour cette communauté"
+        },
+        "password": {
+          "button": "J'ai le mot de passe",
+          "title": "J'ai le mot de passe",
+          "info": "Si vous connaissez le mot de passe pour accéder à cette communauté tapez le ici vous deviendrez automatiquement membre de la communauté",
+          "confirm": "Valider"
+        },
+        "mail": {
+          "button": "Je dispose d'un e-mail",
+          "title": "je dispose d'un email autorisé",
+          "info": "Ajouter une adresse email autorisée à votre compte",
+          "success": "L'email __email__ a bien été ajouté à votre compte. Vous allez recevoir un email pour valider que vous êtes bien le propriétaire. Vous pouvez également",
+          "error": "Cette adresse email est déjà utilisé par un autre compte"
+        },
+        "other": "Uniquement sur invitation<br><br>Cette communauté est uniquement accessible sur invitation des modérateurs. Si vous les connaissez, contacter les directement."
+      }
     }
   },
   "group": {

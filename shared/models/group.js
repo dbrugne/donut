@@ -176,7 +176,7 @@ groupSchema.methods.canUserJoin = function (userId, userEmails) {
     return false;
   }
 
-  if (!this.allowed_domains || this.allowed_domains.length < 1) {
+  if (!userEmails || !this.allowed_domains || this.allowed_domains.length < 1) {
     return false;
   }
 

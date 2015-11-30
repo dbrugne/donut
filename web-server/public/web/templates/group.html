@@ -87,13 +87,13 @@
             <% } %>
 
             <div class="pull-right mt5">
-                <span class="curp btn btn-primary request-allowance"><%= t('group.ask-membership') %></span>
-                <% if (group.has_password) { %>
+                <span class="curp btn btn-primary group-join"><%= t('group.ask-membership') %></span>
+                <!--<% if (group.has_password) { %>
                     <span class="curp btn btn-primary send-password password-div"><%= t('actions.direct-access') %></span>
                 <% } %>
                 <% if (group.can_join && !isMember && !isBanned) { %>
                     <span class="curp btn btn-primary group-join pull-right"><%= t('actions.direct-access') %></span>
-                <% } %>
+                <% } %>-->
             </div>
 
         </div>

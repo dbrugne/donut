@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
-var ConfirmationView = require('./modal-confirmation');
+var JoinGroupModalView = require('./modal-join-group');
 var client = require('../libs/client');
 var i18next = require('i18next-client');
 var app = require('../libs/app');
@@ -18,12 +18,11 @@ var GroupView = Backbone.View.extend({
   className: 'group',
 
   events: {
-    'click .request-allowance': 'onRequestAllowance',
-    'click .send-password': 'onSendPassword',
     'click .group-join': 'onJoinGroup'
   },
 
   initialize: function (options) {
+    this.listenTo(this.model, 'joinGroup', this.onJoinGroup);
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(this.model, 'change:members', this.refreshUsers);
     this.listenTo(this.model, 'change:op', this.refreshUsers);
@@ -40,6 +39,7 @@ var GroupView = Backbone.View.extend({
     var isOp = this.model.currentUserIsOp();
     var isAdmin = this.model.currentUserIsAdmin();
 
+    this.joinGroupModalView = new JoinGroupModalView({model: this.model});
     this.bannedObject = this.model.currentUserIsBanned();
 
     // prepare avatar for group
@@ -109,55 +109,15 @@ var GroupView = Backbone.View.extend({
       this.$el.hide();
     }
   },
-  onRequestAllowance: function (event) {
-    var options = {
-      message: 'request-allowance',
-      area: true
-    };
-
-    ConfirmationView.open(options, _.bind(function (message) {
-      client.groupJoinRequest(this.model.get('group_id'), message, function (response) {
-        if (response.err) {
-          if (response.err === 'allow-pending' || response.err === 'message-wrong-format') {
-            app.trigger('alert', 'error', i18next.t('chat.allowed.error.' + response.err));
-          } else if (response.err === 'not-confirmed') {
-            app.trigger('alert', 'error', i18next.t('chat.form.errors.' + response.err));
-          } else {
-            app.trigger('alert', 'error', i18next.t('global.unknownerror'));
-          }
-        } else {
-          app.trigger('alert', 'info', i18next.t('chat.allowed.success'));
-        }
-      });
-    }, this));
-  },
-  onSendPassword: function (event) {
-    if (!!this.bannedObject === true) {
-      return app.trigger('alert', 'error', i18next.t('chat.password.group-banned'));
-    }
-    var options = {
-      password: true
-    };
-
-    ConfirmationView.open(options, _.bind(function (password) {
-      client.groupJoin(this.model.get('group_id'), password, _.bind(function (response) {
-        if (response.err) {
-          if (response.err === 'wrong-password' || response.err === 'params-password') {
-            app.trigger('alert', 'error', i18next.t('chat.password.wrong-password'));
-          } else {
-            app.trigger('alert', 'error', i18next.t('global.unknownerror'));
-          }
-        } else if (response.success) {
-          app.trigger('joinGroup', {name: this.model.get('name'), popin: false});
-        }
-      }, this));
-    }, this));
-  },
   onJoinGroup: function () {
     client.groupJoin(this.model.get('group_id'), null, _.bind(function (response) {
       if (response.err) {
-        app.trigger('alert', 'error', i18next.t('global.unknownerror'));
-      } else if (response.success) {
+        return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+      }
+      if (!response.success) {
+        this.joinGroupModalView.render(response.options);
+        this.joinGroupModalView.show();
+      } else {
         app.trigger('joinGroup', {name: this.model.get('name'), popin: false});
       }
     }, this));
