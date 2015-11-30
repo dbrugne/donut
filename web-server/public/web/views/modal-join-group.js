@@ -6,6 +6,10 @@ var JoinGroupOptionsView = require('./join-group-options');
 var JoinGroupModalView = Backbone.View.extend({
   el: $('#join-group'),
 
+  events: {
+    'click .close': 'hide'
+  },
+
   initialize: function (options) {
     this.model = options.model;
     this.$el.modal({
@@ -18,7 +22,7 @@ var JoinGroupModalView = Backbone.View.extend({
   },
 
   render: function (response) {
-    this.$('.title-join').text(i18next.t('chat.joingroup.title', {name: this.model.get('name')}));
+    this.$('.title-join').html(i18next.t('chat.joingroup.title', {identifier: this.model.get('identifier')}));
     if (this.model.get('disclaimer')) {
       this.$('.disclaimer').html(i18next.t('chat.joingroup.disclaimer', {
         username: this.model.get('owner_username'),
@@ -27,6 +31,9 @@ var JoinGroupModalView = Backbone.View.extend({
     }
 
     this.joinGroupOptionsView.render(response);
+    this.listenTo(this.joinGroupOptionsView, 'onClose', function (event) {
+      this.hide();
+    });
     return this;
   },
 

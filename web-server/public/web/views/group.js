@@ -30,7 +30,6 @@ var GroupView = Backbone.View.extend({
     this.listenTo(this.model, 'change:avatar', this.onAvatar);
     this.listenTo(this.model, 'change:color', this.onColor);
     this.listenTo(this.model, 'redraw', this.render);
-    this.render();
   },
   render: function () {
     var group = this.model.toJSON();

@@ -39,10 +39,6 @@ handler.call = function (data, session, next) {
         return callback('group-not-found');
       }
 
-      /*if ((!group.password || !data.password) && !group.canUserJoin(user.id, user.emails)) {
-        return callback('params-password');
-      }*/
-
       if (group.isMember(user.id)) {
         return callback('allowed');
       }
@@ -51,15 +47,25 @@ handler.call = function (data, session, next) {
         return callback('group-banned');
       }
 
+      addMember = group.isAllowed(user.id);
       return callback(null);
     },
 
     function checkPassword (callback) {
-      if (!data.password) {
+      if (addMember || !data.password) {
         return callback(null);
       }
-      if (!group.validPassword(data.password) && !group.canUserJoin(user.id, user.emails)) {
+      if (!group.validPassword(data.password)) {
         return callback('wrong-password');
+      } else {
+        addMember = true;
+        return callback(null);
+      }
+    },
+
+    function checkUserMail (callback) {
+      if (!group.canUserJoin(user.id, user.emails)) {
+        return callback(null);
       } else {
         addMember = true;
         return callback(null);
@@ -81,6 +87,7 @@ handler.call = function (data, session, next) {
 
       if (group.allowed_domains && group.allowed_domains.length) {
         options.mail = true;
+        options.allowed_domains = group.allowed_domains;
       }
 
       if (!group.allow_user_request && !group.isAllowed(user.id) && !options.password && !options.mail) {
