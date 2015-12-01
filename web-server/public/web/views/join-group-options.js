@@ -125,11 +125,11 @@ var JoinGroupOptionsView = Backbone.View.extend({
 
   onConfirmPassword: function () {
     this.resetMessage();
-    if (!this.data.password) {
-      return $(this.$error).text(i18next.t('global.unknownerror')).show();
-    }
     var password = this.$('.input-join-password').val();
 
+    if (!password || !this.data.password) {
+      return $(this.$error).text(i18next.t('chat.password.wrong-password')).show();
+    }
     client.groupJoin(this.model.get('group_id'), password, _.bind(function (data) {
       if (data.err) {
         if (data.err === 'wrong-password' || data.err === 'params-password') {
@@ -146,9 +146,6 @@ var JoinGroupOptionsView = Backbone.View.extend({
 
   onConfirmMail: function () {
     this.resetMessage();
-    if (!this.data.mail) {
-      return $(this.$error).text(i18next.t('global.unknownerror')).show();
-    }
     if (!this.data.allowed_domains || !this.data.allowed_domains.length) {
       return $(this.$error).text(i18next.t('global.unknownerror')).show();
     }
@@ -159,9 +156,12 @@ var JoinGroupOptionsView = Backbone.View.extend({
     }
 
     var mail = this.$('.input-join-mail').val() + selectDomain;
+    if (!mail || !this.data.mail) {
+      return $(this.$error).text(i18next.t('global.unknownerror')).show();
+    }
     client.accountEmail(mail, 'add', _.bind(function (response) {
       if (response.success) {
-        $(this.$success).html(i18next.t('chat.joingroup.options.mail.success')).show();
+        $(this.$success).html(i18next.t('chat.joingroup.options.mail.success', { email: mail })).show();
       } else {
         $(this.$error).text((i18next.t('global.unknownerror')).show());
       }

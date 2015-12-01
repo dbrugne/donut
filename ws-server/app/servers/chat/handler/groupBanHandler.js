@@ -184,6 +184,9 @@ handler.call = function (data, session, next) {
       },
 
       function notification (event, callback) {
+        if (!group.isMember(targetUser.id)) {
+          return callback(null);
+        }
         Notifications(that.app).getType('groupban').create(targetUser.id, group, event, function (err) {
           return callback(err);
         });
