@@ -102,6 +102,9 @@ module.exports = {
       },
       roomjoin: {
         creation: 5 * 60 // 5mn
+      },
+      groupinvite: {
+        creation: 60 * 60 // 60mn
       }
     }
   }
