@@ -67,7 +67,9 @@ var GroupsCollection = Backbone.Collection.extend({
       return;
     }
 
-    model.onAllow(data);
+    if (data.pending) {
+      model.onAllow(data);
+    }
   },
   onDisallow: function (data) {
     var model;

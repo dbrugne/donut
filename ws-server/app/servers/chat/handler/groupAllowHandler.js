@@ -66,7 +66,8 @@ handler.call = function (data, session, next) {
         username: targetUser.username,
         avatar: targetUser._avatar(),
         color: targetUser.color,
-        group_id: group.id
+        group_id: group.id,
+        pending: wasPending
       };
       callback(null, event);
     },
