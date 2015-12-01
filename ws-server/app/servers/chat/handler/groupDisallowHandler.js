@@ -129,6 +129,9 @@ handler.call = function (data, session, next) {
     },
 
     function notification (event, callback) {
+      if (!targetUser.isMember(user.id)) {
+        return callback(null);
+      }
       Notifications(that.app).getType('groupdisallow').create(targetUser.id, group, event, function (err) {
         return callback(err);
       });
