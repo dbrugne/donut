@@ -30,6 +30,7 @@ var GroupView = Backbone.View.extend({
     this.listenTo(this.model, 'change:avatar', this.onAvatar);
     this.listenTo(this.model, 'change:color', this.onColor);
     this.listenTo(this.model, 'redraw', this.render);
+    this.joinGroupModalView = new JoinGroupModalView({model: this.model});
   },
   render: function () {
     var group = this.model.toJSON();
@@ -38,8 +39,8 @@ var GroupView = Backbone.View.extend({
     var isOp = this.model.currentUserIsOp();
     var isAdmin = this.model.currentUserIsAdmin();
 
-    this.joinGroupModalView = new JoinGroupModalView({model: this.model});
     this.bannedObject = this.model.currentUserIsBanned();
+    this.joinGroupModalView.hide();
 
     // prepare avatar for group
     group.avatarUrl = common.cloudinary.prepare(group.avatar, 160);
@@ -99,6 +100,7 @@ var GroupView = Backbone.View.extend({
   removeView: function () {
     this.groupUsersView._remove();
     this.cardsView._remove();
+    this.joinGroupModalView._remove();
     this.remove();
   },
   onFocusChange: function () {

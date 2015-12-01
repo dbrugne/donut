@@ -42,6 +42,10 @@ var JoinGroupModalView = Backbone.View.extend({
   },
   hide: function () {
     this.$el.modal('hide');
+  },
+  _remove: function () {
+    this.joinGroupOptionsView._remove();
+    this.remove();
   }
 });
 

@@ -35,7 +35,7 @@ handler.call = function (data, session, next) {
         return callback('group-not-found');
       }
 
-      if (group.isMember(user.id)) {
+      if (group.isMember(user.id) || group.isAllowed(user.id)) {
         return callback('allowed');
       }
 

@@ -108,7 +108,8 @@ var JoinGroupOptionsView = Backbone.View.extend({
 
     client.groupJoinRequest(this.model.get('group_id'), message, _.bind(function (data) {
       if (data.err) {
-        if (data.err === 'member' || data.err === 'allowed') {
+        if (data.err === 'allowed') {
+          this.trigger('onClose');
           this.model.trigger('joinGroup');
         } else if (data.err === 'allow-pending' || data.err === 'message-wrong-format') {
           $(this.$error).text(i18next.t('chat.allowed.error.' + data.err)).show();
@@ -175,6 +176,9 @@ var JoinGroupOptionsView = Backbone.View.extend({
   resetMessage: function () {
     $(this.$error).hide();
     $(this.$success).hide();
+  },
+  _remove: function () {
+    this.remove();
   }
 });
 
