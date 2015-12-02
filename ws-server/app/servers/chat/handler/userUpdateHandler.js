@@ -251,7 +251,7 @@ handler.call = function (data, session, next) {
       return callback(null, event);
     },
 
-    function broadcastToRelatedUSers (event, callback) {
+    function broadcastToRelatedUsers (event, callback) {
       if (!event) {
         return callback(null, event);
       }
