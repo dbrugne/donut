@@ -441,7 +441,7 @@ var MainView = Backbone.View.extend({
       return;
     }
     var view = new DrawerGroupEditView({group_id: groupId});
-    this.drawerView.setSize('450p').setView(view).open();
+    this.drawerView.setSize('450px').setView(view).open();
   },
   openRoomUsers: function (event) {
     event.preventDefault();
