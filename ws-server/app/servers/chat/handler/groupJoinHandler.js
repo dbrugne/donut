@@ -19,9 +19,7 @@ handler.call = function (data, session, next) {
   var addMember = false;
   var options = {
     request: false,
-    mail: false,
-    password: false,
-    other: false
+    password: false
   };
 
   async.waterfall([
@@ -40,7 +38,7 @@ handler.call = function (data, session, next) {
       }
 
       if (group.isMember(user.id)) {
-        return callback('allowed');
+        return callback('already-member');
       }
 
       if (group.isBanned(user.id)) {
@@ -64,7 +62,10 @@ handler.call = function (data, session, next) {
     },
 
     function checkUserMail (callback) {
-      if (!group.canUserJoin(user.id, user.emails)) {
+      if (!user.emails || !group.allowed_domains || group.allowed_domains.length < 1) {
+        return callback(null);
+      }
+      if (!user.hasAllowedEmail(group.allowed_domains)) {
         return callback(null);
       } else {
         addMember = true;
@@ -72,7 +73,7 @@ handler.call = function (data, session, next) {
       }
     },
 
-    function checkOptions (callback) {
+    function prepareOptions (callback) {
       if (addMember) {
         return callback(null);
       }
@@ -81,36 +82,29 @@ handler.call = function (data, session, next) {
         options.password = true;
       }
 
-      if (group.allow_user_request && !group.isAllowed(user.id)) {
+      if (group.allow_user_request && !group.isAllowedPending(user.id)) {
         options.request = true;
       }
 
       if (group.allowed_domains && group.allowed_domains.length) {
-        options.mail = true;
         options.allowed_domains = group.allowed_domains;
-      }
-
-      if (!group.allow_user_request && !group.isAllowed(user.id) && !options.password && !options.mail) {
-        options.other = true;
       }
       return callback(null);
     },
 
     function persist (callback) {
-      if (addMember) {
-        Group.update(
-          {_id: {$in: [group.id]}},
-          {
-            $addToSet: {members: user._id},
-            $pull: {members_pending: {user: user._id}}
-          }, function (err) {
-            if (err) {
-              return callback(err);
-            }
-          }
-        );
+      if (!addMember) {
+        return callback(null);
       }
-      return callback(null);
+
+      Group.update(
+        {_id: group._id},
+        {
+          $addToSet: {members: user._id},
+          $pull: {members_pending: {user: user._id}}
+          // important: not pull from allowed to allow future group leave/join
+        }, function (err) { return callback(err); }
+      );
     }
 
   ], function (err) {

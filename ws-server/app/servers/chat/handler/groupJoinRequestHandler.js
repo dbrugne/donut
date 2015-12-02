@@ -36,7 +36,11 @@ handler.call = function (data, session, next) {
       }
 
       if (group.isMember(user.id) || group.isAllowed(user.id)) {
-        return callback('allowed');
+        return callback('already-member');
+      }
+
+      if (group.isAllowed(user.id)) {
+        return callback('already-allowed');
       }
 
       if (group.isAllowedPending(user.id)) {
