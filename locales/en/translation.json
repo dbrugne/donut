@@ -962,21 +962,21 @@
       "disclaimer": "Message from <strong>@__username__</strong> :<br><i class=\"icon icon-quote\"></i>__disclaimer__",
       "options": {
         "request": {
-          "title": "I Request membership",
+          "button": "I Request membership",
           "info": "Your contact details and your following message (optional) will be sent to the moderators of this community.",
           "placeholder": "Your motivations, background...",
           "confirm": "Send",
           "success": "Request sent ! You will be notified when accepted."
         },
         "password": {
-          "title": "I have the password",
+          "button": "I have the password",
           "info": "Enter the password :",
           "placeholder": "password",
           "confirm": "Send",
           "error": "Invalid password"
         },
         "email": {
-          "title": "I have an authorized e-mail",
+          "button": "I have an authorized e-mail",
           "info": "I have an authorized e-mail",
           "placeholder": "e-mail",
           "confirm": "Add",

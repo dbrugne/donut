@@ -962,21 +962,21 @@
       "disclaimer": "Message de <strong>@__username__</strong> :<br><i class=\"icon icon-quote\"></i>__disclaimer__",
       "options": {
         "request": {
-          "title": "Je fais une demande",
+          "button": "Je fais une demande",
           "info": "Vos coordonnées ainsi que votre message (facultatif) seront transmis aux modérateurs de cette communauté.",
           "placeholder": "Vos motivations ...",
           "confirm": "Envoyer",
           "success": "Demande envoyée ! Vous serez notifié dès acceptation."
         },
         "password": {
-          "title": "J'ai le mot de passe",
+          "button": "J'ai le mot de passe",
           "info": "Entrez le mot de passe : ",
           "placeholder": "mot de passe",
           "confirm": "Valider",
           "error": "Mot de passe invalide"
         },
         "email": {
-          "title": "Je dispose d'un e-mail",
+          "button": "Je dispose d'un e-mail",
           "info": "Ajouter une adresse email autorisée à votre compte",
           "confirm": "Ajouter",
           "placeholder": "e-mail",
