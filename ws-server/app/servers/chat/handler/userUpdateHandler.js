@@ -224,7 +224,7 @@ handler.call = function (data, session, next) {
     function prepareEventForOthers (sanitized, callback) {
       // notify only certain fields
       var sanitizedToNotify = {};
-      var fieldToNotify = ['avatar', 'poster', 'color'];
+      var fieldToNotify = ['avatar', 'poster', 'color', 'realname'];
       _.each(Object.keys(sanitized), function (key) {
         if (fieldToNotify.indexOf(key) !== -1) {
           if (key === 'avatar') {
@@ -235,6 +235,8 @@ handler.call = function (data, session, next) {
             sanitizedToNotify['color'] = sanitized[key];
             sanitizedToNotify['avatar'] = user._avatar();
             sanitizedToNotify['poster'] = user._poster();
+          } else if (key === 'realname') {
+            sanitizedToNotify['realname'] = sanitized[key];
           }
         }
       });
