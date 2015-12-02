@@ -84,15 +84,16 @@ handler.call = function (data, session, next) {
       }
 
       // website
+      var website = null;
       if (_.has(data.data, 'website') && data.data.website) {
         if (data.data.website.length < 5 && data.data.website.length > 255) {
           errors.website = 'website-size'; // website should be 5 characters min and 255 characters max.;
         } else {
           var link = linkify.find(data.data.website);
           if (!link || !link[0] || !link[0].type || !link[0].value || !link[0].href || link[0].type !== 'url') {
-            errors.website = 'website-url';
-          } else { // website should be a valid site URL
-            var website = {
+            errors.website = 'website-url'; // website should be a valid site URL
+          } else {
+            website = {
               href: link[0].href,
               title: link[0].value
             };
