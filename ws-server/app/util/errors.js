@@ -40,8 +40,8 @@ var errors = {
   'private': 403,                     // Room is private
   'permanent': 403,                   // Room is permanent can\'t set private
   'voiced': 403,                      // User is voiced in the room
-  'allowed': 403,                     // User is allowed in the room
-  'member': 403,                      // User is member in the group
+  'already-allowed': 403,             // User is allowed in the room or group
+  'already-member': 403,              // User is member in the group
   'owner': 403,                       // User is owner in the room
   'oped': 403,                        // User is op in the room
   'allow-pending': 403,               // User is in allowed pending list (private room)
