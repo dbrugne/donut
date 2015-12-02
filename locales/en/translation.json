@@ -962,22 +962,26 @@
       "disclaimer": "Message from <strong>@__username__</strong> :<br><i class=\"icon icon-quote\"></i>__disclaimer__",
       "options": {
         "request": {
-          "button": "I Request membership",
+          "title": "I Request membership",
           "info": "Your contact details and your following message (optional) will be sent to the moderators of this community.",
           "placeholder": "Your motivations, background...",
           "confirm": "Send",
           "success": "Request sent ! You will be notified when accepted."
         },
         "password": {
-          "button": "I have the password",
+          "title": "I have the password",
           "info": "Enter the password :",
-          "confirm": "Send"
+          "placeholder": "password",
+          "confirm": "Send",
+          "error": "Invalid password"
         },
-        "mail": {
-          "button": "I have an authorized e-mail",
+        "email": {
+          "title": "I have an authorized e-mail",
           "info": "I have an authorized e-mail",
+          "placeholder": "e-mail",
           "confirm": "Add",
-          "success": "The email __email__ has been successfully added to your account. You will receive a verification e-mail. Once verified you will automatically become a member of this community.<br>You can manage your emails <a class=\"open-user-account\">here</a>"
+          "success": "The email __email__ has been successfully added to your account. You will receive a verification e-mail. Once verified you will automatically become a member of this community.<br>You can manage your emails <a class=\"open-user-account\">here</a>",
+          "error": "This e-mail is already linked to another account"
         }
       }
     }

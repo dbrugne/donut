@@ -962,22 +962,26 @@
       "disclaimer": "Message de <strong>@__username__</strong> :<br><i class=\"icon icon-quote\"></i>__disclaimer__",
       "options": {
         "request": {
-          "button": "Je fais une demande",
+          "title": "Je fais une demande",
           "info": "Vos coordonnées ainsi que votre message (facultatif) seront transmis aux modérateurs de cette communauté.",
-          "placeholder": "Vos motivations...",
+          "placeholder": "Vos motivations ...",
           "confirm": "Envoyer",
           "success": "Demande envoyée ! Vous serez notifié dès acceptation."
         },
         "password": {
-          "button": "J'ai le mot de passe",
+          "title": "J'ai le mot de passe",
           "info": "Entrez le mot de passe : ",
-          "confirm": "Valider"
+          "placeholder": "mot de passe",
+          "confirm": "Valider",
+          "error": "Mot de passe invalide"
         },
-        "mail": {
-          "button": "Je dispose d'un e-mail",
+        "email": {
+          "title": "Je dispose d'un e-mail",
           "info": "Ajouter une adresse email autorisée à votre compte",
           "confirm": "Ajouter",
-          "success": "L'e-mail __email__ a bien été ajoutée à votre compte. Vous allez recevoir un email pour valider que vous en êtes bien le propriétaire. Une fois validé, vous deviendrez automatiquement membre de cette communauté.<br>Vous pouvez gérer vos e-mails <a class=\"open-user-account\">ici</a>"
+          "placeholder": "e-mail",
+          "success": "L'e-mail __email__ a bien été ajoutée à votre compte. Vous allez recevoir un email pour valider que vous en êtes bien le propriétaire. Une fois validé, vous deviendrez automatiquement membre de cette communauté.<br>Vous pouvez gérer vos e-mails <a class=\"open-user-account\">ici</a>",
+          "error": "Cet e-mail est déjà lié à un autre compte"
         },
         "other": "Uniquement sur invitation<br><br>Cette communauté est uniquement accessible sur invitation des modérateurs. Si vous les connaissez, contacter les directement."
       }
