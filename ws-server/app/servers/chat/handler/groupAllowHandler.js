@@ -45,7 +45,7 @@ handler.call = function (data, session, next) {
       }
 
       if (group.isAllowed(targetUser.id)) {
-        return callback('allowed');
+        return callback('already-allowed');
       }
 
       if (group.isBanned(targetUser.id)) {
@@ -146,7 +146,7 @@ handler.refuse = function (data, session, next) {
       }
 
       if (group.isMember(targetUser.id)) {
-        return callback('allowed');
+        return callback('already-member');
       }
 
       if (!group.isAllowedPending(targetUser.id)) {

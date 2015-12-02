@@ -45,7 +45,7 @@ handler.call = function (data, session, next) {
       }
 
       if (room.isAllowed(user.id)) {
-        return callback('allowed');
+        return callback('already-allowed');
       }
 
       if (room.isBanned(user.id)) {
@@ -150,7 +150,7 @@ handler.refuse = function (data, session, next) {
       }
 
       if (room.isAllowed(user.id)) {
-        return callback('allowed');
+        return callback('already-allowed');
       }
 
       if (room.isBanned(user.id)) {
