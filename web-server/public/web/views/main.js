@@ -33,6 +33,8 @@ var NotificationsView = require('./notifications');
 var DrawerUserEditView = require('./drawer-user-edit');
 var DrawerUserPreferencesView = require('./drawer-user-preferences');
 var DrawerUserAccountView = require('./drawer-account');
+var ModalView = require('./modal');
+var ModalJoinGroupView = require('./modal-join-group');
 var GroupView = require('./group');
 var RoomView = require('./discussion-room');
 var RoomViewBlocked = require('./discussion-room-blocked');
@@ -115,6 +117,7 @@ var MainView = Backbone.View.extend({
     this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
     this.listenTo(app, 'openGroupProfile', this.openGroupProfile);
     this.listenTo(app, 'openUserProfile', this.openUserProfile);
+    this.listenTo(app, 'openGroupJoin', this.openGroupJoin);
     this.listenTo(app, 'changeColor', this.onChangeColor);
   },
   run: function () {
@@ -123,6 +126,7 @@ var MainView = Backbone.View.extend({
     this.navOnes = new NavOnesView();
     this.navRooms = new NavRoomsView();
     this.drawerView = new DrawerView();
+    this.modalView = new ModalView();
     this.alertView = new AlertView();
     this.connectionView = new ConnectionModalView();
     this.welcomeView = new WelcomeModalView();
@@ -508,6 +512,17 @@ var MainView = Backbone.View.extend({
     event.preventDefault();
     var view = new DrawerUserPreferencesView();
     this.drawerView.setSize('450px').setView(view).open();
+  },
+
+  // MODAL
+  // ======================================================================
+
+  openGroupJoin: function (data) {
+    if (!data) {
+      return;
+    }
+    var view = new ModalJoinGroupView({data: data});
+    this.modalView.setSize('450px').setView(view).open();
   },
 
   // DISCUSSIONS MANAGEMENT
