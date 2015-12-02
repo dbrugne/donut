@@ -5,10 +5,6 @@ var Backbone = require('backbone');
 var ModalView = Backbone.View.extend({
   el: $('#modal'),
 
-  events: {
-    'click .close': 'close'
-  },
-
   initialize: function (options) {
     this.$content = this.$('.modal-content').first();
   },
@@ -36,6 +32,9 @@ var ModalView = Backbone.View.extend({
     $('body').removeClass('modal-open');
   },
   _show: function () {
+    $(this.$el).modal({
+      backdrop: true
+    });
     // escape key
     $(document).on('keyup', $.proxy(function (e) {
       if (e.which === 27) {
@@ -47,9 +46,6 @@ var ModalView = Backbone.View.extend({
       this.close();
     }, this));
 
-    $(this.$el).modal({
-      backdrop: true
-    });
     this.$el.addClass('in');
   },
   _hide: function () {

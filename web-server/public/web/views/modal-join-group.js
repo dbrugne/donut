@@ -1,52 +1,178 @@
 var $ = require('jquery');
+var _ = require('underscore');
 var Backbone = require('backbone');
+var client = require('../libs/client');
 var i18next = require('i18next-client');
-var JoinGroupOptionsView = require('./join-group-options');
+var app = require('../libs/app');
 
-var JoinGroupModalView = Backbone.View.extend({
-  el: $('#join-group'),
+var ModalJoinGroupView = Backbone.View.extend({
+  template: require('../templates/modal-join-group.html'),
 
   events: {
-    'click .close': 'hide'
+    'click .close': 'close',
+    'click .confirm-request': 'onConfirmRequest',
+    'click .confirm-password': 'onConfirmPassword',
+    'click .confirm-email': 'onConfirmEmail',
+    'click .change-option': 'onChangeOption'
   },
 
   initialize: function (options) {
-    this.model = options.model;
-    this.$el.modal({
-      show: false
-    });
-    this.joinGroupOptionsView = new JoinGroupOptionsView({
-      el: $('.join-group-options'),
-      model: this.model
-    });
+    this.data = options.data;
+    this.render();
   },
 
-  render: function (response) {
-    this.$('.title-join').html(i18next.t('chat.joingroup.title', {identifier: this.model.get('identifier')}));
-    if (this.model.get('disclaimer')) {
-      this.$('.disclaimer').html(i18next.t('chat.joingroup.disclaimer', {
-        username: this.model.get('owner_username'),
-        disclaimer: this.model.get('disclaimer')
-      }));
-    }
+  render: function () {
+    this.$el.html(this.template({data: this.data}));
 
-    this.joinGroupOptionsView.render(response);
-    this.listenTo(this.joinGroupOptionsView, 'onClose', function (event) {
-      this.hide();
-    });
+    // error and success
+    this.$error = this.$('.error').hide();
+    this.$success = this.$('.success').hide();
+
+    // button
+    this.$buttonRequest = this.$('#button-request').hide();
+    this.$buttonPassword = this.$('#button-password').hide();
+    this.$buttonEmail = this.$('#button-email').hide();
+
+    // Options
+    this.$currentOption;
+    this.$('.join-request').hide();
+    this.$('.join-password').hide();
+    this.$('.join-email').hide();
+
+    this.showOptions();
     return this;
   },
 
-  show: function () {
-    this.$el.modal('show');
+  showOptions: function () {
+    var selectClass;
+    if (this.getNbrOptions(this.data) > 1) {
+      if (this.data.allowed_domains) {
+        this.$buttonEmail.show();
+      }
+      if (this.data.password) {
+        this.$buttonPassword.show();
+        selectClass = '.join-password';
+      }
+      if (this.data.request) {
+        this.$buttonRequest.show();
+        selectClass = '.join-request';
+      }
+      this.$(selectClass).show();
+      this.$currentOption = this.$(selectClass).show();
+    } else {
+      selectClass = (this.data.request)
+        ? '.join-request'
+        : (this.data.password)
+        ? '.join-password'
+        : (this.data.allowed_domains)
+        ? '.join-email'
+        : '.join-other';
+      this.$currentOption = this.$(selectClass).show();
+    }
   },
-  hide: function () {
-    this.$el.modal('hide');
+
+  getNbrOptions: function () {
+    var result = 0;
+    if (this.data.email) {
+      result++;
+    }
+    if (this.data.password) {
+      result++;
+    }
+    if (this.data.request) {
+      result++;
+    }
+    return result;
   },
-  _remove: function () {
-    this.joinGroupOptionsView._remove();
-    this.remove();
+
+  onChangeOption: function ($event) {
+    this.resetMessage();
+    var option = $($event.currentTarget);
+    $(this.$currentOption).hide();
+    if (option.attr('id') === 'button-request') {
+      this.$currentOption = this.$('.join-request').show();
+    } else if (option.attr('id') === 'button-password') {
+      this.$currentOption = this.$('.join-password').show();
+    } else if (option.attr('id') === 'button-email') {
+      this.$currentOption = this.$('.join-email').show();
+    }
+  },
+
+  onConfirmRequest: function () {
+    this.resetMessage();
+    if (!this.data.request) {
+      return $(this.$error).text(i18next.t('global.unknownerror')).show();
+    }
+    var message = this.$('.input-request').val();
+
+    client.groupJoinRequest(this.data.group_id, message, _.bind(function (response) {
+      if (response.err) {
+        if (response.err === 'already-member' || response.err === 'already-allowed') {
+          app.trigger('askMembership');
+          this.trigger('close');
+        } else if (response.err === 'allow-pending' || response.err === 'message-wrong-format') {
+          $(this.$error).text(i18next.t('chat.allowed.error.' + response.err)).show();
+        } else if (response.err === 'not-confirmed') {
+          $(this.$error).text(i18next.t('chat.form.errors.' + response.err)).show();
+        } else {
+          $(this.$error).text(i18next.t('global.unknownerror')).show();
+        }
+      } else {
+        $(this.$success).text(i18next.t('chat.joingroup.options.request.success')).show();
+      }
+    }, this));
+  },
+
+  onConfirmPassword: function () {
+    this.resetMessage();
+    var password = this.$('.input-password').val();
+
+    if (!password || !this.data.password) {
+      return $(this.$error).text(i18next.t('chat.password.wrong-password')).show();
+    }
+    client.groupJoin(this.data.group_id, password, _.bind(function (response) {
+      if (response.err) {
+        if (response.err === 'wrong-password' || response.err === 'params-password') {
+          $(this.$error).text(i18next.t('chat.password.wrong-password')).show();
+        } else {
+          $(this.$error).text(i18next.t('global.unknownerror')).show();
+        }
+      } else if (response.success) {
+        app.trigger('joinGroup', {name: this.data.name, popin: false});
+        this.trigger('close');
+      }
+    }, this));
+  },
+
+  onConfirmEmail: function () {
+    this.resetMessage();
+    var selectDomain = this.$('.select-domain').val();
+    var mail = this.$('.input-email').val() + selectDomain;
+    if (!this.data.allowed_domains || !this.data.allowed_domains.length) {
+      return $(this.$error).text(i18next.t('global.unknownerror')).show();
+    }
+
+    if (_.indexOf(this.data.allowed_domains, selectDomain) === -1) {
+      return $(this.$error).text(i18next.t('global.unknownerror')).show();
+    }
+
+    client.accountEmail(mail, 'add', _.bind(function (response) {
+      if (response.success) {
+        $(this.$success).html(i18next.t('chat.joingroup.options.mail.success', { email: mail })).show();
+      } else {
+        $(this.$error).text((i18next.t('global.unknownerror')).show());
+      }
+    }, this));
+  },
+
+  resetMessage: function () {
+    $(this.$error).hide();
+    $(this.$success).hide();
+  },
+
+  close: function () {
+    this.trigger('close');
   }
 });
 
-module.exports = JoinGroupModalView;
+module.exports = ModalJoinGroupView;

@@ -1,7 +1,6 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
-var JoinGroupModalView = require('./modal-join-group');
 var client = require('../libs/client');
 var i18next = require('i18next-client');
 var app = require('../libs/app');
@@ -18,11 +17,10 @@ var GroupView = Backbone.View.extend({
   className: 'group',
 
   events: {
-    'click .group-join': 'onJoinGroup'
+    'click .group-join': 'askMembership'
   },
 
   initialize: function (options) {
-    this.listenTo(this.model, 'joinGroup', this.onJoinGroup);
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(this.model, 'change:members', this.refreshUsers);
     this.listenTo(this.model, 'change:op', this.refreshUsers);
@@ -30,7 +28,7 @@ var GroupView = Backbone.View.extend({
     this.listenTo(this.model, 'change:avatar', this.onAvatar);
     this.listenTo(this.model, 'change:color', this.onColor);
     this.listenTo(this.model, 'redraw', this.render);
-    this.joinGroupModalView = new JoinGroupModalView({model: this.model});
+    this.listenTo(app, 'askMembership', this.askMembership);
   },
   render: function () {
     var group = this.model.toJSON();
@@ -40,7 +38,6 @@ var GroupView = Backbone.View.extend({
     var isAdmin = this.model.currentUserIsAdmin();
 
     this.bannedObject = this.model.currentUserIsBanned();
-    this.joinGroupModalView.hide();
 
     // prepare avatar for group
     group.avatarUrl = common.cloudinary.prepare(group.avatar, 160);
@@ -100,7 +97,6 @@ var GroupView = Backbone.View.extend({
   removeView: function () {
     this.groupUsersView._remove();
     this.cardsView._remove();
-    this.joinGroupModalView._remove();
     this.remove();
   },
   onFocusChange: function () {
@@ -110,14 +106,13 @@ var GroupView = Backbone.View.extend({
       this.$el.hide();
     }
   },
-  onJoinGroup: function () {
+  askMembership: function () {
     client.groupJoin(this.model.get('group_id'), null, _.bind(function (response) {
       if (response.err) {
         return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
       }
       if (!response.success) {
-        this.joinGroupModalView.render(response.options);
-        this.joinGroupModalView.show();
+        app.trigger('openGroupJoin', response.options);
       } else {
         app.trigger('joinGroup', {name: this.model.get('name'), popin: false});
       }

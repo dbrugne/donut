@@ -94,6 +94,11 @@ handler.call = function (data, session, next) {
 
     function persist (callback) {
       if (!addMember) {
+        options.group_id = group._id;
+        options.name = group.name;
+        options.identifier = group.getIdentifier();
+        options.owner_username = group.owner.username;
+        options.disclaimer = group.disclaimer;
         return callback(null);
       }
 
