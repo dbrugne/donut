@@ -480,7 +480,7 @@ emailer.roomMessage = function (to, events, roomName, roomAvatar, callback) {
   }, callback);
 };
 
-emailer.groupJoinRequest = function (to, data, callback) {
+emailer.groupRequest = function (to, data, callback) {
   data.name = data.groupname;
   sendEmail(to, 'emails/group-join-request.html', {
     username: data.username,

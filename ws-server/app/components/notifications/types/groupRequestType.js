@@ -156,7 +156,7 @@ Notification.prototype.sendEmail = function (model, done) {
       var method, data;
       switch (model.type) {
         case 'groupjoinrequest':
-          method = emailer.groupJoinRequest;
+          method = emailer.groupRequest;
           data = {
             username: model.data.by_user.username,
             groupname: group.name
