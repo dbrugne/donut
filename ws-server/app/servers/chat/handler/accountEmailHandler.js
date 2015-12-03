@@ -138,6 +138,13 @@ handler.main = function (email, user, next) {
       return errors.getHandler('user:email:main', next)(err);
     }
 
+    if (!oldEmail) {
+      // if address not validate, send an validation email
+      if (!_.findWhere(user.emails, {email: email, confirmed: true})) {
+        return this.validate(email, user, next);
+      }
+    }
+
     emailer.emailChanged(oldEmail, _.bind(function (err) {
       if (err) {
         return errors.getHandler('user:email:main', next)(err);
