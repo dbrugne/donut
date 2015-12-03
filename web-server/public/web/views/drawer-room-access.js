@@ -215,26 +215,20 @@ var RoomAccessView = Backbone.View.extend({
     });
   },
   onChangeGroupAllow: function (event) {
-    if (this.$checkboxGroupAllow.is(':checked')) {
-      client.roomUpdate(this.roomId, { allow_group_member: true }, function (err) {
-        return (err);
-      });
-    } else {
-      client.roomUpdate(this.roomId, { allow_group_member: false, add_users_to_allow: true }, function (err) {
-        return (err);
-      });
-    }
+    var update = (this.$checkboxGroupAllow.is(':checked'))
+      ? { allow_group_member: true }
+      : { allow_group_member: false, add_users_to_allow: true };
+
+    client.roomUpdate(this.roomId, update, _.bind(function (err) {
+      this.$errors.html(err).show();
+    }, this));
   },
   onChangeUsersRequest: function (event) {
-    if (this.$checkboxUserRequest.is(':checked')) {
-      client.roomUpdate(this.roomId, { allow_user_request: true }, function (err) {
-        return (err);
-      });
-    } else {
-      client.roomUpdate(this.roomId, { allow_user_request: false }, function (err) {
-        return (err);
-      });
-    }
+    client.roomUpdate(this.roomId, {
+      allow_user_request: this.$checkboxUserRequest.is(':checked')
+    }, _.bind(function (err) {
+      this.$errors.html(err).show();
+    }, this));
   },
   reset: function () {
     this.$errors.html('').hide();
