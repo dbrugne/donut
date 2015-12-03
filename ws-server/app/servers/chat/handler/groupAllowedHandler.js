@@ -134,7 +134,7 @@ handler.remove = function (data, session, next) {
     function persistOnGroup (callback) {
       GroupModel.update(
         {_id: { $in: [group.id] }},
-        {$pull: {allowed: targetUser.id, members: targetUser.id, op: targetUser.id}},
+        {$pull: {allowed: targetUser.id}},
         function (err) {
           return callback(err);
         });

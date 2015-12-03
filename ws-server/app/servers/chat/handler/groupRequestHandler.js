@@ -143,8 +143,11 @@ handler.accept = function (data, session, next) {
       Group.update(
         {_id: group._id},
         {
-          $addToSet: {members: targetUser.id},
-          $pull: {members_pending: {user: targetUser.id}}
+          $addToSet: {members: targetUser._id},
+          $pull: {
+            members_pending: {user: targetUser._id},
+            allowed: targetUser._id // when become member remove from allowed
+          }
         },
         function (err) {
           return callback(err);

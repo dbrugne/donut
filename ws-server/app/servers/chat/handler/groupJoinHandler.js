@@ -106,8 +106,10 @@ handler.call = function (data, session, next) {
         {_id: group._id},
         {
           $addToSet: {members: user._id},
-          $pull: {members_pending: {user: user._id}}
-          // important: not pull from allowed to allow future group leave/join
+          $pull: {
+            members_pending: {user: user._id},
+            allowed: user._id // when become member remove from allowed
+          }
         }, function (err) { return callback(err); }
       );
     }
