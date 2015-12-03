@@ -66,6 +66,8 @@ var DrawerGroupDeleteView = Backbone.View.extend({
     client.groupDelete(this.groupId, _.bind(function (response) {
       if (response.err) {
         return this.setError(i18next.t('chat.form.errors.' + response.err, {defaultValue: i18next.t('global.unknownerror')}));
+      } else {
+        app.trigger('alert', 'info', i18next.t('chat.form.group-form.edit.group.delete.success'));
       }
     }, this));
     this.trigger('close');
@@ -86,7 +88,7 @@ var DrawerGroupDeleteView = Backbone.View.extend({
       return;
     }
 
-    app.trigger('alert', 'info', i18next.t('edit.room.delete.success'));
+    app.trigger('alert', 'info', i18next.t('chat.form.group-form.edit.group.delete.success'));
     this.trigger('close');
   },
   onKeyup: function (event) {
