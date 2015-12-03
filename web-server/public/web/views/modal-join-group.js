@@ -9,7 +9,7 @@ var ModalJoinGroupView = Backbone.View.extend({
   template: require('../templates/modal-join-group.html'),
 
   events: {
-    'click .confirm-request': 'onConfirmRequest',
+    'click .confirm-request': 'onSendRequest',
     'click .confirm-password': 'onConfirmPassword',
     'click .confirm-email': 'onConfirmEmail',
     'click .change-option': 'onChangeOption'
@@ -24,8 +24,10 @@ var ModalJoinGroupView = Backbone.View.extend({
     this.$el.html(this.template({data: this.data}));
 
     // error and success
-    this.$error = this.$('.error').hide();
-    this.$success = this.$('.success').hide();
+    this.$error = this.$('.error');
+    this.$success = this.$('.success');
+    this.$error.hide();
+    this.$success.hide();
 
     // button
     this.$buttonRequest = this.$('#button-request').hide();
@@ -98,27 +100,27 @@ var ModalJoinGroupView = Backbone.View.extend({
     }
   },
 
-  onConfirmRequest: function () {
+  onSendRequest: function () {
     this.resetMessage();
     if (!this.data.request) {
-      return $(this.$error).text(i18next.t('global.unknownerror')).show();
+      return this.$error.text(i18next.t('global.unknownerror')).show();
     }
     var message = this.$('.input-request').val();
 
-    client.groupJoinRequest(this.data.group_id, message, _.bind(function (response) {
+    client.groupRequest(this.data.group_id, message, _.bind(function (response) {
       if (response.err) {
         if (response.err === 'already-member' || response.err === 'already-allowed') {
           app.trigger('askMembership');
           this.trigger('close');
         } else if (response.err === 'allow-pending' || response.err === 'message-wrong-format') {
-          $(this.$error).text(i18next.t('chat.allowed.error.' + response.err)).show();
+          this.$error.text(i18next.t('chat.allowed.error.' + response.err)).show();
         } else if (response.err === 'not-confirmed') {
-          $(this.$error).text(i18next.t('chat.form.errors.' + response.err)).show();
+          this.$error.text(i18next.t('chat.form.errors.' + response.err)).show();
         } else {
-          $(this.$error).text(i18next.t('global.unknownerror')).show();
+          this.$error.text(i18next.t('global.unknownerror')).show();
         }
       } else {
-        $(this.$success).text(i18next.t('chat.joingroup.options.request.success')).show();
+        this.$success.text(i18next.t('chat.joingroup.options.request.success')).show();
       }
     }, this));
   },
@@ -128,14 +130,14 @@ var ModalJoinGroupView = Backbone.View.extend({
     var password = this.$('.input-password').val();
 
     if (!password || !this.data.password) {
-      return $(this.$error).text(i18next.t('chat.joingroup.options.password.error')).show();
+      return this.$error.text(i18next.t('chat.joingroup.options.password.error')).show();
     }
     client.groupJoin(this.data.group_id, password, _.bind(function (response) {
       if (response.err) {
         if (response.err === 'wrong-password' || response.err === 'params-password') {
-          $(this.$error).text(i18next.t('chat.joingroup.options.password.error')).show();
+          this.$error.text(i18next.t('chat.joingroup.options.password.error')).show();
         } else {
-          $(this.$error).text(i18next.t('global.unknownerror')).show();
+          this.$error.text(i18next.t('global.unknownerror')).show();
         }
       } else if (response.success) {
         app.trigger('joinGroup', {name: this.data.name, popin: false});
@@ -149,31 +151,31 @@ var ModalJoinGroupView = Backbone.View.extend({
     var selectDomain = this.$('.select-domain').val();
     var mail = this.$('.input-email').val() + selectDomain;
     if (!this.data.allowed_domains || !this.data.allowed_domains.length) {
-      return $(this.$error).text(i18next.t('global.unknownerror')).show();
+      return this.$error.text(i18next.t('global.unknownerror')).show();
     }
 
     if (_.indexOf(this.data.allowed_domains, selectDomain) === -1) {
-      return $(this.$error).text(i18next.t('global.unknownerror')).show();
+      return this.$error.text(i18next.t('global.unknownerror')).show();
     }
 
     client.accountEmail(mail, 'add', _.bind(function (response) {
       if (response.success) {
-        $(this.$success).html(i18next.t('chat.joingroup.options.email.success', { email: mail })).show();
+        this.$success.html(i18next.t('chat.joingroup.options.email.success', { email: mail })).show();
       } else {
         if (response.err === 'mail-already-exist') {
-          $(this.$error).text(i18next.t('chat.joingroup.options.email.error')).show();
+          this.$error.text(i18next.t('chat.joingroup.options.email.error')).show();
         } else if (response.err === 'wrong-format') {
-          $(this.$error).text(i18next.t('account.email.error.format')).show();
+          this.$error.text(i18next.t('account.email.error.format')).show();
         } else {
-          $(this.$error).text(i18next.t('global.unknownerror')).show();
+          this.$error.text(i18next.t('global.unknownerror')).show();
         }
       }
     }, this));
   },
 
   resetMessage: function () {
-    $(this.$error).hide();
-    $(this.$success).hide();
+    this.$error.hide();
+    this.$success.hide();
   },
 
   close: function () {

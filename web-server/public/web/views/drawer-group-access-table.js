@@ -19,10 +19,10 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
   nbPages: 0, // Store total number of pages
 
   events: {
-    'click .accept-allow': 'onAllowUser',
+    'click .accept-allow': 'onRequestAccept',
+    'click .refuse-allow': 'onRequestRefuse',
     'click .deban-group': 'onDebanGroupUser',
-    'click .refuse-allow': 'onRefuseUser',
-    'click .disallow': 'onDisallow',
+    'click .disallow': 'onGroupAllowedRemove',
     'click .pagination>li>a': 'onChangePage'
   },
 
@@ -73,13 +73,16 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
     this.initializePopover();
   },
 
-  onAllowUser: function (event) {
+  onRequestAccept: function (event) {
     var userId = $(event.currentTarget).data('userId');
     var userName = $(event.currentTarget).data('username');
 
     if (userId && userName) {
       confirmationView.open({message: 'accept-user', username: userName}, _.bind(function () {
-        client.groupAllow(this.model.get('group_id'), userId, _.bind(function (data) {
+        client.groupRequestAccept(this.model.get('group_id'), userId, _.bind(function (response) {
+          if (response.err) {
+            return this.trigger('error', response.err)
+          }
           app.trigger('redraw-tables');
           this.model.refreshUsers();
         }, this));
@@ -100,26 +103,32 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
     }
   },
 
-  onRefuseUser: function (event) {
+  onRequestRefuse: function (event) {
     var userId = $(event.currentTarget).data('userId');
     var userName = $(event.currentTarget).data('username');
 
     if (userId && userName) {
       confirmationView.open({message: 'refuse-user', username: userName}, _.bind(function () {
-        client.groupRefuse(this.model.get('group_id'), userId, _.bind(function (data) {
+        client.groupRequestRefuse(this.model.get('group_id'), userId, _.bind(function (response) {
+          if (response.err) {
+            return this.trigger('error', response.err);
+          }
           app.trigger('redraw-tables');
         }, this));
       }, this));
     }
   },
 
-  onDisallow: function (event) {
+  onGroupAllowedRemove: function (event) {
     var userId = $(event.currentTarget).data('userId');
     var userName = $(event.currentTarget).data('username');
 
     if (userId && userName) {
       confirmationView.open({message: 'disallow-user', username: userName}, _.bind(function () {
-        client.groupDisallow(this.model.get('group_id'), userId, _.bind(function (data) {
+        client.groupAllowedRemove(this.model.get('group_id'), userId, _.bind(function (response) {
+          if (response.err) {
+            return this.trigger('error', response.err);
+          }
           app.trigger('redraw-tables');
           this.model.refreshUsers();
         }, this));
