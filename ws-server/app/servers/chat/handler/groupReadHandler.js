@@ -55,7 +55,7 @@ handler.call = function (data, session, next) {
 
       // owner
       if (group.owner) {
-        read.owner_id = group.owner.user_id;
+        read.owner_id = group.owner.id;
         read.owner_username = group.owner.username;
       }
 
