@@ -9,7 +9,6 @@ var ModalJoinGroupView = Backbone.View.extend({
   template: require('../templates/modal-join-group.html'),
 
   events: {
-    'click .close': 'close',
     'click .confirm-request': 'onConfirmRequest',
     'click .confirm-password': 'onConfirmPassword',
     'click .confirm-email': 'onConfirmEmail',
@@ -38,6 +37,7 @@ var ModalJoinGroupView = Backbone.View.extend({
     this.$('.join-request').hide();
     this.$('.join-password').hide();
     this.$('.join-email').hide();
+    this.$('.join-other').hide();
 
     this.showOptions();
     return this;
@@ -73,7 +73,7 @@ var ModalJoinGroupView = Backbone.View.extend({
 
   getNbrOptions: function () {
     var result = 0;
-    if (this.data.email) {
+    if (this.data.allowed_domains) {
       result++;
     }
     if (this.data.password) {
@@ -128,12 +128,12 @@ var ModalJoinGroupView = Backbone.View.extend({
     var password = this.$('.input-password').val();
 
     if (!password || !this.data.password) {
-      return $(this.$error).text(i18next.t('chat.password.wrong-password')).show();
+      return $(this.$error).text(i18next.t('chat.joingroup.options.password.error')).show();
     }
     client.groupJoin(this.data.group_id, password, _.bind(function (response) {
       if (response.err) {
         if (response.err === 'wrong-password' || response.err === 'params-password') {
-          $(this.$error).text(i18next.t('chat.password.wrong-password')).show();
+          $(this.$error).text(i18next.t('chat.joingroup.options.password.error')).show();
         } else {
           $(this.$error).text(i18next.t('global.unknownerror')).show();
         }
@@ -158,9 +158,15 @@ var ModalJoinGroupView = Backbone.View.extend({
 
     client.accountEmail(mail, 'add', _.bind(function (response) {
       if (response.success) {
-        $(this.$success).html(i18next.t('chat.joingroup.options.mail.success', { email: mail })).show();
+        $(this.$success).html(i18next.t('chat.joingroup.options.email.success', { email: mail })).show();
       } else {
-        $(this.$error).text((i18next.t('global.unknownerror')).show());
+        if (response.err === 'mail-already-exist') {
+          $(this.$error).text(i18next.t('chat.joingroup.options.email.error')).show();
+        } else if (response.err === 'wrong-format') {
+          $(this.$error).text(i18next.t('account.email.error.format')).show();
+        } else {
+          $(this.$error).text(i18next.t('global.unknownerror')).show();
+        }
       }
     }, this));
   },

@@ -1,5 +1,5 @@
 <div id="join-group" class="modal-body">
-    <span class="close icon icon-times"></span>
+    <span class="close icon icon-times" data-dismiss="modal"></span>
     <div class="title"><%= t('chat.joingroup.title', {identifier: data.identifier}) %></div>
     <div class="message"><%= t('chat.joingroup.message') %></div>
     <% if (data.owner_username && data.disclaimer) { %>
@@ -35,6 +35,9 @@
             <div class="info-option"><%= t('chat.joingroup.options.password.info') %></div>
             <input class="form-control input-password" type="password" placeholder="">
             <button type="button" class="confirm-password btn btn-default"><%= t('chat.joingroup.options.password.confirm') %></button>
+        </div>
+        <div class="join-other">
+            <%= t('chat.joingroup.options.other') %>
         </div>
     </div>
 </div>

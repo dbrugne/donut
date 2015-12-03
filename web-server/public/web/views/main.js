@@ -522,7 +522,7 @@ var MainView = Backbone.View.extend({
       return;
     }
     var view = new ModalJoinGroupView({data: data});
-    this.modalView.setSize('450px').setView(view).open();
+    this.modalView.setView(view).open();
   },
 
   // DISCUSSIONS MANAGEMENT

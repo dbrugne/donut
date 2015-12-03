@@ -11,10 +11,6 @@ var ModalView = Backbone.View.extend({
   render: function () {
     return this; // modal container is already in DOM,
   },
-  setSize: function (size) {
-    this.currentSize = size;
-    return this;
-  },
   setView: function (view) {
     this.contentView = view;
     this.$content.html(view.$el);
@@ -35,25 +31,11 @@ var ModalView = Backbone.View.extend({
     $(this.$el).modal({
       backdrop: true
     });
-    // escape key
-    $(document).on('keyup', $.proxy(function (e) {
-      if (e.which === 27) {
-        this.close();
-      }
-    }, this));
-
-    $(this.$el).on('hide.bs.modal', _.bind(function (e) {
-      this.close();
-    }, this));
-
     this.$el.addClass('in');
   },
   _hide: function () {
-    // escape key
-    $(document).off('keydown');
-    $(this.$el).off('hide.bs.modal');
-
     this.$el.removeClass('in');
+    $(this.$el).modal('hide');
     if (this.contentView) {
       if (_.isFunction(this.contentView._remove)) {
         this.contentView._remove();
