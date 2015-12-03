@@ -19,7 +19,7 @@ var DrawerGroupAccessDomainTableView = Backbone.View.extend({
     this.$ctn = this.$('.ctn');
   },
   render: function (data) {
-    this.$ctn.html(this.template({domain: data.allowed_domains}));
+    this.$ctn.html(this.template({domains: data.allowed_domains}));
 
     this.data = data;
     this.$error = $('.error-label');
