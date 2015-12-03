@@ -143,6 +143,7 @@ handler.main = function (email, user, next) {
       if (!_.findWhere(user.emails, {email: email, confirmed: true})) {
         return this.validate(email, user, next);
       }
+      return next(null, {success: true});
     }
 
     emailer.emailChanged(oldEmail, _.bind(function (err) {
