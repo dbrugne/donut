@@ -937,6 +937,7 @@
         "color-hexadecimal": "Color must be explained has hexadecimal (e.g.: #FF00AA).",
         "color-integer": "Priority must be explained has number (integer).",
         "name-wrong-format": "Invalid name",
+        "group-name-wrong-format": "Invalid name",
         "mode-wrong-format": "You must select a mode for this room",
         "invalid-password": "The password must be 4 and 255 characters",
         "room-already-exist": "Donut __name__ already exists, <a href='__uri__'>would you like to join it</a>?",

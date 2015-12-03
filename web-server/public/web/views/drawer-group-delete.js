@@ -60,10 +60,14 @@ var DrawerGroupDeleteView = Backbone.View.extend({
     event.preventDefault();
     this.reset();
     if (!this._valid()) {
-      return this.setError(i18next.t('chat.form.errors.name-wrong-format'));
+      return this.setError(i18next.t('chat.form.errors.group-name-wrong-format'));
     }
 
-    client.groupDelete(this.groupId);
+    client.groupDelete(this.groupId, _.bind(function (response) {
+      if (response.err) {
+        return this.setError(i18next.t('chat.form.errors.' + response.err, {defaultValue: i18next.t('global.unknownerror')}));
+      }
+    }, this));
     this.trigger('close');
   },
   onDelete: function (data) {
