@@ -9,7 +9,7 @@ var ModalView = Backbone.View.extend({
     this.$content = this.$('.modal-content').first();
   },
   render: function () {
-    return this; // modal container is already in DOM,
+    return this; // modal container is already in DOM
   },
   setView: function (view) {
     this.contentView = view;
