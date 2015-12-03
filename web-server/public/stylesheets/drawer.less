@@ -246,22 +246,16 @@
       text-decoration: underline;
     }
   }
-  .overlay-ctn {
-    width: 100px;
-    height: 100px;
-    margin: 0 auto;
-    .avatar { background-size: 100px; background-position: center; display: block; .border-radius(4px);
-      width: 100px;
-      height: 100px;
-      .group-type { padding: 3px 3px 3px 3px; top: 3px; position: absolute; left: 3px; border: 2px solid @cl-border; background-color: #FFF;
-        i { font-size: 2rem; line-height: 2rem; }
+  .overlay-ctn { width: 100px; height: 100px; margin: 0 auto;
+    .avatar { background-size: 100px; background-position: center; display: block; width: 100px; height: 100px;
+      .group-type { padding: 4px 6px 4px 6px; top: 3px; position: absolute; left: 3px; border: 2px solid @cl-border;
+        i { font-size: 1.5rem; line-height: 1.5rem; }
       }
     }
     .overlay {
       top: 0;
       height: 100px;
       width: 100px;
-      .border-radius(4px);
     }
     .overlay-text {
       top: 40px;
@@ -272,7 +266,7 @@
     .item { border:2px solid transparent;
       .avatar { background-size:contain; }
     }
-    .item.op { border: 2px solid @cl-success; .border-radius(5px); height:34px;
+    .item.op { border: 2px solid @cl-success; height:34px;
       &::after {
         .icon-op;
         position: absolute;
@@ -288,7 +282,7 @@
         .border-radius(3px);
       }
     }
-    .item.owner { border: 2px solid @cl-warning; .border-radius(5px); height:34px;
+    .item.owner { border: 2px solid @cl-warning; height:34px;
       &::after {
         .icon-owner;
         position: absolute;
@@ -419,7 +413,6 @@
               top: 38%;
               margin-top: -16px;
               left: 7px;
-              .border-radius(4px);
               border: 2px solid #fafafa;
             }
             i.icon {

@@ -3,7 +3,7 @@
    data-time="<%= data.time %>"
     <% if (data.href) { print('href="' + data.href + '"'); } %>
     <%= data.html %> >
-    <img src="<%= data.avatar %>" alt="<%= data.title %>" />
+    <img class="<%= data.avatarCircle ? 'img-circle' : '' %>" src="<%= data.avatar %>" alt="<%= data.title %>" />
     <div class="message-subject"><%= data.message %></div>
     <span class="icon icon-times action-tag-as-done"></span>
     <div class="message-description unviewed">

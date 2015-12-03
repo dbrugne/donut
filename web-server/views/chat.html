@@ -16,11 +16,11 @@
                 </div>
 
                 <div id="block-current-user" class="flex-parent column">
-                    <a href="#" class="clean dropdown-toggle toggle flex-parent center" data-toggle="dropdown" role="button" aria-expanded="false">
+                    <a id="block-current-user-toggle" href="#" class="clean dropdown-toggle toggle flex-parent center" data-toggle="dropdown" role="button" aria-expanded="false">
                         <img class="mr5 dc-border-darker curp" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
-                            <span class="mr5 ml5 dc-text-contrast username flex-child">
-                                <% if (user.realname) { print (user.realname) } else { print ('@'+user.username) } %>
-                            </span>
+                        <span class="mr5 ml5 dc-text-contrast username flex-child">
+                            <% if (user.realname) { print (user.realname) } else { print ('@'+user.username) } %>
+                        </span>
                         <i class="icon icon-chevron-down fs20 dc-text-contrast hover"></i>
                     </a>
                     <ul class="dropdown-menu" role="menu">
@@ -95,8 +95,11 @@
                         <div class="modal-content"><!--modal-content--></div>
                     </div>
                 </div>
-                <div id="home" class="flex-parent column">
-                    <div class="left">
+                <div id="home" class="flex-parent column loading">
+                    <div class="left" class="relative">
+                        <div class="backdrop hidden">
+                            <i class="icon icon-spinner icon-spin icon-4x"></i>
+                        </div>
                         <div class="disclaimer">
                             <%= t('chat.home.roomstitle') %>
                         </div>

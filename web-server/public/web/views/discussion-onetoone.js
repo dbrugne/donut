@@ -25,6 +25,7 @@ var OneToOnePanelView = Backbone.View.extend({
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(this.model, 'change:color', this.onColor);
     this.listenTo(this.model, 'change:avatar', this.onAvatar);
+    this.listenTo(this.model, 'change:realname', this.onRealname);
     this.listenTo(this.model, 'change:poster', this.onPoster);
     this.listenTo(this.model, 'change:location', this.onLocation);
     this.listenTo(this.model, 'change:website', this.onWebsite);
@@ -117,6 +118,9 @@ var OneToOnePanelView = Backbone.View.extend({
   onAvatar: function (model, value, options) {
     var url = common.cloudinary.prepare(value, 100);
     this.$('.header .avatar img').attr('src', url);
+  },
+  onRealname: function (model, value, options) {
+    this.$('.header .name .realname').html('<span class="mr5">' + value + '</span>');
   },
   onPoster: function (model, url, options) {
     this.$('div.side').css('background-image', 'url(' + url + ')');

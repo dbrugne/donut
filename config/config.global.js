@@ -54,8 +54,8 @@ module.exports = {
     }
   },
   facebook: {
-    'clientID': '328600083963864', // your App ID
-    'clientSecret': '89a61eab36ab0971e0400f9f3934addb', // your App Secret
+    'clientID': '400694556754416', // same for dev and test
+    'clientSecret': '0ae02262f9a318add8b50378eaaf42ce', // same for dev and test
     'callbackURL': '',
     url: 'https://www.facebook.com/donutdotme'
   },

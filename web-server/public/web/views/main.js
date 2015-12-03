@@ -122,7 +122,7 @@ var MainView = Backbone.View.extend({
   },
   run: function () {
     // generate and attach subviews
-    this.currentUserView = new CurrentUserView({model: currentUser});
+    this.currentUserView = new CurrentUserView({el: this.$el.find('#block-current-user'), model: currentUser});
     this.navOnes = new NavOnesView();
     this.navRooms = new NavRoomsView();
     this.drawerView = new DrawerView();

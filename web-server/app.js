@@ -77,7 +77,6 @@ app.set('view engine', 'html');
 app.use(require('./app/authentication/oauth'));
 app.use(require('./app/authentication/signup'));
 app.use(require('./app/authentication/login'));
-app.use(require('./app/authentication/link'));
 app.use(require('./app/authentication/forgot'));
 app.use(require('./app/authentication/username'));
 app.use(require('./app/authentication/verify'));
@@ -85,8 +84,8 @@ app.use(require('./app/authentication/verify'));
 // public routes
 app.use(require('./app/routes/seo'));
 app.use(require('./app/routes/landing'));
-app.use(require('./app/routes/room-profile'));
-app.use(require('./app/routes/group-profile'));
+//app.use(require('./app/routes/room-profile'));
+//app.use(require('./app/routes/group-profile'));
 app.use(require('./app/routes/chat'));
 app.use(require('./app/routes/contact-form'));
 app.use(require('./app/routes/static'));

@@ -1,13 +1,8 @@
 'use strict';
 var express = require('express');
-var _ = require('underscore');
-var async = require('async');
 var router = express.Router();
 var i18next = require('../../../shared/util/i18next');
 var conf = require('../../../config/index');
-var common = require('@dbrugne/donut-common/server');
-var featuredRooms = require('../../../shared/util/featured-rooms');
-var urls = require('../../../shared/util/url');
 
 var underscoreTemplate = require('../../../shared/util/underscore-template');
 var renderer = underscoreTemplate.standard({

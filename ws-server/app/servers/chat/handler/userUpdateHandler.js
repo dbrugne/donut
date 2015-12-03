@@ -84,15 +84,16 @@ handler.call = function (data, session, next) {
       }
 
       // website
+      var website = null;
       if (_.has(data.data, 'website') && data.data.website) {
         if (data.data.website.length < 5 && data.data.website.length > 255) {
           errors.website = 'website-size'; // website should be 5 characters min and 255 characters max.;
         } else {
           var link = linkify.find(data.data.website);
           if (!link || !link[0] || !link[0].type || !link[0].value || !link[0].href || link[0].type !== 'url') {
-            errors.website = 'website-url';
-          } else { // website should be a valid site URL
-            var website = {
+            errors.website = 'website-url'; // website should be a valid site URL
+          } else {
+            website = {
               href: link[0].href,
               title: link[0].value
             };
@@ -223,7 +224,7 @@ handler.call = function (data, session, next) {
     function prepareEventForOthers (sanitized, callback) {
       // notify only certain fields
       var sanitizedToNotify = {};
-      var fieldToNotify = ['avatar', 'poster', 'color'];
+      var fieldToNotify = ['avatar', 'poster', 'color', 'realname'];
       _.each(Object.keys(sanitized), function (key) {
         if (fieldToNotify.indexOf(key) !== -1) {
           if (key === 'avatar') {
@@ -234,6 +235,8 @@ handler.call = function (data, session, next) {
             sanitizedToNotify['color'] = sanitized[key];
             sanitizedToNotify['avatar'] = user._avatar();
             sanitizedToNotify['poster'] = user._poster();
+          } else if (key === 'realname') {
+            sanitizedToNotify['realname'] = sanitized[key];
           }
         }
       });
@@ -251,7 +254,7 @@ handler.call = function (data, session, next) {
       return callback(null, event);
     },
 
-    function broadcastToRelatedUSers (event, callback) {
+    function broadcastToRelatedUsers (event, callback) {
       if (!event) {
         return callback(null, event);
       }

@@ -4,6 +4,7 @@ var router = express.Router();
 var passport = require('../../../shared/authentication/passport');
 var i18next = require('../../../shared/util/i18next');
 var bouncer = require('../middlewares/bouncer');
+var logger = require('pomelo-logger').getLogger('web', __filename);
 
 var validateInput = function (req, res, next) {
   req.checkBody('email', i18next.t('login.emailerror')).isEmail();
@@ -53,6 +54,11 @@ router.route('/login')
     })(req, res, next);
   }], bouncer.redirect);
 
+router.get('/logout', function (req, res) {
+  req.logout();
+  res.redirect('/');
+});
+
 router.get('/login/facebook', passport.authenticate('facebook', {
   scope: 'email'
 }));
@@ -61,9 +67,20 @@ router.get('/login/facebook/callback', passport.authenticate('facebook', {
   failureRedirect: '/'
 }), bouncer.redirect);
 
-router.get('/logout', function (req, res) {
-  req.logout();
-  res.redirect('/');
+router.get('/unlink/facebook', function (req, res) {
+  var user = req.user;
+
+  if (!user.local.email) {
+    req.flash('warning', i18next.t('account.facebook.error.needemailpassword'));
+    return res.redirect('/');
+  }
+
+  user.update({$unset: {'facebook.token': true, 'facebook.id': true}}, function (err) {
+    if (err) {
+      logger.debug(err);
+    }
+    res.redirect('/!');
+  });
 });
 
 module.exports = router;
