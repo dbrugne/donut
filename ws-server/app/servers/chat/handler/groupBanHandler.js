@@ -77,6 +77,7 @@ handler.call = function (data, session, next) {
             $pull: {
               op: targetUser._id,
               members: targetUser._id,
+              allowed: targetUser._id,
               members_pending: {user: targetUser._id}
             }
           }, function (err) {
