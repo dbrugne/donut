@@ -10,7 +10,6 @@ var CurrentUserView = Backbone.View.extend({
 
   initialize: function (options) {
     this.listenTo(this.model, 'change', this.render);
-    this.listenTo(client, 'user:confirmed', this.userConfirmed);
     this.$toggle = this.$el.find('#block-current-user-toggle');
   },
   render: function () {
@@ -29,12 +28,6 @@ var CurrentUserView = Backbone.View.extend({
     this.muteView = new MuteView();
 
     return this;
-  },
-  userConfirmed: function () {
-    if (this.model.get('confirmed') !== true) {
-      this.model.setConfirmed();
-      this.render();
-    }
   }
 });
 
