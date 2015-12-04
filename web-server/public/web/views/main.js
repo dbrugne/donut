@@ -119,7 +119,6 @@ var MainView = Backbone.View.extend({
     this.listenTo(app, 'openGroupProfile', this.openGroupProfile);
     this.listenTo(app, 'openUserProfile', this.openUserProfile);
     this.listenTo(app, 'openGroupJoin', this.openGroupJoin);
-    this.listenTo(app, 'openModalChooseUsername', this.openModalChooseUsername); // @todo dbr customize
     this.listenTo(app, 'changeColor', this.onChangeColor);
   },
   run: function () {
@@ -165,6 +164,7 @@ var MainView = Backbone.View.extend({
     // Is username required
     if (data.usernameRequired) {
       this.connectionView.hide();
+      this.openModalChooseUsername();
       return console.log('pop choose username');
     }
 
@@ -174,15 +174,11 @@ var MainView = Backbone.View.extend({
 
     // Only on first connection
     if (this.firstConnection) { // show if true or if undefined
-
-      app.trigger('openModalChooseUsername');
-
-      // @todo dbr uncomment to enable again welcome popin
       // Welcome message
-      //if (currentUser.shouldDisplayWelcome()) {
-      //  this.welcomeView.render(data);
-      //  this.welcomeView.show();
-      //}
+      if (currentUser.shouldDisplayWelcome()) {
+        this.welcomeView.render(data);
+        this.welcomeView.show();
+      }
 
       // Elements hidden until first 'welcome'
       $('#block-discussions').show();

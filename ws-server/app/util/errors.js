@@ -60,6 +60,7 @@ var errors = {
   'not-found': 404,                   // == GENERAL TAG ==
 
   // CONFLICT (409)
+  'not-available': 409,               // Username already used by an other user
   'mail-already-exist': 409,          // Mail already used by an other user
   'room-already-exist': 409,          // room name already used by an other room/group
   'group-name-already-exist': 409,    // group name already used by an other group/room
