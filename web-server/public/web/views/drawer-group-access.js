@@ -110,10 +110,12 @@ var GroupAccessView = Backbone.View.extend({
       el: this.$('.allowed'),
       model: this.model
     });
-    this.tableDomain = new TableDomainView({
-      el: this.$('.domain-allowed'),
-      model: this.model
-    });
+    if (data.isAdmin || data.isOp || data.isOwner) {
+      this.tableDomain = new TableDomainView({
+        el: this.$('.domain-allowed'),
+        model: this.model
+      });
+    }
     this.renderTables(data);
 
     this.listenTo(this.tablePending, 'error', this.setError);
@@ -125,7 +127,9 @@ var GroupAccessView = Backbone.View.extend({
   renderTables: function (data) {
     this.tablePending.render('pending');
     this.tableAllowed.render('allowed');
-    this.tableDomain.render(data);
+    if (this.tableDomain) {
+      this.tableDomain.render(data);
+    }
   },
   renderPendingTable: function () {
     this.tablePending.render('pending');
