@@ -18,8 +18,9 @@ var ModalView = Backbone.View.extend({
     this.listenTo(view, 'close', this.hide);
     return this;
   },
-  open: function () {
-    $(this.$el).modal({'show': true, backdrop: true});
+  open: function (options) {
+    var options = options || {'show': true, backdrop: true};
+    $(this.$el).modal(options);
     return this;
   },
   hide: function () {
