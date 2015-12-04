@@ -78,7 +78,6 @@ app.use(require('./app/authentication/oauth'));
 app.use(require('./app/authentication/signup'));
 app.use(require('./app/authentication/login'));
 app.use(require('./app/authentication/forgot'));
-app.use(require('./app/authentication/username'));
 app.use(require('./app/authentication/verify'));
 
 // public routes
