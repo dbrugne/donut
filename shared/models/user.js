@@ -163,8 +163,6 @@ userSchema.methods.isAllowedToConnect = function () {
   var err = null;
   if (this.suspended === true) {
     err = 'suspended';
-  } else if (!this.username) {
-    err = 'no-username';
   }
 
   return {allowed: (!err), err: err};

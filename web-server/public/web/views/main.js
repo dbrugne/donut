@@ -160,6 +160,12 @@ var MainView = Backbone.View.extend({
    * @param data
    */
   onWelcome: function (data) {
+    // Is username required
+    if (data.usernameRequired) {
+      this.connectionView.hide();
+      return console.log('pop choose username');
+    }
+
     currentUser.onWelcome(data);
     onetoones.onWelcome(data);
     rooms.onWelcome(data);
