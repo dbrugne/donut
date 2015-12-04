@@ -8,6 +8,7 @@ require('../javascripts/jquery.socialify');
 require('../javascripts/jquery.contactform');
 require('bootstrap/js/transition');
 require('bootstrap/js/dropdown');
+require('bootstrap/js/tab');
 require('bootstrap/js/modal');
 require('bootstrap/js/tooltip');
 require('bootstrap/js/button');

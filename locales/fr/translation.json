@@ -982,7 +982,8 @@
           "info": "Ajouter une adresse email autorisée à votre compte",
           "confirm": "Ajouter",
           "placeholder": "e-mail",
-          "success": "L'e-mail __email__ a bien été ajoutée à votre compte. Vous allez recevoir un email pour valider que vous en êtes bien le propriétaire. Une fois validé, vous deviendrez automatiquement membre de cette communauté.<br>Vous pouvez gérer vos e-mails <a class=\"open-user-account\">ici</a>",
+          "domain": "domaine",
+          "success": "L'e-mail __email__ a bien été ajoutée à votre compte. Vous allez recevoir un email pour valider que vous en êtes bien le propriétaire. Une fois validé, vous deviendrez automatiquement membre de cette communauté.<br>Vous pouvez gérer vos e-mails <a class=\"inverse open-user-account\" data-dismiss=\"modal\">ici</a>",
           "error": "Cet e-mail est déjà lié à un autre compte"
         },
         "other": "Cette communauté est uniquement accessible sur invitation des modérateurs."

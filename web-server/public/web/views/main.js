@@ -35,6 +35,7 @@ var DrawerUserPreferencesView = require('./drawer-user-preferences');
 var DrawerUserAccountView = require('./drawer-account');
 var ModalView = require('./modal');
 var ModalJoinGroupView = require('./modal-join-group');
+var ModalChooseUsernameView = require('./modal-choose-username');
 var GroupView = require('./group');
 var RoomView = require('./discussion-room');
 var RoomViewBlocked = require('./discussion-room-blocked');
@@ -118,6 +119,7 @@ var MainView = Backbone.View.extend({
     this.listenTo(app, 'openGroupProfile', this.openGroupProfile);
     this.listenTo(app, 'openUserProfile', this.openUserProfile);
     this.listenTo(app, 'openGroupJoin', this.openGroupJoin);
+    this.listenTo(app, 'openModalChooseUsername', this.openModalChooseUsername); // @todo dbr customize
     this.listenTo(app, 'changeColor', this.onChangeColor);
   },
   run: function () {
@@ -172,11 +174,15 @@ var MainView = Backbone.View.extend({
 
     // Only on first connection
     if (this.firstConnection) { // show if true or if undefined
+
+      app.trigger('openModalChooseUsername');
+
+      // @todo dbr uncomment to enable again welcome popin
       // Welcome message
-      if (currentUser.shouldDisplayWelcome()) {
-        this.welcomeView.render(data);
-        this.welcomeView.show();
-      }
+      //if (currentUser.shouldDisplayWelcome()) {
+      //  this.welcomeView.render(data);
+      //  this.welcomeView.show();
+      //}
 
       // Elements hidden until first 'welcome'
       $('#block-discussions').show();
@@ -529,6 +535,11 @@ var MainView = Backbone.View.extend({
     }
     var view = new ModalJoinGroupView({data: data});
     this.modalView.setView(view).open();
+  },
+
+  openModalChooseUsername: function () {
+    var view = new ModalChooseUsernameView();
+    this.modalView.setView(view).open({'show': true, keyboard: false, backdrop: 'static'});
   },
 
   // DISCUSSIONS MANAGEMENT

@@ -11,8 +11,7 @@ var ModalJoinGroupView = Backbone.View.extend({
   events: {
     'click .confirm-request': 'onSendRequest',
     'click .confirm-password': 'onConfirmPassword',
-    'click .confirm-email': 'onConfirmEmail',
-    'click .change-option': 'onChangeOption'
+    'click .confirm-email': 'onConfirmEmail'
   },
 
   initialize: function (options) {
@@ -26,78 +25,8 @@ var ModalJoinGroupView = Backbone.View.extend({
     // error and success
     this.$error = this.$('.error');
     this.$success = this.$('.success');
-    this.$error.hide();
-    this.$success.hide();
 
-    // button
-    this.$buttonRequest = this.$('#button-request').hide();
-    this.$buttonPassword = this.$('#button-password').hide();
-    this.$buttonEmail = this.$('#button-email').hide();
-
-    // Options
-    this.$currentOption;
-    this.$('.join-request').hide();
-    this.$('.join-password').hide();
-    this.$('.join-email').hide();
-    this.$('.join-other').hide();
-
-    this.showOptions();
     return this;
-  },
-
-  showOptions: function () {
-    var selectClass;
-    if (this.getNbrOptions(this.data) > 1) {
-      if (this.data.allowed_domains) {
-        this.$buttonEmail.show();
-      }
-      if (this.data.password) {
-        this.$buttonPassword.show();
-        selectClass = '.join-password';
-      }
-      if (this.data.request) {
-        this.$buttonRequest.show();
-        selectClass = '.join-request';
-      }
-      this.$(selectClass).show();
-      this.$currentOption = this.$(selectClass).show();
-    } else {
-      selectClass = (this.data.request)
-        ? '.join-request'
-        : (this.data.password)
-        ? '.join-password'
-        : (this.data.allowed_domains)
-        ? '.join-email'
-        : '.join-other';
-      this.$currentOption = this.$(selectClass).show();
-    }
-  },
-
-  getNbrOptions: function () {
-    var result = 0;
-    if (this.data.allowed_domains) {
-      result++;
-    }
-    if (this.data.password) {
-      result++;
-    }
-    if (this.data.request) {
-      result++;
-    }
-    return result;
-  },
-
-  onChangeOption: function ($event) {
-    this.resetMessage();
-    var option = $($event.currentTarget);
-    $(this.$currentOption).hide();
-    if (option.attr('id') === 'button-request') {
-      this.$currentOption = this.$('.join-request').show();
-    } else if (option.attr('id') === 'button-password') {
-      this.$currentOption = this.$('.join-password').show();
-    } else if (option.attr('id') === 'button-email') {
-      this.$currentOption = this.$('.join-email').show();
-    }
   },
 
   onSendRequest: function () {
@@ -149,7 +78,7 @@ var ModalJoinGroupView = Backbone.View.extend({
   onConfirmEmail: function () {
     this.resetMessage();
     var selectDomain = this.$('.select-domain').val();
-    var mail = this.$('.input-email').val() + selectDomain;
+    var mail = this.$('.input-email').val().replace(selectDomain, '') + selectDomain;
     if (!this.data.allowed_domains || !this.data.allowed_domains.length) {
       return this.$error.text(i18next.t('global.unknownerror')).show();
     }
@@ -176,10 +105,6 @@ var ModalJoinGroupView = Backbone.View.extend({
   resetMessage: function () {
     this.$error.hide();
     this.$success.hide();
-  },
-
-  close: function () {
-    this.trigger('close');
   }
 });
 
