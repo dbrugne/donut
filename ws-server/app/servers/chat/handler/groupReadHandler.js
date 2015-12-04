@@ -68,13 +68,14 @@ handler.call = function (data, session, next) {
       if (group.isOwner(user.id) || session.settings.admin === true) {
         read.password = group.password;
         read.allowed_domains = group.allowed_domains;
+        read.allow_user_request = group.allow_user_request;
       }
 
       if (session.settings.admin === true) {
         read.visibility = group.visibility || false;
         read.priority = group.priority || 0;
       }
-      read.allow_user_request = group.allow_user_request;
+
       return callback(null);
     },
 
