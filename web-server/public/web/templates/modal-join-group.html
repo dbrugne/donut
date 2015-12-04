@@ -1,0 +1,51 @@
+<div id="join-group" class="modal-body">
+    <span class="close icon icon-times" data-dismiss="modal"></span>
+    <div class="title"><%= t('chat.joingroup.title', {identifier: data.identifier}) %></div>
+    <div class="message"><%= t('chat.joingroup.message') %></div>
+    <% if (data.owner_username && data.disclaimer) { %>
+        <div class="disclaimer"><%= t('chat.joingroup.disclaimer', {username: data.owner_username ,disclaimer: data.disclaimer}) %></div>
+    <% } %>
+    <div id="join-options">
+        <div class="button-options">
+            <button type="button" id="button-request" class="change-option btn btn-default"><%= t('chat.joingroup.options.request.button') %></button>
+            <button type="button" id="button-password" class="change-option btn btn-default"><%= t('chat.joingroup.options.password.button') %></button>
+            <button type="button" id="button-email" class="change-option btn btn-default"><%= t('chat.joingroup.options.email.button') %></button>
+        </div>
+        <div class="alert alert-success success"></div>
+        <div class="alert alert-danger error"></div>
+
+        <div class="join-email">
+            <div class="info-option"><%= t('chat.joingroup.options.email.info') %></div>
+            <input type="text" class="form-control input-email" placeholder="">
+            <% if (data.allowed_domains && data.allowed_domains.length) { %>
+                <select class="select-domain">
+                    <% _.each(data.allowed_domains, function(domain) { %>
+                        <option value="<%= domain %>"><%= domain %></option>
+                    <% }); %>
+                </select>
+            <% } %>
+            <button type="button" class="confirm-email btn btn-default"><%= t('chat.joingroup.options.email.confirm') %></button>
+        </div>
+        <div class="join-request">
+            <% if (!data.isAllowedPending) { %>
+                <div class="info-option"><%= t('chat.joingroup.options.request.info') %></div>
+                <textarea class="form-control input-request" rows="5" maxlength="200" placeholder="<%= t('chat.joingroup.options.request.placeholder') %>"></textarea>
+                <button type="button" class="confirm-request btn btn-default"><%= t('chat.joingroup.options.request.confirm') %></button>
+            <% } else { %>
+                <%= t('chat.joingroup.allowedpending') %>
+            <% } %>
+        </div>
+        <div class="join-password">
+            <div class="info-option"><%= t('chat.joingroup.options.password.info') %></div>
+            <input class="form-control input-password" type="password" placeholder="">
+            <button type="button" class="confirm-password btn btn-default"><%= t('chat.joingroup.options.password.confirm') %></button>
+        </div>
+        <div class="join-other">
+            <% if (!data.isAllowedPending) { %>
+                <%= t('chat.joingroup.options.other') %>
+            <% } else { %>
+                <%= t('chat.joingroup.allowedpending') %>
+            <% } %>
+        </div>
+    </div>
+</div>

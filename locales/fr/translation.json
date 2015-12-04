@@ -956,14 +956,46 @@
     "navroom": {
       "seemore": "voir tout",
       "seeless": "voir moins"
+    },
+    "joingroup": {
+      "title": "Rejoindre la communauté <strong>__identifier__</strong>",
+      "message": "Les membres ont des privilèges tels que l'accès direct à certains donuts privés et aux autres membres de la communauté.",
+      "disclaimer": "Message de <strong>@__username__</strong> :<br><i class=\"icon icon-quote\"></i>__disclaimer__",
+      "allowedpending": "L'accès à cette communauté est sur invitation, et vous avez déjà une demande en cours.",
+      "options": {
+        "request": {
+          "button": "Je fais une demande",
+          "info": "Vos coordonnées ainsi que votre message (facultatif) seront transmis aux modérateurs de cette communauté.",
+          "placeholder": "Vos motivations ...",
+          "confirm": "Envoyer",
+          "success": "Demande envoyée ! Vous serez notifié dès acceptation."
+        },
+        "password": {
+          "button": "J'ai le mot de passe",
+          "info": "Entrez le mot de passe : ",
+          "placeholder": "mot de passe",
+          "confirm": "Valider",
+          "error": "Mot de passe invalide"
+        },
+        "email": {
+          "button": "Je dispose d'un e-mail",
+          "info": "Ajouter une adresse email autorisée à votre compte",
+          "confirm": "Ajouter",
+          "placeholder": "e-mail",
+          "success": "L'e-mail __email__ a bien été ajoutée à votre compte. Vous allez recevoir un email pour valider que vous en êtes bien le propriétaire. Une fois validé, vous deviendrez automatiquement membre de cette communauté.<br>Vous pouvez gérer vos e-mails <a class=\"open-user-account\">ici</a>",
+          "error": "Cet e-mail est déjà lié à un autre compte"
+        },
+        "other": "Cette communauté est uniquement accessible sur invitation des modérateurs."
+      }
     }
   },
   "group": {
     "administrator": "Modérateurs",
     "users": "Utilisateurs",
-    "invite": "Inviter",
+    "invite": "Gérer les membres",
     "ask-membership": "devenir membre",
     "blocked": "Saisissez le mot de passe d'accès direct à la communauté",
+    "default-member": "Vous êtes membre de cette communauté",
     "default-disclaimer": "Vous n'êtes pas encore membre de cette communauté. Cliquez sur \"devenir membre\" pour en faire la demande.",
     "disclaimer-start": "Vous n'êtes pas encore membre de cette communauté. Vous pouvez pouvez y rejoindre les donuts publics et éventuellement demander l'accès à des donuts privés. Les membres d'une communauté ont des privilèges tels que l'accès direct à certains donuts privés et aux autres membres de la communauté.",
     "disclaimer-end": " Avant de demander à devenir membre, jetez un oeil aux conditions d'accès de cette communauté :"

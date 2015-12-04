@@ -386,7 +386,7 @@
     }
   }
 
-  #center { height: 100%; z-index: 5; margin-left: @size-left; font-size: 12px; background-color: @cl-subtext0; background-image: url('@{img-path}/logo-onecolor-gr.svg'); background-repeat: no-repeat; background-position: center center; background-size: 60%;
+  #center { height: 100%; z-index: 5; margin-left: @size-left; background-color: @cl-subtext0; background-image: url('@{img-path}/logo-onecolor-gr.svg'); background-repeat: no-repeat; background-position: center center; background-size: 60%;
     .user-list { height: 100%;
       .list { overflow-y: auto; overflow-x: hidden; height: 100%; .scrollbar-white;
         .item { .pull-left; position: relative; margin:5px;
@@ -521,6 +521,7 @@
     }
 
     > .group { height: 100%; background-color: @cl-background2; overflow-y: auto; .scrollbar-grey-thin;
+      .fl-left { float: left; }
       .content {position: relative; margin: 0 20px; .display-flex; .flex-flow(column nowrap);
         .header {  background-color: #FFF; margin-top: 20px; padding: 20px; min-height: 200px; border:1px solid @cl-border;
           .overlay-ctn  {
@@ -540,7 +541,7 @@
           }
           .actions .btn { white-space: nowrap; }
         }
-        .reason, .disclaimer { text-align: justify; font-size:1.6rem; margin-bottom:0; }
+        .reason, .disclaimer, .members { text-align: justify; font-size:1.6rem; margin-bottom:0; }
         .title { color:@cl-text; .ft-opensans-bold; font-size: 2rem; text-transform: capitalize; }
         .user-list { min-height:auto;
           .list { overflow: hidden;

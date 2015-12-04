@@ -956,14 +956,46 @@
     "navroom": {
       "seemore": "see all",
       "seeless": "see less"
+    },
+    "joingroup": {
+      "title": "Join community <strong>__identifier__</strong>",
+      "message": "Members have special priviledges such as direct access to certain private donuts and to other members of this community.",
+      "disclaimer": "Message from <strong>@__username__</strong> :<br><i class=\"icon icon-quote\"></i>__disclaimer__",
+      "allowedpending": "Access to this community is by invitation, and you already have a request in progress.",
+      "options": {
+        "request": {
+          "button": "I Request membership",
+          "info": "Your contact details and your following message (optional) will be sent to the moderators of this community.",
+          "placeholder": "Your motivations, background ...",
+          "confirm": "Send",
+          "success": "Request sent ! You will be notified when accepted."
+        },
+        "password": {
+          "button": "I have the password",
+          "info": "Enter the password :",
+          "placeholder": "password",
+          "confirm": "Send",
+          "error": "Invalid password"
+        },
+        "email": {
+          "button": "I have an authorized e-mail",
+          "info": "I have an authorized e-mail",
+          "placeholder": "e-mail",
+          "confirm": "Add",
+          "success": "The email __email__ has been successfully added to your account. You will receive a verification e-mail. Once verified you will automatically become a member of this community.<br>You can manage your emails <a class=\"open-user-account\">here</a>",
+          "error": "This e-mail is already linked to another account"
+        },
+        "other": "You can join this community only if invited by its moderators."
+      }
     }
   },
   "group": {
     "administrator": "Moderators",
     "users": "Users",
-    "invite": "Invite",
+    "invite": "Manage members",
     "ask-membership": "request membership",
     "blocked": "This community is blocked by a password, to join we invite you to type it",
+    "default-member": "You are a member of this community",
     "default-disclaimer": "You are not yet a member of this community. Click \"request membership\" to apply for.",
     "disclaimer-start": "You are not yet a member of this community You can join public donuts or request access to a private donut. Members have special priviledges such as direct access to certain private donuts and to other members of this community.",
     "disclaimer-end": "Before you request membership have a glance at this community access conditions :"

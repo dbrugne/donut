@@ -28,7 +28,7 @@ var GroupAccessView = Backbone.View.extend({
   events: {
     'keyup #input-search': 'onSearchUser',
     'click .search-user i.icon-search': 'onSearchUser',
-    'click .search-user .dropdown-menu>li': 'onAllowUser',
+    'click .search-user .dropdown-menu>li': 'onAddAllowed',
 
     'keyup #input-search-banned': 'onSearchUserBanned',
     'click .search-user-banned i.icon-search': 'onSearchUserBanned',
@@ -38,7 +38,8 @@ var GroupAccessView = Backbone.View.extend({
     'click input.save-conditions': 'onSubmitConditions',
     'change [type="checkbox"]': 'onChoosePassword',
     'click .random-password': 'onRandomPassword',
-    'keyup #conditions-area': 'onTypeConditions'
+    'keyup #conditions-area': 'onTypeConditions',
+    'click #input-userrequest-checkbox': 'onChangeUsersRequest'
   },
 
   initialize: function (options) {
@@ -76,7 +77,8 @@ var GroupAccessView = Backbone.View.extend({
 
     var html = this.template({
       group: data,
-      password: data.password
+      password: data.password,
+      allow_user_request: data.allow_user_request || false
     });
     this.$el.html(html);
 
@@ -88,7 +90,7 @@ var GroupAccessView = Backbone.View.extend({
     this.$dropdownBan = this.$('.search-user-banned .dropdown');
 
     this.$toggleCheckbox = this.$('#input-password-checkbox');
-    this.$checkboxGroupAllow = this.$('#input-allowgroupmember-checkbox');
+    this.$checkboxUserRequest = this.$('#input-userrequest-checkbox');
     this.$password = this.$('.input-password');
     this.$randomPassword = this.$('.random-password');
     this.$countConditions = this.$('.counter');
@@ -113,6 +115,10 @@ var GroupAccessView = Backbone.View.extend({
       model: this.model
     });
     this.renderTables(data);
+
+    this.listenTo(this.tablePending, 'error', this.setError);
+    this.listenTo(this.tableAllowed, 'error', this.setError);
+    this.listenTo(this.tableDomain, 'error', this.setError);
 
     this.initializeTooltips();
   },
@@ -203,19 +209,23 @@ var GroupAccessView = Backbone.View.extend({
 
     this.renderDropDown(val, this.$dropdownBan);
   },
-  onAllowUser: function (event) {
+  onAddAllowed: function (event) {
     event.preventDefault();
 
     var userId = $(event.currentTarget).data('userId');
-    var userName = $(event.currentTarget).data('username');
+    var username = $(event.currentTarget).data('username');
 
-    if (userId && userName) {
+    if (userId && username) {
       ConfirmationView.open({
         message: 'invite',
-        username: userName,
+        username: username,
         room_name: this.group_name
       }, _.bind(function () {
-        client.groupAllow(this.model.get('group_id'), userId, _.bind(function () {
+        client.groupAllowedAdd(this.model.get('group_id'), userId, _.bind(function (response) {
+          if (response.err) {
+            return this.setError(i18next.t('chat.form.errors.' + response.err));
+          }
+
           this.tablePending.render('pending');
           this.tableAllowed.render('allowed');
           this.model.refreshUsers();
@@ -284,6 +294,15 @@ var GroupAccessView = Backbone.View.extend({
     }
     this.$password.val(common.misc.randomString());
     this.$password.focus();
+  },
+  onChangeUsersRequest: function (event) {
+    client.groupUpdate(this.model.get('group_id'), {
+      allow_user_request: this.$checkboxUserRequest.is(':checked')
+    }, _.bind(function (response) {
+      if (response.err) {
+        this.$errors.html(response.err).show();
+      }
+    }, this));
   },
   reset: function () {
     this.$errors.html('').hide();
