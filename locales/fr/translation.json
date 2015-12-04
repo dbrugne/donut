@@ -960,6 +960,7 @@
       "title": "Rejoindre la communauté <strong>__identifier__</strong>",
       "message": "Les membres ont des privilèges tels que l'accès direct à certains donuts privés et aux autres membres de la communauté.",
       "disclaimer": "Message de <strong>@__username__</strong> :<br><i class=\"icon icon-quote\"></i>__disclaimer__",
+      "allowedpending": "L'accès à cette communauté est sur invitation, et vous avez déjà une demande en cours.",
       "options": {
         "request": {
           "button": "Je fais une demande",

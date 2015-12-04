@@ -27,9 +27,13 @@
             <button type="button" class="confirm-email btn btn-default"><%= t('chat.joingroup.options.email.confirm') %></button>
         </div>
         <div class="join-request">
-            <div class="info-option"><%= t('chat.joingroup.options.request.info') %></div>
-            <textarea class="form-control input-request" rows="5" maxlength="200" placeholder="<%= t('chat.joingroup.options.request.placeholder') %>"></textarea>
-            <button type="button" class="confirm-request btn btn-default"><%= t('chat.joingroup.options.request.confirm') %></button>
+            <% if (!data.isAllowedPending) { %>
+                <div class="info-option"><%= t('chat.joingroup.options.request.info') %></div>
+                <textarea class="form-control input-request" rows="5" maxlength="200" placeholder="<%= t('chat.joingroup.options.request.placeholder') %>"></textarea>
+                <button type="button" class="confirm-request btn btn-default"><%= t('chat.joingroup.options.request.confirm') %></button>
+            <% } else { %>
+                <%= t('chat.joingroup.allowedpending') %>
+            <% } %>
         </div>
         <div class="join-password">
             <div class="info-option"><%= t('chat.joingroup.options.password.info') %></div>
@@ -37,7 +41,11 @@
             <button type="button" class="confirm-password btn btn-default"><%= t('chat.joingroup.options.password.confirm') %></button>
         </div>
         <div class="join-other">
-            <%= t('chat.joingroup.options.other') %>
+            <% if (!data.isAllowedPending) { %>
+                <%= t('chat.joingroup.options.other') %>
+            <% } else { %>
+                <%= t('chat.joingroup.allowedpending') %>
+            <% } %>
         </div>
     </div>
 </div>

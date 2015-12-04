@@ -82,13 +82,15 @@ handler.call = function (data, session, next) {
         options.password = true;
       }
 
-      if (group.allow_user_request && !group.isAllowedPending(user.id)) {
+      options.isAllowedPending = group.isAllowedPending(user.id);
+      if (group.allow_user_request) {
         options.request = true;
       }
 
       if (group.allowed_domains && group.allowed_domains.length) {
         options.allowed_domains = group.allowed_domains;
       }
+
       return callback(null);
     },
 
