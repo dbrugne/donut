@@ -3,7 +3,7 @@ var logger = require('../../../../../shared/util/logger').getLogger('donut', __f
 var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
-var Room = require('../../../../../shared/models/room');
+var RoomModel = require('../../../../../shared/models/room');
 var validator = require('validator');
 var cloudinary = require('../../../../../shared/util/cloudinary').cloudinary;
 var linkify = require('linkifyjs');
@@ -35,14 +35,25 @@ handler.call = function (data, session, next) {
       var errors = {};
       var sanitized = {};
 
+      // username (format)
+      if (_.has(data.data, 'username')) {
+        if (!common.validate.username(data.data.username)) {
+          errors.realname = 'username-format';
+        } else {
+          var username = data.data.username;
+          username = validator.trim(username);
+          if (username !== user.username) {
+            sanitized.username = username;
+          }
+        }
+      }
+
       // realname
       if (_.has(data.data, 'realname')) {
         if (data.data.realname.length === 0) {
           sanitized.realname = '';
         } else {
           if (!common.validate.realname(data.data.realname)) {
-            errors.realname = 'real-name-format';
-          } else if (!validator.isLength(data.data.realname, 2, 20)) {
             errors.realname = 'real-name-format';
           } else {
             var realname = data.data.realname;
@@ -131,6 +142,16 @@ handler.call = function (data, session, next) {
       return callback(null, sanitized);
     },
 
+    function usernameAvailability (sanitized, callback) {
+      if (!sanitized.username) {
+        return callback(null, sanitized);
+      }
+
+      user.usernameAvailability(sanitized.username, function (err) {
+        return callback(err, sanitized); // usernameAvailability returns err as 'not-available' if taken
+      });
+    },
+
     /**
      * We receive following fields (e.g.: data.data.avatar):
      *
@@ -193,7 +214,6 @@ handler.call = function (data, session, next) {
     },
 
     function broadcast (sanitized, callback) {
-      // notify only certain fields
       var sanitizedToNotify = {};
       _.each(Object.keys(sanitized), function (key) {
         if (key === 'avatar') {
@@ -224,10 +244,12 @@ handler.call = function (data, session, next) {
     function prepareEventForOthers (sanitized, callback) {
       // notify only certain fields
       var sanitizedToNotify = {};
-      var fieldToNotify = ['avatar', 'poster', 'color', 'realname'];
+      var fieldToNotify = ['username', 'avatar', 'poster', 'color', 'realname'];
       _.each(Object.keys(sanitized), function (key) {
         if (fieldToNotify.indexOf(key) !== -1) {
-          if (key === 'avatar') {
+          if (key === 'username') {
+            sanitizedToNotify['username'] = user.username;
+          } else if (key === 'avatar') {
             sanitizedToNotify['avatar'] = user._avatar();
           } else if (key === 'poster') {
             sanitizedToNotify['poster'] = user._poster();
@@ -261,7 +283,7 @@ handler.call = function (data, session, next) {
 
       var onesId = _.map(user.ones, 'user');
       var roomsId = [];
-      Room.findByUser(user.id).exec(function (err, rooms) {
+      RoomModel.findByUser(user.id).exec(function (err, rooms) {
         if (err) {
           return callback(err);
         }
