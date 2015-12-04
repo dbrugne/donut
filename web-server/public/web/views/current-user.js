@@ -31,8 +31,10 @@ var CurrentUserView = Backbone.View.extend({
     return this;
   },
   userConfirmed: function () {
-    this.model.setConfirmed();
-    this.render();
+    if (this.model.get('confirmed') !== true) {
+      this.model.setConfirmed();
+      this.render();
+    }
   }
 });
 
