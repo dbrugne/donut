@@ -15,25 +15,14 @@ var ModalView = Backbone.View.extend({
     this.contentView = view;
     this.$content.html(view.$el);
 
-    this.listenTo(view, 'close', this.close);
+    this.listenTo(view, 'close', this.hide);
     return this;
   },
   open: function () {
-    this._show();
-    $('body').addClass('modal-open');
+    $(this.$el).modal({'show': true, backdrop: true});
     return this;
   },
-  close: function () {
-    this._hide();
-    $('body').removeClass('modal-open');
-  },
-  _show: function () {
-    $(this.$el).modal({
-      backdrop: true
-    });
-    this.$el.addClass('in');
-  },
-  _hide: function () {
+  hide: function () {
     this.$el.removeClass('in');
     $(this.$el).modal('hide');
     if (this.contentView) {
