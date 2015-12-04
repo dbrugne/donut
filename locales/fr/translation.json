@@ -168,6 +168,7 @@
     "verify": "Verification de votre email"
   },
   "global": {
+    "validate": "valider",
     "collapse": "réduire",
     "members": "<strong>__count__</strong> membre",
     "members_plural": "<strong>__count__</strong> membres",
