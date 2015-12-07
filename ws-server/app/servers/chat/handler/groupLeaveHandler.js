@@ -19,14 +19,20 @@ var handler = Handler.prototype;
 handler.call = function (data, session, next) {
   var user = session.__currentUser__;
   var group = session.__group__;
-  var rooms = {};
-  var event = {};
+  var rooms = [];
+
+  var event = {
+    user_id: user.id,
+    username: user.username,
+    avatar: user._avatar(),
+    reason: 'out'
+  };
 
   var that = this;
 
   async.waterfall([
 
-    function check(callback) {
+    function check (callback) {
       if (!data.group_id) {
         return callback('params-group-id');
       }
@@ -35,6 +41,8 @@ handler.call = function (data, session, next) {
         return callback('group-not-found');
       }
 
+      // @todo spariaud isMember
+
       return callback(null);
     },
 
@@ -42,7 +50,7 @@ handler.call = function (data, session, next) {
       GroupModel.update(
         {_id: group._id},
         {
-          $addToSet: {allowed: user._id},
+          $addToSet: {allowed: user._id}, // like that user will be able to-rejoin further
           $pull: {
             op: user._id,
             members: user._id
@@ -54,26 +62,29 @@ handler.call = function (data, session, next) {
     },
 
     function computeRoomsToProcess (callback) {
-      RoomModel.find({group: group._id, mode: 'private', allow_group_member: true, user: {$nin: [user._id]}})
-        .exec(function (err, dbrooms) {
-          if (err) {
-            return callback(err);
-          }
-          rooms = dbrooms;
+      RoomModel.find({
+        group: group._id,
+        mode: 'private',
+        allow_group_member: true,
+        user: {$in: [user._id]}
+      }).exec(function (err, dbrooms) {
+        if (err) {
           return callback(err);
-        });
+        }
+
+        rooms = dbrooms;
+        return callback(null);
+      });
     },
 
     function persistOnRooms (callback) {
-      event = {
-        user_id: user.id,
-        username: user.username,
-        avatar: user._avatar(),
-        reason: 'out'
-      };
+      if (!rooms.length) {
+        return callback(null);
+      }
 
+      var ids = _.map(rooms, '_id');
       RoomModel.update(
-        {group: group._id, mode: 'private', allow_group_member: true, user: {$nin: [user._id]}},
+        {_id: {$in: ids}},
         {
           $pull: {
             users: user._id,
@@ -83,39 +94,27 @@ handler.call = function (data, session, next) {
         {multi: true},
         function (err) {
           return callback(err);
-        });
+        }
+      );
     },
 
     function broadcast (callback) {
-      var roomEvent = {};
-      async.eachLimit(rooms, 10, function (r, callback) {
-        roomEvent = {
-          name: r.name,
-          id: r.id,
-          room_id: r.id,
-        };
-        that.app.globalChannelService.pushMessage('connector', 'room:leave', _.clone(roomEvent), 'user:' + user.id, {}, function (err) {
-          if (err) {
-            callback(err);
-          }
-          roomEmitter(that.app, user, r, 'room:out', _.clone(event), function (err) {
-            if (err) {
-              return callback(r.id + ': ' + err);
-            }
-            return callback(null);
-          });
-        });
-      }, function (err) {
-        return callback(err);
-      });
-      callback(null);
+      if (!rooms.length) {
+        return callback(null);
+      }
+
+      async.eachLimit(rooms, 5, function (r, cb) {
+        roomEmitter(that.app, user, r, 'room:out', _.clone(event), cb);
+      }, callback);
     },
 
     function broadcastToUser (callback) {
-      event = {
+      var event = {
         group_id: group.id,
-        group_name: '#' + group.name
-      }
+        group_name: '#' + group.name,
+        // @todo : add rooms
+      };
+      // @todo : implement room:leave logic on client side for group:leave
       that.app.globalChannelService.pushMessage('connector', 'group:leave', event, 'user:' + user.id, {}, function (err) {
         return callback(err);
       });
