@@ -20,6 +20,8 @@ module.exports = function (app, msg, session, next) {
 
   var firstClient = true;
 
+  var welcome;
+
   async.waterfall([
 
     function determineIfFirstClient (callback) {
@@ -65,7 +67,17 @@ module.exports = function (app, msg, session, next) {
       );
     },
 
-    function declareIdentity (welcome, callback) {
+    function handlerRequireUsername (_welcome, callback) {
+      welcome = _welcome;
+
+      if (!welcome.user.username) {
+        welcome.usernameRequired = true;
+      }
+
+      return callback(null);
+    },
+
+    function declareIdentity (callback) {
       // add username in connection monitoring
       app.components.__connection__.updateUserInfo(uid, {
         username: welcome.user.username,
@@ -78,10 +90,8 @@ module.exports = function (app, msg, session, next) {
       session.set('device', device);
 
       // add username, avatar, color and admin flag on session
-      session.set('username', welcome.user.username);
-      session.set('avatar', welcome.user.avatar);
-      session.set('color', welcome.user.color);
       session.set('started', Date.now());
+      session.set('username', welcome.user.username);
       if (welcome.user.admin === true) {
         session.set('admin', true);
       }
@@ -90,13 +100,13 @@ module.exports = function (app, msg, session, next) {
         if (err) {
           return callback('Error while updating session infos: ' + err);
         }
-        return callback(null, welcome);
+        return callback(null);
       });
     },
 
-    function subscribeRoomChannels (welcome, callback) {
-      if (!welcome.rooms || welcome.rooms.length < 1) {
-        return callback(null, welcome);
+    function subscribeRoomChannels (callback) {
+      if (welcome.usernameRequired || !welcome.rooms || welcome.rooms.length < 1) {
+        return callback(null);
       }
 
       var parallels = [];
@@ -116,41 +126,45 @@ module.exports = function (app, msg, session, next) {
           return callback('Error while registering user in rooms channels: ' + err);
         }
 
-        return callback(null, welcome);
+        return callback(null);
       });
     },
 
-    function subscribeUserChannel (welcome, callback) {
+    function subscribeUserChannel (callback) {
       app.globalChannelService.add(USER_CHANNEL_PREFIX + uid, uid, session.frontendId, function (err) {
         if (err) {
           return callback('Error while registering user in user channel: ' + err);
         }
 
-        return callback(null, welcome);
+        return callback(null);
       });
     },
 
-    function subscribeGlobalChannel (welcome, callback) {
+    function subscribeGlobalChannel (callback) {
       app.globalChannelService.add(GLOBAL_CHANNEL_NAME, uid, session.frontendId, function (err) {
         if (err) {
           return callback('Error while registering user in global channel: ' + err);
         }
 
-        return callback(null, welcome);
+        return callback(null);
       });
     },
 
-    function cleanupNotifications (welcome, callback) {
+    function cleanupNotifications (callback) {
       Notifications(app).avoidNotificationsSending(uid, function (err) {
         if (err) {
           return callback('Error while setting notifications as read for ' + session.uid + ': ' + err);
         }
 
-        return callback(null, welcome);
+        return callback(null);
       });
     },
 
-    function tracking (welcome, callback) {
+    function tracking (callback) {
+      if (welcome.usernameRequired) {
+        return callback(null);
+      }
+
       var _socket = session.__session__.__socket__.socket;
       var sessionEvent = {
         session: {
@@ -170,13 +184,13 @@ module.exports = function (app, msg, session, next) {
           logger.error('Error while tracking session_start in keen.io for ' + uid + ': ' + err);
         }
 
-        return callback(null, welcome);
+        return callback(null);
       });
     },
 
-    function sendUserOnline (welcome, callback) {
+    function sendUserOnline (callback) {
       if (!firstClient) {
-        return callback(null, welcome);
+        return callback(null);
       }
 
       app.rpc.chat.statusRemote.online(
@@ -191,10 +205,10 @@ module.exports = function (app, msg, session, next) {
       );
 
       // don't wait for response before continuing
-      return callback(null, welcome);
+      return callback(null);
     }
 
-  ], function (err, welcome) {
+  ], function (err) {
     if (err) {
       logger.error(err);
       return next(null, { code: 500, error: true, msg: err });

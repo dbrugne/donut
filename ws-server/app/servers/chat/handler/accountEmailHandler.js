@@ -56,6 +56,10 @@ handler.add = function (email, user, next) {
   async.waterfall([
 
     function check (callback) {
+      if (_.findWhere(user.emails, {email: email})) {
+        return callback('mail-already-exist');
+      }
+
       User.findOne({'emails': {$elemMatch: {'email': email, 'confirmed': true}}}).exec(function (err, user) {
         if (err) {
           return callback(err);
@@ -136,6 +140,14 @@ handler.main = function (email, user, next) {
   user.save(_.bind(function (err) {
     if (err) {
       return errors.getHandler('user:email:main', next)(err);
+    }
+
+    if (!oldEmail) {
+      // if address not validate, send an validation email
+      if (!_.findWhere(user.emails, {email: email, confirmed: true})) {
+        return this.validate(email, user, next);
+      }
+      return next(null, {success: true});
     }
 
     emailer.emailChanged(oldEmail, _.bind(function (err) {

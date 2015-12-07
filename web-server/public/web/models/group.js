@@ -52,7 +52,7 @@ var GroupModel = Backbone.Model.extend({
       }
     });
 
-    this.trigger('members-redraw');  // required to redraw members list only, user has changed list
+    this.trigger('refreshPage');
   },
   onDeop: function (data) {
     // user.get('is_op')
@@ -63,31 +63,7 @@ var GroupModel = Backbone.Model.extend({
       }
     });
 
-    this.trigger('members-redraw');  // required to redraw members list only, user has changed list
-  },
-  onAllow: function (data) {
-    data.is_op = false;
-    var members = this.get('members');
-    members.push(data);
-    this.set('members', members);
-
-    if (data.user_id === currentUser.get('user_id')) {
-      this.refreshRooms();
-    }
-
-    this.trigger('redraw'); // required to redraw all, as we now display private rooms
-  },
-  onDisallow: function (data) {
-    var members = _.reject(this.get('members'), function (m) {
-      return (m.user_id === data.user_id);
-    });
-    this.set('members', members);
-
-    if (data.user_id === currentUser.get('user_id')) {
-      this.refreshRooms();
-    }
-
-    this.trigger('redraw'); // required to redraw all, as we now hide private rooms
+    this.trigger('refreshPage');
   },
   onBan: function (data) {
     var ban = {
@@ -101,7 +77,7 @@ var GroupModel = Backbone.Model.extend({
     bans.push(ban);
     this.set('bans', bans);
 
-    this.trigger('members-redraw');  // required to redraw members list only, user has been, removed from list
+    this.trigger('refreshPage');
   },
   onDeleteRoom: function (roomId) {
     var rooms = _.reject(this.get('rooms'), function (r) {
@@ -109,21 +85,7 @@ var GroupModel = Backbone.Model.extend({
     });
     this.set('rooms', rooms);
 
-    this.trigger('redraw'); // required to redraw all, as we now remove the room
-  },
-  refreshUsers: function () {
-    client.groupRead(this.get('group_id'), { users: true }, _.bind(function (response) {
-      if (!response.err) {
-        this.set(response);
-      }
-    }, this));
-  },
-  refreshRooms: function () {
-    client.groupRead(this.get('group_id'), { rooms: true }, _.bind(function (response) {
-      if (!response.err) {
-        this.set('rooms', response.rooms);
-      }
-    }, this));
+    this.trigger('refreshPage');
   }
 });
 

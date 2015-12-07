@@ -5,6 +5,7 @@ var async = require('async');
 var emailer = require('../../../../../shared/io/emailer');
 var utils = require('./../utils');
 var NotificationModel = require('../../../../../shared/models/notification');
+var conf = require('../../../../../config/index');
 
 module.exports = function (facade) {
   return new Notification(facade);
@@ -46,6 +47,31 @@ Notification.prototype.create = function (user, group, event, done) {
         return callback(true);
       }
       return callback(null, userModel, groupModel, status);
+    },
+
+    function avoidRepetitive (userModel, groupModel, status, callback) {
+      if (that.facade.options.force === true || that.type !== 'groupinvite') {
+        return callback(null, userModel, groupModel, status);
+      }
+      var criteria = {
+        type: that.type,
+        time: {
+          $gte: new Date((Date.now() - 1000 * conf.notifications.types.groupinvite.creation))
+        },
+        'data.group': groupModel._id,
+        'data.by_user': event.by_user_id
+      };
+      NotificationModel.findOne(criteria).count(function (err, count) {
+        if (err) {
+          return callback(err);
+        }
+        if (count) {
+          logger.debug('roomJoinType.create no notification creation due to repetitive');
+          return callback(true);
+        }
+
+        return callback(null, userModel, groupModel, status);
+      });
     },
 
     function save (userModel, groupModel, status, callback) {
@@ -130,7 +156,7 @@ Notification.prototype.sendEmail = function (model, done) {
       var method, data;
       switch (model.type) {
         case 'groupjoinrequest':
-          method = emailer.groupJoinRequest;
+          method = emailer.groupRequest;
           data = {
             username: model.data.by_user.username,
             groupname: group.name

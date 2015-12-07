@@ -168,6 +168,7 @@
     "verify": "Verification de votre email"
   },
   "global": {
+    "validate": "valider",
     "collapse": "réduire",
     "members": "<strong>__count__</strong> membre",
     "members_plural": "<strong>__count__</strong> membres",
@@ -503,6 +504,7 @@
         "deban-room-user": "Vous allez débannir cet utilisateur de ce donut.",
         "kick-room-user": "Vous allez expulser cet utilisateur de ce donut.",
         "devoice-room-user": "Vous allez rendre muet cet utilisateur.",
+        "close-group": "Vous allez quitter cette communauté",
         "ban-group-user": "Vous allez bannir l'utilisateur @__username__ de cette communauté",
         "deban-group-user": "Vous allez débannir l'utilisateur @__username__ de cette communauté",
         "op-group-user": "Vous allez promouvoir @__username__ modérateur de cette communauté. Les modérateurs peuvent gérer les demandes d'adhésion, inviter et bannir des membres.",
@@ -937,6 +939,7 @@
         "color-hexadecimal": "La couleur doit être dans un format hexadécimale (e.g.: #FF00AA).",
         "color-integer": "La priorité devrait être exprimer en nombre (entier).",
         "name-wrong-format": "Le nom du donut est invalide",
+        "group-name-wrong-format": "Le nom de la communauté est invalide",
         "mode-wrong-format": "Vous devez séléctionner un mode pour ce donut",
         "invalid-password": "Le mot de passe doit être compris entre 4 et 255 caractères",
         "room-already-exist": "Le donut __name__ existe déjà, <a href='__uri__'>voulez-vous le rejoindre</a> ?",
@@ -955,17 +958,51 @@
     "navroom": {
       "seemore": "voir tout",
       "seeless": "voir moins"
+    },
+    "joingroup": {
+      "title": "Rejoindre la communauté <strong>__identifier__</strong>",
+      "message": "Les membres ont des privilèges tels que l'accès direct à certains donuts privés et aux autres membres de la communauté.",
+      "disclaimer": "Message de <strong>@__username__</strong> :<br><i class=\"icon icon-quote\"></i>__disclaimer__",
+      "allowedpending": "L'accès à cette communauté est sur invitation, et vous avez déjà une demande en cours.",
+      "options": {
+        "request": {
+          "button": "Je fais une demande",
+          "info": "Vos coordonnées ainsi que votre message (facultatif) seront transmis aux modérateurs de cette communauté.",
+          "placeholder": "Vos motivations ...",
+          "confirm": "Envoyer",
+          "success": "Demande envoyée ! Vous serez notifié dès acceptation."
+        },
+        "password": {
+          "button": "J'ai le mot de passe",
+          "info": "Entrez le mot de passe : ",
+          "placeholder": "mot de passe",
+          "confirm": "Valider",
+          "error": "Mot de passe invalide"
+        },
+        "email": {
+          "button": "Je dispose d'un e-mail",
+          "info": "Ajouter une adresse email autorisée à votre compte",
+          "confirm": "Ajouter",
+          "placeholder": "e-mail",
+          "domain": "domaine",
+          "success": "L'e-mail __email__ a bien été ajoutée à votre compte. Vous allez recevoir un email pour valider que vous en êtes bien le propriétaire. Une fois validé, vous deviendrez automatiquement membre de cette communauté.<br>Vous pouvez gérer vos e-mails <a class=\"inverse open-user-account\" data-dismiss=\"modal\">ici</a>",
+          "error": "Cet e-mail est déjà lié à un autre compte"
+        },
+        "other": "Cette communauté est uniquement accessible sur invitation des modérateurs."
+      }
     }
   },
   "group": {
     "administrator": "Modérateurs",
     "users": "Utilisateurs",
-    "invite": "Inviter",
+    "invite": "Gérer les membres",
     "ask-membership": "devenir membre",
     "blocked": "Saisissez le mot de passe d'accès direct à la communauté",
+    "default-member": "Vous êtes membre de cette communauté",
     "default-disclaimer": "Vous n'êtes pas encore membre de cette communauté. Cliquez sur \"devenir membre\" pour en faire la demande.",
     "disclaimer-start": "Vous n'êtes pas encore membre de cette communauté. Vous pouvez pouvez y rejoindre les donuts publics et éventuellement demander l'accès à des donuts privés. Les membres d'une communauté ont des privilèges tels que l'accès direct à certains donuts privés et aux autres membres de la communauté.",
-    "disclaimer-end": " Avant de demander à devenir membre, jetez un oeil aux conditions d'accès de cette communauté :"
+    "disclaimer-end": " Avant de demander à devenir membre, jetez un oeil aux conditions d'accès de cette communauté :",
+    "close": "quitter le groupe"
   },
   "account": {
     "error": {

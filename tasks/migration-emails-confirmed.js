@@ -12,8 +12,15 @@ module.exports = function (grunt) {
         emails.push({email: user.local.email, confirmed: true});
       }
       if (user.facebook && user.facebook.email) {
-        emails.push({email: user.facebook.email, confirmed: true});
-        user.local.email = user.facebook.email;
+        // don't duplicate email
+        if (!user.local || !user.local.email || user.local.email !== user.facebook.email) {
+          emails.push({email: user.facebook.email, confirmed: true});
+        }
+
+        // don't rewrite main email
+        if (!user.local || !user.local.email) {
+          user.local.email = user.facebook.email;
+        }
       }
       user.emails = emails;
       user.confirmed = true;

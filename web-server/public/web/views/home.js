@@ -39,6 +39,7 @@ var HomeView = Backbone.View.extend({
   },
   onHome: function (data) {
     data.fill = true;
+    this.$el.removeClass('loading');
     this.cardsView.render(_.omit(data, 'users'));
     this.usersView.render(_.omit(data, ['rooms', 'groups']));
     this.empty = false;

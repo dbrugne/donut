@@ -79,7 +79,8 @@ handler.call = function (data, session, next) {
         by_avatar: user._avatar(),
         user_id: group.owner._id,
         username: group.owner.username,
-        avatar: group.owner._avatar()
+        avatar: group.owner._avatar(),
+        reason: 'deleted'
       };
       var ids = group.getIdsByType('members');
       var channelsName = [];
@@ -98,11 +99,12 @@ handler.call = function (data, session, next) {
       if (!roomIds.length) {
         return callback(null);
       }
-      RoomModel.update({
-        _id: {$in: roomIds}
-      }, {
-        $set: {deleted: true}
-      }, {multi: true}, callback);
+      RoomModel.update(
+        {_id: {$in: roomIds}},
+        {$set: {deleted: true}},
+        {multi: true},
+        function (err) { callback(err); }
+      );
     },
 
     function persistGroup (callback) {

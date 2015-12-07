@@ -40,7 +40,7 @@ handler.call = function (data, session, next) {
       }
 
       if (room.isAllowed(user.id)) {
-        return callback('allowed');
+        return callback('already-allowed');
       }
 
       if (room.isAllowedPending(user.id)) {

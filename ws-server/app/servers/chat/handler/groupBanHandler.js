@@ -77,6 +77,7 @@ handler.call = function (data, session, next) {
             $pull: {
               op: targetUser._id,
               members: targetUser._id,
+              allowed: targetUser._id,
               members_pending: {user: targetUser._id}
             }
           }, function (err) {
@@ -184,6 +185,9 @@ handler.call = function (data, session, next) {
       },
 
       function notification (event, callback) {
+        if (!group.isMember(targetUser.id)) {
+          return callback(null);
+        }
         Notifications(that.app).getType('groupban').create(targetUser.id, group, event, function (err) {
           return callback(err);
         });

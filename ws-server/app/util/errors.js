@@ -27,6 +27,7 @@ var errors = {
 
   // NOT ALLOWED ERROR (403)
   'not-op': 403,                      // User not op
+  'not-member': 403,                  // User not member
   'not-admin-owner': 403,             // User not admin or owner
   'not-admin-owner-groupowner': 403,  // User not admin, owner and group owner
   'not-op-owner-admin': 403,          // User not op, owner and admin
@@ -40,7 +41,8 @@ var errors = {
   'private': 403,                     // Room is private
   'permanent': 403,                   // Room is permanent can\'t set private
   'voiced': 403,                      // User is voiced in the room
-  'allowed': 403,                     // User is allowed in the room
+  'already-allowed': 403,             // User is allowed in the room or group
+  'already-member': 403,              // User is member in the group
   'owner': 403,                       // User is owner in the room
   'oped': 403,                        // User is op in the room
   'allow-pending': 403,               // User is in allowed pending list (private room)
@@ -59,6 +61,7 @@ var errors = {
   'not-found': 404,                   // == GENERAL TAG ==
 
   // CONFLICT (409)
+  'not-available': 409,               // Username already used by an other user
   'mail-already-exist': 409,          // Mail already used by an other user
   'room-already-exist': 409,          // room name already used by an other room/group
   'group-name-already-exist': 409,    // group name already used by an other group/room

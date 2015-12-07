@@ -7,6 +7,7 @@ var CurrentUserModel = Backbone.Model.extend({
   initialize: function (options) {
     this.listenTo(client, 'user:updated', this.onUpdated);
     this.listenTo(client, 'preferences:update', this.setPreference);
+    this.listenTo(client, 'user:confirmed', this.setConfirmed);
 
     // listen for client statuses (should be done only by client and view??)
     var statuses = {

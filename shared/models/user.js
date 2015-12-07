@@ -163,8 +163,6 @@ userSchema.methods.isAllowedToConnect = function () {
   var err = null;
   if (this.suspended === true) {
     err = 'suspended';
-  } else if (!this.username) {
-    err = 'no-username';
   }
 
   return {allowed: (!err), err: err};
@@ -345,6 +343,14 @@ userSchema.methods.preferencesValue = function (key) {
   }
 
   return preferencesConfig[_key]['default'];
+};
+
+userSchema.methods.hasAllowedEmail = function (domains) {
+  var found = _.find(this.emails, _.bind(function (e) {
+    var domain = '@' + e.email.split('@')[1].toLowerCase();
+    return (domains.indexOf(domain) !== -1 && e.confirmed);
+  }, this));
+  return (typeof found !== 'undefined');
 };
 
 /** *******************************************************************************

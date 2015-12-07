@@ -36,7 +36,7 @@ module.exports = {
   },
   oauth: {
     secret: 'QmFzZTY0DQoNCkJhc2U2NCBpcyBhIGdlbmVyaWMgdGVybSBmb3IgYSBudW1iZ',
-    expire: 6 * 60 * 60 // 6 hours, in seconds
+    expire: 7 * 24 * 3600 // 1 week, in seconds
   },
   verify: {
     secret: 'GwTiZFkkX8XoC4HqaUobXBhFUODxz7RNkYyIx8KCEsUkcEeir88UBX1AJBpyOiOI',
@@ -102,6 +102,9 @@ module.exports = {
       },
       roomjoin: {
         creation: 5 * 60 // 5mn
+      },
+      groupinvite: {
+        creation: 60 * 60 // 60mn
       }
     }
   }

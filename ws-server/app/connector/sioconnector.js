@@ -82,7 +82,8 @@ Connector.prototype.start = function (cb) {
     var ip = (socket.handshake.headers['x-forwarded-for'])
       ? socket.handshake.headers['x-forwarded-for']
       : socket.conn.remoteAddress;
-    logger.info('ws:authenticated', socket.decoded_token.username, ip);
+    var username = socket.decoded_token.username || 'none';
+    logger.info('ws:authenticated', username, ip);
 
     // add test event
     socket.on('ping', function (data) {

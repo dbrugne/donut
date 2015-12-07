@@ -1,7 +1,6 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
-var ConfirmationView = require('./modal-confirmation');
 var client = require('../libs/client');
 var i18next = require('i18next-client');
 var app = require('../libs/app');
@@ -18,20 +17,16 @@ var GroupView = Backbone.View.extend({
   className: 'group',
 
   events: {
-    'click .request-allowance': 'onRequestAllowance',
-    'click .send-password': 'onSendPassword',
-    'click .group-join': 'onJoinGroup'
+    'click .group-join': 'askMembership'
   },
 
   initialize: function (options) {
+    this.listenTo(this.model, 'refreshPage', this.onRefreshPage);
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
-    this.listenTo(this.model, 'change:members', this.refreshUsers);
-    this.listenTo(this.model, 'change:op', this.refreshUsers);
-    this.listenTo(this.model, 'change:rooms', this.render);
     this.listenTo(this.model, 'change:avatar', this.onAvatar);
     this.listenTo(this.model, 'change:color', this.onColor);
     this.listenTo(this.model, 'redraw', this.render);
-    this.render();
+    this.listenTo(app, 'askMembership', this.askMembership);
   },
   render: function () {
     var group = this.model.toJSON();
@@ -94,6 +89,7 @@ var GroupView = Backbone.View.extend({
       el: this.$('.users.user-list'),
       model: this.model
     });
+    this.groupUsersView.render();
 
     return this;
   },
@@ -109,55 +105,14 @@ var GroupView = Backbone.View.extend({
       this.$el.hide();
     }
   },
-  onRequestAllowance: function (event) {
-    var options = {
-      message: 'request-allowance',
-      area: true
-    };
-
-    ConfirmationView.open(options, _.bind(function (message) {
-      client.groupJoinRequest(this.model.get('group_id'), message, function (response) {
-        if (response.err) {
-          if (response.err === 'allow-pending' || response.err === 'message-wrong-format') {
-            app.trigger('alert', 'error', i18next.t('chat.allowed.error.' + response.err));
-          } else if (response.err === 'not-confirmed') {
-            app.trigger('alert', 'error', i18next.t('chat.form.errors.' + response.err));
-          } else {
-            app.trigger('alert', 'error', i18next.t('global.unknownerror'));
-          }
-        } else {
-          app.trigger('alert', 'info', i18next.t('chat.allowed.success'));
-        }
-      });
-    }, this));
-  },
-  onSendPassword: function (event) {
-    if (!!this.bannedObject === true) {
-      return app.trigger('alert', 'error', i18next.t('chat.password.group-banned'));
-    }
-    var options = {
-      password: true
-    };
-
-    ConfirmationView.open(options, _.bind(function (password) {
-      client.groupJoin(this.model.get('group_id'), password, _.bind(function (response) {
-        if (response.err) {
-          if (response.err === 'wrong-password' || response.err === 'params-password') {
-            app.trigger('alert', 'error', i18next.t('chat.password.wrong-password'));
-          } else {
-            app.trigger('alert', 'error', i18next.t('global.unknownerror'));
-          }
-        } else if (response.success) {
-          app.trigger('joinGroup', {name: this.model.get('name'), popin: false});
-        }
-      }, this));
-    }, this));
-  },
-  onJoinGroup: function () {
+  askMembership: function () {
     client.groupJoin(this.model.get('group_id'), null, _.bind(function (response) {
       if (response.err) {
-        app.trigger('alert', 'error', i18next.t('global.unknownerror'));
-      } else if (response.success) {
+        return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+      }
+      if (!response.success) {
+        app.trigger('openGroupJoin', response.options);
+      } else {
         app.trigger('joinGroup', {name: this.model.get('name'), popin: false});
       }
     }, this));
@@ -180,8 +135,15 @@ var GroupView = Backbone.View.extend({
     var url = common.cloudinary.prepare(value, 100);
     this.$('img.avatar').attr('src', url);
   },
-  refreshUsers: function () {
-    this.groupUsersView.render();
+  onRefreshPage: function () {
+    console.log('toty');
+    client.groupRead(this.model.get('group_id'), { users: true, rooms: true }, _.bind(function (response) {
+      if (!response.err) {
+        this.model.set(response);
+        this.model.set('rooms', response.rooms);
+        this.render();
+      }
+    }, this));
   }
 });
 

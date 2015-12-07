@@ -22,7 +22,7 @@ var handler = Handler.prototype;
  * @param  {Object}   session current session object
  * @param  {Function} next    next stemp callback
  */
-handler.enter = function (msg, session, next) {
+handler.call = function (msg, session, next) {
   if (!session ||
     !session.__session__ ||
     !session.__session__.__socket__ ||

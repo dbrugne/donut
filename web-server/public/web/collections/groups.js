@@ -28,9 +28,8 @@ var GroupsCollection = Backbone.Collection.extend({
     this.listenTo(client, 'group:ban', this.onGroupBan);
     this.listenTo(client, 'group:op', this.onOp);
     this.listenTo(client, 'group:deop', this.onDeop);
-    this.listenTo(client, 'group:allow', this.onAllow);
-    this.listenTo(client, 'group:disallow', this.onDisallow);
     this.listenTo(client, 'group:leave', this.onGroupLeave);
+    this.listenTo(client, 'group:refresh', this.onGroupResfresh);
   },
   addModel: function (data) {
     data.id = data.group_id;
@@ -61,22 +60,6 @@ var GroupsCollection = Backbone.Collection.extend({
 
     model.onUpdated(data);
   },
-  onAllow: function (data) {
-    var model;
-    if (!data || !data.group_id || !(model = this.get(data.group_id))) {
-      return;
-    }
-
-    model.onAllow(data);
-  },
-  onDisallow: function (data) {
-    var model;
-    if (!data || !data.group_id || !(model = this.get(data.group_id))) {
-      return;
-    }
-
-    model.onDisallow(data);
-  },
   onGroupBan: function (data) {
     data.id = data.group_id;
     var model;
@@ -96,7 +79,7 @@ var GroupsCollection = Backbone.Collection.extend({
       message += ' ' + i18next.t('chat.reason', {reason: _.escape(data.reason)});
     }
     app.trigger('alert', 'warning', message);
-    app.trigger('refreshRoomsList'); // sort & redraw navigation
+    model.trigger('refreshPage');
   },
   onOp: function (data) {
     var model;
@@ -119,11 +102,20 @@ var GroupsCollection = Backbone.Collection.extend({
       return;
     }
 
-    if (currentUser.get('user_id') !== data.user_id) {
+    app.trigger('redrawNavigationRooms');
+    if (data.reason === 'deleted') {
+      this.remove(model);
+    } else {
+      model.trigger('refreshPage');
+    }
+  },
+  onGroupResfresh: function (data) {
+    var model;
+
+    if (!data || !data.group_id || !(model = this.get(data.group_id))) {
       return;
     }
-    this.remove(model);
-    app.trigger('refreshRoomsList');
+    model.trigger('refreshPage');
   },
   isMemberOwnerAdmin: function (groupId) {
     var model;

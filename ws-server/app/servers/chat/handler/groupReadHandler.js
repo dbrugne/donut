@@ -19,7 +19,7 @@ handler.call = function (data, session, next) {
   var group = session.__group__;
 
   var read = {};
-  var what = data.what || {};
+  var what = data.what || {};
 
   var alreadyIn = [];
 
@@ -48,14 +48,12 @@ handler.call = function (data, session, next) {
         description: group.description,
         disclaimer: group.disclaimer,
         created: group.created_at,
-        members: [],
-        has_password: (!!group.password),
-        can_join: group.canUserJoin(user.id, user.emails)
+        members: []
       };
 
       // owner
       if (group.owner) {
-        read.owner_id = group.owner.user_id;
+        read.owner_id = group.owner.id;
         read.owner_username = group.owner.username;
       }
 
@@ -70,6 +68,7 @@ handler.call = function (data, session, next) {
       if (group.isOwner(user.id) || session.settings.admin === true) {
         read.password = group.password;
         read.allowed_domains = group.allowed_domains;
+        read.allow_user_request = group.allow_user_request;
       }
 
       if (session.settings.admin === true) {

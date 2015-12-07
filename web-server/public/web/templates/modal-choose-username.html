@@ -1,0 +1,18 @@
+<div class="modal-header">
+    <h4 class="modal-title"><%= t('choose-username.title') %></h4>
+</div>
+<div id="join-group" class="modal-body">
+
+    <div class="alert alert-success success mt10" style="display: none"></div>
+    <div class="alert alert-danger error mt10" style="display: none"></div>
+
+    <div class="form-horizontal input">
+        <div class="info-option"><%= t('choose-username.description') %></div>
+
+        <input type="text" class="form-control input-email" placeholder="<%= t('login.username-placeholder') %>">
+        <div class="help mt10"><%= t('choose-username.help') %></div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary submit"><%= t('global.validate') %></button>
+</div>

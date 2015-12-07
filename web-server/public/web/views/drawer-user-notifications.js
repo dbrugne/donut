@@ -98,13 +98,16 @@ var DrawerUserNotificationsView = Backbone.View.extend({
     n.href = '';
     n.name = '';
     n.html = '';
+    n.avatarCircle = false;
     if (n.data.room) {
       n.avatar = common.cloudinary.prepare(n.data.room.avatar, 90);
+      n.avatarCircle = true;
       n.title = n.data.room.name;
       n.name = n.data.room.name;
       n.href = n.name;
     } else if (n.data.group) {
       n.avatar = common.cloudinary.prepare(n.data.group.avatar, 90);
+      n.avatarCircle = true;
       n.title = n.data.group.name;
       n.name = n.data.group.name;
       n.href = '#g/' + n.name;
@@ -133,6 +136,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
         ? n.data.by_user.avatar
         : n.data.user.avatar;
       n.avatar = common.cloudinary.prepare(avatar, 90);
+      n.avatarCircle = false;
     }
     if (n.type === 'roomjoinrequest') {
       n.href = '';

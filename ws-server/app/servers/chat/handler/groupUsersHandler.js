@@ -23,13 +23,14 @@ handler.call = function (data, session, next) {
 
   var searchTypes = [
     'members',          // members + owner
+    'allowed',          // allowed
     'pending',          // members_pending
     'op',               // op + owner
     'regular',          // members (not op/owner)
     'bans'              // banned members
   ];
 
-  var searchTypesThatNeedPower = ['bans', 'pending'];
+  var searchTypesThatNeedPower = ['allowed', 'pending', 'bans'];
 
   /**
    * @param group_id (@mandatory)

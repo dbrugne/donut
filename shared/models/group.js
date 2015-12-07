@@ -11,6 +11,8 @@ var groupSchema = mongoose.Schema({
   priority: Number,
   owner: {type: mongoose.Schema.ObjectId, ref: 'User'},
   op: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
+  allow_user_request: {type: Boolean, default: true},
+  allowed: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
   members: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
   members_pending: [{
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
@@ -90,6 +92,25 @@ groupSchema.methods.isBanned = function (userId) {
   return (typeof doc !== 'undefined');
 };
 
+groupSchema.methods.isAllowed = function (userId) {
+  if (this.isOwner(userId)) {
+    return true;
+  }
+
+  if (!this.allowed || !this.allowed.length) {
+    return false;
+  }
+
+  var subDocument = _.find(this.allowed, function (u) {
+    if (u._id) {
+      return (u.id === userId);
+    } else {
+      return (u.toString() === userId);
+    }
+  });
+  return (typeof subDocument !== 'undefined');
+};
+
 groupSchema.methods.isMember = function (userId) {
   if (this.isOwner(userId)) {
     return true;
@@ -144,26 +165,6 @@ groupSchema.methods.isMemberOrOwner = function (userId) {
 
 groupSchema.methods.isOwnerOrOp = function (userId) {
   return (this.isOwner(userId) || this.isOp(userId));
-};
-
-groupSchema.methods.canUserJoin = function (userId, userEmails) {
-  if (this.isMember(userId)) {
-    return true;
-  }
-
-  if (this.isBanned(userId)) {
-    return false;
-  }
-
-  if (!this.allowed_domains || this.allowed_domains.length < 1) {
-    return false;
-  }
-
-  var found = _.find(userEmails, _.bind(function (e) {
-    var domain = '@' + e.email.split('@')[1].toLowerCase();
-    return (this.allowed_domains.indexOf(domain) !== -1 && e.confirmed);
-  }, this));
-  return (typeof found !== 'undefined');
 };
 
 groupSchema.methods._avatar = function (size) {
@@ -227,6 +228,10 @@ groupSchema.methods.getIdsByType = function (type) {
     } else {
       ids.push(this.owner.toString());
     }
+  } else if (type === 'allowed') {
+    _.each(this.allowed, function (u) {
+      ids.push(u.toString());
+    });
   } else if (type === 'pending') {
     _.each(this.members_pending, function (pen) {
       ids.push(pen.user.toString());

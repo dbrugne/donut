@@ -79,6 +79,7 @@ handler.call = function (data, session, next) {
       }
 
       // website
+      var website = null;
       if (_.has(data.data, 'website') && data.data.website) {
         if (data.data.website.length < 5 && data.data.website.length > 255) {
           errors.website = 'website-size'; // website should be 5 characters min and 255 characters max.;
@@ -87,16 +88,14 @@ handler.call = function (data, session, next) {
           if (!link || !link[0] || !link[0].type || !link[0].value || !link[0].href || link[0].type !== 'url') {
             errors.website = 'website-url'; // website should be a valid site URL
           } else {
-            var website = {
+            website = {
               href: link[0].href,
               title: link[0].value
             };
           }
         }
       }
-      if (website !== group.website) {
-        sanitized.website = website;
-      }
+      sanitized.website = website;
 
       // color
       if (_.has(data.data, 'color')) {
@@ -148,6 +147,10 @@ handler.call = function (data, session, next) {
             }
           }
         }
+      }
+
+      if (_.has(data.data, 'allow_user_request')) {
+        sanitized.allow_user_request = data.data.allow_user_request;
       }
 
       if (Object.keys(errors).length > 0) {

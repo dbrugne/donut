@@ -208,63 +208,6 @@ router.route('/oauth/get-token-from-facebook')
 );
 
 /**
- * Route handler - save username on account designed by token
- *
- * Used by mobile client to save username (e.g.: after Facebook signup)
- *
- * @post token
- * @post username
- * @response {}
- */
-router.route('/oauth/save-username')
-  .post(function (req, res) {
-    if (!req.body.token) {
-      return res.json({err: 'no-token'});
-    }
-    var username = req.body.username;
-    if (!username) {
-      return res.json({err: 'no-username'});
-    }
-
-    jwt.verify(req.body.token, conf.oauth.secret, function (err, decoded) {
-      if (err) {
-        logger.error('Error while saving username: ' + err);
-        return res.json({err: 'internal'});
-      }
-
-      if (!common.validate.username(username)) {
-        return res.json({err: 'invalid'});
-      }
-
-      User.findOne({_id: decoded.id}, function (err, user) {
-        if (err) {
-          logger.error('Error while retrieving user: ' + err);
-          return res.json({err: 'internal'});
-        }
-
-        user.usernameAvailability(username, function (err) {
-          if (err) {
-            if (err === 'not-available') {
-              return res.json({err: 'not-available'});
-            } else {
-              logger.error('Error while checking username availability: ' + err);
-              return res.json({err: 'internal'});
-            }
-          }
-
-          user.update({$set: {username: username}}, function (err) {
-            if (err) {
-              logger.error('Error while saving username: ' + err);
-              return res.json({err: 'internal'});
-            }
-            return res.json({success: true}); // success
-          });
-        });
-      });
-    });
-  });
-
-/**
  * Route handler - signup account with email, username and password
  *
  * Used by mobile client

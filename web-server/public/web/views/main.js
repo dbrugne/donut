@@ -33,6 +33,9 @@ var NotificationsView = require('./notifications');
 var DrawerUserEditView = require('./drawer-user-edit');
 var DrawerUserPreferencesView = require('./drawer-user-preferences');
 var DrawerUserAccountView = require('./drawer-account');
+var ModalView = require('./modal');
+var ModalJoinGroupView = require('./modal-join-group');
+var ModalChooseUsernameView = require('./modal-choose-username');
 var GroupView = require('./group');
 var RoomView = require('./discussion-room');
 var RoomViewBlocked = require('./discussion-room-blocked');
@@ -84,6 +87,7 @@ var MainView = Backbone.View.extend({
     'click .open-group-access': 'onOpenGroupAccess',
     'click .open-group-create': 'openGroupCreate',
     'click .open-group-users': 'openGroupUsers',
+    'click .close-group': 'onCloseGroup',
     'click .close-discussion': 'onCloseDiscussion',
     'click .open-room-access': 'openRoomAccess',
     'click .switch[data-language]': 'switchLanguage',
@@ -115,14 +119,16 @@ var MainView = Backbone.View.extend({
     this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
     this.listenTo(app, 'openGroupProfile', this.openGroupProfile);
     this.listenTo(app, 'openUserProfile', this.openUserProfile);
+    this.listenTo(app, 'openGroupJoin', this.openGroupJoin);
     this.listenTo(app, 'changeColor', this.onChangeColor);
   },
   run: function () {
     // generate and attach subviews
-    this.currentUserView = new CurrentUserView({model: currentUser});
+    this.currentUserView = new CurrentUserView({el: this.$el.find('#block-current-user'), model: currentUser});
     this.navOnes = new NavOnesView();
     this.navRooms = new NavRoomsView();
     this.drawerView = new DrawerView();
+    this.modalView = new ModalView();
     this.alertView = new AlertView();
     this.connectionView = new ConnectionModalView();
     this.welcomeView = new WelcomeModalView();
@@ -156,6 +162,13 @@ var MainView = Backbone.View.extend({
    * @param data
    */
   onWelcome: function (data) {
+    // Is username required
+    if (data.usernameRequired) {
+      this.connectionView.hide();
+      this.openModalChooseUsername();
+      return console.log('pop choose username');
+    }
+
     currentUser.onWelcome(data);
     onetoones.onWelcome(data);
     rooms.onWelcome(data);
@@ -441,7 +454,7 @@ var MainView = Backbone.View.extend({
       return;
     }
     var view = new DrawerGroupEditView({group_id: groupId});
-    this.drawerView.setSize('450p').setView(view).open();
+    this.drawerView.setSize('450px').setView(view).open();
   },
   openRoomUsers: function (event) {
     event.preventDefault();
@@ -508,6 +521,22 @@ var MainView = Backbone.View.extend({
     event.preventDefault();
     var view = new DrawerUserPreferencesView();
     this.drawerView.setSize('450px').setView(view).open();
+  },
+
+  // MODAL
+  // ======================================================================
+
+  openGroupJoin: function (data) {
+    if (!data) {
+      return;
+    }
+    var view = new ModalJoinGroupView({data: data});
+    this.modalView.setView(view).open();
+  },
+
+  openModalChooseUsername: function () {
+    var view = new ModalChooseUsernameView();
+    this.modalView.setView(view).open({'show': true, keyboard: false, backdrop: 'static'});
   },
 
   // DISCUSSIONS MANAGEMENT
@@ -589,6 +618,21 @@ var MainView = Backbone.View.extend({
     if (wasFocused) {
       Backbone.history.navigate('#', {trigger: true});
     }
+  },
+  onCloseGroup: function (event) {
+    event.preventDefault();
+
+    var groupId = $(event.currentTarget).data('groupId');
+    if (!groupId) {
+      return;
+    }
+    ConfirmationView.open({message: 'close-group'}, _.bind(function () {
+      client.groupLeave(groupId, function (response) {
+        if (response.err) {
+          return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+        }
+      });
+    }, this));
   },
   onRemoveGroupView: function (model, collection) {
     var view = this.views[model.get('id')];

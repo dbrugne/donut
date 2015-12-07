@@ -3,7 +3,7 @@ var logger = require('../../../../../shared/util/logger').getLogger('donut', __f
 var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
-var Room = require('../../../../../shared/models/room');
+var RoomModel = require('../../../../../shared/models/room');
 var validator = require('validator');
 var cloudinary = require('../../../../../shared/util/cloudinary').cloudinary;
 var linkify = require('linkifyjs');
@@ -35,14 +35,25 @@ handler.call = function (data, session, next) {
       var errors = {};
       var sanitized = {};
 
+      // username (format)
+      if (_.has(data.data, 'username')) {
+        if (!common.validate.username(data.data.username)) {
+          errors.realname = 'username-format';
+        } else {
+          var username = data.data.username;
+          username = validator.trim(username);
+          if (username !== user.username) {
+            sanitized.username = username;
+          }
+        }
+      }
+
       // realname
       if (_.has(data.data, 'realname')) {
         if (data.data.realname.length === 0) {
           sanitized.realname = '';
         } else {
           if (!common.validate.realname(data.data.realname)) {
-            errors.realname = 'real-name-format';
-          } else if (!validator.isLength(data.data.realname, 2, 20)) {
             errors.realname = 'real-name-format';
           } else {
             var realname = data.data.realname;
@@ -84,15 +95,16 @@ handler.call = function (data, session, next) {
       }
 
       // website
+      var website = null;
       if (_.has(data.data, 'website') && data.data.website) {
         if (data.data.website.length < 5 && data.data.website.length > 255) {
           errors.website = 'website-size'; // website should be 5 characters min and 255 characters max.;
         } else {
           var link = linkify.find(data.data.website);
           if (!link || !link[0] || !link[0].type || !link[0].value || !link[0].href || link[0].type !== 'url') {
-            errors.website = 'website-url';
-          } else { // website should be a valid site URL
-            var website = {
+            errors.website = 'website-url'; // website should be a valid site URL
+          } else {
+            website = {
               href: link[0].href,
               title: link[0].value
             };
@@ -128,6 +140,16 @@ handler.call = function (data, session, next) {
       } // object
 
       return callback(null, sanitized);
+    },
+
+    function usernameAvailability (sanitized, callback) {
+      if (!sanitized.username) {
+        return callback(null, sanitized);
+      }
+
+      user.usernameAvailability(sanitized.username, function (err) {
+        return callback(err, sanitized); // usernameAvailability returns err as 'not-available' if taken
+      });
     },
 
     /**
@@ -192,7 +214,6 @@ handler.call = function (data, session, next) {
     },
 
     function broadcast (sanitized, callback) {
-      // notify only certain fields
       var sanitizedToNotify = {};
       _.each(Object.keys(sanitized), function (key) {
         if (key === 'avatar') {
@@ -223,10 +244,12 @@ handler.call = function (data, session, next) {
     function prepareEventForOthers (sanitized, callback) {
       // notify only certain fields
       var sanitizedToNotify = {};
-      var fieldToNotify = ['avatar', 'poster', 'color'];
+      var fieldToNotify = ['username', 'avatar', 'poster', 'color', 'realname'];
       _.each(Object.keys(sanitized), function (key) {
         if (fieldToNotify.indexOf(key) !== -1) {
-          if (key === 'avatar') {
+          if (key === 'username') {
+            sanitizedToNotify['username'] = user.username;
+          } else if (key === 'avatar') {
             sanitizedToNotify['avatar'] = user._avatar();
           } else if (key === 'poster') {
             sanitizedToNotify['poster'] = user._poster();
@@ -234,6 +257,8 @@ handler.call = function (data, session, next) {
             sanitizedToNotify['color'] = sanitized[key];
             sanitizedToNotify['avatar'] = user._avatar();
             sanitizedToNotify['poster'] = user._poster();
+          } else if (key === 'realname') {
+            sanitizedToNotify['realname'] = sanitized[key];
           }
         }
       });
@@ -251,14 +276,14 @@ handler.call = function (data, session, next) {
       return callback(null, event);
     },
 
-    function broadcastToRelatedUSers (event, callback) {
+    function broadcastToRelatedUsers (event, callback) {
       if (!event) {
         return callback(null, event);
       }
 
       var onesId = _.map(user.ones, 'user');
       var roomsId = [];
-      Room.findByUser(user.id).exec(function (err, rooms) {
+      RoomModel.findByUser(user.id).exec(function (err, rooms) {
         if (err) {
           return callback(err);
         }
