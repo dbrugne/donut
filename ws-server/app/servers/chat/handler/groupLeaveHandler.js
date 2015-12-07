@@ -20,6 +20,7 @@ handler.call = function (data, session, next) {
   var user = session.__currentUser__;
   var group = session.__group__;
   var rooms = [];
+  var rooms_ids = [];
 
   var event = {
     user_id: user.id,
@@ -41,7 +42,9 @@ handler.call = function (data, session, next) {
         return callback('group-not-found');
       }
 
-      // @todo spariaud isMember
+      if (!group.isMember(user.id)) {
+        return callback('not-member');
+      }
 
       return callback(null);
     },
@@ -66,7 +69,7 @@ handler.call = function (data, session, next) {
         group: group._id,
         mode: 'private',
         allow_group_member: true,
-        user: {$in: [user._id]}
+        users: {$in: [user._id]}
       }).exec(function (err, dbrooms) {
         if (err) {
           return callback(err);
@@ -82,9 +85,9 @@ handler.call = function (data, session, next) {
         return callback(null);
       }
 
-      var ids = _.map(rooms, '_id');
+      rooms_ids = _.map(rooms, '_id');
       RoomModel.update(
-        {_id: {$in: ids}},
+        {_id: {$in: rooms_ids}},
         {
           $pull: {
             users: user._id,
@@ -112,13 +115,46 @@ handler.call = function (data, session, next) {
       var event = {
         group_id: group.id,
         group_name: '#' + group.name,
-        // @todo : add rooms
+        rooms_ids: rooms_ids
       };
-      // @todo : implement room:leave logic on client side for group:leave
       that.app.globalChannelService.pushMessage('connector', 'group:leave', event, 'user:' + user.id, {}, function (err) {
         return callback(err);
       });
-    }
+    },
+
+    function unsubscribeClients (callback) {
+      // search for all the user sessions (any frontends)
+      that.app.statusService.getSidsByUid(user.id, function (err, sids) {
+        if (err) {
+          return callback('Error while retrieving user status: ' + err);
+        }
+
+        if (!sids || sids.length < 1) {
+          return callback(null, event); // the targeted user could be offline at this time
+        }
+
+        var parallels = [];
+        _.each(sids, function (sid) {
+          _.each(rooms, function (room) {
+            parallels.push(function (fn) {
+              that.app.globalChannelService.leave(room.name, user.id, sid, function (err) {
+                if (err) {
+                  return fn(sid + ': ' + err);
+                }
+                return fn(null);
+              });
+            });
+          });
+        });
+        async.parallel(parallels, function (err, results) {
+          if (err) {
+            return callback('Error while unsubscribing user ' + user.id + ' : ' + err);
+          }
+
+          return callback(null, event);
+        });
+      });
+    },
 
   ], function (err) {
     if (err) {

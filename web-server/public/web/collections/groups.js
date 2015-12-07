@@ -6,6 +6,7 @@ var client = require('../libs/client');
 var app = require('../libs/app');
 var currentUser = require('../models/current-user');
 var urls = require('../../../../shared/util/url');
+var Rooms = require('./rooms');
 
 var GroupsCollection = Backbone.Collection.extend({
   iwhere: function (key, val) { // insensitive case search
@@ -26,6 +27,7 @@ var GroupsCollection = Backbone.Collection.extend({
   initialize: function () {
     this.listenTo(client, 'group:updated', this.onUpdated);
     this.listenTo(client, 'group:ban', this.onGroupBan);
+    this.listenTo(client, 'group:deban', this.onGroupDeban);
     this.listenTo(client, 'group:op', this.onOp);
     this.listenTo(client, 'group:deop', this.onDeop);
     this.listenTo(client, 'group:leave', this.onGroupLeave);
@@ -79,6 +81,12 @@ var GroupsCollection = Backbone.Collection.extend({
       message += ' ' + i18next.t('chat.reason', {reason: _.escape(data.reason)});
     }
     app.trigger('alert', 'warning', message);
+  },
+  onGroupDeban: function (data) {
+    var model;
+    if (!data || !data.group_id || !(model = this.get(data.group_id))) {
+      return;
+    }
     model.trigger('refreshPage');
   },
   onOp: function (data) {
@@ -102,12 +110,16 @@ var GroupsCollection = Backbone.Collection.extend({
       return;
     }
 
-    app.trigger('redrawNavigationRooms');
     if (data.reason === 'deleted') {
       this.remove(model);
     } else {
+      _.each(data.rooms_ids, function (room_id) {
+        data.room_id = room_id;
+        Rooms.onLeave(data);
+      })
       model.trigger('refreshPage');
     }
+    app.trigger('redrawNavigationRooms');
   },
   onGroupResfresh: function (data) {
     var model;

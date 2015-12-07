@@ -136,7 +136,6 @@ var GroupView = Backbone.View.extend({
     this.$('img.avatar').attr('src', url);
   },
   onRefreshPage: function () {
-    console.log('toty');
     client.groupRead(this.model.get('group_id'), { users: true, rooms: true }, _.bind(function (response) {
       if (!response.err) {
         this.model.set(response);

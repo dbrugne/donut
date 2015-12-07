@@ -345,20 +345,14 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    var roomWasFocused = model.get('focused');
-    var groupId = model.get('group_id');
-    var roomId = model.get('id');
-    var roomName = model.get('name');
-
     this.remove(model);
     app.trigger('redrawNavigationRooms');
-
     if (data.reason && data.reason === 'deleted') {
       this.trigger('deleted', {
-        name: roomName,
-        was_focused: roomWasFocused,
-        group_id: groupId,
-        room_id: roomId
+        name: model.get('name'),
+        was_focused: model.get('focused'),
+        group_id:  model.get('group_id'),
+        room_id: model.get('id')
       });
     }
   },
