@@ -232,7 +232,6 @@ var GroupAccessView = Backbone.View.extend({
 
           this.tablePending.render('pending');
           this.tableAllowed.render('allowed');
-          this.model.refreshUsers();
         }, this));
       }, this));
     }
@@ -260,7 +259,6 @@ var GroupAccessView = Backbone.View.extend({
 
           this.tablePending.render('pending');
           this.tableAllowed.render('allowed');
-          this.model.refreshUsers();
         }, this));
       }, this));
     }

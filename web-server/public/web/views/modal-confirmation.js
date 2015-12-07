@@ -124,6 +124,8 @@ var ConfirmationModalView = Backbone.View.extend({
         this.$message.text(i18next.t('chat.confirmation.message.acceptuser', {username: this.options.username}));
       } else if (this.options.message === 'disallow-user') {
         this.$message.text(i18next.t('chat.confirmation.message.disallowuser', {username: this.options.username}));
+      } else if (this.options.message === 'close-group') {
+        this.$message.text(i18next.t('chat.confirmation.message.close-group'));
       } else if (this.options.message === 'ban-group-user') {
         this.$message.text(i18next.t('chat.confirmation.message.ban-group-user', {username: this.options.username}));
       } else if (this.options.message === 'deban-group-user') {

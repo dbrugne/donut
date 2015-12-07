@@ -504,6 +504,7 @@
         "deban-room-user": "Vous allez débannir cet utilisateur de ce donut.",
         "kick-room-user": "Vous allez expulser cet utilisateur de ce donut.",
         "devoice-room-user": "Vous allez rendre muet cet utilisateur.",
+        "close-group": "Vous allez quitter cette communauté",
         "ban-group-user": "Vous allez bannir l'utilisateur @__username__ de cette communauté",
         "deban-group-user": "Vous allez débannir l'utilisateur @__username__ de cette communauté",
         "op-group-user": "Vous allez promouvoir @__username__ modérateur de cette communauté. Les modérateurs peuvent gérer les demandes d'adhésion, inviter et bannir des membres.",
@@ -1000,7 +1001,8 @@
     "default-member": "Vous êtes membre de cette communauté",
     "default-disclaimer": "Vous n'êtes pas encore membre de cette communauté. Cliquez sur \"devenir membre\" pour en faire la demande.",
     "disclaimer-start": "Vous n'êtes pas encore membre de cette communauté. Vous pouvez pouvez y rejoindre les donuts publics et éventuellement demander l'accès à des donuts privés. Les membres d'une communauté ont des privilèges tels que l'accès direct à certains donuts privés et aux autres membres de la communauté.",
-    "disclaimer-end": " Avant de demander à devenir membre, jetez un oeil aux conditions d'accès de cette communauté :"
+    "disclaimer-end": " Avant de demander à devenir membre, jetez un oeil aux conditions d'accès de cette communauté :",
+    "close": "quitter le groupe"
   },
   "account": {
     "error": {

@@ -87,6 +87,7 @@ var MainView = Backbone.View.extend({
     'click .open-group-access': 'onOpenGroupAccess',
     'click .open-group-create': 'openGroupCreate',
     'click .open-group-users': 'openGroupUsers',
+    'click .close-group': 'onCloseGroup',
     'click .close-discussion': 'onCloseDiscussion',
     'click .open-room-access': 'openRoomAccess',
     'click .switch[data-language]': 'switchLanguage',
@@ -617,6 +618,21 @@ var MainView = Backbone.View.extend({
     if (wasFocused) {
       Backbone.history.navigate('#', {trigger: true});
     }
+  },
+  onCloseGroup: function (event) {
+    event.preventDefault();
+
+    var groupId = $(event.currentTarget).data('groupId');
+    if (!groupId) {
+      return;
+    }
+    ConfirmationView.open({message: 'close-group'}, _.bind(function () {
+      client.groupLeave(groupId, function (response) {
+        if (response.err) {
+          return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+        }
+      });
+    }, this));
   },
   onRemoveGroupView: function (model, collection) {
     var view = this.views[model.get('id')];

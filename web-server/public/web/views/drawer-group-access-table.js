@@ -84,7 +84,6 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
             return this.trigger('error', response.err)
           }
           app.trigger('redraw-tables');
-          this.model.refreshUsers();
         }, this));
       }, this));
     }
@@ -130,7 +129,6 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
             return this.trigger('error', response.err);
           }
           app.trigger('redraw-tables');
-          this.model.refreshUsers();
         }, this));
       }, this));
     }

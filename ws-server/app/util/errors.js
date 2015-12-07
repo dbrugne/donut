@@ -27,6 +27,7 @@ var errors = {
 
   // NOT ALLOWED ERROR (403)
   'not-op': 403,                      // User not op
+  'not-member': 403,                  // User not member
   'not-admin-owner': 403,             // User not admin or owner
   'not-admin-owner-groupowner': 403,  // User not admin, owner and group owner
   'not-op-owner-admin': 403,          // User not op, owner and admin
