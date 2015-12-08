@@ -1068,7 +1068,7 @@
       "noresult": "Aucune adresse mail trouvée",
       "main": "Principal",
       "add": "ajouter e-mail",
-      "mail-notconfirmed": "Votre compte n'a pas été validé, nous vous avons envoyé un mail de confirmation. Si vous avez reçu aucun mail de confirmation, nous pouvons vous en renvoyer un dans la section: ",
+      "mail-notconfirmed": "Votre compte n'a pas été validé, nous vous avons envoyé un mail de confirmation. Si vous avez reçu aucun mail de confirmation, nous pouvons vous en renvoyer un dans la section: <a class=\"open-user-account link\">Gérer vos emails</a>",
       "errors": {
         "wrong-format": "L'addresse mail n'est pas valide",
         "mail-already-exist": "Cette adresse mail est déjà utilisé",

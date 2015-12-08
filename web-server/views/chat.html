@@ -32,13 +32,7 @@
                         <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" href="/logout"><i class="icon icon-fw icon-power-off"></i> <%= t('actions.logout') %></a></li>
                     </ul>
                 </div>
-
-                <% if (typeof user.confirmed === 'undefined' || user.confirmed === false) { %>
-                    <div class="mail-not-confirmed alert alert-warning">
-                         <%= t('account.manageemail.mail-notconfirmed') %>&nbsp;<a class="open-user-account link"><%= t('account.manageemail.label') %></a>
-                    </div>
-                <% } %>
-
+                <div class="mail-not-confirmed alert alert-warning"></div>
                 <div id="navbar">
                     <div class="links">
                         <a href="/!#"><i class="icon icon-fw icon-home"></i></a>

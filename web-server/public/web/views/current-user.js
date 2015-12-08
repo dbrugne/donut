@@ -3,6 +3,7 @@ var client = require('../libs/client');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
 var currentUser = require('../models/current-user');
+var i18next = require('i18next-client');
 var MuteView = require('./mute');
 
 var CurrentUserView = Backbone.View.extend({
@@ -10,7 +11,8 @@ var CurrentUserView = Backbone.View.extend({
 
   initialize: function (options) {
     this.listenTo(this.model, 'change', this.render);
-    this.$toggle = this.$el.find('#block-current-user-toggle');
+    this.$toggle = this.$el.find('#block-current-user');
+    this.$message = $('#chat').find('.mail-not-confirmed').hide();
   },
   render: function () {
     if (!currentUser.get('user_id')) {
@@ -21,6 +23,12 @@ var CurrentUserView = Backbone.View.extend({
 
     data.avatar = common.cloudinary.prepare(currentUser.get('avatar'), 60);
     data.realname = currentUser.get('realname');
+
+    if (!data.confirmed) {
+      this.$message.html(i18next.t('account.manageemail.mail-notconfirmed')).show();
+    } else {
+      this.$message.html('').hide();
+    }
 
     var html = this.template(data);
     this.$toggle.html(html);
