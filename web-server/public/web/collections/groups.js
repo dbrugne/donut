@@ -127,6 +127,10 @@ var GroupsCollection = Backbone.Collection.extend({
     if (!data || !data.group_id || !(model = this.get(data.group_id))) {
       return;
     }
+
+    if (data.reason === 'request-accept') {
+      app.trigger('alert', 'info', i18next.t('group.default-member'));
+    }
     model.trigger('refreshPage');
   },
   isMemberOwnerAdmin: function (groupId) {
