@@ -35,6 +35,8 @@ var GroupView = Backbone.View.extend({
     var isOp = this.model.currentUserIsOp();
     var isAdmin = this.model.currentUserIsAdmin();
 
+    console.log(isAdmin);
+
     this.bannedObject = this.model.currentUserIsBanned();
 
     // prepare avatar for group

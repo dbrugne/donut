@@ -68,7 +68,7 @@
         </div>
     </div>
 
-    <% if (isMember && !isBanned) { %>
+    <% if ((isMember || isOwner || isAdmin) && !isBanned) { %>
     <div class="members mt10 alert alert-success">
         <div class="actions">
             <p class="fl-left"><%= t('group.default-member') %></p>
@@ -84,7 +84,7 @@
     </div>
     <% } %>
 
-    <% if (!isMember && !isBanned) { %>
+    <% if (!isMember && !isBanned && !isOwner && !isAdmin) { %>
         <div class="disclaimer mt10 alert alert-warning" role="alert">
             <% if (group.disclaimer) { %>
                 <p><%= t('group.disclaimer-start') %><strong><span class="open-user-profile fs15 dc-text" data-user-id="<%=group.owner_id %>"></span></strong><%= t('group.disclaimer-end') %></p>
