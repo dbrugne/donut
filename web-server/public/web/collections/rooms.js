@@ -283,7 +283,7 @@ var RoomsCollection = Backbone.Collection.extend({
 
     // if i'm the "targeted user" destroy the model/view
     var isFocused = model.get('focused');
-    var blocked = (what === 'ban')
+    var blocked = (what === 'ban' || what === 'groupban')
       ? 'banned'
       : (what === 'kick')
       ? 'kicked'
@@ -316,9 +316,9 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    if (currentUser.get('user_id') === data.user_id) {
+    /*if (currentUser.get('user_id') === data.user_id) {
       app.trigger('joinRoom', data.identifier, true);
-    }
+    }*/
 
     model.users.onDeban(data);
   },
