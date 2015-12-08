@@ -1,0 +1,31 @@
+<div class="relative"><span class="close icon icon-times"></span></div>
+
+<div class="title">
+    <%= t('profile.room.usersallowed') %>
+    <%= room.identifier %>
+</div>
+
+<div class="ctn-drawer">
+    <div class="errors block"></div>
+
+    <div class="block">
+        <label><%= t('chat.actions.searchuser') %></label>
+        <p class="help-block"><%= t('drawers.users-allowed.disclaimer') %></p>
+        <div class="search-ctn mt10"><!-- rendered in another view --></div>
+    </div>
+
+    <div class="allow-pending block">
+        <label><%= t('chat.access.labelpending') %></label>
+        <p class="help-block"><%= t('drawers.users-allowed.pending-disclaimer') %></p>
+        <div class="ctn mt10"></div>
+        <div class="paginate flex-parent block"></div>
+    </div>
+
+    <div class="allowed block">
+        <label><%= t('chat.users.type.allowed') %></label>
+        <p class="help-block"><%= t('drawers.users-allowed.allowed-disclaimer') %></p>
+        <div class="ctn mt10"></div>
+        <div class="paginate flex-parent block"></div>
+    </div>
+
+</div>

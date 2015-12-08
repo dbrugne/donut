@@ -316,7 +316,8 @@
       },
       "permalink": "Permalien de ce profil",
       "editusers": "Gérer les utilisateurs",
-      "createdat": "créé le"
+      "createdat": "créé le",
+      "usersallowed": "Utilisateurs autorisés"
     },
     "group": {
       "ownerops": "Les habitués",
@@ -1498,6 +1499,13 @@
     "group-create": {
       "title": "Création de communauté",
       "content": "Ca y est, vous avez votre communauté ! Voici votre page d'accueil, vos membres peuvent y voir tous les autres membres, et tous les donuts pour les rejoindre plus facilement.<br/><br/> Nous avons créé votre premier donut: <strong>#__groupname__/welcome</strong>. Il est public donc accessible y compris aux non-membres. Pensez à <a href=\"#\" class=\"inverse open-group-profile\" data-group-id=\"__groupid__\" data-dismiss=\"modal\">personnaliser votre profil</a> et ceux qui <a href=\"#\" class=\"inverse open-group-access\" data-group-id=\"__groupid__\" data-dismiss=\"modal\">accèdent à votre communauté</a>"
+    }
+  },
+  "drawers": {
+    "users-allowed": {
+      "disclaimer": "Vous avez la possibilité d'inviter un utilisateur à rejoindre ce donut.",
+      "pending-disclaimer" : "Les utilisateurs suivants sont en attente d'une réponse de votre part.",
+      "allowed-disclaimer" : "Les utilisateurs suivants sont autorisés à rejoindre ce donut."
     }
   }
 }

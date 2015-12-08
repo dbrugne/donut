@@ -316,7 +316,8 @@
       },
       "permalink": "Permalink of this profile",
       "editusers": "Manage users",
-      "createdat": "Created on"
+      "createdat": "Created on",
+      "usersallowed": "Allowed users"
     },
     "group": {
       "ownerops": "The regulars",
@@ -1498,6 +1499,13 @@
     "group-create": {
       "title": "Community's creation",
       "content": "Congrats ! This is your homepage where your members can see all the members, and all the donuts of your community.<br/><br/> We created your first donut: <strong>#__groupname__/welcome</strong>. It is public so anyone (even non-members) can join it. Take a minute to <a href=\"#\" class=\"inverse open-group-profile\" data-group-id=\"__groupid__\" data-dismiss=\"modal\">customize your profile</a> and configure who can <a href=\"#\" class=\"inverse open-group-access\" data-group-id=\"__groupid__\" data-dismiss=\"modal\">access your community</a>"
+    }
+  },
+  "drawers": {
+    "users-allowed": {
+      "disclaimer": "You can invite a user to join this donut.",
+      "pending-disclaimer" : "Following users are awaiting an answer from you.",
+      "allowed-disclaimer" : "Following users are allowed to join this donut."
     }
   }
 }
