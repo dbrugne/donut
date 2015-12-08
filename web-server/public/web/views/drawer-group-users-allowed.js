@@ -127,7 +127,13 @@ var GroupAccessView = Backbone.View.extend({
       }, _.bind(function () {
         client.groupAllowedAdd(this.model.get('group_id'), userId, _.bind(function (response) {
           if (response.err) {
-            return this.setError(i18next.t('chat.form.errors.' + response.err));
+            if (response.err === 'already-allowed') {
+              return this.setError(i18next.t('chat.form.errors.' + response.err, {username: userName}));
+            }
+            if (response.err === 'group-banned') {
+              return this.setError(i18next.t('group.banned', {username: userName}));
+            }
+            return this.setError(i18next.t('global.unknownerror'));
           }
 
           this.renderTables();
