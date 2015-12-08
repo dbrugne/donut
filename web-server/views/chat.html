@@ -34,7 +34,7 @@
                 </div>
 
                 <% if (typeof user.confirmed === 'undefined' || user.confirmed === false) { %>
-                    <div class="mail-not-confirmed">
+                    <div class="mail-not-confirmed alert alert-warning">
                          <%= t('account.manageemail.mail-notconfirmed') %>&nbsp;<a class="open-user-account link"><%= t('account.manageemail.label') %></a>
                     </div>
                 <% } %>
