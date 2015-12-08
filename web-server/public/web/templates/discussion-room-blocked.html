@@ -39,7 +39,9 @@
                         </div>
                     <% } %>
                     <% if (data.disclaimer) { %>
-                        <p class="disclaimer fs20"><%= data.disclaimer %></p>
+                        <p class="mt20 mb20 alert alert-warning" style="text-align: left;">
+                            <em><%= t('chat.joingroup.disclaimer', {username: data.owner_username, disclaimer: data.disclaimer}) %></em>
+                        </p>
                     <% } %>
                 <% } else if (data.blocked === 'banned' || data.blocked === 'groupbanned') { %>
                     <div class="mt15 fs15">
