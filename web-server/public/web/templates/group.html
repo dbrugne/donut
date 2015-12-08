@@ -48,11 +48,13 @@
                         </a>
                     </li>
                     <% }; %>
+                    <% if (!isOwner) { %>
                     <li role="presentation">
                         <a role="menuitem" tabindex="-1" class="close-group" data-group-id="<%= group.group_id %>">
                             <i class="icon icon-times"></i> <%= t('group.close') %>
                         </a>
                     </li>
+                    <% } %>
                 </ul>
             </div>
             <% } %>
