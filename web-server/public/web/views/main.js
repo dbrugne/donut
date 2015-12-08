@@ -28,6 +28,7 @@ var DrawerGroupDeleteView = require('./drawer-group-delete');
 var DrawerGroupProfileView = require('./drawer-group-profile');
 var DrawerGroupAccessView = require('./drawer-group-access');
 var DrawerGroupUsersView = require('./drawer-group-users');
+var DrawerGroupUsersAllowedView = require('./drawer-group-users-allowed');
 var DrawerUserProfileView = require('./drawer-user-profile');
 var DrawerUserNotificationsView = require('./drawer-user-notifications');
 var NotificationsView = require('./notifications');
@@ -89,6 +90,7 @@ var MainView = Backbone.View.extend({
     'click .open-group-access': 'onOpenGroupAccess',
     'click .open-group-create': 'openGroupCreate',
     'click .open-group-users': 'openGroupUsers',
+    'click .open-group-users-allowed': 'openGroupUsersAllowed',
     'click .close-group': 'onCloseGroup',
     'click .close-discussion': 'onCloseDiscussion',
     'click .open-room-access': 'openRoomAccess',
@@ -349,6 +351,22 @@ var MainView = Backbone.View.extend({
     }
 
     var view = new DrawerGroupUsersView({model: model});
+    this.drawerView.setSize('450px').setView(view).open();
+  },
+  openGroupUsersAllowed: function (event) {
+    event.preventDefault();
+
+    var groupId = $(event.currentTarget).data('group-id');
+    if (!groupId) {
+      return;
+    }
+
+    var model = groups.get(groupId);
+    if (!model) {
+      return;
+    }
+
+    var view = new DrawerGroupUsersAllowedView({model: model});
     this.drawerView.setSize('450px').setView(view).open();
   },
   openUserAccount: function (event) {

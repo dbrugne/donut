@@ -14,8 +14,7 @@ var DropdownUsersView = Backbone.View.extend({
     'click .dropdown-menu>li': 'onClickLi'
   },
 
-  initialize: function (options) {
-    this.roomId = options.room_id;
+  initialize: function () {
     this.render();
   },
 

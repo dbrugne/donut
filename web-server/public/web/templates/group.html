@@ -42,6 +42,11 @@
                             <i class="icon icon-users"></i> <%= t('chat.users.link') %>
                         </a>
                     </li>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" class="open-group-users-allowed" data-group-id="<%= group.group_id %>">
+                            <i class="icon icon-verified-user"></i> <%= t('profile.group.usersallowed') %>
+                        </a>
+                    </li>
                     <% }; %>
                     <li role="presentation">
                         <a role="menuitem" tabindex="-1" class="close-group" data-group-id="<%= group.group_id %>">

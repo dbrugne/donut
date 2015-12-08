@@ -1,24 +1,26 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var i18next = require('i18next-client');
+var keyboard = require('../libs/keyboard');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
 var client = require('../libs/client');
 var ConfirmationView = require('./modal-confirmation');
-var TableView = require('./drawer-room-access-table');
+var TableView = require('./drawer-group-access-table');
+var i18next = require('i18next-client');
+var currentUser = require('../models/current-user');
 var DropdownUsersView = require('./dropdown-users');
 
-var RoomAccessView = Backbone.View.extend({
+var GroupAccessView = Backbone.View.extend({
 
-  template: require('../templates/drawer-room-users-allowed.html'),
+  template: require('../templates/drawer-group-users-allowed.html'),
 
-  id: 'room-users-allowed',
+  id: 'group-users-allowed',
 
   events: {},
 
   initialize: function (options) {
-    this.roomId = options.room_id;
+    this.model = options.model;
     this.render();
     this.reload();
   },
@@ -28,21 +30,18 @@ var RoomAccessView = Backbone.View.extend({
   },
   reload: function () {
     var what = {
-      more: true,
-      users: false,
+      users: true,
       admin: true
     };
-    client.roomRead(this.roomId, what, _.bind(function (data) {
+    client.groupRead(this.model.get('id'), what, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }
     }, this));
   },
   onResponse: function (data) {
-    this.room_name = data.name;
-
     var html = this.template({
-      identifier: data.identifier
+      identifier: data.name
     });
     this.$el.html(html);
 
@@ -57,16 +56,21 @@ var RoomAccessView = Backbone.View.extend({
 
     this.tablePending = new TableView({
       el: this.$('.allow-pending'),
-      room_id: this.roomId
+      group_id: this.model.get('group_id'),
+      model: this.model
     });
     this.tableAllowed = new TableView({
       el: this.$('.allowed'),
-      room_id: this.roomId
+      model: this.model
     });
 
     this.listenTo(app, 'redraw-tables', this.renderTables);
 
     this.renderTables();
+
+    this.listenTo(this.tablePending, 'error', this.setError);
+    this.listenTo(this.tableAllowed, 'error', this.setError);
+
     this.initializeTooltips();
   },
   renderTables: function () {
@@ -93,6 +97,24 @@ var RoomAccessView = Backbone.View.extend({
       this.dropdownUsersView.onResults(data.users.list);
     }, this));
   },
+  //onSearchUserBanned: function (event) {
+  //  event.preventDefault();
+  //  var key = keyboard._getLastKeyCode(event);
+  //  if (key.key === keyboard.ESC && this.$dropdownBan.hasClass('open')) {
+  //    event.preventDefault();
+  //    event.stopPropagation();
+  //    this.resetDropdownBan();
+  //  }
+  //
+  //  var val = this.$searchBan.val();
+  //
+  //  if (val === '') {
+  //    this.$dropdownBan.removeClass('open');
+  //    return;
+  //  }
+  //
+  //  this.renderDropDown(val, this.$dropdownBan);
+  //},
   onAllowUser: function (event) {
     var userId = $(event.currentTarget).data('userId');
     var userName = $(event.currentTarget).data('username');
@@ -101,9 +123,13 @@ var RoomAccessView = Backbone.View.extend({
       ConfirmationView.open({
         message: 'invite',
         username: userName,
-        room_name: this.room_name
+        room_name: this.model.get('name')
       }, _.bind(function () {
-        client.roomAllow(this.roomId, userId, _.bind(function () {
+        client.groupAllowedAdd(this.model.get('group_id'), userId, _.bind(function (response) {
+          if (response.err) {
+            return this.setError(i18next.t('chat.form.errors.' + response.err));
+          }
+
           this.renderTables();
         }, this));
       }, this));
@@ -111,6 +137,33 @@ var RoomAccessView = Backbone.View.extend({
 
     this.dropdownUsersView.close();
   },
+  //onBanUser: function (event) {
+  //  event.preventDefault();
+  //
+  //  var userId = $(event.currentTarget).data('userId');
+  //  var userName = $(event.currentTarget).data('username');
+  //
+  //  if (userId && userName) {
+  //    ConfirmationView.open({
+  //      input: true,
+  //      message: 'ban-group-user',
+  //      username: userName
+  //    }, _.bind(function (reason) {
+  //      client.groupBan(this.model.get('group_id'), userId, reason, _.bind(function (response) {
+  //        if (response.err) {
+  //          return this.setError(i18next.t('chat.form.errors.' + response.err, {defaultValue: i18next.t('global.unknownerror')}));
+  //        }
+  //
+  //        this.tablePending.render('pending');
+  //        this.tableAllowed.render('allowed');
+  //      }, this));
+  //    }, this));
+  //  }
+  //
+  //  // Close dropdown
+  //  this.$dropdownBan.removeClass('open');
+  //  this.$searchBan.val('');
+  //},
   reset: function () {
     this.$errors.html('').hide();
     this.$el.removeClass('has-error').removeClass('has-success').val('');
@@ -128,4 +181,4 @@ var RoomAccessView = Backbone.View.extend({
   }
 });
 
-module.exports = RoomAccessView;
+module.exports = GroupAccessView;

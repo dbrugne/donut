@@ -326,7 +326,8 @@
       "editlink": "Edit",
       "profilelink": "Profile of ",
       "editusers": "Manage users",
-      "createdat": "Created on"
+      "createdat": "Created on",
+      "usersallowed": "Allowed users"
     },
     "user": {
       "hisrooms": "Active in these donuts",
@@ -1502,10 +1503,15 @@
     }
   },
   "drawers": {
-    "users-allowed": {
+    "users-allowed-room": {
       "disclaimer": "You can invite a user to join this donut.",
       "pending-disclaimer" : "Following users are awaiting an answer from you.",
       "allowed-disclaimer" : "Following users are allowed to join this donut."
+    },
+    "users-allowed-group": {
+      "disclaimer": "You can invite a user to join this community.",
+      "pending-disclaimer" : "Following users are awaiting an answer from you.",
+      "allowed-disclaimer" : "Following users are allowed to join this community."
     }
   }
 }

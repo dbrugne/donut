@@ -326,7 +326,8 @@
       "editlink": "Editer",
       "profilelink": "Profil de ",
       "editusers": "Gérer les utilisateurs",
-      "createdat": "créé le"
+      "createdat": "créé le",
+      "usersallowed": "Utilisateurs autorisés"
     },
     "user": {
       "hisrooms": "Ses donuts",
@@ -1504,10 +1505,15 @@
     }
   },
   "drawers": {
-    "users-allowed": {
+    "users-allowed-room": {
       "disclaimer": "Vous avez la possibilité d'inviter un utilisateur à rejoindre ce donut.",
       "pending-disclaimer" : "Les utilisateurs suivants sont en attente d'une réponse de votre part.",
       "allowed-disclaimer" : "Les utilisateurs suivants sont autorisés à rejoindre ce donut."
+    },
+    "users-allowed-group": {
+      "disclaimer": "Vous avez la possibilité d'inviter un utilisateur à rejoindre cette communauté.",
+      "pending-disclaimer" : "Les utilisateurs suivants sont en attente d'une réponse de votre part.",
+      "allowed-disclaimer" : "Les utilisateurs suivants sont autorisés à rejoindre cette communauté."
     }
   }
 }
