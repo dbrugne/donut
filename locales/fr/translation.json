@@ -999,6 +999,8 @@
     "invite": "Gérer les membres",
     "ask-membership": "devenir membre",
     "blocked": "Saisissez le mot de passe d'accès direct à la communauté",
+    "already-member": "<strong>@__username__</strong> est déjà membre de cette communauté",
+    "banned": "<strong>@__username__</strong> est déjà banni de cette communauté",
     "default-member": "Vous êtes membre de cette communauté",
     "default-disclaimer": "Vous n'êtes pas encore membre de cette communauté. Cliquez sur \"devenir membre\" pour en faire la demande.",
     "disclaimer-start": "Vous n'êtes pas encore membre de cette communauté. Vous pouvez pouvez y rejoindre les donuts publics et éventuellement demander l'accès à des donuts privés. Les membres d'une communauté ont des privilèges tels que l'accès direct à certains donuts privés et aux autres membres de la communauté.",

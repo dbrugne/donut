@@ -227,7 +227,13 @@ var GroupAccessView = Backbone.View.extend({
       }, _.bind(function () {
         client.groupAllowedAdd(this.model.get('group_id'), userId, _.bind(function (response) {
           if (response.err) {
-            return this.setError(i18next.t('chat.form.errors.' + response.err));
+            if (response.err === 'already-member') {
+              return this.setError(i18next.t('group.' + response.err, {username: username}));
+            }
+            if (response.err === 'group-banned') {
+              return this.setError(i18next.t('group.banned', {username: username}));
+            }
+            return this.setError(i18next.t('global.unknownerror'));
           }
 
           this.tablePending.render('pending');
@@ -254,7 +260,10 @@ var GroupAccessView = Backbone.View.extend({
       }, _.bind(function (reason) {
         client.groupBan(this.model.get('group_id'), userId, reason, _.bind(function (response) {
           if (response.err) {
-            return this.setError(i18next.t('chat.form.errors.' + response.err, {defaultValue: i18next.t('global.unknownerror')}));
+            if (response.err === 'banned') {
+              return this.setError(i18next.t('group.' + response.err, {username: userName}));
+            }
+            return this.setError(i18next.t('global.unknownerror'));
           }
 
           this.tablePending.render('pending');
