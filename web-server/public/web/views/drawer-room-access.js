@@ -118,15 +118,19 @@ var RoomAccessView = Backbone.View.extend({
       ? { allow_group_member: true }
       : { allow_group_member: false, add_users_to_allow: true };
 
-    client.roomUpdate(this.roomId, update, _.bind(function (err) {
-      this.$errors.html(err).show();
+    client.roomUpdate(this.roomId, update, _.bind(function (reponse) {
+      if (response.err) {
+        this.setError(response.err);
+      }
     }, this));
   },
   onChangeUsersRequest: function (event) {
     client.roomUpdate(this.roomId, {
       allow_user_request: this.$checkboxUserRequest.is(':checked')
-    }, _.bind(function (err) {
-      this.$errors.html(err).show();
+    }, _.bind(function (response) {
+        if (response.err) {
+          this.setError(response.err);
+        }
     }, this));
   },
   reset: function () {
