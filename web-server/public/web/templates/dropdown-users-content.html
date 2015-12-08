@@ -1,5 +1,7 @@
+<% var classname = 'active'; %>
 <% _.each(users, function (u) { %>
-    <li data-user-id="<%= u.user_id %>" data-username="<%= u.username %>"><a href="#"><img src="<%= u.avatarUrl %>" class="mr5">@<%= u.username %></a></li>
+    <li class="<%=classname%>" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>"><a href="#"><img src="<%= u.avatarUrl %>" class="mr5">@<%= u.username %></a></li>
+    <% classname = ''; %>
 <% });%>
 <% if (!users.length) { %>
     <li><a href="#"><%= t('chat.search.noresults') %></a></li>

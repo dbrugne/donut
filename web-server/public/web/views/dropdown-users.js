@@ -1,3 +1,4 @@
+var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
@@ -7,7 +8,8 @@ var DropdownUsersView = Backbone.View.extend({
   templateContent: require('../templates/dropdown-users-content.html'),
 
   events: {
-    'keyup input[type=text]': 'onSearch', // @todo implement navigation up down enter hover
+    'keyup input[type=text]': 'onKeyUp',
+    'mouseover .dropdown-menu>li': 'onHover',
     'click i.icon-search': 'onSearch',
     'click .dropdown-menu>li': 'onClickLi'
   },
@@ -26,6 +28,49 @@ var DropdownUsersView = Backbone.View.extend({
   },
   onResults: function (list) {
     this.$dropdownMenu.html(this.templateContent({users: list}));
+  },
+  onKeyUp: function (event) {
+    var data = keyboard._getLastKeyCode(event);
+
+    if (data.key === keyboard.DOWN || data.key === keyboard.UP || data.key === keyboard.TAB) {
+      event.preventDefault(); // avoid triggering keyUp
+      return this._navigate(data.key);
+    }
+
+    if (data.key === keyboard.RETURN) {
+      var currentLi = this.$dropdownMenu.find('li.active');
+      if (currentLi) {
+        currentLi.click();
+      }
+    }
+
+    this.onSearch(event);
+  },
+  _navigate: function (key) {
+    var currentLi = this.$dropdownMenu.find('li.active');
+    var li = '';
+    if (key === keyboard.UP) {
+      li = currentLi.prev();
+      if (li.length === 0) {
+        li = currentLi.parent().find('li').last();
+      }
+    } else if (key === keyboard.DOWN || key === keyboard.TAB) {
+      li = currentLi.next();
+      if (li.length === 0) {
+        li = currentLi.parent().find('li').first();
+      }
+    }
+
+    if (li.length !== 0) {
+      currentLi.removeClass('active');
+      li.addClass('active');
+    }
+  },
+  onHover: function (event) {
+    var li = $(event.currentTarget);
+    var currentLi = this.$dropdownMenu.find('li.active');
+    currentLi.removeClass('active');
+    li.addClass('active');
   },
   onSearch: function (event) {
     event.preventDefault();
