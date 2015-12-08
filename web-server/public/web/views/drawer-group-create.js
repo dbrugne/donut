@@ -22,8 +22,7 @@ var DrawerGroupCreateView = Backbone.View.extend({
     this.render();
   },
   render: function (name) {
-    var html = this.template({confirmed: currentUser.isConfirmed()});
-    this.$el.html(html);
+    this.$el.html(this.template);
     this.$input = this.$el.find('input[name=input-create]');
     this.$errors = this.$el.find('.errors');
     this.$submit = this.$el.find('.submit');
@@ -71,9 +70,6 @@ var DrawerGroupCreateView = Backbone.View.extend({
     return common.validate.group(name);
   },
   submit: function () {
-    if (!currentUser.isConfirmed()) {
-      return;
-    }
 
     this.reset();
     // name
@@ -85,19 +81,16 @@ var DrawerGroupCreateView = Backbone.View.extend({
     this.$submit.addClass('loading');
     client.groupCreate(name, _.bind(function (response) {
       this.$submit.removeClass('loading');
-      if (response.code !== 500 && response.success !== true) {
-        var uri;
+      if (!response.success) {
         if (response.err === 'group-name-already-exist') {
-          uri = urls({name: name}, 'group', 'uri');
-        } else {
-          uri = urls({group_name: this.group_name, name: name}, 'room', 'uri');
+          var uri = urls({name: name}, 'group', 'uri');
+          return this.setError(i18next.t('chat.form.errors.' + response.err, {name: name, uri: uri, defaultValue: i18next.t('global.unknownerror')}));
         }
-        var error = i18next.t('chat.form.errors.' + response.err, {name: name, uri: uri, defaultValue: i18next.t('global.unknownerror')});
-        return this.setError(error);
-      } else if (response.code === 500) {
+        if (response.err === 'not-confirmed') {
+          return this.setError(i18next.t('chat.form.errors.' + response.err));
+        }
         return this.setError(i18next.t('global.unknownerror'));
       }
-
       app.trigger('joinGroup', {name: name, popin: true});
       this.reset();
       this.trigger('close');

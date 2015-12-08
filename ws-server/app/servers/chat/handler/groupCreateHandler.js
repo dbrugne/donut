@@ -30,6 +30,10 @@ handler.call = function (data, session, next) {
         return callback('name-wrong-format');
       }
 
+      if (user.confirmed === false) {
+        return callback('not-confirmed');
+      }
+
       return callback(null);
     },
 

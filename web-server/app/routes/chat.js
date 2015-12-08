@@ -44,4 +44,18 @@ router.get('/!', function (req, res) {
   });
 });
 
+router.param('group', require('../middlewares/group-param'));
+router.get('/g/join/:group', function (req, res) {
+  bouncer.set(req, req.group.chat);
+  res.redirect('/login');
+});
+
+router.param('room', require('../middlewares/room-param'));
+var bouncerCallback = function (req, res) {
+  bouncer.set(req, req.room.chat);
+  res.redirect('/login');
+};
+router.get('/r/join/:room', bouncerCallback);
+router.get('/r/join/:group/:room', bouncerCallback);
+
 module.exports = router;

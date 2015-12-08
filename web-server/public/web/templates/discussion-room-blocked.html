@@ -19,27 +19,27 @@
                     <% if (data.hasPassword) { %>
                         <div class="password-form mt15 fs15">
                             <%= t('chat.blocked.allowed') %>
-                            <% if(data.allow_user_request && confirmed !== false) { %>
+                            <% if(data.allow_user_request) { %>
                                 <%= t('chat.blocked.ask-for-access') %>
                             <% } %>
-                            <% if(confirmed !== false) { %>
                             <div class="form-inline mt15">
                                 <span class="mt15"><%= t('chat.blocked.password') %></span>
                                 <input class="input-password form-control " type="text" placeholder="<%= t('chat.blocked.password_placeholder') %>">
                                 <button class="valid-password btn btn-success"><%= t('chat.blocked.password_button') %></button>
                             </div>
-                            <% } %>
                         </div>
                     <% } else { %>
                         <div class="mt15 mb5 fs15">
                             <%= t('chat.blocked.allowed') %>
-                            <% if(data.allow_user_request && confirmed !== false) { %>
+                            <% if(data.allow_user_request) { %>
                                 <%= t('chat.blocked.ask-for-access') %>
                             <% } %>
                         </div>
                     <% } %>
                     <% if (data.disclaimer) { %>
-                        <p class="disclaimer fs20"><%= data.disclaimer %></p>
+                        <p class="mt20 mb20 alert alert-warning" style="text-align: left;">
+                            <em><%= t('chat.joingroup.disclaimer', {username: data.owner_username, disclaimer: data.disclaimer}) %></em>
+                        </p>
                     <% } %>
                 <% } else if (data.blocked === 'banned' || data.blocked === 'groupbanned') { %>
                     <div class="mt15 fs15">

@@ -40,6 +40,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
     this.render(); // show spinner as temp content
 
     client.notificationRead(null, null, 10, _.bind(function (data) {
+      this.isThereMoreNotifications = data.more;
       this.$el.html(this.template({}));
 
       this.$unreadCount = this.$('.unread-count');
@@ -238,7 +239,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
       return this.$actions.addClass('hidden');
     }
 
-    if (!this.toggleReadMore) {
+    if (!this.isThereMoreNotifications) {
       this.$actions.addClass('hidden');
     } else {
       this.$actions.removeClass('hidden');

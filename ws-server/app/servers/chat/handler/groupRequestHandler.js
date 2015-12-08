@@ -165,7 +165,8 @@ handler.accept = function (data, session, next) {
         avatar: targetUser._avatar(),
         color: targetUser.color,
         group_id: group.id,
-        pending: group.isAllowedPending(targetUser.id)
+        pending: group.isAllowedPending(targetUser.id),
+        reason: 'request-accept'
       };
       that.app.globalChannelService.pushMessage('connector', 'group:refresh', event, 'user:' + targetUser.id, {}, function (err) {
         callback(err, event);
