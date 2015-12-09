@@ -6,23 +6,22 @@ var UserModel = require('../../../shared/models/user');
 var cloudinary = require('../../../shared/util/cloudinary');
 
 /**
- * Store history in MongoDB, emit event in corresponding onetoone and call:
- *
- *   callback(err, sentEvent)
+ * Store history in database, then emit event
  *
  * @param app
- * @param onetoone // {from: String, to: String}
  * @param eventName
- * @param eventData
+ * @param eventData (with user_id and to_user_id keys)
  * @param callback
  */
-module.exports = function (app, onetoone, eventName, eventData, callback) {
-  eventData.from = onetoone.from;
-  eventData.to = onetoone.to;
+module.exports = function (app, eventName, eventData, callback) {
+  if (!eventData.user_id || !eventData.to_user_id) {
+    return callback('oneEmitter require an event with user_id and to_user_id');
+  }
+
   eventData.time = Date.now();
   recorder(eventName, eventData, function (err, model) {
     if (err) {
-      return callback('Error while saving event while emitting in onetoone ' + eventName + ': ' + err);
+      return callback('oneEmitter error for ' + eventName, err);
     }
 
     eventData.id = model.id;
@@ -41,7 +40,7 @@ module.exports = function (app, onetoone, eventName, eventData, callback) {
 
       function sendToSender (fn) {
         // Broadcast message to all 'sender' devices
-        app.globalChannelService.pushMessage('connector', eventName, eventData, 'user:' + onetoone.from.toString(), {}, function (err) {
+        app.globalChannelService.pushMessage('connector', eventName, eventData, 'user:' + eventData.user_id, {}, function (err) {
           if (err) {
             return fn('Error while pushing message to sender: ' + err);
           }
@@ -52,11 +51,11 @@ module.exports = function (app, onetoone, eventName, eventData, callback) {
 
       function sendToReceiver (fn) {
         // (if sender!=receiver) Broadcast message to all 'receiver' devices
-        if (onetoone.from.toString() === onetoone.to.toString()) {
+        if (eventData.user_id === eventData.to_user_id) {
           return fn(null);
         }
 
-        app.globalChannelService.pushMessage('connector', eventName, eventData, 'user:' + onetoone.to.toString(), {}, function (err) {
+        app.globalChannelService.pushMessage('connector', eventName, eventData, 'user:' + eventData.to_user_id, {}, function (err) {
           if (err) {
             return fn('Error while pushing message to receiver: ' + err);
           }
@@ -65,7 +64,7 @@ module.exports = function (app, onetoone, eventName, eventData, callback) {
             return fn(null);
           }
 
-          UserModel.setUnviewedOneMessage(onetoone.from, onetoone.to, model.id, function (err) {
+          UserModel.setUnviewedOneMessage(eventData.user_id, eventData.to_user_id, model.id, function (err) {
             return fn(err);
           });
         });

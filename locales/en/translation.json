@@ -612,8 +612,10 @@
         "groupop": "You are moderator of community <span>#__name__</span>",
         "groupdeop": "You are no longer moderator of community <span>#__name__</span>"
       },
-      "userban": " was blocked by",
-      "userdeban": " is no longer blocked as requested by"
+      "userban-me": "__who__ blocked you",
+      "userban-other": "you blocked __who__",
+      "userdeban-me": "__who__ unblocked you",
+      "userdeban-other": "you unblocked __who__"
     },
     "unread": {
       "title": "(new)"

@@ -67,7 +67,7 @@ handler.call = function (data, session, next) {
 
     function sendToUserSockets (callback) {
       var viewedEvent = {
-        from_user_id: user._id,
+        user_id: user._id,
         to_user_id: withUser._id,
         events: data.events
       };
