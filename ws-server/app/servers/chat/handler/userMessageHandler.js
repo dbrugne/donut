@@ -85,7 +85,7 @@ handler.call = function (data, session, next) {
         from_realname: user.realname,
         from_avatar: user._avatar(),
         to_user_id: withUser.id,
-        to_username: withUser.username,
+        to_username: withUser.username, // allow Web client to create model (need username for navigation) if i'm the send and if i've more than one client
         to_realname: withUser.realname,
         time: Date.now()
       };
