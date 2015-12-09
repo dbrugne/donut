@@ -612,8 +612,10 @@
         "groupop": "Vous êtes maintenant modérateur de la communauté <span>#__name__</span>",
         "groupdeop": "Vous n'êtes plus modérateur de la communauté <span>#__name__</span>"
       },
-      "userban": " est bloqué à la demande de",
-      "userdeban": " n'est plus bloqué à la demande de"
+      "userban-me": "__who__ vous a bloqué",
+      "userban-other": "vous avez bloqué __who__",
+      "userdeban-me": "__who__ vous a débloqué",
+      "userdeban-other": "vous avez débloqué __who__"
     },
     "unread": {
       "title": "(nouveau)"
@@ -1073,7 +1075,7 @@
       "noresult": "Aucune adresse mail trouvée",
       "main": "Principal",
       "add": "ajouter e-mail",
-      "mail-notconfirmed": "Votre compte n'a pas été validé, nous vous avons envoyé un mail de confirmation. Si vous avez reçu aucun mail de confirmation, nous pouvons vous en renvoyer un dans la section: <a class=\"open-user-account link\">Gérer vos emails</a>",
+      "mail-notconfirmed": "Votre compte n'a pas été validé, nous vous avons envoyé un mail de confirmation. Si vous avez reçu aucun mail de confirmation, nous pouvons vous en renvoyer un dans la section: <strong class=\"open-user-account link\">Gérer vos emails</strong>",
       "errors": {
         "wrong-format": "L'addresse mail n'est pas valide",
         "mail-already-exist": "Cette adresse mail est déjà utilisé",
@@ -1509,12 +1511,12 @@
     "users-allowed-room": {
       "disclaimer": "Vous avez la possibilité d'inviter un utilisateur à rejoindre ce donut.",
       "pending-disclaimer" : "Les utilisateurs suivants sont en attente d'une réponse de votre part.",
-      "allowed-disclaimer" : "Les utilisateurs suivants sont autorisés à rejoindre ce donut."
+      "allowed-disclaimer" : "Les utilisateurs suivants sont invités à rejoindre ce donut."
     },
     "users-allowed-group": {
       "disclaimer": "Vous avez la possibilité d'inviter un utilisateur à rejoindre cette communauté.",
       "pending-disclaimer" : "Les utilisateurs suivants sont en attente d'une réponse de votre part.",
-      "allowed-disclaimer" : "Les utilisateurs suivants sont autorisés à rejoindre cette communauté."
+      "allowed-disclaimer" : "Les utilisateurs suivants sont invités à rejoindre cette communauté."
     }
   }
 }

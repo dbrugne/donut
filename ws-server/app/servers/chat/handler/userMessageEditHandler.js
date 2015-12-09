@@ -33,8 +33,8 @@ handler.call = function (data, session, next) {
         return callback('params-events');
       }
 
-      if (!data.files && !event.data.files) {
-        return callback('params');
+      if (!data.message && !event.data.files) {
+        return callback('params-message');
       }
 
       if (!withUser) {
@@ -96,23 +96,17 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function prepareEvent (message, callback) {
+    function broadcastFrom (message, callback) {
       var eventToSend = {
-        from_user_id: user._id,
-        from_username: user.username,
-        to_user_id: withUser._id,
-        to_username: withUser.username,
         event: event.id,
+        user_id: user.id,
+        to_user_id: withUser.id,
         message: message
       };
 
-      return callback(null, eventToSend);
-    },
-
-    function broadcastFrom (eventToSend, callback) {
       that.app.globalChannelService.pushMessage('connector', 'user:message:edit', eventToSend, 'user:' + user.id, {}, function (err) {
         if (err) {
-          logger.error(err); // not 'return', we delete even if error happen
+          logger.error(err); // not 'return', we continue event if error happens
         }
 
         return callback(null, eventToSend);
@@ -125,7 +119,7 @@ handler.call = function (data, session, next) {
       }
       that.app.globalChannelService.pushMessage('connector', 'user:message:edit', eventToSend, 'user:' + withUser.id, {}, function (err) {
         if (err) {
-          logger.error(err); // not 'return', we delete even if error happen
+          logger.error(err); // not 'return', we continue event if error happens
         }
 
         return callback(null);

@@ -15,6 +15,21 @@ grunt change-long-name
 grunt migration-onetoones
 ```
 
+* Migrate onetoones message:
+```
+db.getCollection('history-one').update({}, {$unset :{ 
+    'data.user_id': true, 
+    'data.username': true,
+    'data.avatar': true,
+    'data.username': true,
+    'data.by_user_id': true,
+    'data.by_username': true,
+    'data.by_avatar': true,
+    'to_realname': true,
+    'from_realname': true
+ }}, {multi:true})
+```
+
 * Migrate history*.data.images=>.files
 ```
 db.getCollection('history-room').update({'data.images': {$exists: true }}, {$rename: {'data.images': 'data.files'}}, {multi:true})

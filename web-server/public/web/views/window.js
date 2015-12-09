@@ -182,10 +182,8 @@ var WindowView = Backbone.View.extend({
       ? rooms
       : onetoones;
 
-    var uid = data.from_user_id || data.user_id;
-
     // badge (even if focused), only if user sending the message is not currentUser
-    if (model.get('unviewed') !== true && currentUser.get('user_id') !== uid) {
+    if (model.get('unviewed') !== true && currentUser.get('user_id') !== data.user_id) {
       model.set('unviewed', true);
     }
 
@@ -198,7 +196,7 @@ var WindowView = Backbone.View.extend({
     }
 
     // ignore event from currentUser
-    if (currentUser.get('user_id') === uid) {
+    if (currentUser.get('user_id') === data.user_id) {
       return;
     }
 

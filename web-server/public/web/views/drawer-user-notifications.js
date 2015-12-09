@@ -141,7 +141,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
     }
     if (n.type === 'roomjoinrequest') {
       n.href = '';
-      n.css += 'open-room-access';
+      n.css += 'open-room-users-allowed';
       var roomId = (n.data.room._id)
         ? n.data.room._id
         : n.data.room.id;
@@ -149,7 +149,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
       n.username = null;
     } else if (n.type === 'groupjoinrequest') {
       n.href = '';
-      n.css += 'open-group-access';
+      n.css += 'open-group-users-allowed';
       var groupId = (n.data.group._id)
         ? n.data.group._id
         : n.data.group.id;

@@ -10,8 +10,8 @@ var historySchema = mongoose.Schema({
   to: { type: mongoose.Schema.ObjectId, ref: 'User' },
   time: { type: Date, default: Date.now },
   data: mongoose.Schema.Types.Mixed,
-  viewed: { type: Boolean, default: false }, // true if to user has read this
-                                             // event
+  // true if to user has read this event
+  viewed: { type: Boolean, default: false },
   edited: { type: Boolean },
   edited_at: { type: Date }
 
@@ -19,13 +19,13 @@ var historySchema = mongoose.Schema({
 
 var dryFields = [
   'time',
-  'to',
-  'from',
-  'from_username',
-  'from_user_id',
-  'from_avatar',
+  'user_id',
+  'username',
+  'realname',
+  'avatar',
   'to_user_id',
-  'to_username'
+  'to_username',
+  'to_avatar'
 ]; // in user:online/offline event the fields are user_id, username, avatar
 
 historySchema.statics.record = function () {
@@ -37,20 +37,10 @@ historySchema.statics.record = function () {
    * @return event with event_id set
    */
   return function (event, data, fn) {
-    // user:online/offline special case
-    var fromUserId, toUserId;
-    if (data.from_user_id === undefined && data.from) {
-      fromUserId = data.from;
-      toUserId = data.to;
-    } else {
-      fromUserId = data.from_user_id;
-      toUserId = data.to_user_id;
-    }
-
     var model = new Model();
     model.event = event;
-    model.from = fromUserId;
-    model.to = toUserId;
+    model.from = data.user_id;
+    model.to = data.to_user_id;
     model.time = data.time;
 
     // dry data
@@ -59,27 +49,12 @@ historySchema.statics.record = function () {
 
     model.save(function (err) {
       if (err) {
-        return fn('Unable to save historyOne ' + model.from + '=>' + model.to + ': ' + err);
+        return fn('historyone.record', model.from, '=>', model.to, err);
       }
 
       return fn(null, model);
     });
   };
-};
-
-// @todo yfuks remove after prod migration
-historySchema.statics.getLastMessage = function (fromUid, toUid, fn) {
-  this.find({
-    $or: [
-      {from: [fromUid], to: [toUid]},
-      {from: [toUid], to: [fromUid]}
-    ],
-    event: 'user:message'
-  }).sort({time: -1})
-    .limit(1)
-    .exec(function (err, doc) {
-      return fn(err, doc);
-    });
 };
 
 historySchema.methods.toClientJSON = function (userViewed) {
@@ -89,16 +64,21 @@ historySchema.methods.toClientJSON = function (userViewed) {
   var data = (this.data)
     ? _.clone(this.data)
     : {};
-  data.id = this._id.toString();
+  data.id = this.id;
   data.time = this.time;
   if (this.from) {
-    data.from_user_id = this.from._id.toString();
-    data.from_username = this.from.username;
-    data.from_realname = this.from.realname;
-    data.from_avatar = this.from._avatar();
+    data.user_id = this.from.id;
+    data.username = this.from.username;
+    data.realname = this.from.realname;
+    data.avatar = this.from._avatar();
   }
   if (this.to) {
-    data.to_user_id = this.to._id.toString();
+    data.to_user_id = this.to.id;
+    // promote
+    if ([ 'user:ban', 'user:deban' ].indexOf(this.event) !== -1) {
+      data.to_username = this.to.username;
+      data.to_avatar = this.to._avatar();
+    }
   }
   if (this.edited === true) {
     data.edited = this.edited;
@@ -115,7 +95,7 @@ historySchema.methods.toClientJSON = function (userViewed) {
 
   // unviewed status (true if message, i'm the receiver and current value is
   // false)
-  if (userViewed && [ 'user:message' ].indexOf(this.event) !== -1 && data.to_user_id === userViewed && !this.viewed) {
+  if (userViewed && this.event === 'user:message' && data.to_user_id === userViewed && !this.viewed) {
     data.unviewed = true;
   }
 

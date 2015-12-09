@@ -2,6 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var common = require('@dbrugne/donut-common/browser');
 var date = require('./date');
+var currentUser = require('../models/current-user');
 
 var templates = {
   'hello': require('../templates/event/block-hello.html'),
@@ -23,8 +24,8 @@ var templates = {
   'room:op': require('../templates/event/promote.html'),
   'room:groupban': require('../templates/event/group-promote.html'),
   'room:groupdisallow': require('../templates/event/group-promote.html'),
-  'user:ban': require('../templates/event/promote.html'),
-  'user:deban': require('../templates/event/promote.html')
+  'user:ban': require('../templates/event/user-promote.html'),
+  'user:deban': require('../templates/event/user-promote.html')
 };
 
 var exports = module.exports = function (options) {
@@ -218,15 +219,6 @@ exports.prototype._data = function (type, data) {
   data.type = type.replace(':', '');
   data.stype = type.replace('room:', '').replace('user:', '');
 
-  // ones
-  if (type === 'user:message') {
-    data.user_id = data.from_user_id;
-    data.realname = data.from_realname;
-    data.username = data.from_username;
-    data.avatar = data.from_avatar;
-    data.color = data.from_color;
-  }
-
   // unviewed & spammed & edited
   data.unviewed = (data.unviewed === true);
   data.spammed = (data.spammed === true);
@@ -238,6 +230,16 @@ exports.prototype._data = function (type, data) {
   }
   if (data.by_avatar) {
     data.by_avatar = common.cloudinary.prepare(data.by_avatar, 40);
+  }
+  if (data.to_avatar) {
+    data.to_avatar = common.cloudinary.prepare(data.to_avatar, 40);
+  }
+
+  // user:promote
+  if (data.to_user_id) {
+    data.target = (currentUser.get('user_id') === data.to_user_id)
+      ? 'me'
+      : 'other';
   }
 
   if (data.message || data.topic) {
