@@ -1,34 +1,22 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var keyboard = require('../libs/keyboard');
 var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
 var client = require('../libs/client');
 var ConfirmationView = require('./modal-confirmation');
-var TableView = require('./drawer-room-access-table');
 
 var RoomAccessView = Backbone.View.extend({
 
   template: require('../templates/drawer-room-access.html'),
 
-  dropdownTemplate: require('../templates/drawer-room-access-dropdown.html'),
-
   passwordPattern: /(.{4,255})$/i,
 
   id: 'room-access',
 
-  timeBufferBeforeSearch: 1000,
-
-  timeout: 0,
-
   events: {
-    'keyup input[type=text]': 'onSearch',
     'click input.save-password': 'onSubmit',
     'click input.save-conditions': 'onSubmitConditions',
-    'click i.icon-search': 'onSearch',
-    'click .dropdown-menu>li': 'onAllowUser',
     'change [type="checkbox"]': 'onChoosePassword',
     'click .random-password': 'onRandomPassword',
     'click .change-mode': 'onChangeMode',
@@ -60,8 +48,6 @@ var RoomAccessView = Backbone.View.extend({
     }, this));
   },
   onResponse: function (data) {
-    this.listenTo(app, 'redraw-tables', this.renderTables);
-
     this.currentPassword = data.password;
     this.room_name = data.name;
 
@@ -77,8 +63,6 @@ var RoomAccessView = Backbone.View.extend({
 
     this.$errors = this.$('.errors');
     this.$search = this.$('input[type=text]');
-    this.$dropdown = this.$('.dropdown');
-    this.$dropdownMenu = this.$('.dropdown-menu');
     this.$toggleCheckbox = this.$('#input-password-checkbox');
     this.$checkboxGroupAllow = this.$('#input-allowgroupmember-checkbox');
     this.$checkboxUserRequest = this.$('#input-userrequest-checkbox');
@@ -92,92 +76,7 @@ var RoomAccessView = Backbone.View.extend({
       this.onTypeConditions();
     }
 
-    // Only render tables if the donut is private
-    if (data.mode === 'private') {
-      this.tablePending = new TableView({
-        el: this.$('.allow-pending'),
-        room_id: this.roomId
-      });
-      this.tableAllowed = new TableView({
-        el: this.$('.allowed'),
-        room_id: this.roomId
-      });
-      this.renderTables();
-    }
-
     this.initializeTooltips();
-  },
-  renderTables: function () {
-    this.tablePending.render('pending');
-    this.tableAllowed.render('allowed');
-  },
-  renderPendingTable: function () {
-    this.tablePending.render('pending');
-  },
-  renderDropDown: function () {
-    this.$dropdown.addClass('open');
-    this.$dropdownMenu.html(require('../templates/spinner.html'));
-
-    var that = this;
-    var options = {
-      users: true,
-      limit: {
-        users: 15
-      }
-    };
-    client.search(this.$search.val(), options, function (data) {
-      _.each(data.users.list, function (element, index, list) {
-        list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 20);
-      });
-
-      that.$dropdownMenu.html(that.dropdownTemplate({users: data.users.list}));
-    });
-  },
-  _remove: function () {
-    if (this.tablePending) {
-      this.tablePending.remove();
-    }
-    if (this.tableAllowed) {
-      this.tableAllowed.remove();
-    }
-    this.remove();
-  },
-  onSearch: function (event) {
-    event.preventDefault();
-
-    clearTimeout(this.timeout);
-
-    if (this.$search.val() === '') {
-      this.$dropdown.removeClass('open');
-      return;
-    }
-    var key = keyboard._getLastKeyCode(event);
-    if (event.type === 'click' || key.key === keyboard.RETURN) { // instant search when user click on icon or press enter
-      this.renderDropDown();
-      return;
-    }
-
-    this.timeout = setTimeout(_.bind(function () {
-      this.renderDropDown();
-    }, this), this.timeBufferBeforeSearch);
-  },
-  onAllowUser: function (event) {
-    event.preventDefault();
-
-    var userId = $(event.currentTarget).data('userId');
-    var userName = $(event.currentTarget).data('username');
-
-    if (userId && userName) {
-      ConfirmationView.open({message: 'invite', username: userName, room_name: this.room_name}, _.bind(function () {
-        client.roomAllow(this.roomId, userId, _.bind(function () {
-          this.renderTables();
-        }, this));
-      }, this));
-    }
-
-    // Close dropdown
-    this.$dropdown.removeClass('open');
-    this.$search.val('');
   },
   // Chen the user clicks on the password checkbox
   onChoosePassword: function (event) {
@@ -219,15 +118,19 @@ var RoomAccessView = Backbone.View.extend({
       ? { allow_group_member: true }
       : { allow_group_member: false, add_users_to_allow: true };
 
-    client.roomUpdate(this.roomId, update, _.bind(function (err) {
-      this.$errors.html(err).show();
+    client.roomUpdate(this.roomId, update, _.bind(function (reponse) {
+      if (response.err) {
+        this.setError(response.err);
+      }
     }, this));
   },
   onChangeUsersRequest: function (event) {
     client.roomUpdate(this.roomId, {
       allow_user_request: this.$checkboxUserRequest.is(':checked')
-    }, _.bind(function (err) {
-      this.$errors.html(err).show();
+    }, _.bind(function (response) {
+        if (response.err) {
+          this.setError(response.err);
+        }
     }, this));
   },
   reset: function () {

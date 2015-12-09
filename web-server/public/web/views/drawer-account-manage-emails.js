@@ -25,8 +25,8 @@ var DrawerAccountManageEmailsView = Backbone.View.extend({
     this.$el.html(this.template({emails: this.user.account.emails}));
 
     this.$errorLabel = this.$('.error-label');
-    this.$success = this.$('.success');
-    this.$error = this.$('.error');
+    this.$success = this.$('.alert-success');
+    this.$error = this.$('.alert-danger');
 
     this.$error.hide();
     this.$success.hide();
@@ -45,7 +45,10 @@ var DrawerAccountManageEmailsView = Backbone.View.extend({
     var email = $target.data('email');
     $target.prop('checked', false);
 
-    confirmationView.open({message: 'change-email', email: email}, _.bind(function () {
+    confirmationView.open({
+      message: 'change-email',
+      email: email
+    }, _.bind(function () {
       client.accountEmail(email, 'main', _.bind(function (d) {
         if (d.err) {
           return this.putError(d.err);
@@ -62,7 +65,10 @@ var DrawerAccountManageEmailsView = Backbone.View.extend({
   },
 
   onAddEmail: function (event) {
-    confirmationView.open({message: 'add-email', input: true}, _.bind(function (email) {
+    confirmationView.open({
+      message: 'add-email',
+      input: true
+    }, _.bind(function (email) {
       client.accountEmail(email, 'add', _.bind(function (response) {
         if (response.err) {
           return this.putError(response.err);
@@ -70,6 +76,10 @@ var DrawerAccountManageEmailsView = Backbone.View.extend({
 
         this.user.account.emails.push({email: email, confirmed: false});
         this.render();
+        this.$success.show();
+        setTimeout(_.bind(function () {
+          this.$success.fadeOut();
+        }, this), 2000);
       }, this));
     }, this));
   },
@@ -77,7 +87,10 @@ var DrawerAccountManageEmailsView = Backbone.View.extend({
   onDeleteEmail: function (event) {
     var email = $(event.currentTarget).data('email');
 
-    confirmationView.open({message: 'delete-email', email: email}, _.bind(function () {
+    confirmationView.open({
+      message: 'delete-email',
+      email: email
+    }, _.bind(function () {
       client.accountEmail(email, 'delete', _.bind(function (response) {
         if (response.err) {
           return this.putError(response.err);
@@ -98,7 +111,10 @@ var DrawerAccountManageEmailsView = Backbone.View.extend({
   onSendValidationEmail: function (event) {
     var email = $(event.currentTarget).data('email');
 
-    confirmationView.open({message: 'send-email', email: email}, _.bind(function () {
+    confirmationView.open({
+      message: 'send-email',
+      email: email
+    }, _.bind(function () {
       client.accountEmail(email, 'validate', _.bind(function (response) {
         if (response.err) {
           return this.putError(response.err);

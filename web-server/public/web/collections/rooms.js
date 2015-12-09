@@ -283,7 +283,7 @@ var RoomsCollection = Backbone.Collection.extend({
 
     // if i'm the "targeted user" destroy the model/view
     var isFocused = model.get('focused');
-    var blocked = (what === 'ban')
+    var blocked = (what === 'ban' || what === 'groupban')
       ? 'banned'
       : (what === 'kick')
       ? 'kicked'
@@ -316,9 +316,9 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    if (currentUser.get('user_id') === data.user_id) {
+    /*if (currentUser.get('user_id') === data.user_id) {
       app.trigger('joinRoom', data.identifier, true);
-    }
+    }*/
 
     model.users.onDeban(data);
   },
@@ -345,20 +345,14 @@ var RoomsCollection = Backbone.Collection.extend({
       return;
     }
 
-    var roomWasFocused = model.get('focused');
-    var groupId = model.get('group_id');
-    var roomId = model.get('id');
-    var roomName = model.get('name');
-
     this.remove(model);
     app.trigger('redrawNavigationRooms');
-
     if (data.reason && data.reason === 'deleted') {
       this.trigger('deleted', {
-        name: roomName,
-        was_focused: roomWasFocused,
-        group_id: groupId,
-        room_id: roomId
+        name: model.get('name'),
+        was_focused: model.get('focused'),
+        group_id:  model.get('group_id'),
+        room_id: model.get('id')
       });
     }
   },

@@ -42,12 +42,19 @@
                             <i class="icon icon-users"></i> <%= t('chat.users.link') %>
                         </a>
                     </li>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" class="open-group-users-allowed" data-group-id="<%= group.group_id %>">
+                            <i class="icon icon-verified-user"></i> <%= t('profile.group.usersallowed') %>
+                        </a>
+                    </li>
                     <% }; %>
+                    <% if (!isOwner) { %>
                     <li role="presentation">
                         <a role="menuitem" tabindex="-1" class="close-group" data-group-id="<%= group.group_id %>">
                             <i class="icon icon-times"></i> <%= t('group.close') %>
                         </a>
                     </li>
+                    <% } %>
                 </ul>
             </div>
             <% } %>
@@ -68,7 +75,7 @@
         </div>
     </div>
 
-    <% if (isMember && !isBanned) { %>
+    <% if ((isMember || isOwner || isAdmin) && !isBanned) { %>
     <div class="members mt10 alert alert-success">
         <div class="actions">
             <p class="fl-left"><%= t('group.default-member') %></p>
@@ -84,11 +91,11 @@
     </div>
     <% } %>
 
-    <% if (!isMember && !isBanned) { %>
+    <% if (!isMember && !isBanned && !isOwner && !isAdmin) { %>
         <div class="disclaimer mt10 alert alert-warning" role="alert">
             <% if (group.disclaimer) { %>
                 <p><%= t('group.disclaimer-start') %><strong><span class="open-user-profile fs15 dc-text" data-user-id="<%=group.owner_id %>"></span></strong><%= t('group.disclaimer-end') %></p>
-                <p class="mt10"><i class="icon icon-quote"></i> <em><%= group.disclaimer %></em></p>
+                <p class="mt10"><em><%= t('chat.joingroup.disclaimer', {username: group.owner_username ,disclaimer: group.disclaimer}) %></em></p>
             <% } else { %>
                 <p><%= t('group.default-disclaimer') %></p>
             <% } %>

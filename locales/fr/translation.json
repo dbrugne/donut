@@ -316,7 +316,8 @@
       },
       "permalink": "Permalien de ce profil",
       "editusers": "Gérer les utilisateurs",
-      "createdat": "créé le"
+      "createdat": "créé le",
+      "usersallowed": "Utilisateurs autorisés"
     },
     "group": {
       "ownerops": "Les habitués",
@@ -325,7 +326,8 @@
       "editlink": "Editer",
       "profilelink": "Profil de ",
       "editusers": "Gérer les utilisateurs",
-      "createdat": "créé le"
+      "createdat": "créé le",
+      "usersallowed": "Utilisateurs autorisés"
     },
     "user": {
       "hisrooms": "Ses donuts",
@@ -514,7 +516,7 @@
         "add-email": "Nouvel e-mail :",
         "send-email": "Un email de confirmation va être envoyé à __email__",
         "delete-email": "__email__ va être supprimé de vos adresses mails",
-        "change-email": "Vous allez faire __email__ votre e-mail principal. Dorénavant vous vous connecterez avec cette e-mail et vous recevrez toutes les notifications dessus.",
+        "change-email": "Vous allez faire __email__ votre e-mail principal. Dorénavant vous vous connecterez avec cet e-mail et vous recevrez toutes les notifications dessus.",
         "add-domain": "Vous êtes sur le point de rajouter un domaine dans les domaines d'email autorisé, tout utilisateur ayant une addresse mail avec ce domaine pourra rejoindre cette communauté sans avoir besoin de faire une demande d'adhésion ou d'être invité.",
         "delete-domain": "Vous êtes sur le point de supprimer le domaine __domain__ dans les domains d'email autorisé, un nouvel utilisateur ayant une addresse mail avec ce domaine ne pourra pas rejoindre cette communauté sans avoir fait une demande d'adhésion ou y être invité. Les membres qui ont rejoins cette communauté via ce domaine resterons membres."
       }
@@ -669,7 +671,7 @@
       "labelsearch": "Autoriser des utilisateurs",
       "add": "Autoriser un utilisateur",
       "labelpending": "Utilisateurs en attente d'autorisation",
-      "user-request-access": "Permettre aux utilisateurs à demander une invitation",
+      "user-request-access": "Permettre aux utilisateurs de demander une invitation",
       "request-access": "Demande d'accès",
       "types": {
         "all": "Tous",
@@ -998,6 +1000,9 @@
     "invite": "Gérer les membres",
     "ask-membership": "devenir membre",
     "blocked": "Saisissez le mot de passe d'accès direct à la communauté",
+    "already-allowed": "<strong>@__username__</strong> est déjà un utilisateur autorisés",
+    "already-member": "<strong>@__username__</strong> est déjà membre de cette communauté",
+    "banned": "<strong>@__username__</strong> est banni de cette communauté",
     "default-member": "Vous êtes membre de cette communauté",
     "default-disclaimer": "Vous n'êtes pas encore membre de cette communauté. Cliquez sur \"devenir membre\" pour en faire la demande.",
     "disclaimer-start": "Vous n'êtes pas encore membre de cette communauté. Vous pouvez pouvez y rejoindre les donuts publics et éventuellement demander l'accès à des donuts privés. Les membres d'une communauté ont des privilèges tels que l'accès direct à certains donuts privés et aux autres membres de la communauté.",
@@ -1068,7 +1073,7 @@
       "noresult": "Aucune adresse mail trouvée",
       "main": "Principal",
       "add": "ajouter e-mail",
-      "mail-notconfirmed": "Votre compte n'a pas été validé, nous vous avons envoyé un mail de confirmation. Si vous avez reçu aucun mail de confirmation, nous pouvons vous en renvoyer un dans la section: ",
+      "mail-notconfirmed": "Votre compte n'a pas été validé, nous vous avons envoyé un mail de confirmation. Si vous avez reçu aucun mail de confirmation, nous pouvons vous en renvoyer un dans la section: <a class=\"open-user-account link\">Gérer vos emails</a>",
       "errors": {
         "wrong-format": "L'addresse mail n'est pas valide",
         "mail-already-exist": "Cette adresse mail est déjà utilisé",
@@ -1498,6 +1503,18 @@
     "group-create": {
       "title": "Création de communauté",
       "content": "Ca y est, vous avez votre communauté ! Voici votre page d'accueil, vos membres peuvent y voir tous les autres membres, et tous les donuts pour les rejoindre plus facilement.<br/><br/> Nous avons créé votre premier donut: <strong>#__groupname__/welcome</strong>. Il est public donc accessible y compris aux non-membres. Pensez à <a href=\"#\" class=\"inverse open-group-profile\" data-group-id=\"__groupid__\" data-dismiss=\"modal\">personnaliser votre profil</a> et ceux qui <a href=\"#\" class=\"inverse open-group-access\" data-group-id=\"__groupid__\" data-dismiss=\"modal\">accèdent à votre communauté</a>"
+    }
+  },
+  "drawers": {
+    "users-allowed-room": {
+      "disclaimer": "Vous avez la possibilité d'inviter un utilisateur à rejoindre ce donut.",
+      "pending-disclaimer" : "Les utilisateurs suivants sont en attente d'une réponse de votre part.",
+      "allowed-disclaimer" : "Les utilisateurs suivants sont autorisés à rejoindre ce donut."
+    },
+    "users-allowed-group": {
+      "disclaimer": "Vous avez la possibilité d'inviter un utilisateur à rejoindre cette communauté.",
+      "pending-disclaimer" : "Les utilisateurs suivants sont en attente d'une réponse de votre part.",
+      "allowed-disclaimer" : "Les utilisateurs suivants sont autorisés à rejoindre cette communauté."
     }
   }
 }

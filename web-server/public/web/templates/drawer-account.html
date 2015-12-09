@@ -22,16 +22,18 @@
         <% if (user.account.facebook && user.account.facebook.token) { %>
             <p class="values"><%= t('account.facebook.help') %></p>
             <div class="facebook">
-                <div class="infos">
+                <div class="infos flex-parent" style="overflow: hidden;">
                     <img class="avatar" src="https://graph.facebook.com/<%= user.account.facebook.id %>/picture"/>
-                    <p>
-                        <span class="labels"><%= t('account.facebook.name') %></span>
-                        <span class="values"><%= user.account.facebook.name %></span>
-                    </p>
-                    <p>
-                        <span class="labels"><%= t('account.facebook.email') %></span>
-                        <span class="values"><%= user.account.facebook.email %></span>
-                    </p>
+                    <div class="flex-child ml10 flex-parent jc-center column">
+                        <div class="row">
+                            <strong class="col-sm-2"><%= t('account.facebook.name') %></strong>
+                            <span class="col-sm-10"><%= user.account.facebook.name %></span>
+                        </div>
+                        <div class="row">
+                            <strong class="col-sm-2"><%= t('account.facebook.email') %></strong>
+                            <span class="col-sm-10"><%= user.account.facebook.email %></span>
+                        </div>
+                    </div>
                 </div>
                 <% if (user.account.email) { %>
                     <p class="unlink">
