@@ -96,46 +96,32 @@ var OnetoonesCollection = Backbone.Collection.extend({
     return model;
   },
   getModelFromEvent: function (event, autoCreate) {
-    var key;
-    if (!event.user_id) {
-      var withUser;
-      if (currentUser.get('user_id') === event.from_user_id) {
-        // i'm emitter
-        withUser = {
-          username: event.to_username,
-          user_id: event.to_user_id,
-          avatar: event.to_avatar,
-          color: event.to_color
-        };
-      } else if (currentUser.get('user_id') === event.to_user_id) {
-        // i'm recipient
-        withUser = {
-          username: event.from_username,
-          user_id: event.from_user_id,
-          avatar: event.from_avatar,
-          color: event.from_color,
-          status: 'online'
-        };
-      } else {
-        return; // visibly something goes wrong
-      }
+    var key = this._key(event.user_id, event.to_user_id);
 
-      key = this._key(event.from_user_id, event.to_user_id);
-    } else if (event.by_user_id) {
-      key = (event.user_id === currentUser.get('user_id'))
-        ? this._key(event.by_user_id, currentUser.get('user_id'))
-        : this._key(event.user_id, currentUser.get('user_id'));
-    } else {
-      key = this._key(event.user_id, currentUser.get('user_id'));
+    // already opened?
+    var model = this.findWhere({key: key});
+    if (!model && !autoCreate) {
+      return;
     }
 
-    // retrieve the current onetoone model OR create a new one
-    var model = this.findWhere({'key': key}); // already opened
-    if (model === undefined) { // should be opened
-      if (!autoCreate) {
-        return false;
+    // create a new one
+    if (!model) {
+      // determine if i'm sender
+      var iam = (currentUser.get('user_id') === event.user_id);
+      var withUser = {
+        key: key,
+        user_id: (iam) ? event.to_user_id : event.user_id,
+        username: (iam) ? event.to_username : event.username,
+        realname: (iam) ? event.to_realname : event.realname,
+        avatar: (iam) ? event.to_avatar : event.avatar,
+        color: (iam) ? event.to_color : event.color
+      };
+
+      if (!iam) {
+        // if i received a message from this user he is online
+        withUser.status = 'online';
       }
-      withUser.key = key;
+
       model = this.addModel(withUser);
       app.trigger('redrawNavigationOnes');
       client.userRead(withUser.user_id, {more: true}, function (data) {
@@ -155,21 +141,17 @@ var OnetoonesCollection = Backbone.Collection.extend({
 
   onLeave: function (data) {
     var model = this.get(data.user_id);
-    if (model) {
-      this.remove(model);
-      app.trigger('redrawNavigationOnes');
+    if (!model) {
+      return;
     }
+
+    this.remove(model);
+    app.trigger('redrawNavigationOnes');
   },
   onMessage: function (data) {
     var model = this.getModelFromEvent(data, true);
     _.defer(function () { // cause view will be really added only on next tick
       model.onMessage(data);
-    });
-  },
-  onMe: function (data) {
-    var model = this.getModelFromEvent(data, true);
-    _.defer(function () { // cause view will be really added only on next tick
-      model.onMe(data);
     });
   },
   onUpdated: function (data) {

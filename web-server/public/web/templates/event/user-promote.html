@@ -1,0 +1,30 @@
+<%
+var key = 'chat.notifications.';
+if (data.stype === 'ban') {
+  if (data.target === 'me') {
+    key += 'userban-me';
+  } else {
+    key += 'userban-other';
+  }
+} else {
+    if (data.target === 'me') {
+        key += 'userdeban-me';
+    } else {
+        key += 'userdeban-other';
+    }
+}
+var user_id = (data.target === 'me') ? data.user_id : data.to_user_id;
+var username = (data.target === 'me') ? data.username : data.to_username;
+var avatar = (data.target === 'me') ? data.avatar : data.to_avatar;
+var who = '<span class="username open-user-profile" data-user-id="' + user_id + '">@' + username + '</span>';
+%>
+<div class="block promote <%= data.stype %>" id="<%= data.id %>" data-time="<%= data.time %>">
+    <div class="event">
+        <div class="text">
+            <i class="icon icon-fw icon-ban"></i>
+            <div class="avatar open-user-profile" data-user-id="<%= user_id %>" style="background-image: url(<%= avatar %>)"></div>
+            <span class="message"><%= t(key, {who: who}) %></span>
+        </div>
+        <div class="date"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
+    </div>
+</div>

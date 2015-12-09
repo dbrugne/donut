@@ -140,13 +140,11 @@ module.exports = function (grunt) {
 
       function usermessageType (callback) {
         var event = {
-          from: userFrom.id,
-          from_user_id: userFrom.id,
-          from_username: userFrom.username,
-          from_avatar: userFrom._avatar(),
-          to: userTo.id,
+          user_id: userFrom.id,
+          username: userFrom.username,
+          realname: userFrom.realname,
+          avatar: userFrom._avatar(),
           to_user_id: userTo.id,
-          to_username: userTo.username,
           time: new Date(),
           message: message
         };

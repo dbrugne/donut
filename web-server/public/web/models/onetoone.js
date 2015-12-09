@@ -39,7 +39,7 @@ var OneToOneModel = Backbone.Model.extend({
   onMessage: function (data) {
     app.trigger('newEvent', 'user:message', data, this);
 
-    data.unviewed = (currentUser.get('user_id') !== data.from_user_id);
+    data.unviewed = (currentUser.get('user_id') !== data.user_id);
     this.trigger('freshEvent', 'user:message', data);
   },
   onUserOnline: function (data) {
@@ -65,12 +65,12 @@ var OneToOneModel = Backbone.Model.extend({
   },
   onBan: function (data) {
     if (data.user_id === currentUser.get('user_id')) {
+      // i banned the other user
+      this.set('banned', true);
+    } else {
       // i'm the banned user
       this.set('i_am_banned', true);
       this.trigger('inputActive');
-    } else {
-      // i banned the other user
-      this.set('banned', true);
     }
 
     // add event to discussion
@@ -78,12 +78,12 @@ var OneToOneModel = Backbone.Model.extend({
   },
   onDeban: function (data) {
     if (data.user_id === currentUser.get('user_id')) {
+      // i banned the other user
+      this.set('banned', false);
+    } else {
       // i'm the debanned user
       this.set('i_am_banned', false);
       this.trigger('inputActive');
-    } else {
-      // i banned the other user
-      this.set('banned', false);
     }
 
     // add event to discussion
