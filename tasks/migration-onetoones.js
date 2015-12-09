@@ -2,13 +2,27 @@ var async = require('async');
 var UserModel = require('../shared/models/user');
 var HistoryOneModel = require('../shared/models/historyone');
 
+function getOneLastMessage (fromUid, toUid, fn) {
+  HistoryOneModel.find({
+    $or: [
+      {from: [fromUid], to: [toUid]},
+      {from: [toUid], to: [fromUid]}
+    ],
+    event: 'user:message'
+  }).sort({time: -1})
+    .limit(1)
+    .exec(function (err, doc) {
+      return fn(err, doc);
+  });
+}
+
 module.exports = function (grunt) {
   grunt.registerTask('migration-onetoones', function () {
     var done = this.async();
 
     var MoveToones = function (user, fn) {
       async.each(user.onetoones, function (one, callback) {
-        HistoryOneModel.getLastMessage(user._id.toString(), one.toString(), function (err, doc) {
+        getOneLastMessage(user._id.toString(), one.toString(), function (err, doc) {
           if (err) {
             callback(err);
           }
