@@ -1075,7 +1075,7 @@
       "noresult": "No mails found",
       "main": "Main",
       "add": "add email",
-      "mail-notconfirmed": "Your account has not beed confirmed, we sent you a confirmation email. If you have nothing received, we can send a new mail in the section: <a class=\"open-user-account link\">Manage your mails</a>",
+      "mail-notconfirmed": "Your account has not beed confirmed, we sent you a confirmation email. If you have nothing received, we can send a new mail in the section: <strong class=\"open-user-account link\">Manage your mails</strong>",
       "errors": {
         "wrong-format": "Mail address is not valid",
         "mail-already-exist": "This mail address is already used",
@@ -1511,12 +1511,12 @@
     "users-allowed-room": {
       "disclaimer": "You can invite a user to join this donut.",
       "pending-disclaimer" : "Following users are awaiting an answer from you.",
-      "allowed-disclaimer" : "Following users are allowed to join this donut."
+      "allowed-disclaimer" : "Following users are invited to join this donut."
     },
     "users-allowed-group": {
       "disclaimer": "You can invite a user to join this community.",
       "pending-disclaimer" : "Following users are awaiting an answer from you.",
-      "allowed-disclaimer" : "Following users are allowed to join this community."
+      "allowed-disclaimer" : "Following users are invited to join this community."
     }
   }
 }
