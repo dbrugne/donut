@@ -52,7 +52,7 @@ var GroupModel = Backbone.Model.extend({
       }
     });
 
-    this.trigger('refreshPage');
+    this.onRefresh();
   },
   onDeop: function (data) {
     // user.get('is_op')
@@ -63,7 +63,7 @@ var GroupModel = Backbone.Model.extend({
       }
     });
 
-    this.trigger('refreshPage');
+    this.onRefresh();
   },
   onBan: function (data) {
     var ban = {
@@ -77,7 +77,7 @@ var GroupModel = Backbone.Model.extend({
     bans.push(ban);
     this.set('bans', bans);
 
-    this.trigger('refreshPage');
+    this.onRefresh();
   },
   onDeleteRoom: function (roomId) {
     var rooms = _.reject(this.get('rooms'), function (r) {
@@ -85,7 +85,16 @@ var GroupModel = Backbone.Model.extend({
     });
     this.set('rooms', rooms);
 
-    this.trigger('refreshPage');
+    this.onRefresh();
+  },
+  onRefresh: function () {
+    client.groupRead(this.get('group_id'), { users: true, rooms: true }, _.bind(function (response) {
+      if (!response.err) {
+        this.set(response);
+        this.set('rooms', response.rooms);
+        this.trigger('redraw');
+      }
+    }, this));
   }
 });
 
