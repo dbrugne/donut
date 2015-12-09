@@ -1509,12 +1509,12 @@
     "users-allowed-room": {
       "disclaimer": "Vous avez la possibilité d'inviter un utilisateur à rejoindre ce donut.",
       "pending-disclaimer" : "Les utilisateurs suivants sont en attente d'une réponse de votre part.",
-      "allowed-disclaimer" : "Les utilisateurs suivants sont autorisés à rejoindre ce donut."
+      "allowed-disclaimer" : "Les utilisateurs suivants sont invités à rejoindre ce donut."
     },
     "users-allowed-group": {
       "disclaimer": "Vous avez la possibilité d'inviter un utilisateur à rejoindre cette communauté.",
       "pending-disclaimer" : "Les utilisateurs suivants sont en attente d'une réponse de votre part.",
-      "allowed-disclaimer" : "Les utilisateurs suivants sont autorisés à rejoindre cette communauté."
+      "allowed-disclaimer" : "Les utilisateurs suivants sont invités à rejoindre cette communauté."
     }
   }
 }
