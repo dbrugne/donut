@@ -954,6 +954,10 @@
         "not-confirmed": "Action autorisée seulement pour les comptes validés. Validez votre e-mail.",
         "group-banned": "Vous êtes banni de la communauté",
         "domain": "Ce nom de domaine est invalide"
+      },
+      "success": {
+        "set-access": "Accès modifié",
+        "set-password": "Mot de passe modifié"
       }
     },
     "members": "Vous êtes maintenant membre de la communauté #__name__",

@@ -954,6 +954,10 @@
         "not-confirmed": "Action authorized to verified accounts only. Verifiy your e-mail.",
         "group-banned": "You were banned from community",
         "domain": "This domain is not valid"
+      },
+      "success": {
+        "set-access": "Access updated",
+        "set-password": "password updated"
       }
     },
     "members": "You are now a member of #__name__",
