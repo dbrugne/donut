@@ -1073,7 +1073,7 @@
       "noresult": "No mails found",
       "main": "Main",
       "add": "add email",
-      "mail-notconfirmed": "Your account has not beed confirmed, we sent you a confirmation email. If you have nothing received, we can send a new mail in the section: <a class=\"open-user-account link\">Manage your mails</a>",
+      "mail-notconfirmed": "Your account has not beed confirmed, we sent you a confirmation email. If you have nothing received, we can send a new mail in the section: <strong class=\"open-user-account link\">Manage your mails</strong>",
       "errors": {
         "wrong-format": "Mail address is not valid",
         "mail-already-exist": "This mail address is already used",
