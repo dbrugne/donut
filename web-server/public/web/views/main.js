@@ -169,8 +169,7 @@ var MainView = Backbone.View.extend({
     // Is username required
     if (data.usernameRequired) {
       this.connectionView.hide();
-      this.openModalChooseUsername();
-      return console.log('pop choose username');
+      return this.openModalChooseUsername();
     }
 
     currentUser.onWelcome(data);

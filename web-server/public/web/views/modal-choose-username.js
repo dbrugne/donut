@@ -46,7 +46,6 @@ module.exports = Backbone.View.extend({
         return this.$error.text(response.err).show();
       }
 
-      // @todo : trigger disconnect
       client.connect();
     }, this));
   },
