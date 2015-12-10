@@ -98,6 +98,9 @@ var RoomBlockedView = Backbone.View.extend({
           if (response.err === 'not-confirmed') {
             this.$error.text(i18next.t('chat.form.errors.' + response.err));
           }
+          if (response.err === 'not-allowed') {
+            this.$error.text(i18next.t('chat.form.errors.' + response.err));
+          }
           else if (response.code !== 500) {
             this.$error.text(i18next.t('chat.allowed.error.' + response.err));
           } else {
