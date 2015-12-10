@@ -228,52 +228,35 @@ Notification.prototype.sendMobile = function (model, done) {
   async.waterfall([
 
     function send (callback) {
-      var msg;
+      var method;
       if (['roomop', 'roomdeop', 'roomkick', 'roomban', 'roomdeban', 'roomvoice',
           'roomdevoice'].indexOf(model.type) === -1) {
         return callback('roomPromoteType.sendMobile unknown notification type: ' + model.type);
       }
       switch (model.type) {
         case 'roomop':
-          msg = 'you are now op of ' + model.data.room.getIdentifier();
+          method = parse.roomOp;
           break;
         case 'roomdeop':
-          msg = 'you are no more op of ' + model.data.room.getIdentifier();
+          method = parse.roomDeop;
           break;
         case 'roomkick':
-          msg = 'you have been kicked of ' + model.data.room.getIdentifier();
+          method = parse.roomKick;
           break;
         case 'roomban':
-          msg = 'you have been banned of ' + model.data.room.getIdentifier();
+          method = parse.roomBan;
           break;
         case 'roomdeban':
-          msg = 'you have been unbanned of ' + model.data.room.getIdentifier();
+          method = parse.roomDeban;
           break;
         case 'roomvoice':
-          msg = 'you are no more muted in ' + model.data.room.getIdentifier();
+          method = parse.roomVoice;
           break;
         case 'roomdevoice':
-          msg = 'you are muted in ' + model.data.room.getIdentifier();
+          method = parse.roomDevoice;
           break;
       }
-
-      var query = new parse.Query(parse.Installation);
-      query.equalTo('uid', model.user._id.toString());
-      parse.Push.send({
-        where: query,
-        data: {
-          badge: 'Increment',
-          alert: msg,
-          type: model.type
-        }
-      }, {
-        success: function () {
-          callback(null);
-        },
-        error: function (error) {
-          callback(error);
-        }
-      });
+      _.bind(method, parse)(model.user._id.toString(), model.data.room.getIdentifier(), callback);
     },
 
     function persist (callback) {

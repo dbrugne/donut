@@ -192,23 +192,7 @@ Notification.prototype.sendMobile = function (model, done) {
     utils.retrieveHistoryRoom(model.data.event.toString()),
 
     function send (history, callback) {
-      var query = new parse.Query(parse.Installation);
-      query.equalTo('uid', model.user._id.toString());
-      parse.Push.send({
-        where: query,
-        data: {
-          badge: 'Increment',
-          alert: history.user.username + ' join ' + model.data.room.getIdentifier(),
-          type: model.type
-        }
-      }, {
-        success: function () {
-          callback(null);
-        },
-        error: function (error) {
-          callback(error);
-        }
-      });
+      _.bind(parse.roomJoin, parse)(model.user._id.toString(), history.user.username, model.data.room.getIdentifier(), callback);
     },
 
     function persist (callback) {

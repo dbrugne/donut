@@ -172,23 +172,7 @@ Notification.prototype.sendMobile = function (model, done) {
 
     function send (history, callback) {
       var topic = common.markup.toText(history.data.topic);
-      var query = new parse.Query(parse.Installation);
-      query.equalTo('uid', model.user._id.toString());
-      parse.Push.send({
-        where: query,
-        data: {
-          badge: 'Increment',
-          alert: 'new topic in ' + model.data.room.getIdentifier() + ' : ' + topic,
-          type: 'roommessage'
-        }
-      }, {
-        success: function () {
-          callback(null);
-        },
-        error: function (error) {
-          callback(error);
-        }
-      });
+      _.bind(parse.roomTopic, parse)(model.user._id.toString(), model.data.room.getIdentifier(), topic, callback);
     },
 
     function persist (callback) {

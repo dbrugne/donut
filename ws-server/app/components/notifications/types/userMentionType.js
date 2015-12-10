@@ -239,24 +239,8 @@ Notification.prototype.sendMobile = function (model, done) {
     },
 
     function send (events, callback) {
-      var query = new parse.Query(parse.Installation);
-      query.equalTo('uid', model.user._id.toString());
       async.eachLimit(events, 10, function (event, cb) {
-        parse.Push.send({
-          where: query,
-          data: {
-            badge: 'Increment',
-            alert: event.data.message,
-            type: 'roommessage'
-          }
-        }, {
-          success: function () {
-            cb(null);
-          },
-          error: function (error) {
-            cb(error);
-          }
-        });
+        _.bind(parse.userMention, parse)(model.user._id.toString(), event.data.username, model.data.room.getIdentifier(), event.data.message, cb);
       }, function (err) {
         return callback(err);
       });

@@ -251,54 +251,38 @@ Notification.prototype.sendMobile = function (model, done) {
           'groupdisallow', 'groupban', 'groupdeban', 'groupop', 'groupdeop'].indexOf(model.type) === -1) {
         return callback('roomPromoteType.sendMobile unknown notification type: ' + model.type);
       }
-      var msg;
+      var method;
       switch (model.type) {
         case 'groupjoinrequest':
-          msg = model.data.by_user.username + ' want to join ' + group.name;
+          method = parse.groupJoinRequest;
           break;
         case 'groupallowed':
-          msg = model.data.by_user.username + ' allow you to join ' + group.name;
+          method = parse.groupAllowed;
           break;
         case 'groupdisallow':
-          msg = model.data.by_user.username + ' you are no more a member of ' + group.name;
+          method = parse.groupDisallow;
           break;
         case 'groupinvite':
-          msg = model.data.by_user.username + ' invite you to join ' + group.name;
+          method = parse.groupInvite;
           break;
         case 'grouprefuse':
-          msg = model.data.by_user.username + ' refuse your request to join ' + group.name;
+          method = parse.groupRefuse;
           break;
         case 'groupban':
-          msg = model.data.by_user.username + ' ban you from ' + group.name;
+          method = parse.groupBan;
           break;
         case 'groupdeban':
-          msg = model.data.by_user.username + ' deban you from ' + group.name;
+          method = parse.groupDeban;
           break;
         case 'groupop':
-          msg = model.data.by_user.username + ' make you operator in ' + group.name;
+          method = parse.groupOp;
           break;
         case 'groupdeop':
-          msg = 'you are no more operator in ' + group.name;
+          method = parse.groupDeop;
           break;
       }
 
-      var query = new parse.Query(parse.Installation);
-      query.equalTo('uid', model.user._id.toString());
-      parse.Push.send({
-        where: query,
-        data: {
-          badge: 'Increment',
-          alert: msg,
-          type: model.type
-        }
-      }, {
-        success: function () {
-          callback(null);
-        },
-        error: function (error) {
-          callback(error);
-        }
-      });
+      _.bind(method, parse)(model.user._id.toString(), model.data.by_user.username, group.name, callback);
     },
 
     function persist (callback) {

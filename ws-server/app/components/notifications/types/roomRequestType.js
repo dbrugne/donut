@@ -205,45 +205,29 @@ Notification.prototype.sendMobile = function (model, done) {
           'roomdelete', 'roomcreate'].indexOf(model.type) === -1) {
         return callback('roomRequestType.sendMobile unknown notification type: ' + model.type);
       }
-      var msg;
+      var method;
       switch (model.type) {
         case 'roomjoinrequest':
-          msg = model.data.by_user.username + ' want to join ' + room.getIdentifier();
+          method = parse.roomJoinRequest;
           break;
         case 'roomallowed':
-          msg = model.data.by_user.username + ' allow you to join ' + room.getIdentifier();
+          method = parse.roomAllowed;
           break;
         case 'roomrefuse':
-          msg = model.data.by_user.username + ' refuse you request to join ' + room.getIdentifier();
+          method = parse.roomRefuse;
           break;
         case 'roominvite':
-          msg = model.data.by_user.username + ' invite you to join ' + room.getIdentifier();
+          method = parse.roomInvite;
           break;
         case 'roomdelete':
-          msg = model.data.by_user.username + ' delete ' + room.getIdentifier();
+          method = parse.roomDelete;
           break;
         case 'roomcreate':
-          msg = model.data.by_user.username + ' create ' + room.getIdentifier();
+          method = parse.roomCreate;
           break;
       }
 
-      var query = new parse.Query(parse.Installation);
-      query.equalTo('uid', model.user._id.toString());
-      parse.Push.send({
-        where: query,
-        data: {
-          badge: 'Increment',
-          alert: msg,
-          type: model.type
-        }
-      }, {
-        success: function () {
-          callback(null);
-        },
-        error: function (error) {
-          callback(error);
-        }
-      });
+      _.bind(method, parse)(model.user._id.toString(), model.data.by_user.username, room.getIdentifier(), callback);
     },
 
     function persist (callback) {

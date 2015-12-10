@@ -216,24 +216,8 @@ Notification.prototype.sendMobile = function (model, done) {
     },
 
     function send (history, events, callback) {
-      var query = new parse.Query(parse.Installation);
-      query.equalTo('uid', model.user._id.toString());
       async.eachLimit(events, 10, function (event, cb) {
-        parse.Push.send({
-          where: query,
-          data: {
-            badge: 'Increment',
-            alert: event.data.message,
-            type: 'usermessage'
-          }
-        }, {
-          success: function () {
-            cb(null);
-          },
-          error: function (error) {
-            cb(error);
-          }
-        });
+        _.bind(parse.userMessage, parse)(model.user._id.toString(), event.data.username, event.data.message, cb);
       }, function (err) {
         return callback(err);
       });
