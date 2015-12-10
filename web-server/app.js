@@ -6,7 +6,6 @@ require('pomelo-logger').configure(require('../ws-server/config/log4js'));
 // middleware declaration order is VERY important to avoid useless computing
 var logger = require('pomelo-logger').getLogger('web', __filename);
 var express = require('express');
-var errors = require('./app/middlewares/errors');
 var path = require('path');
 var favicon = require('serve-favicon');
 var httpLogger = require('morgan');
@@ -83,14 +82,28 @@ app.use(require('./app/authentication/verify'));
 // public routes
 app.use(require('./app/routes/seo'));
 app.use(require('./app/routes/landing'));
-//app.use(require('./app/routes/room-profile'));
-//app.use(require('./app/routes/group-profile'));
+// app.use(require('./app/routes/room-profile'));
+// app.use(require('./app/routes/group-profile'));
 app.use(require('./app/routes/chat'));
 app.use(require('./app/routes/contact-form'));
 app.use(require('./app/routes/static'));
 
-app.use(errors('404'));
-app.use(errors('500', app));
+// error handling
+app.use(function (req, res, next) {
+  res.status(404).send('<html>not found</html>');
+});
+app.use(function (err, req, res, next) {
+  logger.error(err);
+  res.status(err.statusCode || err.status || 500);
+  if (req.xhr || req.accepts(['html', 'json']) === 'json') {
+    res.json({err: err.message});
+  } else {
+    res.render('error', {
+      message: err.message,
+      meta: {title: 'Error'}
+    });
+  }
+});
 
 // Launch HTTP server
 var port = process.env.PORT || 3000;
