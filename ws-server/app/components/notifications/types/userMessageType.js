@@ -217,7 +217,7 @@ Notification.prototype.sendMobile = function (model, done) {
 
     function send (history, events, callback) {
       async.eachLimit(events, 10, function (event, cb) {
-        _.bind(parse.userMessage, parse)(model.user._id.toString(), event.data.username, event.data.message, cb);
+        parse.userMessage(model.user._id.toString(), event.data.username, event.data.message, cb);
       }, function (err) {
         return callback(err);
       });

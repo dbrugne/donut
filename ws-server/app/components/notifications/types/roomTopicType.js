@@ -172,7 +172,7 @@ Notification.prototype.sendMobile = function (model, done) {
 
     function send (history, callback) {
       var topic = common.markup.toText(history.data.topic);
-      _.bind(parse.roomTopic, parse)(model.user._id.toString(), model.data.room.getIdentifier(), topic, callback);
+      parse.roomTopic(model.user._id.toString(), model.data.room.getIdentifier(), topic, callback);
     },
 
     function persist (callback) {

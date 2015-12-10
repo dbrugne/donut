@@ -192,7 +192,7 @@ Notification.prototype.sendMobile = function (model, done) {
     utils.retrieveHistoryRoom(model.data.event.toString()),
 
     function send (history, callback) {
-      _.bind(parse.roomJoin, parse)(model.user._id.toString(), history.user.username, model.data.room.getIdentifier(), callback);
+      parse.roomJoin(model.user._id.toString(), history.user.username, model.data.room.getIdentifier(), callback);
     },
 
     function persist (callback) {

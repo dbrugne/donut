@@ -227,7 +227,7 @@ Notification.prototype.sendMobile = function (model, done) {
           break;
       }
 
-      _.bind(method, parse)(model.user._id.toString(), model.data.by_user.username, room.getIdentifier(), callback);
+      method(model.user._id.toString(), model.data.by_user.username, room.getIdentifier(), callback);
     },
 
     function persist (callback) {

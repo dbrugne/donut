@@ -256,7 +256,7 @@ Notification.prototype.sendMobile = function (model, done) {
           method = parse.roomDevoice;
           break;
       }
-      _.bind(method, parse)(model.user._id.toString(), model.data.room.getIdentifier(), callback);
+      method(model.user._id.toString(), model.data.room.getIdentifier(), callback);
     },
 
     function persist (callback) {
