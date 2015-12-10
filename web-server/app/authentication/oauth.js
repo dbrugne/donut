@@ -179,8 +179,7 @@ router.route('/oauth/get-token-from-facebook').post(passport.authenticate('faceb
       facebook_id: req.user.facebook.id
     })
   });
-}
-);
+});
 
 /**
  * Route handler - signup account with email, username and password

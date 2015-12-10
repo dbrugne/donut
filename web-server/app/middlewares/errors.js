@@ -19,25 +19,16 @@ module.exports = function (code, app) {
   }
 
   // Error 500
-  if (app.get('env') === 'production') {
-    // Display light error page
-    return function (err, req, res, next) {
-      res.status(err.status || 500);
+  return function (err, req, res, next) {
+    logger.error(err);
+    res.status(err.status || 500);
+    if (req.accepts(['html', 'json']) === 'json') {
+      res.json({err: err.message});
+    } else {
       res.render('error', {
         message: err.message,
-        error: {},
-        meta: {title: '500 (donuts) error'}
+        meta: {title: 'Error'}
       });
-    };
-  } else {
-    // Display full error message
-    return function (err, req, res, next) {
-      res.status(err.status || 500);
-      res.render('error', {
-        message: err.message,
-        errorObject: err,
-        meta: {title: '500 (donuts) error'}
-      });
-    };
-  }
+    }
+  };
 };
