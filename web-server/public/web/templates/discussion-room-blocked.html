@@ -15,7 +15,11 @@
                     <span class="owner"><%= t('global.by') %> <a class="open-user-profile dc-text" data-user-id="<%= data.owner_id %>">@<%= data.owner_username %></a></span>
                 <% } %>
 
-                <% if (data.mode === 'private' && data.blocked !== 'groupbanned' && data.blocked !== 'banned' && data.blocked !== 'kicked') { %>
+                <% if (!confirmed) { %>
+                    <div class="mt15 fs15">
+                        <%= t('chat.blocked.not-confirmed') %>
+                    </div>
+                <% } else if (data.mode === 'private' && data.blocked !== 'groupbanned' && data.blocked !== 'banned' && data.blocked !== 'kicked') { %>
                     <% if (data.hasPassword) { %>
                         <div class="password-form mt15 fs15">
                             <%= t('chat.blocked.allowed') %>

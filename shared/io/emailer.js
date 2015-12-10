@@ -450,13 +450,13 @@ emailer.userMention = function (to, events, from, room, callback) {
   }, callback);
 };
 
-emailer.userMessage = function (to, username, events, callback) {
-  var data = {username: username};
+emailer.userMessage = function (to, from, events, callback) {
+  var data = {username: from};
   sendEmail(to, 'emails/user-message.html', {
     events: events,
-    username: username,
-    title: i18next.t('email.usermessage.content.title', {username: username}),
-    subject: i18next.t('email.usermessage.subject', {username: username}),
+    username: from,
+    title: i18next.t('email.usermessage.content.title', {username: from}),
+    subject: i18next.t('email.usermessage.subject', {username: from}),
     userlink: {
       chat: conf.url + urls(data, 'user', 'chat')
     },
