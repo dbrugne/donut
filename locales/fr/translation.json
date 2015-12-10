@@ -758,7 +758,8 @@
       "disclaimer-changing": "Vous pouvez passer ce donut en mode privé. Alors, seuls les utilisateurs que vous autoriserez pourront rejoindre, participer et accéder à l'historique. L'accès se fera par invitation et/ou par mot de passe. Les membres actuels de donut public resteront autorisés dans ce donut une fois qu'il sera devenu privé. Attention, cette action est irréversible.",
       "disclaimer-group": "Les membres peuvent créer des donuts et les gérer au sein de la communauté. Ils peuvent rejoindre tout donut ouvert aux membres. A noter que les donuts publics sont accessibles à tous.",
       "close": "Fermer ce donut",
-      "allowgroupmember": "Autoriser les membres de cette communauté à rejoindre ce donut"
+      "allowgroupmember": "Autoriser les membres de cette communauté à rejoindre ce donut",
+      "not-confirmed": "Action autorisée seulement pour les comptes validés. Validez votre e-mail."
     },
     "form": {
       "common": {
