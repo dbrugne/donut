@@ -217,6 +217,7 @@ function facebookCallback (req, token, refreshToken, profile, done) {
       }
 
       user.save(function (err) {
+        console.error(err);
         done(err, user);
       });
     };
@@ -224,6 +225,7 @@ function facebookCallback (req, token, refreshToken, profile, done) {
     // look for existing user with this profile.id
     User.findOne({ 'facebook.id': profile.id }, function (err, existingUser) {
       if (err) {
+        console.error(err);
         return done(err);
       }
 
@@ -241,6 +243,7 @@ function facebookCallback (req, token, refreshToken, profile, done) {
       // look for existing user with this profile.email
       User.findOne({ 'local.email': facebookEmail }, function (err, existingUser) {
         if (err) {
+          console.error(err);
           return done(err);
         }
 
