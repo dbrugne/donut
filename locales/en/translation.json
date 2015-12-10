@@ -758,7 +758,8 @@
       "disclaimer-changing": "You can switch this donut to private mode. Then, only users you authorize will be able to join, participate and access history. Access will be based on invitation and/or password. The current members of this public donut will remain members once this donut switched to private. Caution, this action cannot be undone.",
       "disclaimer-group": "Members create donuts and manage them. Members can join any donut open to members. Note: public donuts are open to anyone.",
       "close": "Close this donut",
-      "allowgroupmember": "Allow community members to join this donut"
+      "allowgroupmember": "Allow community members to join this donut",
+      "not-confirmed": "Action authorized to verified accounts only. Verifiy your e-mail."
     },
     "form": {
       "common": {
@@ -954,6 +955,10 @@
         "not-confirmed": "Action authorized to verified accounts only. Verifiy your e-mail.",
         "group-banned": "You were banned from community",
         "domain": "This domain is not valid"
+      },
+      "success": {
+        "set-access": "Access updated",
+        "set-password": "password updated"
       }
     },
     "members": "You are now a member of #__name__",

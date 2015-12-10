@@ -158,29 +158,36 @@ router.route('/oauth/check-token').post(function (req, res) {
  * Route handler - authenticate a user based on a Facebook access token
  * Delegate Facebook token validation to passport-facebook-token
  *
+ * See http://passportjs.org/docs/authenticate for "Custom Callback" syntax
+ *
  * @post access_token
  * @response {token: String}
  */
-router.route('/oauth/get-token-from-facebook').post(passport.authenticate('facebook-token'), function (req, res) {
-  if (!req.user) {
-    return res.json({err: 'unable to retrieve this user'});
-  }
+router.route('/oauth/get-token-from-facebook').post(function (req, res, next) {
+  passport.authenticate('facebook-token', {}, function (err, user, info) {
+    if (err) {
+      logger.warn('passport-facebook-token', err);
+      return res.json({err: 'passport-facebook-token-invalid'});
+    }
+    if (!user) {
+      return res.json({err: 'unknown'});
+    }
 
-  var allowed = req.user.isAllowedToConnect();
-  if (!allowed.allowed) {
-    return res.json(allowed);
-  }
+    var allowed = user.isAllowedToConnect();
+    if (!allowed.allowed) {
+      return res.json(allowed);
+    }
 
-  res.json({
-    id: req.user.id,
-    token: getToken({
-      id: req.user.id,
-      username: req.user.username,
-      facebook_id: req.user.facebook.id
-    })
-  });
-}
-);
+    res.json({
+      id: user.id,
+      token: getToken({
+        id: user.id,
+        username: user.username,
+        facebook_id: user.facebook.id
+      })
+    });
+  })(req, res, next);
+});
 
 /**
  * Route handler - signup account with email, username and password

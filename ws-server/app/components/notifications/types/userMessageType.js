@@ -155,6 +155,7 @@ Notification.prototype.sendEmail = function (model, done) {
 
     function send (history, events, callback) {
       var messages = [];
+      var username = '';
       _.each(events, function (event) {
         var isCurrentMessage = (history.id === event.data.id);
         messages.push({
@@ -169,7 +170,7 @@ Notification.prototype.sendEmail = function (model, done) {
       });
 
       if (model.user.getEmail()) {
-        emailer.userMessage(model.user.getEmail(), model.user.get('username'), messages, callback);
+        emailer.userMessage(model.user.getEmail(), events[0]['data']['username'], messages, callback);
       }
     },
 

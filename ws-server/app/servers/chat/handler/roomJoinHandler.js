@@ -28,9 +28,6 @@ handler.call = function (data, session, next) {
   if (!room) {
     return next(null, {code: 404, err: 'room-not-found'});
   }
-  if (!user.confirmed) {
-    return next(null, {code: 403, err: 'not-confirmed'});
-  }
 
   blocked = room.isUserBlocked(user.id, data.password);
   if (blocked === false) {

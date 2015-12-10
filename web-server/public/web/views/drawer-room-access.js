@@ -62,6 +62,7 @@ var RoomAccessView = Backbone.View.extend({
     this.$el.html(html);
 
     this.$errors = this.$('.errors');
+    this.$success = this.$('.success');
     this.$search = this.$('input[type=text]');
     this.$toggleCheckbox = this.$('#input-password-checkbox');
     this.$checkboxGroupAllow = this.$('#input-allowgroupmember-checkbox');
@@ -118,9 +119,12 @@ var RoomAccessView = Backbone.View.extend({
       ? { allow_group_member: true }
       : { allow_group_member: false, add_users_to_allow: true };
 
-    client.roomUpdate(this.roomId, update, _.bind(function (reponse) {
+    client.roomUpdate(this.roomId, update, _.bind(function (response) {
+      this.reset();
       if (response.err) {
         this.setError(response.err);
+      } else {
+        return this.setSuccess(i18next.t('chat.form.success.set-access'));
       }
     }, this));
   },
@@ -128,13 +132,17 @@ var RoomAccessView = Backbone.View.extend({
     client.roomUpdate(this.roomId, {
       allow_user_request: this.$checkboxUserRequest.is(':checked')
     }, _.bind(function (response) {
+        this.reset();
         if (response.err) {
           this.setError(response.err);
+        } else {
+          return this.setSuccess(i18next.t('chat.form.success.set-access'));
         }
     }, this));
   },
   reset: function () {
     this.$errors.html('').hide();
+    this.$success.html('').hide();
     this.$el.removeClass('has-error').removeClass('has-success').val('');
   },
   setError: function (err) {
@@ -142,6 +150,12 @@ var RoomAccessView = Backbone.View.extend({
       err = i18next.t('global.unknownerror');
     }
     this.$errors.html(err).show();
+  },
+  setSuccess: function (message) {
+    if (!message) {
+      return;
+    }
+    this.$success.html(message).show();
   },
   onSubmit: function (event) {
     this.reset();
@@ -152,18 +166,21 @@ var RoomAccessView = Backbone.View.extend({
     }
 
     client.roomUpdate(this.roomId, {password: this.getPassword()}, _.bind(function (data) {
+      this.reset();
       if (data.err) {
         return this.setError(i18next.t('chat.form.errors.' + data.err, {defaultValue: i18next.t('global.unknownerror')}));
+      } else {
+        return this.setSuccess(i18next.t('chat.form.success.set-password'));
       }
-      this.trigger('close');
     }, this));
   },
   onSubmitConditions: function (event) {
-    this.reset();
-
     client.roomUpdate(this.roomId, {disclaimer: this.$conditions.val()}, _.bind(function (data) {
+      this.reset();
       if (data.err) {
         return this.setError(i18next.t('chat.form.errors.' + data.err, {defaultValue: i18next.t('global.unknownerror')}));
+      } else {
+        return this.setSuccess(i18next.t('chat.form.success.set-access'));
       }
       this.trigger('close');
     }, this));
