@@ -5,6 +5,7 @@ var async = require('async');
 var emailer = require('../../../../../shared/io/emailer');
 var utils = require('./../utils');
 var NotificationModel = require('../../../../../shared/models/notification');
+var parse = require('../../../../../shared/io/parse');
 
 module.exports = function (facade) {
   return new Notification(facade);
@@ -184,6 +185,70 @@ Notification.prototype.sendEmail = function (model, done) {
     function persist (callback) {
       model.sent_to_email = true;
       model.sent_to_email_at = new Date();
+      model.save(callback);
+    }
+
+  ], done);
+};
+
+Notification.prototype.sendMobile = function (model, done) {
+  if (!model.data || !model.user || !model.user._id) {
+    return done('roomRequestType.sendMobile data left');
+  }
+
+  async.waterfall([
+
+    utils.retrieveRoom(model.data.room),
+
+    function send (room, callback) {
+      if (['roomjoinrequest', 'roomallowed', 'roomrefuse', 'roominvite',
+          'roomdelete', 'roomcreate'].indexOf(model.type) === -1) {
+        return callback('roomRequestType.sendMobile unknown notification type: ' + model.type);
+      }
+      var msg;
+      switch (model.type) {
+        case 'roomjoinrequest':
+          msg = model.data.by_user.username + ' want to join ' + room.getIdentifier();
+          break;
+        case 'roomallowed':
+          msg = model.data.by_user.username + ' allow you to join ' + room.getIdentifier();
+          break;
+        case 'roomrefuse':
+          msg = model.data.by_user.username + ' refuse you request to join ' + room.getIdentifier();
+          break;
+        case 'roominvite':
+          msg = model.data.by_user.username + ' invite you to join ' + room.getIdentifier();
+          break;
+        case 'roomdelete':
+          msg = model.data.by_user.username + ' delete ' + room.getIdentifier();
+          break;
+        case 'roomcreate':
+          msg = model.data.by_user.username + ' create ' + room.getIdentifier();
+          break;
+      }
+
+      var query = new parse.Query(parse.Installation);
+      query.equalTo('uid', model.user._id.toString());
+      parse.Push.send({
+        where: query,
+        data: {
+          badge: 'Increment',
+          alert: msg,
+          type: model.type
+        }
+      }, {
+        success: function () {
+          callback(null);
+        },
+        error: function (error) {
+          callback(error);
+        }
+      });
+    },
+
+    function persist (callback) {
+      model.sent_to_mobile = true;
+      model.sent_to_mobile_at = new Date();
       model.save(callback);
     }
 

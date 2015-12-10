@@ -6,6 +6,7 @@ var emailer = require('../../../../../shared/io/emailer');
 var utils = require('./../utils');
 var NotificationModel = require('../../../../../shared/models/notification');
 var conf = require('../../../../../config/index');
+var parse = require('../../../../../shared/io/parse');
 
 module.exports = function (facade) {
   return new Notification(facade);
@@ -230,6 +231,79 @@ Notification.prototype.sendEmail = function (model, done) {
     function persist (callback) {
       model.sent_to_email = true;
       model.sent_to_email_at = new Date();
+      model.save(callback);
+    }
+
+  ], done);
+};
+
+Notification.prototype.sendMobile = function (model, done) {
+  if (!model.data || !model.user || !model.user._id) {
+    return done('groupRequestType.sendMobile data left');
+  }
+
+  async.waterfall([
+
+    utils.retrieveGroup(model.data.group),
+
+    function send (group, callback) {
+      if (['groupjoinrequest', 'groupallowed', 'grouprefuse', 'groupinvite',
+          'groupdisallow', 'groupban', 'groupdeban', 'groupop', 'groupdeop'].indexOf(model.type) === -1) {
+        return callback('roomPromoteType.sendMobile unknown notification type: ' + model.type);
+      }
+      var msg;
+      switch (model.type) {
+        case 'groupjoinrequest':
+          msg = model.data.by_user.username + ' want to join ' + group.name;
+          break;
+        case 'groupallowed':
+          msg = model.data.by_user.username + ' allow you to join ' + group.name;
+          break;
+        case 'groupdisallow':
+          msg = model.data.by_user.username + ' you are no more a member of ' + group.name;
+          break;
+        case 'groupinvite':
+          msg = model.data.by_user.username + ' invite you to join ' + group.name;
+          break;
+        case 'grouprefuse':
+          msg = model.data.by_user.username + ' refuse your request to join ' + group.name;
+          break;
+        case 'groupban':
+          msg = model.data.by_user.username + ' ban you from ' + group.name;
+          break;
+        case 'groupdeban':
+          msg = model.data.by_user.username + ' deban you from ' + group.name;
+          break;
+        case 'groupop':
+          msg = model.data.by_user.username + ' make you operator in ' + group.name;
+          break;
+        case 'groupdeop':
+          msg = 'you are no more operator in ' + group.name;
+          break;
+      }
+
+      var query = new parse.Query(parse.Installation);
+      query.equalTo('uid', model.user._id.toString());
+      parse.Push.send({
+        where: query,
+        data: {
+          badge: 'Increment',
+          alert: msg,
+          type: model.type
+        }
+      }, {
+        success: function () {
+          callback(null);
+        },
+        error: function (error) {
+          callback(error);
+        }
+      });
+    },
+
+    function persist (callback) {
+      model.sent_to_mobile = true;
+      model.sent_to_mobile_at = new Date();
       model.save(callback);
     }
 

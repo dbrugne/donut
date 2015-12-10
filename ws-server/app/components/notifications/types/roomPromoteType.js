@@ -7,6 +7,7 @@ var utils = require('./../utils');
 var HistoryRoom = require('../../../../../shared/models/historyroom');
 var RoomModel = require('../../../../../shared/models/room');
 var NotificationModel = require('../../../../../shared/models/notification');
+var parse = require('../../../../../shared/io/parse');
 
 module.exports = function (facade) {
   return new Notification(facade);
@@ -213,6 +214,71 @@ Notification.prototype.sendEmail = function (model, done) {
     function persist (callback) {
       model.sent_to_email = true;
       model.sent_to_email_at = new Date();
+      model.save(callback);
+    }
+
+  ], done);
+};
+
+Notification.prototype.sendMobile = function (model, done) {
+  if (!model.data || !model.user || !model.user._id) {
+    return done('roomPromoteType.sendMobile data left');
+  }
+
+  async.waterfall([
+
+    function send (callback) {
+      var msg;
+      if (['roomop', 'roomdeop', 'roomkick', 'roomban', 'roomdeban', 'roomvoice',
+          'roomdevoice'].indexOf(model.type) === -1) {
+        return callback('roomPromoteType.sendMobile unknown notification type: ' + model.type);
+      }
+      switch (model.type) {
+        case 'roomop':
+          msg = 'you are now op of ' + model.data.room.getIdentifier();
+          break;
+        case 'roomdeop':
+          msg = 'you are no more op of ' + model.data.room.getIdentifier();
+          break;
+        case 'roomkick':
+          msg = 'you have been kicked of ' + model.data.room.getIdentifier();
+          break;
+        case 'roomban':
+          msg = 'you have been banned of ' + model.data.room.getIdentifier();
+          break;
+        case 'roomdeban':
+          msg = 'you have been unbanned of ' + model.data.room.getIdentifier();
+          break;
+        case 'roomvoice':
+          msg = 'you are no more muted in ' + model.data.room.getIdentifier();
+          break;
+        case 'roomdevoice':
+          msg = 'you are muted in ' + model.data.room.getIdentifier();
+          break;
+      }
+
+      var query = new parse.Query(parse.Installation);
+      query.equalTo('uid', model.user._id.toString());
+      parse.Push.send({
+        where: query,
+        data: {
+          badge: 'Increment',
+          alert: msg,
+          type: model.type
+        }
+      }, {
+        success: function () {
+          callback(null);
+        },
+        error: function (error) {
+          callback(error);
+        }
+      });
+    },
+
+    function persist (callback) {
+      model.sent_to_mobile = true;
+      model.sent_to_mobile_at = new Date();
       model.save(callback);
     }
 

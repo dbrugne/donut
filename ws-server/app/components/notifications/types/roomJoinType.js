@@ -9,6 +9,7 @@ var HistoryRoomModel = require('../../../../../shared/models/historyroom');
 var emailer = require('../../../../../shared/io/emailer');
 var utils = require('./../utils');
 var conf = require('../../../../../config/index');
+var parse = require('../../../../../shared/io/parse');
 
 module.exports = function (facade) {
   return new Notification(facade);
@@ -175,6 +176,44 @@ Notification.prototype.sendEmail = function (model, done) {
     function persist (callback) {
       model.sent_to_email = true;
       model.sent_to_email_at = new Date();
+      model.save(callback);
+    }
+
+  ], done);
+};
+
+Notification.prototype.sendMobile = function (model, done) {
+  if (!model.data || !model.data.event || !model.user || !model.user._id) {
+    return logger.error('roomJoinType.sendMobile data left');
+  }
+
+  async.waterfall([
+
+    utils.retrieveHistoryRoom(model.data.event.toString()),
+
+    function send (history, callback) {
+      var query = new parse.Query(parse.Installation);
+      query.equalTo('uid', model.user._id.toString());
+      parse.Push.send({
+        where: query,
+        data: {
+          badge: 'Increment',
+          alert: history.user.username + ' join ' + model.data.room.getIdentifier(),
+          type: model.type
+        }
+      }, {
+        success: function () {
+          callback(null);
+        },
+        error: function (error) {
+          callback(error);
+        }
+      });
+    },
+
+    function persist (callback) {
+      model.sent_to_mobile = true;
+      model.sent_to_mobile_at = new Date();
       model.save(callback);
     }
 

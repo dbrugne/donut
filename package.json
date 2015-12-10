@@ -52,6 +52,7 @@
     "node-uuid": "^1.4.3",
     "nodemailer": "1.x",
     "nodemailer-mailgun-transport": "^1.0.0",
+    "parse": "^1.6.9",
     "passport": "0.3.x",
     "passport-facebook": "2.x",
     "passport-facebook-token": "^3.0.0",

@@ -33,9 +33,16 @@ module.exports = {
         }
 
         // Send to mobile
-        // if (_.isFunction(type.sendMobile) && notification.sent_to_mobile ===
-        // false && notification.to_mobile === true)
-        // type.sendMobile(notification);
+        if (_.isFunction(type.sendMobile) && notification.sent_to_mobile ===
+          false && notification.to_mobile === true) {
+          type.sendMobile(notification, function (err) {
+            if (err) {
+              return logger.warn('notificationsTask.send mobile sending ' + notification.id + ' error: ' + err);
+            }
+
+            return logger.trace('notificationsTask.send mobile ' + notification.id + ' sent');
+          });
+        }
       });
 
       logger.trace('notificationsTask.send done');

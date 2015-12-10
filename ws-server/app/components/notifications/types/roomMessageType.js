@@ -10,6 +10,7 @@ var HistoryRoomModel = require('../../../../../shared/models/historyroom');
 var emailer = require('../../../../../shared/io/emailer');
 var utils = require('./../utils');
 var conf = require('../../../../../config/index');
+var parse = require('../../../../../shared/io/parse');
 
 module.exports = function (facade) {
   return new Notification(facade);
@@ -179,6 +180,69 @@ Notification.prototype.sendEmail = function (model, done) {
     function persist (callback) {
       model.sent_to_email = true;
       model.sent_to_email_at = new Date();
+      model.save(callback);
+    }
+
+  ], done);
+};
+
+Notification.prototype.sendMobile = function (model, done) {
+  if (!model.data || !model.data.event || !model.user || !model.user._id) {
+    return logger.error('roomMessageType.sendMobile data left');
+  }
+
+  async.waterfall([
+
+    function retrieveEvents (callback) {
+      HistoryRoomModel.retrieveEventWithContext(model.data.event.toString(), model.user.id, 5, 10, true, function (err, events) {
+        if (err) {
+          return callback(err);
+        }
+
+        return callback(null, events);
+      });
+    },
+
+    function mentions (events, callback) {
+      // @todo what do we do with mentions ?
+      _.each(events, function (event, index, list) {
+        if (!event.data.message) {
+          return;
+        }
+
+        list[ index ].data.message = common.markup.toText(event.data.message);
+      });
+
+      callback(null, events);
+    },
+
+    function send (events, callback) {
+      var query = new parse.Query(parse.Installation);
+      query.equalTo('uid', model.user._id.toString());
+      async.eachLimit(events, 10, function (event, cb) {
+        parse.Push.send({
+          where: query,
+          data: {
+            badge: 'Increment',
+            alert: event.data.message,
+            type: 'roommessage'
+          }
+        }, {
+          success: function () {
+            cb(null);
+          },
+          error: function (error) {
+            cb(error);
+          }
+        });
+      }, function (err) {
+        return callback(err);
+      });
+    },
+
+    function persist (callback) {
+      model.sent_to_mobile = true;
+      model.sent_to_mobile_at = new Date();
       model.save(callback);
     }
 

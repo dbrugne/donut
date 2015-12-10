@@ -1,5 +1,6 @@
 'use strict';
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var common = require('@dbrugne/donut-common/server');
 var _ = require('underscore');
 var async = require('async');
 var UserModel = require('../../../../../shared/models/user');
@@ -9,6 +10,7 @@ var HistoryRoomModel = require('../../../../../shared/models/historyroom');
 var emailer = require('../../../../../shared/io/emailer');
 var utils = require('./../utils');
 var conf = require('../../../../../config/index');
+var parse = require('../../../../../shared/io/parse');
 
 module.exports = function (facade) {
   return new Notification(facade);
@@ -148,6 +150,45 @@ Notification.prototype.sendEmail = function (model, done) {
       if (model.user.getEmail()) {
         emailer.roomTopic(model.user.getEmail(), history.user.username, model.data.room.getIdentifier(), topic, callback);
       }
+    },
+
+    function persist (callback) {
+      model.sent_to_email = true;
+      model.sent_to_email_at = new Date();
+      model.save(callback);
+    }
+
+  ], done);
+};
+
+Notification.prototype.sendMobile = function (model, done) {
+  if (!model.data || !model.data.event || !model.user || !model.user._id) {
+    return logger.error('roomTopicType.sendMobile data left');
+  }
+
+  async.waterfall([
+
+    utils.retrieveHistoryRoom(model.data.event.toString()),
+
+    function send (history, callback) {
+      var topic = common.markup.toText(history.data.topic);
+      var query = new parse.Query(parse.Installation);
+      query.equalTo('uid', model.user._id.toString());
+      parse.Push.send({
+        where: query,
+        data: {
+          badge: 'Increment',
+          alert: 'new topic in ' + model.data.room.getIdentifier() + ' : ' + topic,
+          type: 'roommessage'
+        }
+      }, {
+        success: function () {
+          callback(null);
+        },
+        error: function (error) {
+          callback(error);
+        }
+      });
     },
 
     function persist (callback) {
