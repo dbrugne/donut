@@ -170,7 +170,7 @@ router.route('/oauth/get-token-from-facebook').post(function (req, res, next) {
       return res.json({err: 'passport-facebook-token-invalid'});
     }
     if (!user) {
-      return res.json({err: 'unknown-user'});
+      return res.json({err: 'unknown'});
     }
 
     var allowed = user.isAllowedToConnect();
