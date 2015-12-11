@@ -227,7 +227,10 @@ Notification.prototype.sendMobile = function (model, done) {
           break;
       }
 
-      method(model.user._id.toString(), model.data.by_user.username, room.getIdentifier(), callback);
+      var avatar = (['roomjoinrequest'].indexOf(model.type) !== -1)
+        ? model.data.by_user._avatar()
+        : room._avatar();
+      method(model.user._id.toString(), model.data.by_user.username, room.getIdentifier(), avatar, callback);
     },
 
     function persist (callback) {

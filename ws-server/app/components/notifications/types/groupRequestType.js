@@ -282,7 +282,10 @@ Notification.prototype.sendMobile = function (model, done) {
           break;
       }
 
-      method(model.user._id.toString(), model.data.by_user.username, group.name, callback);
+      var avatar = (['groupjoinrequest'].indexOf(model.type) !== -1)
+        ? model.data.by_user._avatar()
+        : group._avatar();
+      method(model.user._id.toString(), model.data.by_user.username, group.name, avatar, callback);
     },
 
     function persist (callback) {
