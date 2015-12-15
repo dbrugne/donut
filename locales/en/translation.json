@@ -1135,7 +1135,7 @@
       "subject": "Email validation on DONUT.me",
       "content": {
         "title": "Validate email on DONUT.me",
-        "disclaimer": "To activate your email you should click on the link below",
+        "disclaimer": "Email activation will be effective for @__username__ account. To activate your email you should click on the link below",
         "button": "Valid your email"
       }
     },

@@ -1135,7 +1135,7 @@
       "subject": "Valider votre email DONUT.me",
       "content": {
         "title": "Valider votre email",
-        "disclaimer": "Pour activer votre email cliquer sur le lien ci-dessous",
+        "disclaimer": "L'email est rataché au compte utilisateur @__username__. Pour activer votre email cliquer sur le lien ci-dessous",
         "button": "Valider votre email"
       }
     },

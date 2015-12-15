@@ -23,7 +23,7 @@ var sendEmail = function (user, email, cb) {
   };
   var token = jwt.sign(profile, conf.verify.secret, {expiresIn: conf.verify.expire});
 
-  emailer.verify(email, token, function (err) {
+  emailer.verify(email, user, token, function (err) {
     if (err) {
       return cb('verify-emailer: ' + err);
     }
