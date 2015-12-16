@@ -100,9 +100,10 @@ emailer.forgot = function (to, token, callback) {
   }, callback);
 };
 
-emailer.verify = function (to, token, callback) {
+emailer.verify = function (to, from, token, callback) {
   sendEmail(to, 'emails/verify.html', {
     token: token,
+    username: from.username,
     title: i18next.t('email.verify.content.title'),
     subject: i18next.t('email.verify.subject')
   }, callback);

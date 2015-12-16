@@ -45,6 +45,11 @@
                     </span>
                 </span>
             </span>
+            <% if (confirmed === false) { %>
+                <span class="not-confirmed">
+                    - <%= t('chat.blocked.cant-answer', {username: username}) %>
+                </span>
+            <% } %>
         </div>
     </div>
     <div class="date-ctn hidden"></div>
