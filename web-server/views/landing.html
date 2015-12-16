@@ -12,7 +12,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/"><img class="logo" src="/images/logo-bordered-small.png" alt="<%= t('title') %> - <%= t('baseline') %>"></a>
+                <a class="navbar-brand" href="/"><img class="logo" src="/images/logo-bordered-small.png" height="25" alt="<%= t('title') %> - <%= t('baseline') %>"></a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -52,8 +52,7 @@
         </nav>
     </header>
 
-    <div class="first flex-parent column">
-        <div class="flex-child"></div>
+    <div class="first flex-parent column jc-center center">
         <div class="container">
             <div class="disclaimer-top">
                 <p class="p1">L'ESPACE DE DISCUSSION</p>
@@ -95,7 +94,6 @@
             </div>
 
         </div>
-        <div class="flex-child"></div>
     </div>
 
     <div class="border"></div>
@@ -178,24 +176,80 @@
         <div class="hr"></div>
         <div class="container">
             <p class="shadowed"><strong>CRÉEZ</strong> L'ESPACE DE DISCUSSION QUI RESSEMBLE À VOTRE COMMUNAUTÉ GRÂCE À DONUT</p>
+            <div class="authenticate">
+                <% if (user) { %>
+                <div class="login"><%= t('logged.title') %></div>
+                <div class="logged mt25 flex-parent">
+                    <img class="avatar" src="<%= user.avatar %>" alt="<%= user.username %> avatar">
+                    <div class="text-ctn">
+                        <% if (user.username) { %>
+                        <p class="username">@<%= user.username %></p>
+                        <% } else { %>
+                        <p class="username"><%= user.realname ? user.realname : '' %></p>
+                        <% } %>
+                        <p class="text"><%= t('logged.text') %></p>
+                    </div>
+                    <div class="actions flex-parent column jc-center center">
+                        <a class="button button-primary" href="/!"><%= t('logged.chat') %></a>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <% } else { %>
+                <div class="flex-parent column">
+                    <div class="login">S'inscrire</div>
+                    <div class="row">
+                        <a href="/login/facebook" class="button button-facebook col-sm-5"><%= t('login.withfacebook') %></span></a>
+                        <div class="or col-sm-2"><%= t('global.or') %></div>
+                        <a href="/signup" class="button button-primary col-sm-5">Créer un compte</span></a>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <div class="fourth flex-parent column jc-center center">
+        <div class="container">
+            <div class="ctn">
+                <div class="title">A propos de nous</div>
+                <div class="text">
+                    <p>Nous puisons une grande part de notre inspiration dans IRC, le système de chat qui a permis aux tous premiers internautes de se retrouver par communautés. Nous avons la nostalgie de cette époque et de cette vision d'Internet. Un Internet où, comme dans la vraie vie, on peut discuter avec ceux qui se trouvent au même endroit que soi, qu'on soit déjà "amis" ou non. A l'origine de ce projet il y a la volonté de faire revivre ces grandes heures du chat à notre génération, et les faire découvrir aux plus jeunes.</p>
+                    <p>Par ailleurs nous sommes admiratifs de la qualité des messageries instantantanées pour discuter entre amis (Whatsapp, Viber, Facebook Messenger...) ou entre collègues (Slack, Hipchat...). Ces outils ne sont malheureusement pas adaptés aux discussions de communautés.</p>
+                    <p>Notre mission chez DONUT, c'est d'offrir aux communautés, et en particularité aux campus universitaires, la meilleure expérience de discussion instantanée.</p>
+                </div>
+            <div class="logo"></div>
+            </div>
+        </div>
+    </div>
+    <div class="partners flex-parent jc-center center">
+        <div class="container">
+            <div class="ctn">
+                <div class="title">Our partners</div>
+                <div class="img-ctn flex-parent jc-center center">
+                    <div class="logo1"></div>
+                    <div class="logo2"></div>
+                    <div class="logo3"></div>
+                </div>
+            </div>
         </div>
     </div>
 
     <footer>
-        <div class="container flex-parent center jc-center mt10 mb10">
-            <a class="inverse ml10" href="/!#donut/help"><%= t('chat.help') %></a>
-            <a class="inverse ml10" href="/faq" target="_blank"><%= t('page.faq.title') %></a>
-            <a class="inverse ml10" data-toggle="contactform"><%= t('page.contact.title') %></a>
-            <a class="inverse ml10" href="/eutc" target="_blank"><%= t('page.eutc.title') %></a>
-            <a class="inverse ml10" href="/legals" target="_blank"><%=t('landing.legals')%></a>
-            <span class="ml10"> - </span>
-            <a class="inverse ml10 switch" href="" data-language="fr" >Français</a>
-            <a class="inverse ml10 switch" href="" data-language="en" >English</a>
-
-        </div>
-        <div class="container flex-parent">
-            <div class="fb-like flex-child" data-href="https://www.facebook.com/donutdotme" data-layout="standard" data-action="like" data-show-faces="true" data-share="true" data-ref="landing"></div>
-            <div class="text-center">Copyright DONUT</div>
+        <div class="container">
+            <div class=" flex-parent center jc-center">
+                <a class="ml10" href="/!#donut/help"><%= t('chat.help') %></a>
+                <a class="ml10" href="/faq" target="_blank"><%= t('page.faq.title') %></a>
+                <a class="ml10" data-toggle="contactform"><%= t('page.contact.title') %></a>
+                <a class="ml10" href="/eutc" target="_blank"><%= t('page.eutc.title') %></a>
+                <a class="ml10" href="/legals" target="_blank">Mentions légales</a>
+            </div>
+            <div class="hr"></div>
+            <div class="flex-parent">
+                <div class="fb-like flex-child" data-href="https://www.facebook.com/donutdotme" data-layout="standard" data-action="like" data-colorscheme="dark" data-show-faces="false" data-share="true" data-ref="landing"></div>
+                <div class="flex-right">
+                    <div class="logo"></div>
+                    <div class="copy">©donut.me2015</div>
+                </div>
+            </div>
         </div>
     </footer>
 

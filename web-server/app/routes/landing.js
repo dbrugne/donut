@@ -4,13 +4,6 @@ var router = express.Router();
 var i18next = require('../../../shared/util/i18next');
 var conf = require('../../../config/index');
 
-var underscoreTemplate = require('../../../shared/util/underscore-template');
-var renderer = underscoreTemplate.standard({
-  defaultVariables: {
-    t: i18next.t
-  }
-});
-
 router.get('/', [require('csurf')()], function (req, res) {
   var baseUrl = req.protocol + '://' + conf.fqdn + '/';
   var meta = {
@@ -26,10 +19,7 @@ router.get('/', [require('csurf')()], function (req, res) {
 
   return res.render('landing', {
     token: req.csrfToken(),
-    meta: meta,
-    title: false,
-    search: false,
-    cardsHtml: renderer.render('../public/web/templates/cards.html')
+    meta: meta
   });
 });
 
