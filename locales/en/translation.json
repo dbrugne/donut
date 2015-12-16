@@ -759,7 +759,8 @@
       "disclaimer-group": "Members create donuts and manage them. Members can join any donut open to members. Note: public donuts are open to anyone.",
       "close": "Close this donut",
       "allowgroupmember": "Allow community members to join this donut",
-      "not-confirmed": "Action authorized to verified accounts only. Verifiy your e-mail."
+      "not-confirmed": "Action authorized to verified accounts only. Verifiy your e-mail.",
+      "cant-answer": "User @__username__ cannot answer because his mail is not yet validated."
     },
     "form": {
       "common": {

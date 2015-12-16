@@ -759,7 +759,8 @@
       "disclaimer-group": "Les membres peuvent créer des donuts et les gérer au sein de la communauté. Ils peuvent rejoindre tout donut ouvert aux membres. A noter que les donuts publics sont accessibles à tous.",
       "close": "Fermer ce donut",
       "allowgroupmember": "Autoriser les membres de cette communauté à rejoindre ce donut",
-      "not-confirmed": "Action autorisée seulement pour les comptes validés. Validez votre e-mail."
+      "not-confirmed": "Action autorisée seulement pour les comptes validés. Validez votre e-mail.",
+      "cant-answer": "L'utilisateur @__username__ ne peut pas répondre car son compte n'est pas encore validé."
     },
     "form": {
       "common": {
