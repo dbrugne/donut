@@ -15,7 +15,7 @@
         <% if (data.files) { %>
         <div class="images">
             <% _.each(data.files, function(f) { %>
-                <% if (f.type !== 'raw') { %>
+                <% if (f.type === 'image') { %>
                     <a class="image"
                        target="_blank"
                        href="<%=f.href%>"

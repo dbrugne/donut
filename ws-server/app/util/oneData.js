@@ -40,6 +40,7 @@ module.exports = function (app, user, users, fn) {
 
         var one = {
           user_id: u.id,
+          confirmed: u.confirmed,
           realname: u.realname,
           username: u.username,
           avatar: u._avatar(),
