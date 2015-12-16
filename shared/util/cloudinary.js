@@ -108,11 +108,11 @@ module.exports = {
       return;
     }
 
-    if (element.type === 'raw') {
+    if (element.type !== 'image') {
       return {
-        type: 'raw',
+        type: element.type,
         filename: element.filename,
-        url: cloudinary.url(element.path, {secure: true, resource_type: 'raw'}),
+        url: cloudinary.url(element.path, {secure: true, resource_type: element.type}),
         size: element.size ? element.size : null
       };
     } else {

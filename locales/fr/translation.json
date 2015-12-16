@@ -4,66 +4,7 @@
     "description": "Désolé, nous n'avons pas trouvé ce que vous cherchiez. Et si on repartait du bon pied ? Cliquez ici :"
   },
   "landing": {
-    "signup" : "Inscription",
-    "login" : "Connexion",
-    "loginwithfacebook": "Connexion avec Facebook",
-    "orbymail": "ou par email",
-    "username-placeholder": "Nom d'utilisateur",
-    "email-placeholder": "Email",
-    "password-placeholder": "Mot de passe",
-    "yourinterests": "Qu'est-ce qui vous intéresse ?",
-    "loadmore": "Plus de résultats",
-    "help": "Aide",
-    "faq": "FAQ",
-    "contact": "Contact",
-    "cgu": "CGU",
-    "legals": "Mentions légales",
-    "signup-self": "S'inscrire",
-    "login-self": "Se connecter",
-    "first": {
-      "part-1": ["<p>L'espace de discussion</p>", "<p>(presque) officiel de votre université</p>"],
-      "part-2": ["<p>DONUT vous permet de vous retrouver pour discuter quelle que soit la taille de votre communauté. La messagerie instantanée pensée à l'échelle de cotre campus, vos associations, vos Meetups</p>"]
-    },
-    "second": {
-      "title": "Votre communauté se renforce au fil de toutes ses discussions."
-    },
-    "third": {
-      "title": "DONUT vous apporte le confort pour organiser les discussions entre vos membres",
-      "block-1": {
-        "title": "Votre espace à vous",
-        "description": "Vous regroupez votre communauté et toutes ses discussions au sein d'un espace qui lui est réservé. Chacun peut facilement y retrouver les autres."
-      },
-      "block-2": {
-        "title": "Vos membres sont autonomes",
-        "description": "Libre à eux de créer des discussions privées ou publiques, de s'échanger des documents,... Votre communauté vit par elle-même"
-      },
-      "block-3": {
-        "title": "Gestion d'accès sans souci",
-        "description": "Vous définissez l'accès public ou privé, et selon vos critères, et nous détectons automatiquement vos membres."
-      },
-      "block-4": {
-        "title": "Membres No limit",
-        "description": "DONUT vous aide à animer votre communauté qu'elle ait 30 ou 100.000 membres. C'est fait pour !"
-      },
-      "block-5": {
-        "title": "Ambiance toujours zen",
-        "description": "Les modérateurs de votre équipe disposent d'une panoplie complète de super-pouvoirs."
-      },
-      "block-6": {
-        "title": "Clavier-friendly",
-        "description": "DONUT existe sur mobile certes, mais également sur ordinateur. Parce qu'on pense au confort de vos dix doigts et de vos petits yeux."
-      },
-      "sub-title": "Alors, créez l'espace de discussion qui ressemble à votre communauté grâce à DONUT"
-    },
-    "fourth": {
-      "blockquote": ["<p>Nous puisons une grande part de notre inspiration dans IRC, le système de chat qui a permis aux tous premiers internautes de se retrouver par communautés. Nous avons la nostalgie de cette époque et de cette vision d'Internet. Un Internet où, comme dans la vraie vie, on peut discuter avec ceux qui se trouvent au même endroit que soi, qu'on soit déjà \"amis\" ou non. A l'origine de ce projet il y a la volonté de faire revivre ces grandes heures du chat à notre génération, et les faire découvrir aux plus jeunes.</p>",
-        "<p>Par ailleurs nous sommes admiratifs de la qualité des messageries instantantanées pour discuter entre amis (Whatsapp, Viber, Facebook Messenger...) ou entre collègues (Slack, Hipchat...). Ces outils ne sont malheureusement pas adaptés aux discussions de communautés.</p>",
-        "<p>Notre mission chez DONUT, c'est d'offrir aux communautés, et en particularité aux campus universitaires, la meilleure expérience de discussion instantanée.</p>"],
-      "donut-team": "L'équipe DONUT"
-    },
-    "fifth": {
-      "partners": "Partenaires"
-    }
+
   },
   "forms": {
     "username-required": "Le nom d'utilisateur est requis",
@@ -759,7 +700,8 @@
       "disclaimer-group": "Les membres peuvent créer des donuts et les gérer au sein de la communauté. Ils peuvent rejoindre tout donut ouvert aux membres. A noter que les donuts publics sont accessibles à tous.",
       "close": "Fermer ce donut",
       "allowgroupmember": "Autoriser les membres de cette communauté à rejoindre ce donut",
-      "not-confirmed": "Action autorisée seulement pour les comptes validés. Validez votre e-mail."
+      "not-confirmed": "Action autorisée seulement pour les comptes validés. Validez votre e-mail.",
+      "cant-answer": "L'utilisateur @__username__ ne peut pas répondre car son compte n'est pas encore validé."
     },
     "form": {
       "common": {
@@ -1135,7 +1077,7 @@
       "subject": "Valider votre email DONUT.me",
       "content": {
         "title": "Valider votre email",
-        "disclaimer": "Pour activer votre email cliquer sur le lien ci-dessous",
+        "disclaimer": "L'email est rataché au compte utilisateur @__username__. Pour activer votre email cliquer sur le lien ci-dessous",
         "button": "Valider votre email"
       }
     },

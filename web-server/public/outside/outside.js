@@ -1,11 +1,11 @@
 var $ = require('jquery');
-var _ = require('underscore');
 global.jQuery = $; // expose jQuery globally, needed for some beside plugins
 require('bootstrap/js/transition');
 require('bootstrap/js/dropdown');
 require('bootstrap/js/modal');
 require('bootstrap/js/tooltip');
 require('bootstrap/js/popover');
+require('bootstrap/js/collapse');
 require('../javascripts/jquery.socialify');
 require('../javascripts/jquery.contactform');
 var common = require('@dbrugne/donut-common/browser');
@@ -17,81 +17,11 @@ $('[data-toggle="contactform"]').contactform({});
 // Landing Page
 var $landing = $('#landing');
 if ($landing.length) {
-  console.log('landing');
   $(window).scroll(function () {
-    console.log('scrolling');
-    if ($(this).scrollTop() > 100) {
+    if ($(this).scrollTop() > 700) {
       $landing.addClass('clean');
     } else {
       $landing.removeClass('clean');
-    }
-  });
-
-  var emailPattern = /[\w.+-]+@[\w.-]+\.[a-z]{2,4}/i;
-  var passwordPattern = /(.{4,255})$/i;
-
-  // validate signup form
-  var $formSignup = $('form#signup');
-  $formSignup.submit(function (e) {
-    var $username = $formSignup.find('#signin-username');
-    var $usernameParent = $username.parents('.form-group');
-    var $email = $formSignup.find('#signin-email');
-    var $emailParent = $email.parents('.form-group');
-    var $password = $formSignup.find('#signin-password');
-    var $passwordParent = $password.parents('.form-group');
-    var errors = [];
-
-    // Cleanup classes on form submission
-    $emailParent.removeClass(function (index, css) {
-      return (css.match(/(has-(success|error))+/g) || []).join(' ');
-    });
-    $passwordParent.removeClass(function (index, css) {
-      return (css.match(/(has-(success|error))+/g) || []).join(' ');
-    });
-
-    // Cleanup popover also
-    $usernameParent.find('.help-block').html('');
-    $emailParent.find('.help-block').html('');
-    $passwordParent.find('.help-block').html('');
-
-    // Check presence of email
-    if ($email.val() === '') {
-      errors.push({
-        parent: $emailParent,
-        sibling: $email.siblings('.help-block'),
-        message: i18next.t('forms.email-required')
-      });
-      // Check validity of email
-    } else if (!emailPattern.test($email.val())) {
-      errors.push({
-        parent: $emailParent,
-        sibling: $email.siblings('.help-block'),
-        message: i18next.t('account.email.error.format')
-      });
-    }
-
-    // Check presence of password
-    if ($password.val() === '') {
-      errors.push({
-        parent: $passwordParent,
-        sibling: $password.siblings('.help-block'),
-        message: i18next.t('forms.password-required')
-      });
-      // Check validity of password
-    } else if (!passwordPattern.test($password.val())) {
-      errors.push({
-        parent: $passwordParent,
-        sibling: $password.siblings('.help-block'),
-        message: i18next.t('forms.password-error')
-      });
-    }
-
-    if (errors.length > 0) {
-      e.preventDefault(); // Prevent form submission
-      _.each(errors, function (error) {
-        error.parent.addClass('has-error');
-        error.sibling.append(error.message);
-      });
     }
   });
 }
