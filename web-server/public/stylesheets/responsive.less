@@ -314,5 +314,78 @@
 }
 
 @media screen and (max-width: @screen-tablet) {
+  #landing {
+    header { position:relative; background-color: #1d252f;
+      .navbar { width: 100%;
+        .navbar-header { .display-flex; .align-items(center); .justify-content(center); }
+        .navbar-toggle { position:absolute; left:10px; }
+        .navbar-nav>li>a { padding: 10px 15px; }
+        .navbar-brand { align-self: center; }
+        .spacer { display:none; }
+      }
+    }
+    .first { height:700px; }
+    .first .container .disclaimer-top .p1 { font-size: 25px;line-height: 25px; }
+    .first .container .disclaimer-top .p2 { font-size: 15px;line-height: 15px; }
+    .first .container .disclaimer-top .almost { font-size: 15px;line-height: 15px; }
+    .first .container .divider { height: 16px; width: 320px; }
+    .first .container .disclaimer-bottom { width:320px; }
+    .first .container .disclaimer-bottom p { font-size: 14px; line-height: 22px; }
+    .second {
+      .overlays { width:100%; height:195px;
+        .left1  { position: absolute; bottom: 0; left: 0;  }
+        .left2  { position: absolute; top: -30px; left: 50px;     }
+        .right1 { position: absolute; top: 10px; right: 180px; }
+        .right2 { position: absolute; top: 0; right: 0;    }
+      }
+      .container { max-width: 410px; }
+    }
+    .authenticate { width:320px; margin: auto;
+      .login { line-height: 50px; font-size: 25px; }
+      .or { display:none; }
+      .row-fluid>a:first-child { margin-bottom:20px; }
+      .button { height: 60px; }
+    }
 
+    
+    .third {
+      .sub-title { font-size: 28px; line-height: 38px; }
+      .description { font-size: 20px; line-height: 27px; }
+      .col-md-4 { margin-bottom:50px;
+        .image { margin-bottom: 20px; height: 150px;
+          .background-1 { width:180px; height:90px; }
+          .background-2 { width:90px; height:132px; }
+          .background-3 { width:118px; height:126px; }
+          .background-4 { width:176px; height:150px; }
+          .background-5 { width:138px; height:140px; }
+          .background-6 { width:152px; height:92px; }
+        }
+      }
+      .hr { display:none; }
+    }
+    .border { margin-top: -45px; }
+    .fourth { padding:40px; }
+    .fourth .container .ctn .title { text-align: center;}
+    .fourth .container .ctn .logo { margin: 100px auto 0; position:initial; }
+    .fourth .container .ctn .text p { font-size: 16px; line-height: 25px;  }
+    .partners { height: 774px;
+      .ctn {
+        .col-sm-4 { height:200px; }
+        .img-ctn {
+          .logo1 { width:392px; height:186px; background:transparent url('@{img-path}/landing/logo-incubateur.jpg')  no-repeat center center; background-size: cover; }
+          .logo2 { width:134px; height:94px; background:transparent url('@{img-path}/landing/logo-42.jpg')  no-repeat center center; background-size: cover; }
+          .logo3 { width:246px; height:128px; }
+        }
+      }
+    }
+    footer .container { height:800px;
+      > .flex-parent { .flex-wrap(wrap); .justify-content(flex-start);
+        a { width: 40%; margin: 0 0 0 10% !important; padding: 10px 0; }
+      }
+      .flex-right { margin: 100px auto 50px;
+        .logo { width: 218px; height: 50px; }
+        .copy { text-align:center; font-size: 20px; }
+      }
+    }
+  }
 }

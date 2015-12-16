@@ -16,14 +16,12 @@
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse mr20" id="bs-example-navbar-collapse-1">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <% if (user) { %>
                         <li class="signup">
                             <a href="/!"><%= t('logged.chat') %></a>
                         </li>
-                        <li class="divider-vertical"></li>
-                        <li class="nav-divider"></li>
                         <li class="login">
                             <a href="/logout"><%= t('logged.logout') %></a>
                         </li>
@@ -33,6 +31,7 @@
                         <li class="lang">
                             <a class="switch" href="" data-language="en" >En</a>
                         </li>
+                        <li class="spacer"></li>
                     <% } else { %>
                         <li class="signup">
                             <a href="/signup">S'inscrire</a>
@@ -46,6 +45,7 @@
                         <li class="lang">
                             <a class="switch" href="" data-language="en" >En</a>
                         </li>
+                        <li class="spacer"></li>
                     <% } %>
                 </ul>
             </div><!-- /.navbar-collapse -->
@@ -53,7 +53,7 @@
     </header>
 
     <div class="first flex-parent column jc-center center">
-        <div class="container">
+        <div class="container flex-parent column jc-center center">
             <div class="disclaimer-top">
                 <p class="p1">L'ESPACE DE DISCUSSION</p>
                 <p class="p2"><span class="almost">PRESQUE</span> OFFICIEL DE VOTRE UNIVERSITE</p>
@@ -84,7 +84,7 @@
                 <% } else { %>
                     <div class="flex-parent column">
                         <div class="login">S'inscrire</div>
-                        <div class="row">
+                        <div class="row-fluid">
                             <a href="/login/facebook" class="button button-facebook col-sm-5"><%= t('login.withfacebook') %></span></a>
                             <div class="or col-sm-2"><%= t('global.or') %></div>
                             <a href="/signup" class="button button-primary col-sm-5">Créer un compte</span></a>
@@ -106,8 +106,14 @@
                 <div class="android"></div>
             </div>
         </div>
-        <div class="flex-parent">
+        <div class="flex-parent column center">
             <div class="background2"></div>
+            <div class="overlays relative">
+                <div class="left1"></div>
+                <div class="left2"></div>
+                <div class="right1"></div>
+                <div class="right2"></div>
+            </div>
         </div>
         <div class="container">
             <p class="shadowed"><strong>DONUT</strong> VOUS APPORTE LE CONFORT POUR ORGANISER LES DISCUSSIONS ENTRE VOS MEMBRES</p>
@@ -197,7 +203,7 @@
                 <% } else { %>
                 <div class="flex-parent column">
                     <div class="login">S'inscrire</div>
-                    <div class="row">
+                    <div class="row-fluid">
                         <a href="/login/facebook" class="button button-facebook col-sm-5"><%= t('login.withfacebook') %></span></a>
                         <div class="or col-sm-2"><%= t('global.or') %></div>
                         <a href="/signup" class="button button-primary col-sm-5">Créer un compte</span></a>
@@ -224,10 +230,23 @@
         <div class="container">
             <div class="ctn">
                 <div class="title">Our partners</div>
-                <div class="img-ctn flex-parent jc-center center">
-                    <div class="logo1"></div>
-                    <div class="logo2"></div>
-                    <div class="logo3"></div>
+                <div class="img-ctn row-fluid">
+                    <div class="col-sm-4 flex-parent jc-center center">
+                        <div class="flex-parent jc-center center ">
+                            <div class="logo1"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 flex-parent jc-center center">
+                        <div class="flex-parent jc-center center ">
+                            <div class="logo2"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 flex-parent jc-center center">
+                        <div class="flex-parent jc-center center ">
+                            <div class="logo3"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
                 </div>
             </div>
         </div>
