@@ -75,6 +75,9 @@ var RoomModel = Backbone.Model.extend({
     data.unviewed = (currentUser.get('user_id') !== data.user_id);
     this.trigger('freshEvent', 'room:message', data);
   },
+  onCantRespond: function (data) {
+    this.trigger('freshEvent', 'room:message:cant:respond', data);
+  },
   onUpdated: function (data) {
     _.each(data.data, _.bind(function (value, key, list) {
       this.set(key, value);

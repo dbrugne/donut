@@ -753,7 +753,7 @@
       "close": "Close this donut",
       "allowgroupmember": "Allow community members to join this donut",
       "not-confirmed": "Action authorized to verified accounts only. Verifiy your e-mail.",
-      "cant-answer": "User @__username__ cannot answer because his mail is not yet validated."
+      "cant-answer": "@__username__ cannot answer because his/her account has not been verified yet."
     },
     "form": {
       "common": {

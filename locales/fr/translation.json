@@ -753,7 +753,7 @@
       "close": "Fermer ce donut",
       "allowgroupmember": "Autoriser les membres de cette communauté à rejoindre ce donut",
       "not-confirmed": "Action autorisée seulement pour les comptes validés. Validez votre e-mail.",
-      "cant-answer": "L'utilisateur @__username__ ne peut pas répondre car son compte n'est pas encore validé."
+      "cant-answer": "@__username__ ne peut pas répondre car son compte n'est pas encore validé."
     },
     "form": {
       "common": {
