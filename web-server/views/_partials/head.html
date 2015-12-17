@@ -19,7 +19,8 @@
         <% if (meta.image) { %><meta property="og:image" content="<%= meta.image %>" /><% } %>
         <% if (meta.type) { %><meta property="og:type" content="<%= meta.type %>" /><% } %>
     <% } %>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,target-densitydpi=device-dpi" />
+
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <% if (!avoidFa) { %>
     <link rel='stylesheet' href='/stylesheets/font-awesome.min.css' />

@@ -324,12 +324,13 @@
         .spacer { display:none; }
       }
     }
-    .first .container .disclaimer-top .p1 { font-size: 25px;line-height: 25px; }
-    .first .container .disclaimer-top .p2 { font-size: 15px;line-height: 15px; }
-    .first .container .disclaimer-top .almost { font-size: 15px;line-height: 15px; }
-    .first .container .divider { height: 16px; width: 320px; }
-    .first .container .disclaimer-bottom { width:320px; }
-    .first .container .disclaimer-bottom p { font-size: 14px; line-height: 22px; }
+    .first .ctn .disclaimer-top { padding-left: 15px; padding-right: 15px; }
+    .first .ctn .disclaimer-top .p1 { font-size: 25px;line-height: 25px; }
+    .first .ctn .disclaimer-top .p2 { font-size: 15px;line-height: 15px; }
+    .first .ctn .disclaimer-top .almost { font-size: 15px;line-height: 15px; }
+    .first .ctn .divider { height: 16px; width: 90%; }
+    .first .ctn .disclaimer-bottom { max-width:320px; padding-left: 15px; padding-right: 15px; }
+    .first .ctn .disclaimer-bottom p { font-size: 14px; line-height: 22px; }
     .second {
       .overlays { width:100%; height:90px;
         .left1  { width:44px; height:47px;   bottom: 0; left: 0;  }
@@ -337,10 +338,10 @@
         .right1 { width:44px; height:49px;   top: 10px; right: 180px; }
         .right2 { width:86px; height:91px; top: 0; right: 0;    }
       }
-      .container { max-width: 410px; }
+      .ctn { max-width: 410px; }
       .background2 { margin: 40px auto; height: 245px; background-size: cover; }
     }
-    .authenticate { width:320px; margin: auto;
+    .authenticate { max-width:320px; margin: auto;
       .login { line-height: 50px; font-size: 25px; }
       .or { display:none; }
       .row-fluid>a:first-child { margin-bottom:20px; }
@@ -351,8 +352,6 @@
         }
       }
     }
-
-    
     .third {
       .sub-title { font-size: 28px; line-height: 38px; }
       .description { font-size: 20px; line-height: 27px; }
@@ -368,7 +367,7 @@
       }
       .hr { display:none; }
     }
-    .fourth { padding:40px; }
+    .fourth { padding:40px 15px; }
     .fourth .container .ctn .title { text-align: center;}
     .fourth .container .ctn .logo { margin: 100px auto 0; position:initial; }
     .fourth .container .ctn .text p { font-size: 16px; line-height: 25px;  }
@@ -377,9 +376,9 @@
         .col-sm-4 { height:100px; }
       }
     }
-    footer .container { height:500px;
+    footer .ctn { height:500px;
       > .flex-parent { .flex-wrap(wrap); .justify-content(flex-start);
-        a { width: 90%; margin: 0 0 0 10% !important; padding: 10px 0; font-size: 22px; }
+        > a { width: 90%; margin: 0 0 0 10% !important; padding: 10px 0; font-size: 22px; }
       }
       .flex-right { margin: 100px auto 50px;
         .logo { width: 218px; height: 50px; }

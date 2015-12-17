@@ -50,7 +50,7 @@
         </nav>
     </header>
     <div class="first flex-parent column jc-center center">
-        <div class="container flex-parent column jc-center center">
+        <div class="ctn flex-parent column jc-center center">
             <div class="disclaimer-top">
                 <p class="p1"><%= t('landing.first.p1') %></p>
                 <p class="p2"><span class="almost"><%= t('landing.first.almost') %></span><%= t('landing.first.p2') %></p>
@@ -94,7 +94,7 @@
     </div>
 
     <div class="second">
-        <div class="container">
+        <div class="ctn">
             <p class="shadowed"><%= t('landing.second.p1') %></p>
             <div class="img-ctn flex-parent jc-center center mlt10">
                 <div class="apple"></div>
@@ -110,7 +110,7 @@
                 <div class="right2"></div>
             </div>
         </div>
-        <div class="container">
+        <div class="ctn">
             <p class="shadowed"><%= t('landing.second.p2') %></p>
         </div>
     </div>
@@ -210,49 +210,45 @@
     </div>
 
     <div class="fourth flex-parent column jc-center center">
-        <div class="container">
-            <div class="ctn">
-                <div class="title"><%= t('landing.fourth.about') %></div>
-                <div class="text"><%= t('landing.fourth.text') %></div>
-                <div class="logo"></div>
-            </div>
+        <div class="ctn">
+            <div class="title"><%= t('landing.fourth.about') %></div>
+            <div class="text"><%= t('landing.fourth.text') %></div>
+            <div class="logo"></div>
         </div>
     </div>
 
     <div class="partners flex-parent jc-center center">
-        <div class="container">
-            <div class="ctn">
-                <div class="title"><%= t('landing.partners') %></div>
-                <div class="img-ctn row-fluid">
-                    <div class="col-sm-4 flex-parent jc-center center">
-                        <div class="flex-parent jc-center center ">
-                            <a href="http://www.incubateurmipy.fr/" target="_blank" title="incubateur midi-pyrénées"><div class="logo1"></div></a>
-                        </div>
+        <div class="ctn">
+            <div class="title"><%= t('landing.partners') %></div>
+            <div class="img-ctn row-fluid">
+                <div class="col-sm-4 flex-parent jc-center center">
+                    <div class="flex-parent jc-center center ">
+                        <a href="http://www.incubateurmipy.fr/" target="_blank" title="incubateur midi-pyrénées"><div class="logo1"></div></a>
                     </div>
-                    <div class="col-sm-4 flex-parent jc-center center">
-                        <div class="flex-parent jc-center center ">
-                            <a href="http://www.42.fr/" target="_blank" title="42"><div class="logo2"></div></a>
-                        </div>
-                    </div>
-                    <div class="col-sm-4 flex-parent jc-center center">
-                        <div class="flex-parent jc-center center ">
-                            <a href="http://www.hec.fr/" target="_blank" title="HEC"><div class="logo3"></div></a>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
                 </div>
+                <div class="col-sm-4 flex-parent jc-center center">
+                    <div class="flex-parent jc-center center ">
+                        <a href="http://www.42.fr/" target="_blank" title="42"><div class="logo2"></div></a>
+                    </div>
+                </div>
+                <div class="col-sm-4 flex-parent jc-center center">
+                    <div class="flex-parent jc-center center ">
+                        <a href="http://www.hec.fr/" target="_blank" title="HEC"><div class="logo3"></div></a>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
             </div>
         </div>
     </div>
 
     <footer>
-        <div class="container">
+        <div class="ctn">
             <div class=" flex-parent center jc-center">
-                <a class="ml10" href="/!#donut/help"><%= t('chat.help') %></a>
-                <a class="ml10" href="/faq" target="_blank"><%= t('page.faq.title') %></a>
-                <a class="ml10" data-toggle="contactform"><%= t('page.contact.title') %></a>
-                <a class="ml10" href="/eutc" target="_blank"><%= t('page.eutc.title') %></a>
-                <a class="ml10" href="/legals" target="_blank"><%= t('landing.legals') %></a>
+                <a href="/!#donut/help"><%= t('chat.help') %></a>
+                <a href="/faq" target="_blank"><%= t('page.faq.title') %></a>
+                <a data-toggle="contactform"><%= t('page.contact.title') %></a>
+                <a href="/eutc" target="_blank"><%= t('page.eutc.title') %></a>
+                <a href="/legals" target="_blank"><%= t('landing.legals') %></a>
             </div>
             <div class="hr"></div>
             <div class="flex-parent">
