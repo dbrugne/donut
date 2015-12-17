@@ -55,7 +55,9 @@ var MessageEditView = Backbone.View.extend({
 
       that.model.trigger('editMessageClose');
     };
-    $('html').one('click', this.onClickOutsideHandler);
+    _.defer(_.bind(function () {
+      $('html').one('click', this.onClickOutsideHandler);
+    }, this));
 
     return this;
   },
