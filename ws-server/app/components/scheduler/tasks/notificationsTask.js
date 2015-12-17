@@ -2,6 +2,7 @@
 var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var Notifications = require('../../notifications/index');
 var _ = require('underscore');
+var async = require('async');
 
 module.exports = {
   send: function (data) {
@@ -15,37 +16,49 @@ module.exports = {
 
       logger.trace('notificationsTask.send ' + notifications.length + ' notification(s) to send found');
 
-      _.each(notifications, function (notification) {
+      async.each(notifications, function (notification, callback) {
         var type = facade.getType(notification.type);
         if (!type) {
-          return logger.warn('notificationsTask.send unable to identify notification type: ' + notification.type);
+          return callback('notificationsTask.send unable to identify notification type', notification.type);
         }
 
-        // Send to email
-        if (_.isFunction(type.sendEmail) && notification.sent_to_email === false && notification.to_email === true) {
-          type.sendEmail(notification, function (err) {
-            if (err) {
-              return logger.warn('notificationsTask.send sending ' + notification.id + ' error: ' + err);
+        async.series([
+          // Send to email
+          function email (cb) {
+            if (!_.isFunction(type.sendEmail) || notification.to_email !== true ||
+              notification.sent_to_email === true) {
+              return cb(null);
             }
 
-            return logger.trace('notificationsTask.send ' + notification.id + ' sent');
-          });
-        }
-
-        // Send to mobile
-        if (_.isFunction(type.sendMobile) && notification.sent_to_mobile ===
-          false && notification.to_mobile === true) {
-          type.sendMobile(notification, function (err) {
-            if (err) {
-              return logger.warn('notificationsTask.send mobile sending ' + notification.id + ' error: ' + err);
+            type.sendEmail(notification, cb);
+          },
+          // Send to mobile
+          function mobile (cb) {
+            if (!_.isFunction(type.sendMobile) || notification.to_mobile !== true ||
+              notification.sent_to_mobile === true) {
+              return cb(null);
             }
 
-            return logger.trace('notificationsTask.send mobile ' + notification.id + ' sent');
+            type.sendMobile(notification, cb);
+          }
+
+        ], callback);
+      }, function (err) {
+        if (err) {
+          logger.error('notificationsTask.send (will mark this notification as done)', err);
+
+          // robustness, if error mark notification as done
+          notification.done = true;
+          notification.save(function (err) {
+            if (err) {
+              logger.error('unable to persist notification as done', err);
+            }
           });
+          return;
         }
+
+        logger.trace('notificationsTask.send done');
       });
-
-      logger.trace('notificationsTask.send done');
     });
   },
   cleanup: function (data) {
