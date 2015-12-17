@@ -324,7 +324,6 @@
         .spacer { display:none; }
       }
     }
-    .first { height:700px; }
     .first .container .disclaimer-top .p1 { font-size: 25px;line-height: 25px; }
     .first .container .disclaimer-top .p2 { font-size: 15px;line-height: 15px; }
     .first .container .disclaimer-top .almost { font-size: 15px;line-height: 15px; }
@@ -332,13 +331,14 @@
     .first .container .disclaimer-bottom { width:320px; }
     .first .container .disclaimer-bottom p { font-size: 14px; line-height: 22px; }
     .second {
-      .overlays { width:100%; height:195px;
-        .left1  { position: absolute; bottom: 0; left: 0;  }
-        .left2  { position: absolute; top: -30px; left: 50px;     }
-        .right1 { position: absolute; top: 10px; right: 180px; }
-        .right2 { position: absolute; top: 0; right: 0;    }
+      .overlays { width:100%; height:90px;
+        .left1  { width:44px; height:47px;   bottom: 0; left: 0;  }
+        .left2  { width:67px; height:75.5px; top: -30px; left: 50px;     }
+        .right1 { width:44px; height:49px;   top: 10px; right: 180px; }
+        .right2 { width:86px; height:91px; top: 0; right: 0;    }
       }
       .container { max-width: 410px; }
+      .background2 { margin: 40px auto; height: 245px; background-size: cover; }
     }
     .authenticate { width:320px; margin: auto;
       .login { line-height: 50px; font-size: 25px; }
@@ -347,7 +347,7 @@
       .button { height: 60px; }
       .logged { .flex-wrap(wrap);
         .actions { width: 100%;
-          .button { width: 90%; height: 44px; margin: 10px 0; }
+          .button { width: 100%; height: 44px; margin: 10px 0 0; }
         }
       }
     }
@@ -368,24 +368,18 @@
       }
       .hr { display:none; }
     }
-    .border { margin-top: -45px; }
     .fourth { padding:40px; }
     .fourth .container .ctn .title { text-align: center;}
     .fourth .container .ctn .logo { margin: 100px auto 0; position:initial; }
     .fourth .container .ctn .text p { font-size: 16px; line-height: 25px;  }
-    .partners { height: 774px;
+    .partners { height: 500px;
       .ctn {
-        .col-sm-4 { height:200px; }
-        .img-ctn {
-          .logo1 { width:392px; height:186px; background:transparent url('@{img-path}/landing/logo-incubateur.jpg')  no-repeat center center; background-size: cover; }
-          .logo2 { width:134px; height:94px; background:transparent url('@{img-path}/landing/logo-42.jpg')  no-repeat center center; background-size: cover; }
-          .logo3 { width:246px; height:128px; }
-        }
+        .col-sm-4 { height:100px; }
       }
     }
-    footer .container { height:800px;
+    footer .container { height:500px;
       > .flex-parent { .flex-wrap(wrap); .justify-content(flex-start);
-        a { width: 40%; margin: 0 0 0 10% !important; padding: 10px 0; }
+        a { width: 90%; margin: 0 0 0 10% !important; padding: 10px 0; font-size: 22px; }
       }
       .flex-right { margin: 100px auto 50px;
         .logo { width: 218px; height: 50px; }

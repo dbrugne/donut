@@ -291,7 +291,7 @@
   "logged": {
     "title": "Already logged in",
     "hello": "Hello",
-    "text": "You are already logged in, enter DONUT:",
+    "text": "You are already logged in",
     "chat": "Chat",
     "logout": "Logout"
   },
