@@ -4,7 +4,59 @@
     "description": "Sorry we are not able to find this resource! You could just press this neat little button:"
   },
   "landing": {
-
+    "toggle": "Toggle navigation",
+    "signup-self": "Sign up",
+    "login-self": "Log in",
+    "first": {
+      "p1": "THE",
+      "almost": "ALSMOST",
+      "p2": " OFFICIAL DISCUSSION SPACE OF YOUR UNIVERSITY",
+      "disclaimer": "DONUT allows you to hang out and chat whatever the size of your community. Instant messaging smartly scaled for your campus, your organizations, your Meetups?"
+    },
+    "second": {
+      "p1": "YOUR <strong>COMMUNITY</strong> IS GROWING THROUGHOUT ALL ITS DISCUSSIONS.",
+      "p2": "<strong>DONUT</strong> BRINGS YOU COMFORT TO ORGANIZE DISCUSSIONS AMONG YOUR MEMBERS"
+    },
+    "third": {
+      "1": {
+        "subtitle": "Your own space",
+        "description": "Gather your community members and all their discussions in a dedicated space. Everyone can easily find each other."
+      },
+      "2": {
+        "subtitle": "Carefree access Management",
+        "description": "Define access rules (public or private, custom criteria) and we automatically detect your members. End with one by one validation."
+      },
+      "3": {
+        "subtitle": "Always zen",
+        "description": "Your team moderators have a superpowers to prevent trolling."
+      },
+      "4": {
+        "subtitle": "Your members are independent",
+        "description": "They are free to create private or public discussions, to exchange documents ... Your community lives by itself."
+      },
+      "5": {
+        "subtitle": "Members: no limit",
+        "description": "Engage your community whether it has 30 or 100,000 members. DONUT is made for it !"
+      },
+      "6": {
+        "subtitle": "Keyboard-friendly",
+        "description": "DONUT is available both on mobile and on computer. Because we think about the comfort of your eyes and your ten lovely fingers."
+      },
+      "disclaimer": "SO <strong>CREATE</strong> A SPACE THAT LOOKS LIKE YOUR COMMUNITY ON DONUT"
+    },
+    "fourth": {
+      "about": "About us",
+      "text": [
+        "<p>We draw much of our inspiration in IRC, the chat system which allowed early Internet adopters to meet in on-line communities. We have nostalgia for that time and this vision of the Internet. Where, as in real life, we can chat with people around us, no matter if we are already \"friends \" or not. From the origin of this project we've wanted to revive this heyday of chat with our generation, and to introduce it the younger.</p>",
+        "<p>Furthermore we admire the the quality of instant messaging app enabling to chat with friends (Whatsapp, Viber, Facebook Messenger ...) or colleagues (Slack, HipChat ...). These tools are unfortunately not suitable for communities discussions.</p>",
+        "<p>Our mission at DONUT is to provide communities, and especially university campuses, the best experience of instant chat.</p>"
+      ]
+    },
+    "partners": "Partners",
+    "legals": "Legals",
+    "loadmore": "More results",
+    "signup" : "Sign up",
+    "login" : "Login"
   },
   "forms": {
     "username-required": "username is required",
@@ -239,7 +291,7 @@
   "logged": {
     "title": "Already logged in",
     "hello": "Hello",
-    "text": "You are already logged in, enter DONUT:",
+    "text": "You are already logged in",
     "chat": "Chat",
     "logout": "Logout"
   },
@@ -701,7 +753,7 @@
       "close": "Close this donut",
       "allowgroupmember": "Allow community members to join this donut",
       "not-confirmed": "Action authorized to verified accounts only. Verifiy your e-mail.",
-      "cant-answer": "User @__username__ cannot answer because his mail is not yet validated."
+      "cant-answer": "@__username__ cannot answer because his/her account has not been verified yet."
     },
     "form": {
       "common": {

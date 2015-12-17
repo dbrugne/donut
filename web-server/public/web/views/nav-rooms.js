@@ -4,6 +4,7 @@ var Backbone = require('backbone');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
 var rooms = require('../collections/rooms');
+var groups = require('../collections/groups');
 var i18next = require('i18next-client');
 
 module.exports = Backbone.View.extend({
@@ -35,14 +36,28 @@ module.exports = Backbone.View.extend({
     } else {
       this.$empty.hide();
     }
-    var data = [];
+
+    var groupIds = [];
+    var dataGroups = [];
+    var dataRooms = [];
     _.each(rooms.models, function (o) {
       var json = o.toJSON();
       json.avatar = common.cloudinary.prepare(json.avatar, 40);
-      data.push(json);
+      groupIds.push(json.group_id);
+      dataRooms.push(json);
     });
+    groupIds = _.uniq(groupIds, false); // return array id unique. delete doubloon
 
-    var html = this.template({list: data, toggleCount: this.toggleCount, expand: true});
+    _.each(groups.models, function (g) {
+      var json = g.toJSON();
+      json.avatar = common.cloudinary.prepare(json.avatar, 40);
+      if (_.indexOf(groupIds, json.id) === -1) {
+        dataGroups.push(json);
+      }
+    });
+    dataGroups = _.sortBy(dataGroups, 'name');
+
+    var html = this.template({listRooms: dataRooms, listGroups: dataGroups, toggleCount: this.toggleCount, expand: true});
     this.$list.html(html);
 
     this.initializeCollapse();

@@ -4,18 +4,16 @@
 
     <header>
         <nav class="navbar">
-            <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
+                    <span class="sr-only"><%= t('landing.toggle') %></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/"><img class="logo" src="/images/logo-bordered-small.png" height="25" alt="<%= t('title') %> - <%= t('baseline') %>"></a>
+                <a class="navbar-brand" href="/"><img class="logo" src="/images/logo-bordered-small.png" height="25" alt="DONUT"></a>
             </div>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <% if (user) { %>
@@ -26,7 +24,7 @@
                             <a href="/logout"><%= t('logged.logout') %></a>
                         </li>
                         <li class="lang">
-                            <a class="switch active" href="" data-language="fr" >Fr</a>
+                            <a class="switch" href="" data-language="fr" >Fr</a>
                         </li>
                         <li class="lang">
                             <a class="switch" href="" data-language="en" >En</a>
@@ -34,13 +32,13 @@
                         <li class="spacer"></li>
                     <% } else { %>
                         <li class="signup">
-                            <a href="/signup">S'inscrire</a>
+                            <a href="/signup"><%= t('landing.signup-self') %></a>
                         </li>
                         <li class="login">
-                            <a href="/login">Se connecter</a>
+                            <a href="/login"><%= t('landing.login-self') %></a>
                         </li>
                         <li class="lang">
-                            <a class="switch active" href="" data-language="fr" >Fr</a>
+                            <a class="switch" href="" data-language="fr" >Fr</a>
                         </li>
                         <li class="lang">
                             <a class="switch" href="" data-language="en" >En</a>
@@ -55,12 +53,12 @@
     <div class="first flex-parent column jc-center center">
         <div class="container flex-parent column jc-center center">
             <div class="disclaimer-top">
-                <p class="p1">L'ESPACE DE DISCUSSION</p>
-                <p class="p2"><span class="almost">PRESQUE</span> OFFICIEL DE VOTRE UNIVERSITE</p>
+                <p class="p1"><%= t('landing.first.p1') %></p>
+                <p class="p2"><span class="almost"><%= t('landing.first.almost') %></span><%= t('landing.first.p2') %></p>
             </div>
             <div class="divider"></div>
             <div class="disclaimer-bottom">
-                <p>DONUT vous permet de vous retrouver pour discuter quelle que soit la taille de votre communauté. La messagerie instantanée pensée à l'échelle de votre campus, vos associations, vos Meetups</p>
+                <p><%= t('landing.first.disclaimer') %></p>
             </div>
 
             <div class="authenticate">
@@ -83,11 +81,11 @@
                     </div>
                 <% } else { %>
                     <div class="flex-parent column">
-                        <div class="login">S'inscrire</div>
+                        <div class="login"><%= t('landing.signup-self') %></div>
                         <div class="row-fluid">
                             <a href="/login/facebook" class="button button-facebook col-sm-5"><%= t('login.withfacebook') %></span></a>
                             <div class="or col-sm-2"><%= t('global.or') %></div>
-                            <a href="/signup" class="button button-primary col-sm-5">Créer un compte</span></a>
+                            <a href="/signup" class="button button-primary col-sm-5"><%= t('actions.signup') %></span></a>
                         </div>
                     </div>
                 <% } %>
@@ -100,7 +98,7 @@
 
     <div class="second">
         <div class="container">
-            <p class="shadowed">VOTRE <strong>COMMUNAUTÉ</strong> SE RENFORCE AU FIL DE TOUTES SES DISCUSSIONS.</p>
+            <p class="shadowed"><%= t('landing.second.p1') %></p>
             <div class="img-ctn flex-parent jc-center center mlt10">
                 <div class="apple"></div>
                 <div class="android"></div>
@@ -116,7 +114,7 @@
             </div>
         </div>
         <div class="container">
-            <p class="shadowed"><strong>DONUT</strong> VOUS APPORTE LE CONFORT POUR ORGANISER LES DISCUSSIONS ENTRE VOS MEMBRES</p>
+            <p class="shadowed"><%= t('landing.second.p2') %></p>
         </div>
     </div>
 
@@ -127,8 +125,8 @@
                     <div class="image flex-parent">
                         <div class="background-1"></div>
                     </div>
-                    <div class="sub-title">Votre espace à vous</div>
-                    <div class="description">Vous regroupez votre communauté et toutes ses discussions au sein d'un espace qui lui est réservé. Chacun peut facilement y retrouver les autres.</div>
+                    <div class="sub-title"><%= t('landing.third.1.subtitle') %></div>
+                    <div class="description"><%= t('landing.third.1.description') %></div>
                 </div>
             </div>
             <div class="col-sm-4 col-md-4 col-lg-4">
@@ -136,8 +134,8 @@
                     <div class="image flex-parent">
                         <div class="background-2"></div>
                     </div>
-                    <div class="sub-title">Gestion d’accès sans soucis</div>
-                    <div class="description">Vous définissez l'accès public ou privé, et selon vos critères, et nous détectons automatiquement vos membres.</div>
+                    <div class="sub-title"><%= t('landing.third.2.subtitle') %></div>
+                    <div class="description"><%= t('landing.third.2.description') %></div>
                 </div>
             </div>
             <div class="col-sm-4 col-md-4 col-lg-4">
@@ -145,8 +143,8 @@
                     <div class="image flex-parent">
                         <div class="background-3"></div>
                     </div>
-                    <div class="sub-title">Ambiance toujours zen</div>
-                    <div class="description">Les modérateurs de votre équipe disposent d'une panoplie complète de super-pouvoirs.</div>
+                    <div class="sub-title"><%= t('landing.third.3.subtitle') %></div>
+                    <div class="description"><%= t('landing.third.3.description') %></div>
                 </div>
             </div>
             <div class="col-sm-12 col-md-12 col-lg-12"></div>
@@ -155,8 +153,8 @@
                     <div class="image flex-parent">
                         <div class="background-4"></div>
                     </div>
-                    <div class="sub-title">Vos membres sont autonomes</div>
-                    <div class="description">Libre à eux de créer des discussions privées ou publiques, de s'échanger des documents,... Votre communauté vit par elle-même.</div>
+                    <div class="sub-title"><%= t('landing.third.4.subtitle') %></div>
+                    <div class="description"><%= t('landing.third.4.description') %></div>
                 </div>
             </div>
             <div class="col-sm-4 col-md-4 col-lg-4">
@@ -164,8 +162,8 @@
                     <div class="image flex-parent">
                         <div class="background-5"></div>
                     </div>
-                    <div class="sub-title">Membres no limit</div>
-                    <div class="description">DONUT vous aide à animer votre communauté qu'elle ait 30 ou 100.000 membres. C'est fait pour !</div>
+                    <div class="sub-title"><%= t('landing.third.5.subtitle') %></div>
+                    <div class="description"><%= t('landing.third.5.description') %></div>
                 </div>
             </div>
             <div class="col-sm-4 col-md-4 col-lg-4">
@@ -173,15 +171,15 @@
                     <div class="image flex-parent">
                         <div class="background-6"></div>
                     </div>
-                    <div class="sub-title">Clavier-friendly</div>
-                    <div class="description">DONUT existe sur mobile certes, mais également sur ordinateur. Parce qu'on pense au confort de vos dix doigts et de vos petits yeux.</div>
+                    <div class="sub-title"><%= t('landing.third.6.subtitle') %></div>
+                    <div class="description"><%= t('landing.third.6.description') %></div>
                 </div>
             </div>
             <div class="col-md-12"></div>
         </div>
         <div class="hr"></div>
         <div class="container">
-            <p class="shadowed"><strong>CRÉEZ</strong> L'ESPACE DE DISCUSSION QUI RESSEMBLE À VOTRE COMMUNAUTÉ GRÂCE À DONUT</p>
+            <p class="shadowed"><%= t('landing.third.disclaimer') %></p>
             <div class="authenticate">
                 <% if (user) { %>
                 <div class="login"><%= t('logged.title') %></div>
@@ -202,11 +200,11 @@
                 </div>
                 <% } else { %>
                 <div class="flex-parent column">
-                    <div class="login">S'inscrire</div>
+                    <div class="login"><%= t('landing.login-self') %></div>
                     <div class="row-fluid">
                         <a href="/login/facebook" class="button button-facebook col-sm-5"><%= t('login.withfacebook') %></span></a>
                         <div class="or col-sm-2"><%= t('global.or') %></div>
-                        <a href="/signup" class="button button-primary col-sm-5">Créer un compte</span></a>
+                        <a href="/signup" class="button button-primary col-sm-5"><%= t('actions.signup') %></span></a>
                     </div>
                 </div>
                 <% } %>
@@ -216,12 +214,8 @@
     <div class="fourth flex-parent column jc-center center">
         <div class="container">
             <div class="ctn">
-                <div class="title">A propos de nous</div>
-                <div class="text">
-                    <p>Nous puisons une grande part de notre inspiration dans IRC, le système de chat qui a permis aux tous premiers internautes de se retrouver par communautés. Nous avons la nostalgie de cette époque et de cette vision d'Internet. Un Internet où, comme dans la vraie vie, on peut discuter avec ceux qui se trouvent au même endroit que soi, qu'on soit déjà "amis" ou non. A l'origine de ce projet il y a la volonté de faire revivre ces grandes heures du chat à notre génération, et les faire découvrir aux plus jeunes.</p>
-                    <p>Par ailleurs nous sommes admiratifs de la qualité des messageries instantantanées pour discuter entre amis (Whatsapp, Viber, Facebook Messenger...) ou entre collègues (Slack, Hipchat...). Ces outils ne sont malheureusement pas adaptés aux discussions de communautés.</p>
-                    <p>Notre mission chez DONUT, c'est d'offrir aux communautés, et en particularité aux campus universitaires, la meilleure expérience de discussion instantanée.</p>
-                </div>
+                <div class="title"><%= t('landing.fourth.about') %></div>
+                <div class="text"><%= t('landing.fourth.text') %></div>
             <div class="logo"></div>
             </div>
         </div>
@@ -229,21 +223,21 @@
     <div class="partners flex-parent jc-center center">
         <div class="container">
             <div class="ctn">
-                <div class="title">Our partners</div>
+                <div class="title"><%= t('landing.partners') %></div>
                 <div class="img-ctn row-fluid">
                     <div class="col-sm-4 flex-parent jc-center center">
                         <div class="flex-parent jc-center center ">
-                            <div class="logo1"></div>
+                            <a href="http://www.incubateurmipy.fr/" target="_blank" title="incubateur midi-pyrénées"><div class="logo1"></div></a>
                         </div>
                     </div>
                     <div class="col-sm-4 flex-parent jc-center center">
                         <div class="flex-parent jc-center center ">
-                            <div class="logo2"></div>
+                            <a href="http://www.42.fr/" target="_blank" title="42"><div class="logo2"></div></a>
                         </div>
                     </div>
                     <div class="col-sm-4 flex-parent jc-center center">
                         <div class="flex-parent jc-center center ">
-                            <div class="logo3"></div>
+                            <a href="http://www.hec.fr/" target="_blank" title="HEC"><div class="logo3"></div></a>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -259,7 +253,7 @@
                 <a class="ml10" href="/faq" target="_blank"><%= t('page.faq.title') %></a>
                 <a class="ml10" data-toggle="contactform"><%= t('page.contact.title') %></a>
                 <a class="ml10" href="/eutc" target="_blank"><%= t('page.eutc.title') %></a>
-                <a class="ml10" href="/legals" target="_blank">Mentions légales</a>
+                <a class="ml10" href="/legals" target="_blank"><%= t('landing.legals') %></a>
             </div>
             <div class="hr"></div>
             <div class="flex-parent">

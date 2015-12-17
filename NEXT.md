@@ -104,3 +104,5 @@ db[ 'history-one' ].dropIndex({
 ```
 grunt migration-emails-confirmed
 ```
+
+*  Cleanup @todos "AFTER PROD MIGRATION"

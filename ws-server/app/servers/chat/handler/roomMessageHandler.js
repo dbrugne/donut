@@ -9,6 +9,7 @@ var filesUtil = require('../../../util/files');
 var keenio = require('../../../../../shared/io/keenio');
 var Notifications = require('../../../components/notifications');
 var GroupModel = require('../../../../../shared/models/group');
+var UserModel = require('../../../../../shared/models/user');
 
 var Handler = function (app) {
   this.app = app;
@@ -96,6 +97,45 @@ handler.call = function (data, session, next) {
         }
 
         return callback(null, sentEvent, mentions);
+      });
+    },
+
+    /**
+     * Sending an event to an user who mention an not confirmed user =>
+     * @username cannot answer because his/her account has not been verified yet.
+     */
+    function sendCantRespondeEvent (sentEvent, mentions, callback) {
+      if (!mentions || !mentions.length) {
+        return callback(null, sentEvent, mentions);
+      }
+
+      var event = {
+        room_id: room.id,
+        user_id: user.id,
+        avatar: user._avatar()
+      };
+
+      // To disable multi event for the same user mention (ex: "@David is @David")
+      var usersBlocked = [];
+      async.eachLimit(mentions, 10, function (m, cb) {
+        UserModel.findByUid(m.id).exec(function (err, model) {
+          if (err) {
+            return cb(err);
+          }
+
+          if (!model.confirmed && usersBlocked.indexOf(model.id) === -1) {
+            usersBlocked.push(model.id);
+            event.username = model.username;
+            event.realname = model.realname;
+            that.app.globalChannelService.pushMessage('connector', 'room:message:cant:respond', event, 'user:' + user.id, {}, function (err) {
+              return cb(err);
+            });
+          } else {
+            return cb(null);
+          }
+        });
+      }, function (err) {
+        return callback(err, sentEvent, mentions);
       });
     },
 

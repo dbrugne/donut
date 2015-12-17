@@ -87,7 +87,7 @@ var GroupsCollection = Backbone.Collection.extend({
     if (!data || !data.group_id || !(model = this.get(data.group_id))) {
       return;
     }
-    model.trigger('refreshPage');
+    model.onRefresh();
   },
   onOp: function (data) {
     var model;
@@ -117,7 +117,7 @@ var GroupsCollection = Backbone.Collection.extend({
         data.room_id = room_id;
         Rooms.onLeave(data);
       })
-      model.trigger('refreshPage');
+      model.onRefresh();
     }
     app.trigger('redrawNavigationRooms');
   },
@@ -131,7 +131,7 @@ var GroupsCollection = Backbone.Collection.extend({
     if (data.reason === 'request-accept') {
       app.trigger('alert', 'info', i18next.t('group.default-member'));
     }
-    model.trigger('refreshPage');
+    model.onRefresh();
   },
   isMemberOwnerAdmin: function (groupId) {
     var model;

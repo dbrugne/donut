@@ -81,6 +81,7 @@ var RoomsCollection = Backbone.Collection.extend({
     this.listenTo(client, 'room:out', this.onOut);
     this.listenTo(client, 'room:topic', this.onTopic);
     this.listenTo(client, 'room:message', this.onMessage);
+    this.listenTo(client, 'room:message:cant:respond', this.onMessageCantRespond);
     this.listenTo(client, 'room:op', this.onOp);
     this.listenTo(client, 'room:deop', this.onDeop);
     this.listenTo(client, 'room:updated', this.onUpdated);
@@ -209,6 +210,14 @@ var RoomsCollection = Backbone.Collection.extend({
     }
 
     model.onMessage(data);
+  },
+  onMessageCantRespond: function (data) {
+    var model;
+    if (!data || !data.room_id || !(model = this.get(data.room_id))) {
+      return;
+    }
+
+    model.onCantRespond(data);
   },
   onOp: function (data) {
     var model;

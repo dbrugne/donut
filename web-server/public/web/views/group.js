@@ -21,7 +21,6 @@ var GroupView = Backbone.View.extend({
   },
 
   initialize: function (options) {
-    this.listenTo(this.model, 'refreshPage', this.onRefreshPage);
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(this.model, 'change:avatar', this.onAvatar);
     this.listenTo(this.model, 'change:color', this.onColor);
@@ -135,15 +134,6 @@ var GroupView = Backbone.View.extend({
   onAvatar: function (model, value) {
     var url = common.cloudinary.prepare(value, 100);
     this.$('img.avatar').attr('src', url);
-  },
-  onRefreshPage: function () {
-    client.groupRead(this.model.get('group_id'), { users: true, rooms: true }, _.bind(function (response) {
-      if (!response.err) {
-        this.model.set(response);
-        this.model.set('rooms', response.rooms);
-        this.render();
-      }
-    }, this));
   }
 });
 

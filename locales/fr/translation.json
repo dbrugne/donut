@@ -4,7 +4,59 @@
     "description": "Désolé, nous n'avons pas trouvé ce que vous cherchiez. Et si on repartait du bon pied ? Cliquez ici :"
   },
   "landing": {
-
+    "toggle": "Afficher/masquer la navigation",
+    "signup-self": "S'inscrire",
+    "login-self": "Se connecter",
+    "first": {
+      "p1": "L'ESPACE DE DISCUSSION",
+      "almost": "PRESQUE",
+      "p2": " OFFICIEL DE VOTRE UNIVERSITE",
+      "disclaimer": "DONUT vous permet de vous retrouver pour discuter quelle que soit la taille de votre communauté. La messagerie instantanée pensée à l'échelle de votre campus, vos associations, vos Meetups"
+    },
+    "second": {
+      "p1": "VOTRE <strong>COMMUNAUTÉ</strong> SE RENFORCE AU FIL DE TOUTES SES DISCUSSIONS.",
+      "p2": "<strong>DONUT</strong> VOUS APPORTE LE CONFORT POUR ORGANISER LES DISCUSSIONS ENTRE VOS MEMBRES"
+    },
+    "third": {
+      "1": {
+        "subtitle": "Votre espace à vous",
+        "description": "Vous regroupez votre communauté et toutes ses discussions au sein d'un espace qui lui est réservé. Chacun peut facilement y retrouver les autres."
+      },
+      "2": {
+        "subtitle": "Gestion d’accès sans soucis",
+        "description": "Vous définissez l'accès public ou privé, et selon vos critères, et nous détectons automatiquement vos membres."
+      },
+      "3": {
+        "subtitle": "Ambiance toujours zen",
+        "description": "Les modérateurs de votre équipe disposent d'une panoplie complète de super-pouvoirs."
+      },
+      "4": {
+        "subtitle": "Vos membres sont autonomes",
+        "description": "Libre à eux de créer des discussions privées ou publiques, de s'échanger des documents,... Votre communauté vit par elle-même."
+      },
+      "5": {
+        "subtitle": "Membres no limit",
+        "description": "DONUT vous aide à animer votre communauté qu'elle ait 30 ou 100.000 membres. C'est fait pour !"
+      },
+      "6": {
+        "subtitle": "Clavier-friendly",
+        "description": "DONUT existe sur mobile certes, mais également sur ordinateur. Parce qu'on pense au confort de vos dix doigts et de vos petits yeux."
+      },
+      "disclaimer": "<strong>CRÉEZ</strong> L'ESPACE DE DISCUSSION QUI RESSEMBLE À VOTRE COMMUNAUTÉ GRÂCE À DONUT"
+    },
+    "fourth": {
+      "about": "A propos de nous",
+      "text": [
+        "<p>Nous puisons une grande part de notre inspiration dans IRC, le système de chat qui a permis aux tous premiers internautes de se retrouver par communautés. Nous avons la nostalgie de cette époque et de cette vision d'Internet. Un Internet où, comme dans la vraie vie, on peut discuter avec ceux qui se trouvent au même endroit que soi, qu'on soit déjà \"amis\" ou non. A l'origine de ce projet il y a la volonté de faire revivre ces grandes heures du chat à notre génération, et les faire découvrir aux plus jeunes.</p>",
+        "<p>Par ailleurs nous sommes admiratifs de la qualité des messageries instantantanées pour discuter entre amis (Whatsapp, Viber, Facebook Messenger...) ou entre collègues (Slack, Hipchat...). Ces outils ne sont malheureusement pas adaptés aux discussions de communautés.</p>",
+        "<p>Notre mission chez DONUT, c'est d'offrir aux communautés, et en particularité aux campus universitaires, la meilleure expérience de discussion instantanée.</p>"
+      ]
+    },
+    "partners": "Nos partenaires",
+    "legals": "Mentions légales",
+    "loadmore": "Plus de résultats",
+    "signup" : "Inscription",
+    "login" : "Connexion"
   },
   "forms": {
     "username-required": "Le nom d'utilisateur est requis",
@@ -239,7 +291,7 @@
   "logged": {
     "title": "Déjà connecté",
     "hello": "Bonjour",
-    "text": "Vous êtes déjà connecté, accédez à DONUT :",
+    "text": "Vous êtes déjà connecté",
     "chat": "Discuter",
     "logout": "Déconnexion"
   },
@@ -701,7 +753,7 @@
       "close": "Fermer ce donut",
       "allowgroupmember": "Autoriser les membres de cette communauté à rejoindre ce donut",
       "not-confirmed": "Action autorisée seulement pour les comptes validés. Validez votre e-mail.",
-      "cant-answer": "L'utilisateur @__username__ ne peut pas répondre car son compte n'est pas encore validé."
+      "cant-answer": "@__username__ ne peut pas répondre car son compte n'est pas encore validé."
     },
     "form": {
       "common": {

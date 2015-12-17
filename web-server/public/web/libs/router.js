@@ -103,6 +103,10 @@ var DonutRouter = Backbone.Router.extend({
   joinGroup: function (data) {
     var name = data.name;
     var model = groups.iwhere('name', name);
+    if (model) {
+      model.onRefresh();
+      return this.focus(model);
+    }
 
     client.groupId(name, _.bind(function (response) {
       if (response.code === 404) {
@@ -113,8 +117,9 @@ var DonutRouter = Backbone.Router.extend({
       client.groupRead(response.group_id, {users: true, rooms: true}, _.bind(function (response) {
         if (!response.err) {
           model = groups.addModel(response);
-          this.focus(model);
           model.trigger('redraw');
+          app.trigger('redrawNavigationRooms');
+          this.focus(model);
           app.trigger('nav-active-group', {
             group_id: response.group_id,
             group_name: name,
