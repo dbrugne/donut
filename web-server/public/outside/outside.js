@@ -18,11 +18,18 @@ $('[data-toggle="contactform"]').contactform({});
 var $landing = $('#landing');
 if ($landing.length) {
   $(window).scroll(function () {
-    if ($(this).scrollTop() > 700) {
+    if ($(this).scrollTop() > 600) {
       $landing.addClass('clean');
     } else {
       $landing.removeClass('clean');
     }
+  });
+
+  // @todo dbrugne not sure that's the best way to read a cookie. It works nevertheless...
+  $(document).ready(function () {
+    var cookie = document.cookie.match('(^|;)\\s*donut\.lng\\s*=\\s*([^;]+)');
+    var lng = cookie.length > 0 ? cookie.pop() : 'en';
+    $('.switch[data-language="' + lng + '"]').addClass('active');
   });
 }
 
