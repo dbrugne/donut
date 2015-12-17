@@ -5,6 +5,7 @@ var async = require('async');
 var emailer = require('../../../../../shared/io/emailer');
 var utils = require('./../utils');
 var NotificationModel = require('../../../../../shared/models/notification');
+var parse = require('../../../../../shared/io/parse');
 
 module.exports = function (facade) {
   return new Notification(facade);
@@ -184,6 +185,57 @@ Notification.prototype.sendEmail = function (model, done) {
     function persist (callback) {
       model.sent_to_email = true;
       model.sent_to_email_at = new Date();
+      model.save(callback);
+    }
+
+  ], done);
+};
+
+Notification.prototype.sendMobile = function (model, done) {
+  if (!model.data || !model.user || !model.user._id) {
+    return done('roomRequestType.sendMobile data left');
+  }
+
+  async.waterfall([
+
+    utils.retrieveRoom(model.data.room),
+
+    function send (room, callback) {
+      if (['roomjoinrequest', 'roomallowed', 'roomrefuse', 'roominvite',
+          'roomdelete', 'roomcreate'].indexOf(model.type) === -1) {
+        return callback('roomRequestType.sendMobile unknown notification type: ' + model.type);
+      }
+      var method;
+      switch (model.type) {
+        case 'roomjoinrequest':
+          method = parse.roomJoinRequest;
+          break;
+        case 'roomallowed':
+          method = parse.roomAllowed;
+          break;
+        case 'roomrefuse':
+          method = parse.roomRefuse;
+          break;
+        case 'roominvite':
+          method = parse.roomInvite;
+          break;
+        case 'roomdelete':
+          method = parse.roomDelete;
+          break;
+        case 'roomcreate':
+          method = parse.roomCreate;
+          break;
+      }
+
+      var avatar = (['roomjoinrequest'].indexOf(model.type) !== -1)
+        ? model.data.by_user._avatar()
+        : room._avatar();
+      method(model.user._id.toString(), model.data.by_user.username, room.getIdentifier(), avatar, callback);
+    },
+
+    function persist (callback) {
+      model.sent_to_mobile = true;
+      model.sent_to_mobile_at = new Date();
       model.save(callback);
     }
 
