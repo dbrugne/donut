@@ -31,7 +31,7 @@ var MessageEditView = Backbone.View.extend({
     this.$el.removeClass('has-hover');
 
     this.originalMessage = (this.$text.html() !== undefined) ? this.$text.html() : '';
-    this.originalMessage = common.markup.toText(this.originalMessage);
+    this.originalMessage = common.markup.toText(this.originalMessage).trim();
     this.originalMessage = this.htmlSmileyToText(this.originalMessage);
 
     this.$messageForm = this.$('.message-form');
