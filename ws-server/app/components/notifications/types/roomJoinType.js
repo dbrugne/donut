@@ -9,6 +9,7 @@ var HistoryRoomModel = require('../../../../../shared/models/historyroom');
 var emailer = require('../../../../../shared/io/emailer');
 var utils = require('./../utils');
 var conf = require('../../../../../config/index');
+var parse = require('../../../../../shared/io/parse');
 
 module.exports = function (facade) {
   return new Notification(facade);
@@ -175,6 +176,28 @@ Notification.prototype.sendEmail = function (model, done) {
     function persist (callback) {
       model.sent_to_email = true;
       model.sent_to_email_at = new Date();
+      model.save(callback);
+    }
+
+  ], done);
+};
+
+Notification.prototype.sendMobile = function (model, done) {
+  if (!model.data || !model.data.event || !model.user || !model.user._id) {
+    return logger.error('roomJoinType.sendMobile data left');
+  }
+
+  async.waterfall([
+
+    utils.retrieveHistoryRoom(model.data.event.toString()),
+
+    function send (history, callback) {
+      parse.roomJoin(model.user._id.toString(), history.user.username, model.data.room.getIdentifier(), model.data.room._avatar(), callback);
+    },
+
+    function persist (callback) {
+      model.sent_to_mobile = true;
+      model.sent_to_mobile_at = new Date();
       model.save(callback);
     }
 

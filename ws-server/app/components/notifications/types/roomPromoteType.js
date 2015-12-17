@@ -7,6 +7,7 @@ var utils = require('./../utils');
 var HistoryRoom = require('../../../../../shared/models/historyroom');
 var RoomModel = require('../../../../../shared/models/room');
 var NotificationModel = require('../../../../../shared/models/notification');
+var parse = require('../../../../../shared/io/parse');
 
 module.exports = function (facade) {
   return new Notification(facade);
@@ -213,6 +214,54 @@ Notification.prototype.sendEmail = function (model, done) {
     function persist (callback) {
       model.sent_to_email = true;
       model.sent_to_email_at = new Date();
+      model.save(callback);
+    }
+
+  ], done);
+};
+
+Notification.prototype.sendMobile = function (model, done) {
+  if (!model.data || !model.user || !model.user._id) {
+    return done('roomPromoteType.sendMobile data left');
+  }
+
+  async.waterfall([
+
+    function send (callback) {
+      var method;
+      if (['roomop', 'roomdeop', 'roomkick', 'roomban', 'roomdeban', 'roomvoice',
+          'roomdevoice'].indexOf(model.type) === -1) {
+        return callback('roomPromoteType.sendMobile unknown notification type: ' + model.type);
+      }
+      switch (model.type) {
+        case 'roomop':
+          method = parse.roomOp;
+          break;
+        case 'roomdeop':
+          method = parse.roomDeop;
+          break;
+        case 'roomkick':
+          method = parse.roomKick;
+          break;
+        case 'roomban':
+          method = parse.roomBan;
+          break;
+        case 'roomdeban':
+          method = parse.roomDeban;
+          break;
+        case 'roomvoice':
+          method = parse.roomVoice;
+          break;
+        case 'roomdevoice':
+          method = parse.roomDevoice;
+          break;
+      }
+      method(model.user._id.toString(), model.data.room.getIdentifier(), model.data.room._avatar(), callback);
+    },
+
+    function persist (callback) {
+      model.sent_to_mobile = true;
+      model.sent_to_mobile_at = new Date();
       model.save(callback);
     }
 

@@ -74,6 +74,12 @@ handler.join = function (user, room, next) {
       });
     },
 
+    function persistRoom (callback) {
+      room.update({$pull: {allowed_pending: {user: user._id}}}, function (err) {
+        return callback(err);
+      });
+    },
+
     function broadcast (callback) {
       // this step happen BEFORE user/room persistence and room subscription
       // to avoid noisy notifications

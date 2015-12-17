@@ -6,6 +6,7 @@ var emailer = require('../../../../../shared/io/emailer');
 var utils = require('./../utils');
 var NotificationModel = require('../../../../../shared/models/notification');
 var conf = require('../../../../../config/index');
+var parse = require('../../../../../shared/io/parse');
 
 module.exports = function (facade) {
   return new Notification(facade);
@@ -230,6 +231,66 @@ Notification.prototype.sendEmail = function (model, done) {
     function persist (callback) {
       model.sent_to_email = true;
       model.sent_to_email_at = new Date();
+      model.save(callback);
+    }
+
+  ], done);
+};
+
+Notification.prototype.sendMobile = function (model, done) {
+  if (!model.data || !model.user || !model.user._id) {
+    return done('groupRequestType.sendMobile data left');
+  }
+
+  async.waterfall([
+
+    utils.retrieveGroup(model.data.group),
+
+    function send (group, callback) {
+      if (['groupjoinrequest', 'groupallowed', 'grouprefuse', 'groupinvite',
+          'groupdisallow', 'groupban', 'groupdeban', 'groupop', 'groupdeop'].indexOf(model.type) === -1) {
+        return callback('roomPromoteType.sendMobile unknown notification type: ' + model.type);
+      }
+      var method;
+      switch (model.type) {
+        case 'groupjoinrequest':
+          method = parse.groupJoinRequest;
+          break;
+        case 'groupallowed':
+          method = parse.groupAllowed;
+          break;
+        case 'groupdisallow':
+          method = parse.groupDisallow;
+          break;
+        case 'groupinvite':
+          method = parse.groupInvite;
+          break;
+        case 'grouprefuse':
+          method = parse.groupRefuse;
+          break;
+        case 'groupban':
+          method = parse.groupBan;
+          break;
+        case 'groupdeban':
+          method = parse.groupDeban;
+          break;
+        case 'groupop':
+          method = parse.groupOp;
+          break;
+        case 'groupdeop':
+          method = parse.groupDeop;
+          break;
+      }
+
+      var avatar = (['groupjoinrequest'].indexOf(model.type) !== -1)
+        ? model.data.by_user._avatar()
+        : group._avatar();
+      method(model.user._id.toString(), model.data.by_user.username, group.name, avatar, callback);
+    },
+
+    function persist (callback) {
+      model.sent_to_mobile = true;
+      model.sent_to_mobile_at = new Date();
       model.save(callback);
     }
 
