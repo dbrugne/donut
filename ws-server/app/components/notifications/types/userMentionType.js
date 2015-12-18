@@ -210,7 +210,7 @@ Notification.prototype.sendEmail = function (model, done) {
 
 Notification.prototype.sendMobile = function (model, done) {
   if (!model.data || !model.data.event || !model.user || !model.user._id) {
-    return logger.error('roomTopicType.sendMobile data left');
+    return done('roomTopicType.sendMobile data left');
   }
 
   async.waterfall([

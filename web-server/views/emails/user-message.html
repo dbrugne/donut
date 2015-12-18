@@ -21,19 +21,19 @@
                 <% var lastTime = ''; %>
                 <% var className = 'odd'; %>
                 <% _.forEach(events, function(event){ %>
-                    <% if ( lastUsername !== event.from_username) { %>
+                    <% if ( lastUsername !== event.username) { %>
                 <% var className = ( className === 'even' ? 'odd' : 'even' ); %>
-                        <% lastUsername = event.from_username; %>
+                        <% lastUsername = event.username; %>
                 <tr
                 <% if (className === 'even') { %>style="background-color: #f9fafc;"<% } %> <% if (event.current ===
                 true) { %>style="background-color: #E6E8ED;"<% } %> >
                             <td style="width: 35px;">
-                                <img src="<%- event.from_avatar %>" style=" width: 30px; height: 30px; ">
+                                <img src="<%- event.avatar %>" style=" width: 30px; height: 30px; ">
                             </td>
                             <td>
                                 <div style="font-family: 'Open Sans',sans-serif; font-weight: bold; font-size: 1em;">
                                     <div style="font-family: 'Open Sans',sans-serif; font-weight: bold; font-size: 1em;">
-                                        @<%- event.from_username %>
+                                        @<%- event.username %>
                                     </div>
                                 </div>
                             </td>
