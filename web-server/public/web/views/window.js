@@ -185,6 +185,7 @@ var WindowView = Backbone.View.extend({
     // badge (even if focused), only if user sending the message is not currentUser
     if (model.get('unviewed') !== true && currentUser.get('user_id') !== data.user_id) {
       model.set('unviewed', true);
+      model.set('first_unviewed', data.id);
     }
 
     // update navigation

@@ -360,9 +360,9 @@ userSchema.methods.hasAllowedEmail = function (domains) {
  *
  *********************************************************************************/
 
-userSchema.methods.hasUnviewedRoomMessage = function (room) {
+userSchema.methods.findRoomFirstUnviewed = function (room) {
   if (!this.unviewed) {
-    return false;
+    return;
   }
 
   var found = _.find(this.unviewed, function (e) {
@@ -370,21 +370,24 @@ userSchema.methods.hasUnviewedRoomMessage = function (room) {
       return true;
     }
   });
-
-  return !!found;
-};
-userSchema.methods.hasUnviewedOneMessage = function (user) {
-  if (!this.unviewed) {
-    return false;
+  if (!found) {
+    return;
   }
-
+  return found.event;
+};
+userSchema.methods.findOneFirstUnviewed = function (user) {
+  if (!this.unviewed) {
+    return;
+  }
   var found = _.find(this.unviewed, function (u) {
     if (u.user && u.user.toString() === user.id) {
       return true;
     }
   });
-
-  return !!found;
+  if (!found) {
+    return;
+  }
+  return found.event;
 };
 userSchema.statics.setUnviewedRoomMessage = function (roomId, usersId, userId, eventId, fn) {
   this.update({

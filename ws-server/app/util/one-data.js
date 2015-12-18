@@ -50,10 +50,13 @@ module.exports = function (app, user, users, fn) {
           website: u.website,
           banned: user.isBanned(u.id), // for ban/deban menu
           i_am_banned: u.isBanned(user.id), // for input enable/disable
-          unviewed: user.hasUnviewedOneMessage(u), // @todo : add first unviewed event
           last_event_at: obj.last_event_at,
           last_event: obj.last_event
         };
+
+        var firstUnviewed = user.findOneFirstUnviewed(u);
+        one.unviewed = !!(firstUnviewed);
+        one.first_unviewed = firstUnviewed;
 
         if (statuses[u.id] === true) {
           one.status = 'online';

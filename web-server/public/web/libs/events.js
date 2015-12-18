@@ -86,6 +86,7 @@ exports.prototype.insertTop = function (events) {
   var previous;
   _.each(events, _.bind(function (e) {
     var event = this._data(e.type, e.data);
+    var firstUnviewed = (this.discussion.get('first_unviewed') === event.data.id);
 
     // try to render event (before)
     var _html = this._renderEvent(event);
@@ -96,6 +97,14 @@ exports.prototype.insertTop = function (events) {
     // new message block
     if (this.block(event, previous)) {
       _html = this.renderBlockUser(event) + _html;
+    }
+
+    // new unviewed block
+    if (firstUnviewed) {
+      console.log('PREMIER TROUVEEEEEE');
+      _html = require('../templates/event/block-unviewed.html')({
+        time: event.data.time
+      }) + _html;
     }
 
     // new date block

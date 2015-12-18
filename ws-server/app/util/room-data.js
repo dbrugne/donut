@@ -78,7 +78,10 @@ module.exports = function (user, room, fn) {
     data.topic = room.topic;
     data.poster = room._poster();
     data.posterblured = room._poster(true);
-    data.unviewed = user.hasUnviewedRoomMessage(room);  // @todo : add first unviewed event
+
+    var firstUnviewed = user.findRoomFirstUnviewed(room);
+    data.unviewed = !!(firstUnviewed);
+    data.first_unviewed = firstUnviewed;
   }
 
   fn(null, data);
