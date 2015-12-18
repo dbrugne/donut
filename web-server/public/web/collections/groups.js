@@ -4,8 +4,7 @@ var GroupModel = require('../models/group');
 var client = require('../libs/client');
 var app = require('../libs/app');
 var currentUser = require('../models/current-user');
-var urls = require('../../../../shared/util/url');
-var Rooms = require('./rooms');
+var rooms = require('./rooms');
 
 var GroupsCollection = Backbone.Collection.extend({
   iwhere: function (key, val) { // insensitive case search
@@ -35,8 +34,6 @@ var GroupsCollection = Backbone.Collection.extend({
   addModel: function (data) {
     data.id = data.group_id;
     data.identifier = '#' + data.name;
-    data.uri = urls(data, 'group', 'uri');
-    data.url = urls(data, 'group', 'url');
 
     // update model
     var isNew = (typeof this.get(data.group_id) === 'undefined');
@@ -108,7 +105,7 @@ var GroupsCollection = Backbone.Collection.extend({
     } else {
       _.each(data.rooms_ids, function (room_id) {
         data.room_id = room_id;
-        Rooms.onLeave(data);
+        rooms.onLeave(data);
       })
       model.onRefresh();
     }
