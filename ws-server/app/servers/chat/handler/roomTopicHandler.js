@@ -2,7 +2,7 @@
 var errors = require('../../../util/errors');
 var async = require('async');
 var Notifications = require('../../../components/notifications');
-var roomEmitter = require('../../../util/roomEmitter');
+var roomEmitter = require('../../../util/room-emitter');
 var inputUtil = require('../../../util/input');
 var common = require('@dbrugne/donut-common/server');
 var GroupModel = require('../../../../../shared/models/group');
@@ -57,20 +57,8 @@ handler.call = function (data, session, next) {
     },
 
     function persist (topic, callback) {
-      // Update topic and activity date
       room.topic = topic;
-      room.lastactivity_at = Date.now();
       room.save(function (err) {
-        return callback(err, topic);
-      });
-    },
-
-    function persistOnGroup (topic, callback) {
-      if (!room.get('group')) {
-        return callback(null, topic);
-      }
-
-      GroupModel.update({_id: room.get('group').get('id')}, {lastactivity_at: Date.now()}, {multi: false}, function (err) {
         return callback(err, topic);
       });
     },

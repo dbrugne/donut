@@ -50,8 +50,9 @@ module.exports = function (app, user, users, fn) {
           website: u.website,
           banned: user.isBanned(u.id), // for ban/deban menu
           i_am_banned: u.isBanned(user.id), // for input enable/disable
-          unviewed: user.hasUnviewedOneMessage(u),
-          lastactivity_at: obj.lastactivity_at
+          unviewed: user.hasUnviewedOneMessage(u), // @todo : add first unviewed event
+          last_event_at: obj.last_event_at,
+          last_event: obj.last_event
         };
 
         if (statuses[u.id] === true) {

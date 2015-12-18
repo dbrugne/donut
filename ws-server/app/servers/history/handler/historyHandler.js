@@ -98,7 +98,7 @@ handler.call = function (data, session, next) {
       }
 
       _.each(docs, function (model) {
-        event.history.push(model.toClientJSON(user.id));
+        event.history.push(model.toClientJSON());
       });
 
       return callback(null);

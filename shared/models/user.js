@@ -36,10 +36,11 @@ var userSchema = mongoose.Schema({
     name: String
   },
   preferences: mongoose.Schema.Types.Mixed,
-  onetoones: [{type: mongoose.Schema.ObjectId, ref: 'User'}], // @todo yfuks remove after prod migration
+  onetoones: [{type: mongoose.Schema.ObjectId, ref: 'User'}], // @todo yfuks remove after prod migration (allow migration task to work with model)
   ones: [{
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
-    lastactivity_at: {type: Date, default: Date.now}
+    last_event_at: {type: Date, default: Date.now},
+    last_event: {type: mongoose.Schema.ObjectId, ref: 'HistoryOne'}
   }],
   blocked: [{type: mongoose.Schema.ObjectId, ref: 'Room'}],
   unviewed: [{
@@ -385,20 +386,20 @@ userSchema.methods.hasUnviewedOneMessage = function (user) {
 
   return !!found;
 };
-userSchema.statics.setUnviewedRoomMessage = function (roomId, usersId, userId, event, fn) {
+userSchema.statics.setUnviewedRoomMessage = function (roomId, usersId, userId, eventId, fn) {
   this.update({
     _id: {$in: usersId, $nin: [userId]},
     'unviewed.room': {$nin: [roomId]}
   }, {
-    $addToSet: {unviewed: {room: roomId, event: event}}
+    $addToSet: {unviewed: {room: roomId, event: eventId}}
   }, {multi: true}, fn);
 };
-userSchema.statics.setUnviewedOneMessage = function (fromUserId, toUserId, event, fn) {
+userSchema.statics.setUnviewedOneMessage = function (fromUserId, toUserId, eventId, fn) {
   this.update({
     _id: {$in: [toUserId]},
     'unviewed.user': {$nin: [fromUserId]}
   }, {
-    $addToSet: {'unviewed': {user: fromUserId, event: event}}
+    $addToSet: {unviewed: {user: fromUserId, event: eventId}}
   }, fn);
 };
 userSchema.methods.resetUnviewedRoom = function (roomId, fn) {
@@ -515,13 +516,13 @@ userSchema.methods.isOnetoone = function (userId) {
   var doc = this.findOnetoone(userId);
   return (typeof doc !== 'undefined');
 };
-userSchema.methods.updateActivity = function (userId, callback) {
+userSchema.methods.updateActivity = function (userId, eventId, callback) {
   if (this.isOnetoone(userId.toString())) {
     this.constructor.update(
        {_id: this._id, 'ones.user': userId},
-       {$set: {'ones.$.lastactivity_at': new Date()}}, callback);
+       {$set: {'ones.$.last_event_at': Date.now(), 'ones.$.last_event': eventId}}, callback);
   } else {
-    var oneuser = {user: userId, lastactivity_at: new Date()};
+    var oneuser = {user: userId, last_event_at: Date.now(), last_event: eventId};
     this.update({$addToSet: {ones: oneuser}}, callback);
   }
 };

@@ -4,7 +4,7 @@ var errors = require('../../../util/errors');
 var async = require('async');
 var GroupModel = require('../../../../../shared/models/group');
 var RoomModel = require('../../../../../shared/models/room');
-var roomEmitter = require('../../../util/roomEmitter');
+var roomEmitter = require('../../../util/room-emitter');
 var Notifications = require('../../../components/notifications');
 var inputUtil = require('../../../util/input');
 

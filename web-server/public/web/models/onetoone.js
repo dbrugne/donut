@@ -38,8 +38,6 @@ var OneToOneModel = Backbone.Model.extend({
   },
   onMessage: function (data) {
     app.trigger('newEvent', 'user:message', data, this);
-
-    data.unviewed = (currentUser.get('user_id') !== data.user_id);
     this.trigger('freshEvent', 'user:message', data);
   },
   onUserOnline: function (data) {
@@ -94,8 +92,8 @@ var OneToOneModel = Backbone.Model.extend({
       return callback(data);
     });
   },
-  viewedElements: function (elements) {
-    client.userViewed(this.get('user_id'), elements);
+  markAsViewed: function () {
+    client.userViewed(this.get('user_id'));
   },
   sendMessage: function (message, files) {
     client.userMessage(this.get('user_id'), message, files);
@@ -105,7 +103,6 @@ var OneToOneModel = Backbone.Model.extend({
       this.set('unviewed', false);
       app.trigger('viewedEvent', this);
     }
-    this.trigger('viewed', data);
   },
   isInputActive: function () {
     return !(this.get('i_am_banned') === true || !currentUser.isConfirmed());

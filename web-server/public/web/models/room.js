@@ -65,14 +65,10 @@ var RoomModel = Backbone.Model.extend({
   onTopic: function (data) {
     this.set('topic', data.topic);
     app.trigger('newEvent', 'room:topic', data, this);
-
-    data.unviewed = (currentUser.get('user_id') !== data.user_id);
     this.trigger('freshEvent', 'room:topic', data);
   },
   onMessage: function (data) {
     app.trigger('newEvent', 'room:message', data, this);
-
-    data.unviewed = (currentUser.get('user_id') !== data.user_id);
     this.trigger('freshEvent', 'room:message', data);
   },
   onCantRespond: function (data) {
@@ -91,15 +87,14 @@ var RoomModel = Backbone.Model.extend({
   sendMessage: function (message, files) {
     client.roomMessage(this.get('id'), message, files);
   },
-  viewedElements: function (elements) {
-    client.roomViewed(this.get('room_id'), elements);
+  markAsViewed: function () {
+    client.roomViewed(this.get('room_id'));
   },
   onViewed: function (data) {
     if (this.get('unviewed') === true) {
       this.set('unviewed', false);
       app.trigger('viewedEvent', this);
     }
-    this.trigger('viewed', data);
   },
   isInputActive: function () {
     return !(this.users.isUserDevoiced(currentUser.get('user_id')) || (!currentUser.isConfirmed() && this.get('mode') !== 'public'));

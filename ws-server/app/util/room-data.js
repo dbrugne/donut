@@ -19,7 +19,8 @@ module.exports = function (user, room, fn) {
     color: room.color,
     users_number: room.numberOfUsers(),
     created_at: room.created_at,
-    lastactivity_at: room.lastactivity_at
+    last_event_at: room.last_event_at,
+    last_event: room.last_event
   };
   if (room.group) {
     data.group_id = room.group.id;
@@ -44,10 +45,12 @@ module.exports = function (user, room, fn) {
     data.blocked = 'kicked';
   }
 
+  var doc;
+
   // banned user
   if (room.isBanned(user.id)) {
     data.blocked = true;
-    var doc = room.isInBanned(user.id);
+    doc = room.isInBanned(user.id);
     data.banned_at = doc.banned_at;
     data.blocked = 'banned';
     if (doc.reason) {
@@ -58,7 +61,7 @@ module.exports = function (user, room, fn) {
   // group banned user
   if (room.group && room.isGroupBanned(user.id)) {
     data.blocked = true;
-    var doc = room.isInGroupBanned(user.id);
+    doc = room.isInGroupBanned(user.id);
     data.banned_at = doc.banned_at;
     data.blocked = 'groupbanned';
     if (doc.reason) {
@@ -75,7 +78,7 @@ module.exports = function (user, room, fn) {
     data.topic = room.topic;
     data.poster = room._poster();
     data.posterblured = room._poster(true);
-    data.unviewed = user.hasUnviewedRoomMessage(room);
+    data.unviewed = user.hasUnviewedRoomMessage(room);  // @todo : add first unviewed event
   }
 
   fn(null, data);

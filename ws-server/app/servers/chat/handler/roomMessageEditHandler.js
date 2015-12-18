@@ -93,24 +93,6 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function persist (message, mentions, callback) {
-      // Update topic and activity date
-      room.lastactivity_at = Date.now();
-      room.save(function (err) {
-        return callback(err, message, mentions);
-      });
-    },
-
-    function persistOnGroup (message, mentions, callback) {
-      if (!room.get('group')) {
-        return callback(null, message, mentions);
-      }
-
-      GroupModel.update({_id: room.get('group').get('id')}, {lastactivity_at: Date.now()}, {multi: false}, function (err) {
-        return callback(err, message, mentions);
-      });
-    },
-
     function broadcast (message, mentions, callback) {
       var eventToSend = {
         name: room.name,

@@ -77,7 +77,6 @@ handler.call = function (data, session, next) {
       room.color = conf.room.default.color;
       room.visibility = false; // not visible on home until admin change this value
       room.priority = 0;
-      room.lastjoin_at = Date.now();
       room.users.addToSet(user._id);
       room.allowed.addToSet(user._id);
 

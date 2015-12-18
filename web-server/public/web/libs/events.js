@@ -220,8 +220,7 @@ exports.prototype._data = function (type, data) {
   data.type = type.replace(':', '');
   data.stype = type.replace('room:', '').replace('user:', '');
 
-  // unviewed & spammed & edited
-  data.unviewed = (data.unviewed === true);
+  // spammed & edited
   data.spammed = (data.spammed === true);
   data.edited = (data.edited === true);
 

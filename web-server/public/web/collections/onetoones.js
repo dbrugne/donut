@@ -70,10 +70,10 @@ var OnetoonesCollection = Backbone.Collection.extend({
     app.trigger('redrawNavigationOnes');
   },
   addModel: function (data) {
-    data.last = (data.lastactivity_at)
-      ? new Date(data.lastactivity_at).getTime()
+    data.last = (data.last_event_at)
+      ? new Date(data.last_event_at).getTime()
       : '';
-    delete data.lastactivity_at;
+    delete data.last_event_at; // only needed on welcome, then will be maintained in realtime
 
     data.identifier = '@' + data.username;
 

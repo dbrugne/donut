@@ -145,7 +145,6 @@ var RoomUsersCollection = Backbone.Collection.extend({
 
     app.trigger('newEvent', 'room:in', data, this.parent);
 
-    data.unviewed = (currentUser.get('user_id') !== data.user_id);
     this.parent.trigger('freshEvent', 'room:in', data);
   },
   onOut: function (data) {

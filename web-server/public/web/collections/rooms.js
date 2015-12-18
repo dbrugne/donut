@@ -155,10 +155,10 @@ var RoomsCollection = Backbone.Collection.extend({
     data.id = data.room_id;
     data.blocked = blocked || false;
 
-    data.last = (data.lastactivity_at)
-      ? new Date(data.lastactivity_at).getTime()
+    data.last = (data.last_event_at)
+      ? new Date(data.last_event_at).getTime()
       : '';
-    delete data.lastactivity_at;
+    delete data.last_event_at; // only needed on welcome, then will be maintained in realtime
 
     data.identifier = (data.group_id)
       ? '#' + data.group_name + '/' + data.name

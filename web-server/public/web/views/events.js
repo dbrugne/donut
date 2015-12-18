@@ -6,7 +6,6 @@ var app = require('../libs/app');
 var date = require('../libs/date');
 var client = require('../libs/client');
 var EventsDateView = require('./events-date');
-var EventsViewedView = require('./events-viewed');
 var EventsHistoryView = require('./events-history');
 var EventsSpamView = require('./events-spam');
 var EventsEditView = require('./events-edit');
@@ -21,9 +20,9 @@ module.exports = Backbone.View.extend({
     'shown.bs.dropdown .actions': 'onMessageMenuShow'
   },
 
-  scrollTopTimeout: null,
+  markAsViewedTimeout: null,
 
-  scrollVisibleTimeout: null,
+  scrollTopTimeout: null,
 
   chatmode: false,
 
@@ -50,10 +49,6 @@ module.exports = Backbone.View.extend({
       model: this.model,
       currentUserId: currentUser.get('user_id'),
       el: this.$realtime
-    });
-    this.eventsViewedView = new EventsViewedView({
-      el: this.$scrollable,
-      model: this.model
     });
     this.eventsHistoryView = new EventsHistoryView({
       el: this.$el,
@@ -109,7 +104,6 @@ module.exports = Backbone.View.extend({
     this.scrollDown();
   },
   _remove: function () {
-    this.eventsViewedView.remove();
     this.eventsDateView.remove();
     this.eventsHistoryView.remove();
     this.eventsSpamView.remove();
@@ -163,24 +157,22 @@ module.exports = Backbone.View.extend({
       }, 1500);
     }
 
-    // everywhere
-    this.scrollVisibleTimeout = setTimeout(function () {
-      // scroll haven't change until timeout
-      if (that.$scrollable.scrollTop() === currentScrollPosition) {
-        if (that.isVisible()) {
-          that.eventsViewedView.markVisibleAsViewed();
-        }
+    // start timeout for mark as viewed detection
+    this.markAsViewedTimeout = setTimeout(_.bind(function () {
+      if (!this.isVisible()) {
+        return;
       }
-    }, 2000);
+      this.model.markAsViewed();
+    }, this), 2000); // 2s
   },
   _scrollTimeoutCleanup: function () {
     if (this.scrollTopTimeout) {
       clearInterval(this.scrollTopTimeout);
       this.scrollTopTimeout = null;
     }
-    if (this.scrollVisibleTimeout) {
-      clearInterval(this.scrollVisibleTimeout);
-      this.scrollVisibleTimeout = null;
+    if (this.markAsViewedTimeout) {
+      clearInterval(this.markAsViewedTimeout);
+      this.markAsViewedTimeout = null;
     }
   },
   _scrollBottomPosition: function () {
