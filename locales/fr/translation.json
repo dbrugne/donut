@@ -205,6 +205,7 @@
     "french": "Français",
     "english": "Anglais",
     "unknownerror": "Erreur inconnue, veuillez réessayer",
+    "cannot-leave-group": "Vous devez clore toutes les discussions de ce groupe avant de pouvoir clore ce groupe",
     "notconfirmed": "Votre compte n'a pas été validé, cliquer ici pour gérer vos emails",
     "mode": {
       "title": {
@@ -1008,7 +1009,8 @@
     "default-disclaimer": "Vous n'êtes pas encore membre de cette communauté. Cliquez sur \"devenir membre\" pour en faire la demande.",
     "disclaimer-start": "Vous n'êtes pas encore membre de cette communauté. Vous pouvez pouvez y rejoindre les donuts publics et éventuellement demander l'accès à des donuts privés. Les membres d'une communauté ont des privilèges tels que l'accès direct à certains donuts privés et aux autres membres de la communauté.",
     "disclaimer-end": " Avant de demander à devenir membre, jetez un oeil aux conditions d'accès de cette communauté :",
-    "close": "quitter le groupe"
+    "close": "quitter le groupe",
+    "exit": "fermer le groupe"
   },
   "account": {
     "error": {

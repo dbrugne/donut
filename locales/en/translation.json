@@ -206,6 +206,7 @@
     "english": "English",
     "unknownerror": "Unknown error, please retry later",
     "notconfirmed": "Your account has not beed confirmed, click here to manage your emails",
+    "cannot-leave-group": "You must close every donut in this comunity before you can close it",
     "mode": {
       "title": {
         "private": "private",
@@ -1008,7 +1009,8 @@
     "default-disclaimer": "You are not yet a member of this community. Click \"request membership\" to apply for.",
     "disclaimer-start": "You are not yet a member of this community You can join public donuts or request access to a private donut. Members have special priviledges such as direct access to certain private donuts and to other members of this community.",
     "disclaimer-end": "Before you request membership have a glance at this community access conditions :",
-    "close": "leave this community"
+    "close": "leave this community",
+    "exit": "close this community page"
   },
   "account": {
     "error": {

@@ -116,7 +116,7 @@ var GroupsCollection = Backbone.Collection.extend({
       _.each(data.rooms_ids, function (room_id) {
         data.room_id = room_id;
         Rooms.onLeave(data);
-      })
+      });
       model.onRefresh();
     }
     app.trigger('redrawNavigationRooms');
@@ -140,6 +140,14 @@ var GroupsCollection = Backbone.Collection.extend({
     }
 
     return (model.currentUserIsMember() || model.currentUserIsAdmin() || model.currentUserIsOwner());
+  },
+  isMember: function (groupId) {
+    var model;
+    if (!groupId || !(model = this.get(groupId))) {
+      return false;
+    }
+
+    return (model.currentUserIsMember());
   },
   isMemberBanned: function (groupId) {
     var model;

@@ -656,13 +656,24 @@ var MainView = Backbone.View.extend({
     if (!groupId) {
       return;
     }
-    ConfirmationView.open({message: 'close-group'}, _.bind(function () {
-      client.groupLeave(groupId, function (response) {
-        if (response.err) {
-          return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
-        }
-      });
-    }, this));
+
+    // Current user is a member of the selected group
+    if (groups.isMember(groupId)) {
+      ConfirmationView.open({message: 'close-group'}, _.bind(function () {
+        client.groupLeave(groupId, function (response) {
+          if (response.err) {
+            return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+          }
+        });
+      }, this));
+    // current user is not a member
+    } else {
+      var model = groups.findWhere({id: groupId});
+      if (!rooms.getByGroup(groupId)) {
+        return groups.remove(model);
+      }
+      return app.trigger('alert', 'error', i18next.t('global.cannot-leave-group'));
+    }
   },
   onRemoveGroupView: function (model, collection) {
     var view = this.views[model.get('id')];
