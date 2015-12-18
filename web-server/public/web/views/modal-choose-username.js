@@ -1,15 +1,16 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var client = require('../libs/client');
+var keyboard = require('../libs/keyboard');
+var common = require('@dbrugne/donut-common/browser');
 var i18next = require('i18next-client');
-var app = require('../libs/app');
 
 module.exports = Backbone.View.extend({
   template: require('../templates/modal-choose-username.html'),
 
   events: {
-    'click .submit': 'onSubmit'
+    'click .submit': 'onSubmit',
+    'keyup input[type="text"]': 'onKeyUp'
   },
 
   initialize: function () {
@@ -33,21 +34,35 @@ module.exports = Backbone.View.extend({
     this.$input = this.$inputBlock.find('input[type="text"]');
     return this;
   },
+  onKeyUp: function (event) {
+    var key = keyboard._getLastKeyCode(event);
+    if (key.key === keyboard.RETURN) {
+      this.onSubmit();
+    }
+  },
   onSubmit: function () {
     this.resetMessage();
     var username = this.$input.val();
 
-    // @todo : listen for enter key to submit
-    // @todo : validation
-    console.log(username);
+    if (this._validateInput()) {
+      client.userUpdate({username: username}, _.bind(function (response) {
+        if (response.err) {
+          return this.$error.text(i18next.t('chat.form.errors.' + response.err)).show();
+        }
 
-    client.userUpdate({username: username}, _.bind(function (response) {
-      if (response.err) {
-        return this.$error.text(response.err).show();
-      }
+        client.connect();
+      }, this));
+    }
+  },
+  _validateInput: function () {
+    var username = this.$input.val();
+    if (!common.validate.username(username)) {
+      this.$error.text(i18next.t('chat.form.errors.username-format'));
+      this.$error.show();
+      return false;
+    }
 
-      client.connect();
-    }, this));
+    return true;
   },
   resetMessage: function () {
     this.$error.hide();
