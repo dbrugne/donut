@@ -163,7 +163,9 @@ var OnetoonesCollection = Backbone.Collection.extend({
     model.onUpdated(data);
   },
   onUserOnline: function (data) {
-    var model = this.getModelFromEvent(data, false);
+    var model = this.find(function (o) {
+      return (o.get('user_id') === data.user_id);
+    });
     if (!model) {
       return;
     }
@@ -171,7 +173,9 @@ var OnetoonesCollection = Backbone.Collection.extend({
     model.onUserOnline(data);
   },
   onUserOffline: function (data) {
-    var model = this.getModelFromEvent(data, false);
+    var model = this.find(function (o) {
+      return (o.get('user_id') === data.user_id);
+    });
     if (!model) {
       return;
     }

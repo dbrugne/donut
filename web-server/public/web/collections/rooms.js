@@ -245,7 +245,6 @@ var RoomsCollection = Backbone.Collection.extend({
   },
   onUserOnline: function (data) {
     var model;
-
     _.each(data.rooms_id, _.bind(function (roomId) {
       if ((model = this.get(roomId))) {
         if (model.users) {
@@ -256,7 +255,6 @@ var RoomsCollection = Backbone.Collection.extend({
   },
   onUserOffline: function (data) {
     var model;
-
     _.each(data.rooms_id, _.bind(function (roomId) {
       if ((model = this.get(roomId))) {
         if (model.users) {
