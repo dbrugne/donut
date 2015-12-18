@@ -29,7 +29,6 @@
                     <li class="lang">
                         <a class="switch <% if (locale === 'en') { print('active'); } %>" href="" data-language="en" >En</a>
                     </li>
-                    <li class="spacer"></li>
                     <% } else { %>
                     <li class="signup">
                         <a href="/signup"><%= t('landing.signup-self') %></a>
@@ -43,7 +42,6 @@
                     <li class="lang">
                         <a class="switch <% if (locale === 'en') { print('active'); } %>" href="" data-language="en" >En</a>
                     </li>
-                    <li class="spacer"></li>
                     <% } %>
                 </ul>
             </div><!-- /.navbar-collapse -->
@@ -96,10 +94,10 @@
     <div class="second flex-parent column center">
         <div class="ctn">
             <p class="shadowed"><%= t('landing.second.p1') %></p>
-            <div class="img-ctn flex-parent jc-center center mlt10">
-                <div class="apple"></div>
-                <div class="android"></div>
-            </div>
+            <!--<div class="img-ctn flex-parent jc-center center mlt10">-->
+                <!--<div class="apple"></div>-->
+                <!--<div class="android"></div>-->
+            <!--</div>-->
         </div>
         <div class="flex-parent column center" style="width:100%">
             <div class="background2"></div>
