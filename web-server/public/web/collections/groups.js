@@ -1,6 +1,5 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
-var i18next = require('i18next-client');
 var GroupModel = require('../models/group');
 var client = require('../libs/client');
 var app = require('../libs/app');
@@ -74,13 +73,7 @@ var GroupsCollection = Backbone.Collection.extend({
     }
 
     model.onBan(data);
-
     this.remove(model);
-    var message = i18next.t('chat.alert.groupban', {name: data.group_name});
-    if (data.reason) {
-      message += ' ' + i18next.t('chat.reason', {reason: _.escape(data.reason)});
-    }
-    app.trigger('alert', 'warning', message);
   },
   onGroupDeban: function (data) {
     var model;
@@ -126,10 +119,6 @@ var GroupsCollection = Backbone.Collection.extend({
 
     if (!data || !data.group_id || !(model = this.get(data.group_id))) {
       return;
-    }
-
-    if (data.reason === 'request-accept') {
-      app.trigger('alert', 'info', i18next.t('group.default-member'));
     }
     model.onRefresh();
   },
