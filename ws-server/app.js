@@ -1,7 +1,7 @@
 'use strict';
 
 var pomelo = require('pomelo');
-var logger = require('../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var scheduler = require('./app/components/scheduler');
 var dispatcher = require('./app/util/dispatcher');
 var connector = require('./app/connector/sioconnector');

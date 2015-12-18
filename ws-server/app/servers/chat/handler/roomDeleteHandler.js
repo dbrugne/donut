@@ -1,6 +1,6 @@
 'use strict';
 var errors = require('../../../util/errors');
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var async = require('async');
 var GroupModel = require('../../../../../shared/models/group');
 var UserModel = require('../../../../../shared/models/user');

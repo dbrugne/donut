@@ -1,6 +1,6 @@
 'use strict';
 
-var logger = require('../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var keenio = require('../../../shared/io/keenio');
 
 module.exports = function (session, reason) {

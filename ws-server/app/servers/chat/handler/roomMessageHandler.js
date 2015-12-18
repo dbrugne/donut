@@ -1,6 +1,6 @@
 'use strict';
 var errors = require('../../../util/errors');
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var async = require('async');
 var _ = require('underscore');
 var roomEmitter = require('../../../util/roomEmitter');
