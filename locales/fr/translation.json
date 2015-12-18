@@ -1076,7 +1076,7 @@
       "noresult": "Aucune adresse mail trouvée",
       "main": "Principal",
       "add": "ajouter e-mail",
-      "mail-notconfirmed": "Votre compte n'a pas été validé, nous vous avons envoyé un mail de confirmation. Si vous avez reçu aucun mail de confirmation, nous pouvons vous en renvoyer un dans la section: <strong class=\"open-user-account link\">Gérer vos emails</strong>",
+      "mail-notconfirmed": "Validez votre compte à l'aide de l'e-mail de confirmation que nous vous avons envoyé. Pour en renvoyer un allez <strong class=\"open-user-account link\">ici</strong>.",
       "errors": {
         "wrong-format": "L'addresse mail n'est pas valide",
         "mail-already-exist": "Cette adresse mail est déjà utilisé",
@@ -1511,13 +1511,13 @@
   "drawers": {
     "users-allowed-room": {
       "disclaimer": "Vous avez la possibilité d'inviter un utilisateur à rejoindre ce donut.",
-      "pending-disclaimer" : "Les utilisateurs suivants sont en attente d'une réponse de votre part.",
-      "allowed-disclaimer" : "Les utilisateurs suivants sont invités à rejoindre ce donut."
+      "pending-disclaimer" : "Utilisateurs en attente de votre autorisation.",
+      "allowed-disclaimer" : "Utilisateurs invités à rejoindre ce donut."
     },
     "users-allowed-group": {
       "disclaimer": "Vous avez la possibilité d'inviter un utilisateur à rejoindre cette communauté.",
-      "pending-disclaimer" : "Les utilisateurs suivants sont en attente d'une réponse de votre part.",
-      "allowed-disclaimer" : "Les utilisateurs suivants sont invités à rejoindre cette communauté."
+      "pending-disclaimer" : "Utilisateurs en attente de votre autorisation.",
+      "allowed-disclaimer" : "Utilisateurs invités à rejoindre cette communauté."
     }
   }
 }

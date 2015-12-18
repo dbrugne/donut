@@ -701,7 +701,7 @@
         "<p>This is private conversation and its history are only accessible to allowed users.</p>",
         "<p>Say 'hi' to engage in the discussion.</p>"
       ],
-      "onetoone": "he will get your messages on his next connection"
+      "onetoone": "he/she will get your messages on their next connection"
     },
     "connection": {
       "connected": "Connected, loading interface...",
@@ -1076,7 +1076,7 @@
       "noresult": "No mails found",
       "main": "Main",
       "add": "add email",
-      "mail-notconfirmed": "Your account has not beed confirmed, we sent you a confirmation email. If you have nothing received, we can send a new mail in the section: <strong class=\"open-user-account link\">Manage your mails</strong>",
+      "mail-notconfirmed": "Verify your account ! Check your mailbox. You can re-send a verification e-mail <strong class=\"open-user-account link\">here</strong>.",
       "errors": {
         "wrong-format": "Mail address is not valid",
         "mail-already-exist": "This mail address is already used",
@@ -1511,13 +1511,13 @@
   "drawers": {
     "users-allowed-room": {
       "disclaimer": "You can invite a user to join this donut.",
-      "pending-disclaimer" : "Following users are awaiting an answer from you.",
-      "allowed-disclaimer" : "Following users are invited to join this donut."
+      "pending-disclaimer" : "Users pending for your approval.",
+      "allowed-disclaimer" : "Users invited to join this donut."
     },
     "users-allowed-group": {
       "disclaimer": "You can invite a user to join this community.",
-      "pending-disclaimer" : "Following users are awaiting an answer from you.",
-      "allowed-disclaimer" : "Following users are invited to join this community."
+      "pending-disclaimer" : "Users pending for your approval.",
+      "allowed-disclaimer" : "Users invited to join this community."
     }
   }
 }
