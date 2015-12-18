@@ -662,7 +662,7 @@
             } // #chat #center .discussion .content .header.user .status-block
           } // #chat #center .discussion .content .header.user
         }
-        .events { /*border-top: 1px solid @cl-subtext10;*/ overflow-y: scroll; overflow-x: hidden; .flex(1); .scrollbar-grey; position: relative;
+        .events { /*border-top: 1px solid @cl-subtext10;*/ overflow-y: scroll; overflow-x: hidden; .flex(1); .scrollbar-grey; position: relative; margin-top: 60px;
           .scrollable { margin-right: 5px;
             .scrollable-content { position: relative;
               hr { border-color: @cl-subtext5; }
@@ -1168,9 +1168,18 @@
     &.date { margin-top: 25px; margin-bottom: 25px; clear: both; border-top: 0; height: 1px; background-color: @cl-subtext10; text-align: center;
       .moment { position: relative; top: -0.7em; background-color: @cl-background; text-align: center; font-size: 1.5rem; font-weight: bold; color: @cl-subtext30; padding: 0 10px; text-transform: capitalize; }
     }
+    &.unviewed { .opacity(0.6); margin: 25px 10px 25px 5px; clear: both; border-top: 0; height: 1px; background-color: @cl-first; text-align: center;
+      .title { position: absolute; right:0; height:20px; top: -0.7em; background-color: @cl-background; text-align: center; font-size: 1.5rem; font-weight: bold; color: @cl-first; padding: 0 10px; }
+    }
+    &.unviewed-top { .border-radius(3px);
+      background-color: #FF8100;
+      padding: 5px 10px;
+      color: #FFF;
+      opacity: 0.6;
+    }
   }
 
-  .date-ctn { padding: 0 12px 10px 0; position: absolute; width: 100%; background-color: white; z-index: 2; min-height: 22px }
+  .date-ctn { margin-top: 10px; padding: 0 12px 10px 0; position: absolute; width: 100%; background-color: white; z-index: 2; min-height: 22px }
 
   @import './drawer';
 }

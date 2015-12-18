@@ -381,7 +381,11 @@
     },
     "help": "Help",
     "room-discussion": {
-      "input-placeholder": "click here to type a message"
+      "input-placeholder": "click here to type a message",
+      "new-messages": "new messages",
+      "count-since": "new messages since __date__",
+      "jumpto": "Jump to",
+      "mark-as-read": "Mark as read"
     },
     "createadonut": "Create a donut",
     "home": {

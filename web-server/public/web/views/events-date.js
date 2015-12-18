@@ -29,9 +29,15 @@ module.exports = Backbone.View.extend({
       return this.reset();
     }
 
-    this.$dateContainer.html(last.clone()).removeClass('hidden');
+    this.$dateContainer.find('.ctn').html(last.clone());
   },
   reset: function () {
-    this.$dateContainer.html('').addClass('hidden');
+    this.$dateContainer.find('.ctn').html('');
+  },
+  markAsViewed: function() {
+    var elt = this.$dateContainer.find('.ctn-unviewed');
+    elt.find('.unviewed-top').fadeOut(1000, function(){
+      elt.html('');
+    });
   }
 });

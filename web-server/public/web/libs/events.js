@@ -81,6 +81,7 @@ exports.prototype.insertTop = function (events) {
   if (events.length === 0) {
     return;
   }
+  this.$unviewedContainer = this.$el.closest('.discussion').find('.date-ctn').find('.ctn-unviewed');
 
   var html = '';
   var previous;
@@ -105,6 +106,10 @@ exports.prototype.insertTop = function (events) {
       _html = require('../templates/event/block-unviewed.html')({
         time: event.data.time
       }) + _html;
+      this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({
+        time: event.data.time,
+        date: date.longDateTime(event.data.time)
+      }));
     }
 
     // new date block
@@ -157,7 +162,7 @@ exports.prototype.replaceLastDisconnectBlock = function ($lastDisconnectBlock, $
 
     // new message block
     if ((previous && this.block(event, previous)) || (!previous && event.data.user_id !== $previousEventDiv.data('userId'))) {
-        _html = this.renderBlockUser(event) + _html;
+      _html = this.renderBlockUser(event) + _html;
     }
 
     // new date block
