@@ -35,12 +35,12 @@ module.exports = Backbone.View.extend({
   },
   onSubmit: function () {
     this.resetMessage();
+    var username = this.$input.val();
 
     // @todo : listen for enter key to submit
     // @todo : validation
-
-    var username = this.$input.val();
     console.log(username);
+
     client.userUpdate({username: username}, _.bind(function (response) {
       if (response.err) {
         return this.$error.text(response.err).show();
