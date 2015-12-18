@@ -24,10 +24,10 @@
                         <a href="/logout"><%= t('logged.logout') %></a>
                     </li>
                     <li class="lang">
-                        <a class="switch" href="" data-language="fr" >Fr</a>
+                        <a class="switch <% if (locale === 'fr') { print('active'); } %>" href="" data-language="fr" >Fr</a>
                     </li>
                     <li class="lang">
-                        <a class="switch" href="" data-language="en" >En</a>
+                        <a class="switch <% if (locale === 'en') { print('active'); } %>" href="" data-language="en" >En</a>
                     </li>
                     <li class="spacer"></li>
                     <% } else { %>
@@ -38,10 +38,10 @@
                         <a href="/login"><%= t('landing.login-self') %></a>
                     </li>
                     <li class="lang">
-                        <a class="switch" href="" data-language="fr" >Fr</a>
+                        <a class="switch <% if (locale === 'fr') { print('active'); } %>" href="" data-language="fr" >Fr</a>
                     </li>
                     <li class="lang">
-                        <a class="switch" href="" data-language="en" >En</a>
+                        <a class="switch <% if (locale === 'en') { print('active'); } %>" href="" data-language="en" >En</a>
                     </li>
                     <li class="spacer"></li>
                     <% } %>
