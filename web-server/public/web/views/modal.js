@@ -14,18 +14,17 @@ var ModalView = Backbone.View.extend({
   setView: function (view) {
     this.contentView = view;
     this.$content.html(view.$el);
-
     this.listenTo(view, 'close', this.hide);
     return this;
   },
   open: function (options) {
-    var options = options || {'show': true, backdrop: true};
-    $(this.$el).modal(options);
+    options = options || {show: true, backdrop: true};
+    this.$el.modal(options);
     return this;
   },
   hide: function () {
     this.$el.removeClass('in');
-    $(this.$el).modal('hide');
+    this.$el.modal('hide');
     if (this.contentView) {
       if (_.isFunction(this.contentView._remove)) {
         this.contentView._remove();

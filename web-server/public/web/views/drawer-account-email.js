@@ -1,6 +1,6 @@
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
-var client = require('../libs/client');
+var app = require('../libs/app');
 
 var DrawerAccountEmailView = Backbone.View.extend({
   template: require('../templates/drawer-account-email.html'),
@@ -75,7 +75,7 @@ var DrawerAccountEmailView = Backbone.View.extend({
     this.$spinner.show();
     this.$form.removeClass('has-error');
 
-    client.accountEmail(this.$input.val(), 'main', function (data) {
+    app.client.accountEmail(this.$input.val(), 'main', function (data) {
       that.$spinner.hide();
       if (data.err) {
         return that.putError(data.err);

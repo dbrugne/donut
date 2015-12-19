@@ -3,7 +3,6 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../libs/client');
 var i18next = require('i18next-client');
 var date = require('../libs/date');
 
@@ -31,15 +30,15 @@ var DrawerUserNotificationsView = Backbone.View.extend({
   initialize: function (options) {
     this.userId = options.user_id;
 
-    this.listenTo(client, 'notification:new', this.onNewNotification);
-    this.listenTo(client, 'notification:done', this.onDoneNotification);
+    this.listenTo(app.client, 'notification:new', this.onNewNotification);
+    this.listenTo(app.client, 'notification:done', this.onDoneNotification);
 
     this.$badge = $('#notifications').find('.unread-count').first();
     this.$badgeResponsive = $('.hover-menu-notifications');
 
     this.render(); // show spinner as temp content
 
-    client.notificationRead(null, null, 10, _.bind(function (data) {
+    app.client.notificationRead(null, null, 10, _.bind(function (data) {
       this.isThereMoreNotifications = data.more;
       this.$el.html(this.template({}));
 
@@ -183,7 +182,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
       return;
     }
 
-    client.notificationViewed(ids, false, _.bind(function (data) {
+    app.client.notificationViewed(ids, false, _.bind(function (data) {
       // For each notification in the list, tag them as read
       _.each(unreadNotifications, function (notification) {
         notification.classList.remove('unread');
@@ -202,7 +201,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
     this.$readMore.addClass('hidden');
     this.$loader.removeClass('hidden');
 
-    client.notificationRead(null, this.lastNotifDisplayedTime(), 10, _.bind(function (data) {
+    app.client.notificationRead(null, this.lastNotifDisplayedTime(), 10, _.bind(function (data) {
       this.isThereMoreNotifications = data.more;
       var previousContent = this.$menu.html();
       var html = '';
@@ -247,7 +246,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
   },
   onTagAsRead: function (event) {
     // Ask server to set notifications as viewed, and wait for response to set them likewise
-    client.notificationViewed([], true, _.bind(function (data) {
+    app.client.notificationViewed([], true, _.bind(function (data) {
       // For each notification in the list, tag them as read
       _.each(this.$menu.find('.message.unread'), function (notification) {
         notification.classList.remove('unread');
@@ -261,7 +260,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
   onTagAsDone: function (event) {
     event.preventDefault();
     var message = $(event.currentTarget).parents('.message');
-    client.notificationDone(message.data('notification-id'), true);
+    app.client.notificationDone(message.data('notification-id'), true);
     return false;
   },
   // A Notification is tagged as done on the server

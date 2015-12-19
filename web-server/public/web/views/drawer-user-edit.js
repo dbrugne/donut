@@ -1,8 +1,8 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
-var client = require('../libs/client');
-var currentUser = require('../models/current-user');
+var app = require('../libs/app');
+var currentUser = require('../libs/app').user;
 var ImageUploader = require('./image-uploader');
 var ColorPicker = require('./color-picker');
 
@@ -22,7 +22,7 @@ var DrawerUserEditView = Backbone.View.extend({
 
     // ask for data
     var that = this;
-    client.userRead(currentUser.get('user_id'), {more: true, admin: true}, function (data) {
+    app.client.userRead(currentUser.get('user_id'), {more: true, admin: true}, function (data) {
       if (!data.err) {
         that.onResponse(data);
       }
@@ -114,7 +114,7 @@ var DrawerUserEditView = Backbone.View.extend({
     }
 
     var that = this;
-    client.userUpdate(updateData, function (data) {
+    app.client.userUpdate(updateData, function (data) {
       that.$('.errors').hide();
       if (data.err) {
         return that.editError(data.err);
@@ -127,7 +127,7 @@ var DrawerUserEditView = Backbone.View.extend({
       avatar: data
     };
     var that = this;
-    client.userUpdate(updateData, function (d) {
+    app.client.userUpdate(updateData, function (d) {
       that.$('.errors').hide();
       if (d.err) {
         that.editError(d.err);
@@ -139,7 +139,7 @@ var DrawerUserEditView = Backbone.View.extend({
       poster: data
     };
     var that = this;
-    client.userUpdate(updateData, function (d) {
+    app.client.userUpdate(updateData, function (d) {
       that.$('.errors').hide();
       if (d.err) {
         that.editError(d.err);

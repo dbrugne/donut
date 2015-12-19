@@ -3,7 +3,6 @@ var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
-var client = require('../libs/client');
 var ConfirmationView = require('./modal-confirmation');
 
 var RoomAccessView = Backbone.View.extend({
@@ -41,7 +40,7 @@ var RoomAccessView = Backbone.View.extend({
       users: false,
       admin: true
     };
-    client.roomRead(this.roomId, what, _.bind(function (data) {
+    app.client.roomRead(this.roomId, what, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }
@@ -107,7 +106,7 @@ var RoomAccessView = Backbone.View.extend({
     event.preventDefault();
     var that = this;
     ConfirmationView.open({message: 'mode-change'}, function () {
-      client.roomSetPrivate(that.roomId, function (response) {
+      app.client.roomSetPrivate(that.roomId, function (response) {
         if (!response.err) {
           that.reload();
         }
@@ -119,7 +118,7 @@ var RoomAccessView = Backbone.View.extend({
       ? { allow_group_member: true }
       : { allow_group_member: false, add_users_to_allow: true };
 
-    client.roomUpdate(this.roomId, update, _.bind(function (response) {
+    app.client.roomUpdate(this.roomId, update, _.bind(function (response) {
       this.reset();
       if (response.err) {
         this.setError(response.err);
@@ -129,15 +128,15 @@ var RoomAccessView = Backbone.View.extend({
     }, this));
   },
   onChangeUsersRequest: function (event) {
-    client.roomUpdate(this.roomId, {
+    app.client.roomUpdate(this.roomId, {
       allow_user_request: this.$checkboxUserRequest.is(':checked')
     }, _.bind(function (response) {
-        this.reset();
-        if (response.err) {
-          this.setError(response.err);
-        } else {
-          return this.setSuccess(i18next.t('chat.form.success.set-access'));
-        }
+      this.reset();
+      if (response.err) {
+        this.setError(response.err);
+      } else {
+        return this.setSuccess(i18next.t('chat.form.success.set-access'));
+      }
     }, this));
   },
   reset: function () {
@@ -165,7 +164,7 @@ var RoomAccessView = Backbone.View.extend({
       return this.setError(i18next.t('chat.form.errors.invalid-password'));
     }
 
-    client.roomUpdate(this.roomId, {password: this.getPassword()}, _.bind(function (data) {
+    app.client.roomUpdate(this.roomId, {password: this.getPassword()}, _.bind(function (data) {
       this.reset();
       if (data.err) {
         return this.setError(i18next.t('chat.form.errors.' + data.err, {defaultValue: i18next.t('global.unknownerror')}));
@@ -175,14 +174,13 @@ var RoomAccessView = Backbone.View.extend({
     }, this));
   },
   onSubmitConditions: function (event) {
-    client.roomUpdate(this.roomId, {disclaimer: this.$conditions.val()}, _.bind(function (data) {
+    app.client.roomUpdate(this.roomId, {disclaimer: this.$conditions.val()}, _.bind(function (data) {
       this.reset();
       if (data.err) {
         return this.setError(i18next.t('chat.form.errors.' + data.err, {defaultValue: i18next.t('global.unknownerror')}));
       } else {
         return this.setSuccess(i18next.t('chat.form.success.set-access'));
       }
-      this.trigger('close');
     }, this));
   },
   onTypeConditions: function (event) {

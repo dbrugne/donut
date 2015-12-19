@@ -2,7 +2,6 @@ var $ = require('jquery');
 var Backbone = require('backbone');
 var app = require('../libs/app');
 var i18next = require('i18next-client');
-var client = require('../libs/client');
 
 module.exports = Backbone.View.extend({
 
@@ -27,7 +26,7 @@ module.exports = Backbone.View.extend({
     var roomId = this.model.get('id');
     var messageId = parent.attr('id');
 
-    client.roomMessageSpam(roomId, messageId);
+    app.client.roomMessageSpam(roomId, messageId);
   },
   onUnmarkAsSpam: function (event) {
     event.preventDefault();
@@ -39,7 +38,7 @@ module.exports = Backbone.View.extend({
     var ctn = parent.find('.text') || parent.find('.image');
     ctn.find('.remask-spammed-message').remove();
 
-    client.roomMessageUnspam(roomId, messageId);
+    app.client.roomMessageUnspam(roomId, messageId);
   },
   onMarkedAsSpam: function (room) {
     this.$('#' + room.event)

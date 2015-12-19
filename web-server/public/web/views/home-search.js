@@ -1,7 +1,5 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var client = require('../libs/client');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
 var keyboard = require('../libs/keyboard');
@@ -66,7 +64,7 @@ var SearchView = Backbone.View.extend({
       return;
     }
 
-    if (key.key === keyboard.LEFT ||key.key === keyboard.RIGHT || key.key === keyboard.TAB) {
+    if (key.key === keyboard.LEFT || key.key === keyboard.RIGHT || key.key === keyboard.TAB) {
       return;
     }
 
@@ -113,7 +111,7 @@ var SearchView = Backbone.View.extend({
         rooms: 4
       }
     };
-    client.search(s, options, _.bind(function (data) {
+    app.client.search(s, options, _.bind(function (data) {
       var total = (data.groups && data.groups.list
           ? data.groups.list.length
           : 0) +

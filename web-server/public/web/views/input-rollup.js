@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../libs/client');
+var app = require('../libs/app');
 var keyboard = require('../libs/keyboard');
 
 var InputRollupView = Backbone.View.extend({
@@ -204,7 +204,7 @@ var InputRollupView = Backbone.View.extend({
           rooms: 15
         };
         options.starts = true;
-        client.search(search, options, function (data) {
+        app.client.search(search, options, function (data) {
           _.each(_.union(data.groups.list, data.rooms.list), function (d) {
             d.avatarUrl = common.cloudinary.prepare(d.avatar);
           });
@@ -223,7 +223,7 @@ var InputRollupView = Backbone.View.extend({
           rooms: 15
         };
         options.starts = true;
-        client.search(roomSearch, options, function (data) {
+        app.client.search(roomSearch, options, function (data) {
           _.each(data.rooms.list, function (d) {
             d.avatarUrl = common.cloudinary.prepare(d.avatar);
           });
@@ -242,7 +242,7 @@ var InputRollupView = Backbone.View.extend({
         users: 15
       };
       options.starts = true;
-      client.search(search, options, function (data) {
+      app.client.search(search, options, function (data) {
         _.each(data.users.list, function (d) {
           d.avatarUrl = common.cloudinary.prepare(d.avatar);
         });

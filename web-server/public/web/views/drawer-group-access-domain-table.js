@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var client = require('../libs/client');
+var app = require('../libs/app');
 var confirmationView = require('./modal-confirmation');
 var i18next = require('i18next-client');
 
@@ -34,7 +34,7 @@ var DrawerGroupAccessDomainTableView = Backbone.View.extend({
 
   onAddDomain: function () {
     confirmationView.open({message: 'add-domain', input: true}, _.bind(function (domain) {
-      client.groupDomains(this.data.group_id, domain, 'add', _.bind(function (response) {
+      app.client.groupDomains(this.data.group_id, domain, 'add', _.bind(function (response) {
         if (!response.err) {
           this.data.allowed_domains.push(domain);
           this.render(this.data);
@@ -52,7 +52,7 @@ var DrawerGroupAccessDomainTableView = Backbone.View.extend({
     }
 
     confirmationView.open({message: 'delete-domain', domain: domain}, _.bind(function () {
-      client.groupDomains(this.data.group_id, domain, 'delete', _.bind(function (response) {
+      app.client.groupDomains(this.data.group_id, domain, 'delete', _.bind(function (response) {
         if (!response.err) {
           this.data.allowed_domains = _.without(this.data.allowed_domains, domain);
           this.render(this.data);

@@ -1,8 +1,5 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var client = require('../libs/client');
-var i18next = require('i18next-client');
 var app = require('../libs/app');
 
 module.exports = Backbone.View.extend({
@@ -15,7 +12,7 @@ module.exports = Backbone.View.extend({
   initialize: function () {
     // is user lost connection during username choosing, hide this modal
     // will be display again on next 'welcome'
-    this.listenTo(client, 'disconnect', _.bind(function () {
+    this.listenTo(app.client, 'disconnect', _.bind(function () {
       this.trigger('close');
     }, this), this);
 
@@ -41,12 +38,12 @@ module.exports = Backbone.View.extend({
     // @todo : validation
     console.log(username);
 
-    client.userUpdate({username: username}, _.bind(function (response) {
+    app.client.userUpdate({username: username}, _.bind(function (response) {
       if (response.err) {
         return this.$error.text(response.err).show();
       }
 
-      client.connect();
+      app.client.onnect();
     }, this));
   },
   resetMessage: function () {

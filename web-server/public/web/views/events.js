@@ -4,14 +4,13 @@ var async = require('async');
 var Backbone = require('backbone');
 var app = require('../libs/app');
 var date = require('../libs/date');
-var client = require('../libs/client');
 var EventsDateView = require('./events-date');
 var EventsHistoryView = require('./events-history');
 var EventsSpamView = require('./events-spam');
 var EventsEditView = require('./events-edit');
 var windowView = require('./window');
 var EventsEngine = require('../libs/events');
-var currentUser = require('../models/current-user');
+var currentUser = require('../libs/app').user;
 
 module.exports = Backbone.View.extend({
   template: require('../templates/events.html'),
@@ -31,7 +30,7 @@ module.exports = Backbone.View.extend({
                            // true, for first focus)
 
   initialize: function () {
-    this.listenTo(client, 'preferences:update', _.bind(function () {
+    this.listenTo(app.client, 'preferences:update', _.bind(function () {
       if (currentUser.discussionMode() !== this.chatmode) {
         this.$realtime.toggleClass('compact');
         this.chatmode = currentUser.discussionMode();

@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
-var client = require('../libs/client');
-var currentUser = require('../models/current-user');
+var app = require('../libs/app');
+var currentUser = require('../libs/app').user;
 
 var InputTypingView = Backbone.View.extend({
   template: require('../templates/input-typing.html'),
@@ -20,7 +20,7 @@ var InputTypingView = Backbone.View.extend({
   },
 
   render: function () {
-    if (_.keys(this.usersTyping).length == 0) {
+    if (!_.keys(this.usersTyping).length) {
       return this.$el.html('');
     }
 
@@ -56,9 +56,9 @@ var InputTypingView = Backbone.View.extend({
     }
 
     if (this.model.get('type') === 'room') {
-      client.roomTyping(this.model.get('id'));
+      app.client.roomTyping(this.model.get('id'));
     } else {
-      client.userTyping(this.model.get('user_id'));
+      app.client.userTyping(this.model.get('user_id'));
     }
 
     this.canSendTypingEvent = false;

@@ -2,8 +2,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../libs/client');
-var currentUser = require('../models/current-user');
+var currentUser = require('../libs/app').user;
 var date = require('../libs/date');
 var urls = require('../../../../shared/util/url');
 
@@ -29,7 +28,7 @@ var DrawerUserProfileView = Backbone.View.extend({
     }
 
     var that = this;
-    client.userRead(this.userId, {more: true, admin: true, rooms: true}, function (data) {
+    app.client.userRead(this.userId, {more: true, admin: true, rooms: true}, function (data) {
       if (data.err === 'user-not-found') {
         return;
       }
@@ -124,7 +123,7 @@ var DrawerUserProfileView = Backbone.View.extend({
   },
   onUserBanChange: function () {
     this.render();
-    client.userRead(this.userId, {more: true, admin: true, admin: true}, _.bind(function (data) {
+    app.client.userRead(this.userId, {more: true, admin: true}, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }
@@ -141,8 +140,6 @@ var DrawerUserProfileView = Backbone.View.extend({
       }
     });
   }
-
 });
-
 
 module.exports = DrawerUserProfileView;

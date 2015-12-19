@@ -3,8 +3,6 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
-var rooms = require('../collections/rooms');
-var groups = require('../collections/groups');
 var i18next = require('i18next-client');
 
 module.exports = Backbone.View.extend({
@@ -30,7 +28,7 @@ module.exports = Backbone.View.extend({
     this.$empty = this.$('.empty');
   },
   render: function () {
-    if (!rooms.models.length) {
+    if (!app.rooms.models.length) {
       this.$list.empty();
       return this.$empty.show();
     } else {
@@ -40,7 +38,7 @@ module.exports = Backbone.View.extend({
     var groupIds = [];
     var dataGroups = [];
     var dataRooms = [];
-    _.each(rooms.models, function (o) {
+    _.each(app.rooms.models, function (o) {
       var json = o.toJSON();
       json.avatar = common.cloudinary.prepare(json.avatar, 40);
       groupIds.push(json.group_id);
@@ -48,7 +46,7 @@ module.exports = Backbone.View.extend({
     });
     groupIds = _.uniq(groupIds, false); // return array id unique. delete doubloon
 
-    _.each(groups.models, function (g) {
+    _.each(app.groups.models, function (g) {
       var json = g.toJSON();
       json.avatar = common.cloudinary.prepare(json.avatar, 40);
       if (_.indexOf(groupIds, json.id) === -1) {
@@ -84,7 +82,7 @@ module.exports = Backbone.View.extend({
         group.addClass('collapsed');
       }
     });
-    _.find(rooms.models, function (room) {
+    _.find(app.rooms.models, function (room) {
       if (room.get('focused') === true) {
         var elt = that.$list.find('[data-room-id="' + room.get('id') + '"]');
         elt.addClass('active');

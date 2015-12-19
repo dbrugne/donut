@@ -1,11 +1,8 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
+var app = require('../libs/app');
 var keyboard = require('../libs/keyboard');
 var i18next = require('i18next-client');
-var app = require('../libs/app');
-var client = require('../libs/client');
-var currentUser = require('../models/current-user');
-var groups = require('../collections/groups');
 
 var DrawerRoomDeleteView = Backbone.View.extend({
   template: require('../templates/drawer-room-delete.html'),
@@ -24,7 +21,7 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     // show spinner as temp content
     this.render();
 
-    client.roomRead(this.roomId, null, _.bind(function (data) {
+    app.client.roomRead(this.roomId, null, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }
@@ -46,7 +43,7 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     return this;
   },
   onResponse: function (room) {
-    if (room.group_owner !== currentUser.get('user_id') && room.owner_id !== currentUser.get('user_id') && !currentUser.isAdmin()) {
+    if (room.group_owner !== app.user.get('user_id') && room.owner_id !== app.user.get('user_id') && !app.user.isAdmin()) {
       return;
     }
 
@@ -65,7 +62,7 @@ var DrawerRoomDeleteView = Backbone.View.extend({
       return this.setError(i18next.t('chat.form.errors.name-wrong-format'));
     }
 
-    client.roomDelete(this.roomId, _.bind(function (response) {
+    app.client.roomDelete(this.roomId, _.bind(function (response) {
       if (response.err) {
         return this.setError(i18next.t('chat.form.errors.' + response.err, {defaultValue: i18next.t('global.unknownerror')}));
       }
@@ -73,7 +70,7 @@ var DrawerRoomDeleteView = Backbone.View.extend({
       app.trigger('alert', 'info', i18next.t('chat.form.room-form.edit.room.delete.success'));
       this.trigger('close');
       if (this.groupId) {
-        var model = groups.findWhere({id: this.groupId});
+        var model = app.groups.findWhere({id: this.groupId});
         if (model) {
           model.onDeleteRoom(this.roomId);
         }

@@ -1,7 +1,5 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var client = require('../libs/client');
 var i18next = require('i18next-client');
 var app = require('../libs/app');
 
@@ -36,7 +34,7 @@ var ModalJoinGroupView = Backbone.View.extend({
     }
     var message = this.$('.input-request').val();
 
-    client.groupRequest(this.data.group_id, message, _.bind(function (response) {
+    app.client.groupRequest(this.data.group_id, message, _.bind(function (response) {
       if (response.err) {
         if (response.err === 'already-member' || response.err === 'already-allowed') {
           app.trigger('askMembership');
@@ -61,7 +59,7 @@ var ModalJoinGroupView = Backbone.View.extend({
     if (!password || !this.data.password) {
       return this.$error.text(i18next.t('chat.joingroup.options.password.error')).show();
     }
-    client.groupJoin(this.data.group_id, password, _.bind(function (response) {
+    app.client.groupJoin(this.data.group_id, password, _.bind(function (response) {
       if (response.err) {
         if (response.err === 'wrong-password' || response.err === 'params-password') {
           this.$error.text(i18next.t('chat.joingroup.options.password.error')).show();
@@ -87,7 +85,7 @@ var ModalJoinGroupView = Backbone.View.extend({
       return this.$error.text(i18next.t('global.unknownerror')).show();
     }
 
-    client.accountEmail(mail, 'add', _.bind(function (response) {
+    app.client.accountEmail(mail, 'add', _.bind(function (response) {
       if (response.success) {
         this.$success.html(i18next.t('chat.joingroup.options.email.success', { email: mail })).show();
       } else {

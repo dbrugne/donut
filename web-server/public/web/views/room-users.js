@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var client = require('../libs/client');
+var app = require('../libs/app');
 var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
@@ -122,7 +122,7 @@ var RoomUsersView = Backbone.View.extend({
 
       this.$popinUsers.show();
 
-      client.userRead(user.user_id, {more: true}, _.bind(function (user) {
+      app.client.userRead(user.user_id, {more: true}, _.bind(function (user) {
         if (user.err) {
           return;
         }

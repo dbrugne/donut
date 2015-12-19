@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var common = require('@dbrugne/donut-common/browser');
 var date = require('./date');
-var currentUser = require('../models/current-user');
+var app = require('../libs/app');
 
 var templates = {
   'hello': require('../templates/event/block-hello.html'),
@@ -157,7 +157,7 @@ exports.prototype.replaceLastDisconnectBlock = function ($lastDisconnectBlock, $
 
     // new message block
     if ((previous && this.block(event, previous)) || (!previous && event.data.user_id !== $previousEventDiv.data('userId'))) {
-        _html = this.renderBlockUser(event) + _html;
+      _html = this.renderBlockUser(event) + _html;
     }
 
     // new date block
@@ -192,10 +192,7 @@ exports.prototype.block = function (event, previous) {
   if (!date.isSameDay(event.data.time, previous.data.time)) {
     return true;
   }
-  if (event.data.user_id !== previous.data.user_id) {
-    return true;
-  }
-  return false;
+  return event.data.user_id !== previous.data.user_id;
 };
 
 /**
@@ -246,7 +243,7 @@ exports.prototype._data = function (type, data) {
 
   // user:promote
   if (data.to_user_id) {
-    data.target = (currentUser.get('user_id') === data.to_user_id)
+    data.target = (app.user.get('user_id') === data.to_user_id)
       ? 'me'
       : 'other';
   }
@@ -302,7 +299,7 @@ exports.prototype.renderBlockUser = function (event) {
     console.error('render exception: ' + event.type, e);
   }
   return html;
-}
+};
 
 exports.prototype._renderEvent = function (event) {
   try {

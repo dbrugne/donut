@@ -1,8 +1,8 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
-var client = require('../libs/client');
-var currentUser = require('../models/current-user');
+var app = require('../libs/app');
+var currentUser = require('../libs/app').user;
 var ImageUploader = require('./image-uploader');
 var ColorPicker = require('./color-picker');
 
@@ -26,7 +26,7 @@ var DrawerRoomEditView = Backbone.View.extend({
       more: true,
       admin: true
     };
-    client.roomRead(this.roomId, what, _.bind(function (data) {
+    app.client.roomRead(this.roomId, what, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }
@@ -122,7 +122,7 @@ var DrawerRoomEditView = Backbone.View.extend({
       updateData.poster = this.posterUploader.data;
     }
 
-    client.roomUpdate(this.roomId, updateData, _.bind(function (data) {
+    app.client.roomUpdate(this.roomId, updateData, _.bind(function (data) {
       this.$('.errors').hide();
       if (data.err) {
         return this.editError(data.err);
@@ -136,7 +136,7 @@ var DrawerRoomEditView = Backbone.View.extend({
       avatar: data
     };
     var that = this;
-    client.roomUpdate(this.roomId, updateData, function (d) {
+    app.client.roomUpdate(this.roomId, updateData, function (d) {
       that.$('.errors').hide();
       if (d.err) {
         that.editError(d.err);
@@ -149,7 +149,7 @@ var DrawerRoomEditView = Backbone.View.extend({
       poster: data
     };
     var that = this;
-    client.roomUpdate(this.roomId, updateData, function (d) {
+    app.client.roomUpdate(this.roomId, updateData, function (d) {
       that.$('.errors').hide();
       if (d.err) {
         that.editError(d.err);

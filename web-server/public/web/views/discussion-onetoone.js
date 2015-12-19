@@ -152,4 +152,5 @@ var OneToOnePanelView = Backbone.View.extend({
     }
   }
 });
+
 module.exports = OneToOnePanelView;

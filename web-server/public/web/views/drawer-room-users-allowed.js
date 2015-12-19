@@ -4,7 +4,6 @@ var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
-var client = require('../libs/client');
 var ConfirmationView = require('./modal-confirmation');
 var TableView = require('./drawer-room-access-table');
 var DropdownUsersView = require('./dropdown-users');
@@ -32,7 +31,7 @@ var RoomAccessView = Backbone.View.extend({
       users: false,
       admin: true
     };
-    client.roomRead(this.roomId, what, _.bind(function (data) {
+    app.client.roomRead(this.roomId, what, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }
@@ -85,7 +84,7 @@ var RoomAccessView = Backbone.View.extend({
       users: true,
       limit: {users: 15}
     };
-    client.search(val, options, _.bind(function (data) {
+    app.client.search(val, options, _.bind(function (data) {
       _.each(data.users.list, function (element, index, list) {
         list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 20);
       });
@@ -103,7 +102,7 @@ var RoomAccessView = Backbone.View.extend({
         username: userName,
         room_name: this.room_name
       }, _.bind(function () {
-        client.roomAllow(this.roomId, userId, _.bind(function () {
+        app.client.roomAllow(this.roomId, userId, _.bind(function () {
           this.renderTables();
         }, this));
       }, this));

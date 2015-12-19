@@ -1,6 +1,6 @@
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
-var client = require('../libs/client');
+var app = require('../libs/app');
 
 var DrawerAccountPasswordView = Backbone.View.extend({
   template: require('../templates/drawer-account-password.html'),
@@ -87,7 +87,7 @@ var DrawerAccountPasswordView = Backbone.View.extend({
     this.$spinner.show();
     this.$form.removeClass('has-error');
 
-    client.accountPassword(this.$inputNewPassword.val(), this.$inputCurrentPassword.val(), function (data) {
+    app.client.accountPassword(this.$inputNewPassword.val(), this.$inputCurrentPassword.val(), function (data) {
       that.$spinner.hide();
       if (data.err) {
         return that.putError(data.err);

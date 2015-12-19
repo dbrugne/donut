@@ -1,8 +1,7 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
 var app = require('../libs/app');
-var client = require('../libs/client');
-var currentUser = require('../models/current-user');
+var currentUser = require('../libs/app').user;
 
 var MuteView = Backbone.View.extend({
   el: $('#mute'),
@@ -11,8 +10,8 @@ var MuteView = Backbone.View.extend({
   },
 
   initialize: function (options) {
-    this.listenTo(client, 'preferences:update', this.render);
-    this.listenTo(app, 'muteview', this.render);
+    this.listenTo(app.client, 'preferences:update', this.render);
+    this.listenTo(app, 'currentUserReady', this.render);
     this.$icon = this.$('.icon');
   },
 
@@ -28,7 +27,7 @@ var MuteView = Backbone.View.extend({
   },
 
   toggle: function () {
-    client.userPreferencesUpdate({
+    app.client.userPreferencesUpdate({
       'browser:sounds': !currentUser.shouldPlaySound()
     });
   }
