@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
-var client = require('../libs/client');
+var app = require('../libs/app');
 var confirmationView = require('./modal-confirmation');
 
 var DrawerAccountManageEmailsView = Backbone.View.extend({
@@ -49,7 +49,7 @@ var DrawerAccountManageEmailsView = Backbone.View.extend({
       message: 'change-email',
       email: email
     }, _.bind(function () {
-      client.accountEmail(email, 'main', _.bind(function (d) {
+      app.client.accountEmail(email, 'main', _.bind(function (d) {
         if (d.err) {
           return this.putError(d.err);
         }
@@ -69,7 +69,7 @@ var DrawerAccountManageEmailsView = Backbone.View.extend({
       message: 'add-email',
       input: true
     }, _.bind(function (email) {
-      client.accountEmail(email, 'add', _.bind(function (response) {
+      app.client.accountEmail(email, 'add', _.bind(function (response) {
         if (response.err) {
           return this.putError(response.err);
         }
@@ -91,7 +91,7 @@ var DrawerAccountManageEmailsView = Backbone.View.extend({
       message: 'delete-email',
       email: email
     }, _.bind(function () {
-      client.accountEmail(email, 'delete', _.bind(function (response) {
+      app.client.accountEmail(email, 'delete', _.bind(function (response) {
         if (response.err) {
           return this.putError(response.err);
         }
@@ -115,7 +115,7 @@ var DrawerAccountManageEmailsView = Backbone.View.extend({
       message: 'send-email',
       email: email
     }, _.bind(function () {
-      client.accountEmail(email, 'validate', _.bind(function (response) {
+      app.client.accountEmail(email, 'validate', _.bind(function (response) {
         if (response.err) {
           return this.putError(response.err);
         }

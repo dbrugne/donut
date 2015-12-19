@@ -1,7 +1,6 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../libs/client');
 var i18next = require('i18next-client');
 var app = require('../libs/app');
 var urls = require('../../../../shared/util/url');
@@ -105,7 +104,7 @@ var GroupView = Backbone.View.extend({
     }
   },
   askMembership: function () {
-    client.groupJoin(this.model.get('group_id'), null, _.bind(function (response) {
+    app.client.groupJoin(this.model.get('group_id'), null, _.bind(function (response) {
       if (response.err) {
         return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
       }

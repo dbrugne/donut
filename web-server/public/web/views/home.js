@@ -1,7 +1,6 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var client = require('../libs/client');
 var app = require('../libs/app');
 var CardsView = require('./cards');
 var UsersView = require('./home-users');
@@ -27,7 +26,7 @@ var HomeView = Backbone.View.extend({
     return this;
   },
   request: function () {
-    client.home(_.bind(this.onHome, this));
+    app.client.home(_.bind(this.onHome, this));
   },
   focus: function () {
     if (this.empty) {

@@ -1,14 +1,11 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var keyboard = require('../libs/keyboard');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
-var client = require('../libs/client');
 var ConfirmationView = require('./modal-confirmation');
 var TableView = require('./drawer-group-access-table');
 var i18next = require('i18next-client');
-var currentUser = require('../models/current-user');
 var DropdownUsersView = require('./dropdown-users');
 
 var GroupAccessView = Backbone.View.extend({
@@ -33,7 +30,7 @@ var GroupAccessView = Backbone.View.extend({
       users: true,
       admin: true
     };
-    client.groupRead(this.model.get('id'), what, _.bind(function (data) {
+    app.client.groupRead(this.model.get('id'), what, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }
@@ -89,7 +86,7 @@ var GroupAccessView = Backbone.View.extend({
       users: true,
       limit: {users: 15}
     };
-    client.search(val, options, _.bind(function (data) {
+    app.client.search(val, options, _.bind(function (data) {
       _.each(data.users.list, function (element, index, list) {
         list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 20);
       });
@@ -97,24 +94,6 @@ var GroupAccessView = Backbone.View.extend({
       this.dropdownUsersView.onResults(data.users.list);
     }, this));
   },
-  //onSearchUserBanned: function (event) {
-  //  event.preventDefault();
-  //  var key = keyboard._getLastKeyCode(event);
-  //  if (key.key === keyboard.ESC && this.$dropdownBan.hasClass('open')) {
-  //    event.preventDefault();
-  //    event.stopPropagation();
-  //    this.resetDropdownBan();
-  //  }
-  //
-  //  var val = this.$searchBan.val();
-  //
-  //  if (val === '') {
-  //    this.$dropdownBan.removeClass('open');
-  //    return;
-  //  }
-  //
-  //  this.renderDropDown(val, this.$dropdownBan);
-  //},
   onAllowUser: function (event) {
     var userId = $(event.currentTarget).data('userId');
     var userName = $(event.currentTarget).data('username');
@@ -125,7 +104,7 @@ var GroupAccessView = Backbone.View.extend({
         username: userName,
         room_name: this.model.get('name')
       }, _.bind(function () {
-        client.groupAllowedAdd(this.model.get('group_id'), userId, _.bind(function (response) {
+        app.client.groupAllowedAdd(this.model.get('group_id'), userId, _.bind(function (response) {
           if (response.err) {
             if (response.err === 'already-allowed' || response.err === 'already-member') {
               return this.setError(i18next.t('group.' + response.err, {username: userName}));
@@ -143,33 +122,6 @@ var GroupAccessView = Backbone.View.extend({
 
     this.dropdownUsersView.close();
   },
-  //onBanUser: function (event) {
-  //  event.preventDefault();
-  //
-  //  var userId = $(event.currentTarget).data('userId');
-  //  var userName = $(event.currentTarget).data('username');
-  //
-  //  if (userId && userName) {
-  //    ConfirmationView.open({
-  //      input: true,
-  //      message: 'ban-group-user',
-  //      username: userName
-  //    }, _.bind(function (reason) {
-  //      client.groupBan(this.model.get('group_id'), userId, reason, _.bind(function (response) {
-  //        if (response.err) {
-  //          return this.setError(i18next.t('chat.form.errors.' + response.err, {defaultValue: i18next.t('global.unknownerror')}));
-  //        }
-  //
-  //        this.tablePending.render('pending');
-  //        this.tableAllowed.render('allowed');
-  //      }, this));
-  //    }, this));
-  //  }
-  //
-  //  // Close dropdown
-  //  this.$dropdownBan.removeClass('open');
-  //  this.$searchBan.val('');
-  //},
   reset: function () {
     this.$errors.html('').hide();
     this.$el.removeClass('has-error').removeClass('has-success').val('');

@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var _ = require('underscore');
 var NotificationModel = require('../../../../shared/models/notification');
 var RoomModel = require('../../../../shared/models/room');

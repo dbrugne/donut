@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var async = require('async');
 var inputUtil = require('../../../util/input');
 var conf = require('../../../../../config');
@@ -82,17 +82,6 @@ handler.call = function (data, session, next) {
         $set: { edited: true, edited_at: new Date(), 'data.message': message }
       }, function (err) {
         return callback(err, message);
-      });
-    },
-
-    function persistOnBoth (message, callback) {
-      user.updateActivity(withUser._id, function (err) {
-        if (err) {
-          return callback(err, message);
-        }
-        withUser.updateActivity(user._id, function (err) {
-          return callback(err, message);
-        });
       });
     },
 

@@ -9,7 +9,7 @@
     "login-self": "Log in",
     "first": {
       "p1": "THE",
-      "almost": "ALSMOST",
+      "almost": "Alsmost",
       "p2": " OFFICIAL DISCUSSION SPACE OF YOUR UNIVERSITY",
       "disclaimer": "DONUT allows you to hang out and chat whatever the size of your community. Instant messaging smartly scaled for your campus, your organizations, your Meetups?"
     },
@@ -206,6 +206,7 @@
     "english": "English",
     "unknownerror": "Unknown error, please retry later",
     "notconfirmed": "Your account has not beed confirmed, click here to manage your emails",
+    "cannot-leave-group": "You must close every donut in this comunity before you can close it",
     "mode": {
       "title": {
         "private": "private",
@@ -381,7 +382,11 @@
     },
     "help": "Help",
     "room-discussion": {
-      "input-placeholder": "click here to type a message"
+      "input-placeholder": "click here to type a message",
+      "new-messages": "new messages",
+      "count-since": "new messages since __date__",
+      "jumpto": "Jump to",
+      "mark-as-read": "Mark as read"
     },
     "createadonut": "Create a donut",
     "home": {
@@ -700,7 +705,7 @@
         "<p>This is private conversation and its history are only accessible to allowed users.</p>",
         "<p>Say 'hi' to engage in the discussion.</p>"
       ],
-      "onetoone": "he will get your messages on his next connection"
+      "onetoone": "he/she will get your messages on their next connection"
     },
     "connection": {
       "connected": "Connected, loading interface...",
@@ -929,6 +934,8 @@
         }
       },
       "errors": {
+        "not-available": "Username not available",
+        "username-format": "Invalid username",
         "real-name-format": "Invalid real name",
         "bio": "Bio must be 200 characters max.",
         "location": "Location must be 70 characters max.",
@@ -1008,7 +1015,8 @@
     "default-disclaimer": "You are not yet a member of this community. Click \"request membership\" to apply for.",
     "disclaimer-start": "You are not yet a member of this community You can join public donuts or request access to a private donut. Members have special priviledges such as direct access to certain private donuts and to other members of this community.",
     "disclaimer-end": "Before you request membership have a glance at this community access conditions :",
-    "close": "leave this community"
+    "close": "leave this community",
+    "exit": "close this community page"
   },
   "account": {
     "error": {
@@ -1074,7 +1082,7 @@
       "noresult": "No mails found",
       "main": "Main",
       "add": "add email",
-      "mail-notconfirmed": "Your account has not beed confirmed, we sent you a confirmation email. If you have nothing received, we can send a new mail in the section: <strong class=\"open-user-account link\">Manage your mails</strong>",
+      "mail-notconfirmed": "Verify your account ! Check your mailbox. You can re-send a verification e-mail <strong class=\"open-user-account link\">here</strong>.",
       "errors": {
         "wrong-format": "Mail address is not valid",
         "mail-already-exist": "This mail address is already used",
@@ -1509,13 +1517,13 @@
   "drawers": {
     "users-allowed-room": {
       "disclaimer": "You can invite a user to join this donut.",
-      "pending-disclaimer" : "Following users are awaiting an answer from you.",
-      "allowed-disclaimer" : "Following users are invited to join this donut."
+      "pending-disclaimer" : "Users pending for your approval.",
+      "allowed-disclaimer" : "Users invited to join this donut."
     },
     "users-allowed-group": {
       "disclaimer": "You can invite a user to join this community.",
-      "pending-disclaimer" : "Following users are awaiting an answer from you.",
-      "allowed-disclaimer" : "Following users are invited to join this community."
+      "pending-disclaimer" : "Users pending for your approval.",
+      "allowed-disclaimer" : "Users invited to join this community."
     }
   }
 }

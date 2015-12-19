@@ -1,9 +1,6 @@
 'use strict';
 var errors = require('../../../util/errors');
 var async = require('async');
-var _ = require('underscore');
-var HistoryRoom = require('../../../../../shared/models/historyroom');
-var pattern = new RegExp('^[0-9a-fA-F]{24}$');
 
 var Handler = function (app) {
   this.app = app;
@@ -28,36 +25,11 @@ handler.call = function (data, session, next) {
         return callback('params-room-id');
       }
 
-      if (!data.events || !_.isArray(data.events)) {
-        return callback('params-events');
-      }
-
       if (!room) {
         return callback('room-not-found');
       }
 
-      data.events = _.filter(data.events, function (id) {
-        // http://stackoverflow.com/questions/11985228/mongodb-node-check-if-objectid-is-valid
-        return pattern.test(id);
-      });
-      if (!data.events.length) {
-        return callback('params-events');
-      }
-
       return callback(null);
-    },
-
-    function persist (callback) {
-      HistoryRoom.update({
-        _id: {$in: data.events},
-        event: {$in: ['room:message', 'room:topic']}
-      }, {
-        $addToSet: {viewed: user._id}
-      }, {
-        multi: true
-      }, function (err) {
-        return callback(err);
-      });
     },
 
     function persistOnUser (callback) {
@@ -66,9 +38,7 @@ handler.call = function (data, session, next) {
 
     function sendToUserSockets (callback) {
       var viewedEvent = {
-        name: room.name,
-        room_id: room.id,
-        events: data.events
+        room_id: room.id
       };
       that.app.globalChannelService.pushMessage('connector', 'room:viewed', viewedEvent, 'user:' + user.id, {}, callback);
     }

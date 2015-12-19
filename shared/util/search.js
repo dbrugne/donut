@@ -98,14 +98,14 @@ module.exports = function (search, options, callback) {
         criteria.name = _regexp;
       }
 
-      var q = GroupModel.find(criteria, 'name owner avatar color members op lastactivity_at description');
+      var q = GroupModel.find(criteria, 'name owner avatar color members op last_event_at description');
       if (options.skip && options.skip.groups) {
         q.skip(options.skip.groups);
       }
       if (limit.groups) {
         q.limit(limit.groups + 1); // look for one more to handle "more" logic
       }
-      q.sort('-lastactivity_at -members avatar name');
+      q.sort('-last_event_at -members avatar name');
       q.populate('owner', 'username');
       q.exec(function (err, dbgroups) {
         if (err) {
@@ -153,11 +153,11 @@ module.exports = function (search, options, callback) {
       }
 
       var select = (options.light)
-        ? 'name group avatar color lastjoin_at lastactivity_at mode'
-        : 'name owner group description avatar color users lastjoin_at lastactivity_at mode';
+        ? 'name group avatar color last_event_at mode'
+        : 'name owner group description avatar color users last_event_at mode';
 
       var q = RoomModel.find(criteria, select)
-        .sort('-lastactivity_at -lastjoin_at -users avatar name');
+        .sort('-last_event_at -users avatar name');
 
       if (options.skip && options.skip.rooms) {
         q.skip(options.skip.rooms);
@@ -205,7 +205,7 @@ module.exports = function (search, options, callback) {
       if (limit.users) {
         q.limit(limit.users + 1); // handle "more" logic
       }
-      q.populate('ones', 'lastactivity_at');
+      q.populate('ones', 'last_event_at');
       q.populate('ones.user', 'id');
       q.exec(function (err, dbusers) {
         if (err) {
@@ -249,8 +249,7 @@ module.exports = function (search, options, callback) {
             identifier: room.getIdentifier(),
             avatar: room._avatar(),
             color: room.color,
-            mode: room.mode,
-            lastjoin_at: new Date(room.lastjoin_at).getTime()
+            mode: room.mode
           };
 
           if (room.group) {
@@ -318,8 +317,8 @@ module.exports = function (search, options, callback) {
             var a = _.find(user.get('ones'), function (item) {
               return item.user.id === options.user_id;
             });
-            r.lastactivity_at = a && a.lastactivity_at
-              ? a.lastactivity_at
+            r.last_event_at = a && a.last_event_at
+              ? a.last_event_at
               : null;
           }
 

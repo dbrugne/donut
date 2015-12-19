@@ -1,9 +1,9 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var errors = require('../../../util/errors');
 var async = require('async');
 var Notifications = require('../../../components/notifications');
-var oneEmitter = require('../../../util/oneEmitter');
+var oneEmitter = require('../../../util/one-emitter');
 var inputUtil = require('../../../util/input');
 var filesUtil = require('../../../util/files');
 var keenio = require('../../../../../shared/io/keenio');
@@ -50,17 +50,6 @@ handler.call = function (data, session, next) {
       return callback(null);
     },
 
-    function persistOnBoth (callback) {
-      user.updateActivity(withUser._id, function (err) {
-        if (err) {
-          return callback(err);
-        }
-        withUser.updateActivity(user._id, function (err) {
-          return callback(err);
-        });
-      });
-    },
-
     function prepareMessage (callback) {
       // text filtering
       var message = inputUtil.filter(data.message, 512);
@@ -96,7 +85,7 @@ handler.call = function (data, session, next) {
       if (data.special) {
         event.special = data.special;
       }
-      oneEmitter(that.app, 'user:message', event, callback);
+      oneEmitter(that.app, user, withUser, 'user:message', event, callback);
     },
 
     function notification (event, callback) {

@@ -1,7 +1,7 @@
 'use strict';
 var errors = require('../../../util/errors');
 var async = require('async');
-var oneEmitter = require('../../../util/oneEmitter');
+var oneEmitter = require('../../../util/one-emitter');
 
 var Handler = function (app) {
   this.app = app;
@@ -56,7 +56,7 @@ handler.call = function (data, session, next) {
         to_username: bannedUser.username,
         to_avatar: bannedUser._avatar()
       };
-      oneEmitter(that.app, 'user:ban', event, callback);
+      oneEmitter(that.app, user, bannedUser, 'user:ban', event, callback);
     }
 
   ], function (err) {

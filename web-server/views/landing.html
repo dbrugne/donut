@@ -24,12 +24,11 @@
                         <a href="/logout"><%= t('logged.logout') %></a>
                     </li>
                     <li class="lang">
-                        <a class="switch" href="" data-language="fr" >Fr</a>
+                        <a class="switch <% if (locale === 'fr') { print('active'); } %>" href="" data-language="fr" >Fr</a>
                     </li>
                     <li class="lang">
-                        <a class="switch" href="" data-language="en" >En</a>
+                        <a class="switch <% if (locale === 'en') { print('active'); } %>" href="" data-language="en" >En</a>
                     </li>
-                    <li class="spacer"></li>
                     <% } else { %>
                     <li class="signup">
                         <a href="/signup"><%= t('landing.signup-self') %></a>
@@ -38,12 +37,11 @@
                         <a href="/login"><%= t('landing.login-self') %></a>
                     </li>
                     <li class="lang">
-                        <a class="switch" href="" data-language="fr" >Fr</a>
+                        <a class="switch <% if (locale === 'fr') { print('active'); } %>" href="" data-language="fr" >Fr</a>
                     </li>
                     <li class="lang">
-                        <a class="switch" href="" data-language="en" >En</a>
+                        <a class="switch <% if (locale === 'en') { print('active'); } %>" href="" data-language="en" >En</a>
                     </li>
-                    <li class="spacer"></li>
                     <% } %>
                 </ul>
             </div><!-- /.navbar-collapse -->
@@ -63,7 +61,7 @@
             <div class="authenticate">
                 <% if (user) { %>
                 <div class="login"><%= t('logged.title') %></div>
-                <div class="logged mt25 flex-parent">
+                <div class="logged mt25 flex-parent center jc-center">
                     <img class="avatar" src="<%= user.avatar %>" alt="<%= user.username %> avatar">
                     <div class="text-ctn">
                         <% if (user.username) { %>
@@ -96,10 +94,10 @@
     <div class="second flex-parent column center">
         <div class="ctn">
             <p class="shadowed"><%= t('landing.second.p1') %></p>
-            <div class="img-ctn flex-parent jc-center center mlt10">
-                <div class="apple"></div>
-                <div class="android"></div>
-            </div>
+            <!--<div class="img-ctn flex-parent jc-center center mlt10">-->
+                <!--<div class="apple"></div>-->
+                <!--<div class="android"></div>-->
+            <!--</div>-->
         </div>
         <div class="flex-parent column center" style="width:100%">
             <div class="background2"></div>
@@ -180,7 +178,7 @@
             <div class="authenticate">
                 <% if (user) { %>
                 <div class="login"><%= t('logged.title') %></div>
-                <div class="logged mt25 flex-parent">
+                <div class="logged mt25 flex-parent center jc-center">
                     <img class="avatar" src="<%= user.avatar %>" alt="<%= user.username %> avatar">
                     <div class="text-ctn">
                         <% if (user.username) { %>

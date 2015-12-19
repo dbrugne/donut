@@ -31,7 +31,7 @@
                 <i class="icon icon-users"></i> <%= t('chat.users.link') %>
             </a>
         </li>
-        <% if (data.isOwner || data.isAdmin || data.isOp) { %>
+        <% if ((data.isOwner || data.isAdmin || data.isOp) && data.mode !== 'public') { %>
         <li role="presentation">
             <a role="menuitem" tabindex="-1" class="open-room-users-allowed" data-room-id="<%= data.room_id %>">
                 <i class="icon icon-verified-user"></i> <%= t('profile.room.usersallowed') %>

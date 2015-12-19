@@ -2,8 +2,8 @@
 var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
-var roomDataHelper = require('../../../util/roomData');
-var roomEmitter = require('../../../util/roomEmitter');
+var roomDataHelper = require('../../../util/room-data');
+var roomEmitter = require('../../../util/room-emitter');
 var Notifications = require('../../../components/notifications');
 
 var Handler = function (app) {
@@ -94,9 +94,7 @@ handler.join = function (user, room, next) {
     },
 
     function persistRoom (eventData, callback) {
-      room.lastjoin_at = Date.now();
       room.users.addToSet(user._id);
-      room.lastactivity_at = Date.now();
 
       // private room only
       if (room.mode === 'private') {

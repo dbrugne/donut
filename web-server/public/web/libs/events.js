@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var common = require('@dbrugne/donut-common/browser');
 var date = require('./date');
-var currentUser = require('../models/current-user');
+var app = require('../libs/app');
 
 var templates = {
   'hello': require('../templates/event/block-hello.html'),
@@ -81,11 +81,13 @@ exports.prototype.insertTop = function (events) {
   if (events.length === 0) {
     return;
   }
+  this.$unviewedContainer = this.$el.closest('.discussion').find('.date-ctn').find('.ctn-unviewed');
 
   var html = '';
   var previous;
   _.each(events, _.bind(function (e) {
     var event = this._data(e.type, e.data);
+    var firstUnviewed = (this.discussion.get('first_unviewed') === event.data.id);
 
     // try to render event (before)
     var _html = this._renderEvent(event);
@@ -96,6 +98,18 @@ exports.prototype.insertTop = function (events) {
     // new message block
     if (this.block(event, previous)) {
       _html = this.renderBlockUser(event) + _html;
+    }
+
+    // new unviewed block
+    if (firstUnviewed) {
+      console.log('PREMIER TROUVEEEEEE');
+      _html = require('../templates/event/block-unviewed.html')({
+        time: event.data.time
+      }) + _html;
+      this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({
+        time: event.data.time,
+        date: date.longDateTime(event.data.time)
+      }));
     }
 
     // new date block
@@ -148,7 +162,7 @@ exports.prototype.replaceLastDisconnectBlock = function ($lastDisconnectBlock, $
 
     // new message block
     if ((previous && this.block(event, previous)) || (!previous && event.data.user_id !== $previousEventDiv.data('userId'))) {
-        _html = this.renderBlockUser(event) + _html;
+      _html = this.renderBlockUser(event) + _html;
     }
 
     // new date block
@@ -183,10 +197,7 @@ exports.prototype.block = function (event, previous) {
   if (!date.isSameDay(event.data.time, previous.data.time)) {
     return true;
   }
-  if (event.data.user_id !== previous.data.user_id) {
-    return true;
-  }
-  return false;
+  return event.data.user_id !== previous.data.user_id;
 };
 
 /**
@@ -220,8 +231,7 @@ exports.prototype._data = function (type, data) {
   data.type = type.replace(':', '');
   data.stype = type.replace('room:', '').replace('user:', '');
 
-  // unviewed & spammed & edited
-  data.unviewed = (data.unviewed === true);
+  // spammed & edited
   data.spammed = (data.spammed === true);
   data.edited = (data.edited === true);
 
@@ -238,7 +248,7 @@ exports.prototype._data = function (type, data) {
 
   // user:promote
   if (data.to_user_id) {
-    data.target = (currentUser.get('user_id') === data.to_user_id)
+    data.target = (app.user.get('user_id') === data.to_user_id)
       ? 'me'
       : 'other';
   }
@@ -294,7 +304,7 @@ exports.prototype.renderBlockUser = function (event) {
     console.error('render exception: ' + event.type, e);
   }
   return html;
-}
+};
 
 exports.prototype._renderEvent = function (event) {
   try {

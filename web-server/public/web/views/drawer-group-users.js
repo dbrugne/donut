@@ -1,7 +1,6 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
 var app = require('../libs/app');
-var client = require('../libs/client');
 var GroupUsersTableConfirmation = require('./drawer-group-users-table');
 var keyboard = require('../libs/keyboard');
 var i18next = require('i18next-client');
@@ -33,10 +32,10 @@ var DrawerRoomUsersView = Backbone.View.extend({
   initialize: function (options) {
     this.model = options.model;
 
-    this.listenTo(client, 'group:ban', this.render);
-    this.listenTo(client, 'group:deban', this.render);
-    this.listenTo(client, 'group:op', this.render);
-    this.listenTo(client, 'group:deop', this.render);
+    this.listenTo(app.client, 'group:ban', this.render);
+    this.listenTo(app.client, 'group:deban', this.render);
+    this.listenTo(app.client, 'group:op', this.render);
+    this.listenTo(app.client, 'group:deop', this.render);
 
     this.$el.html(this.template({group: this.model.toJSON(), type: this.types}));
     this.numberUsers = this.$('.number');
@@ -62,7 +61,7 @@ var DrawerRoomUsersView = Backbone.View.extend({
       searchString: this.search.val(),
       selector: {start: (this.page - 1) * this.paginate, length: this.paginate}
     };
-    client.groupUsers(this.model.get('id'), searchAttributes, function (data) {
+    app.client.groupUsers(this.model.get('id'), searchAttributes, function (data) {
       that.onResponse(data);
     });
     return this;

@@ -1,9 +1,9 @@
 'use strict';
 var errors = require('../../../util/errors');
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var async = require('async');
 var _ = require('underscore');
-var roomEmitter = require('../../../util/roomEmitter');
+var roomEmitter = require('../../../util/room-emitter');
 var inputUtil = require('../../../util/input');
 var filesUtil = require('../../../util/files');
 var keenio = require('../../../../../shared/io/keenio');
@@ -135,24 +135,6 @@ handler.call = function (data, session, next) {
           }
         });
       }, function (err) {
-        return callback(err, sentEvent, mentions);
-      });
-    },
-
-    function persist (sentEvent, mentions, callback) {
-      // Update topic and activity date
-      room.lastactivity_at = Date.now();
-      room.save(function (err) {
-        return callback(err, sentEvent, mentions);
-      });
-    },
-
-    function persistOnGroup (sentEvent, mentions, callback) {
-      if (!room.get('group')) {
-        return callback(null, sentEvent, mentions);
-      }
-
-      GroupModel.update({_id: room.get('group').get('id')}, {lastactivity_at: Date.now()}, {multi: false}, function (err) {
         return callback(err, sentEvent, mentions);
       });
     },

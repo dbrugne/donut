@@ -1,11 +1,11 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var _ = require('underscore');
 var async = require('async');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
-var roomDataHelper = require('../../../util/roomData');
-var oneDataHelper = require('../../../util/oneData');
+var roomDataHelper = require('../../../util/room-data');
+var oneDataHelper = require('../../../util/one-data');
 var featuredRooms = require('../../../../../shared/util/featured-rooms');
 var Notifications = require('../../../components/notifications');
 

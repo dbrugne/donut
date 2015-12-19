@@ -1,8 +1,8 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
-var client = require('../libs/client');
-var currentUser = require('../models/current-user');
+var app = require('../libs/app');
+var currentUser = require('../libs/app').user;
 var ImageUploader = require('./image-uploader');
 var ColorPicker = require('./color-picker');
 
@@ -25,7 +25,7 @@ var DrawerGroupEditView = Backbone.View.extend({
     var what = {
       admin: true
     };
-    client.groupRead(this.groupId, what, _.bind(function (data) {
+    app.client.groupRead(this.groupId, what, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }
@@ -110,7 +110,7 @@ var DrawerGroupEditView = Backbone.View.extend({
       updateData.avatar = this.avatarUploader.data;
     }
 
-    client.groupUpdate(this.groupId, updateData, _.bind(function (data) {
+    app.client.groupUpdate(this.groupId, updateData, _.bind(function (data) {
       this.$('.errors').hide();
       if (data.err) {
         return this.editError(data.err);
@@ -124,7 +124,7 @@ var DrawerGroupEditView = Backbone.View.extend({
       avatar: data
     };
     var that = this;
-    client.groupUpdate(this.groupId, updateData, function (d) {
+    app.client.groupUpdate(this.groupId, updateData, function (d) {
       that.$('.errors').hide();
       if (d.err) {
         that.editError(d.err);

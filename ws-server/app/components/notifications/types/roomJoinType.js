@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var _ = require('underscore');
 var async = require('async');
 var UserModel = require('../../../../../shared/models/user');
@@ -160,7 +160,7 @@ Notification.prototype.sendToBrowser = function (room, model, history, done) {
 
 Notification.prototype.sendEmail = function (model, done) {
   if (!model.data || !model.data.event) {
-    return logger.error('roomJoinType.sendEmail data.event left');
+    return done('roomJoinType.sendEmail data.event left');
   }
 
   async.waterfall([
@@ -184,7 +184,7 @@ Notification.prototype.sendEmail = function (model, done) {
 
 Notification.prototype.sendMobile = function (model, done) {
   if (!model.data || !model.data.event || !model.user || !model.user._id) {
-    return logger.error('roomJoinType.sendMobile data left');
+    return done('roomJoinType.sendMobile data left');
   }
 
   async.waterfall([

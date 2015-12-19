@@ -30,11 +30,31 @@
   src: local('Open Sans Extrabold'), local('OpenSans-Extrabold'), url(//themes.googleusercontent.com/static/fonts/opensans/v9/EInbV5DfGHOiMmvb1Xr-hnhCUOGz7vYGh680lGh-uXM.woff) format('woff');
 }
 
+@font-folder: '/fonts';
+@font-face {
+  font-family: 'fabfeltscriptbold';
+  src:  url('@{font-folder}/fabfelt/fabfeltscript-bold-webfont.eot');
+  src:  url('@{font-folder}/fabfelt/fabfeltscript-bold-webfont.eot?#iefix') format('embedded-opentype'),
+        url('@{font-folder}/fabfelt/fabfeltscript-bold-webfont.woff2') format('woff2'),
+        url('@{font-folder}/fabfelt/fabfeltscript-bold-webfont.woff') format('woff'),
+        url('@{font-folder}/fabfelt/fabfeltscript-bold-webfont.ttf') format('truetype'),
+        url('@{font-folder}/fabfelt/fabfeltscript-bold-webfont.svg#fabfeltscriptbold') format('svg');
+
+  font-weight: normal;
+  font-style: normal;
+}
+
+// Open sans
 .ft-opensans-light        { font-family: 'Open Sans', sans-serif; font-weight: 300; }
 .ft-opensans-italic       { font-family: 'Open Sans', sans-serif; font-weight: 400; font-style: italic; }
 .ft-opensans              { font-family: 'Open Sans', sans-serif; font-weight: 400; }
 .ft-opensans-bold         { font-family: 'Open Sans', sans-serif; font-weight: 700; }
 .ft-opensans-extra-bold   { font-family: 'Open Sans', sans-serif; font-weight: 800; }
+
+// Fabel
+.ft-fabfelt                 { font-family: 'fabfeltscriptbold', sans-serif; }
+
+// Freight
 
 // Gather icons classes from https://use.fonticons.com/kits/49ec3664/49ec3664.css to avoid having to know code when using an icon
 .icon-user{font:normal normal normal 14px/1 'Donut'; content:'\f000';}

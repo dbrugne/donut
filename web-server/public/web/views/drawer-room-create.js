@@ -3,10 +3,9 @@ var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../libs/client');
 var i18next = require('i18next-client');
 var urls = require('../../../../shared/util/url');
-var currentUser = require('../models/current-user');
+var currentUser = require('../libs/app').user;
 
 var DrawerRoomCreateView = Backbone.View.extend({
   template: require('../templates/drawer-room-create.html'),
@@ -95,7 +94,7 @@ var DrawerRoomCreateView = Backbone.View.extend({
     var name = this.$input.val();
 
     this.$submit.addClass('loading');
-    client.roomCreate(name, mode, null, this.group_id, _.bind(function (response) {
+    app.client.roomCreate(name, mode, null, this.group_id, _.bind(function (response) {
       this.$submit.removeClass('loading');
       if (response.code !== 500 && response.success !== true) {
         var uri;

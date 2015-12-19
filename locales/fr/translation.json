@@ -9,7 +9,7 @@
     "login-self": "Se connecter",
     "first": {
       "p1": "L'ESPACE DE DISCUSSION",
-      "almost": "PRESQUE",
+      "almost": "Presque",
       "p2": " OFFICIEL DE VOTRE UNIVERSITE",
       "disclaimer": "DONUT vous permet de vous retrouver pour discuter quelle que soit la taille de votre communauté. La messagerie instantanée pensée à l'échelle de votre campus, vos associations, vos Meetups"
     },
@@ -205,6 +205,7 @@
     "french": "Français",
     "english": "Anglais",
     "unknownerror": "Erreur inconnue, veuillez réessayer",
+    "cannot-leave-group": "Vous devez clore toutes les discussions de ce groupe avant de pouvoir clore ce groupe",
     "notconfirmed": "Votre compte n'a pas été validé, cliquer ici pour gérer vos emails",
     "mode": {
       "title": {
@@ -381,7 +382,11 @@
     },
     "help": "Aide",
     "room-discussion": {
-      "input-placeholder": "cliquez ici pour taper un message"
+      "input-placeholder": "cliquez ici pour taper un message",
+      "new-messages": "nouveaux messages",
+      "count-since": "messages non vus depuis __date__",
+      "jumpto": "Aller à",
+      "mark-as-read": "Marquer comme lu"
     },
     "createadonut": "Nouveau",
     "home": {
@@ -929,6 +934,8 @@
         }
       },
       "errors": {
+        "not-available": "Nom d'utilisateur non disponible",
+        "username-format": "Nom d'utilisateur invalide",
         "real-name-format": "Le nom complet est invalide",
         "bio": "La bio devrait contenir 200 caractères max.",
         "location": "Le lieu devrait contenir 70 caractères max.",
@@ -1008,7 +1015,8 @@
     "default-disclaimer": "Vous n'êtes pas encore membre de cette communauté. Cliquez sur \"devenir membre\" pour en faire la demande.",
     "disclaimer-start": "Vous n'êtes pas encore membre de cette communauté. Vous pouvez pouvez y rejoindre les donuts publics et éventuellement demander l'accès à des donuts privés. Les membres d'une communauté ont des privilèges tels que l'accès direct à certains donuts privés et aux autres membres de la communauté.",
     "disclaimer-end": " Avant de demander à devenir membre, jetez un oeil aux conditions d'accès de cette communauté :",
-    "close": "quitter le groupe"
+    "close": "quitter le groupe",
+    "exit": "fermer le groupe"
   },
   "account": {
     "error": {
@@ -1074,7 +1082,7 @@
       "noresult": "Aucune adresse mail trouvée",
       "main": "Principal",
       "add": "ajouter e-mail",
-      "mail-notconfirmed": "Votre compte n'a pas été validé, nous vous avons envoyé un mail de confirmation. Si vous avez reçu aucun mail de confirmation, nous pouvons vous en renvoyer un dans la section: <strong class=\"open-user-account link\">Gérer vos emails</strong>",
+      "mail-notconfirmed": "Validez votre compte à l'aide de l'e-mail de confirmation que nous vous avons envoyé. Pour en renvoyer un allez <strong class=\"open-user-account link\">ici</strong>.",
       "errors": {
         "wrong-format": "L'addresse mail n'est pas valide",
         "mail-already-exist": "Cette adresse mail est déjà utilisé",
@@ -1509,13 +1517,13 @@
   "drawers": {
     "users-allowed-room": {
       "disclaimer": "Vous avez la possibilité d'inviter un utilisateur à rejoindre ce donut.",
-      "pending-disclaimer" : "Les utilisateurs suivants sont en attente d'une réponse de votre part.",
-      "allowed-disclaimer" : "Les utilisateurs suivants sont invités à rejoindre ce donut."
+      "pending-disclaimer" : "Utilisateurs en attente de votre autorisation.",
+      "allowed-disclaimer" : "Utilisateurs invités à rejoindre ce donut."
     },
     "users-allowed-group": {
       "disclaimer": "Vous avez la possibilité d'inviter un utilisateur à rejoindre cette communauté.",
-      "pending-disclaimer" : "Les utilisateurs suivants sont en attente d'une réponse de votre part.",
-      "allowed-disclaimer" : "Les utilisateurs suivants sont invités à rejoindre cette communauté."
+      "pending-disclaimer" : "Utilisateurs en attente de votre autorisation.",
+      "allowed-disclaimer" : "Utilisateurs invités à rejoindre cette communauté."
     }
   }
 }

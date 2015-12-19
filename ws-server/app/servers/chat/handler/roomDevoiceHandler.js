@@ -1,7 +1,7 @@
 'use strict';
 var errors = require('../../../util/errors');
 var async = require('async');
-var roomEmitter = require('../../../util/roomEmitter');
+var roomEmitter = require('../../../util/room-emitter');
 var inputUtil = require('../../../util/input');
 var Notifications = require('../../../components/notifications');
 

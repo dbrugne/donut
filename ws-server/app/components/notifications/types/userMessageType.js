@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var common = require('@dbrugne/donut-common/server');
 var _ = require('underscore');
 var async = require('async');
@@ -122,7 +122,7 @@ Notification.prototype.create = function (user, history, done) {
 
 Notification.prototype.sendEmail = function (model, done) {
   if (!model.data || !model.data.event) {
-    return logger.error('userMessageType.sendEmail data.event left');
+    return done('userMessageType.sendEmail data.event left');
   }
 
   async.waterfall([
@@ -155,16 +155,13 @@ Notification.prototype.sendEmail = function (model, done) {
 
     function send (history, events, callback) {
       var messages = [];
-      var username = '';
       _.each(events, function (event) {
         var isCurrentMessage = (history.id === event.data.id);
         messages.push({
           current: isCurrentMessage,
-          from_avatar: common.cloudinary.prepare(event.data.from_avatar, 90),
-          from_username: event.data.from_username,
+          avatar: common.cloudinary.prepare(event.data.avatar, 90),
+          username: event.data.username,
           message: event.data.message,
-          to_avatar: common.cloudinary.prepare(event.data.to_avatar, 90),
-          to_username: event.data.to_username,
           time_full: utils.longDateTime(event.data.time)
         });
       });
@@ -185,7 +182,7 @@ Notification.prototype.sendEmail = function (model, done) {
 
 Notification.prototype.sendMobile = function (model, done) {
   if (!model.data || !model.data.event || !model.user || !model.user._id) {
-    return logger.error('userMessageType.sendMobile data.event left');
+    return done('userMessageType.sendMobile data.event left');
   }
 
   async.waterfall([

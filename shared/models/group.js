@@ -33,7 +33,7 @@ var groupSchema = mongoose.Schema({
   disclaimer: String,
   website: mongoose.Schema.Types.Mixed,
   created_at: {type: Date, default: Date.now},
-  lastactivity_at: {type: Date}
+  last_event_at: {type: Date}
 });
 
 groupSchema.statics.findByName = function (name) {

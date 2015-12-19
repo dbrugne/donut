@@ -24,13 +24,6 @@ if ($landing.length) {
       $landing.removeClass('clean');
     }
   });
-
-  // @todo dbrugne not sure that's the best way to read a cookie. It works nevertheless...
-  $(document).ready(function () {
-    var cookie = document.cookie.match('(^|;)\\s*donut\.lng\\s*=\\s*([^;]+)');
-    var lng = cookie.length > 0 ? cookie.pop() : 'en';
-    $('.switch[data-language="' + lng + '"]').addClass('active');
-  });
 }
 
 // User and room profiles

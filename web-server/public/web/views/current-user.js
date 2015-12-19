@@ -1,8 +1,7 @@
 var $ = require('jquery');
-var client = require('../libs/client');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
-var currentUser = require('../models/current-user');
+var currentUser = require('../libs/app').user;
 var i18next = require('i18next-client');
 var MuteView = require('./mute');
 

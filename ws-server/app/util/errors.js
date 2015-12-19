@@ -1,4 +1,4 @@
-var logger = require('../../../shared/util/logger').getLogger('donut');
+var logger = require('pomelo-logger').getLogger('donut');
 
 var errors = {
   // WRONG PARAMS (400)

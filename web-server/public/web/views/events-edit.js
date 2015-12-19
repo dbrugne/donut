@@ -4,7 +4,7 @@ var app = require('../libs/app');
 var keyboard = require('../libs/keyboard');
 var common = require('@dbrugne/donut-common/browser');
 var i18next = require('i18next-client');
-var currentUser = require('../models/current-user');
+var currentUser = require('../libs/app').user;
 var MessageEditView = require('./message-edit');
 
 module.exports = Backbone.View.extend({

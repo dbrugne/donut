@@ -41,7 +41,7 @@ handler.call = function (data, session, next) {
           visibility: true,
           deleted: {$ne: true}
         })
-          .sort({priority: -1, 'lastjoin_at': -1})
+          .sort({priority: -1, 'last_event_at': -1})
           .limit(roomLimit + 1)
           .populate('group', 'name avatar color')
           .populate('owner', 'username avatar');
@@ -169,7 +169,7 @@ handler.call = function (data, session, next) {
             color: room.color,
             avatar: room._avatar(),
             users: count,
-            lastjoin_at: new Date(room.lastjoin_at).getTime(),
+            last_event_at: new Date(room.last_event_at).getTime(),
             priority: room.priority || 0
           };
 
@@ -210,7 +210,7 @@ handler.call = function (data, session, next) {
           _list.push(_data);
         });
 
-        // sort (priority, users, lastjoin_at, name)
+        // sort (priority, users, last_event_at, name)
         _list.sort(function (a, b) {
           if (a.priority !== b.priority) {
             return b.priority - a.priority;
@@ -226,8 +226,8 @@ handler.call = function (data, session, next) {
             return 1;
           }
 
-          if (a.type !== 'group' && b.type !== 'group' && a.lastjoin_at !== b.lastjoin_at) {
-            return (b.lastjoin_at - a.lastjoin_at);
+          if (a.type !== 'group' && b.type !== 'group' && a.last_event_at !== b.last_event_at) {
+            return (b.last_event_at - a.last_event_at);
           } // b - a == descending
 
           return a.name.toLowerCase().localeCompare(b.name.toLowerCase());

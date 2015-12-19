@@ -12,7 +12,6 @@ var historySchema = mongoose.Schema({
   user: { type: mongoose.Schema.ObjectId, ref: 'User' },
   by_user: { type: mongoose.Schema.ObjectId, ref: 'User' },
   data: mongoose.Schema.Types.Mixed,
-  viewed: [ { type: mongoose.Schema.ObjectId, ref: 'User' } ],
   spammed: { type: Boolean },
   spammed_at: { type: Date },
   edited: { type: Boolean },
@@ -64,9 +63,7 @@ historySchema.statics.record = function () {
   };
 };
 
-historySchema.methods.toClientJSON = function (userViewed) {
-  userViewed = userViewed || false;
-
+historySchema.methods.toClientJSON = function () {
   if (!this.room) {
     this.room = new Room();
   } // some rooms was removed (but not their history) before Room.deleted flag
@@ -108,14 +105,6 @@ historySchema.methods.toClientJSON = function (userViewed) {
       // errors
       return cloudinary.messageFile(element);
     });
-  }
-
-  // unviewed status (true if message and if i'm not in .viewed)
-  if (userViewed &&
-    [ 'room:message', 'room:topic' ].indexOf(this.event) !== -1 &&
-    data.user_id !== userViewed &&
-    (!this.viewed || (_.isArray(this.viewed) && this.viewed.indexOf(userViewed) === -1))) {
-    data.unviewed = true;
   }
 
   return {

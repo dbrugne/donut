@@ -10,11 +10,8 @@ var historySchema = mongoose.Schema({
   to: { type: mongoose.Schema.ObjectId, ref: 'User' },
   time: { type: Date, default: Date.now },
   data: mongoose.Schema.Types.Mixed,
-  // true if to user has read this event
-  viewed: { type: Boolean, default: false },
   edited: { type: Boolean },
   edited_at: { type: Date }
-
 });
 
 var dryFields = [
@@ -57,9 +54,7 @@ historySchema.statics.record = function () {
   };
 };
 
-historySchema.methods.toClientJSON = function (userViewed) {
-  userViewed = userViewed || false;
-
+historySchema.methods.toClientJSON = function () {
   // re-hydrate data
   var data = (this.data)
     ? _.clone(this.data)
@@ -91,12 +86,6 @@ historySchema.methods.toClientJSON = function (userViewed) {
       // errors
       return cloudinary.messageFile(element);
     });
-  }
-
-  // unviewed status (true if message, i'm the receiver and current value is
-  // false)
-  if (userViewed && this.event === 'user:message' && data.to_user_id === userViewed && !this.viewed) {
-    data.unviewed = true;
   }
 
   return {
