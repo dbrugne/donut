@@ -3,7 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../libs/client');
+var app = require('../libs/app');
 
 var MessageEditView = Backbone.View.extend({
   template: require('../templates/message-edit.html'),
@@ -31,7 +31,7 @@ var MessageEditView = Backbone.View.extend({
     this.$el.removeClass('has-hover');
 
     this.originalMessage = (this.$text.html() !== undefined) ? this.$text.html() : '';
-    this.originalMessage = common.markup.toText(this.originalMessage);
+    this.originalMessage = common.markup.toText(this.originalMessage).trim();
     this.originalMessage = this.htmlSmileyToText(this.originalMessage);
 
     this.$messageForm = this.$('.message-form');
@@ -55,7 +55,9 @@ var MessageEditView = Backbone.View.extend({
 
       that.model.trigger('editMessageClose');
     };
-    $('html').one('click', this.onClickOutsideHandler);
+    _.defer(_.bind(function () {
+      $('html').one('click', this.onClickOutsideHandler);
+    }, this));
 
     return this;
   },
@@ -84,9 +86,9 @@ var MessageEditView = Backbone.View.extend({
     }
 
     if (this.model.get('type') === 'room') {
-      client.roomMessageEdit(this.model.get('id'), messageId, message);
+      app.client.roomMessageEdit(this.model.get('id'), messageId, message);
     } else {
-      client.userMessageEdit(this.model.get('id'), messageId, message);
+      app.client.userMessageEdit(this.model.get('id'), messageId, message);
     }
 
     this.model.trigger('editMessageClose');

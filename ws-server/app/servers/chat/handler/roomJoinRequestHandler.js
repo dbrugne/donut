@@ -27,7 +27,11 @@ handler.call = function (data, session, next) {
         return callback('params-room-id');
       }
 
-      if (!room) {
+      if (data.message && data.message.length > 200) {
+        return callback('message-wrong-format');
+      }
+
+      if (!room || room.deleted) {
         return callback('room-not-found');
       }
 
@@ -36,11 +40,23 @@ handler.call = function (data, session, next) {
       }
 
       if (room.isAllowed(user.id)) {
-        return callback('allowed');
+        return callback('already-allowed');
       }
 
       if (room.isAllowedPending(user.id)) {
         return callback('allow-pending');
+      }
+
+      if (!room.allow_user_request) {
+        return callback('not-allowed');
+      }
+
+      if (room.isGroupBanned(user.id)) {
+        return callback('group-banned');
+      }
+
+      if (user.confirmed === false) {
+        return callback('not-confirmed');
       }
 
       return callback(null);
@@ -59,17 +75,23 @@ handler.call = function (data, session, next) {
     },
 
     function persist (eventData, callback) {
+      var pendingModel = {user: user._id};
+      if (data.message) {
+        pendingModel.message = data.message;
+      }
       Room.update(
         {_id: { $in: [room.id] }},
-        {$addToSet: {allowed_pending: user._id}}, function (err) {
+        {$addToSet: {allowed_pending: pendingModel}}, function (err) {
           return callback(err, eventData);
-        }
-      );
+        });
     },
 
     function notification (event, callback) {
-      Notifications(that.app).getType('roomjoinrequest').create(room.owner.id, room, event, function (err) {
-        return callback(err, event);
+      var ids = room.getIdsByType('op');
+      async.eachLimit(ids, 10, function (id, fn) {
+        Notifications(that.app).getType('roomjoinrequest').create(id, room, event, fn);
+      }, function (err) {
+        return callback(err);
       });
     }
 

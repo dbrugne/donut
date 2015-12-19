@@ -1,10 +1,13 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var _ = require('underscore');
 var async = require('async');
 var emailer = require('../../../../../shared/io/emailer');
 var utils = require('./../utils');
+var HistoryRoom = require('../../../../../shared/models/historyroom');
+var RoomModel = require('../../../../../shared/models/room');
 var NotificationModel = require('../../../../../shared/models/notification');
+var parse = require('../../../../../shared/io/parse');
 
 module.exports = function (facade) {
   return new Notification(facade);
@@ -42,8 +45,8 @@ Notification.prototype.create = function (user, room, history, done) {
     },
 
     function checkPreferences (userModel, roomModel, historyModel, callback) {
-      if (userModel.preferencesValue('room:notif:nothing:__what__'.replace('__what__', roomModel.name)) ||
-        !userModel.preferencesValue('room:notif:roompromote:__what__'.replace('__what__', roomModel.name))) {
+      if (userModel.preferencesValue('room:notif:nothing:__what__'.replace('__what__', roomModel.id)) ||
+        !userModel.preferencesValue('room:notif:roompromote:__what__'.replace('__what__', roomModel.id))) {
         logger.debug('roomPromoteType.create no notification due to user preferences');
         return callback(true);
       }
@@ -62,7 +65,7 @@ Notification.prototype.create = function (user, room, history, done) {
     },
 
     function save (userModel, roomModel, historyModel, status, callback) {
-      var model = NotificationModel.getNewModel(that.type, userModel._id, { event: historyModel._id });
+      var model = NotificationModel.getNewModel(that.type, userModel._id, { event: historyModel._id, room: roomModel._id });
       model.to_browser = true;
       model.to_email = (!userModel.getEmail()
         ? false
@@ -118,7 +121,7 @@ Notification.prototype.sendToBrowser = function (model, user, room, history, don
       },
       room: {
         id: room.id,
-        name: room.name,
+        name: room.getIdentifier(),
         avatar: room._avatar()
       }
     }
@@ -142,21 +145,21 @@ Notification.prototype.sendEmail = function (model, done) {
           method = emailer.roomOp;
           data = {
             username: history.by_user.username,
-            roomname: history.room.name
+            roomname: model.data.room.getIdentifier()
           };
           break;
         case 'roomdeop':
           method = emailer.roomDeop;
           data = {
             username: history.by_user.username,
-            roomname: history.room.name
+            roomname: model.data.room.getIdentifier()
           };
           break;
         case 'roomkick':
           method = emailer.roomKick;
           data = {
             username: history.by_user.username,
-            roomname: history.room.name,
+            roomname: model.data.room.getIdentifier(),
             reason: (history.data && history.data.reason
               ? history.data.reason
               : null)
@@ -166,7 +169,7 @@ Notification.prototype.sendEmail = function (model, done) {
           method = emailer.roomBan;
           data = {
             username: history.by_user.username,
-            roomname: history.room.name,
+            roomname: model.data.room.getIdentifier(),
             reason: (history.data && history.data.reason
               ? history.data.reason
               : null)
@@ -176,14 +179,14 @@ Notification.prototype.sendEmail = function (model, done) {
           method = emailer.roomDeban;
           data = {
             username: history.by_user.username,
-            roomname: history.room.name
+            roomname: model.data.room.getIdentifier()
           };
           break;
         case 'roomvoice':
           method = emailer.roomVoice;
           data = {
             username: history.by_user.username,
-            roomname: history.room.name,
+            roomname: model.data.room.getIdentifier(),
             reason: (history.data && history.data.reason
               ? history.data.reason
               : null)
@@ -193,7 +196,7 @@ Notification.prototype.sendEmail = function (model, done) {
           method = emailer.roomDevoice;
           data = {
             username: history.by_user.username,
-            roomname: history.room.name,
+            roomname: model.data.room.getIdentifier(),
             reason: (history.data && history.data.reason
               ? history.data.reason
               : null)
@@ -203,7 +206,9 @@ Notification.prototype.sendEmail = function (model, done) {
           return callback('roomPromoteType.sendEmail unknown notification type: ' + model.type);
       }
 
-      _.bind(method, emailer)(model.user.getEmail(), data, callback);
+      if (model.user.getEmail()) {
+        _.bind(method, emailer)(model.user.getEmail(), data, callback);
+      }
     },
 
     function persist (callback) {
@@ -213,4 +218,84 @@ Notification.prototype.sendEmail = function (model, done) {
     }
 
   ], done);
+};
+
+Notification.prototype.sendMobile = function (model, done) {
+  if (!model.data || !model.user || !model.user._id) {
+    return done('roomPromoteType.sendMobile data left');
+  }
+
+  async.waterfall([
+
+    function send (callback) {
+      var method;
+      if (['roomop', 'roomdeop', 'roomkick', 'roomban', 'roomdeban', 'roomvoice',
+          'roomdevoice'].indexOf(model.type) === -1) {
+        return callback('roomPromoteType.sendMobile unknown notification type: ' + model.type);
+      }
+      switch (model.type) {
+        case 'roomop':
+          method = parse.roomOp;
+          break;
+        case 'roomdeop':
+          method = parse.roomDeop;
+          break;
+        case 'roomkick':
+          method = parse.roomKick;
+          break;
+        case 'roomban':
+          method = parse.roomBan;
+          break;
+        case 'roomdeban':
+          method = parse.roomDeban;
+          break;
+        case 'roomvoice':
+          method = parse.roomVoice;
+          break;
+        case 'roomdevoice':
+          method = parse.roomDevoice;
+          break;
+      }
+      method(model.user._id.toString(), model.data.room.getIdentifier(), model.data.room._avatar(), callback);
+    },
+
+    function persist (callback) {
+      model.sent_to_mobile = true;
+      model.sent_to_mobile_at = new Date();
+      model.save(callback);
+    }
+
+  ], done);
+};
+
+Notification.prototype.populateNotification = function (notification, done) {
+  if (!notification || !notification.data || !notification.data.event) {
+    return done('roomPromote population error: params');
+  }
+
+  HistoryRoom.findOne({_id: notification.data.event.toString()})
+    .populate('user', 'username avatar color facebook')
+    .populate('by_user', 'username avatar color facebook')
+    .populate('room', 'avatar color name group')
+    .exec(function (err, event) {
+      if (err) {
+        return done(err);
+      }
+      if (!event) {
+        return done(null);
+      }
+
+      RoomModel.populate(event, {
+        path: 'room.group',
+        model: 'Group',
+        select: 'name'
+      }, function (err, docs) {
+        if (err) {
+          return done(err);
+        }
+
+        notification.data.event = docs;
+        return done(null, notification);
+      });
+    });
 };

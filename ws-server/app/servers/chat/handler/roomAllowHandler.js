@@ -40,12 +40,12 @@ handler.call = function (data, session, next) {
         return callback('room-not-found');
       }
 
-      if (!room.isOwner(currentUser.id) && session.settings.admin !== true) {
-        return callback('no-admin-owner');
+      if (!room.isOwnerOrOp(currentUser.id) && session.settings.admin !== true) {
+        return callback('not-admin-owner');
       }
 
       if (room.isAllowed(user.id)) {
-        return callback('allowed');
+        return callback('already-allowed');
       }
 
       if (room.isBanned(user.id)) {
@@ -65,7 +65,8 @@ handler.call = function (data, session, next) {
         user_id: user._id,
         username: user.username,
         avatar: user._avatar(),
-        room_id: room.id
+        room_id: room.id,
+        identifier: room.getIdentifier()
       };
       callback(null, event);
     },
@@ -83,7 +84,7 @@ handler.call = function (data, session, next) {
           if (wasPending) {
             Room.update(
               {_id: { $in: [room.id] }},
-              {$pull: {allowed_pending: user.id},
+              {$pull: {allowed_pending: {user: user.id}},
               $addToSet: {users: user.id}}, function (err) {
                 return callback(err, eventData);
               }
@@ -145,11 +146,11 @@ handler.refuse = function (data, session, next) {
       }
 
       if (!room.isOwner(currentUser.id) && session.settings.admin !== true) {
-        return callback('no-admin-owner');
+        return callback('not-admin-owner');
       }
 
       if (room.isAllowed(user.id)) {
-        return callback('allowed');
+        return callback('already-allowed');
       }
 
       if (room.isBanned(user.id)) {
@@ -178,7 +179,7 @@ handler.refuse = function (data, session, next) {
     function persist (eventData, callback) {
       Room.update(
         {_id: { $in: [room.id] }},
-        {$pull: {allowed_pending: user.id}}, function (err) {
+        {$pull: {allowed_pending: {user: user.id}}}, function (err) {
           return callback(err, eventData);
         }
       );

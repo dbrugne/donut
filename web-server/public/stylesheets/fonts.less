@@ -1,4 +1,4 @@
-/* @import url(//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700,300,800); */
+/* @import url(//fonts.googleapis.com/css?family=Open+Sans:400,800,300,700,400italic); */
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
@@ -13,6 +13,12 @@
 }
 @font-face {
   font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Open Sans Italic'), local('OpenSans-Italic'), url(//themes.googleusercontent.com/static/fonts/opensans/v9/xjAJXh38I15wypJXxuGMBobN6UDyHWBl620a-IRfuBk.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: 700;
   src: local('Open Sans Bold'), local('OpenSans-Bold'), url(//themes.googleusercontent.com/static/fonts/opensans/v9/k3k702ZOKiLJc3WVjuplzHhCUOGz7vYGh680lGh-uXM.woff) format('woff');
@@ -23,76 +29,38 @@
   font-weight: 800;
   src: local('Open Sans Extrabold'), local('OpenSans-Extrabold'), url(//themes.googleusercontent.com/static/fonts/opensans/v9/EInbV5DfGHOiMmvb1Xr-hnhCUOGz7vYGh680lGh-uXM.woff) format('woff');
 }
+
+@font-folder: '/fonts';
 @font-face {
-  font-family: 'Open Sans';
-  font-style: italic;
-  font-weight: 400;
-  src: local('Open Sans Italic'), local('OpenSans-Italic'), url(//themes.googleusercontent.com/static/fonts/opensans/v9/xjAJXh38I15wypJXxuGMBobN6UDyHWBl620a-IRfuBk.woff) format('woff');
-}
-@font-face {
-  font-family: 'Open Sans';
-  font-style: italic;
-  font-weight: 700;
-  src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url(//themes.googleusercontent.com/static/fonts/opensans/v9/PRmiXeptR36kaC0GEAetxjqR_3kx9_hJXbbyU8S6IN0.woff) format('woff');
+  font-family: 'fabfeltscriptbold';
+  src:  url('@{font-folder}/fabfelt/fabfeltscript-bold-webfont.eot');
+  src:  url('@{font-folder}/fabfelt/fabfeltscript-bold-webfont.eot?#iefix') format('embedded-opentype'),
+        url('@{font-folder}/fabfelt/fabfeltscript-bold-webfont.woff2') format('woff2'),
+        url('@{font-folder}/fabfelt/fabfeltscript-bold-webfont.woff') format('woff'),
+        url('@{font-folder}/fabfelt/fabfeltscript-bold-webfont.ttf') format('truetype'),
+        url('@{font-folder}/fabfelt/fabfeltscript-bold-webfont.svg#fabfeltscriptbold') format('svg');
+
+  font-weight: normal;
+  font-style: normal;
 }
 
-/* @import url(//fonts.googleapis.com/css?family=Raleway:500,900,400); */
-@font-face {
-  font-family: 'Raleway';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Raleway'), url(//fonts.gstatic.com/s/raleway/v8/0dTEPzkLWceF7z0koJaX1A.woff2) format('woff2'), url(//fonts.gstatic.com/s/raleway/v8/IczWvq5y_Cwwv_rBjOtT0w.woff) format('woff');
-}
-@font-face {
-  font-family: 'Raleway';
-  font-style: normal;
-  font-weight: 500;
-  src: local('Raleway Medium'), local('Raleway-Medium'), url(//fonts.gstatic.com/s/raleway/v8/CcKI4k9un7TZVWzRVT-T8_k_vArhqVIZ0nv9q090hN8.woff2) format('woff2'), url(//fonts.gstatic.com/s/raleway/v8/CcKI4k9un7TZVWzRVT-T8xsxEYwM7FgeyaSgU71cLG0.woff) format('woff');
-}
-@font-face {
-  font-family: 'Raleway';
-  font-style: normal;
-  font-weight: 600;
-  src: local('Raleway SemiBold'), local('Raleway-SemiBold'), url(//fonts.gstatic.com/s/raleway/v9/xkvoNo9fC8O2RDydKj12bwzyDMXhdD8sAj6OAJTFsBI.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
-}
-@font-face {
-  font-family: 'Raleway';
-  font-style: normal;
-  font-weight: 700;
-  src: local('Raleway Bold'), local('Raleway-Bold'), url(//fonts.gstatic.com/s/raleway/v9/JbtMzqLaYbbbCL9X6EvaIwzyDMXhdD8sAj6OAJTFsBI.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
-}
-@font-face {
-  font-family: 'Raleway';
-  font-style: normal;
-  font-weight: 800;
-  src: local('Raleway ExtraBold'), local('Raleway-ExtraBold'), url(//fonts.gstatic.com/s/raleway/v9/1ImRNPx4870-D9a1EBUdPAzyDMXhdD8sAj6OAJTFsBI.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
-}
-@font-face {
-  font-family: 'Raleway';
-  font-style: normal;
-  font-weight: 900;
-  src: local('Raleway Heavy'), local('Raleway-Heavy'), url(//fonts.gstatic.com/s/raleway/v8/PKCRbVvRfd5n7BTjtGiFZPk_vArhqVIZ0nv9q090hN8.woff2) format('woff2'), url(//fonts.gstatic.com/s/raleway/v8/PKCRbVvRfd5n7BTjtGiFZBsxEYwM7FgeyaSgU71cLG0.woff) format('woff');
-}
+// Open sans
+.ft-opensans-light        { font-family: 'Open Sans', sans-serif; font-weight: 300; }
+.ft-opensans-italic       { font-family: 'Open Sans', sans-serif; font-weight: 400; font-style: italic; }
+.ft-opensans              { font-family: 'Open Sans', sans-serif; font-weight: 400; }
+.ft-opensans-bold         { font-family: 'Open Sans', sans-serif; font-weight: 700; }
+.ft-opensans-extra-bold   { font-family: 'Open Sans', sans-serif; font-weight: 800; }
 
-.ft-opensans { font-family: 'Open Sans', sans-serif; font-weight: normal; }
-.ft-opensans-light { .ft-opensans; font-weight: 300; }
-.ft-opensans-italic { .ft-opensans; font-weight: 300; font-style: italic; }
-.ft-opensans-bold { .ft-opensans; font-weight: bold; }
-.ft-opensans-bold-italic { .ft-opensans; font-weight: bold; font-style: italic; }
-.ft-raleway { font-family: 'Raleway', sans-serif; font-weight: normal; }
-.ft-raleway-medium { .ft-raleway; font-weight: 500; }
-.ft-raleway-heavy { .ft-raleway; font-weight: 900; }
+// Fabel
+.ft-fabfelt                 { font-family: 'fabfeltscriptbold', sans-serif; }
 
+// Freight
 
 // Gather icons classes from https://use.fonticons.com/kits/49ec3664/49ec3664.css to avoid having to know code when using an icon
 .icon-user{font:normal normal normal 14px/1 'Donut'; content:'\f000';}
 .icon-times-circle-o{font:normal normal normal 14px/1 'Donut'; content:'\f001';}
 .icon-ban{font:normal normal normal 14px/1 'Donut'; content:'\f002';}
 .icon-arrow-right{font:normal normal normal 14px/1 'Donut'; content:'\f003';}
-.icon-hello{font:normal normal normal 14px/1 'Donut'; content:'\f005';}
 .icon-in{font:normal normal normal 14px/1 'Donut'; content:'\f006';}
 .icon-kick{font:normal normal normal 14px/1 'Donut'; content:'\f007';}
 .icon-op{font:normal normal normal 14px/1 'Donut'; content:'\f008';}
@@ -152,3 +120,9 @@
 .icon-triangle-up{font:normal normal normal 14px/1 'Donut'; content:'\f040';}
 .icon-refresh{font:normal normal normal 14px/1 'Donut'; content:'\f041';}
 .icon-public{font:normal normal normal 14px/1 'Donut'; content:'\f042';}
+.icon-star{font:normal normal normal 14px/1 'Donut'; content:'\f043';}
+.icon-file{font:normal normal normal 14px/1 'Donut'; content:'\f044';}
+.icon-info-circle{font:normal normal normal 14px/1 'Donut'; content:'\f045';}
+.icon-ellipsis-v{font:normal normal normal 14px/1 'Donut'; content:'\f048';}
+.icon-list{font:normal normal normal 14px/1 'Donut'; content:'\f049';}
+.icon-verified-user{font:normal normal normal 14px/1 'Donut'; content:'\f04a';}

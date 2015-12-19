@@ -2,14 +2,11 @@ var $ = require('jquery');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
-var app = require('../models/app');
-var client = require('../libs/client');
+var app = require('../libs/app');
 var EventsView = require('./events');
 var InputView = require('./input');
-var confirmationView = require('./modal-confirmation');
 var TopicView = require('./room-topic');
 var UsersView = require('./room-users');
-var date = require('../libs/date');
 
 var RoomView = Backbone.View.extend({
   tagName: 'div',
@@ -18,18 +15,15 @@ var RoomView = Backbone.View.extend({
 
   hasBeenFocused: false,
 
+  reconnect: false,
+
   template: require('../templates/discussion-room.html'),
 
   events: {
-    'click .op-user': 'opUser',
-    'click .deop-user': 'deopUser',
-    'click .kick-user': 'kickUser',
-    'click .ban-user': 'banUser',
-    'click .voice-user': 'voiceUser',
-    'click .devoice-user': 'devoiceUser',
     'click .share .facebook': 'shareFacebook',
     'click .share .twitter': 'shareTwitter',
-    'click .share .googleplus': 'shareGoogle'
+    'click .share .googleplus': 'shareGoogle',
+    'click .mark-as-viewed': 'removeUnviewedBlock'
   },
 
   initialize: function () {
@@ -38,7 +32,9 @@ var RoomView = Backbone.View.extend({
     this.listenTo(this.model, 'change:poster', this.onPoster);
     this.listenTo(this.model, 'change:posterblured', this.onPosterBlured);
     this.listenTo(this.model, 'change:color', this.onColor);
+    this.listenTo(this.model, 'change:allow_group_member', this.onChangeAllowGroupMember);
     this.listenTo(this.model, 'setPrivate', this.onPrivate);
+    this.listenTo(this.model, 'change:unviewed', this.onMarkAsViewed);
 
     this.render();
 
@@ -55,22 +51,15 @@ var RoomView = Backbone.View.extend({
       model: this.model
     });
     this.usersView = new UsersView({
-      el: this.$('.side .users'),
+      el: this.$('.side'),
       model: this.model,
       collection: this.model.users
     });
-
-    this.$privateTooltip = this.$('.private');
-    if (this.model.get('mode') === 'public') {
-      this.$privateTooltip.hide();
-    }
   },
   render: function () {
     var data = this.model.toJSON();
 
     // owner
-    var owner = this.model.get('owner').toJSON();
-    data.owner = owner;
     data.isOwner = this.model.currentUserIsOwner();
     data.isOp = this.model.currentUserIsOp();
     data.isAdmin = this.model.currentUserIsAdmin();
@@ -90,8 +79,13 @@ var RoomView = Backbone.View.extend({
     // room mode
     data.mode = this.model.get('mode');
 
+    // room default
+    data.default = (this.model.get('group_id'))
+      ? (this.model.get('group_default') === data.room_id)
+      : false;
+
     // share widget
-    var share = 'share-room-' + this.model.get('name').replace('#', '').toLocaleLowerCase();
+    var share = 'share-room-' + this.model.get('id');
     this.share = {
       class: share,
       selector: '.' + share
@@ -99,12 +93,16 @@ var RoomView = Backbone.View.extend({
     data.share = this.share.class;
 
     // dropdown
-    data.dropdown = require('../templates/dropdown-room-actions.html')({
+    var dropdown = require('../templates/dropdown-room-actions.html')({
       data: data
     });
 
     // render
-    var html = this.template(data);
+    var html = this.template({
+      data: data,
+      dropdown: dropdown
+    });
+    this.$el.attr('data-identifier', this.model.get('identifier'));
     this.$el.html(html);
     this.$el.hide();
 
@@ -132,119 +130,27 @@ var RoomView = Backbone.View.extend({
       if (!this.hasBeenFocused) {
         this.onFirstFocus();
       }
+
+      if (this.reconnect) {
+        this.onFirstFocusAfterReconnect();
+      }
+      this.reconnect = false;
       this.hasBeenFocused = true;
 
-      // refocus an offline one after few times
-      date.from('fromnow', this.$('.ago span'));
+      this.eventsView.onScroll();
     } else {
       this.$el.hide();
     }
   },
   onFirstFocus: function () {
-    // @todo : on reconnect (only), remove all events in view before requesting history
     this.eventsView.requestHistory('bottom');
     this.eventsView.scrollDown();
-    this.model.fetchUsers();
+    this.model.users.fetchUsers();
   },
-
-  /**
-   * User actions methods
-   */
-
-  _showUserListModal: function () {
-    if (this.topicView.isUserModelRequired()) {
-      this.topicView.loadUserModal();
-    }
-  },
-
-  opUser: function (event) {
-    event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
-      return false;
-    }
-    var userId = $(event.currentTarget).data('userId');
-    if (!userId) {
-      return;
-    }
-    var that = this;
-    confirmationView.open({}, function () {
-      client.roomOp(that.model.get('id'), userId, null, function (err) {
-        if (err) {
-          return;
-        }
-      });
-    });
-  },
-  deopUser: function (event) {
-    event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
-      return false;
-    }
-    var userId = $(event.currentTarget).data('userId');
-    if (!userId) {
-      return;
-    }
-    var that = this;
-    confirmationView.open({}, function () {
-      client.roomDeop(that.model.get('id'), userId, null, function (err) {
-        if (err) {
-          return;
-        }
-      });
-    });
-  },
-  kickUser: function (event) {
-    event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
-      return false;
-    }
-    var userId = $(event.currentTarget).data('userId');
-    if (!userId) {
-      return;
-    }
-    var that = this;
-    confirmationView.open({input: true}, function (reason) {
-      client.roomKick(that.model.get('id'), userId, null, reason);
-    });
-  },
-  banUser: function (event) {
-    event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
-      return false;
-    }
-    var userId = $(event.currentTarget).data('userId');
-    if (!userId) {
-      return;
-    }
-    var that = this;
-    confirmationView.open({input: true}, function (reason) {
-      client.roomBan(that.model.get('id'), userId, null, reason);
-    });
-  },
-  voiceUser: function (event) {
-    event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
-      return false;
-    }
-    var userId = $(event.currentTarget).data('userId');
-    if (!userId) {
-      return;
-    }
-    client.roomVoice(this.model.get('id'), userId, null);
-  },
-  devoiceUser: function (event) {
-    event.preventDefault();
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
-      return false;
-    }
-    var userId = $(event.currentTarget).data('userId');
-    if (!userId) {
-      return;
-    }
-    var that = this;
-    confirmationView.open({input: true}, function (reason) {
-      client.roomDevoice(that.model.get('id'), userId, null, reason);
-    });
+  onFirstFocusAfterReconnect: function () {
+    this.eventsView.replaceDisconnectBlocks();
+    this.eventsView.scrollDown();
+    this.model.users.fetchUsers();
   },
 
   /**
@@ -275,9 +181,26 @@ var RoomView = Backbone.View.extend({
   onPosterBlured: function (model, url) {
     this.$('div.blur').css('background-image', 'url(' + url + ')');
   },
+  onChangeAllowGroupMember: function (model, value, options) {
+    this.$('span.label').attr('data-original-title', i18next.t('global.mode.description.private' + (value
+        ? '-group'
+        : '')));
+    this.$('span.label').text(i18next.t('global.mode.title.private' + (value
+        ? '-group'
+        : '')));
+  },
   onPrivate: function (data) {
     this.model.set('mode', 'private');
-    this.$privateTooltip.show();
+    this.$('span.label').attr('data-original-title', i18next.t('global.mode.description.private' + (data.allow_user_request
+        ? '-invites'
+        : '') + (data.allow_group_member
+        ? '-group'
+        : '')));
+    this.$('span.label').text(i18next.t('global.mode.title.private' + (data.allow_user_request
+        ? '-invites'
+        : '') + (data.allow_group_member
+        ? '-group'
+        : '')));
   },
 
   /**
@@ -307,6 +230,23 @@ var RoomView = Backbone.View.extend({
     this.$el.find('[data-toggle="tooltip"]').tooltip({
       container: 'body'
     });
+  },
+
+  removeUnviewedBlock: function (event) {
+    event.preventDefault();
+    var elt = $(event.currentTarget).closest('.unviewed-top ');
+    elt.fadeOut(1000, function () {
+      elt.remove();
+    });
+  },
+
+  // only care about models to set a viewed
+  onMarkAsViewed: function (data) {
+    if (data.get('unviewed') === true) {
+      return;
+    }
+
+    this.eventsView.markAsViewed();
   }
 });
 

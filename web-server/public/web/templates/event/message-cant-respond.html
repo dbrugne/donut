@@ -1,0 +1,10 @@
+<div class="block message has-hover me"
+     id="<%= data.id %>"
+     data-user-id="<%= data.user_id %>"
+     data-time="<%= data.time %>">
+<span class="username open-user-profile" data-user-id="<%= data.user_id %>"  style="display:none">@<%=data.username%></span>
+<div class="ctn">
+    <div class="text"><%= t('chat.blocked.cant-answer', {username: data.username}) %></div>
+</div>
+<div class="date pull-right"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
+</div>

@@ -1,7 +1,7 @@
 'use strict';
 var errors = require('../../../util/errors');
 var async = require('async');
-var oneEmitter = require('../../../util/oneEmitter');
+var oneEmitter = require('../../../util/one-emitter');
 
 var Handler = function (app) {
   this.app = app;
@@ -49,22 +49,19 @@ handler.call = function (data, session, next) {
 
     function historizeAndEmit (callback) {
       var event = {
-        by_user_id: user.id,
-        by_username: user.username,
-        by_avatar: user._avatar(),
-        user_id: bannedUser.id,
-        username: bannedUser.username,
-        avatar: bannedUser._avatar()
+        user_id: user.id,
+        username: user.username,
+        avatar: user._avatar(),
+        to_user_id: bannedUser.id,
+        to_username: bannedUser.username,
+        to_avatar: bannedUser._avatar()
       };
-      oneEmitter(that.app, {
-        from: user._id,
-        to: bannedUser._id
-      }, 'user:ban', event, callback);
+      oneEmitter(that.app, user, bannedUser, 'user:ban', event, callback);
     }
 
   ], function (err) {
     if (err) {
-     return errors.getHandler('user:ban', next)(err);
+      return errors.getHandler('user:ban', next)(err);
     }
 
     next(null, {});

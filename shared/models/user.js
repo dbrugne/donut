@@ -8,10 +8,15 @@ var cloudinary = require('../util/cloudinary');
 
 var userSchema = mongoose.Schema({
   username: String,
-  name: String,
+  realname: String,
+  emails: [{
+    email: {type: String},
+    confirmed: {type: Boolean, default: false}
+  }],
   admin: {type: Boolean, default: false},
   deleted: {type: Boolean, default: false},
   suspended: {type: Boolean, default: false},
+  confirmed: {type: Boolean, default: false},
   bio: String,
   location: String,
   website: mongoose.Schema.Types.Mixed,
@@ -31,10 +36,11 @@ var userSchema = mongoose.Schema({
     name: String
   },
   preferences: mongoose.Schema.Types.Mixed,
-  onetoones: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
+  onetoones: [{type: mongoose.Schema.ObjectId, ref: 'User'}], // @todo yfuks remove after prod migration (allow migration task to work with model)
   ones: [{
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
-    lastactivity_at: {type: Date, default: Date.now}
+    last_event_at: {type: Date, default: Date.now},
+    last_event: {type: mongoose.Schema.ObjectId, ref: 'HistoryOne'}
   }],
   blocked: [{type: mongoose.Schema.ObjectId, ref: 'Room'}],
   unviewed: [{
@@ -46,13 +52,11 @@ var userSchema = mongoose.Schema({
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
     banned_at: {type: Date, default: Date.now}
   }],
-  positions: {type: String},
   created_at: {type: Date, default: Date.now},
   lastlogin_at: {type: Date},
   online: Boolean,
   lastonline_at: {type: Date},
   lastoffline_at: {type: Date}
-
 });
 
 /**
@@ -160,8 +164,6 @@ userSchema.methods.isAllowedToConnect = function () {
   var err = null;
   if (this.suspended === true) {
     err = 'suspended';
-  } else if (!this.username) {
-    err = 'no-username';
   }
 
   return {allowed: (!err), err: err};
@@ -206,8 +208,8 @@ userSchema.statics.findByUid = function (uid) {
  * @param callback
  */
 userSchema.statics.findRoomUsersHavingPreference = function (room, preferenceName, userId, callback) {
-  var keyNothing = 'preferences.room:notif:nothing:__what__'.replace('__what__', room.name);
-  var keyTopic = 'preferences.room:notif:__preference__:__what__'.replace('__preference__', preferenceName).replace('__what__', room.name);
+  var keyNothing = 'preferences.room:notif:nothing:__what__'.replace('__what__', room.id);
+  var keyTopic = 'preferences.room:notif:__preference__:__what__'.replace('__preference__', preferenceName).replace('__what__', room.id);
 
   var criteria = {
     _id: {
@@ -266,7 +268,7 @@ userSchema.statics.retrieveUser = function (username) {
  */
 userSchema.statics.preferencesKeys = function () {
   return {
-    'browser:exitpopin': {default: true},
+    'browser:exitpopin': {default: false},
     'browser:welcome': {default: true},
     'browser:sounds': {default: true},
     'notif:channels:desktop': {default: false},
@@ -274,7 +276,8 @@ userSchema.statics.preferencesKeys = function () {
     'notif:channels:mobile': {default: true},
 
     'notif:usermessage': {default: true},
-    'notif:roominvite': {default: true},
+    'notif:invite': {default: true},
+    'chatmode:compact': {default: false},
 
     'room:notif:nothing:__what__': {default: false},
     'room:notif:usermention:__what__': {default: true},
@@ -343,15 +346,23 @@ userSchema.methods.preferencesValue = function (key) {
   return preferencesConfig[_key]['default'];
 };
 
+userSchema.methods.hasAllowedEmail = function (domains) {
+  var found = _.find(this.emails, _.bind(function (e) {
+    var domain = '@' + e.email.split('@')[1].toLowerCase();
+    return (domains.indexOf(domain) !== -1 && e.confirmed);
+  }, this));
+  return (typeof found !== 'undefined');
+};
+
 /** *******************************************************************************
  *
  * Unviewed
  *
  *********************************************************************************/
 
-userSchema.methods.hasUnviewedRoomMessage = function (room) {
+userSchema.methods.findRoomFirstUnviewed = function (room) {
   if (!this.unviewed) {
-    return false;
+    return;
   }
 
   var found = _.find(this.unviewed, function (e) {
@@ -359,36 +370,39 @@ userSchema.methods.hasUnviewedRoomMessage = function (room) {
       return true;
     }
   });
-
-  return !!found;
-};
-userSchema.methods.hasUnviewedOneMessage = function (user) {
-  if (!this.unviewed) {
-    return false;
+  if (!found) {
+    return;
   }
-
+  return found.event;
+};
+userSchema.methods.findOneFirstUnviewed = function (user) {
+  if (!this.unviewed) {
+    return;
+  }
   var found = _.find(this.unviewed, function (u) {
     if (u.user && u.user.toString() === user.id) {
       return true;
     }
   });
-
-  return !!found;
+  if (!found) {
+    return;
+  }
+  return found.event;
 };
-userSchema.statics.setUnviewedRoomMessage = function (roomId, usersId, userId, event, fn) {
+userSchema.statics.setUnviewedRoomMessage = function (roomId, usersId, userId, eventId, fn) {
   this.update({
     _id: {$in: usersId, $nin: [userId]},
     'unviewed.room': {$nin: [roomId]}
   }, {
-    $addToSet: {unviewed: {room: roomId, event: event}}
+    $addToSet: {unviewed: {room: roomId, event: eventId}}
   }, {multi: true}, fn);
 };
-userSchema.statics.setUnviewedOneMessage = function (fromUserId, toUserId, event, fn) {
+userSchema.statics.setUnviewedOneMessage = function (fromUserId, toUserId, eventId, fn) {
   this.update({
     _id: {$in: [toUserId]},
     'unviewed.user': {$nin: [fromUserId]}
   }, {
-    $addToSet: {'unviewed': {user: fromUserId, event: event}}
+    $addToSet: {unviewed: {user: fromUserId, event: eventId}}
   }, fn);
 };
 userSchema.methods.resetUnviewedRoom = function (roomId, fn) {
@@ -487,5 +501,32 @@ userSchema.methods.posterId = function () {
   var id = data[1].substr(0, data[1].lastIndexOf('.'));
   return id;
 };
+userSchema.methods.findOnetoone = function (userId) {
+  if (!this.ones || !this.ones.length) {
+    return;
+  }
 
+  return _.find(this.ones, function (onetoone) {
+    if (onetoone.user._id) {
+       // populated
+      return (onetoone.user.id === userId);
+    } else {
+      return (onetoone.user.toString() === userId);
+    }
+  });
+};
+userSchema.methods.isOnetoone = function (userId) {
+  var doc = this.findOnetoone(userId);
+  return (typeof doc !== 'undefined');
+};
+userSchema.methods.updateActivity = function (userId, eventId, callback) {
+  if (this.isOnetoone(userId.toString())) {
+    this.constructor.update(
+       {_id: this._id, 'ones.user': userId},
+       {$set: {'ones.$.last_event_at': Date.now(), 'ones.$.last_event': eventId}}, callback);
+  } else {
+    var oneuser = {user: userId, last_event_at: Date.now(), last_event: eventId};
+    this.update({$addToSet: {ones: oneuser}}, callback);
+  }
+};
 module.exports = mongoose.model('User', userSchema);

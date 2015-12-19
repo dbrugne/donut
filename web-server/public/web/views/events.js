@@ -1,34 +1,42 @@
 var $ = require('jquery');
 var _ = require('underscore');
+var async = require('async');
 var Backbone = require('backbone');
-var app = require('../models/app');
+var app = require('../libs/app');
 var date = require('../libs/date');
 var EventsDateView = require('./events-date');
-var EventsViewedView = require('./events-viewed');
 var EventsHistoryView = require('./events-history');
 var EventsSpamView = require('./events-spam');
 var EventsEditView = require('./events-edit');
 var windowView = require('./window');
 var EventsEngine = require('../libs/events');
+var currentUser = require('../libs/app').user;
 
 module.exports = Backbone.View.extend({
   template: require('../templates/events.html'),
 
   events: {
-    'click .go-to-top a': 'scrollTop',
-    'click .go-to-bottom a': 'scrollDown',
     'shown.bs.dropdown .actions': 'onMessageMenuShow'
   },
 
+  markAsViewedTimeout: null,
+
   scrollTopTimeout: null,
 
-  scrollVisibleTimeout: null,
+  chatmode: false,
 
   scrollWasOnBottom: true, // ... before unfocus (scroll position is not
                            // available when discussion is hidden (default:
                            // true, for first focus)
 
   initialize: function () {
+    this.listenTo(app.client, 'preferences:update', _.bind(function () {
+      if (currentUser.discussionMode() !== this.chatmode) {
+        this.$realtime.toggleClass('compact');
+        this.chatmode = currentUser.discussionMode();
+      }
+    }, this));
+    this.chatmode = currentUser.discussionMode();
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(this.model, 'windowRefocused', this.onScroll);
     this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
@@ -38,11 +46,8 @@ module.exports = Backbone.View.extend({
 
     this.engine = new EventsEngine({
       model: this.model,
+      currentUserId: currentUser.get('user_id'),
       el: this.$realtime
-    });
-    this.eventsViewedView = new EventsViewedView({
-      el: this.$scrollable,
-      model: this.model
     });
     this.eventsHistoryView = new EventsHistoryView({
       el: this.$el,
@@ -74,30 +79,22 @@ module.exports = Backbone.View.extend({
   render: function () {
     // render view
     var modelJson = this.model.toJSON();
-    if (modelJson.owner) {
-      modelJson.owner = modelJson.owner.toJSON();
-    }
-    var created_at = (this.model.get('created_at'))
+    modelJson.created_at = (this.model.get('created_at'))
       ? date.dateTime(this.model.get('created_at'))
       : '';
-    var created_time = (this.model.get('created_at'))
+    modelJson.created_time = (this.model.get('created_at'))
       ? date.shortTimeSeconds(this.model.get('created_at'))
       : '';
     var html = this.template({
+      chatmode: this.chatmode,
       model: modelJson,
-      created_at: created_at,
-      created_time: created_time,
-      isOwner: (this.model.get('type') === 'room' && this.model.currentUserIsOwner()),
-      time: Date.now()
+      isOwner: (this.model.get('type') === 'room' && this.model.currentUserIsOwner())
     });
     this.$el.append(html);
 
     this.$scrollable = this.$el;
     this.$scrollableContent = this.$scrollable.find('.scrollable-content');
     this.$realtime = this.$scrollableContent.find('.realtime');
-
-    this.$goToTop = this.$('.go-to-top');
-    this.$goToBottom = this.$('.go-to-bottom');
 
     this.$scrollable.on('scroll', _.bind(function () {
       this.onScroll();
@@ -106,7 +103,6 @@ module.exports = Backbone.View.extend({
     this.scrollDown();
   },
   _remove: function () {
-    this.eventsViewedView.remove();
     this.eventsDateView.remove();
     this.eventsHistoryView.remove();
     this.eventsSpamView.remove();
@@ -143,31 +139,10 @@ module.exports = Backbone.View.extend({
     this._scrollTimeoutCleanup();
 
     var currentScrollPosition = this.$scrollable.scrollTop();
-    var bottom = this._scrollBottomPosition();
 
     this.eventsDateView.scroll({
       currentScrollPosition: currentScrollPosition
     });
-
-    // toggle the "go to top and bottom" links
-    if (bottom > 100) { // content should be longer than 100px of viewport to avoid link display for
-      // few pixels
-      if (currentScrollPosition < 30) {
-        this.$goToTop.hide();
-      } else {
-        this.$goToTop.show();
-      }
-      // possible performance issue
-      if (currentScrollPosition >= (bottom - 10)) {
-        this.$goToBottom.hide().removeClass('unread');
-      } else {
-        this.$goToBottom.show();
-      }
-    } else {
-      // nothing to scroll, hide links
-      this.$goToBottom.hide().removeClass('unread');
-      this.$goToTop.hide();
-    }
 
     var that = this;
 
@@ -181,24 +156,22 @@ module.exports = Backbone.View.extend({
       }, 1500);
     }
 
-    // everywhere
-    this.scrollVisibleTimeout = setTimeout(function () {
-      // scroll haven't change until timeout
-      if (that.$scrollable.scrollTop() === currentScrollPosition) {
-        if (that.isVisible()) {
-          that.eventsViewedView.markVisibleAsViewed();
-        }
+    // start timeout for mark as viewed detection
+    this.markAsViewedTimeout = setTimeout(_.bind(function () {
+      if (!this.isVisible()) {
+        return;
       }
-    }, 2000);
+      this.model.markAsViewed();
+    }, this), 2000); // 2s
   },
   _scrollTimeoutCleanup: function () {
     if (this.scrollTopTimeout) {
       clearInterval(this.scrollTopTimeout);
       this.scrollTopTimeout = null;
     }
-    if (this.scrollVisibleTimeout) {
-      clearInterval(this.scrollVisibleTimeout);
-      this.scrollVisibleTimeout = null;
+    if (this.markAsViewedTimeout) {
+      clearInterval(this.markAsViewedTimeout);
+      this.markAsViewedTimeout = null;
     }
   },
   _scrollBottomPosition: function () {
@@ -219,9 +192,14 @@ module.exports = Backbone.View.extend({
   scrollDown: function () {
     this.$scrollable.scrollTop(this.$scrollableContent.outerHeight(true));
   },
-  scrollTop: function () {
-    var targetTop = this.eventsHistoryView.getLoaderTop();
-    this.$scrollable.scrollTop(targetTop); // add a 8px margin
+  markAsViewed: function () {
+    var elt = this.$el.find('.block.unviewed');
+    if (elt) {
+      elt.fadeOut(1000, function () {
+        elt.remove();
+      });
+    }
+    this.eventsDateView.markAsViewed();
   },
 
   /** **************************************************************************************************************
@@ -229,7 +207,7 @@ module.exports = Backbone.View.extend({
    * Events rendering
    *
    *****************************************************************************************************************/
-  addFreshEvent: function (model) {
+  addFreshEvent: function (type, data) {
     // scrollDown only if already on bottom before DOM insertion
     var needToScrollDown = (
       (this.model.get('focused') === true && this.isScrollOnBottom()) ||
@@ -237,13 +215,11 @@ module.exports = Backbone.View.extend({
     );
 
     // render and insert
-    this.engine.insertBottom(model);
+    this.engine.insertBottom(type, data);
 
     // scrollDown
     if (needToScrollDown && !this.eventsEditView.messageUnderEdition) {
       this.scrollDown();
-    } else {
-      this.$goToBottom.show().addClass('unread');
     }
   },
   addBatchEvents: function (events) {
@@ -253,13 +229,9 @@ module.exports = Backbone.View.extend({
     this.eventsHistoryView.requestHistory(scrollTo);
   },
   onMessageMenuShow: function (event) {
-    var ownerUserId = '';
-    if (this.model.get('owner')) {
-      ownerUserId = this.model.get('owner').get('user_id');
-    }
     var $event = $(event.currentTarget).closest('.block.message');
     var userId = $event.closest('[data-user-id]').data('userId');
-    var isMessageOwner = (ownerUserId === userId);
+    var isMessageOwner = (userId && this.model.get('owner_id') === userId);
 
     var isEditable = this.eventsEditView.isEditable($event);
 
@@ -283,5 +255,41 @@ module.exports = Backbone.View.extend({
       }
     });
     $(event.currentTarget).find('.dropdown-menu').html(html);
+  },
+  replaceDisconnectBlocks: function () {
+    var $lastEventDisconnect = this.$el.find('.realtime div.block.disconnect:last');
+    var that = this;
+
+    async.whilst(
+      function test () {
+        return $lastEventDisconnect.length;
+      },
+      function action (callback) {
+        var beforeLastDisconnectId = $lastEventDisconnect
+          .prevAll('div.block')
+          .not('.hello, .date')
+          .first()
+          .attr('id');
+
+        var afterLastDisconnectId = $lastEventDisconnect
+          .nextAll('div.block')
+          .not('.hello, .date')
+          .first()
+          .attr('id');
+
+        var $previousEvent = $lastEventDisconnect.prevAll('div.block').not('hello').first();
+
+        that.model.history(beforeLastDisconnectId, afterLastDisconnectId, null, function (event) {
+          if (!event.err) {
+            that.engine.replaceLastDisconnectBlock($lastEventDisconnect, $previousEvent, event.history);
+          }
+          $lastEventDisconnect = that.$el.find('.realtime div.block.disconnect:last');
+          return callback(null);
+        });
+      },
+      function back (err) {
+        return err;
+      }
+    );
   }
 });

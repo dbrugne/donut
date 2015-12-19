@@ -1,7 +1,6 @@
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
-var app = require('../models/app');
+var app = require('../libs/app');
 
 var AlertView = Backbone.View.extend({
   initialize: function () {
@@ -16,8 +15,7 @@ var AlertView = Backbone.View.extend({
       that.$message.html('');
       that.$alert
         .finish()
-        .slideUp('fast')
-        .removeClass('info warning error');
+        .slideUp('fast');
     });
   },
 
@@ -26,12 +24,14 @@ var AlertView = Backbone.View.extend({
    *
    * @param type could be 'info', 'warn' or 'error'
    * @param message
+   * @param noDelay
    * @returns {AlertView}
    */
   onAlert: function (type, message) {
     type = type || 'info';
     this.$message
       .html(message);
+
     this.$alert
       .finish()
       .removeClass('info warning error')
@@ -44,6 +44,5 @@ var AlertView = Backbone.View.extend({
   }
 
 });
-
 
 module.exports = AlertView;

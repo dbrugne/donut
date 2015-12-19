@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var conf = require('../../../config/index');
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
@@ -82,7 +82,8 @@ Connector.prototype.start = function (cb) {
     var ip = (socket.handshake.headers['x-forwarded-for'])
       ? socket.handshake.headers['x-forwarded-for']
       : socket.conn.remoteAddress;
-    logger.info('ws:authenticated', socket.decoded_token.username, ip);
+    var username = socket.decoded_token.username || 'none';
+    logger.info('ws:authenticated', username, ip);
 
     // add test event
     socket.on('ping', function (data) {

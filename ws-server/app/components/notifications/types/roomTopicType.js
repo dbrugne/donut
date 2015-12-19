@@ -1,12 +1,16 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var common = require('@dbrugne/donut-common/server');
 var _ = require('underscore');
 var async = require('async');
 var UserModel = require('../../../../../shared/models/user');
+var RoomModel = require('../../../../../shared/models/room');
 var NotificationModel = require('../../../../../shared/models/notification');
+var HistoryRoomModel = require('../../../../../shared/models/historyroom');
 var emailer = require('../../../../../shared/io/emailer');
 var utils = require('./../utils');
 var conf = require('../../../../../config/index');
+var parse = require('../../../../../shared/io/parse');
 
 module.exports = function (facade) {
   return new Notification(facade);
@@ -53,7 +57,7 @@ Notification.prototype.create = function (room, history, done) {
       _.each(users, function (user) {
         var model = NotificationModel.getNewModel(that.type, user._id, {
           event: historyModel._id,
-          name: roomModel.name
+          room: roomModel._id
         });
 
         model.to_browser = true;
@@ -74,27 +78,27 @@ Notification.prototype.create = function (room, history, done) {
         notificationsToCreate.push(model);
       });
 
-      return callback(null, historyModel, notificationsToCreate);
+      return callback(null, roomModel, historyModel, notificationsToCreate);
     },
 
-    function create (historyModel, notificationsToCreate, callback) {
+    function create (roomModel, historyModel, notificationsToCreate, callback) {
       NotificationModel.bulkInsert(notificationsToCreate, function (err, createdNotifications) {
         if (err) {
           return callback(err);
         }
 
-        logger.debug('roomTopicType.create ' + createdNotifications.length + ' notifications created');
-        return callback(null, historyModel, createdNotifications);
+        logger.info('roomTopicType.create ' + createdNotifications.length + ' notifications created');
+        return callback(null, roomModel, historyModel, createdNotifications);
       });
     },
 
-    function sendToBrowser (historyModel, createdNotifications, callback) {
+    function sendToBrowser (roomModel, historyModel, createdNotifications, callback) {
       if (!createdNotifications.length) {
         return callback(null);
       }
 
       async.eachLimit(createdNotifications, 5, function (model, _callback) {
-        that.sendToBrowser(model, historyModel, _callback);
+        that.sendToBrowser(roomModel, model, historyModel, _callback);
       }, callback);
     }
 
@@ -107,7 +111,7 @@ Notification.prototype.create = function (room, history, done) {
   });
 };
 
-Notification.prototype.sendToBrowser = function (model, history, done) {
+Notification.prototype.sendToBrowser = function (room, model, history, done) {
   var event = {
     id: model.id,
     time: model.time,
@@ -121,7 +125,7 @@ Notification.prototype.sendToBrowser = function (model, history, done) {
       },
       room: {
         id: history.room.id,
-        name: history.room.name,
+        name: room.getIdentifier(),
         avatar: history.room._avatar()
       },
       topic: history.data.topic
@@ -132,7 +136,7 @@ Notification.prototype.sendToBrowser = function (model, history, done) {
 
 Notification.prototype.sendEmail = function (model, done) {
   if (!model.data || !model.data.event) {
-    return logger.error('roomTopicType.sendEmail data.event left');
+    return done('roomTopicType.sendEmail data.event left');
   }
 
   async.waterfall([
@@ -143,7 +147,9 @@ Notification.prototype.sendEmail = function (model, done) {
       var topic = utils.mentionize(history.data.topic, {
         style: 'color: ' + conf.room.default.color + ';'
       });
-      emailer.roomTopic(model.user.getEmail(), history.user.username, history.room.name, topic, callback);
+      if (model.user.getEmail()) {
+        emailer.roomTopic(model.user.getEmail(), history.user.username, model.data.room.getIdentifier(), topic, callback);
+      }
     },
 
     function persist (callback) {
@@ -153,4 +159,59 @@ Notification.prototype.sendEmail = function (model, done) {
     }
 
   ], done);
+};
+
+Notification.prototype.sendMobile = function (model, done) {
+  if (!model.data || !model.data.event || !model.user || !model.user._id) {
+    return done('roomTopicType.sendMobile data left');
+  }
+
+  async.waterfall([
+
+    utils.retrieveHistoryRoom(model.data.event.toString()),
+
+    function send (history, callback) {
+      var topic = common.markup.toText(history.data.topic);
+      parse.roomTopic(model.user._id.toString(), model.data.room.getIdentifier(), topic, model.data.room._avatar(), callback);
+    },
+
+    function persist (callback) {
+      model.sent_to_email = true;
+      model.sent_to_email_at = new Date();
+      model.save(callback);
+    }
+
+  ], done);
+};
+
+Notification.prototype.populateNotification = function (notification, done) {
+  if (!notification || !notification.data || !notification.data.event) {
+    return done('roomMessage population error: params');
+  }
+
+  HistoryRoomModel.findOne({_id: notification.data.event.toString()})
+    .populate('user', 'username avatar color facebook')
+    .populate('by_user', 'username avatar color facebook')
+    .populate('room', 'avatar color name group')
+    .exec(function (err, event) {
+      if (err) {
+        return done(err);
+      }
+      if (!event) {
+        return done(null);
+      }
+
+      RoomModel.populate(event, {
+        path: 'room.group',
+        model: 'Group',
+        select: 'name'
+      }, function (err, docs) {
+        if (err) {
+          return done(err);
+        }
+
+        notification.data.event = docs;
+        return done(null, notification);
+      });
+    });
 };

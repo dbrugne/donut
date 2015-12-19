@@ -1,0 +1,44 @@
+@card-height: 310px;
+@card-width: 300px;
+.cards { .scrollbar-grey-thin; overflow: auto; .display-flex; .flex-flow(row wrap); margin: 15px; .justify-content(center);
+  .card { margin: 5px; height: @card-height; width: @card-width; float: left; border:1px solid @cl-subtext5; background-color: #FFF;
+    &.empty { box-shadow:none; height: 1px; margin: 0 20px; }
+    .design-room1 { height: @card-height; border-width:0 0 0 3px; border-style:solid;
+      > .ctn { height:100%; overflow: hidden; border-left: 1px solid @cl-border; border-right: 1px solid @cl-border; border-bottom: 1px solid @cl-border;
+        .user-avatar { .border-shadow; display:block; background-size: 85px; background-repeat: no-repeat; background-position: center center; width: 85px; height: 85px; margin: 10px auto; }
+        .name { line-height: 1.9rem; word-break: normal; overflow: hidden; text-overflow: ellipsis; margin: 0 10px; text-align: center;
+          .value { white-space: nowrap; font-size: 1.9rem; .ft-opensans-extra-bold; }
+          .othername { color: @cl-subtext20; font-weight: normal; }
+        }
+        .description { line-height: 2rem; margin: 15px 10px 15px; overflow: hidden; text-overflow: ellipsis; max-height: 75px; }
+        .actions { margin:5px 10px 10px 5px;
+          .mode-ctn { width: 50%; font-weight:normal; }
+          .btn i { vertical-align: sub; }
+        }
+      }
+    }
+
+    &.card-room .design-room1 {
+      .mode { position: absolute; top:10px; right:10px; }
+    }
+    &.card-user .design-room1 {
+      > .ctn {
+        .description { max-height: 45px; }
+      }
+      .actions { margin:5px 10px 10px 5px;
+        .mode-ctn { display:none; }
+      }
+    }
+    &.card-group .design-room1 {
+      .group-type { padding: 3px 3px 3px 3px; top: -7px; position: absolute; left: -7px; border: 2px solid @cl-border; background-color: #FFF;
+        i { font-size: 2rem; line-height: 2rem; }
+      }
+      > .ctn {
+        .name { margin-top:20px; text-align: left; }
+        .description {  max-height: 101px; }
+      }
+      .actions .mode-ctn { .display-flex; .flex-flow(column nowrap); .align-items(center); .justify-content(center); }
+    }
+  }
+  .spinner { text-align: center; width: 100%; }
+}

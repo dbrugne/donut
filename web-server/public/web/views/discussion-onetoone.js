@@ -1,7 +1,6 @@
 var Backbone = require('backbone');
-var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
-var app = require('../models/app');
+var app = require('../libs/app');
 var EventsView = require('./events');
 var InputView = require('./input');
 var date = require('../libs/date');
@@ -12,6 +11,8 @@ var OneToOnePanelView = Backbone.View.extend({
   className: 'discussion',
 
   hasBeenFocused: false,
+
+  reconnect: false,
 
   template: require('../templates/discussion-onetoone.html'),
 
@@ -24,6 +25,7 @@ var OneToOnePanelView = Backbone.View.extend({
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(this.model, 'change:color', this.onColor);
     this.listenTo(this.model, 'change:avatar', this.onAvatar);
+    this.listenTo(this.model, 'change:realname', this.onRealname);
     this.listenTo(this.model, 'change:poster', this.onPoster);
     this.listenTo(this.model, 'change:location', this.onLocation);
     this.listenTo(this.model, 'change:website', this.onWebsite);
@@ -47,9 +49,6 @@ var OneToOnePanelView = Backbone.View.extend({
     // avatar
     data.avatar = common.cloudinary.prepare(data.avatar, 100);
 
-    // url
-    data.url = '/user/' + ('' + data.username).toLocaleLowerCase();
-
     // dropdown
     data.dropdown = require('../templates/dropdown-one-actions.html')({
       data: data
@@ -57,8 +56,11 @@ var OneToOnePanelView = Backbone.View.extend({
 
     // render
     var html = this.template(data);
+    this.$el.attr('data-identifier', this.model.get('identifier'));
     this.$el.html(html);
     this.$el.hide();
+
+    this.$statusBlock = this.$('.header .status-block');
 
     // other
     this.onStatus();
@@ -83,20 +85,28 @@ var OneToOnePanelView = Backbone.View.extend({
       if (!this.hasBeenFocused) {
         this.onFirstFocus();
       }
+
+      if (this.reconnect) {
+        this.onFirstFocusAfterReconnect();
+      }
       this.hasBeenFocused = true;
+      this.reconnect = false;
 
       // refocus an offline one after few times
       date.from('fromnow', this.$('.ago span'));
+      this.eventsView.onScroll();
     } else {
       this.$el.hide();
     }
   },
   onFirstFocus: function () {
-    // @todo : on reconnect (only), remove all events in view before requesting history
     this.eventsView.requestHistory('bottom');
     this.eventsView.scrollDown();
   },
-
+  onFirstFocusAfterReconnect: function () {
+    this.eventsView.replaceDisconnectBlocks();
+    this.eventsView.scrollDown();
+  },
   /**
    * Update user details methods
    */
@@ -108,6 +118,9 @@ var OneToOnePanelView = Backbone.View.extend({
   onAvatar: function (model, value, options) {
     var url = common.cloudinary.prepare(value, 100);
     this.$('.header .avatar img').attr('src', url);
+  },
+  onRealname: function (model, value, options) {
+    this.$('.header .name .realname').html('<span class="mr5">' + value + '</span>');
   },
   onPoster: function (model, url, options) {
     this.$('div.side').css('background-image', 'url(' + url + ')');
@@ -123,22 +136,12 @@ var OneToOnePanelView = Backbone.View.extend({
     this.$('.header .website').text(value);
   },
   onStatus: function () {
-    if (this.model.get('status') === 'online') {
-      this.$('.header .status-block em').text(i18next.t('global.online'));
-      this.$('.header .status')
-        .removeClass('offline online')
-        .addClass('online');
-      this.$('.ago').hide();
-    } else {
-      this.$('.header .status-block em').text(i18next.t('global.offline'));
-      this.$('.header .status')
-        .removeClass('offline online')
-        .addClass('offline');
+    this.$statusBlock.attr('class', 'status-block').addClass(this.model.get('status'));
 
+    if (this.model.get('status') !== 'online') {
       var $ago = this.$('.ago span');
       $ago.attr('data-time', this.model.get('onlined'));
       date.from('fromnow', $ago);
-      this.$('.ago').show();
     }
   },
   onBannedChange: function (model, value, options) {
@@ -149,4 +152,5 @@ var OneToOnePanelView = Backbone.View.extend({
     }
   }
 });
+
 module.exports = OneToOnePanelView;

@@ -32,7 +32,7 @@ handler.call = function (data, session, next) {
         }
 
         if (notification.user.toString() !== user.id) {
-          return callback('no-right-user');
+          return callback('wrong-user');
         }
 
         return callback(null, notification);

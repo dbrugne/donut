@@ -35,7 +35,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
-        return callback('no-op-owner-admin');
+        return callback('not-op-owner-admin');
       }
 
       if (!event) {
@@ -66,7 +66,7 @@ handler.call = function (data, session, next) {
         room_id: room.id,
         event: event.id
       };
-      that.app.globalChannelService.pushMessage('connector', 'room:message:spam', eventToSend, room.name, {}, callback);
+      that.app.globalChannelService.pushMessage('connector', 'room:message:spam', eventToSend, room.id, {}, callback);
     }
 
   ], function (err) {

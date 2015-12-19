@@ -2,7 +2,7 @@
 var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
-var roomEmitter = require('../../../util/roomEmitter');
+var roomEmitter = require('../../../util/room-emitter');
 
 var Handler = function (app) {
   this.app = app;
@@ -32,7 +32,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isIn(user.id)) {
-        return callback('no-in');
+        return callback('not-in');
       }
 
       return callback(null);
@@ -58,7 +58,7 @@ handler.call = function (data, session, next) {
         var parallels = [];
         _.each(sids, function (sid) {
           parallels.push(function (fn) {
-            that.app.globalChannelService.leave(room.name, user.id, sid, function (err) {
+            that.app.globalChannelService.leave(room.id, user.id, sid, function (err) {
               if (err) {
                 return fn(sid + ': ' + err);
               }

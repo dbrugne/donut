@@ -4,10 +4,10 @@
   width: 100%;
   z-index: 11;
   font-size: 1.4rem; // #chat #drawer
-
   .opacity { // #chat #drawer .opacity
     width: 100%;
     height: 100%;
+    background-color: rgba(0,0,0,0.8);
     .wrap { // #chat #drawer .opacity .wrap
       position: relative;
       left: -10000px;
@@ -17,6 +17,7 @@
         width: 100%;
         height: 100%;
         padding: 0;
+        margin-left: 0;
         background-color: @cl-background;
         .border-radiuses(3px, 0, 0, 0);
         > div {
@@ -31,14 +32,14 @@
             font-size: 2rem;
             font-weight: 600;
             border-bottom: 1px solid @cl-subtext10;
-            border-top-right-radius: 13px;
+            border-top-right-radius: 3px;
             text-shadow: 1px 1px 1px @cl-subtext15;
           }
           .ctn-drawer {
-            padding: 20px 15px 0;
+            padding: 20px 15px 20px;
           }
           .roomname {
-            .ft-raleway-heavy;
+            .ft-opensans-extra-bold;
             font-size: 2.4rem;
           }
           .owner { font-size: 1.6rem; .ft-opensans;
@@ -50,6 +51,11 @@
           height: 100%;
           text-align: center;
           color: @cl-subtext10;
+        }
+        .dropdown-menu .spinner i {
+          position: relative;
+          top: 0;
+          right: initial;
         }
       }
       .close {
@@ -67,6 +73,8 @@
     }
   }
 
+  .link-ctn { padding-left:10px; list-style: none; }
+
   .block {
     margin-top: 20px;
     border:0;
@@ -74,7 +82,7 @@
       .display-flex;
       .flex-flow(row nowrap);
       position: relative;
-      align-items: center;
+      .align-items(center);
       label {
         margin-right: 5px;
       }
@@ -95,12 +103,14 @@
       font-weight: normal;
     }
   }
-  .radio label { .display-flex; align-items: center;padding-left: 21px; }
+  .radio label { .display-flex; .align-items(center); padding-left: 21px; }
   .radio input { margin-top:2px; }
+
+  .user-username { color: #000000; font-weight: bold; }
 
   .hash {
     margin-right: 3px;
-    .ft-raleway-heavy;
+    .ft-opensans-extra-bold;
     font-size: 3.4rem;
   }
 
@@ -110,7 +120,7 @@
     .border-radius(25px);
     padding: 7px 12px;
     max-width: 320px;
-    .ft-raleway;
+    .ft-opensans;
     font-size: 2.0rem;
     outline: none;
   }
@@ -123,9 +133,17 @@
     margin: 20px 0;
   }
 
+  .success {
+    .alert;
+    .alert-success;
+    display: none;
+    font-size: 1.4rem;
+    margin: 20px 0;
+  }
+
   p.left {
     .display-flex;
-    align-items: baseline;
+    .align-items(baseline);
     margin-top: 5px;
     text-align: left;
     text-decoration: none;
@@ -140,7 +158,6 @@
   .help-block {
     font-size: 1.4rem;
     margin:0;
-    font-style: italic;
     padding-top: 5px;
   }
 
@@ -187,13 +204,12 @@
         width: 100%;
         a {
           text-decoration: none;
+          img { width:20px; height:20px; }
         }
       }
     }
   }
   a {
-    font-size: 1.4rem;
-    font-weight: normal;
     text-decoration: underline;
     &.btn { text-decoration:none; }
     &:hover {
@@ -208,18 +224,17 @@
   a.dc-back, a.dc-back:hover {
     text-decoration: none;
   }
-  .offline a, a.big-button-light, a.colored {
+  a.colored {
     text-decoration: none;
     &:hover {
       text-decoration: underline;
     }
   }
-  .overlay-ctn {
-    width: 90px;
-    height: 90px;
-    margin: 0 auto;
-    .avatar {
-      .border-shadow;
+  .overlay-ctn { width: 100px; height: 100px; margin: 0 auto;
+    .avatar { background-size: 100px; background-position: center; display: block; width: 100px; height: 100px;
+      .group-type { padding: 4px 6px 4px 6px; top: 3px; position: absolute; left: 3px; border: 2px solid @cl-border;
+        i { font-size: 1.5rem; line-height: 1.5rem; }
+      }
     }
     .overlay {
       top: 0;
@@ -235,7 +250,7 @@
     .item { border:2px solid transparent;
       .avatar { background-size:contain; }
     }
-    .item.op { border: 2px solid @cl-success; .border-radius(5px); height:34px;
+    .item.op { border: 2px solid @cl-success; height:34px;
       &::after {
         .icon-op;
         position: absolute;
@@ -251,7 +266,7 @@
         .border-radius(3px);
       }
     }
-    .item.owner { border: 2px solid @cl-warning; .border-radius(5px); height:34px;
+    .item.owner { border: 2px solid @cl-warning; height:34px;
       &::after {
         .icon-owner;
         position: absolute;
@@ -285,12 +300,13 @@
       button { padding: 0; }
     }
     .open>.dropdown-menu {
-      left: initial;
+      left: -170px;
       top: -10px;
       right: 27px;
     }
   }
   #room-access .actions div { display: inherit }
+  #group-access .actions div { display: inherit }
   #user-profile {
     .user .avatar-ctn {
       position: relative;
@@ -306,9 +322,149 @@
         width: 90px;
       }
     }
+    .othername {
+      font-size: 0.8em;
+    }
     .offline {
       a {
         background-color: @cl-subtext20;
+      }
+    }
+  }
+  #user-notifications {
+    .empty {
+      .hide-empty {
+        display: none;
+      }
+      .show-empty {
+        display: initial;
+      }
+    }
+    .full {
+      .hide-empty {
+        display: initial;
+      }
+      .show-empty {
+        display: none;
+      }
+    }
+    .ctn-drawer > .ctn {
+      .loading {
+        padding: 20px 20px;
+        font-size: 1.5em;
+        position: relative;
+        .icon {
+          position: absolute;
+          left: 166px;
+          top: 10px;
+        }
+      }
+      .action-tag-as-read {
+        text-decoration: underline;
+        cursor: pointer;
+        font-size: 0.8em;
+        line-height: 18px;
+      }
+      .messages-list-ctn {
+        overflow-y: auto;
+        overflow-x: hidden;
+        width: auto;
+        .messages-list {
+          font-size: 13px;
+          .message {
+            display: block;
+            cursor: pointer;
+            padding: 10px 12px;
+            position: relative;
+            border-bottom-color: #F1F1F1;
+            border-style: solid;
+            border-width: 0 0 1px 0;
+            text-decoration: none;
+            &.unread {
+              background-color: #e9eaed;
+              background: rgba(237, 239, 245, .98);
+              border-color: #d8deea;
+              &:hover {
+                background-color: #f6f7f8;
+                border-color: #e9eaed;
+                text-decoration: none;
+              }
+            }
+            img {
+              width: 45px;
+              height: 45px;
+              position: absolute;
+              top: 38%;
+              margin-top: -16px;
+              left: 7px;
+              border: 2px solid #fafafa;
+            }
+            i.icon {
+              width: 23px;
+              height: 23px;
+              position: absolute;
+              top: 50%;
+              margin-top: -16px;
+              font-size: 22px;
+              text-align: center;
+            }
+            .message-subject {
+              display: block;
+              line-height: 17px;
+              margin-bottom: 2px;
+              overflow-x: hidden;
+              overflow-y: hidden;
+              padding: 0 30px 0 42px;
+              text-overflow: ellipsis;
+              width: 350px;
+              span {
+                font-weight: bold;
+              }
+            }
+            .action-tag-as-done {
+              font-size: 18px;
+              position: absolute;
+              top: 10px;
+              right: 5px;
+              color: @cl-silver;
+              cursor: pointer;
+            }
+            .message-description {
+              color: #AAA;
+              font-size: 11px;
+              line-height: 17px;
+              padding-left: 42px;
+              .username {
+                color: #000;
+                font-weight: bold;
+              }
+              .date {
+                display: inline;
+                float: right;
+              }
+            }
+            &:hover {
+              background-color: @cl-subtext5;
+            }
+          }
+        }
+        .messages-link {
+          border-top-color: #F1F1F1;
+          border-top-style: solid;
+          border-top-width: 1px;
+          color: #999;
+          display: block;
+          font-size: 10px;
+          font-weight: 600;
+          height: 35px;
+          line-height: 18px;
+          padding-top: 8px;
+          text-align: center;
+          text-decoration: none;
+          &:hover {
+            background: #F1F1F1;
+          }
+        }
       }
     }
   }

@@ -2,8 +2,8 @@
 var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
-var roomDataHelper = require('../../../util/roomData');
-var roomEmitter = require('../../../util/roomEmitter');
+var roomDataHelper = require('../../../util/room-data');
+var roomEmitter = require('../../../util/room-emitter');
 var Notifications = require('../../../components/notifications');
 
 var Handler = function (app) {
@@ -20,6 +20,8 @@ handler.call = function (data, session, next) {
   var user = session.__currentUser__;
   var room = session.__room__;
 
+  var blocked;
+
   if (!data.room_id && !data.name) {
     return next(null, {code: 400, err: 'params-room-id-name'});
   }
@@ -27,7 +29,7 @@ handler.call = function (data, session, next) {
     return next(null, {code: 404, err: 'room-not-found'});
   }
 
-  var blocked = room.isUserBlocked(user.id, data.password);
+  blocked = room.isUserBlocked(user.id, data.password);
   if (blocked === false) {
     this.join(user, room, next);
   } else {
@@ -38,6 +40,14 @@ handler.call = function (data, session, next) {
 handler.blocked = function (user, room, blocked, next) {
   async.waterfall([
     function (callback) {
+      if (blocked === 'groupbanned') {
+        return callback(null);
+      }
+
+      if (blocked === 'group-members-only') {
+        return callback(blocked);
+      }
+
       user.update({ $addToSet: {blocked: room.id} }, function (err) {
         return callback(err);
       });
@@ -57,35 +67,48 @@ handler.blocked = function (user, room, blocked, next) {
 handler.join = function (user, room, next) {
   var that = this;
   async.waterfall([
+
+    function persistUser (callback) {
+      user.update({$pull: {blocked: room._id}}, function (err) {
+        return callback(err);
+      });
+    },
+
+    function persistRoom (callback) {
+      room.update({$pull: {allowed_pending: {user: user._id}}}, function (err) {
+        return callback(err);
+      });
+    },
+
     function broadcast (callback) {
       // this step happen BEFORE user/room persistence and room subscription
       // to avoid noisy notifications
       var event = {
         user_id: user.id,
         username: user.username,
-        avatar: user._avatar()
+        avatar: user._avatar(),
+        isDevoiced: room.isDevoice(user.id)
       };
 
       roomEmitter(that.app, user, room, 'room:in', event, callback);
     },
 
-    function persist (eventData, callback) {
-      room.lastjoin_at = Date.now();
+    function persistRoom (eventData, callback) {
       room.users.addToSet(user._id);
-      room.allowed.addToSet(user._id);
+
+      // private room only
+      if (room.mode === 'private') {
+        room.allowed.addToSet(user._id);
+        var sub = _.find(room.allowed_pending, function (s) {
+          return (s.user.id === user.id);
+        });
+        if (sub) {
+          // @source: http://stackoverflow.com/a/23255415
+          room.allowed_pending.id(sub.id).remove();
+        }
+      }
+
       room.save(function (err) {
-        return callback(err, eventData);
-      });
-    },
-
-    function removeBlocked (eventData, callback) {
-      user.update({$pull: {blocked: room._id}}, function (err) {
-        return callback(err, eventData);
-      });
-    },
-
-    function removeAllowedPending (eventData, callback) {
-      room.update({$pull: {allowed_pending: user._id}}, function (err) {
         return callback(err, eventData);
       });
     },
@@ -102,7 +125,7 @@ handler.join = function (user, room, next) {
         var parallels = [];
         _.each(sids, function (sid) {
           parallels.push(function (fn) {
-            that.app.globalChannelService.add(room.name, user.id, sid, function (err) {
+            that.app.globalChannelService.add(room.id, user.id, sid, function (err) {
               if (err) {
                 return fn(sid + ': ' + err);
               }

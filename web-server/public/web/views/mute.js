@@ -1,23 +1,17 @@
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
-var app = require('../models/app');
-var donutDebug = require('../libs/donut-debug');
-var client = require('../libs/client');
-var currentUser = require('../models/current-user');
-
-var debug = donutDebug('donut:mute');
+var app = require('../libs/app');
+var currentUser = require('../libs/app').user;
 
 var MuteView = Backbone.View.extend({
   el: $('#mute'),
 
   events: {
-    'click .toggle': 'onToggle'
   },
 
   initialize: function (options) {
-    this.listenTo(client, 'preferences:update', this.render);
-
+    this.listenTo(app.client, 'preferences:update', this.render);
+    this.listenTo(app, 'currentUserReady', this.render);
     this.$icon = this.$('.icon');
   },
 
@@ -32,15 +26,12 @@ var MuteView = Backbone.View.extend({
     return this;
   },
 
-  onToggle: function (event) {
-    event.preventDefault();
-    app.trigger('drawerClose');
-    client.userPreferencesUpdate({
+  toggle: function () {
+    app.client.userPreferencesUpdate({
       'browser:sounds': !currentUser.shouldPlaySound()
     });
-  },
+  }
 
 });
-
 
 module.exports = MuteView;

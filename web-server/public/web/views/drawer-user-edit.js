@@ -1,9 +1,8 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
-var client = require('../libs/client');
-var currentUser = require('../models/current-user');
+var app = require('../libs/app');
+var currentUser = require('../libs/app').user;
 var ImageUploader = require('./image-uploader');
 var ColorPicker = require('./color-picker');
 
@@ -13,7 +12,8 @@ var DrawerUserEditView = Backbone.View.extend({
   id: 'user-edit',
 
   events: {
-    'submit form.user-form': 'onSubmit'
+    'submit form.user-form': 'onSubmit',
+    'input #userBio': 'onTypingBio'
   },
 
   initialize: function (options) {
@@ -22,7 +22,7 @@ var DrawerUserEditView = Backbone.View.extend({
 
     // ask for data
     var that = this;
-    client.userRead(currentUser.get('user_id'), null, function (data) {
+    app.client.userRead(currentUser.get('user_id'), {more: true, admin: true}, function (data) {
       if (!data.err) {
         that.onResponse(data);
       }
@@ -49,11 +49,12 @@ var DrawerUserEditView = Backbone.View.extend({
     var html = this.template({user: user});
     this.$el.html(html);
 
-    // description
-    this.$('#userBio').maxlength({
-      counterContainer: this.$('#userBio').siblings('.help-block').find('.counter'),
-      text: i18next.t('chat.form.common.edit.left')
-    });
+    // bio
+    if (user.bio) {
+      this.$('.counter').html(i18next.t('chat.form.common.edit.left', {count: 200 - user.bio.length}));
+    } else {
+      this.$('.counter').html(i18next.t('chat.form.common.edit.left', {count: 200}));
+    }
 
     // website
     this.$website = this.$('input[name=website]');
@@ -97,6 +98,7 @@ var DrawerUserEditView = Backbone.View.extend({
     }
 
     var updateData = {
+      realname: this.$('input[name=realname]').val(),
       bio: this.$('textarea[name=bio]').val(),
       location: this.$('input[name=location]').val(),
       website: this.$('input[name=website]').val(),
@@ -112,10 +114,10 @@ var DrawerUserEditView = Backbone.View.extend({
     }
 
     var that = this;
-    client.userUpdate(updateData, function (data) {
+    app.client.userUpdate(updateData, function (data) {
       that.$('.errors').hide();
       if (data.err) {
-        return that.editError(data);
+        return that.editError(data.err);
       }
       that.trigger('close');
     });
@@ -125,10 +127,10 @@ var DrawerUserEditView = Backbone.View.extend({
       avatar: data
     };
     var that = this;
-    client.userUpdate(updateData, function (d) {
+    app.client.userUpdate(updateData, function (d) {
       that.$('.errors').hide();
       if (d.err) {
-        that.editError(d);
+        that.editError(d.err);
       }
     });
   },
@@ -137,10 +139,10 @@ var DrawerUserEditView = Backbone.View.extend({
       poster: data
     };
     var that = this;
-    client.userUpdate(updateData, function (d) {
+    app.client.userUpdate(updateData, function (d) {
       that.$('.errors').hide();
       if (d.err) {
-        that.editError(d);
+        that.editError(d.err);
       }
     });
   },
@@ -159,14 +161,17 @@ var DrawerUserEditView = Backbone.View.extend({
     return true;
   },
 
-  editError: function (dataErrors) {
-    var message = '';
-    _.each(dataErrors.err, function (error) {
-      message += i18next.t('chat.form.errors.' + error) + '<br>';
+  onTypingBio: function (event) {
+    this.$('.counter').html(i18next.t('chat.form.common.edit.left', {count: 200 - this.$('#userBio').val().length}));
+  },
+
+  editError: function (err) {
+    var errors = '';
+    _.each(err, function (e) {
+      errors += i18next.t('chat.form.errors.' + e, {defaultValue: i18next.t('global.unknownerror')}) + '<br>';
     });
-    this.$('chat.form.errors').html(message).show();
+    this.$('.errors').html(errors).show();
   }
 });
-
 
 module.exports = DrawerUserEditView;

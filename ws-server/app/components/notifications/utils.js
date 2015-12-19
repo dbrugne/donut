@@ -1,12 +1,14 @@
 'use strict';
-var logger = require('../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var _ = require('underscore');
 var UserModel = require('../../../../shared/models/user');
 var RoomModel = require('../../../../shared/models/room');
+var GroupModel = require('../../../../shared/models/group');
 var HistoryOneModel = require('../../../../shared/models/historyone');
 var HistoryRoomModel = require('../../../../shared/models/historyroom');
 var conf = require('../../../../config/index');
 var common = require('@dbrugne/donut-common/server');
+var i18next = require('i18next');
 
 module.exports = {
   retrieveUser: function (user) {
@@ -46,6 +48,28 @@ module.exports = {
       }
 
       RoomModel.findById(room, function (err, model) {
+        args.unshift(err);
+        args.push(model);
+        callback.apply(undefined, args);
+      });
+    };
+  },
+
+  retrieveGroup: function (group) {
+    return function () {
+      var args = _.toArray(arguments);
+      var callback = args.pop();
+      if (!_.isFunction(callback)) {
+        return logger.error('retrieveGroup parameters error, missing callback');
+      }
+
+      if (_.isObject(group)) {
+        args.unshift(null);
+        args.push(group);
+        return callback.apply(undefined, args);
+      }
+
+      GroupModel.findById(group).exec(function (err, model) {
         args.unshift(err);
         args.push(model);
         callback.apply(undefined, args);
@@ -101,11 +125,39 @@ module.exports = {
     };
   },
 
-  mentionTemplate: _.template('<strong><% if (markup.type === \'room\') { %><a href="' + conf.url + '/room/<%= markup.title.replace(\'#\', \'\') %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'user\') { %><a href="' + conf.url + '/user/<%= markup.title.replace(\'@\', \'\') %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'url\') { %><a href="<%= markup.href %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'email\') { %><a href="mailto:<%= markup.href %>" style="<%= options.style %>"><%= markup.title %></a><% } %></strong>'),
+  mentionTemplate: _.template('<strong><% if (markup.type === \'room\') { %><a href="' + conf.url + '/r/<%= markup.title.replace(\'#\', \'\') %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'user\') { %><a href="' + conf.url + '/u/<%= markup.title.replace(\'@\', \'\') %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'url\') { %><a href="<%= markup.href %>" style="<%= options.style %>"><%= markup.title %></a><% } else if (markup.type === \'email\') { %><a href="mailto:<%= markup.href %>" style="<%= options.style %>"><%= markup.title %></a><% } %></strong>'),
 
   mentionize: function (string, options) {
     options.template = this.mentionTemplate;
     return common.markup.toHtml(string, options);
+  },
+
+  longDateTime: function (date) {
+    var myDate = new Date(date);
+    if (isNaN(myDate)) {
+      return;
+    }
+    return i18next.t('date.days.' + myDate.getDay()) +
+      ' ' +
+      myDate.getDate() +
+      ' ' +
+      i18next.t('date.months.' + myDate.getMonth()) +
+      ' ' +
+      myDate.getFullYear() +
+      ', ' +
+      this.shortTime(date) +
+      ':' +
+      myDate.getSeconds();
+  },
+
+  shortTime: function (date) { // HH:mm
+    var myDate = new Date(date);
+    if (isNaN(myDate)) {
+      return;
+    }
+    var h = myDate.getHours();
+    var m = myDate.getMinutes();
+    return ((h < 10) ? '0' : '') + h + ':' + ((m < 10) ? '0' : '') + m;
   }
 
 };

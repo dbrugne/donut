@@ -3,7 +3,7 @@ var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
 var Notifications = require('../../../components/notifications');
-var roomEmitter = require('../../../util/roomEmitter');
+var roomEmitter = require('../../../util/room-emitter');
 
 var Handler = function (app) {
   this.app = app;
@@ -40,7 +40,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
-        return callback('no-op-owner-admin');
+        return callback('not-op-owner-admin');
       }
 
       if (!kickedUser) {
@@ -52,14 +52,14 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isIn(kickedUser.id)) {
-        return callback('no-in');
+        return callback('not-in');
       }
 
       return callback(null);
     },
 
     function persist (callback) {
-      room.update({$pull: { users: kickedUser._id }}, function (err) {
+      room.update({$pull: { users: kickedUser.id }}, function (err) {
         return callback(err);
       });
     },
@@ -89,12 +89,6 @@ handler.call = function (data, session, next) {
       roomEmitter(that.app, user, room, 'room:kick', event, callback);
     },
 
-    function broadcastToKickedUser (sentEvent, callback) {
-      that.app.globalChannelService.pushMessage('connector', 'room:kick', event, 'user:' + kickedUser.id, {}, function (reponse) {
-        callback(null, sentEvent);
-      });
-    },
-
     /**
      * /!\ .unsubscribeClients come after .historizeAndEmit to allow kicked user to receive message
      */
@@ -112,7 +106,7 @@ handler.call = function (data, session, next) {
         var parallels = [];
         _.each(sids, function (sid) {
           parallels.push(function (fn) {
-            that.app.globalChannelService.leave(room.name, kickedUser.id, sid, function (err) {
+            that.app.globalChannelService.leave(room.id, kickedUser.id, sid, function (err) {
               if (err) {
                 return fn(sid + ': ' + err);
               }

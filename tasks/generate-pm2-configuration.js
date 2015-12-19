@@ -102,6 +102,9 @@ module.exports = function (grunt) {
       });
     });
 
+    // add deploy
+    ecosystem.deploy = require('../deploy').deploy;
+
     fs.writeFileSync('./ecosystem.json', JSON.stringify(ecosystem), { flag: 'w+' });
     grunt.log.ok('./ecosystem.json written for env=' + env);
   });

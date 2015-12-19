@@ -1,11 +1,12 @@
 'use strict';
 var errors = require('../../../util/errors');
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var async = require('async');
 var _ = require('underscore');
 var inputUtil = require('../../../util/input');
 var conf = require('../../../../../config');
 var Notifications = require('../../../components/notifications');
+var GroupModel = require('../../../../../shared/models/group');
 
 var Handler = function (app) {
   this.app = app;
@@ -35,7 +36,7 @@ handler.call = function (data, session, next) {
         return callback('params-events');
       }
 
-      if (!data.message && !event.data.images) {
+      if (!data.message && !event.data.files) {
         return callback('params-message');
       }
 
@@ -86,7 +87,7 @@ handler.call = function (data, session, next) {
 
     function persist (message, mentions, callback) {
       event.update({
-        $set: { edited: true, edited_at: new Date(), 'data.message': message }
+        $set: {edited: true, edited_at: new Date(), 'data.message': message}
       }, function (err) {
         return callback(err, message, mentions);
       });
@@ -99,7 +100,7 @@ handler.call = function (data, session, next) {
         event: event.id,
         message: message
       };
-      that.app.globalChannelService.pushMessage('connector', 'room:message:edit', eventToSend, room.name, {}, function (err) {
+      that.app.globalChannelService.pushMessage('connector', 'room:message:edit', eventToSend, room.id, {}, function (err) {
         return callback(err, mentions);
       });
     },
@@ -129,6 +130,6 @@ handler.call = function (data, session, next) {
       return errors.getHandler('room:message:edit', next)(err);
     }
 
-    return next(null, { success: true });
+    return next(null, {success: true});
   });
 };

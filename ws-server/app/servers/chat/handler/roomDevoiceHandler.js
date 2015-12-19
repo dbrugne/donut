@@ -1,7 +1,7 @@
 'use strict';
 var errors = require('../../../util/errors');
 var async = require('async');
-var roomEmitter = require('../../../util/roomEmitter');
+var roomEmitter = require('../../../util/room-emitter');
 var inputUtil = require('../../../util/input');
 var Notifications = require('../../../components/notifications');
 
@@ -40,7 +40,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
-        return callback('no-op-owner-admin');
+        return callback('not-op-owner-admin');
       }
 
       if (!devoicedUser) {
@@ -56,7 +56,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isIn(devoicedUser.id)) {
-        return callback('no-in');
+        return callback('not-in');
       }
 
       return callback(null);

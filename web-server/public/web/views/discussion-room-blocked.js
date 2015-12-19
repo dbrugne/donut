@@ -1,16 +1,20 @@
 var $ = require('jquery');
+var _ = require('underscore');
 var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
 var i18next = require('i18next-client');
 var date = require('../libs/date');
 var common = require('@dbrugne/donut-common/browser');
-var app = require('../models/app');
-var client = require('../libs/client');
+var app = require('../libs/app');
+var ConfirmationView = require('./modal-confirmation');
+var currentUser = require('../libs/app').user;
 
 var RoomBlockedView = Backbone.View.extend({
   tagName: 'div',
 
   className: 'discussion',
+
+  passwordPattern: /(.{4,255})$/i,
 
   hasBeenFocused: false,
 
@@ -29,11 +33,10 @@ var RoomBlockedView = Backbone.View.extend({
     this.render();
   },
   render: function () {
-    var data = this.model.toJSON();
+    // @todo dbr : handle groupban and groupdisallow blocked values
+    // @todo dbr : persist blocked room on user on groupban and groupdisallow blocked values
 
-    // owner
-    var owner = this.model.get('owner').toJSON();
-    data.owner = owner;
+    var data = this.model.toJSON();
 
     // banned_at
     if (data.banned_at) {
@@ -43,8 +46,16 @@ var RoomBlockedView = Backbone.View.extend({
     // avatar
     data.avatar = common.cloudinary.prepare(data.avatar, 150);
 
+    // disclaimer
+    if (data.disclaimer) {
+      data.disclaimer = _.escape(data.disclaimer);
+    }
+
     // id
     data.room_id = this.model.get('id');
+
+    // room mode
+    data.mode = this.model.get('mode');
 
     // dropdown
     data.dropdown = require('../templates/dropdown-room-actions.html')({
@@ -52,7 +63,8 @@ var RoomBlockedView = Backbone.View.extend({
     });
 
     // render
-    var html = this.template(data);
+    var html = this.template({data: data, confirmed: currentUser.isConfirmed()});
+    this.$el.attr('data-identifier', this.model.get('identifier'));
     this.$el.html(html);
     this.$error = this.$('.error');
     this.$el.hide();
@@ -81,50 +93,57 @@ var RoomBlockedView = Backbone.View.extend({
   onRequestAllowance: function (event) {
     event.preventDefault();
 
-    client.roomJoinRequest(this.model.get('id'), function (response) {
-      if (response.err) {
-        if (response.err === 'allow-pending') {
-          app.trigger('alert', 'error', i18next.t('chat.allowed.error.' + response.err));
+    ConfirmationView.open({message: 'request-allowance', area: true}, _.bind(function (message) {
+      app.client.roomJoinRequest(this.model.get('id'), message, _.bind(function (response) {
+        if (response.err) {
+          this.$error.show();
+          if (response.err === 'not-confirmed') {
+            this.$error.text(i18next.t('chat.form.errors.' + response.err));
+          }
+          if (response.err === 'not-allowed') {
+            this.$error.text(i18next.t('chat.form.errors.' + response.err));
+          } else if (response.code !== 500) {
+            this.$error.text(i18next.t('chat.allowed.error.' + response.err));
+          } else {
+            this.$error.text(i18next.t('global.unknownerror'));
+          }
         } else {
-          app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+          app.trigger('alert', 'info', i18next.t('chat.allowed.success'));
         }
-      } else {
-        app.trigger('alert', 'info', i18next.t('chat.allowed.success'));
-      }
-    });
+      }, this));
+    }, this));
   },
   onValidPassword: function (event) {
-    var that = this;
     var key = keyboard._getLastKeyCode(event);
     if (event.type !== 'click' && key.key !== keyboard.RETURN) {
       return;
     }
 
     var password = $(event.currentTarget).closest('.password-form').find('.input-password').val();
-    client.roomJoin(this.model.get('id'), this.model.get('name'), password, function (response) {
+    if (!this.passwordPattern.test(password)) {
+      this.$error.show();
+      this.$error.text(i18next.t('chat.password.invalid-password'));
+      return;
+    }
+    app.client.roomJoin(this.model.get('id'), password, _.bind(function (response) {
       if (!response.err) {
         return;
       }
 
-      that.$error.show();
-      if (response.err === 'wrong-password' || response.err === 'spam-password') {
-        that.$error.text(i18next.t('chat.password.' + response.err));
-      } else if (response.err) {
-        that.$error.text(i18next.t('chat.password.error'));
+      this.$error.show();
+      if (response.err === 'not-confirmed') {
+        this.$error.text(i18next.t('chat.form.errors.' + response.err));
+      } else {
+        this.$error.text(i18next.t('chat.password.wrong-password'));
       }
-    });
+    }, this));
   },
   onRejoin: function (event) {
-    client.roomJoin(this.model.get('id'), null, null, function (response) {
-      if (response.err) {
-        app.trigger('alert', 'error', i18next.t('global.unknownerror'));
-      }
-    });
+    app.trigger('joinRoom', this.model.get('identifier'), true);
   },
-
   onCloseRoom: function (event) {
     event.preventDefault();
-    client.roomLeaveBlock(this.model.get('id'));
+    app.client.roomLeaveBlock(this.model.get('id'));
   },
   initializeTooltips: function () {
     this.$el.find('[data-toggle="tooltip"]').tooltip({

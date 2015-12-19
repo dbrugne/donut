@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var async = require('async');
 var _ = require('underscore');
 var validator = require('validator');
@@ -37,7 +37,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isOwner(user.id) && session.settings.admin !== true) {
-        return callback('no-op-owner-admin');
+        return callback('not-admin-owner');
       }
 
       return callback(null);
@@ -67,7 +67,20 @@ handler.call = function (data, session, next) {
         }
       }
 
+      // disclaimer
+      if (_.has(data.data, 'disclaimer')) {
+        if (!validator.isLength(data.data.disclaimer, 0, 200)) {
+          errors.disclaimer = 'disclaimer'; // Disclaimer should be 200 characters max.
+        } else {
+          var disclaimer = data.data.disclaimer;
+          if (disclaimer !== room.disclaimer) {
+            sanitized.disclaimer = disclaimer;
+          }
+        }
+      }
+
       // website
+      var website = null;
       if (_.has(data.data, 'website') && data.data.website) {
         if (data.data.website.length < 5 && data.data.website.length > 255) {
           errors.website = 'website-size'; // website should be 5 characters min and 255 characters max.;
@@ -76,7 +89,7 @@ handler.call = function (data, session, next) {
           if (!link || !link[0] || !link[0].type || !link[0].value || !link[0].href || link[0].type !== 'url') {
             errors.website = 'website-url'; // website should be a valid site URL
           } else {
-            var website = {
+            website = {
               href: link[0].href,
               title: link[0].value
             };
@@ -97,19 +110,6 @@ handler.call = function (data, session, next) {
         }
       }
 
-      // mode
-      if (_.has(data.data, 'mode')) {
-        var mode = data.data.mode;
-        if (!common.validate.mode(mode)) {
-          errors.mode = 'invalid-mode';
-        } else {
-          if (sanitized.mode !== mode) {
-            // @todo implement state machine on room mode change
-            sanitized.mode = mode;
-          }
-        }
-      }
-
       // password
       if (room.mode === 'public') {
         if (_.has(data.data, 'password')) {
@@ -124,7 +124,7 @@ handler.call = function (data, session, next) {
           if (password !== null) {
             // Change password
             if (passwordPattern.test(password) && (password /* user.generateHash(password)*/ !== room.password || !_.has(room.toJSON(), 'password'))) {
-              sanitized.password = validator.escape(password); // user.generateHash(password);
+              sanitized.password = password; // user.generateHash(password);
             }
             // password is null, Remove password attr from document
           } else {
@@ -155,6 +155,37 @@ handler.call = function (data, session, next) {
               sanitized.priority = priority;
             }
           }
+        }
+      }
+
+      if (_.has(data.data, 'allow_group_member')) {
+        if (!room.group) {
+          errors.group = 'group-not-found';
+        } else {
+          if (data.data.allow_group_member === true) {
+            sanitized.allow_group_member = true;
+          } else {
+            sanitized.allow_group_member = false;
+            if (data.data.add_users_to_allow) {
+              var allowed = room.getIdsByType('allowed');
+              _.each(room.getIdsByType('users'), function (u) {
+                if (_.indexOf(allowed, u) === -1) {
+                  allowed.push(u);
+                }
+              });
+              sanitized.allowed = allowed;
+            }
+          }
+        }
+      }
+
+      if (room.mode === 'public') {
+        if (_.has(data.data, 'allow_user_request')) {
+          errors.allow_user_request = 'invalid-mode';
+        }
+      } else {
+        if (_.has(data.data, 'allow_user_request')) {
+          sanitized.allow_user_request = data.data.allow_user_request;
         }
       }
 
@@ -228,7 +259,7 @@ handler.call = function (data, session, next) {
     function broadcast (sanitized, callback) {
       // notify only certain fields
       var sanitizedToNotify = {};
-      var fieldToNotify = ['avatar', 'poster', 'color'];
+      var fieldToNotify = ['avatar', 'poster', 'color', 'allow_group_member'];
       _.each(Object.keys(sanitized), function (key) {
         if (fieldToNotify.indexOf(key) !== -1) {
           if (key === 'avatar') {
@@ -240,6 +271,8 @@ handler.call = function (data, session, next) {
             sanitizedToNotify['color'] = sanitized[key];
             sanitizedToNotify['avatar'] = room._avatar();
             sanitizedToNotify['poster'] = room._poster();
+          } else if (key === 'allow_group_member') {
+            sanitizedToNotify['allow_group_member'] = !!sanitized[key];
           }
         }
       });
@@ -253,12 +286,15 @@ handler.call = function (data, session, next) {
         room_id: room.id,
         data: sanitizedToNotify
       };
-      that.app.globalChannelService.pushMessage('connector', 'room:updated', event, room.name, {}, callback);
+      that.app.globalChannelService.pushMessage('connector', 'room:updated', event, room.id, {}, callback);
     }
 
   ], function (err) {
     if (err) {
       if (_.isObject(err)) {
+        _.each(err, function (e) {
+          logger.warn('[room:updated] ' + e);
+        });
         return next(null, {code: 400, err: err});
       }
       return errors.getHandler('room:updated', next)(err);

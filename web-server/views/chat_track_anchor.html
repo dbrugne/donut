@@ -2,17 +2,27 @@
 <body>
 <div>wait you are redirecting :)</div>
 <script>
-    (function() {
-        var to = window.location.protocol
-                +'//'+ window.location.host;
-        if ( window.location.href.indexOf('!#room/') !== -1
-             || window.location.href.indexOf('!#user/') !== -1) {
-            to += '/'+ window.location.hash.replace('#', '');
-            to += '?redirect=true';
+    (function () {
+        var to = window.location.protocol + '//' + window.location.host;
+        var regex = /(!#g\/[-a-zA-Z0-9_]{3,20})|(!#[-a-zA-Z0-9_]{3,20}\/[-a-zA-Z0-9_]{3,20})|(!#[-a-zA-Z0-9_]{3,20})$/;
+        var matches = regex.exec(window.location.href);
+        if (regex.test(window.location.href)) {
+            if (typeof (matches[1]) !== 'undefined') { // capture group pattern
+                to += '/g/join/'+ window.location.hash.replace('#g/', '');
+                to += '?redirect=true';
+            } else if (typeof (matches[2]) !== 'undefined') { // capture room in group pattern
+                to += '/r/join/'+ window.location.hash.replace('#', '');
+                to += '?redirect=true';
+            } else if (typeof (matches[3]) !== 'undefined') { // capture room outside group pattern
+                to += '/r/join/'+ window.location.hash.replace('#', '');
+                to += '?redirect=true';
+            } else {
+                to += '/';
+            }
         } else {
             to += '/';
         }
-        console.log('now redirect to:'+to);
+        console.log('now redirect to:' + to);
         window.location.replace(to);
     })();
 </script>

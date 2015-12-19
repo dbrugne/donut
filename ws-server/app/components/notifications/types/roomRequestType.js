@@ -1,10 +1,11 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var _ = require('underscore');
 var async = require('async');
 var emailer = require('../../../../../shared/io/emailer');
 var utils = require('./../utils');
 var NotificationModel = require('../../../../../shared/models/notification');
+var parse = require('../../../../../shared/io/parse');
 
 module.exports = function (facade) {
   return new Notification(facade);
@@ -38,6 +39,14 @@ Notification.prototype.create = function (user, room, event, done) {
 
         return callback(null, userModel, roomModel, status);
       });
+    },
+
+    function checkPreferences (userModel, roomModel, status, callback) {
+      if (that.type === 'roominvite' && !userModel.preferencesValue('notif:invite')) {
+        logger.debug('roomInviteType.create no notification due to user preferences');
+        return callback(true);
+      }
+      return callback(null, userModel, roomModel, status);
     },
 
     function save (userModel, roomModel, status, callback) {
@@ -101,7 +110,7 @@ Notification.prototype.sendToBrowser = function (model, user, room, event, done)
       },
       room: {
         id: room.id,
-        name: room.name,
+        name: room.getIdentifier(),
         avatar: room._avatar()
       }
     }
@@ -125,35 +134,52 @@ Notification.prototype.sendEmail = function (model, done) {
           method = emailer.roomJoinRequest;
           data = {
             username: model.data.by_user.username,
-            roomname: room.name
+            roomname: room.getIdentifier()
           };
           break;
         case 'roomallowed':
           method = emailer.roomAllow;
           data = {
             username: model.data.by_user.username,
-            roomname: room.name
+            roomname: room.getIdentifier()
           };
           break;
         case 'roomrefuse':
           method = emailer.roomRefuse;
           data = {
             username: model.data.by_user.username,
-            roomname: room.name
+            roomname: room.getIdentifier()
           };
           break;
         case 'roominvite':
           method = emailer.roomInvite;
           data = {
             username: model.data.by_user.username,
-            roomname: room.name
+            roomname: room.getIdentifier()
+          };
+          break;
+        case 'roomdelete':
+          method = emailer.roomDelete;
+          data = {
+            username: model.data.by_user.username,
+            roomname: room.getIdentifier(),
+            groupname: model.data.room.group.name
+          };
+          break;
+        case 'roomcreate':
+          method = emailer.roomCreate;
+          data = {
+            username: model.data.by_user.username,
+            roomname: room.getIdentifier()
           };
           break;
         default:
           return callback('roomResquestType.sendEmail unknown notification type: ' + model.type);
       }
 
-      _.bind(method, emailer)(model.user.getEmail(), data, callback);
+      if (model.user.getEmail()) {
+        _.bind(method, emailer)(model.user.getEmail(), data, callback);
+      }
     },
 
     function persist (callback) {
@@ -163,4 +189,95 @@ Notification.prototype.sendEmail = function (model, done) {
     }
 
   ], done);
+};
+
+Notification.prototype.sendMobile = function (model, done) {
+  if (!model.data || !model.user || !model.user._id) {
+    return done('roomRequestType.sendMobile data left');
+  }
+
+  async.waterfall([
+
+    utils.retrieveRoom(model.data.room),
+
+    function send (room, callback) {
+      if (['roomjoinrequest', 'roomallowed', 'roomrefuse', 'roominvite',
+          'roomdelete', 'roomcreate'].indexOf(model.type) === -1) {
+        return callback('roomRequestType.sendMobile unknown notification type: ' + model.type);
+      }
+      var method;
+      switch (model.type) {
+        case 'roomjoinrequest':
+          method = parse.roomJoinRequest;
+          break;
+        case 'roomallowed':
+          method = parse.roomAllowed;
+          break;
+        case 'roomrefuse':
+          method = parse.roomRefuse;
+          break;
+        case 'roominvite':
+          method = parse.roomInvite;
+          break;
+        case 'roomdelete':
+          method = parse.roomDelete;
+          break;
+        case 'roomcreate':
+          method = parse.roomCreate;
+          break;
+      }
+
+      var avatar = (['roomjoinrequest'].indexOf(model.type) !== -1)
+        ? model.data.by_user._avatar()
+        : room._avatar();
+      method(model.user._id.toString(), model.data.by_user.username, room.getIdentifier(), avatar, callback);
+    },
+
+    function persist (callback) {
+      model.sent_to_mobile = true;
+      model.sent_to_mobile_at = new Date();
+      model.save(callback);
+    }
+
+  ], done);
+};
+
+Notification.prototype.populateNotification = function (notification, done) {
+  if (!notification || !notification._id) {
+    return done('roomRequest population error: params');
+  }
+
+  NotificationModel.findOne({_id: notification._id})
+    .populate({
+      path: 'data.user',
+      model: 'User',
+      select: 'facebook username local avatar color'})
+    .populate({
+      path: 'data.by_user',
+      model: 'User',
+      select: 'facebook username local avatar color'})
+    .populate({
+      path: 'data.room',
+      model: 'Room',
+      select: 'avatar color name group'})
+    .exec(function (err, n) {
+      if (err) {
+        return done(err);
+      }
+      if (!n) {
+        return done(null);
+      }
+
+      NotificationModel.populate(n, {
+        path: 'data.room.group',
+        model: 'Group',
+        select: 'name'
+      }, function (err, docs) {
+        if (err) {
+          return done(err);
+        }
+
+        return done(null, n);
+      });
+    });
 };

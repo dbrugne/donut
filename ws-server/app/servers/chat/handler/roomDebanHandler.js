@@ -3,7 +3,7 @@ var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
 var Notifications = require('../../../components/notifications');
-var roomEmitter = require('../../../util/roomEmitter');
+var roomEmitter = require('../../../util/room-emitter');
 
 var Handler = function (app) {
   this.app = app;
@@ -40,7 +40,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
-        return callback('no-op-owner-admin');
+        return callback('not-op-owner-admin');
       }
 
       if (!bannedUser) {
@@ -52,11 +52,11 @@ handler.call = function (data, session, next) {
 
     function persist (callback) {
       if (!room.bans || !room.bans.length) {
-        return callback('no-banned');
+        return callback('not-banned');
       }
 
       if (!room.isBanned(bannedUser.id)) {
-        return callback('no-banned');
+        return callback('not-banned');
       }
 
       var subDocument = _.find(room.bans, function (ban) {
@@ -86,7 +86,8 @@ handler.call = function (data, session, next) {
         by_avatar: user._avatar(),
         user_id: bannedUser.id,
         username: bannedUser.username,
-        avatar: bannedUser._avatar()
+        avatar: bannedUser._avatar(),
+        identifier: room.getIdentifier()
       };
 
       roomEmitter(that.app, user, room, 'room:deban', event, callback);

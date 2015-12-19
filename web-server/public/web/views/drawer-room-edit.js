@@ -1,9 +1,8 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
-var client = require('../libs/client');
-var currentUser = require('../models/current-user');
+var app = require('../libs/app');
+var currentUser = require('../libs/app').user;
 var ImageUploader = require('./image-uploader');
 var ColorPicker = require('./color-picker');
 
@@ -13,7 +12,8 @@ var DrawerRoomEditView = Backbone.View.extend({
   id: 'room-edit',
 
   events: {
-    'submit form.room-form': 'onSubmit'
+    'submit form.room-form': 'onSubmit',
+    'input #roomDescription': 'onTypingDescription'
   },
 
   initialize: function (options) {
@@ -22,13 +22,15 @@ var DrawerRoomEditView = Backbone.View.extend({
     // show spinner as temp content
     this.render();
 
-    // ask for data
-    var that = this;
-    client.roomRead(this.roomId, null, function (data) {
+    var what = {
+      more: true,
+      admin: true
+    };
+    app.client.roomRead(this.roomId, what, _.bind(function (data) {
       if (!data.err) {
-        that.onResponse(data);
+        this.onResponse(data);
       }
-    });
+    }, this));
   },
   render: function () {
     // render spinner only
@@ -46,22 +48,17 @@ var DrawerRoomEditView = Backbone.View.extend({
       this.trigger('color', room.color);
     }
 
-    room.isOwner = (room.owner)
-      ? (room.owner.user_id === currentUser.get('user_id'))
-      : false;
-
-    room.isAdmin = (currentUser.get('admin') === true);
-
     var currentAvatar = room.avatar;
 
     var html = this.template({room: room});
     this.$el.html(html);
 
     // description
-    this.$('#roomDescription').maxlength({
-      counterContainer: this.$('#roomDescription').siblings('.help-block').find('.counter'),
-      text: i18next.t('chat.form.common.edit.left')
-    });
+    if (room.description) {
+      this.$('.counter').html(i18next.t('chat.form.common.edit.left', {count: 200 - room.description.length}));
+    } else {
+      this.$('.counter').html(i18next.t('chat.form.common.edit.left', {count: 200}));
+    }
 
     // website
     this.$website = this.$('input[name=website]');
@@ -125,10 +122,10 @@ var DrawerRoomEditView = Backbone.View.extend({
       updateData.poster = this.posterUploader.data;
     }
 
-    client.roomUpdate(this.roomId, updateData, _.bind(function (data) {
+    app.client.roomUpdate(this.roomId, updateData, _.bind(function (data) {
       this.$('.errors').hide();
       if (data.err) {
-        return this.editError(data);
+        return this.editError(data.err);
       }
       this.trigger('close');
     }, this));
@@ -139,10 +136,10 @@ var DrawerRoomEditView = Backbone.View.extend({
       avatar: data
     };
     var that = this;
-    client.roomUpdate(this.roomId, updateData, function (d) {
+    app.client.roomUpdate(this.roomId, updateData, function (d) {
       that.$('.errors').hide();
       if (d.err) {
-        that.editError(d);
+        that.editError(d.err);
       }
     });
   },
@@ -152,10 +149,10 @@ var DrawerRoomEditView = Backbone.View.extend({
       poster: data
     };
     var that = this;
-    client.roomUpdate(this.roomId, updateData, function (d) {
+    app.client.roomUpdate(this.roomId, updateData, function (d) {
       that.$('.errors').hide();
       if (d.err) {
-        that.editError(d);
+        that.editError(d.err);
       }
     });
   },
@@ -174,12 +171,16 @@ var DrawerRoomEditView = Backbone.View.extend({
     return true;
   },
 
-  editError: function (dataErrors) {
-    var message = '';
-    _.each(dataErrors.err, function (error) {
-      message += i18next.t('chat.form.errors.' + error) + '<br>';
+  editError: function (err) {
+    var errors = '';
+    _.each(err, function (e) {
+      errors += i18next.t('chat.form.errors.' + e, {defaultValue: i18next.t('global.unknownerror')}) + '<br>';
     });
-    this.$('.errors').html(message).show();
+    this.$('.errors').html(errors).show();
+  },
+
+  onTypingDescription: function (event) {
+    this.$('.counter').html(i18next.t('chat.form.common.edit.left', {count: 200 - this.$('#roomDescription').val().length}));
   },
 
   initializeTooltips: function () {

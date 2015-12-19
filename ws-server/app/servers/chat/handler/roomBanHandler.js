@@ -3,7 +3,7 @@ var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
 var Notifications = require('../../../components/notifications');
-var roomEmitter = require('../../../util/roomEmitter');
+var roomEmitter = require('../../../util/room-emitter');
 var inputUtil = require('../../../util/input');
 
 var Handler = function (app) {
@@ -43,7 +43,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
-        return callback('no-op-owner-admin');
+        return callback('not-op-owner-admin');
       }
 
       if (!bannedUser) {
@@ -98,7 +98,7 @@ handler.call = function (data, session, next) {
       };
 
       if (reason) {
-        event.banned_reason = reason;
+        event.reason = reason;
       }
 
       roomEmitter(that.app, user, room, 'room:ban', event, callback);
@@ -128,7 +128,7 @@ handler.call = function (data, session, next) {
         var parallels = [];
         _.each(sids, function (sid) {
           parallels.push(function (fn) {
-            that.app.globalChannelService.leave(room.name, bannedUser.id, sid, function (err) {
+            that.app.globalChannelService.leave(room.id, bannedUser.id, sid, function (err) {
               if (err) {
                 return fn(sid + ': ' + err);
               }

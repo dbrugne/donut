@@ -9,34 +9,23 @@
             <div class="no-more">
                 <% if (model.type === 'room') { %>
                     <div class="room">
-                        <div class="title">
-                            <span class="open-room-profile" data-room-id="<%= model.id %>"><%= model.name %></span>
-                        </div>
                         <div class="info">
-                            <p><%= t('chat.history.currently', {
-                                'roomname': model.name,
-                                'roomid': model.id,
-                                'owner': model.owner.username,
-                                'ownerid': model.owner.id,
-                                created_at: created_at,
-                                created_time: created_time,
-                            }) %>
+                            <p><%= t('chat.history.currently', model) %>
                             </p>
-                            <% if(isOwner) { %>
+                            <% if(isOwner && model.mode !== 'public') { %>
                                 <p><%= t('chat.history.hasPassword') %></p>
                             <% } %>
                         </div>
-                        <% if(isOwner) { %>
+                        <% if(isOwner && model.mode !== 'public') { %>
                             <div class="actions flex-parent">
-                                <a href="#" class="open-room-edit" data-room-id="<%= model.id %>"><%= t('chat.history.edit') %></a>
-                                <a href="#" class="open-room-users" data-room-id="<%= model.id %>"><%= t('chat.history.users') %></a>
-                                <a href="#" class="open-room-access" data-room-id="<%= model.id %>"><%= t('chat.history.access') %></a>
+                                <a href="#" class="open-room-edit" data-room-id="<%= model.room_id %>"><%= t('chat.history.edit') %></a>
+                                <a href="#" class="open-room-users" data-room-id="<%= model.room_id %>"><%= t('chat.history.users') %></a>
+                                <a href="#" class="open-room-access" data-room-id="<%= model.room_id %>"><%= t('chat.history.access') %></a>
                             </div>
                         <% } %>
                     </div>
                 <% } else if (model.type === 'onetoone') { %>
                     <div class="user">
-                        <div class="title">@<%= model.username %></div>
                         <div class="info">
                             <%= t('chat.history.onestart') %>
                         </div>
@@ -45,12 +34,6 @@
             </div>
         </div>
         <div class="blank flex-child"></div>
-        <div class="realtime"></div>
+        <div class="realtime <%= chatmode ? 'compact' : '' %>"></div>
     </div>
-</div>
-<div class="go-to-top">
-    <a><i class="icon icon-arrow-circle-o-up"></i></a>
-</div>
-<div class="go-to-bottom">
-    <a><i class="icon icon-arrow-circle-o-down"></i><span class="unread"><%= t('chat.unread.title') %></span></a>
 </div>

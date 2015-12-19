@@ -1,10 +1,8 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
+var app = require('../libs/app');
 var keyboard = require('../libs/keyboard');
 var i18next = require('i18next-client');
-var app = require('../models/app');
-var client = require('../libs/client');
-var currentUser = require('../models/current-user');
 
 var DrawerRoomDeleteView = Backbone.View.extend({
   template: require('../templates/drawer-room-delete.html'),
@@ -13,7 +11,8 @@ var DrawerRoomDeleteView = Backbone.View.extend({
 
   events: {
     'keyup input[name=input-delete]': 'onKeyup',
-    'click .submit': 'onSubmit'
+    'click .submit': 'onSubmit',
+    'click .cancel-lnk': 'onClose'
   },
 
   initialize: function (options) {
@@ -22,19 +21,17 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     // show spinner as temp content
     this.render();
 
-    // ask for data
-    var that = this;
-    client.roomRead(this.roomId, null, function (data) {
+    app.client.roomRead(this.roomId, null, _.bind(function (data) {
       if (!data.err) {
-        that.onResponse(data);
+        this.onResponse(data);
       }
-    });
-
-    // on room:delete callback
-    this.listenTo(client, 'room:delete', this.onDelete);
+    }, this));
   },
-  setError: function (error) {
-    this.$errors.html(error).show();
+  setError: function (err) {
+    if (err === 'unknown') {
+      err = i18next.t('global.unknownerror');
+    }
+    this.$errors.html(err).show();
   },
   reset: function () {
     this.$errors.html('').hide();
@@ -46,7 +43,7 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     return this;
   },
   onResponse: function (room) {
-    if (room.owner.user_id !== currentUser.get('user_id') && !currentUser.isAdmin()) {
+    if (room.group_owner !== app.user.get('user_id') && room.owner_id !== app.user.get('user_id') && !app.user.isAdmin()) {
       return;
     }
 
@@ -56,6 +53,7 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     this.$el.html(html);
     this.$input = this.$el.find('input[name=input-delete]');
     this.$errors = this.$el.find('.errors');
+    this.groupId = room.group_id;
   },
   onSubmit: function (event) {
     event.preventDefault();
@@ -64,26 +62,20 @@ var DrawerRoomDeleteView = Backbone.View.extend({
       return this.setError(i18next.t('chat.form.errors.name-wrong-format'));
     }
 
-    client.roomDelete(this.roomId);
-  },
-  onDelete: function (data) {
-    if (!data.name || data.name.toLocaleLowerCase() !== this.roomNameConfirmation) {
-      return;
-    }
+    app.client.roomDelete(this.roomId, _.bind(function (response) {
+      if (response.err) {
+        return this.setError(i18next.t('chat.form.errors.' + response.err, {defaultValue: i18next.t('global.unknownerror')}));
+      }
 
-    this.$el.find('.errors').hide();
-
-    if (!data.success) {
-      var message = '';
-      _.each(data.errors, function (error) {
-        message += error + '<br>';
-      });
-      this.$el.find('.errors').html(message).show();
-      return;
-    }
-
-    app.trigger('alert', 'info', i18next.t('edit.room.delete.success'));
-    this.trigger('close');
+      app.trigger('alert', 'info', i18next.t('chat.form.room-form.edit.room.delete.success'));
+      this.trigger('close');
+      if (this.groupId) {
+        var model = app.groups.findWhere({id: this.groupId});
+        if (model) {
+          model.onDeleteRoom(this.roomId);
+        }
+      }
+    }, this));
   },
   onKeyup: function (event) {
     this._cleanupState();
@@ -100,8 +92,12 @@ var DrawerRoomDeleteView = Backbone.View.extend({
       return this.onSubmit(event);
     }
   },
+  onClose: function (event) {
+    event.preventDefault();
+    this.trigger('close');
+  },
   _valid: function () {
-    var name = '#' + this.$input.val();
+    var name = this.$input.val();
     var pattern = new RegExp('^' + this.roomNameConfirmation + '$', 'i');
     return pattern.test(name);
   },

@@ -2,7 +2,7 @@
 var errors = require('../../../util/errors');
 var async = require('async');
 var Notifications = require('../../../components/notifications');
-var roomEmitter = require('../../../util/roomEmitter');
+var roomEmitter = require('../../../util/room-emitter');
 
 var Handler = function (app) {
   this.app = app;
@@ -37,7 +37,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
-        return callback('no-op-owner-admin');
+        return callback('not-op-owner-admin');
       }
 
       if (!opedUser) {
@@ -45,7 +45,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isIn(opedUser.id)) {
-        return callback('no-in');
+        return callback('not-in');
       }
 
       if (room.isOwner(opedUser.id)) {

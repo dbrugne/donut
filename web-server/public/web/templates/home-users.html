@@ -3,7 +3,7 @@
         <% if (search == true) { %><%= t('chat.search.userstitle') %><% } else { %><%= t('chat.home.userstitle') %><% } %>
     </div>
     <% if (users.length < 1) { %>
-        <div class="nothing"><%= t('chat.search.nouser') %></div>
+        <div class="nothing"><%= t('chat.search.noresults') %></div>
     <% } %>
     <% _.each(users, function(u) { %>
         <% var bgColor = txtColor = ''; %>

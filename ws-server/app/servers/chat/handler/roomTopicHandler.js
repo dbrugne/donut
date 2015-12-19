@@ -2,9 +2,10 @@
 var errors = require('../../../util/errors');
 var async = require('async');
 var Notifications = require('../../../components/notifications');
-var roomEmitter = require('../../../util/roomEmitter');
+var roomEmitter = require('../../../util/room-emitter');
 var inputUtil = require('../../../util/input');
 var common = require('@dbrugne/donut-common/server');
+var GroupModel = require('../../../../../shared/models/group');
 
 var Handler = function (app) {
   this.app = app;
@@ -34,7 +35,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isOwnerOrOp(user.id) && session.settings.admin !== true) {
-        return callback('no-op-owner-admin');
+        return callback('not-op-owner-admin');
       }
 
       if (!common.validate.topic(data.topic)) {
@@ -56,7 +57,8 @@ handler.call = function (data, session, next) {
     },
 
     function persist (topic, callback) {
-      room.update({$set: {topic: topic}}, function (err) {
+      room.topic = topic;
+      room.save(function (err) {
         return callback(err, topic);
       });
     },

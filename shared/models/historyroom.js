@@ -1,5 +1,4 @@
 'use strict';
-var logger = require('../util/logger').getLogger('history', __filename);
 var _ = require('underscore');
 var async = require('async');
 var mongoose = require('../io/mongoose');
@@ -13,7 +12,6 @@ var historySchema = mongoose.Schema({
   user: { type: mongoose.Schema.ObjectId, ref: 'User' },
   by_user: { type: mongoose.Schema.ObjectId, ref: 'User' },
   data: mongoose.Schema.Types.Mixed,
-  viewed: [ { type: mongoose.Schema.ObjectId, ref: 'User' } ],
   spammed: { type: Boolean },
   spammed_at: { type: Date },
   edited: { type: Boolean },
@@ -65,18 +63,11 @@ historySchema.statics.record = function () {
   };
 };
 
-historySchema.methods.toClientJSON = function (userViewed) {
-  userViewed = userViewed || false;
-
+historySchema.methods.toClientJSON = function () {
   if (!this.room) {
     this.room = new Room();
   } // some rooms was removed (but not their history) before Room.deleted flag
     // introduction
-
-  // record
-  var e = {
-    type: this.event
-  };
 
   // re-hydrate data
   var data = (this.data)
@@ -90,99 +81,35 @@ historySchema.methods.toClientJSON = function (userViewed) {
   data.time = this.time;
   if (this.user) {
     data.user_id = this.user.id;
+    data.realname = this.user.realname;
     data.username = this.user.username;
     data.avatar = this.user._avatar();
   }
   if (this.by_user) {
     data.by_user_id = this.by_user.id;
+    data.by_realname = this.by_user.realname;
     data.by_username = this.by_user.username;
     data.by_avatar = this.by_user._avatar();
   }
   if (this.spammed === true) {
-    e.spammed = this.spammed;
+    data.spammed = this.spammed;
   }
   if (this.edited === true) {
-    e.edited = this.edited;
+    data.edited = this.edited;
   }
 
-  // images
-  if (data.images && data.images.length > 0) {
-    data.images = _.map(data.images, function (element, key, value) {
+  // files
+  if (data.files && data.files.length > 0) {
+    data.files = _.map(data.files, function (element, key, value) {
       // @important: use .path to obtain URL with file extension and avoid CORS
       // errors
-      return cloudinary.messageImage(element.path);
+      return cloudinary.messageFile(element);
     });
   }
 
-  e.data = data;
-
-  // unviewed status (true if message and if i'm not in .viewed)
-  if (userViewed &&
-    [ 'room:message', 'room:topic' ].indexOf(this.event) !== -1 &&
-    data.user_id !== userViewed &&
-    (!this.viewed || (_.isArray(this.viewed) && this.viewed.indexOf(userViewed) === -1))) {
-    e.unviewed = true;
-  }
-
-  return e;
-};
-
-historySchema.statics.retrieve = function () {
-  var that = this;
-  /**
-   * @param roomId
-   * @param userId
-   * @param what criteria Object: since (timestamp)
-   * @param fn
-   */
-  return function (roomId, userId, what, fn) {
-    what = what || {};
-    var criteria = {
-      room: roomId
-    };
-
-    // Since (timestamp, from present to past direction)
-    if (what.since) {
-      criteria.time = {};
-      criteria.time.$lt = new Date(what.since);
-    }
-
-    // limit
-    var howMany = what.limit || 100;
-    var limit = howMany + 1;
-
-    var q = that.find(criteria)
-      .sort({ time: 'desc' }) // important for timeline logic but also optimize
-                              // rendering on frontend
-      .limit(limit)
-      .populate('room', 'name')
-      .populate('user', 'username avatar color facebook')
-      .populate('by_user', 'username avatar color facebook');
-
-    var start = Date.now();
-    q.exec(function (err, entries) {
-      if (err) {
-        return fn('Error while retrieving room history: ' + err);
-      }
-
-      var duration = Date.now() - start;
-      logger.debug('History requested in ' + duration + 'ms');
-
-      var more = (entries.length > howMany);
-      if (more) {
-        entries.pop();
-      } // remove last
-
-      var history = [];
-      _.each(entries, function (model) {
-        history.push(model.toClientJSON(userId));
-      });
-
-      return fn(null, {
-        history: history,
-        more: more
-      });
-    });
+  return {
+    type: this.event,
+    data: data
   };
 };
 

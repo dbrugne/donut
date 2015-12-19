@@ -1,6 +1,6 @@
 'use strict';
 var chai = require('chai');
-chai.should();
+var should = require('chai').should();
 
 var cloudinary = require('../shared/util/cloudinary');
 var UserModel = require('../shared/models/user');
@@ -64,18 +64,26 @@ describe('shared/util/cloudinary', function () {
     });
   });
 
-  describe('.messageImage()', function () {
+  describe('.messageFile()', function () {
     it('is function', function () {
-      cloudinary.messageImage.should.be.a('function');
+      cloudinary.messageFile.should.be.a('function');
     });
     it('without identifier', function () {
-      cloudinary.messageImage('').should.equal('');
+      should.equal(cloudinary.messageFile(''), undefined);
+      should.equal(cloudinary.messageFile({}), undefined);
     });
+    var path = 'v1440415743/discussion/eolog13xgtatjhfqixbr.png';
     it('without size', function () {
-      cloudinary.messageImage('v1440415743/discussion/eolog13xgtatjhfqixbr.png').should.equal('https://res.cloudinary.com/roomly/image/upload/b_rgb:ffffff,c___crop__,f_jpg,g_center,h___height__,w___width__/v1440415743/discussion/eolog13xgtatjhfqixbr.png');
+      cloudinary.messageFile({path: path}).should.have.property('url').and.equal('https://res.cloudinary.com/roomly/image/upload/b_rgb:ffffff,c___crop__,f_jpg,g_center,h___height__,w___width__/v1440415743/discussion/eolog13xgtatjhfqixbr.png');
     });
     it('with size', function () {
-      cloudinary.messageImage('v1440415743/discussion/eolog13xgtatjhfqixbr.png', 120).should.equal('https://res.cloudinary.com/roomly/image/upload/b_rgb:ffffff,c___crop__,f_jpg,g_center,h_120,w_120/v1440415743/discussion/eolog13xgtatjhfqixbr.png');
+      cloudinary.messageFile({path: path}, 120).should.have.property('url').and.equal('https://res.cloudinary.com/roomly/image/upload/b_rgb:ffffff,c___crop__,f_jpg,g_center,h_120,w_120/v1440415743/discussion/eolog13xgtatjhfqixbr.png');
+    });
+    it('default as image', function () {
+      cloudinary.messageFile({path: path, type: 'image'}, 120).should.have.property('url').and.equal('https://res.cloudinary.com/roomly/image/upload/b_rgb:ffffff,c___crop__,f_jpg,g_center,h_120,w_120/v1440415743/discussion/eolog13xgtatjhfqixbr.png');
+    });
+    it('raw', function () {
+      cloudinary.messageFile({path: 'v1440415743/discussion/eolog13xgtatjhfqixxx.docx', type: 'raw'}).should.have.property('url').and.equal('https://res.cloudinary.com/roomly/raw/upload/v1440415743/discussion/eolog13xgtatjhfqixxx.docx');
     });
   });
 });

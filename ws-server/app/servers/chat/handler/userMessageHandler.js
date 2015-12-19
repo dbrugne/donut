@@ -1,11 +1,11 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var errors = require('../../../util/errors');
 var async = require('async');
 var Notifications = require('../../../components/notifications');
-var oneEmitter = require('../../../util/oneEmitter');
+var oneEmitter = require('../../../util/one-emitter');
 var inputUtil = require('../../../util/input');
-var imagesUtil = require('../../../util/images');
+var filesUtil = require('../../../util/files');
 var keenio = require('../../../../../shared/io/keenio');
 
 var Handler = function (app) {
@@ -43,60 +43,49 @@ handler.call = function (data, session, next) {
         return callback('not-allowed');
       }
 
-      return callback(null);
-    },
+      if (user.confirmed === false) {
+        return callback('not-confirmed');
+      }
 
-    function persistOnBoth (callback) {
-      user.update({ $addToSet: { onetoones: withUser._id } }, function (err) {
-        if (err) {
-          return callback(err);
-        }
-        withUser.update({ $addToSet: { onetoones: user._id } }, function (err) {
-          return callback(err);
-        });
-      });
+      return callback(null);
     },
 
     function prepareMessage (callback) {
       // text filtering
       var message = inputUtil.filter(data.message, 512);
 
-      // images filtering
-      var images = imagesUtil.filter(data.images);
+      // files filtering
+      var files = filesUtil.filter(data.files);
 
-      if (!message && !images) {
+      if (!message && !files) {
         return callback('params-message');
       }
 
       // mentions
       inputUtil.mentions(message, function (err, message) {
-        return callback(err, message, images);
+        return callback(err, message, files);
       });
     },
 
-    function historizeAndEmit (message, images, callback) {
+    function historizeAndEmit (message, files, callback) {
       var event = {
-        from_user_id: user.id,
-        from_username: user.username,
-        from_avatar: user._avatar(),
-        to_user_id: withUser.id,
-        to_username: withUser.username,
-        time: Date.now()
+        to_user_id: withUser.id, // only difference with room:message
+        user_id: user.id,
+        username: user.username,
+        realname: user.realname,
+        avatar: user._avatar()
       };
 
       if (message) {
         event.message = message;
       }
-      if (images && images.length) {
-        event.images = images;
+      if (files && files.length) {
+        event.files = files;
       }
       if (data.special) {
         event.special = data.special;
       }
-      oneEmitter(that.app, {
-        from: user._id,
-        to: withUser._id
-      }, 'user:message', event, callback);
+      oneEmitter(that.app, user, withUser, 'user:message', event, callback);
     },
 
     function notification (event, callback) {
@@ -114,19 +103,21 @@ handler.call = function (data, session, next) {
         user: {
           id: user.id,
           username: user.username,
+          realname: user.realname,
           admin: (session.settings.admin === true)
         },
         to: {
           id: withUser.id,
           username: withUser.username,
+          realname: withUser.realname,
           admin: (withUser.admin === true)
         },
         message: {
           length: (event.message && event.message.length)
             ? event.message.length
             : 0,
-          images: (event.images && event.images.length)
-            ? event.images.length
+          images: (event.files && event.files.length)
+            ? event.files.length
             : 0
         }
       };
@@ -144,6 +135,6 @@ handler.call = function (data, session, next) {
       return errors.getHandler('user:message', next)(err);
     }
 
-    return next(null, { success: true });
+    return next(null, {success: true});
   });
 };

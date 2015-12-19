@@ -20,15 +20,10 @@ router.get('/!', function (req, res) {
     });
   }
 
-  // Has user a username
-  if (!req.user.username) {
-    return res.redirect('/choose-username');
-  }
-
   // ... otherwise open chat
 
   // cleanup bouncer (not before cause other middleware can redirect
-  // browser before, e.g.: choose-username)
+  // browser before, e.g.: ex choose-username)
   bouncer.reset(req);
 
   // client script to use
@@ -36,13 +31,31 @@ router.get('/!', function (req, res) {
     ? '/build/' + req.locale + '.js'
     : '/' + req.locale + '.js';
 
+  var helloMessage = (req.user.username)
+    ? hello().replace('%u', '<strong>@' + req.user.username + '</strong>')
+    : hello().replace('%u', '');
+
   return res.render('chat', {
     meta: {title: i18next.t('title.chat')},
     colors: colors.toString(),
-    hello: hello().replace('%u', '<strong>@' + req.user.username + '</strong>'),
+    hello: helloMessage,
     avoidFa: true,
     script: script
   });
 });
+
+router.param('group', require('../middlewares/group-param'));
+router.get('/g/join/:group', function (req, res) {
+  bouncer.set(req, req.group.chat);
+  res.redirect('/login');
+});
+
+router.param('room', require('../middlewares/room-param'));
+var bouncerCallback = function (req, res) {
+  bouncer.set(req, req.room.chat);
+  res.redirect('/login');
+};
+router.get('/r/join/:room', bouncerCallback);
+router.get('/r/join/:group/:room', bouncerCallback);
 
 module.exports = router;

@@ -1,5 +1,6 @@
 'use strict';
 var conf = require('../../../config');
+var urls = require('../../../shared/util/url');
 
 /**
  * Register systematically some variables in views
@@ -10,9 +11,6 @@ module.exports = function () {
     if (req.user) {
       res.locals.user = req.user.toObject(); // .toObject() avoid modification on original req.user object (like avatar)
       res.locals.user.avatar = req.user._avatar(80);
-      if (req.user.username) {
-        res.locals.user.url = req.protocol + '://' + conf.fqdn + '/user/' + ('' + req.user.username).toLocaleLowerCase();
-      }
     } else {
       res.locals.user = false;
     }
@@ -40,6 +38,7 @@ module.exports = function () {
     res.locals.facebook = conf.facebook;
     res.locals.recaptcha = conf.google.recaptcha;
     res.locals.room_default_color = conf.room.default.color;
+    res.locals.group_room_default = conf.group.default.name;
     res.locals.message_maxedittime = conf.chat.message.maxedittime * 60 * 1000;
 
     // default
@@ -47,7 +46,7 @@ module.exports = function () {
     res.locals.avoidFa = false;
 
     // language
-    // @todo: hotfix to workaround fr_FR or fr-FR, force 'en' or 'fr'
+    // @todo dbr: hotfix to workaround fr_FR or fr-FR, force 'en' or 'fr'
     //        see https://github.com/smhg/express-locale in remplacement
     var short = 'fr';
     if (/en/i.test(req.locale)) {

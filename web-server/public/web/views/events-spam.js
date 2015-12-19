@@ -1,8 +1,7 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
-var app = require('../models/app');
+var app = require('../libs/app');
 var i18next = require('i18next-client');
-var client = require('../libs/client');
 
 module.exports = Backbone.View.extend({
 
@@ -27,7 +26,7 @@ module.exports = Backbone.View.extend({
     var roomId = this.model.get('id');
     var messageId = parent.attr('id');
 
-    client.roomMessageSpam(roomId, messageId);
+    app.client.roomMessageSpam(roomId, messageId);
   },
   onUnmarkAsSpam: function (event) {
     event.preventDefault();
@@ -39,7 +38,7 @@ module.exports = Backbone.View.extend({
     var ctn = parent.find('.text') || parent.find('.image');
     ctn.find('.remask-spammed-message').remove();
 
-    client.roomMessageUnspam(roomId, messageId);
+    app.client.roomMessageUnspam(roomId, messageId);
   },
   onMarkedAsSpam: function (room) {
     this.$('#' + room.event)
@@ -47,8 +46,6 @@ module.exports = Backbone.View.extend({
       .find('.ctn')
       .first()
       .append('<div class="text-spammed">' + i18next.t('chat.message.text-spammed') + '</div>');
-
-    app.trigger('scrollDown');
   },
   onMarkedAsUnspam: function (room) {
     this.$('#' + room.event)
@@ -57,8 +54,6 @@ module.exports = Backbone.View.extend({
       .remove();
 
     this.$('#' + room.event).find('.remask-spammed-message').remove();
-
-    app.trigger('scrollDown');
   },
   onViewSpammedMessage: function (event) {
     event.preventDefault();
@@ -69,8 +64,6 @@ module.exports = Backbone.View.extend({
     textSpammed.remove();
 
     ctn.prepend('<a class="remask-spammed-message label label-danger">' + i18next.t('chat.message.text-remask') + '</a>');
-
-    app.trigger('scrollDown');
   },
   onRemaskSpammedMessage: function (event) {
     event.preventDefault();
@@ -83,7 +76,5 @@ module.exports = Backbone.View.extend({
       .append('<div class="text-spammed">' + i18next.t('chat.message.text-spammed') + '</div>');
 
     ctn.find('.remask-spammed-message').remove();
-
-    app.trigger('scrollDown');
   }
 });

@@ -3,7 +3,7 @@ var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
 var Room = require('../../../../../shared/models/room');
-var roomEmitter = require('../../../util/roomEmitter');
+var roomEmitter = require('../../../util/room-emitter');
 
 var Handler = function (app) {
   this.app = app;
@@ -41,8 +41,12 @@ handler.call = function (data, session, next) {
         return callback('room-not-found');
       }
 
+      if (!user) {
+        return callback('user-not-found');
+      }
+
       if (!room.isOwner(currentUser.id) && session.settings.admin !== true) {
-        return callback('no-admin-owner');
+        return callback('not-admin-owner');
       }
 
       if (room.isOwner(user)) {
@@ -50,7 +54,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isAllowed(user.id)) {
-        return callback('no-allow');
+        return callback('not-allowed');
       }
 
       return callback(null);
@@ -95,7 +99,7 @@ handler.call = function (data, session, next) {
         var parallels = [];
         _.each(sids, function (sid) {
           parallels.push(function (fn) {
-            that.app.globalChannelService.leave(room.name, user.id, sid, function (err) {
+            that.app.globalChannelService.leave(room.id, user.id, sid, function (err) {
               if (err) {
                 return fn(sid + ': ' + err);
               }

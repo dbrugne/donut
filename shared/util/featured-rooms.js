@@ -75,7 +75,6 @@ var retriever = function (app, fn) {
               var name = key.replace('pomelo:globalchannel:channel:', '').replace(/:connector-server-[0-9]+/, '');
               roomsCount.push({name: name, count: value.length});
             });
-            roomsCount = _.sortBy(roomsCount, 'count').reverse(); // desc
             return callback(null, roomsCount);
           }
         });
@@ -91,7 +90,6 @@ var retriever = function (app, fn) {
           visibility: true,
           deleted: {$ne: true}
         }, 'name')
-          .sort({priority: 'desc'})
           .limit(CACHE_NUMBER * 2) // lot of prioritized rooms could be already
                                    // in Redis list
           .exec(function (err, result) {
@@ -121,6 +119,7 @@ var retriever = function (app, fn) {
 
         Room.find({name: {$in: names}})
           .populate('owner', 'username')
+          .populate('group', 'name avatar color')
           .exec(function (err, result) {
             if (err) {
               return callback('Error while hydrating rooms from Mongo: ' + err);
@@ -143,21 +142,31 @@ var retriever = function (app, fn) {
 
           var data = {
             name: room.name,
+            identifier: room.getIdentifier(),
             room_id: room.id,
-            owner: {},
             avatar: room._avatar(),
             poster: room._poster(),
             color: room.color,
             description: room.description,
-            users: (room.users) ? room.users.length : 0,
+            users: (room.users)
+              ? room.users.length
+              : 0,
             onlines: 0,
-            mode: room.mode
+            mode: room.mode,
+            type: 'room',
+            priority: room.priority
           };
+          if (room.group) {
+            data.group_id = room.group.id;
+            data.group_name = room.group.name;
+            data.group_avatar = room.group._avatar();
+          }
           if (room.owner) {
-            data.owner = {
-              user_id: room.owner._id,
-              username: room.owner.username
-            };
+            data.owner_id = room.owner.id;
+            data.owner_username = room.owner.username;
+          }
+          if (room.mode === 'private') {
+            data.allow_user_request = room.allow_user_request;
           }
           roomsData.push(data);
         });
@@ -173,7 +182,7 @@ var retriever = function (app, fn) {
         var parallels = [];
         _.each(roomsData, function (room) {
           parallels.push(function (then) {
-            app.globalChannelService.getMembersByChannelName('connector', room.name, function (err, members) {
+            app.globalChannelService.getMembersByChannelName('connector', room.id, function (err, members) {
               if (err) {
                 return then(err);
               }
@@ -196,8 +205,7 @@ var retriever = function (app, fn) {
       },
 
       function sortList (roomsData, callback) {
-        roomsData = _.sortBy(roomsData, 'onlines')
-          .reverse(); // desc
+        roomsData = _.sortBy(roomsData, 'priority').reverse(); // desc
         return callback(null, roomsData);
       },
 

@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
-var client = require('../libs/client');
+var app = require('../libs/app');
 
 var DrawerUserRoomPreferencesView = Backbone.View.extend({
   template: require('../templates/drawer-room-preferences.html'),
@@ -18,7 +18,7 @@ var DrawerUserRoomPreferencesView = Backbone.View.extend({
     // show spinner as temp content
     this.render();
 
-    client.userPreferencesRead(this.model.get('id'), _.bind(function (data) {
+    app.client.userPreferencesRead(this.model.get('id'), _.bind(function (data) {
       this.onResponse(data);
     }, this));
   },
@@ -30,13 +30,11 @@ var DrawerUserRoomPreferencesView = Backbone.View.extend({
   onResponse: function (data) {
     var html = this.template({
       room: this.model.toJSON(),
-      owner: this.model.get('owner').toJSON(),
       preferences: data.preferences
     });
 
     this.$errors = this.$el.find('.errors');
     this.$el.html(html);
-    
     this.initializeTooltips();
   },
   onNothing: function (event) {
@@ -61,7 +59,7 @@ var DrawerUserRoomPreferencesView = Backbone.View.extend({
     var update = {};
     update[key] = value;
 
-    client.userPreferencesUpdate(update, _.bind(function (data) {
+    app.client.userPreferencesUpdate(update, _.bind(function (data) {
       this.$errors.hide();
       if (data.err) {
         this.$errors.html(i18next.t('global.unknownerror')).show();

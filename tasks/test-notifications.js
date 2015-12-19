@@ -1,6 +1,7 @@
 var async = require('async');
 var UserModel = require('../shared/models/user');
 var RoomModel = require('../shared/models/room');
+var GroupModel = require('../shared/models/group');
 var HistoryOneModel = require('../shared/models/historyone');
 var HistoryRoomModel = require('../shared/models/historyroom');
 var PomeloBridge = require('../ws-server/app/components/bridge').Bridge;
@@ -16,7 +17,7 @@ module.exports = function (grunt) {
             config: 'notifUsernameFrom',
             type: 'input',
             message: 'Choose a "from"/"by" username (the one who made the action, sends the message...)',
-            default: 'david'
+            default: 'yangs'
           } ]
         }
       },
@@ -26,16 +27,26 @@ module.exports = function (grunt) {
             config: 'notifUsernameTo',
             type: 'input',
             message: 'Choose a "to" username (the one who is the subject of the action, receives the message...)',
-            default: 'yangs'
+            default: 'david'
           } ]
         }
       },
-      notifRoomName: {
+      notifIdentifier: {
         options: {
           questions: [ {
-            config: 'notifRoomName',
+            config: 'notifIdentifier',
             type: 'input',
             message: 'Choose a "room" name',
+            default: '#donut/donut'
+          } ]
+        }
+      },
+      notifGroupIdentifier: {
+        options: {
+          questions: [ {
+            config: 'notifGroupIdentifier',
+            type: 'input',
+            message: 'Choose a "group" name',
             default: '#donut'
           } ]
         }
@@ -54,14 +65,16 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('donut-create-test-notifications', function () {
-    var usernameFrom = grunt.config('notifUsernameFrom') || 'david';
-    var usernameTo = grunt.config('notifUsernameTo') || 'yangs';
-    var roomName = grunt.config('notifRoomName') || '#donut';
+    var usernameFrom = grunt.config('notifUsernameFrom') || 'yangs';
+    var usernameTo = grunt.config('notifUsernameTo') || 'david';
+    var identifier = grunt.config('notifIdentifier') || '#donut/donut';
+    var groupidentifier = grunt.config('notifGroupIdentifier') || '#donut';
     var message = grunt.config('notifMessage') || '';
 
     var userFrom = null;
     var userTo = null;
     var room = null;
+    var group = null;
 
     var configuration = grunt.config('pomelo');
     var bridge = PomeloBridge({
@@ -100,27 +113,38 @@ module.exports = function (grunt) {
       },
 
       function retrieveRoom (callback) {
-        RoomModel.findByName(roomName).exec(function (err, r) {
+        RoomModel.findByIdentifier(identifier, function (err, r) {
           if (err) {
-            return callback('Error while retrieving room ' + roomName + ': ' + err);
+            return callback('Error while retrieving room ' + identifier + ': ' + err);
           }
           if (!r) {
-            return callback('Unable to retrieve room: ' + roomName);
+            return callback('Unable to retrieve room: ' + identifier);
           }
           room = r;
           return callback(null);
         });
       },
 
+      function retrieveGroup (callback) {
+        GroupModel.findByName(groupidentifier.replace('#', '')).exec(function (err, g) {
+          if (err) {
+            return callback('Error while retrieving group ' + identifier + ': ' + err);
+          }
+          if (!g) {
+            return callback('Unable to retrieve group: ' + identifier);
+          }
+          group = g;
+          return callback(null);
+        });
+      },
+
       function usermessageType (callback) {
         var event = {
-          from: userFrom.id,
-          from_user_id: userFrom.id,
-          from_username: userFrom.username,
-          from_avatar: userFrom._avatar(),
-          to: userTo.id,
+          user_id: userFrom.id,
+          username: userFrom.username,
+          realname: userFrom.realname,
+          avatar: userFrom._avatar(),
           to_user_id: userTo.id,
-          to_username: userTo.username,
           time: new Date(),
           message: message
         };
@@ -140,6 +164,37 @@ module.exports = function (grunt) {
             }
 
             grunt.log.ok('usermessageType done');
+            return callback(null);
+          });
+        });
+      },
+
+      function roomTopicType (callback) {
+        var event = {
+          name: room.name,
+          id: room.id,
+          user_id: userFrom.id,
+          username: userFrom.username,
+          avatar: userFrom._avatar(),
+          topic: message,
+          time: new Date()
+        };
+        HistoryRoomModel.record()(room, 'room:topic', event, function (err, history) {
+          if (err) {
+            return callback(err);
+          }
+
+          var data = {
+            type: 'roomtopic',
+            room: room.id,
+            history: history.id
+          };
+          bridge.notify('chat', 'createNotificationTask.createNotification', data, function (err) {
+            if (err) {
+              return callback(err);
+            }
+
+            grunt.log.ok('roomtopicType done');
             return callback(null);
           });
         });
@@ -193,7 +248,10 @@ module.exports = function (grunt) {
         async.each([
           { notification: 'roomallowed' },
           { notification: 'roomrefuse' },
-          { notification: 'roomjoinrequest' }
+          { notification: 'roomjoinrequest' },
+          { notification: 'roominvite' },
+          { notification: 'roomdelete' },
+          { notification: 'roomcreate' }
         ], function (item, fn) {
           var event = {
             name: room.name,
@@ -223,37 +281,6 @@ module.exports = function (grunt) {
         }, callback);
       },
 
-      function roomTopicType (callback) {
-        var event = {
-          name: room.name,
-          id: room.id,
-          user_id: userFrom.id,
-          username: userFrom.username,
-          avatar: userFrom._avatar(),
-          topic: message,
-          time: new Date()
-        };
-        HistoryRoomModel.record()(room, 'room:topic', event, function (err, history) {
-          if (err) {
-            return callback(err);
-          }
-
-          var data = {
-            type: 'roomtopic',
-            room: room.id,
-            history: history.id
-          };
-          bridge.notify('chat', 'createNotificationTask.createNotification', data, function (err) {
-            if (err) {
-              return callback(err);
-            }
-
-            grunt.log.ok('roomtopicType done');
-            return callback(null);
-          });
-        });
-      },
-
       function roomMessageType (callback) {
         var event = {
           name: room.name,
@@ -261,6 +288,7 @@ module.exports = function (grunt) {
           user_id: userFrom.id,
           username: userFrom.username,
           avatar: userFrom._avatar(),
+          to: userTo.id,
           message: message,
           time: new Date()
         };
@@ -345,6 +373,48 @@ module.exports = function (grunt) {
             return callback(null);
           });
         });
+      },
+
+      function groupRequestTypes (callback) {
+        async.each([
+          { notification: 'groupallowed' },
+          { notification: 'groupdisallow' },
+          { notification: 'grouprefuse' },
+          { notification: 'groupjoinrequest' },
+          { notification: 'groupinvite' },
+          { notification: 'groupop' },
+          { notification: 'groupdeop' },
+          { notification: 'groupban' },
+          { notification: 'groupdeban' }
+        ], function (item, fn) {
+          var event = {
+            id: group.id,
+            by_user_id: userFrom._id,
+            by_username: userFrom.username,
+            by_avatar: userFrom._avatar(),
+            user_id: userTo._id,
+            username: userTo.username,
+            avatar: userTo._avatar(),
+            group_id: group.id,
+            group_name: group.name,
+            time: new Date(),
+            banned_at: new Date()
+          };
+          var data = {
+            type: item.notification,
+            user: userTo.id,
+            room: group._id,
+            history: event
+          };
+          bridge.notify('chat', 'createNotificationTask.createNotification', data, function (err) {
+            if (err) {
+              return fn(err);
+            }
+
+            grunt.log.ok(item.notification + 'Type done');
+            return fn(null);
+          });
+        }, callback);
       }
 
     ], function (err) {
@@ -362,7 +432,8 @@ module.exports = function (grunt) {
     'load-pomelo-configuration',
     'prompt:notifUsernameFrom',
     'prompt:notifUsernameTo',
-    'prompt:notifRoomName',
+    'prompt:notifIdentifier',
+    'prompt:notifGroupIdentifier',
     'prompt:notifMessage',
     'donut-create-test-notifications'
   ]);

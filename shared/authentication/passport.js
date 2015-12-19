@@ -1,13 +1,15 @@
 'use strict';
 var logger = require('../util/logger').getLogger('passport', __filename);
+var _ = require('underscore');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
-var FacebookTokenStrategy = require('passport-facebook-token').Strategy;
+var FacebookTokenStrategy = require('passport-facebook-token');
 var conf = require('../../config/index');
 var User = require('../models/user');
 var emailer = require('../io/emailer');
 var i18next = require('../util/i18next');
+var verifyEmail = require('../util/verify-email');
 var keenio = require('../io/keenio');
 
 // keen.io tracking
@@ -75,13 +77,14 @@ passport.use('local-signup', new LocalStrategy(localStrategyOptions,
 
       // find existing user with this email
       email = email.toLowerCase();
-      User.findOne({ 'local.email': email }, function (err, user) {
+      User.findOne({ $or: [{'local.email': email}, {'emails': {$elemMatch: {'email': email, 'confirmed': true}}}] }, function (err, user) {
         if (err) {
           return done(err);
         }
 
         if (user) {
-          if (user.validPassword(password)) { // user type both password and mail of user so connect him
+          // user type both password and mail of user so connect him
+          if (user.local && user.local.email === email && user.validPassword(password)) {
             return done(null, user);
           } else {
             return done('email-alreadyexists');
@@ -104,6 +107,7 @@ passport.use('local-signup', new LocalStrategy(localStrategyOptions,
           newUser.local.password = newUser.generateHash(password);
           newUser.username = req.body.username;
           newUser.lastlogin_at = Date.now();
+          newUser.emails.push({email: email});
           newUser.save(function (err) {
             if (err) {
               throw err;
@@ -111,12 +115,17 @@ passport.use('local-signup', new LocalStrategy(localStrategyOptions,
 
             // tracking
             keenIoTracking(newUser, 'email');
-
-            // email will be send on next tick but done() is called immediatly
-            emailer.welcome(newUser.local.email, function (err) {
+            // email will be send on next tick but done() is called immediately
+            verifyEmail.sendEmail(newUser, newUser.local.email, function (err) {
               if (err) {
-                return logger.error('Unable to sent welcome email: ' + err);
+                return logger.error('Unable to sent verify email: ' + err);
               }
+
+              emailer.welcome(newUser.local.email, function (err) {
+                if (err) {
+                  return logger.error('Unable to sent welcome email: ' + err);
+                }
+              });
             });
             return done(null, newUser);
           });
@@ -160,158 +169,165 @@ passport.use('local-login', new LocalStrategy(localStrategyOptions,
   }));
 
 // Facebook (Web browser, based on current Facebook session)
-var facebookStrategyOptions = {
+passport.use(new FacebookStrategy({
   clientID: conf.facebook.clientID,
   clientSecret: conf.facebook.clientSecret,
   callbackURL: conf.facebook.callbackURL,
   passReqToCallback: true
-};
-
-passport.use(new FacebookStrategy(facebookStrategyOptions,
-  function (req, token, refreshToken, profile, done) {
-    process.nextTick(function () {
-      if (!req.user) {
-        User.findOne({ 'facebook.id': profile.id }, function (err, user) {
-          if (err) {
-            return done(err);
-          }
-
-          if (user) {
-            user.lastlogin_at = Date.now();
-            // if there is a user id already but no token (user was linked at
-            // one point and then removed) just add our token and profile
-            // information
-            if (!user.facebook.token) {
-              user.facebook.token = token;
-              user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
-              if (profile.emails) {
-                user.facebook.email = profile.emails[ 0 ].value;
-              }
-            }
-            user.save(function (err) {
-              if (err) {
-                throw err;
-              }
-
-              return done(null, user); // user found, return that user
-            });
-          } else {
-            // create account (=signup)
-            var newUser = User.getNewUser();
-            newUser.lastlogin_at = Date.now();
-            newUser.facebook.id = profile.id;
-            newUser.facebook.token = token;
-            newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
-            newUser.name = profile.displayName;
-            if (profile.emails) {
-              newUser.facebook.email = profile.emails[ 0 ].value;
-            } // facebook can return multiple emails so we'll take the first
-
-            newUser.save(function (err) {
-              if (err) {
-                throw err;
-              }
-
-              // tracking
-              keenIoTracking(newUser, 'facebook');
-
-              // if successful, return the new user
-              return done(null, newUser);
-            });
-          }
-        });
-      } else {
-        // user already exists and is logged in, we have to link accounts
-        var user = req.user;
-
-        // Look for another user account that use this identifier
-        User.findOne({ 'facebook.id': profile.id }, function (err, existingUser) {
-          if (err) {
-            return done(err);
-          }
-
-          if (existingUser) {
-            return done(null, false,
-              req.flash('error', i18next.t('account.facebook.error.alreadylinked')));
-          }
-
-          // update the current users facebook credentials
-          user.facebook.id = profile.id;
-          user.facebook.token = token;
-          user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
-          if (profile.emails) {
-            user.facebook.email = profile.emails[ 0 ].value;
-          }
-
-          // save the user
-          user.save(function (err) {
-            if (err) {
-              throw err;
-            }
-            return done(null, user);
-          });
-        });
-      }
-    });
-  }));
+}, facebookCallback));
 
 // Facebook (mobile, based on token)
 passport.use(new FacebookTokenStrategy({
   clientID: conf.facebook.clientID,
   clientSecret: conf.facebook.clientSecret
-}, function (accessToken, refreshToken, profile, done) {
-  console.log(accessToken);
-  console.log(profile);
-
-  var facebookId = profile.id;
-  User.findOne({ 'facebook.id': facebookId }, function (err, user) {
-    if (err) {
-      return done(err);
-    }
-
-    if (user) {
-      user.lastlogin_at = Date.now();
-      // if there is a user id already but no token (user was linked at one
-      // point and then removed) just add our token and profile information
-      if (!user.facebook.token) {
-        user.facebook.token = accessToken;
-
-        user.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
-        if (profile.emails) {
-          user.facebook.email = profile.emails[ 0 ].value;
-        }
-      }
-      user.save(function (err) {
-        if (err) {
-          return done(err);
-        }
-
-        return done(null, user); // user found, return that user
-      });
-    } else {
-      // create account (=signup)
-      var newUser = User.getNewUser();
-      newUser.lastlogin_at = Date.now();
-      newUser.facebook.id = profile.id;
-      newUser.facebook.token = accessToken;
-      newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName; // @todo :test
-      newUser.name = profile.displayName; // @todo :test
-      if (profile.emails) {
-        newUser.facebook.email = profile.emails[ 0 ].value;
-      } // facebook can return multiple emails so we'll take the first
-      newUser.save(function (err) {
-        if (err) {
-          return done(err);
-        }
-
-        // tracking
-        keenIoTracking(newUser, 'facebook');
-
-        // if successful, return the new user
-        return done(null, newUser);
-      });
-    }
-  });
+}, function (token, refreshToken, profile, done) {
+  facebookCallback({}, token, refreshToken, profile, done);
 }));
+
+function facebookCallback (req, token, refreshToken, profile, done) {
+  process.nextTick(function () {
+    var whenSearchIsDone = function (existingUser) {
+      // user is logged in and try to authenticate with already used Facebook account
+      if (existingUser && req.user && req.user.id !== existingUser.id) {
+        console.error('passport.facebookCallback.alreadylinked');
+        return done(null, false, 'alreadylinked');
+      }
+
+      // user is not logged and try to authenticate with already used Facebook account
+      // => Facebook login
+      if (!req.user && existingUser) {
+        return done(null, existingUser);
+      }
+
+      // User try to authenticate with a not known Facebook account
+      // he is not logged => Facebook signup
+      // he is logged => Facebook link
+      var user = req.user || User.getNewUser();
+
+      user.facebook.id = profile.id;
+      user.facebook.token = token;
+      decorateUserWithFacebookProfile(user, profile);
+
+      user.confirmed = true;
+      user.lastlogin_at = Date.now();
+
+      // tracking
+      if (user.isNew) {
+        keenIoTracking(user, 'facebook');
+      }
+
+      user.save(function (err) {
+        console.error(err);
+        done(err, user);
+      });
+    };
+
+    // look for existing user with this profile.id
+    User.findOne({ 'facebook.id': profile.id }, function (err, existingUser) {
+      if (err) {
+        console.error(err);
+        return done(err);
+      }
+
+      // no user found by facebook.id
+      if (existingUser) {
+        return whenSearchIsDone(existingUser);
+      }
+
+      // we haven't a valid Facebook email
+      var facebookEmail = parseFacebookEmail(profile);
+      if (!facebookEmail) {
+        return whenSearchIsDone();
+      }
+
+      // look for existing user with this profile.email
+      User.findOne({ 'local.email': facebookEmail }, function (err, existingUser) {
+        if (err) {
+          console.error(err);
+          return done(err);
+        }
+
+        whenSearchIsDone(existingUser);
+      });
+    });
+  });
+}
+
+function parseFacebookRealname (profile) {
+  if (!profile || !profile.displayName || !profile.displayName.length) {
+    return;
+  }
+
+  if (profile.displayName.length <= 20) {
+    return profile.displayName;
+  }
+
+  if (!profile.name || (!profile.name.givenName && !profile.name.familyName)) {
+    return profile.displayName.substr(0, 20);
+  }
+
+  if (profile.name.givenName && !profile.name.familyName) {
+    return profile.name.givenName.substr(0, 20);
+  }
+
+  if (!profile.name.givenName && profile.name.familyName) {
+    return profile.name.familyName.substr(0, 20);
+  }
+
+  // we get both givenName and familyName
+
+  var realname = profile.name.givenName + ' ' + profile.name.familyName;
+  if (realname.length <= 20) {
+    return realname;
+  }
+
+  realname = profile.name.givenName.charAt(0).toUpperCase() + '.';
+  realname += ' ' + profile.name.familyName;
+  return realname.substr(0, 20);
+}
+
+function parseFacebookEmail (profile) {
+  if (!profile.emails || !profile.emails[0] || !_.isString(profile.emails[0].value)) {
+    return;
+  }
+
+  return profile.emails[0].value.toLowerCase();
+}
+
+function decorateUserWithFacebookProfile (user, profile) {
+  // name
+  var realname = parseFacebookRealname(profile);
+  if (!user.realname && realname) {
+    user.realname = realname;
+  }
+  if (profile.displayName) {
+    user.facebook.name = profile.displayName;
+  }
+
+  // email
+  var _email = parseFacebookEmail(profile);
+  if (!_email) {
+    return;
+  }
+
+  user.facebook.email = _email;
+
+  // only if user.local.email not already set
+  if (user.local && !user.local.email) {
+    user.local.email = _email;
+  }
+
+  if (!_.isArray(user.emails)) {
+    user.emails = [];
+  }
+
+  var exists = _.find(user.emails, function (doc) {
+    return (doc.email === _email);
+  });
+
+  if (!exists) {
+    user.emails.push({email: _email, confirmed: true});
+  }
+}
 
 module.exports = passport;

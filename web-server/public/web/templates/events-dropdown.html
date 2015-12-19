@@ -2,17 +2,20 @@
     <div class="arrow-up"></div>
     <ul class="a">
         <% if ((data.isOp && !data.isMessageOwner) || data.isOwner || data.isAdmin) { %>
-            <li>
+            <li class="spammed">
                 <i class="icon icon-fw icon-warning"></i>
-                <a href="#" class="spammed"><%= t('chat.message.dropdown.spam.mark-spam') %></a>
-                <a href="#" class="unspam"><%= t('chat.message.dropdown.spam.unmark-spam') %></a>
+                <a href="#"><%= t('chat.message.dropdown.spam.mark-spam') %></a>
+            </li>
+            <li class="unspam">
+                <i class="icon icon-fw icon-warning"></i>
+                <a href="#"><%= t('chat.message.dropdown.spam.unmark-spam') %></a>
             </li>
         <% } %>
 
         <% if (data.isEditable) { %>
-            <li>
+            <li class="edited">
                 <i class="icon icon-fw icon-pencil"></i>
-                <a href="#" class="edited"><%= t('chat.message.dropdown.edit') %></a>
+                <a href="#"><%= t('chat.message.dropdown.edit') %></a>
             </li>
         <% } %>
     </ul>

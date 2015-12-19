@@ -1,5 +1,4 @@
 'use strict';
-var logger = require('../util/logger').getLogger('history', __filename);
 var _ = require('underscore');
 var async = require('async');
 var mongoose = require('../io/mongoose');
@@ -11,22 +10,19 @@ var historySchema = mongoose.Schema({
   to: { type: mongoose.Schema.ObjectId, ref: 'User' },
   time: { type: Date, default: Date.now },
   data: mongoose.Schema.Types.Mixed,
-  viewed: { type: Boolean, default: false }, // true if to user has read this
-                                             // event
   edited: { type: Boolean },
   edited_at: { type: Date }
-
 });
 
 var dryFields = [
   'time',
-  'to',
-  'from',
-  'from_username',
-  'from_user_id',
-  'from_avatar',
+  'user_id',
+  'username',
+  'realname',
+  'avatar',
   'to_user_id',
-  'to_username'
+  'to_username',
+  'to_avatar'
 ]; // in user:online/offline event the fields are user_id, username, avatar
 
 historySchema.statics.record = function () {
@@ -38,20 +34,10 @@ historySchema.statics.record = function () {
    * @return event with event_id set
    */
   return function (event, data, fn) {
-    // user:online/offline special case
-    var fromUserId, toUserId;
-    if (data.from_user_id === undefined && data.from) {
-      fromUserId = data.from;
-      toUserId = data.to;
-    } else {
-      fromUserId = data.from_user_id;
-      toUserId = data.to_user_id;
-    }
-
     var model = new Model();
     model.event = event;
-    model.from = fromUserId;
-    model.to = toUserId;
+    model.from = data.user_id;
+    model.to = data.to_user_id;
     model.time = data.time;
 
     // dry data
@@ -60,7 +46,7 @@ historySchema.statics.record = function () {
 
     model.save(function (err) {
       if (err) {
-        return fn('Unable to save historyOne ' + model.from + '=>' + model.to + ': ' + err);
+        return fn('historyone.record', model.from, '=>', model.to, err);
       }
 
       return fn(null, model);
@@ -68,126 +54,43 @@ historySchema.statics.record = function () {
   };
 };
 
-historySchema.statics.getLastMessage = function (fromUid, toUid, fn) {
-  this.find({
-    $or: [
-      {from: [fromUid], to: [toUid]},
-      {from: [toUid], to: [fromUid]}
-    ],
-    event: 'user:message'
-  }).sort({time: -1})
-    .limit(1)
-    .exec(function (err, doc) {
-      return fn(err, doc);
-    });
-};
-
-historySchema.methods.toClientJSON = function (userViewed) {
-  userViewed = userViewed || false;
-
-  // record
-  var e = {
-    type: this.event
-  };
-
+historySchema.methods.toClientJSON = function () {
   // re-hydrate data
   var data = (this.data)
     ? _.clone(this.data)
     : {};
-  data.id = this._id.toString();
+  data.id = this.id;
   data.time = this.time;
   if (this.from) {
-    data.from_user_id = this.from._id.toString();
-    data.from_username = this.from.username;
-    data.from_avatar = this.from._avatar();
+    data.user_id = this.from.id;
+    data.username = this.from.username;
+    data.realname = this.from.realname;
+    data.avatar = this.from._avatar();
   }
   if (this.to) {
-    data.to_user_id = this.to._id.toString();
-    data.to_username = this.to.username;
-    data.to_avatar = this.to._avatar();
+    data.to_user_id = this.to.id;
+    // promote
+    if ([ 'user:ban', 'user:deban' ].indexOf(this.event) !== -1) {
+      data.to_username = this.to.username;
+      data.to_avatar = this.to._avatar();
+    }
   }
   if (this.edited === true) {
-    e.edited = this.edited;
+    data.edited = this.edited;
   }
 
-  // images
-  if (data.images && data.images.length > 0) {
-    data.images = _.map(data.images, function (element, key, value) {
+  // files
+  if (data.files && data.files.length) {
+    data.files = _.map(data.files, function (element, key, value) {
       // @important: use .path to obtain URL with file extension and avoid CORS
       // errors
-      return cloudinary.messageImage(element.path);
+      return cloudinary.messageFile(element);
     });
   }
 
-  e.data = data;
-
-  // unviewed status (true if message, i'm the receiver and current value is
-  // false)
-  if (userViewed && [ 'user:message' ].indexOf(this.event) !== -1 && data.to_user_id === userViewed && !this.viewed) {
-    e.unviewed = true;
-  }
-
-  return e;
-};
-
-historySchema.statics.retrieve = function () {
-  var that = this;
-  /**
-   * @param me String
-   * @param other String
-   * @param what criteria Object: since (timestamp)
-   * @param fn
-   */
-  return function (me, other, what, fn) {
-    what = what || {};
-    var criteria = {
-      $or: [
-        { from: me, to: other },
-        { from: other, to: me }
-      ]
-    };
-
-    // Since (timestamp, from present to past direction)
-    if (what.since) {
-      criteria.time = {};
-      criteria.time.$lt = new Date(what.since);
-    }
-
-    // limit
-    var howMany = what.limit || 100;
-    var limit = howMany + 1;
-
-    var q = that.find(criteria)
-      .sort({ time: 'desc' }) // important for timeline logic but also optimize
-                              // rendering on frontend
-      .limit(limit)
-      .populate('from', 'username avatar color facebook')
-      .populate('to', 'username avatar color facebook');
-
-    var start = Date.now();
-    q.exec(function (err, entries) {
-      if (err) {
-        return fn('Error while retrieving room history: ' + err);
-      }
-
-      var duration = Date.now() - start;
-      logger.debug('History requested in ' + duration + 'ms');
-
-      var more = (entries.length > howMany);
-      if (more) {
-        entries.pop();
-      } // remove last
-
-      var history = [];
-      _.each(entries, function (entry) {
-        history.push(entry.toClientJSON(me));
-      });
-
-      return fn(null, {
-        history: history,
-        more: more
-      });
-    });
+  return {
+    type: this.event,
+    data: data
   };
 };
 

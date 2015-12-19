@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../libs/client');
+var app = require('../libs/app');
 var keyboard = require('../libs/keyboard');
 
 var InputRollupView = Backbone.View.extend({
@@ -82,6 +82,7 @@ var InputRollupView = Backbone.View.extend({
       if (data.key === keyboard.RETURN && !data.isShift && message.length !== 0) {
         this._closeRollup(event.target);
         this.moveCursorToEnd();
+        return;
       }
 
       // releasing UP / DOWN / TAB / LEFT / RIGHT : Do Nothing
@@ -150,7 +151,7 @@ var InputRollupView = Backbone.View.extend({
     if (li.length !== 0) {
       currentLi.removeClass('active');
       li.addClass('active');
-      this._computeNewValue(li.find('.value').html() + ' ');
+      this._computeNewValue(li.find('.value').html().trim() + ' ');
     }
   },
   _getCursorPosition: function () {
@@ -181,6 +182,7 @@ var InputRollupView = Backbone.View.extend({
         type: 'commands',
         results: this._getCommandList()
       }));
+      this.$el.addClass('open');
       return;
     }
 
@@ -192,21 +194,55 @@ var InputRollupView = Backbone.View.extend({
     var search = input.substr(1);
 
     var that = this;
-
+    var options = {};
     if (prefix === '#') {
-      client.search(search, true, false, 15, 0, false, function (data) {
-        _.each(data.rooms.list, function (d) {
-          d.avatarUrl = common.cloudinary.prepare(d.avatar);
+      if (input.indexOf('/') === -1) {
+        options.rooms = true;
+        options.groups = true;
+        options.limit = {
+          groups: 15,
+          rooms: 15
+        };
+        options.starts = true;
+        app.client.search(search, options, function (data) {
+          _.each(_.union(data.groups.list, data.rooms.list), function (d) {
+            d.avatarUrl = common.cloudinary.prepare(d.avatar);
+          });
+          that.$rollup.html(that.template({
+            type: 'rooms',
+            results: _.union(data.groups.list, data.rooms.list)
+          }));
+          that.$el.addClass('open');
         });
-        that.$rollup.html(that.template({
-          type: 'rooms',
-          results: data.rooms.list
-        }));
-      });
+      } else {
+        var roomSearch = search.split('/')[1] ? search.split('/')[1] : '';
+        options.rooms = true;
+        options.group_name = search.split('/')[0];
+        options.limit = {
+          groups: 15,
+          rooms: 15
+        };
+        options.starts = true;
+        app.client.search(roomSearch, options, function (data) {
+          _.each(data.rooms.list, function (d) {
+            d.avatarUrl = common.cloudinary.prepare(d.avatar);
+          });
+          that.$rollup.html(that.template({
+            type: 'rooms',
+            results: data.rooms.list
+          }));
+          that.$el.addClass('open');
+        });
+      }
     }
 
     if (prefix === '@') {
-      client.search(search, false, true, 15, 0, false, function (data) {
+      options.users = true;
+      options.limit = {
+        users: 15
+      };
+      options.starts = true;
+      app.client.search(search, options, function (data) {
         _.each(data.users.list, function (d) {
           d.avatarUrl = common.cloudinary.prepare(d.avatar);
         });
@@ -214,6 +250,7 @@ var InputRollupView = Backbone.View.extend({
           type: 'users',
           results: data.users.list
         }));
+        that.$el.addClass('open');
       });
     }
   },
@@ -233,10 +270,15 @@ var InputRollupView = Backbone.View.extend({
         return;
       }
 
-      this._computeNewValue(this.$rollup.find('li.active .value').html() + ' ');
+      if (this.$rollup.find('li.active .value').html().trim().slice(-1) !== '/') {
+        this._computeNewValue(this.$rollup.find('li.active .value').html().trim() + ' ');
+      } else {
+        this._computeNewValue(this.$rollup.find('li.active .value').html().trim());
+      }
     }
 
     this.$rollup.html('');
+    this.$el.removeClass('open');
   },
   onRollupHover: function (event) {
     var li = $(event.currentTarget);
@@ -254,7 +296,11 @@ var InputRollupView = Backbone.View.extend({
       return;
     }
 
-    this._computeNewValue(li.find('.value').html() + ' ');
+    if (li.find('.value').html().trim().slice(-1) !== '/') {
+      this._computeNewValue(li.find('.value').html().trim() + ' ');
+    } else {
+      this._computeNewValue(li.find('.value').html().trim());
+    }
     this._closeRollup();
     this.moveCursorToEnd();
   },

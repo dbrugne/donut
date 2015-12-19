@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var app = require('../models/app');
+var app = require('../libs/app');
 
 var DrawerView = Backbone.View.extend({
   defaultSize: '280px',
@@ -86,12 +86,7 @@ var DrawerView = Backbone.View.extend({
     this.$wrap.css('width', size);
 
     // escape key
-    $(document).on('keydown', $.proxy(function (e) {
-      if (e.which === 27) {
-        app.trigger('removeTooltips');
-        this.close();
-      }
-    }, this));
+    $(document).on('keyup', $.proxy(this.onKeyUp, this));
 
     this.$el.show();
     var that = this;
@@ -106,6 +101,12 @@ var DrawerView = Backbone.View.extend({
       }
     });
   },
+  onKeyUp: function (event) {
+    if (event.which === 27) {
+      app.trigger('removeTooltips');
+      this.close();
+    }
+  },
   _hide: function () {
     this.trigger('hide');
 
@@ -113,7 +114,7 @@ var DrawerView = Backbone.View.extend({
     this.shown = false;
 
     // escape key
-    $(document).off('keydown');
+    $(document).off('keyup', this.onKeyUp);
 
     var that = this;
     var width = this.$wrap.width();
@@ -149,6 +150,5 @@ var DrawerView = Backbone.View.extend({
     });
   }
 });
-
 
 module.exports = DrawerView;

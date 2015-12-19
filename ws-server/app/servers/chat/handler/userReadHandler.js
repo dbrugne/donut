@@ -19,6 +19,7 @@ handler.call = function (data, session, next) {
   var readUser = session.__user__;
 
   var read = {};
+  var what = data.what || {};
 
   var that = this;
 
@@ -38,16 +39,20 @@ handler.call = function (data, session, next) {
 
     function details (callback) {
       read.user_id = readUser.id;
+      read.realname = readUser.realname;
       read.username = readUser.username;
       read.color = readUser.color;
       read.avatar = readUser._avatar();
-      read.poster = readUser._poster();
-      read.bio = readUser.bio;
-      read.location = readUser.location;
-      read.website = readUser.website;
-      read.registered = readUser.created_at;
       read.banned = user.isBanned(readUser.id); // for ban/deban menu
       read.i_am_banned = readUser.isBanned(user.id); // for input enable/disable
+
+      if (what.more) {
+        read.poster = readUser._poster();
+        read.bio = readUser.bio;
+        read.location = readUser.location;
+        read.website = readUser.website;
+        read.registered = readUser.created_at;
+      }
 
       return callback(null);
     },
@@ -70,6 +75,10 @@ handler.call = function (data, session, next) {
     },
 
     function rooms (callback) {
+      if (!what.rooms) {
+        return callback(null);
+      }
+
       Room.find({
         deleted: {$ne: true},
         $or: [
@@ -77,39 +86,42 @@ handler.call = function (data, session, next) {
           {op: {$in: [readUser._id]}},
           {users: {$in: [readUser._id]}}
         ]
-      }, 'name avatar color owner op users').exec(function (err, models) {
-        if (err) {
-          return callback(err);
-        }
-
-        read.rooms = {
-          owned: [],
-          oped: [],
-          joined: []
-        };
-        _.each(models, function (room) {
-          var _room = {
-            name: room.name,
-            id: room.id,
-            avatar: room._avatar(),
-            color: room.color
-          };
-
-          if (room.owner.toString() === readUser.id) {
-            read.rooms.owned.push(_room);
-          } else if (room.op.length && room.op.indexOf(readUser._id) !== -1) {
-            read.rooms.oped.push(_room);
-          } else {
-            read.rooms.joined.push(_room);
+      }, 'name avatar color owner op users group')
+        .populate('group', 'name')
+        .exec(function (err, models) {
+          if (err) {
+            return callback(err);
           }
-        });
 
-        return callback(null);
-      });
+          read.rooms = {
+            owned: [],
+            oped: [],
+            joined: []
+          };
+          _.each(models, function (room) {
+            var _room = {
+              name: room.name,
+              identifier: room.getIdentifier(),
+              id: room.id,
+              avatar: room._avatar(),
+              color: room.color
+            };
+
+            if (room.owner && room.owner.toString() === readUser.id) {
+              read.rooms.owned.push(_room);
+            } else if (room.op.length && room.op.indexOf(readUser._id) !== -1) {
+              read.rooms.oped.push(_room);
+            } else {
+              read.rooms.joined.push(_room);
+            }
+          });
+
+          return callback(null);
+        });
     },
 
     function account (callback) {
-      if (readUser.id !== user.id) {
+      if (!what.admin || readUser.id !== user.id) {
         return callback(null);
       }
 
@@ -118,6 +130,22 @@ handler.call = function (data, session, next) {
       // email
       if (readUser.local && readUser.local.email) {
         read.account.email = readUser.local.email;
+      }
+
+      // emails
+      if (readUser.emails && readUser.emails.length > 0) {
+        var emails = [];
+        _.each(readUser.emails, function (e) {
+          var mail = {email: e.email, confirmed: e.confirmed};
+          if (readUser.local && readUser.local.email === e.email) {
+            mail.main = true;
+          }
+          if (readUser.facebook && readUser.facebook.id && readUser.facebook.email === e.email) {
+            mail.facebook = true;
+          }
+          emails.push(mail);
+        });
+        read.account.emails = emails;
       }
 
       // password

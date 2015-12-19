@@ -3,12 +3,12 @@ var _ = require('underscore');
 var mongoose = require('../io/mongoose');
 var common = require('@dbrugne/donut-common/server');
 var cloudinary = require('../util/cloudinary');
-
-var MAX_PASSWORD_TRIES = 5;
-var MAX_PASSWORD_TIME = 60 * 1000; // 1mn
+var GroupModel = require('./group');
+var conf = require('../../config/index');
 
 var roomSchema = mongoose.Schema({
   name: String,
+  group: {type: mongoose.Schema.ObjectId, ref: 'Group'},
   permanent: Boolean,
   deleted: {type: Boolean, default: false},
   visibility: {type: Boolean, default: false},
@@ -28,40 +28,106 @@ var roomSchema = mongoose.Schema({
   }],
   mode: {type: String, default: 'public'},
   password: String,
+  password_indication: String,
   password_tries: [{
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
     count: Number,
     created_at: {type: Date, default: Date.now}
   }],
+  allow_group_member: {type: Boolean, default: true},
+  allow_user_request: {type: Boolean, default: true},
   allowed: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
-  allowed_pending: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
+  allowed_pending: [{
+    user: {type: mongoose.Schema.ObjectId, ref: 'User'},
+    message: String,
+    created_at: {type: Date, default: Date.now}
+  }],
   avatar: String,
   poster: String,
   color: String,
   topic: String,
   description: String,
+  disclaimer: String,
   website: mongoose.Schema.Types.Mixed,
   created_at: {type: Date, default: Date.now},
-  lastjoin_at: {type: Date}
-
+  last_event_at: {type: Date, default: Date.now},
+  last_event: {type: mongoose.Schema.ObjectId, ref: 'HistoryRoom'}
 });
 
 roomSchema.statics.findByName = function (name) {
   return this.findOne({
     name: common.regexp.exact(name, 'i'),
     deleted: {$ne: true}
-  });
+  }).populate('group', 'name');
 };
 
-roomSchema.statics.listByName = function (names) {
-  var criteria = {
-    deleted: false,
-    $or: []
+roomSchema.statics.findById = function (id, callback) {
+  return this.findOne({
+    _id: id,
+    deleted: {$ne: true}
+  }).populate('group', 'name')
+    .exec(callback);
+};
+
+roomSchema.statics.findByNameAndGroup = function (name, groupId) {
+  var query = {
+    name: common.regexp.exact(name, 'i'),
+    deleted: {$ne: true}
   };
-  _.each(names, function (n) {
-    criteria['$or'].push({name: common.regexp.exact(n)});
-  });
-  return this.find(criteria, '_id name');
+  if (groupId) {
+    query.group = {$in: groupId};
+  } else {
+    query.group = {$exists: false};
+  }
+  return this.findOne(query);
+};
+
+roomSchema.statics.findByIdentifier = function (identifier, callback) {
+  var data = common.validate.uriExtract(identifier);
+  if (!data) {
+    return callback('invalid-identifier');
+  }
+
+  var that = this;
+  var populate = function (err, room) {
+    if (err) {
+      return callback(err);
+    }
+    if (!room) {
+      return callback(null);
+    }
+    that.populate(room, [
+      {path: 'owner', select: 'username avatar color facebook'},
+      {path: 'group', select: 'name members owner'}
+    ], callback);
+  };
+
+  if (!data.group) {
+    // non-group rooms only
+    this.findOne({
+      name: common.regexp.exact(data.room, 'i'),
+      deleted: {$ne: true},
+      group: {$exists: false}
+    }, populate);
+  } else {
+    GroupModel.findByName(data.group).exec(function (err, group) {
+      if (err) {
+        return callback(err);
+      }
+      if (!group) {
+        return callback(null);
+      }
+      that.findOne({
+        group: group._id,
+        name: common.regexp.exact(data.room, 'i'),
+        deleted: {$ne: true}
+      }, populate);
+    });
+  }
+};
+
+roomSchema.statics.findByGroup = function (groupId) {
+  return this.find({group: groupId, deleted: {$ne: true}});
 };
 
 roomSchema.statics.findByUser = function (userId) {
@@ -154,6 +220,26 @@ roomSchema.methods.isBanned = function (userId) {
   return (typeof doc !== 'undefined');
 };
 
+roomSchema.methods.isInGroupBanned = function (userId) {
+  if (!this.group || !this.group.bans || !this.group.bans.length) {
+    return;
+  }
+
+  return _.find(this.group.bans, function (ban) {
+    if (ban.user._id) {
+      // populated
+      return (ban.user.id === userId);
+    } else {
+      return (ban.user.toString() === userId);
+    }
+  });
+};
+
+roomSchema.methods.isGroupBanned = function (userId) {
+  var doc = this.isInGroupBanned(userId);
+  return (typeof doc !== 'undefined');
+};
+
 roomSchema.methods.isDevoice = function (userId) {
   if (!this.devoices || !this.devoices.length) {
     return false;
@@ -169,12 +255,22 @@ roomSchema.methods.isAllowed = function (userId) {
   var subDocument = _.find(this.allowed, function (allowed) {
     return (allowed.toString() === userId);
   });
-  return (typeof subDocument !== 'undefined');
+
+  // check if it's a group member
+  if (typeof subDocument === 'undefined' && this.group && this.allow_group_member) {
+    return (this.group.isMember(userId));
+  } else {
+    return (typeof subDocument !== 'undefined');
+  }
 };
 
 roomSchema.methods.isAllowedPending = function (userId) {
+  if (!this.allowed_pending || !this.allowed_pending.length) {
+    return false;
+  }
+
   var subDocument = _.find(this.allowed_pending, function (u) {
-    return (u.toString() === userId);
+    return (u.user.toString() === userId);
   });
   return (typeof subDocument !== 'undefined');
 };
@@ -217,7 +313,7 @@ roomSchema.methods.cleanupPasswordTries = function () {
     if (!doc) {
       return; // strange behavior of mongoose when removing subdocuments
     }
-    if ((Date.now() - new Date(doc.created_at)) > MAX_PASSWORD_TIME) {
+    if ((Date.now() - new Date(doc.created_at)) > conf.room.max_password_time) {
       doc.remove();
     }
   });
@@ -230,7 +326,37 @@ roomSchema.methods.cleanupPasswordTries = function () {
   });
 };
 
+roomSchema.methods.isGoodPassword = function (userId, password) {
+  // remove expired subdocs on model synchronously and in database asynchronously
+  this.cleanupPasswordTries();
+  var tries = this.isInPasswordTries(userId);
+  if (tries && tries.count > conf.room.max_password_tries) {
+    return 'spam-password';
+  }
+  if (this.validPassword(password)) {
+    return true;
+  }
+  if (tries) {
+    tries.count++;
+  } else {
+    this.password_tries.push({
+      user: userId,
+      count: 1
+    });
+  }
+  // persistence will happen later
+  this.save(function (err) {
+    if (err) {
+      logger.error(err);
+    }
+  });
+  return 'wrong-password';
+};
+
 roomSchema.methods.isUserBlocked = function (userId, password) {
+  if (this.isGroupBanned(userId)) {
+    return 'groupbanned';
+  }
   if (this.isOwner(userId)) {
     return false;
   }
@@ -240,40 +366,31 @@ roomSchema.methods.isUserBlocked = function (userId, password) {
   if (this.mode === 'public') {
     return false;
   }
-  if (this.isIn(userId)) {
-    return false;
-  }
   if (this.isAllowed(userId)) {
     return false;
   }
-  if (this.password && (password || password === '')) {
-    // remove expired subdocs on model synchronously and in database asynchronously
-    this.cleanupPasswordTries();
-    var tries = this.isInPasswordTries(userId);
-    if (tries && tries.count > MAX_PASSWORD_TRIES) {
-      return 'spam-password';
-    }
-    if (this.validPassword(password)) {
-      return false;
-    }
-    if (tries) {
-      tries.count ++;
-    } else {
-      this.password_tries.push({
-        user: userId,
-        count: 1
-      });
-    }
-    // persistence will happen later
-    this.save(function (err) {
-      if (err) {
-        logger.error(err);
-      }
-    });
-    return 'wrong-password';
+  if (this.group && this.allow_group_member && !this.allow_user_request) {
+    return 'group-members-only';
+  }
+  if (this.password && password) {
+    return (this.isGoodPassword(userId, password) !== true);
   }
 
   return 'notallowed';
+};
+
+roomSchema.methods.getAllowPendingByUid = function (userId) {
+  if (!this.allowed_pending) {
+    return;
+  }
+
+  return _.find(this.allowed_pending, function (doc) {
+    if (doc.user._id) {
+      return (doc.user.id === userId);
+    } else {
+      return (doc.user.toString() === userId);
+    }
+  });
 };
 
 roomSchema.methods.getIdsByType = function (type) {
@@ -294,14 +411,18 @@ roomSchema.methods.getIdsByType = function (type) {
     _.each(this.op, function (u) {
       ids.push(u.toString());
     });
-    ids.push(this.owner.toString());
+    if (this.owner._id) {
+      ids.push(this.owner.id);
+    } else {
+      ids.push(this.owner.toString());
+    }
   } else if (type === 'allowed') {
     _.each(this.allowed, function (u) {
       ids.push(u.toString());
     });
   } else if (type === 'allowedPending') {
     _.each(this.allowed_pending, function (u) {
-      ids.push(u.toString());
+      ids.push(u.user.toString());
     });
   } else if (type === 'regular') {
     var that = this;
@@ -320,6 +441,15 @@ roomSchema.methods.getIdsByType = function (type) {
     });
   }
   return ids;
+};
+
+roomSchema.methods.getIdentifier = function () {
+  if (!this.group) {
+    return '#' + this.name;
+  }
+  if (this.group.name) {
+    return '#' + this.group.name + '/' + this.name;
+  }
 };
 
 module.exports = mongoose.model('Room', roomSchema);

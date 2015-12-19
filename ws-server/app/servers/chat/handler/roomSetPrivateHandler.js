@@ -2,6 +2,7 @@
 var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
+var GroupModel = require('../../../../../shared/models/group');
 
 var Handler = function (app) {
   this.app = app;
@@ -31,7 +32,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isOwner(currentUser.id) && session.settings.admin !== true) {
-        return callback('no-op-owner-admin');
+        return callback('not-op-owner-admin');
       }
 
       if (room.mode === 'private') {
@@ -42,6 +43,21 @@ handler.call = function (data, session, next) {
         return callback('permanent');
       }
       return callback(null);
+    },
+
+    function checkRoomDefault (callback) {
+      if (!room.group) {
+        return callback(null);
+      }
+      GroupModel.findById(room.group).exec(function (err, group) {
+        if (err) {
+          return callback(err);
+        }
+        if (group.default.toString() === data.room_id) {
+          return callback("params-room-id");
+        }
+        return callback(null);
+      });
     },
 
     function persist (callback) {
@@ -56,9 +72,11 @@ handler.call = function (data, session, next) {
       var privateEvent = {
         room_id: room.id,
         user_id: currentUser.id,
-        username: currentUser.username
+        username: currentUser.username,
+        allow_user_request: true,
+        allow_group_member: !!room.group
       };
-      that.app.globalChannelService.pushMessage('connector', 'room:set:private', privateEvent, room.name, {}, callback);
+      that.app.globalChannelService.pushMessage('connector', 'room:set:private', privateEvent, room.id, {}, callback);
     }
 
   ], function (err) {

@@ -31,9 +31,16 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function prepare (notifications, more, callback) {
+    function retrieveUnreadCount (notifications, more, callback) {
+      Notifications(that.app).retrieveUserNotificationsUnviewedCount(user.id, function (err, count) {
+        return callback(err, notifications, more, count);
+      });
+    },
+
+    function prepare (notifications, more, count, callback) {
       var event = {
         notifications: [],
+        unread: count,
         more: more
       };
       _.each(notifications, function (notification) {
@@ -69,6 +76,7 @@ handler.call = function (data, session, next) {
           if (notification.data.event.room) {
             d.data.room = notification.data.event.room;
             d.data.room.avatar = notification.data.event.room._avatar();
+            d.data.room.name = notification.data.event.room.getIdentifier();
           }
 
           if (notification.data.event && notification.data.event.data && notification.data.event.data.message) {
@@ -83,6 +91,10 @@ handler.call = function (data, session, next) {
           if (notification.data.room) {
             d.data.room = notification.data.room;
             d.data.room.avatar = notification.data.room._avatar();
+            d.data.room.name = notification.data.room.getIdentifier();
+          } else if (notification.data.group) {
+            d.data.group = notification.data.group;
+            d.data.group.avatar = notification.data.group._avatar();
           }
 
           if (notification.data.by_user) {

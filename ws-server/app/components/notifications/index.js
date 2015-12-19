@@ -1,9 +1,8 @@
 'use strict';
-var logger = require('../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var _ = require('underscore');
 var NotificationModel = require('../../../../shared/models/notification');
-var HistoryOne = require('../../../../shared/models/historyone');
-var HistoryRoom = require('../../../../shared/models/historyroom');
+var RoomModel = require('../../../../shared/models/room');
 var conf = require('../../../../config');
 var async = require('async');
 
@@ -15,6 +14,7 @@ var roomTopic = require('./types/roomTopicType');
 var roomMessage = require('./types/roomMessageType');
 var roomJoin = require('./types/roomJoinType');
 var userMention = require('./types/userMentionType');
+var groupRequest = require('./types/groupRequestType');
 
 module.exports = function (app, options) {
   return new Facade(app, options);
@@ -85,7 +85,21 @@ Facade.prototype.getType = function (type) {
     case 'roomallowed':
     case 'roomrefuse':
     case 'roominvite':
+    case 'roomdelete':
+    case 'roomcreate':
       typeConstructor = roomRequest;
+      break;
+
+    case 'groupjoinrequest':
+    case 'groupallowed':
+    case 'groupdisallow':
+    case 'grouprefuse':
+    case 'groupinvite':
+    case 'groupban':
+    case 'groupdeban':
+    case 'groupop':
+    case 'groupdeop':
+      typeConstructor = groupRequest;
       break;
 
     default:
@@ -124,6 +138,7 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
     select: 'local username color facebook avatar'
   });
 
+  var that = this;
   q.exec(function (err, results) {
     if (err) {
       return (err);
@@ -134,66 +149,14 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
         return fn(null);
       }
 
-      if (n.type === 'roomrefuse' || n.type === 'roomallowed' || n.type === 'roomjoinrequest' || n.type === 'roominvite') {
-        NotificationModel.findOne({_id: n._id})
-          .populate({
-            path: 'data.user',
-            model: 'User',
-            select: 'facebook username local avatar color'})
-          .populate({
-            path: 'data.by_user',
-            model: 'User',
-            select: 'facebook username local avatar color'})
-          .populate({
-            path: 'data.room',
-            model: 'Room',
-            select: 'avatar color name'})
-          .exec(function (err, notification) {
-            if (err) {
-              return fn(err);
-            }
-            if (!notification) {
-              return fn(null);
-            }
+      that.getType(n.type).populateNotification(n, function (err, notif) {
+        if (err) {
+          return fn(err);
+        }
 
-            n = notification;
-            notifications.push(n);
-            return fn(null);
-          });
-      } else if (n.getEventType() === 'historyone') {
-        var q = HistoryOne.findOne({_id: n.data.event.toString()})
-          .populate('from', 'username avatar color facebook')
-          .populate('to', 'username avatar color facebook');
-        q.exec(function (err, event) {
-          if (err) {
-            return fn(err);
-          }
-          if (!event) {
-            return fn(null);
-          }
-
-          n.data.event = event;
-          notifications.push(n);
-          return fn(null);
-        });
-      } else {
-        HistoryRoom.findOne({_id: n.data.event.toString()})
-          .populate('user', 'username avatar color facebook')
-          .populate('by_user', 'username avatar color facebook')
-          .populate('room', 'avatar color name')
-          .exec(function (err, event) {
-            if (err) {
-              return fn(err);
-            }
-            if (!event) {
-              return fn(null);
-            }
-
-            n.data.event = event;
-            notifications.push(n);
-            return fn(null);
-          });
-      }
+        notifications.push(notif);
+        return fn(null);
+      });
     }, function (err) {
       if (err) {
         return callback(err);
@@ -243,7 +206,7 @@ Facade.prototype.retrieveScheduledNotifications = function (callback) {
   var q = NotificationModel.find({
     done: false,
     viewed: false,
-    time: {$lt: time}, // @todo : add delay before sending email/mobile for each notification type here
+    time: {$lt: time},
     $or: [
       {to_email: true, sent_to_email: false}
     ]
@@ -267,6 +230,11 @@ Facade.prototype.retrieveScheduledNotifications = function (callback) {
   q.populate({
     path: 'data.room',
     model: 'Room',
+    select: 'avatar color name group'
+  });
+  q.populate({
+    path: 'data.group',
+    model: 'Group',
     select: 'avatar color name'
   });
   q.exec(function (err, results) {
@@ -274,7 +242,34 @@ Facade.prototype.retrieveScheduledNotifications = function (callback) {
       callback(err);
     }
 
-    callback(null, results);
+    // hydrate room groups (mongoose seems unable to populate populated document)
+    var rooms = [];
+    var roomsIds = [];
+    _.each(results, function (n) {
+      if (n.data.room) {
+        if (roomsIds.indexOf(n.data.room.id) !== -1) {
+          return;
+        }
+        rooms.push(n.data.room);
+        roomsIds.push(n.data.room.id);
+      }
+    });
+
+    if (!rooms.length) {
+      return callback(null, results);
+    }
+
+    RoomModel.populate(rooms, {
+      path: 'group',
+      model: 'Group',
+      select: 'name'
+    }, function (err, docs) {
+      if (err) {
+        callback(err);
+      }
+
+      callback(null, results);
+    });
   });
 };
 

@@ -1,19 +1,18 @@
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
-var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
-var client = require('../libs/client');
+var app = require('../libs/app');
+var CardsView = require('./cards');
 
 var debug = donutDebug('donut:modal-welcome');
 
 var WelcomeModalView = Backbone.View.extend({
   el: $('#welcome'),
 
-  template: require('../templates/rooms-cards.html'),
+  template: require('../templates/cards.html'),
 
   events: {
-    'hidden.bs.modal': 'onHide',
+    'hidden.bs.modal': 'onHidden',
     'click .nothing, .list .room .join': 'onClose'
   },
 
@@ -23,29 +22,20 @@ var WelcomeModalView = Backbone.View.extend({
     this.$el.modal({
       show: false
     });
+    this.cardsView = new CardsView({
+      el: this.$('.cards')
+    });
   },
   render: function (welcome) {
     if (!welcome || !welcome.featured || !welcome.featured.length) {
-      this.$('.modal-body .rooms').empty();
       return;
     }
 
-    var rooms = [];
-    _.each(welcome.featured, function (room) {
-      room.avatar = common.cloudinary.prepare(room.avatar, 135);
-      room.join = '/!#room/' + room.name.replace('#', '');
-      rooms.push(room);
-    });
+    this.cardsView.render({fill: false, rooms: {list: welcome.featured}});
 
-    var html = this.template({
-      title: false,
-      rooms: welcome.featured,
-      search: false,
-      more: false,
-      replace: true
+    this.listenTo(this.cardsView, 'onClose', function (event) {
+      this.hide();
     });
-    this.$('.modal-body .rooms')
-      .html(html);
     return this;
   },
   show: function () {
@@ -54,13 +44,16 @@ var WelcomeModalView = Backbone.View.extend({
   hide: function () {
     this.$el.modal('hide');
   },
-  onHide: function () {
+  onHidden: function () {
     // set welcome as false on user if checkbox is checked
     if (this.$("input[type='checkbox'].avoid").prop('checked') === true) {
-      client.userPreferencesUpdate({'browser:welcome': false}, function (data) {
+      app.client.userPreferencesUpdate({'browser:welcome': false}, function (data) {
         debug('user preference saved: ', data);
       });
     }
+  },
+  onHide: function (event) {
+    console.log(event);
   },
   onClose: function (event) {
     this.hide();

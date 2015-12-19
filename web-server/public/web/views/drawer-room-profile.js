@@ -1,10 +1,10 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
-var app = require('../models/app');
+var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../libs/client');
-var currentUser = require('../models/current-user');
+var currentUser = require('../libs/app').user;
 var date = require('../libs/date');
+var urls = require('../../../../shared/util/url');
 
 var DrawerRoomProfileView = Backbone.View.extend({
   template: require('../templates/drawer-room-profile.html'),
@@ -23,21 +23,23 @@ var DrawerRoomProfileView = Backbone.View.extend({
       this.onResponse(options.data);
     }
 
-    // ask for data
-    var that = this;
-    client.roomRead(this.roomId, null, function (data) {
+    var what = {
+      more: true,
+      users: true,
+      admin: false
+    };
+    app.client.roomRead(this.roomId, what, _.bind(function (data) {
       if (data.err === 'room-not-found') {
         return;
       }
       if (!data.err) {
-        that.onResponse(data);
+        this.onResponse(data);
       }
-    });
+    }, this));
   },
   render: function () {
     // render spinner only
     this.$el.html(require('../templates/spinner.html'));
-
     return this;
   },
   onResponse: function (room) {
@@ -45,13 +47,17 @@ var DrawerRoomProfileView = Backbone.View.extend({
       return app.trigger('drawerClose');
     }
 
-    room.isOwner = (room.owner && room.owner.user_id === currentUser.get('user_id'));
+    room.isOwner = (room.owner_id === currentUser.get('user_id'));
+
+    room.isGroupOwner = (room.group_id && room.group_owner === currentUser.get('user_id'));
 
     room.isAdmin = currentUser.isAdmin();
-
     room.avatar = common.cloudinary.prepare(room.avatar, 90);
 
-    room.url = '/room/' + room.name.replace('#', '').toLocaleLowerCase();
+    room.uri = room.identifier;
+    room.url = urls(room, 'room', 'url');
+
+    room.isDefault = (room.group_id) ? (room.group_default === room.room_id) : false;
 
     _.each(room.users, function (element, key, list) {
       element.avatar = common.cloudinary.prepare(element.avatar, 34);
@@ -80,6 +86,10 @@ var DrawerRoomProfileView = Backbone.View.extend({
         return '<div class="username" style="' + this.dataset.bgcolor + '">@' + this.dataset.username + '</div>';
       }
     });
+  },
+  updateCount: function (count) {
+    this.$badge.text(count);
+    this.$badgeResponsive.text(count);
   }
 
 });

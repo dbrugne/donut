@@ -1,14 +1,14 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var common = require('@dbrugne/donut-common/server');
 var _ = require('underscore');
 var async = require('async');
 var utils = require('./../utils');
 var emailer = require('../../../../../shared/io/emailer');
-var moment = require('../../../../../shared/util/moment');
 var conf = require('../../../../../config/index');
 var NotificationModel = require('../../../../../shared/models/notification');
 var HistoryOneModel = require('../../../../../shared/models/historyone');
+var parse = require('../../../../../shared/io/parse');
 
 module.exports = function (facade) {
   return new Notification(facade);
@@ -122,7 +122,7 @@ Notification.prototype.create = function (user, history, done) {
 
 Notification.prototype.sendEmail = function (model, done) {
   if (!model.data || !model.data.event) {
-    return logger.error('userMessageType.sendEmail data.event left');
+    return done('userMessageType.sendEmail data.event left');
   }
 
   async.waterfall([
@@ -141,7 +141,7 @@ Notification.prototype.sendEmail = function (model, done) {
 
     function mentions (history, events, callback) {
       _.each(events, function (event, index, list) {
-        if (!event.data.message) {
+        if (!event.data || !event.data.message) {
           return;
         }
 
@@ -159,17 +159,16 @@ Notification.prototype.sendEmail = function (model, done) {
         var isCurrentMessage = (history.id === event.data.id);
         messages.push({
           current: isCurrentMessage,
-          from_avatar: common.cloudinary.prepare(event.data.from_avatar, 90),
-          from_username: event.data.from_username,
+          avatar: common.cloudinary.prepare(event.data.avatar, 90),
+          username: event.data.username,
           message: event.data.message,
-          to_avatar: common.cloudinary.prepare(event.data.to_avatar, 90),
-          to_username: event.data.to_username,
-          time_short: moment(event.data.time).format('Do MMMM, HH:mm'),
-          time_full: moment(event.data.time).format('dddd Do MMMM YYYY à HH:mm:ss')
+          time_full: utils.longDateTime(event.data.time)
         });
       });
 
-      emailer.userMessage(model.user.getEmail(), events[ 0 ].data.from_username, messages, callback);
+      if (model.user.getEmail()) {
+        emailer.userMessage(model.user.getEmail(), events[0]['data']['username'], messages, callback);
+      }
     },
 
     function persist (callback) {
@@ -179,4 +178,74 @@ Notification.prototype.sendEmail = function (model, done) {
     }
 
   ], done);
+};
+
+Notification.prototype.sendMobile = function (model, done) {
+  if (!model.data || !model.data.event || !model.user || !model.user._id) {
+    return done('userMessageType.sendMobile data.event left');
+  }
+
+  async.waterfall([
+
+    utils.retrieveHistoryOne(model.data.event.toString()),
+
+    function retrieveEvents (history, callback) {
+      HistoryOneModel.retrieveEventWithContext(history.id, 5, 10, true, function (err, events) {
+        if (err) {
+          return callback(err);
+        }
+
+        return callback(null, history, events);
+      });
+    },
+
+    function mentions (history, events, callback) {
+      // @todo what do we do with mentions ?
+      _.each(events, function (event, index, list) {
+        if (!event.data || !event.data.message) {
+          return;
+        }
+
+        list[ index ].data.message = common.markup.toText(event.data.message);
+      });
+
+      callback(null, history, events);
+    },
+
+    function send (history, events, callback) {
+      async.eachLimit(events, 10, function (event, cb) {
+        parse.userMessage(model.user._id.toString(), event.data.username, event.data.message, event.data.to_avatar, cb);
+      }, function (err) {
+        return callback(err);
+      });
+    },
+
+    function persist (callback) {
+      model.sent_to_mobile = true;
+      model.sent_to_mobile_at = new Date();
+      model.save(callback);
+    }
+
+  ], done);
+};
+
+Notification.prototype.populateNotification = function (notification, done) {
+  if (!notification || !notification.data || !notification.data.event) {
+    return done('userMessage population error: params');
+  }
+
+  var q = HistoryOneModel.findOne({_id: notification.data.event.toString()})
+    .populate('from', 'username avatar color facebook')
+    .populate('to', 'username avatar color facebook');
+  q.exec(function (err, event) {
+    if (err) {
+      return done(err);
+    }
+    if (!event) {
+      return done(null);
+    }
+
+    notification.data.event = event;
+    return done(null, notification);
+  });
 };

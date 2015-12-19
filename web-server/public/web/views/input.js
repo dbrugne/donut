@@ -1,11 +1,10 @@
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
 var keyboard = require('../libs/keyboard');
-var currentUser = require('../models/current-user');
+var currentUser = require('../libs/app').user;
 var RollupView = require('./input-rollup');
 var CommandsView = require('./input-commands');
 var TypingView = require('./input-typing');
@@ -27,6 +26,7 @@ var DiscussionInputView = Backbone.View.extend({
   initialize: function (options) {
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(currentUser, 'change:avatar', this.onAvatar);
+    this.listenTo(currentUser, 'change:confirmed', this.render);
     this.listenTo(this.model, 'inputFocus', this.onFocus);
     this.listenTo(this.model, 'inputActive', this.onInputActiveChange);
 
@@ -64,11 +64,11 @@ var DiscussionInputView = Backbone.View.extend({
   render: function () {
     this.$el.html(this.template({
       avatar: common.cloudinary.prepare(currentUser.get('avatar'), 80),
-      bannedMessage: i18next.t('chat.actions.bannedMessage.__type__'.replace('__type__', this.model.get('type')))
+      bannedMessage: i18next.t('chat.actions.bannedMessage.__type__'.replace('__type__', this.model.get('type'))),
+      confirmed: currentUser.isConfirmed()
     }));
 
     this.$editable = this.$('.editable');
-    this.$preview = this.$('.preview');
     this.$rollup = this.$('.rollup-container');
 
     if (!this.model.isInputActive()) {
@@ -123,7 +123,6 @@ var DiscussionInputView = Backbone.View.extend({
    */
   onKeyDown: function (event) {
     var data = keyboard._getLastKeyCode(event);
-    var message = this.$editable.val();
 
     // Avoid loosing focus when tab is pushed
     if (data.key === keyboard.TAB) {
@@ -173,7 +172,7 @@ var DiscussionInputView = Backbone.View.extend({
     }
 
     // check length (max)
-    // @todo: replace with a "withoutSmileysCodes" logic
+    // @todo dbr: replace with a "withoutSmileysCodes" logic
     if (message.length > 512) {
       debug('message is too long');
       return false;
@@ -193,6 +192,5 @@ var DiscussionInputView = Backbone.View.extend({
   }
 
 });
-
 
 module.exports = DiscussionInputView;

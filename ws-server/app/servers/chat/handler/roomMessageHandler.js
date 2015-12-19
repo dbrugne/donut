@@ -1,13 +1,15 @@
 'use strict';
 var errors = require('../../../util/errors');
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var async = require('async');
 var _ = require('underscore');
-var roomEmitter = require('../../../util/roomEmitter');
+var roomEmitter = require('../../../util/room-emitter');
 var inputUtil = require('../../../util/input');
-var imagesUtil = require('../../../util/images');
+var filesUtil = require('../../../util/files');
 var keenio = require('../../../../../shared/io/keenio');
 var Notifications = require('../../../components/notifications');
+var GroupModel = require('../../../../../shared/models/group');
+var UserModel = require('../../../../../shared/models/user');
 
 var Handler = function (app) {
   this.app = app;
@@ -37,7 +39,7 @@ handler.call = function (data, session, next) {
       }
 
       if (!room.isIn(user.id)) {
-        return callback('no-in');
+        return callback('not-in');
       }
 
       if (room.isDevoice(user.id)) {
@@ -48,6 +50,10 @@ handler.call = function (data, session, next) {
         return callback('not-allowed');
       }
 
+      if (user.confirmed === false && room.mode !== 'public') {
+        return callback('not-confirmed');
+      }
+
       return callback(null);
     },
 
@@ -55,30 +61,31 @@ handler.call = function (data, session, next) {
       // text filtering
       var message = inputUtil.filter(data.message, 512);
 
-      // images filtering
-      var images = imagesUtil.filter(data.images);
+      // files filtering
+      var files = filesUtil.filter(data.files);
 
-      if (!message && !images) {
+      if (!message && !files) {
         return callback('message-wrong-format');
       }
 
       // mentions
       inputUtil.mentions(message, function (err, message, markups) {
-        return callback(err, message, images, markups.users);
+        return callback(err, message, files, markups.users);
       });
     },
 
-    function broadcast (message, images, mentions, callback) {
+    function broadcast (message, files, mentions, callback) {
       var event = {
         user_id: user.id,
         username: user.username,
+        realname: user.realname,
         avatar: user._avatar()
       };
       if (message) {
         event.message = message;
       }
-      if (images && images.length) {
-        event.images = images;
+      if (files && files.length) {
+        event.files = files;
       }
       if (data.special) {
         event.special = data.special;
@@ -90,6 +97,45 @@ handler.call = function (data, session, next) {
         }
 
         return callback(null, sentEvent, mentions);
+      });
+    },
+
+    /**
+     * Sending an event to an user who mention an not confirmed user =>
+     * @username cannot answer because his/her account has not been verified yet.
+     */
+    function sendCantRespondeEvent (sentEvent, mentions, callback) {
+      if (!mentions || !mentions.length) {
+        return callback(null, sentEvent, mentions);
+      }
+
+      var event = {
+        room_id: room.id,
+        user_id: user.id,
+        avatar: user._avatar()
+      };
+
+      // To disable multi event for the same user mention (ex: "@David is @David")
+      var usersBlocked = [];
+      async.eachLimit(mentions, 10, function (m, cb) {
+        UserModel.findByUid(m.id).exec(function (err, model) {
+          if (err) {
+            return cb(err);
+          }
+
+          if (!model.confirmed && usersBlocked.indexOf(model.id) === -1) {
+            usersBlocked.push(model.id);
+            event.username = model.username;
+            event.realname = model.realname;
+            that.app.globalChannelService.pushMessage('connector', 'room:message:cant:respond', event, 'user:' + user.id, {}, function (err) {
+              return cb(err);
+            });
+          } else {
+            return cb(null);
+          }
+        });
+      }, function (err) {
+        return callback(err, sentEvent, mentions);
       });
     },
 
@@ -114,7 +160,7 @@ handler.call = function (data, session, next) {
     },
 
     function messageNotification (sentEvent, callback) {
-      // @todo : change pattern for this event (particularly frequent) and tag historyRoomModel as "to_be_consumed" and
+      // @todo dbr : change pattern for this event (particularly frequent) and tag historyRoomModel as "to_be_consumed" and
       //         implement a consumer to treat notifications asynchronously
       Notifications(that.app).getType('roommessage').create(room, sentEvent.id, function (err) {
         if (err) {
@@ -140,7 +186,7 @@ handler.call = function (data, session, next) {
         },
         message: {
           length: (event.message && event.message.length) ? event.message.length : 0,
-          images: (event.images && event.images.length) ? event.images.length : 0
+          images: (event.files && event.files.length) ? event.files.length : 0
         }
       };
       keenio.addEvent('room_message', messageEvent, function (err, res) {

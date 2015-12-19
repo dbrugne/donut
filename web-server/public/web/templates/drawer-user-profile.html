@@ -8,22 +8,39 @@
             <img class="avatar" src="<%= user.avatar %>" alt="<%= user.username %> avatar">
             <% if (user.isCurrent) { %>
             <span class="overlay"></span>
-            <span class="overlay-text"><%= t('profile.user.edit') %></span>
+            <span class="overlay-text"><%= t('profile.common.editlink') %></span>
             <% } %>
         </span>
     </div>
 </div>
 
 <div class="ctn-drawer">
-    <div class="user block">
-        <p class="username text-center">@<%= user.username %></p>
+    <div class="user">
+        <p class="username text-center">
+            <% if (user.realname) { %>
+                <%= user.realname %>
+                <br>
+                <span class="othername text-center">@<%= user.username %></span>
+            <% } else { %>
+                @<%= user.username %>
+            <% } %>
+        </p>
+
+        <div class="status-block text-center">
+            <i class="icon icon-dot-circle-o status contrast <%=user.status%>"></i>
+            <em><%= t('global.'+user.status) %></em>
+        </div>
+
+
         <% if (user.bio) { %><p class="bio mt20 mb20 left"><%= user.bio %></p><% }; %>
         <% if (user.location) { %><p class="action location left"><i class="icon icon-fw icon-map-marker dc-text"></i> <%= user.location %></p><% }; %>
         <% if (user.website && user.website.href) { %><p class="action website left"><i class="icon icon-fw icon-link dc-text"></i> <a class="colored" href="<%= user.website.href %>" target="_blank" title="<%= user.website.title %>"><%= user.website.title %></a></p><% }; %>
         <% if (user.registered) { %><p class="action created left"><i class="icon icon-fw icon-clock-o dc-text"></i> <%= t('profile.user.signuped') %> <span class="ml5" data-time="<%= user.registered %>"></span></p><% }; %>
-        <% if (user.status != 'online' && user.onlined) { %><p class="onlined left"><i class="icon icon-fw icon-clock-o dc-text"></i> <%= t('profile.user.onlined', {time: '<span data-time="'+user.onlined+'"></span>'}) %></p><% }; %>
-        <p class="action permalink left"><i class="icon icon-fw icon-link dc-text"></i> <a class="colored dc-text" href="<%= user.url %>" target="_blank" ><%= t('profile.user.permalink') %></a></p>
-        <% if (user.isCurrent) { %><p class="action edit left"><i class="icon icon-fw icon-pencil dc-text"></i> <a class="colored open-user-edit dc-text" data-user-id="<%= user.user_id %>"><%= t('profile.user.editlink') %></a></p><% }; %>
+
+        <% if (user.isCurrent) { %><p class="action edit left"><i class="icon icon-fw icon-lock dc-text"></i> <a class="colored open-user-account dc-text" data-user-id="<%= user.user_id %>"><%= t('chat.actions.account') %></a></p><% }; %>
+        <% if (user.isCurrent) { %><p class="action edit left"><i class="icon icon-fw icon-pencil dc-text"></i> <a class="colored open-user-edit dc-text" data-user-id="<%= user.user_id %>"><%= t('profile.common.editlink') %></a></p><% }; %>
+        <% if (user.isCurrent) { %><p class="action edit left"><i class="icon icon-fw icon-bell dc-text"></i> <a class="colored open-user-preferences dc-text" data-user-id="<%= user.user_id %>"><%= t('chat.actions.preferences') %></a></p><% }; %>
+
 
         <% if (!user.isCurrent) { %>
             <!--Check if I banned this user-->
@@ -47,11 +64,7 @@
         <% }; %>
 
         <div class="block flex-parent jc-center center">
-            <% if (user.status == 'online') { %>
-            <p class="discuss"><a href="#user/<%= user.username %>" class="dc-back dc-back-hover dc-text-contrast button button-big fs20"><%= t('actions.discuss') %></a></p>
-            <% } else { %>
-            <p class="offline"><a href="#user/<%= user.username %>" class="dc-back dc-back-hover dc-text-contrast button button-big fs20"><%= t('global.offline') %></a></p>
-            <% }; %>
+            <p class="discuss"><a href="<%= user.uri %>" class="btn btn-default btn-big"><%= t('actions.discuss') %></a></p>
         </div>
 
         <% if (user.rooms_list.length > 0) { %>
@@ -67,7 +80,7 @@
                     bgColor = "background-color: "+room.color;
                     txtColor = "color: "+room.color;
                 }; %>
-                <div class="item open-room-profile <% if (room.oped) { %>op<% } %> <% if (room.owned) { %>owner<% } %>" data-room-id="<%= room.id %>" data-bgcolor="<%= bgColor %>" data-type="rooms" data-username="<%= room.name %>"  data-txtcolor="<%= txtColor %>" data-toggle="tooltip" data-placement="right">
+                <div class="item open-room-profile <% if (room.oped) { %>op<% } %> <% if (room.owned) { %>owner<% } %>" data-room-id="<%= room.id %>" data-bgcolor="<%= bgColor %>" data-type="rooms" data-username="<%= room.identifier %>"  data-txtcolor="<%= txtColor %>" data-toggle="tooltip" data-placement="right">
                     <div class="avatar" style="background-image:url(<%= room.avatar %>)"></div>
                 </div>
                 <% }); %>

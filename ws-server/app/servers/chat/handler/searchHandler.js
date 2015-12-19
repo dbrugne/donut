@@ -1,5 +1,6 @@
 'use strict';
-var logger = require('../../../../../shared/util/logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
+var _ = require('underscore');
 var search = require('../../../../../shared/util/search');
 
 var Handler = function (app) {
@@ -13,23 +14,23 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
-  if (!data.search) {
+  var user = session.__currentUser__;
+
+  // at least look into something
+  if (!(data.options.users || data.options.rooms || data.options.groups)) {
     return next(null, {});
   }
 
-  var searchInUsers = (data.users && data.users === true);
-  var searchInRooms = (data.rooms && data.rooms === true);
-  if (!searchInUsers && !searchInRooms) {
+  // at least look for something
+  if (!(data.search || data.options.group_name)) {
     return next(null, {});
   }
 
-  var lightSearch = (data.light && data.light === true);
+  var options = _.clone(data.options);
+  options.app = this.app;
+  options.user_id = user.id;
 
-  var limit = (data.limit) ? data.limit : 150;
-
-  var skip = (data.skip) ? data.skip : 0;
-
-  search(data.search, searchInUsers, searchInRooms, limit, skip, lightSearch, function (err, results) {
+  search(data.search, options, function (err, results) {
     if (err) {
       logger('[search] ' + err);
       return next(null, {code: 500, err: 'internal'});

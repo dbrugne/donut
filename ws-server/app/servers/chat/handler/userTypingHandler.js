@@ -34,10 +34,9 @@ handler.call = function (data, session, next) {
 
     function broadcast (callback) {
       var typingEvent = {
-        from_user_id: user.id,
-        to_user_id: withUser.id,
         user_id: user.id,
-        username: user.username
+        username: user.username,
+        to_user_id: withUser.id
       };
       that.app.globalChannelService.pushMessage('connector', 'user:typing', typingEvent, 'user:' + withUser.id, {}, callback);
     }
