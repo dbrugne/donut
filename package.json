@@ -1,7 +1,7 @@
 {
   "name": "donut",
-  "version": "0.0.1",
-  "description": "DONUT is a social chatroom platform based on nodejs, pomelojs, socket.io and backbone",
+  "version": "1.0.0",
+  "description": "DONUT server project",
   "private": true,
   "scripts": {
     "test": "mocha"
