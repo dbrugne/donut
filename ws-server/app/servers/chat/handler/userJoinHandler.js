@@ -1,7 +1,7 @@
 'use strict';
 var errors = require('../../../util/errors');
 var async = require('async');
-var oneDataHelper = require('../../../util/oneData');
+var oneDataHelper = require('../../../util/one-data');
 
 var Handler = function (app) {
   this.app = app;
@@ -34,11 +34,12 @@ handler.call = function (data, session, next) {
     },
 
     function welcome (callback) {
-      oneDataHelper(that.app, user, { user: withUser, lastactivity_at: new Date() }, callback);
+      oneDataHelper(that.app, user, { user: withUser, last_event_at: Date.now() }, callback);
     },
 
     function persist (oneData, callback) {
-      user.updateActivity(withUser._id, function (err) {
+      // only 'up' the discussion for user that is opening
+      user.updateActivity(withUser._id, null, function (err) {
         return callback(err, oneData);
       });
     },

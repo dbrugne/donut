@@ -3,10 +3,8 @@ var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../libs/client');
 var i18next = require('i18next-client');
 var urls = require('../../../../shared/util/url');
-var currentUser = require('../models/current-user');
 
 var DrawerGroupCreateView = Backbone.View.extend({
   template: require('../templates/drawer-group-create.html'),
@@ -70,7 +68,6 @@ var DrawerGroupCreateView = Backbone.View.extend({
     return common.validate.group(name);
   },
   submit: function () {
-
     this.reset();
     // name
     if (!this._valid()) {
@@ -79,7 +76,7 @@ var DrawerGroupCreateView = Backbone.View.extend({
     var name = this.$input.val();
 
     this.$submit.addClass('loading');
-    client.groupCreate(name, _.bind(function (response) {
+    app.client.groupCreate(name, _.bind(function (response) {
       this.$submit.removeClass('loading');
       if (!response.success) {
         if (response.err === 'group-name-already-exist') {

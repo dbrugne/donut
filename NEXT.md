@@ -30,6 +30,12 @@ db.getCollection('history-one').update({}, {$unset :{
  }}, {multi:true})
 ```
 
+* Migrate last_activity_at => last_event_at
+```
+db.getCollection('rooms').update({}, {$rename: {lastactivity_at: 'last_event_at'}}, {multi: true})
+db.getCollection('rooms').update({}, {$unset: {lastjoin_at: 1}}, {multi: true})
+```
+
 * Migrate history*.data.images=>.files
 ```
 db.getCollection('history-room').update({'data.images': {$exists: true }}, {$rename: {'data.images': 'data.files'}}, {multi:true})
@@ -103,6 +109,12 @@ db[ 'history-one' ].dropIndex({
 * Set all users to confirmed and add email to emails field
 ```
 grunt migration-emails-confirmed
+```
+
+* Remove old "unviewed" field detection
+```
+db.getCollection('history-one').update({}, {$unset: {viewed: true}}, {multi: true})
+db.getCollection('history-room').update({}, {$unset: {viewed: true}}, {multi: true})
 ```
 
 *  Cleanup @todos "AFTER PROD MIGRATION"

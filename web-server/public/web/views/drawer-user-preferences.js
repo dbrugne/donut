@@ -4,8 +4,7 @@ var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../libs/client');
-var currentUser = require('../models/current-user');
+var currentUser = require('../libs/app').user;
 var desktop = require('../libs/desktop');
 
 var DrawerUserPreferencesView = Backbone.View.extend({
@@ -27,7 +26,7 @@ var DrawerUserPreferencesView = Backbone.View.extend({
 
     // ask for data
     var that = this;
-    client.userPreferencesRead(null, function (data) {
+    app.client.userPreferencesRead(null, function (data) {
       that.onResponse(data);
     });
   },
@@ -79,7 +78,7 @@ var DrawerUserPreferencesView = Backbone.View.extend({
     update[key] = value;
 
     var that = this;
-    client.userPreferencesUpdate(update, function (data) {
+    app.client.userPreferencesUpdate(update, function (data) {
       that.$('.errors').hide();
       if (data.err) {
         that.$('.errors').html(i18next.t('global.unknownerror')).show();
@@ -90,7 +89,7 @@ var DrawerUserPreferencesView = Backbone.View.extend({
     this.render();
 
     var that = this;
-    client.userPreferencesRead(null, function (data) {
+    app.client.userPreferencesRead(null, function (data) {
       that.onResponse(data);
     });
   },

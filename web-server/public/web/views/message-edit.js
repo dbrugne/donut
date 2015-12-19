@@ -3,7 +3,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../libs/client');
+var app = require('../libs/app');
 
 var MessageEditView = Backbone.View.extend({
   template: require('../templates/message-edit.html'),
@@ -86,9 +86,9 @@ var MessageEditView = Backbone.View.extend({
     }
 
     if (this.model.get('type') === 'room') {
-      client.roomMessageEdit(this.model.get('id'), messageId, message);
+      app.client.roomMessageEdit(this.model.get('id'), messageId, message);
     } else {
-      client.userMessageEdit(this.model.get('id'), messageId, message);
+      app.client.userMessageEdit(this.model.get('id'), messageId, message);
     }
 
     this.model.trigger('editMessageClose');

@@ -151,5 +151,4 @@ var DrawerView = Backbone.View.extend({
   }
 });
 
-
 module.exports = DrawerView;

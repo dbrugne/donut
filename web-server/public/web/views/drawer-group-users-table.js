@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../libs/client');
+var app = require('../libs/app');
 var confirmationView = require('./modal-confirmation');
 
 var DrawerGroupUsersTableView = Backbone.View.extend({
@@ -61,7 +61,7 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
       message: 'op-group-user',
       username: userName
     }, function () {
-      client.groupOp(that.model.get('id'), userId, function (response) {
+      app.client.groupOp(that.model.get('id'), userId, function (response) {
         if (!response.err) {
           that.trigger('redraw');
           that.model.onRefresh();
@@ -86,7 +86,7 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
       message: 'deop-group-user',
       username: userName
     }, function () {
-      client.groupDeop(that.model.get('id'), userId, function (response) {
+      app.client.groupDeop(that.model.get('id'), userId, function (response) {
         if (!response.err) {
           that.trigger('redraw');
           that.model.onRefresh();
@@ -112,7 +112,7 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
       username: userName,
       input: true
     }, function (reason) {
-      client.groupBan(that.model.get('id'), userId, reason, function (response) {
+      app.client.groupBan(that.model.get('id'), userId, reason, function (response) {
         if (!response.err) {
           that.trigger('redraw');
           that.model.onRefresh();
@@ -137,7 +137,7 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
       message: 'deban-group-user',
       username: userName
     }, function () {
-      client.groupDeban(that.model.get('id'), userId, function (response) {
+      app.client.groupDeban(that.model.get('id'), userId, function (response) {
         if (!response.err) {
           that.trigger('redraw');
           that.model.onRefresh();

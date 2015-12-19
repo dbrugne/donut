@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
-var client = require('../libs/client');
-var currentUser = require('../models/current-user');
+var app = require('../libs/app');
+var currentUser = require('../libs/app').user;
 var EmailView = require('./drawer-account-email');
 var PasswordView = require('./drawer-account-password');
 var ManageEmailsView = require('./drawer-account-manage-emails');
@@ -19,7 +19,7 @@ var DrawerUserEditView = Backbone.View.extend({
 
     // ask for data
     var that = this;
-    client.userRead(currentUser.get('user_id'), {admin: true}, function (data) {
+    app.client.userRead(currentUser.get('user_id'), {admin: true}, function (data) {
       if (data.err) {
         return;
       }

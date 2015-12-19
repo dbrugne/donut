@@ -2,8 +2,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../libs/client');
-var currentUser = require('../models/current-user');
+var currentUser = require('../libs/app').user;
 var date = require('../libs/date');
 var urls = require('../../../../shared/util/url');
 
@@ -29,7 +28,7 @@ var DrawerGroupProfileView = Backbone.View.extend({
       users: true,
       admin: true
     };
-    client.groupRead(this.groupId, what, _.bind(function (data) {
+    app.client.groupRead(this.groupId, what, _.bind(function (data) {
       if (data.err === 'group-not-found') {
         return;
       }

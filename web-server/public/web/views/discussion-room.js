@@ -22,7 +22,8 @@ var RoomView = Backbone.View.extend({
   events: {
     'click .share .facebook': 'shareFacebook',
     'click .share .twitter': 'shareTwitter',
-    'click .share .googleplus': 'shareGoogle'
+    'click .share .googleplus': 'shareGoogle',
+    'click .mark-as-viewed': 'removeUnviewedBlock'
   },
 
   initialize: function () {
@@ -33,6 +34,7 @@ var RoomView = Backbone.View.extend({
     this.listenTo(this.model, 'change:color', this.onColor);
     this.listenTo(this.model, 'change:allow_group_member', this.onChangeAllowGroupMember);
     this.listenTo(this.model, 'setPrivate', this.onPrivate);
+    this.listenTo(this.model, 'change:unviewed', this.onMarkAsViewed);
 
     this.render();
 
@@ -78,7 +80,9 @@ var RoomView = Backbone.View.extend({
     data.mode = this.model.get('mode');
 
     // room default
-    data.default = (this.model.get('group_id')) ? (this.model.get('group_default') === data.room_id) : false;
+    data.default = (this.model.get('group_id'))
+      ? (this.model.get('group_default') === data.room_id)
+      : false;
 
     // share widget
     var share = 'share-room-' + this.model.get('id');
@@ -178,13 +182,25 @@ var RoomView = Backbone.View.extend({
     this.$('div.blur').css('background-image', 'url(' + url + ')');
   },
   onChangeAllowGroupMember: function (model, value, options) {
-    this.$('span.label').attr('data-original-title', i18next.t('global.mode.description.private' + (value ? '-group' : '')));
-    this.$('span.label').text(i18next.t('global.mode.title.private' + (value ? '-group' : '')));
+    this.$('span.label').attr('data-original-title', i18next.t('global.mode.description.private' + (value
+        ? '-group'
+        : '')));
+    this.$('span.label').text(i18next.t('global.mode.title.private' + (value
+        ? '-group'
+        : '')));
   },
   onPrivate: function (data) {
     this.model.set('mode', 'private');
-    this.$('span.label').attr('data-original-title', i18next.t('global.mode.description.private' + (data.allow_user_request ? '-invites' : '') + (data.allow_group_member ? '-group' : '')));
-    this.$('span.label').text(i18next.t('global.mode.title.private' + (data.allow_user_request ? '-invites' : '') + (data.allow_group_member ? '-group' : '')));
+    this.$('span.label').attr('data-original-title', i18next.t('global.mode.description.private' + (data.allow_user_request
+        ? '-invites'
+        : '') + (data.allow_group_member
+        ? '-group'
+        : '')));
+    this.$('span.label').text(i18next.t('global.mode.title.private' + (data.allow_user_request
+        ? '-invites'
+        : '') + (data.allow_group_member
+        ? '-group'
+        : '')));
   },
 
   /**
@@ -214,6 +230,23 @@ var RoomView = Backbone.View.extend({
     this.$el.find('[data-toggle="tooltip"]').tooltip({
       container: 'body'
     });
+  },
+
+  removeUnviewedBlock: function (event) {
+    event.preventDefault();
+    var elt = $(event.currentTarget).closest('.unviewed-top ');
+    elt.fadeOut(1000, function () {
+      elt.remove();
+    });
+  },
+
+  // only care about models to set a viewed
+  onMarkAsViewed: function (data) {
+    if (data.get('unviewed') === true) {
+      return;
+    }
+
+    this.eventsView.markAsViewed();
   }
 });
 

@@ -1,36 +1,36 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
-var client = require('../libs/client');
+var app = require('../libs/app');
 
 var ConnectionModalView = Backbone.View.extend({
   el: $('#connection'),
 
   initialize: function (options) {
-    this.listenTo(client, 'connecting', function () {
+    this.listenTo(app.client, 'connecting', function () {
       this.onEvent('connecting');
     }, this);
-    this.listenTo(client, 'connect', function () {
+    this.listenTo(app.client, 'connect', function () {
       this.onEvent('connect');
     }, this);
-    this.listenTo(client, 'disconnect', function (reason) {
+    this.listenTo(app.client, 'disconnect', function (reason) {
       this.onEvent('disconnect', reason);
     }, this);
-    this.listenTo(client, 'reconnect', function (num) {
+    this.listenTo(app.client, 'reconnect', function (num) {
       this.onEvent('reconnect', num);
     }, this);
-    this.listenTo(client, 'reconnect_attempt', function () {
+    this.listenTo(app.client, 'reconnect_attempt', function () {
       this.onEvent('reconnect_attempt');
     }, this);
-    this.listenTo(client, 'reconnecting', function (num) {
+    this.listenTo(app.client, 'reconnecting', function (num) {
       this.onEvent('reconnecting', num);
     }, this);
-    this.listenTo(client, 'reconnect_error', function (err) {
+    this.listenTo(app.client, 'reconnect_error', function (err) {
       this.onEvent('reconnect_error', err);
     }, this);
-    this.listenTo(client, 'reconnect_failed', function () {
+    this.listenTo(app.client, 'reconnect_failed', function () {
       this.onEvent('reconnect_failed');
     }, this);
-    this.listenTo(client, 'error', function (err) {
+    this.listenTo(app.client, 'error', function (err) {
       this.onEvent('error', err);
     }, this);
 

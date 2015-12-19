@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
 var donutDebug = require('../libs/donut-debug');
-var client = require('../libs/client');
+var app = require('../libs/app');
 var CardsView = require('./cards');
 
 var debug = donutDebug('donut:modal-welcome');
@@ -47,7 +47,7 @@ var WelcomeModalView = Backbone.View.extend({
   onHidden: function () {
     // set welcome as false on user if checkbox is checked
     if (this.$("input[type='checkbox'].avoid").prop('checked') === true) {
-      client.userPreferencesUpdate({'browser:welcome': false}, function (data) {
+      app.client.userPreferencesUpdate({'browser:welcome': false}, function (data) {
         debug('user preference saved: ', data);
       });
     }

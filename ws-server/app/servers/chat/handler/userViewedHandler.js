@@ -28,37 +28,11 @@ handler.call = function (data, session, next) {
         return callback('params-rooms-id');
       }
 
-      if (!data.events || !_.isArray(data.events)) {
-        return callback('params-events');
-      }
-
       if (!withUser) {
         return callback('user-not-found');
       }
 
-      data.events = _.filter(data.events, function (id) {
-        // http://stackoverflow.com/questions/11985228/mongodb-node-check-if-objectid-is-valid
-        return pattern.test(id);
-      });
-      if (!data.events.length) {
-        return callback('params-events');
-      }
-
       return callback(null);
-    },
-
-    function persist (callback) {
-      HistoryOne.update({
-        _id: {$in: data.events},
-        event: {$in: ['user:message']},
-        to: user._id
-      }, {
-        $set: {viewed: true}
-      }, {
-        multi: true
-      }, function (err) {
-        return callback(err);
-      });
     },
 
     function persistOnUser (callback) {
@@ -68,8 +42,7 @@ handler.call = function (data, session, next) {
     function sendToUserSockets (callback) {
       var viewedEvent = {
         user_id: user._id,
-        to_user_id: withUser._id,
-        events: data.events
+        to_user_id: withUser._id
       };
       that.app.globalChannelService.pushMessage('connector', 'user:viewed', viewedEvent, 'user:' + user.id, {}, callback);
     }

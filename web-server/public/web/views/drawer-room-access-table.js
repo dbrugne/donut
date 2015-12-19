@@ -2,7 +2,6 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../libs/client');
 var app = require('../libs/app');
 var confirmationView = require('./modal-confirmation');
 var date = require('../libs/date');
@@ -39,7 +38,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
       selector: {start: (this.page - 1) * this.paginate, length: this.paginate}
     };
 
-    client.roomUsers(this.roomId, searchAttributes, _.bind(function (data) {
+    app.client.roomUsers(this.roomId, searchAttributes, _.bind(function (data) {
       this.onResponse(data);
     }, this));
 
@@ -76,7 +75,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     if (userId && userName) {
       confirmationView.open({message: 'accept-user', username: userName}, _.bind(function () {
-        client.roomAllow(this.roomId, userId, _.bind(function (data) {
+        app.client.roomAllow(this.roomId, userId, _.bind(function (data) {
           app.trigger('redraw-tables');
         }, this));
       }, this));
@@ -89,7 +88,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     if (userId && userName) {
       confirmationView.open({message: 'refuse-user', username: userName}, _.bind(function () {
-        client.roomRefuse(this.roomId, userId, _.bind(function (data) {
+        app.client.roomRefuse(this.roomId, userId, _.bind(function (data) {
           app.trigger('redraw-tables');
         }, this));
       }, this));
@@ -102,7 +101,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     if (userId && userName) {
       confirmationView.open({message: 'disallow-user', username: userName}, _.bind(function () {
-        client.roomDisallow(this.roomId, userId, _.bind(function (data) {
+        app.client.roomDisallow(this.roomId, userId, _.bind(function (data) {
           app.trigger('redraw-tables');
         }, this));
       }, this));

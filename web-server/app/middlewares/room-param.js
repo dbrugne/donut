@@ -49,7 +49,6 @@ module.exports = function (req, res, next, roomname) {
               description: model.description,
               website: model.website,
               created_at: model.created_at,
-              lastjoin_at: model.lastjoin_at,
               activity: model.activity,
               mode: model.mode,
               allow_user_request: model.allow_user_request,

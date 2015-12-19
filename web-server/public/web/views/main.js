@@ -1,14 +1,11 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var donutDebug = require('../libs/donut-debug');
 var app = require('../libs/app');
-var client = require('../libs/client');
+
+var debug = require('../libs/donut-debug')('donut:main');
+
 var i18next = require('i18next-client');
-var currentUser = require('../models/current-user');
-var groups = require('../collections/groups');
-var rooms = require('../collections/rooms');
-var onetoones = require('../collections/onetoones');
 var ConnectionModalView = require('./modal-connection');
 var WelcomeModalView = require('./modal-welcome');
 var CurrentUserView = require('./current-user');
@@ -41,14 +38,12 @@ var ModalChooseUsernameView = require('./modal-choose-username');
 var GroupView = require('./group');
 var RoomView = require('./discussion-room');
 var RoomViewBlocked = require('./discussion-room-blocked');
-var OneToOneView = require('./discussion-onetoone');
+var OneView = require('./discussion-onetoone');
 var NavOnesView = require('./nav-ones');
 var NavRoomsView = require('./nav-rooms');
 var ConfirmationView = require('./modal-confirmation');
 var MuteView = require('./mute');
 var SearchView = require('./home-search');
-
-var debug = donutDebug('donut:main');
 
 var MainView = Backbone.View.extend({
   el: $('body'),
@@ -110,16 +105,16 @@ var MainView = Backbone.View.extend({
   initialize: function () {
     this.defaultColor = window.room_default_color;
 
-    this.listenTo(client, 'welcome', this.onWelcome);
-    this.listenTo(client, 'admin:message', this.onAdminMessage);
-    this.listenTo(client, 'disconnect', this.onDisconnect);
-    this.listenTo(groups, 'add', this.addView);
-    this.listenTo(groups, 'remove', this.onRemoveGroupView);
-    this.listenTo(rooms, 'add', this.addView);
-    this.listenTo(rooms, 'remove', this.onRemoveDiscussion);
-    this.listenTo(onetoones, 'add', this.addView);
-    this.listenTo(onetoones, 'remove', this.onRemoveDiscussion);
-    this.listenTo(rooms, 'deleted', this.roomDeleted);
+    this.listenTo(app.client, 'welcome', this.onWelcome);
+    this.listenTo(app.client, 'admin:message', this.onAdminMessage);
+    this.listenTo(app.client, 'disconnect', this.onDisconnect);
+    this.listenTo(app.groups, 'add', this.addView);
+    this.listenTo(app.groups, 'remove', this.onRemoveGroupView);
+    this.listenTo(app.rooms, 'add', this.addView);
+    this.listenTo(app.rooms, 'remove', this.onRemoveDiscussion);
+    this.listenTo(app.ones, 'add', this.addView);
+    this.listenTo(app.ones, 'remove', this.onRemoveDiscussion);
+    this.listenTo(app.rooms, 'deleted', this.roomDeleted);
     this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
     this.listenTo(app, 'openGroupProfile', this.openGroupProfile);
     this.listenTo(app, 'openUserProfile', this.openUserProfile);
@@ -128,7 +123,7 @@ var MainView = Backbone.View.extend({
   },
   run: function () {
     // generate and attach subviews
-    this.currentUserView = new CurrentUserView({el: this.$el.find('#block-current-user'), model: currentUser});
+    this.currentUserView = new CurrentUserView({el: this.$el.find('#block-current-user'), model: app.user});
     this.navOnes = new NavOnesView();
     this.navRooms = new NavRoomsView();
     this.drawerView = new DrawerView();
@@ -145,19 +140,15 @@ var MainView = Backbone.View.extend({
     this.$dropdownResults = this.$('.search .results');
     this.$search = this.$('.search');
 
-    // @debug
     // @todo dbr : mount only on debug mode
+    // @debug
     window.d = {
       $: $,
       app: app,
-      current: currentUser,
-      rooms: rooms,
-      onetoones: onetoones,
-      client: client,
       main: this
     };
 
-    client.connect();
+    app.client.connect();
   },
 
   /**
@@ -172,14 +163,14 @@ var MainView = Backbone.View.extend({
       return this.openModalChooseUsername();
     }
 
-    currentUser.onWelcome(data);
-    onetoones.onWelcome(data);
-    rooms.onWelcome(data);
+    app.user.onWelcome(data);
+    app.ones.onWelcome(data);
+    app.rooms.onWelcome(data);
 
     // Only on first connection
     if (this.firstConnection) { // show if true or if undefined
       // Welcome message
-      if (currentUser.shouldDisplayWelcome()) {
+      if (app.user.shouldDisplayWelcome()) {
         this.welcomeView.render(data);
         this.welcomeView.show();
       }
@@ -291,7 +282,7 @@ var MainView = Backbone.View.extend({
     }
 
     if (data.group_id) {
-      var model = groups.findWhere({id: data.group_id});
+      var model = app.groups.findWhere({id: data.group_id});
       model.onDeleteRoom(data.room_id);
     }
 
@@ -315,11 +306,11 @@ var MainView = Backbone.View.extend({
       return view.focusField();
     }
 
-    if (groups.isMemberBanned(groupId)) {
+    if (app.groups.isMemberBanned(groupId)) {
       return app.trigger('alert', 'error', i18next.t('chat.form.errors.group-banned'));
     }
 
-    if (!groups.isMemberOwnerAdmin(groupId)) {
+    if (!app.groups.isMemberOwnerAdmin(groupId)) {
       return app.trigger('alert', 'error', i18next.t('chat.form.errors.not-admin-owner-groupowner'));
     }
 
@@ -344,7 +335,7 @@ var MainView = Backbone.View.extend({
       return;
     }
 
-    var model = groups.get(groupId);
+    var model = app.groups.get(groupId);
     if (!model) {
       return;
     }
@@ -360,7 +351,7 @@ var MainView = Backbone.View.extend({
       return;
     }
 
-    var model = groups.get(groupId);
+    var model = app.groups.get(groupId);
     if (!model) {
       return;
     }
@@ -375,7 +366,7 @@ var MainView = Backbone.View.extend({
   },
   onOpenUserNotifications: function (event) {
     event.preventDefault();
-    var view = new DrawerUserNotificationsView({user_id: currentUser.get('user_id')});
+    var view = new DrawerUserNotificationsView({user_id: app.user.get('user_id')});
     this.drawerView.setSize('380px').setView(view).open();
   },
   onOpenUserProfile: function (event) {
@@ -396,7 +387,7 @@ var MainView = Backbone.View.extend({
   onOpenCurrentUserProfile: function (event) {
     event.preventDefault();
 
-    var userId = currentUser.get('user_id');
+    var userId = app.user.get('user_id');
     if (!userId) {
       return;
     }
@@ -428,7 +419,7 @@ var MainView = Backbone.View.extend({
       return;
     }
 
-    var model = groups.get(groupId);
+    var model = app.groups.get(groupId);
     if (!model) {
       return;
     }
@@ -516,7 +507,7 @@ var MainView = Backbone.View.extend({
       return;
     }
 
-    var model = rooms.get(roomId);
+    var model = app.rooms.get(roomId);
     if (!model) {
       return;
     }
@@ -583,7 +574,7 @@ var MainView = Backbone.View.extend({
     } else if (model.get('type') === 'group') {
       constructor = GroupView;
     } else {
-      constructor = OneToOneView;
+      constructor = OneView;
     }
 
     // create view
@@ -610,9 +601,9 @@ var MainView = Backbone.View.extend({
     var identifier = $target.data('identifier');
     var model;
     if (type === 'room') {
-      model = rooms.findWhere({id: identifier});
+      model = app.rooms.findWhere({id: identifier});
     } else {
-      model = onetoones.findWhere({user_id: '' + identifier}); // force
+      model = app.ones.findWhere({user_id: '' + identifier}); // force
                                                                // string to
                                                                // handle
                                                                // fully
@@ -658,9 +649,9 @@ var MainView = Backbone.View.extend({
     }
 
     // Current user is a member of the selected group
-    if (groups.isMember(groupId)) {
+    if (app.groups.isMember(groupId)) {
       ConfirmationView.open({message: 'close-group'}, _.bind(function () {
-        client.groupLeave(groupId, function (response) {
+        app.client.groupLeave(groupId, function (response) {
           if (response.err) {
             return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
           }
@@ -668,9 +659,9 @@ var MainView = Backbone.View.extend({
       }, this));
     // current user is not a member
     } else {
-      var model = groups.findWhere({id: groupId});
-      if (!rooms.getByGroup(groupId)) {
-        return groups.remove(model);
+      var model = app.groups.findWhere({id: groupId});
+      if (!app.rooms.getByGroup(groupId)) {
+        return app.groups.remove(model);
       }
       return app.trigger('alert', 'error', i18next.t('global.cannot-leave-group'));
     }
@@ -701,7 +692,7 @@ var MainView = Backbone.View.extend({
     }
 
     ConfirmationView.open({message: 'ban-user'}, _.bind(function () {
-      client.userBan(userId);
+      app.client.userBan(userId);
       app.trigger('userBan');
     }, this));
   },
@@ -714,7 +705,7 @@ var MainView = Backbone.View.extend({
     }
 
     ConfirmationView.open({message: 'deban-user'}, _.bind(function () {
-      client.userDeban(userId);
+      app.client.userDeban(userId);
       app.trigger('userDeban');
     }, this));
   },
@@ -729,7 +720,7 @@ var MainView = Backbone.View.extend({
     }
 
     // check that rooms exists in my rooms
-    var room = rooms.get(elt.data('room-id'));
+    var room = app.rooms.get(elt.data('room-id'));
     if (!room) {
       return null;
     }
@@ -745,22 +736,22 @@ var MainView = Backbone.View.extend({
       return null;
     }
 
-    if (!_.isFunction(client[method])) {
+    if (!_.isFunction(app.client[method])) {
       return;
     }
 
     if (confirm) {
       if (input) {
         ConfirmationView.open({message: key}, function () {
-          client[method](room.get('id'), user.get('id'));
+          app.client[method](room.get('id'), user.get('id'));
         });
       } else {
         ConfirmationView.open({message: key, input: true}, function (reason) {
-          client[method](room.get('id'), user.get('id'), reason);
+          app.client[method](room.get('id'), user.get('id'), reason);
         });
       }
     } else {
-      client[method](room.get('id'), user.get('id'));
+      app.client[method](room.get('id'), user.get('id'));
     }
   },
   opUser: function (event) {

@@ -6,9 +6,8 @@ var i18next = require('i18next-client');
 var date = require('../libs/date');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
-var client = require('../libs/client');
 var ConfirmationView = require('./modal-confirmation');
-var currentUser = require('../models/current-user');
+var currentUser = require('../libs/app').user;
 
 var RoomBlockedView = Backbone.View.extend({
   tagName: 'div',
@@ -95,7 +94,7 @@ var RoomBlockedView = Backbone.View.extend({
     event.preventDefault();
 
     ConfirmationView.open({message: 'request-allowance', area: true}, _.bind(function (message) {
-      client.roomJoinRequest(this.model.get('id'), message, _.bind(function (response) {
+      app.client.roomJoinRequest(this.model.get('id'), message, _.bind(function (response) {
         if (response.err) {
           this.$error.show();
           if (response.err === 'not-confirmed') {
@@ -103,8 +102,7 @@ var RoomBlockedView = Backbone.View.extend({
           }
           if (response.err === 'not-allowed') {
             this.$error.text(i18next.t('chat.form.errors.' + response.err));
-          }
-          else if (response.code !== 500) {
+          } else if (response.code !== 500) {
             this.$error.text(i18next.t('chat.allowed.error.' + response.err));
           } else {
             this.$error.text(i18next.t('global.unknownerror'));
@@ -127,7 +125,7 @@ var RoomBlockedView = Backbone.View.extend({
       this.$error.text(i18next.t('chat.password.invalid-password'));
       return;
     }
-    client.roomJoin(this.model.get('id'), password, _.bind(function (response) {
+    app.client.roomJoin(this.model.get('id'), password, _.bind(function (response) {
       if (!response.err) {
         return;
       }
@@ -135,8 +133,7 @@ var RoomBlockedView = Backbone.View.extend({
       this.$error.show();
       if (response.err === 'not-confirmed') {
         this.$error.text(i18next.t('chat.form.errors.' + response.err));
-      }
-      else {
+      } else {
         this.$error.text(i18next.t('chat.password.wrong-password'));
       }
     }, this));
@@ -146,7 +143,7 @@ var RoomBlockedView = Backbone.View.extend({
   },
   onCloseRoom: function (event) {
     event.preventDefault();
-    client.roomLeaveBlock(this.model.get('id'));
+    app.client.roomLeaveBlock(this.model.get('id'));
   },
   initializeTooltips: function () {
     this.$el.find('[data-toggle="tooltip"]').tooltip({

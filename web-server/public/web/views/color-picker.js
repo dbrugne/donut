@@ -1,5 +1,4 @@
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
 
 var ColorPickerView = Backbone.View.extend({
@@ -52,8 +51,6 @@ var ColorPickerView = Backbone.View.extend({
     this.$('.preview').css('background-color', color);
     this.$('.hexadecimal').text(color);
   }
-
 });
-
 
 module.exports = ColorPickerView;

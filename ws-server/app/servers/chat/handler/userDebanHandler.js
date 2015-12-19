@@ -2,7 +2,7 @@
 var errors = require('../../../util/errors');
 var async = require('async');
 var _ = require('underscore');
-var oneEmitter = require('../../../util/oneEmitter');
+var oneEmitter = require('../../../util/one-emitter');
 
 var Handler = function (app) {
   this.app = app;
@@ -59,7 +59,7 @@ handler.call = function (data, session, next) {
         to_username: bannedUser.username,
         to_avatar: bannedUser._avatar()
       };
-      oneEmitter(that.app, 'user:deban', event, callback);
+      oneEmitter(that.app, user, bannedUser, 'user:deban', event, callback);
     }
 
   ], function (err) {

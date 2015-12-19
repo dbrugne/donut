@@ -3,8 +3,7 @@ var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
 var i18next = require('i18next-client');
 var app = require('../libs/app');
-var client = require('../libs/client');
-var currentUser = require('../models/current-user');
+var currentUser = require('../libs/app').user;
 
 var DrawerGroupDeleteView = Backbone.View.extend({
   template: require('../templates/drawer-group-delete.html'),
@@ -23,14 +22,14 @@ var DrawerGroupDeleteView = Backbone.View.extend({
     // show spinner as temp content
     this.render();
 
-    client.groupRead(this.groupId, null, _.bind(function (data) {
+    app.client.groupRead(this.groupId, null, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }
     }, this));
 
     // on group:delete callback
-    this.listenTo(client, 'group:delete', this.onDelete);
+    this.listenTo(app.client, 'group:delete', this.onDelete);
   },
   setError: function (error) {
     this.$errors.html(error).show();
@@ -63,7 +62,7 @@ var DrawerGroupDeleteView = Backbone.View.extend({
       return this.setError(i18next.t('chat.form.errors.group-name-wrong-format'));
     }
 
-    client.groupDelete(this.groupId, _.bind(function (response) {
+    app.client.groupDelete(this.groupId, _.bind(function (response) {
       if (response.err) {
         return this.setError(i18next.t('chat.form.errors.' + response.err, {defaultValue: i18next.t('global.unknownerror')}));
       } else {

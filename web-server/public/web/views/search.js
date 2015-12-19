@@ -1,7 +1,6 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var client = require('../libs/client');
 var app = require('../libs/app');
 var CardsView = require('./cards');
 
@@ -113,7 +112,7 @@ var SearchPageView = Backbone.View.extend({
       },
       skip: skip
     };
-    client.search(s, options, _.bind(function (data) {
+    app.client.search(s, options, _.bind(function (data) {
       if (skip !== null) {
         data.append = true;
       }

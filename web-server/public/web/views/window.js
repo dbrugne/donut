@@ -1,13 +1,9 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var i18next = require('i18next-client');
 var app = require('../libs/app');
+var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../libs/client');
-var currentUser = require('../models/current-user');
-var rooms = require('../collections/rooms');
-var onetoones = require('../collections/onetoones');
 var desktop = require('../libs/desktop');
 
 var WindowView = Backbone.View.extend({
@@ -62,19 +58,19 @@ var WindowView = Backbone.View.extend({
     });
 
     // Bind events to model
-    this.listenTo(client, 'admin:exit', this.onAdminExit);
-    this.listenTo(client, 'admin:reload', this.onAdminReload);
+    this.listenTo(app.client, 'admin:exit', this.onAdminExit);
+    this.listenTo(app.client, 'admin:reload', this.onAdminReload);
   },
 
   renderTitle: function () {
     var title = '';
 
     // determine if something 'new'
-    var thereIsNew = rooms.some(function (d) { // first looks in rooms
+    var thereIsNew = app.rooms.some(function (d) { // first looks in rooms
       return d.get('unviewed');
     });
     if (!thereIsNew) {
-      thereIsNew = onetoones.some(function (d) { // then looks in onetoones
+      thereIsNew = app.ones.some(function (d) { // then looks in ones
         return d.get('unviewed');
       });
     }
@@ -131,24 +127,24 @@ var WindowView = Backbone.View.extend({
     }
 
     // only if connected
-    if (!client.isConnected()) {
+    if (!app.client.sConnected()) {
       return;
     }
 
     // only if at least one discussion is open and preferences checked
-    if ((!rooms || rooms.length < 1) && (!onetoones || onetoones.length < 1) && currentUser.shouldDisplayExitPopin()) {
+    if ((!app.rooms || app.rooms.length < 1) && (!app.ones || app.ones.length < 1) && app.user.shouldDisplayExitPopin()) {
       return i18next.t('chat.closeapp');
     }
 
-    if (currentUser.shouldDisplayExitPopin()) {
+    if (app.user.shouldDisplayExitPopin()) {
       return i18next.t('chat.closemessage');
     }
   },
 
   _getFocusedModel: function () {
-    var model = rooms.findWhere({focused: true});
+    var model = app.rooms.findWhere({focused: true});
     if (!model) {
-      model = onetoones.findWhere({focused: true});
+      model = app.ones.findWhere({focused: true});
     }
 
     return model; // could be 'undefined'
@@ -179,12 +175,13 @@ var WindowView = Backbone.View.extend({
     model.set('last', Date.now());
 
     var collection = (model.get('type') === 'room')
-      ? rooms
-      : onetoones;
+      ? app.rooms
+      : app.ones;
 
-    // badge (even if focused), only if user sending the message is not currentUser
-    if (model.get('unviewed') !== true && currentUser.get('user_id') !== data.user_id) {
+    // badge (even if focused), only if user sending the message is not current user
+    if (model.get('unviewed') !== true && app.user.get('user_id') !== data.user_id) {
       model.set('unviewed', true);
+      model.set('first_unviewed', data.id);
     }
 
     // update navigation
@@ -195,8 +192,8 @@ var WindowView = Backbone.View.extend({
       app.trigger('redrawNavigationOnes');
     }
 
-    // ignore event from currentUser
-    if (currentUser.get('user_id') === data.user_id) {
+    // ignore event from current user
+    if (app.user.get('user_id') === data.user_id) {
       return;
     }
 
@@ -256,7 +253,7 @@ var WindowView = Backbone.View.extend({
     }
   },
   play: function () {
-    if (!currentUser.shouldPlaySound()) {
+    if (!app.user.shouldPlaySound()) {
       return;
     }
 
@@ -279,7 +276,7 @@ var WindowView = Backbone.View.extend({
     beep.play();
   },
   desktopNotify: function (title, body, force) {
-    if (!force && !currentUser.shouldDisplayDesktopNotif()) {
+    if (!force && !app.user.shouldDisplayDesktopNotif()) {
       return;
     }
 

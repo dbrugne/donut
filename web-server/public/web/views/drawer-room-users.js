@@ -1,11 +1,11 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var client = require('../libs/client');
+var app = require('../libs/app');
 var RoomUsersTableConfirmation = require('./drawer-room-users-table');
 var keyboard = require('../libs/keyboard');
 var i18next = require('i18next-client');
-var currentUser = require('../models/current-user');
+var currentUser = require('../libs/app').user;
 
 var DrawerRoomUsersView = Backbone.View.extend({
   template: require('../templates/drawer-room-users.html'),
@@ -34,13 +34,13 @@ var DrawerRoomUsersView = Backbone.View.extend({
   initialize: function (options) {
     this.roomId = options.room_id;
 
-    this.listenTo(client, 'room:ban', this.render);
-    this.listenTo(client, 'room:deban', this.render);
-    this.listenTo(client, 'room:voice', this.render);
-    this.listenTo(client, 'room:devoice', this.render);
-    this.listenTo(client, 'room:kick', this.render);
-    this.listenTo(client, 'room:op', this.render);
-    this.listenTo(client, 'room:deop', this.render);
+    this.listenTo(app.client, 'room:ban', this.render);
+    this.listenTo(app.client, 'room:deban', this.render);
+    this.listenTo(app.client, 'room:voice', this.render);
+    this.listenTo(app.client, 'room:devoice', this.render);
+    this.listenTo(app.client, 'room:kick', this.render);
+    this.listenTo(app.client, 'room:op', this.render);
+    this.listenTo(app.client, 'room:deop', this.render);
 
     this.reload();
   },
@@ -51,7 +51,7 @@ var DrawerRoomUsersView = Backbone.View.extend({
       users: true,
       admin: true
     };
-    client.roomRead(this.roomId, what, _.bind(function (data) {
+    app.client.roomRead(this.roomId, what, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }
@@ -92,7 +92,7 @@ var DrawerRoomUsersView = Backbone.View.extend({
       searchString: this.search.val(),
       selector: {start: (this.page - 1) * this.paginate, length: this.paginate}
     };
-    client.roomUsers(this.roomId, searchAttributes, function (data) {
+    app.client.roomUsers(this.roomId, searchAttributes, function (data) {
       that.onResponseUser(data);
     });
     return this;

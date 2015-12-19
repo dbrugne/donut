@@ -662,7 +662,7 @@
             } // #chat #center .discussion .content .header.user .status-block
           } // #chat #center .discussion .content .header.user
         }
-        .events { /*border-top: 1px solid @cl-subtext10;*/ overflow-y: scroll; overflow-x: hidden; .flex(1); .scrollbar-grey; position: relative;
+        .events { /*border-top: 1px solid @cl-subtext10;*/ overflow-y: scroll; overflow-x: hidden; .flex(1); .scrollbar-grey; position: relative; margin-top: 60px;
           .scrollable { margin-right: 5px;
             .scrollable-content { position: relative;
               hr { border-color: @cl-subtext5; }
@@ -726,26 +726,6 @@
                 }
                 .block { line-height: 19px; position: relative;
                   &.message { word-break: break-word; } // unofficial but working : http://caniuse.com/#feat=word-break
-                  &.unviewed {
-                    &::before {
-                      .icon-circle;
-                      font-size: 6px;
-                      color: @cl-peter_river;
-                      position: absolute;
-                      top: 7px;
-                      left: 45px;
-                      line-height: 1;
-                      font-style: normal;
-                    }
-                  }
-                  &.promote {
-                    &.unviewed {
-                      &::before {
-                        top: 12px;
-                        left: 47px;
-                      }
-                    }
-                  }
                   &.date + .block { border-top: transparent; }
                   &.hello { padding-top: 10px; font-size: 1.5rem; line-height: 2rem;
                     i {
@@ -764,12 +744,6 @@
                       line-height: normal;
                     }
                     .avatar { margin-right:5px; }
-                    &.unviewed {
-                      &::before {
-                        top: 12px;
-                        left: 48px;
-                      }
-                    }
                   }
                   .event {
                     .date {
@@ -908,7 +882,6 @@
                   }
                 }
                 .block.inout {
-                  &.unviewed::before { top: 16px; left: 29px; }
                   float: left;
                   border-top: 0;
                   padding-top: 5px;
@@ -993,7 +966,6 @@
                     .date { white-space: nowrap; .flex-order(1); position:relative; top: initial; right: initial; margin-right: 5px;
                       &.same { visibility: hidden; }
                     }
-                    &.unviewed::before { content: ""; left: 0; top: 0; background-color: #E2E2FF; width: 100%; height: 100%; z-index: -1; }
                   }
                 }
               } // #chat #center .discussion .content .events .scrollable .scrollable-content .realtime
@@ -1196,9 +1168,18 @@
     &.date { margin-top: 25px; margin-bottom: 25px; clear: both; border-top: 0; height: 1px; background-color: @cl-subtext10; text-align: center;
       .moment { position: relative; top: -0.7em; background-color: @cl-background; text-align: center; font-size: 1.5rem; font-weight: bold; color: @cl-subtext30; padding: 0 10px; text-transform: capitalize; }
     }
+    &.unviewed { .opacity(0.6); margin: 25px 10px 25px 5px; clear: both; border-top: 0; height: 1px; background-color: @cl-first; text-align: center;
+      .title { position: absolute; right:0; height:20px; top: -0.7em; background-color: @cl-background; text-align: center; font-size: 1.5rem; font-weight: bold; color: @cl-first; padding: 0 10px; }
+    }
+    &.unviewed-top { .border-radius(3px);
+      background-color: #FF8100;
+      padding: 5px 10px;
+      color: #FFF;
+      opacity: 0.6;
+    }
   }
 
-  .date-ctn { padding: 0 12px 10px 0; position: absolute; width: 100%; background-color: white; z-index: 2; min-height: 22px }
+  .date-ctn { margin-top: 10px; padding: 0 12px 10px 0; position: absolute; width: 100%; background-color: white; z-index: 2; min-height: 22px }
 
   @import './drawer';
 }

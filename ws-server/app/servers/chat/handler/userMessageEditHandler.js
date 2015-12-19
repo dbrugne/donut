@@ -85,17 +85,6 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function persistOnBoth (message, callback) {
-      user.updateActivity(withUser._id, function (err) {
-        if (err) {
-          return callback(err, message);
-        }
-        withUser.updateActivity(user._id, function (err) {
-          return callback(err, message);
-        });
-      });
-    },
-
     function broadcastFrom (message, callback) {
       var eventToSend = {
         event: event.id,

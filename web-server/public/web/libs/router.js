@@ -2,16 +2,11 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('./app');
-var client = require('./client');
-var groups = require('../collections/groups');
-var rooms = require('../collections/rooms');
-var onetoones = require('../collections/onetoones');
 var i18next = require('i18next-client');
 var HomeView = require('../views/home');
 var SearchView = require('../views/search');
 
 var DonutRouter = Backbone.Router.extend({
-
   routes: {
     '': 'root',
     '_=_': 'root', // workaround for facebook redirect uri bug https://github.com/jaredhanson/passport-facebook/issues/12#issuecomment-5913711
@@ -35,7 +30,7 @@ var DonutRouter = Backbone.Router.extend({
       that.clientOnline = true;
       Backbone.history.start();
     }, this));
-    this.listenTo(client, 'disconnect', _.bind(function () {
+    this.listenTo(app.client, 'disconnect', _.bind(function () {
       that.clientOnline = false;
       Backbone.history.stop();
     }, this));
@@ -102,21 +97,21 @@ var DonutRouter = Backbone.Router.extend({
 
   joinGroup: function (data) {
     var name = data.name;
-    var model = groups.iwhere('name', name);
+    var model = app.groups.iwhere('name', name);
     if (model) {
       model.onRefresh();
       return this.focus(model);
     }
 
-    client.groupId(name, _.bind(function (response) {
+    app.client.groupId(name, _.bind(function (response) {
       if (response.code === 404) {
         return app.trigger('alert', 'error', i18next.t('chat.groupnotexists', {name: name}));
       } else if (response.code === 500) {
         return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
       }
-      client.groupRead(response.group_id, {users: true, rooms: true}, _.bind(function (response) {
+      app.client.groupRead(response.group_id, {users: true, rooms: true}, _.bind(function (response) {
         if (!response.err) {
-          model = groups.addModel(response);
+          model = app.groups.addModel(response);
           model.trigger('redraw');
           app.trigger('redrawNavigationRooms');
           this.focus(model);
@@ -141,7 +136,7 @@ var DonutRouter = Backbone.Router.extend({
   },
 
   focusRoom: function (identifier, forceRedraw) {
-    var model = rooms.iwhere('identifier', identifier);
+    var model = app.rooms.iwhere('identifier', identifier);
     if (typeof model !== 'undefined' && !forceRedraw) {
       return this.focus(model);
     }
@@ -149,13 +144,13 @@ var DonutRouter = Backbone.Router.extend({
     // not already open or force redraw
     this.nextFocus = identifier;
     var that = this;
-    client.roomId(identifier, function (responseRoom) {
+    app.client.roomId(identifier, function (responseRoom) {
       if (responseRoom.code === 404) {
         return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', {name: identifier}));
       } else if (responseRoom.code === 500) {
         return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
       }
-      client.roomJoin(responseRoom.room_id, null, _.bind(function (response) {
+      app.client.roomJoin(responseRoom.room_id, null, _.bind(function (response) {
         if (response.err === 'group-members-only') {
           return app.trigger('alert', 'error', i18next.t('chat.groupmembersonly', {
             name: identifier,
@@ -167,9 +162,9 @@ var DonutRouter = Backbone.Router.extend({
           if (model) {
             var isFocused = model.get('focused');
             model.unbindUsers();
-            rooms.remove(model);
+            app.rooms.remove(model);
           }
-          rooms.addModel(response.room, response.err);
+          app.rooms.addModel(response.room, response.err);
           app.trigger('redrawNavigationRooms'); // also trigger a redraw when displaying a room blocked
 
           if (model && isFocused) {
@@ -185,14 +180,14 @@ var DonutRouter = Backbone.Router.extend({
   },
 
   focusOne: function (username) {
-    var model = onetoones.iwhere('username', username);
+    var model = app.ones.iwhere('username', username);
     if (typeof model !== 'undefined') {
       return this.focus(model);
     }
 
     // not already open
     this.nextFocus = '@' + username;
-    client.userId(username, function (response) {
+    app.client.userId(username, function (response) {
       if (response.err && response !== 500) {
         return app.trigger('alert', 'error', i18next.t('chat.users.usernotexist'));
       } else if (response.code === 500) {
@@ -201,7 +196,7 @@ var DonutRouter = Backbone.Router.extend({
       if (!response.user_id) {
         return;
       }
-      client.userJoin(response.user_id, function (response) {
+      app.client.userJoin(response.user_id, function (response) {
         if (response.err && response !== 500) {
           return app.trigger('alert', 'error', i18next.t('chat.users.usernotexist'));
         } else if (response.code === 500) {
@@ -216,13 +211,13 @@ var DonutRouter = Backbone.Router.extend({
   },
 
   unfocusAll: function () {
-    groups.each(function (o) {
+    app.groups.each(function (o) {
       o.set('focused', false);
     });
-    rooms.each(function (o) {
+    app.rooms.each(function (o) {
       o.set('focused', false);
     });
-    onetoones.each(function (o) {
+    app.ones.each(function (o) {
       o.set('focused', false);
     });
 
@@ -233,17 +228,17 @@ var DonutRouter = Backbone.Router.extend({
 
   focus: function (model) {
     // No opened discussion, display default
-    if (rooms.length < 1 && onetoones.length < 1 && groups.length < 1) {
+    if (app.rooms.length < 1 && app.ones.length < 1 && app.groups.length < 1) {
       return this.focusHome();
     }
 
     // No discussion provided, take first
     if (typeof model === 'undefined') {
-      model = rooms.first();
+      model = app.rooms.first();
       if (typeof model === 'undefined') {
-        model = onetoones.first();
+        model = app.ones.first();
         if (typeof model === 'undefined') {
-          model = groups.first();
+          model = app.groups.first();
           if (typeof model === 'undefined') {
             return this.focusHome();
           }

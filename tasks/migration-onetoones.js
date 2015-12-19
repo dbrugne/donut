@@ -33,7 +33,7 @@ module.exports = function (grunt) {
 
           var oneElement = {
             user: one,
-            lastactivity_at: lastDate
+            last_event_at: lastDate
           };
 
           user.update({$addToSet: {'ones': oneElement}}, function (err) {

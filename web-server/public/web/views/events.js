@@ -4,15 +4,13 @@ var async = require('async');
 var Backbone = require('backbone');
 var app = require('../libs/app');
 var date = require('../libs/date');
-var client = require('../libs/client');
 var EventsDateView = require('./events-date');
-var EventsViewedView = require('./events-viewed');
 var EventsHistoryView = require('./events-history');
 var EventsSpamView = require('./events-spam');
 var EventsEditView = require('./events-edit');
 var windowView = require('./window');
 var EventsEngine = require('../libs/events');
-var currentUser = require('../models/current-user');
+var currentUser = require('../libs/app').user;
 
 module.exports = Backbone.View.extend({
   template: require('../templates/events.html'),
@@ -21,9 +19,9 @@ module.exports = Backbone.View.extend({
     'shown.bs.dropdown .actions': 'onMessageMenuShow'
   },
 
-  scrollTopTimeout: null,
+  markAsViewedTimeout: null,
 
-  scrollVisibleTimeout: null,
+  scrollTopTimeout: null,
 
   chatmode: false,
 
@@ -32,7 +30,7 @@ module.exports = Backbone.View.extend({
                            // true, for first focus)
 
   initialize: function () {
-    this.listenTo(client, 'preferences:update', _.bind(function () {
+    this.listenTo(app.client, 'preferences:update', _.bind(function () {
       if (currentUser.discussionMode() !== this.chatmode) {
         this.$realtime.toggleClass('compact');
         this.chatmode = currentUser.discussionMode();
@@ -50,10 +48,6 @@ module.exports = Backbone.View.extend({
       model: this.model,
       currentUserId: currentUser.get('user_id'),
       el: this.$realtime
-    });
-    this.eventsViewedView = new EventsViewedView({
-      el: this.$scrollable,
-      model: this.model
     });
     this.eventsHistoryView = new EventsHistoryView({
       el: this.$el,
@@ -109,7 +103,6 @@ module.exports = Backbone.View.extend({
     this.scrollDown();
   },
   _remove: function () {
-    this.eventsViewedView.remove();
     this.eventsDateView.remove();
     this.eventsHistoryView.remove();
     this.eventsSpamView.remove();
@@ -163,24 +156,22 @@ module.exports = Backbone.View.extend({
       }, 1500);
     }
 
-    // everywhere
-    this.scrollVisibleTimeout = setTimeout(function () {
-      // scroll haven't change until timeout
-      if (that.$scrollable.scrollTop() === currentScrollPosition) {
-        if (that.isVisible()) {
-          that.eventsViewedView.markVisibleAsViewed();
-        }
+    // start timeout for mark as viewed detection
+    this.markAsViewedTimeout = setTimeout(_.bind(function () {
+      if (!this.isVisible()) {
+        return;
       }
-    }, 2000);
+      this.model.markAsViewed();
+    }, this), 2000); // 2s
   },
   _scrollTimeoutCleanup: function () {
     if (this.scrollTopTimeout) {
       clearInterval(this.scrollTopTimeout);
       this.scrollTopTimeout = null;
     }
-    if (this.scrollVisibleTimeout) {
-      clearInterval(this.scrollVisibleTimeout);
-      this.scrollVisibleTimeout = null;
+    if (this.markAsViewedTimeout) {
+      clearInterval(this.markAsViewedTimeout);
+      this.markAsViewedTimeout = null;
     }
   },
   _scrollBottomPosition: function () {
@@ -200,6 +191,15 @@ module.exports = Backbone.View.extend({
   },
   scrollDown: function () {
     this.$scrollable.scrollTop(this.$scrollableContent.outerHeight(true));
+  },
+  markAsViewed: function () {
+    var elt = this.$el.find('.block.unviewed');
+    if (elt) {
+      elt.fadeOut(1000, function () {
+        elt.remove();
+      });
+    }
+    this.eventsDateView.markAsViewed();
   },
 
   /** **************************************************************************************************************

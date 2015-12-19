@@ -1,9 +1,7 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
-var i18next = require('i18next-client');
 var app = require('../libs/app');
-var client = require('../libs/client');
-var rooms = require('../collections/rooms');
+var i18next = require('i18next-client');
 var confirmationView = require('./modal-confirmation');
 
 var InputCommandsView = Backbone.View.extend({
@@ -213,7 +211,7 @@ var InputCommandsView = Backbone.View.extend({
   },
   leave: function (paramString, parameters) {
     if (!paramString) {
-      client.roomLeave(this.model.get('id'));
+      app.client.roomLeave(this.model.get('id'));
       return;
     }
 
@@ -226,21 +224,21 @@ var InputCommandsView = Backbone.View.extend({
     if (parameters[1] && parameters[2] && parameters[3]) {
       // room in group (#donut/help)
       identifier = parameters[3];
-      model = rooms.getByNameAndGroup(identifier, parameters[1].replace('#', ''));
+      model = app.rooms.getByNameAndGroup(identifier, parameters[1].replace('#', ''));
     } else if (parameters[1] && parameters[2]) {
       // group (#donut/)
       return this.errorCommand('join', 'invalidroom');
     } else {
       // room not in group (#donut)
       identifier = parameters[1];
-      model = rooms.getByNameAndGroup(identifier.replace('#', ''), null);
+      model = app.rooms.getByNameAndGroup(identifier.replace('#', ''), null);
     }
 
     if (!model) {
       return;
     }
 
-    client.roomLeave(model.get('id'));
+    app.client.roomLeave(model.get('id'));
   },
   topic: function (paramString, parameters) {
     if (this.model.get('type') !== 'room') {
@@ -251,7 +249,7 @@ var InputCommandsView = Backbone.View.extend({
     }
 
     var that = this;
-    client.roomTopic(this.model.get('id'), parameters[1], function (data) {
+    app.client.roomTopic(this.model.get('id'), parameters[1], function (data) {
       if (data.err && data.code !== 500) {
         return that.errorCommand('topic', data.err);
       }
@@ -301,12 +299,12 @@ var InputCommandsView = Backbone.View.extend({
     })[what];
 
     var that = this;
-    client.userId(username, function (response) {
+    app.client.userId(username, function (response) {
       if (response.err || !response.user_id) {
         return;
       }
       confirmationView.open({input: input}, function (reason) {
-        client[method](that.model.get('id'), response.user_id, reason, function (data) {
+        app.client[method](that.model.get('id'), response.user_id, reason, function (data) {
           if (data.err && data.code !== 500) {
             return that.errorCommand(what, data.err);
           } else if (data.err) {
@@ -329,7 +327,7 @@ var InputCommandsView = Backbone.View.extend({
     }
 
     var that = this;
-    client.userId(username, function (response) {
+    app.client.userId(username, function (response) {
       if (response.err || !response.user_id) {
         return;
       }
@@ -339,7 +337,7 @@ var InputCommandsView = Backbone.View.extend({
         : 'userDeban';
 
       confirmationView.open({input: false}, function () {
-        client[method](response.user_id, function (data) {
+        app.client[method](response.user_id, function (data) {
           if (data.err && data.err === 'banned') {
             return that.errorCommand(what, 'already-blocked');
           }
@@ -375,17 +373,17 @@ var InputCommandsView = Backbone.View.extend({
       model = this.model;
     } else if (/^#/.test(parameters[1])) {
       if (parameters[2]) {
-        model = rooms.getByNameAndGroup(parameters[2].replace('/', ''), parameters[1].replace('#', ''));
+        model = app.rooms.getByNameAndGroup(parameters[2].replace('/', ''), parameters[1].replace('#', ''));
       } else {
-        model = rooms.getByNameAndGroup(parameters[1].replace('#', ''), null);
+        model = app.rooms.getByNameAndGroup(parameters[1].replace('#', ''), null);
       }
     } else if (/^@/.test(parameters[1])) {
-      client.userId(parameters[1].replace('@', ''), function (response) {
+      app.client.userId(parameters[1].replace('@', ''), function (response) {
         if (!response.user_id) {
           return;
         }
         app.trigger('joinOnetoone', parameters[1].replace('@', ''));
-        client.userMessage(response.user_id, message);
+        app.client.userMessage(response.user_id, message);
       });
       return;
     } else {
@@ -397,9 +395,9 @@ var InputCommandsView = Backbone.View.extend({
     }
 
     if (model.get('type') === 'room') {
-      client.roomMessage(model.get('id'), message);
+      app.client.roomMessage(model.get('id'), message);
     } else if (model.get('type') === 'onetoone') {
-      client.userMessage(model.get('user_id'), message);
+      app.client.userMessage(model.get('user_id'), message);
     }
   },
   profile: function (paramString, parameters) {
@@ -409,7 +407,7 @@ var InputCommandsView = Backbone.View.extend({
 
     var that = this;
     if ((/^#/.test(parameters[1]))) {
-      client.roomId(parameters[1], function (response) {
+      app.client.roomId(parameters[1], function (response) {
         if (response.code === 404) {
           that.errorCommand('profile', 'invalidroom');
           return;
@@ -418,7 +416,7 @@ var InputCommandsView = Backbone.View.extend({
       });
     } else {
       parameters[1] = parameters[1].replace(/^@/, '');
-      client.userId(parameters[1], function (response) {
+      app.client.userId(parameters[1], function (response) {
         if (response.code === 404) {
           that.errorCommand('profile', 'invalidusername');
           return;
@@ -434,13 +432,13 @@ var InputCommandsView = Backbone.View.extend({
 
     var message = parameters[1];
     if (this.model.get('type') === 'room') {
-      client.roomMessage(this.model.get('id'), message, null, 'me');
+      app.client.roomMessage(this.model.get('id'), message, null, 'me');
     } else {
-      client.userMessage(this.model.get('id'), message, null, 'me');
+      app.client.userMessage(this.model.get('id'), message, null, 'me');
     }
   },
   ping: function (paramString, parameters) {
-    client.ping(_.bind(function (duration) {
+    app.client.ping(_.bind(function (duration) {
       this.model.trigger('freshEvent', 'ping', {duration: duration});
     }, this));
   },
@@ -472,9 +470,9 @@ var InputCommandsView = Backbone.View.extend({
       max: max
     });
     if (this.model.get('type') === 'room') {
-      client.roomMessage(this.model.get('id'), message, null, 'random');
+      app.client.roomMessage(this.model.get('id'), message, null, 'random');
     } else {
-      client.userMessage(this.model.get('id'), message, null, 'random');
+      app.client.userMessage(this.model.get('id'), message, null, 'random');
     }
   },
   help: function (paramString, parameters, error) {

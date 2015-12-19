@@ -20,7 +20,7 @@ switch (data.stype) {
     break;
 };
 %>
-<div class="block promote <%= data.stype %> <% if (data.unviewed) { print('unviewed'); } %>" id="<%= data.id %>" data-time="<%= data.time %>">
+<div class="block promote <%= data.stype %>" id="<%= data.id %>" data-time="<%= data.time %>">
     <div class="event">
         <div class="text">
             <i class="icon icon-fw <%= _icon %>"></i>

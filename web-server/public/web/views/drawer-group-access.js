@@ -2,10 +2,9 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
-var client = require('../libs/client');
 var TableDomainView = require('./drawer-group-access-domain-table');
 var i18next = require('i18next-client');
-var currentUser = require('../models/current-user');
+var currentUser = require('../libs/app').user;
 
 var GroupAccessView = Backbone.View.extend({
 
@@ -40,7 +39,7 @@ var GroupAccessView = Backbone.View.extend({
       users: true,
       admin: true
     };
-    client.groupRead(this.model.get('id'), what, _.bind(function (data) {
+    app.client.groupRead(this.model.get('id'), what, _.bind(function (data) {
       if (!data.err) {
         this.onResponse(data);
       }
@@ -132,7 +131,7 @@ var GroupAccessView = Backbone.View.extend({
     this.$password.focus();
   },
   onChangeUsersRequest: function (event) {
-    client.groupUpdate(this.model.get('group_id'), {
+    app.client.groupUpdate(this.model.get('group_id'), {
       allow_user_request: this.$checkboxUserRequest.is(':checked')
     }, _.bind(function (response) {
       if (response.err) {
@@ -158,7 +157,7 @@ var GroupAccessView = Backbone.View.extend({
       return this.setError(i18next.t('chat.form.errors.invalid-password'));
     }
 
-    client.groupUpdate(this.model.get('group_id'), {password: this.getPassword()}, _.bind(function (data) {
+    app.client.groupUpdate(this.model.get('group_id'), {password: this.getPassword()}, _.bind(function (data) {
       if (data.err) {
         return this.setError(i18next.t('chat.form.errors.' + data.err, {defaultValue: i18next.t('global.unknownerror')}));
       }
@@ -171,7 +170,7 @@ var GroupAccessView = Backbone.View.extend({
   onSubmitConditions: function (event) {
     this.reset();
 
-    client.groupUpdate(this.model.get('group_id'), {disclaimer: this.$conditions.val()}, _.bind(function (data) {
+    app.client.groupUpdate(this.model.get('group_id'), {disclaimer: this.$conditions.val()}, _.bind(function (data) {
       if (data.err) {
         return this.setError(i18next.t('chat.form.errors.' + data.err, {defaultValue: i18next.t('global.unknownerror')}));
       }

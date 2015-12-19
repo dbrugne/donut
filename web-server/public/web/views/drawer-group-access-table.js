@@ -2,7 +2,6 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../libs/client');
 var app = require('../libs/app');
 var confirmationView = require('./modal-confirmation');
 var date = require('../libs/date');
@@ -42,7 +41,7 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
       selector: {start: (this.page - 1) * this.paginate, length: this.paginate}
     };
 
-    client.groupUsers(this.model.get('group_id'), searchAttributes, _.bind(function (data) {
+    app.client.groupUsers(this.model.get('group_id'), searchAttributes, _.bind(function (data) {
       this.onResponse(data);
     }, this));
 
@@ -79,9 +78,9 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
 
     if (userId && userName) {
       confirmationView.open({message: 'accept-user', username: userName}, _.bind(function () {
-        client.groupRequestAccept(this.model.get('group_id'), userId, _.bind(function (response) {
+        app.client.groupRequestAccept(this.model.get('group_id'), userId, _.bind(function (response) {
           if (response.err) {
-            return this.trigger('error', response.err)
+            return this.trigger('error', response.err);
           }
           app.trigger('redraw-tables');
         }, this));
@@ -95,7 +94,7 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
 
     if (userId && userName) {
       confirmationView.open({message: 'deban-group-user', username: userName}, _.bind(function () {
-        client.groupDeban(this.model.get('group_id'), userId, _.bind(function (data) {
+        app.client.groupDeban(this.model.get('group_id'), userId, _.bind(function (data) {
           app.trigger('redraw-tables');
         }, this));
       }, this));
@@ -108,7 +107,7 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
 
     if (userId && userName) {
       confirmationView.open({message: 'refuse-user', username: userName}, _.bind(function () {
-        client.groupRequestRefuse(this.model.get('group_id'), userId, _.bind(function (response) {
+        app.client.groupRequestRefuse(this.model.get('group_id'), userId, _.bind(function (response) {
           if (response.err) {
             return this.trigger('error', response.err);
           }
@@ -124,7 +123,7 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
 
     if (userId && userName) {
       confirmationView.open({message: 'disallow-user', username: userName}, _.bind(function () {
-        client.groupAllowedRemove(this.model.get('group_id'), userId, _.bind(function (response) {
+        app.client.groupAllowedRemove(this.model.get('group_id'), userId, _.bind(function (response) {
           if (response.err) {
             return this.trigger('error', response.err);
           }

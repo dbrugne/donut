@@ -382,7 +382,11 @@
     },
     "help": "Aide",
     "room-discussion": {
-      "input-placeholder": "cliquez ici pour taper un message"
+      "input-placeholder": "cliquez ici pour taper un message",
+      "new-messages": "nouveaux messages",
+      "count-since": "messages non vus depuis __date__",
+      "jumpto": "Aller à",
+      "mark-as-read": "Marquer comme lu"
     },
     "createadonut": "Nouveau",
     "home": {

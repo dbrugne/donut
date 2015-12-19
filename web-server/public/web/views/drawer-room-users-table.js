@@ -2,8 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../libs/client');
-var currentUser = require('../models/current-user');
+var app = require('../libs/app');
 var confirmationView = require('./modal-confirmation');
 
 var DrawerRoomUsersTableView = Backbone.View.extend({
@@ -56,11 +55,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({message: 'op-room-user'}, function () {
-      client.roomOp(that.data.room_id, userId, function (err) {
-        if (err) {
-          return;
-        }
-      });
+      app.client.roomOp(that.data.room_id, userId, _.noop);
     });
   },
   deopUser: function (event) {
@@ -76,11 +71,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({message: 'deop-room-user'}, function () {
-      client.roomDeop(that.data.room_id, userId, function (err) {
-        if (err) {
-          return;
-        }
-      });
+      app.client.roomDeop(that.data.room_id, userId, _.noop);
     });
   },
   kickUser: function (event) {
@@ -96,7 +87,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({message: 'kick-room-user', input: true}, function (reason) {
-      client.roomKick(that.data.room_id, userId, reason);
+      app.client.roomKick(that.data.room_id, userId, reason);
     });
   },
   banUser: function (event) {
@@ -112,7 +103,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({message: 'ban-room-user', input: true}, function (reason) {
-      client.roomBan(that.data.room_id, userId, reason);
+      app.client.roomBan(that.data.room_id, userId, reason);
     });
   },
   debanUser: function (event) {
@@ -128,7 +119,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({message: 'deban-room-user'}, function () {
-      client.roomDeban(that.data.room_id, userId);
+      app.client.roomDeban(that.data.room_id, userId);
     });
   },
   voiceUser: function (event) {
@@ -144,7 +135,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({message: 'voice-room-user'}, function () {
-      client.roomVoice(that.data.room_id, userId);
+      app.client.roomVoice(that.data.room_id, userId);
     });
   },
   devoiceUser: function (event) {
@@ -160,7 +151,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     var that = this;
     confirmationView.open({message: 'devoice-room-user'}, function () {
-      client.roomDevoice(that.data.room_id, userId);
+      app.client.roomDevoice(that.data.room_id, userId);
     });
   },
 

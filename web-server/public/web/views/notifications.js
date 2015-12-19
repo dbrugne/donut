@@ -3,7 +3,6 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
-var client = require('../libs/client');
 var i18next = require('i18next-client');
 
 var NotificationsView = Backbone.View.extend({
@@ -14,7 +13,7 @@ var NotificationsView = Backbone.View.extend({
   events: {},
 
   initialize: function () {
-    this.listenTo(client, 'notification:new', this.onNewNotification);
+    this.listenTo(app.client, 'notification:new', this.onNewNotification);
     this.listenTo(app, 'notification:decreaseCount', this.decreaseCount);
     this.listenTo(app, 'notification:readAll', this.readAll);
 

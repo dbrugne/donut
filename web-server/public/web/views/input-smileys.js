@@ -1,9 +1,5 @@
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
-var donutDebug = require('../libs/donut-debug');
-
-var debug = donutDebug('donut:input');
 
 var InputSmileysView = Backbone.View.extend({
   events: {
@@ -42,9 +38,7 @@ var InputSmileysView = Backbone.View.extend({
     var symbol = $.smilifyGetSymbolFromCode($(event.currentTarget).data('smilifyCode'));
     this.$editable.insertAtCaret(symbol);
     this.$smileyButton.popover('hide');
-  },
-
+  }
 });
-
 
 module.exports = InputSmileysView;
