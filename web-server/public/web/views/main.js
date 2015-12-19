@@ -169,14 +169,10 @@ var MainView = Backbone.View.extend({
 
     // Only on first connection
     if (this.firstConnection) { // show if true or if undefined
-      // Welcome message
       if (app.user.shouldDisplayWelcome()) {
         this.welcomeView.render(data);
         this.welcomeView.show();
       }
-
-      // Elements hidden until first 'welcome'
-      $('#block-discussions').show();
     }
 
     this.notificationsView.updateCount(data.notifications.unread);
