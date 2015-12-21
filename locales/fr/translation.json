@@ -205,7 +205,7 @@
     "french": "Français",
     "english": "Anglais",
     "unknownerror": "Erreur inconnue, veuillez réessayer",
-    "cannot-leave-group": "Vous devez clore toutes les discussions de ce groupe avant de pouvoir clore ce groupe",
+    "cannot-leave-group": "Vous devez fermer toutes les discussions de cette communauté avant de la quitter",
     "notconfirmed": "Votre compte n'a pas été validé, cliquer ici pour gérer vos emails",
     "mode": {
       "title": {
@@ -384,7 +384,7 @@
     "room-discussion": {
       "input-placeholder": "cliquez ici pour taper un message",
       "new-messages": "nouveaux messages",
-      "count-since": "messages non vus depuis __date__",
+      "count-since": "nouveaux messages depuis __date__",
       "jumpto": "Aller à",
       "mark-as-read": "Marquer comme lu"
     },
@@ -487,7 +487,7 @@
       "placeholder": "Expliquez pourquoi, visible dans le donut (optionnel)",
       "label-requestallowance": "Expliquez lui pourquoi vous voulez devenir membre. (facultatif)",
       "placeholderarea": "200 caractères maximum",
-      "placeholder-domain": "exemple: @donut.me",
+      "placeholder-domain": "@exemple.com",
       "label": "Expliquez pourquoi (optionnel)",
       "cancel": "Annuler",
       "confirm": "OK",
@@ -515,7 +515,7 @@
         "send-email": "Un email de confirmation va être envoyé à __email__",
         "delete-email": "__email__ va être supprimé de vos adresses mails",
         "change-email": "Vous allez faire __email__ votre e-mail principal. Dorénavant vous vous connecterez avec cet e-mail et vous recevrez toutes les notifications dessus.",
-        "add-domain": "Vous êtes sur le point de rajouter un domaine dans les domaines d'email autorisé, tout utilisateur ayant une addresse mail avec ce domaine pourra rejoindre cette communauté sans avoir besoin de faire une demande d'adhésion ou d'être invité.",
+        "add-domain": "Entrez le domaine d'e-mail de confiance à ajouter.<br>Rappel : Avoir un e-mail de ce format suffira à rejoindre la communauté directement. Sans demande d'adhésion, ni invitation, ni mot de passe.",
         "delete-domain": "Vous êtes sur le point de supprimer le domaine __domain__ dans les domains d'email autorisé, un nouvel utilisateur ayant une addresse mail avec ce domaine ne pourra pas rejoindre cette communauté sans avoir fait une demande d'adhésion ou y être invité. Les membres qui ont rejoins cette communauté via ce domaine resterons membres."
       }
     },
@@ -792,10 +792,10 @@
       },
       "group-form": {
         "mode": {
-          "domain": "Domaines d'e-mails autorisés",
+          "domain": "Domaine d'e-mail de confiance",
           "disclaimer": {
             "group-password": "Le mot de passe suffit pour rejoindre la communauté (sans invitation).",
-            "domain": "Un utilisateur avec un certain domaine d'e-mail pourra rejoindre la communauté sans invitation."
+            "domain": "Autorisez tout utilisateur ayant un e-mail de confiance à rejoindre la communauté (ex: **@universite.edu)."
           }
         },
         "create": {
@@ -861,7 +861,7 @@
             "public": "Tout utilisateur peut rejoindre, participer et accéder à l'historique. Vous disposez d'outils de modération.",
             "private": "Seuls les utilisateurs que vous autorisez pourront rejoindre, participer et accéder à l'historique. Vous disposez d'outils de modération.",
             "password": "Le mot de passe suffit pour rejoindre le donut (sans invitation).",
-            "memberscondition": "Conditions d'entrée ou procédure"
+            "memberscondition": "Message à afficher"
           }
         },
         "create": {
@@ -1015,7 +1015,7 @@
     "default-disclaimer": "Vous n'êtes pas encore membre de cette communauté. Cliquez sur \"devenir membre\" pour en faire la demande.",
     "disclaimer-start": "Vous n'êtes pas encore membre de cette communauté. Vous pouvez pouvez y rejoindre les donuts publics et éventuellement demander l'accès à des donuts privés. Les membres d'une communauté ont des privilèges tels que l'accès direct à certains donuts privés et aux autres membres de la communauté.",
     "disclaimer-end": " Avant de demander à devenir membre, jetez un oeil aux conditions d'accès de cette communauté :",
-    "close": "quitter le groupe",
+    "close": "quitter la communauté",
     "exit": "fermer le groupe"
   },
   "account": {
@@ -1273,7 +1273,7 @@
       "subject": "Nouveau donut __roomname__",
       "content": {
         "title": "@__username__ a crée __roomname__",
-        "disclaimer": "Votre communauté fait le plein de donut !",
+        "disclaimer": "Votre communauté fait le plein de donuts !",
         "info": "Vous avez la possibilité de supprimer ce donut à partir de son profil.",
         "button": "Accéder à la discussion"
       }
