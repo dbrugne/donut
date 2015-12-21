@@ -102,7 +102,6 @@ exports.prototype.insertTop = function (events) {
 
     // new unviewed block
     if (firstUnviewed) {
-      console.log('PREMIER TROUVEEEEEE');
       _html = require('../templates/event/block-unviewed.html')({
         time: event.data.time
       }) + _html;
