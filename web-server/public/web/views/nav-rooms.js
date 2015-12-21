@@ -76,7 +76,7 @@ module.exports = Backbone.View.extend({
     var that = this;
     this.$list.find('.active').each(function (item) {
       $(this).removeClass('active');
-      var group = $(this).parents('.group-block');
+      var group = $(this).parents('.group-block')
       group.removeClass('highlighted');
       if (group.find('li.room-type').length > that.toggleCount) {
         group.addClass('collapsed');
