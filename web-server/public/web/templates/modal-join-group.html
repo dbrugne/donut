@@ -11,7 +11,7 @@
 
     <div class="message mb10"><%= t('chat.joingroup.message') %></div>
     <% if (data.owner_username && data.disclaimer) { %>
-        <div class="disclaimer alert alert-warning"><%- t('chat.joingroup.disclaimer', {username: data.owner_username ,disclaimer: data.disclaimer}) %></div>
+        <div class="disclaimer alert alert-warning"><%= t('chat.joingroup.disclaimer', {username: data.owner_username ,disclaimer: data.disclaimer}) %></div>
     <% } %>
 
 
