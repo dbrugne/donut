@@ -384,7 +384,7 @@
     "room-discussion": {
       "input-placeholder": "click here to type a message",
       "new-messages": "new messages",
-      "count-since": "new messages since __date__",
+      "count-since": "last message: __date__",
       "jumpto": "Jump to",
       "mark-as-read": "Mark as read"
     },

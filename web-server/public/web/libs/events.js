@@ -53,7 +53,7 @@ exports.prototype.insertBottom = function (type, data) {
     this.$unviewedContainer = this.$el.closest('.discussion').find('.date-ctn').find('.ctn-unviewed');
     this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({
       time: data.time,
-      date: date.longDateTime(data.time),
+      date: date.dayMonthTime(data.time),
       id: (data.room_id ? data.room_id : data.user_id)
     }));
 
@@ -126,7 +126,7 @@ exports.prototype.insertTop = function (events) {
       }) + _html;
       this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({
         time: event.data.time,
-        date: date.longDateTime(event.data.time),
+        date: date.dayMonthTime(event.data.time),
         id: (event.data.room_id ? event.data.room_id : event.data.user_id)
       }));
     }

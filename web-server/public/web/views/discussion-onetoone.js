@@ -20,7 +20,8 @@ var OneToOnePanelView = Backbone.View.extend({
   events: {
     'click .ban-user': 'banUser',
     'click .deban-user': 'debanUser',
-    'click .mark-as-viewed': 'removeUnviewedBlock'
+    'click .mark-as-viewed': 'removeUnviewedBlock',
+    'click .jumpto': 'onScrollTo'
   },
 
   initialize: function () {
@@ -173,6 +174,20 @@ var OneToOnePanelView = Backbone.View.extend({
     }
 
     this.eventsView.markAsViewed();
+  },
+  onScrollTo: function (event) {
+    event.preventDefault();
+    var elt = $(event.currentTarget);
+    if (!elt.data('id')) {
+      return this.removeUnviewedBlock(event);
+    }
+
+    var target = $('#unviewed-separator-' + elt.data('id'));
+    if (!target) {
+      return this.removeUnviewedBlock(event);
+    }
+
+    this.eventsView.scrollTo(target.position().top - 31, 1000);
   }
 });
 
