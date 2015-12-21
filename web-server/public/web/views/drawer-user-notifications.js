@@ -55,7 +55,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
         html += this.renderNotification(element);
       }, this));
 
-      this.unread = data.unread;
+      this.setUnreadCount(data.unread);
 
       this.$menu.html(this.$menu.html() + html);
 
@@ -178,7 +178,6 @@ var DrawerUserNotificationsView = Backbone.View.extend({
 
     // Only call Client if at least something to tag as viewed
     if (ids.length === 0) {
-      this.setUnreadCount(0);
       return;
     }
 
