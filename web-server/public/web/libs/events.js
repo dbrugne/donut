@@ -53,13 +53,15 @@ exports.prototype.insertBottom = function (type, data) {
     this.$unviewedContainer = this.$el.closest('.discussion').find('.date-ctn').find('.ctn-unviewed');
     this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({
       time: data.time,
-      date: date.longDateTime(data.time)
+      date: date.longDateTime(data.time),
+      id: (data.room_id ? data.room_id : data.user_id)
     }));
 
     // look for a previous new message separator, if not, insert one
     if (this.$el.children('.block.unviewed').length === 0) {
       html = require('../templates/event/block-unviewed.html')({
-        time: event.data.time
+        time: event.data.time,
+        id: (data.room_id ? data.room_id : data.user_id)
       }) + html;
     }
   }
