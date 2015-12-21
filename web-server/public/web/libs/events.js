@@ -46,9 +46,27 @@ exports.prototype.insertBottom = function (type, data) {
     return console.warn('history and realtime event colision', id);
   }
 
-  var previous = this.bottomEvent;
-
   var html = '';
+
+  // only update topbar message for all users for which this discussion is inactive and not current user
+  if (this.currentUserId !== data.user_id) {
+    this.$unviewedContainer = this.$el.closest('.discussion').find('.date-ctn').find('.ctn-unviewed');
+    this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({
+      time: data.time,
+      date: date.longDateTime(data.time),
+      id: (data.room_id ? data.room_id : data.user_id)
+    }));
+
+    // look for a previous new message separator, if not, insert one
+    if (this.$el.children('.block.unviewed').length === 0) {
+      html = require('../templates/event/block-unviewed.html')({
+        time: event.data.time,
+        id: (data.room_id ? data.room_id : data.user_id)
+      }) + html;
+    }
+  }
+
+  var previous = this.bottomEvent;
 
   // new date block
   if (!previous || !date.isSameDay(event.data.time, previous.data.time)) {
@@ -103,11 +121,13 @@ exports.prototype.insertTop = function (events) {
     // new unviewed block
     if (firstUnviewed) {
       _html = require('../templates/event/block-unviewed.html')({
-        time: event.data.time
+        time: event.data.time,
+        id: (event.data.room_id ? event.data.room_id : event.data.user_id)
       }) + _html;
       this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({
         time: event.data.time,
-        date: date.longDateTime(event.data.time)
+        date: date.longDateTime(event.data.time),
+        id: (event.data.room_id ? event.data.room_id : event.data.user_id)
       }));
     }
 

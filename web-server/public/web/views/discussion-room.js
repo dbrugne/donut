@@ -235,8 +235,12 @@ var RoomView = Backbone.View.extend({
   removeUnviewedBlock: function (event) {
     event.preventDefault();
     var elt = $(event.currentTarget).closest('.unviewed-top ');
+    var separator = $('#unviewed-separator-' + elt.data('id'));
     elt.fadeOut(1000, function () {
       elt.remove();
+    });
+    separator.fadeOut(1000, function () {
+      separator.remove();
     });
   },
 
