@@ -2,51 +2,8 @@
 <body>
 <div id="landing" class="flex-parent column">
 
-    <header>
-        <nav class="navbar">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only"><%= t('landing.toggle') %></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/"><img class="logo" src="/images/logo-bordered-small.png" height="25" alt="DONUT"></a>
-            </div>
+    <%- partial('header-landing') %>
 
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <% if (user) { %>
-                    <li class="signup">
-                        <a href="/!"><%= t('logged.chat') %></a>
-                    </li>
-                    <li class="login">
-                        <a href="/logout"><%= t('logged.logout') %></a>
-                    </li>
-                    <li class="lang">
-                        <a class="switch <% if (locale === 'fr') { print('active'); } %>" href="" data-language="fr" >Fr</a>
-                    </li>
-                    <li class="lang">
-                        <a class="switch <% if (locale === 'en') { print('active'); } %>" href="" data-language="en" >En</a>
-                    </li>
-                    <% } else { %>
-                    <li class="signup">
-                        <a href="/signup"><%= t('landing.signup-self') %></a>
-                    </li>
-                    <li class="login">
-                        <a href="/login"><%= t('landing.login-self') %></a>
-                    </li>
-                    <li class="lang">
-                        <a class="switch <% if (locale === 'fr') { print('active'); } %>" href="" data-language="fr" >Fr</a>
-                    </li>
-                    <li class="lang">
-                        <a class="switch <% if (locale === 'en') { print('active'); } %>" href="" data-language="en" >En</a>
-                    </li>
-                    <% } %>
-                </ul>
-            </div><!-- /.navbar-collapse -->
-        </nav>
-    </header>
     <div class="first flex-parent column jc-center center">
         <div class="ctn flex-parent column jc-center center">
             <div class="disclaimer-top">
@@ -217,7 +174,7 @@
 
     <div class="partners flex-parent jc-center center">
         <div class="ctn">
-            <div class="title"><%= t('landing.partners') %></div>
+            <!--<div class="title"><%= t('landing.partners') %></div>-->
             <div class="img-ctn row-fluid">
                 <div class="col-sm-4 flex-parent jc-center center">
                     <div class="flex-parent jc-center center ">
@@ -239,7 +196,7 @@
         </div>
     </div>
 
-    <footer class="flex-parent jc-center center">
+    <footer class="flex-parent jc-center">
         <div class="ctn">
             <div class=" flex-parent center jc-center">
                 <a href="/!#donut/help"><%= t('chat.help') %></a>
