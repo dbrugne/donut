@@ -121,11 +121,13 @@ exports.prototype.insertTop = function (events) {
     // new unviewed block
     if (firstUnviewed) {
       _html = require('../templates/event/block-unviewed.html')({
-        time: event.data.time
+        time: event.data.time,
+        id: (event.data.room_id ? event.data.room_id : event.data.user_id)
       }) + _html;
       this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({
         time: event.data.time,
-        date: date.longDateTime(event.data.time)
+        date: date.longDateTime(event.data.time),
+        id: (event.data.room_id ? event.data.room_id : event.data.user_id)
       }));
     }
 
