@@ -1032,7 +1032,7 @@
         "format": "Cette adresse email n'est pas valide",
         "alreadyexists": "Cette adresse email est déjà utilisée par un autre compte",
         "alreadyyours": "Vous utilisez déjà cette adresse mail",
-        "domain": "Erreur - Utilisez un e-mail permanent"
+        "domain": "Les emails jetables ne sont pas autorisés"
       },
       "new": "Nouvel email",
       "confirm": "Confirmer"

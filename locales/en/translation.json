@@ -1032,7 +1032,7 @@
         "format": "Invalid e-mail",
         "alreadyexists": "This e-mail is already used by another account",
         "alreadyyours": "You already use this e-mail",
-        "domain": "Error - Use a permanent email"
+        "domain": "Disposable emails website addresses are not allowed"
       },
       "new": "New E-mail",
       "confirm": "Confirm"
