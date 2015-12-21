@@ -1,3 +1,4 @@
+var $ = require('jquery');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
@@ -18,7 +19,9 @@ var OneToOnePanelView = Backbone.View.extend({
 
   events: {
     'click .ban-user': 'banUser',
-    'click .deban-user': 'debanUser'
+    'click .deban-user': 'debanUser',
+    'click .mark-as-viewed': 'removeUnviewedBlock',
+    'click .jumpto': 'onScrollTo'
   },
 
   initialize: function () {
@@ -31,6 +34,7 @@ var OneToOnePanelView = Backbone.View.extend({
     this.listenTo(this.model, 'change:website', this.onWebsite);
     this.listenTo(this.model, 'change:status', this.onStatus);
     this.listenTo(this.model, 'change:banned', this.onBannedChange);
+    this.listenTo(this.model, 'change:unviewed', this.onMarkAsViewed);
 
     this.render();
 
@@ -150,6 +154,40 @@ var OneToOnePanelView = Backbone.View.extend({
     } else {
       this.$('#onetoone .user').removeClass('is-banned');
     }
+  },
+
+  removeUnviewedBlock: function (event) {
+    event.preventDefault();
+    var elt = $(event.currentTarget).closest('.unviewed-top ');
+    var separator = $('#unviewed-separator-' + elt.data('id'));
+    elt.fadeOut(1000, function () {
+      elt.remove();
+    });
+    separator.fadeOut(1000, function () {
+      separator.remove();
+    });
+  },
+  // only care about models to set a viewed
+  onMarkAsViewed: function (data) {
+    if (data.get('unviewed') === true) {
+      return;
+    }
+
+    this.eventsView.markAsViewed();
+  },
+  onScrollTo: function (event) {
+    event.preventDefault();
+    var elt = $(event.currentTarget);
+    if (!elt.data('id')) {
+      return this.removeUnviewedBlock(event);
+    }
+
+    var target = $('#unviewed-separator-' + elt.data('id'));
+    if (!target) {
+      return this.removeUnviewedBlock(event);
+    }
+
+    this.eventsView.scrollTo(target.position().top - 31, 1000);
   }
 });
 

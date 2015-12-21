@@ -23,7 +23,8 @@ var RoomView = Backbone.View.extend({
     'click .share .facebook': 'shareFacebook',
     'click .share .twitter': 'shareTwitter',
     'click .share .googleplus': 'shareGoogle',
-    'click .mark-as-viewed': 'removeUnviewedBlock'
+    'click .mark-as-viewed': 'removeUnviewedBlock',
+    'click .jumpto': 'onScrollTo'
   },
 
   initialize: function () {
@@ -235,8 +236,12 @@ var RoomView = Backbone.View.extend({
   removeUnviewedBlock: function (event) {
     event.preventDefault();
     var elt = $(event.currentTarget).closest('.unviewed-top ');
+    var separator = $('#unviewed-separator-' + elt.data('id'));
     elt.fadeOut(1000, function () {
       elt.remove();
+    });
+    separator.fadeOut(1000, function () {
+      separator.remove();
     });
   },
 
@@ -247,6 +252,21 @@ var RoomView = Backbone.View.extend({
     }
 
     this.eventsView.markAsViewed();
+  },
+
+  onScrollTo: function (event) {
+    event.preventDefault();
+    var elt = $(event.currentTarget);
+    if (!elt.data('id')) {
+      return this.removeUnviewedBlock(event);
+    }
+
+    var target = $('#unviewed-separator-' + elt.data('id'));
+    if (!target) {
+      return this.removeUnviewedBlock(event);
+    }
+
+    this.eventsView.scrollTo(target.position().top - 31, 1000);
   }
 });
 

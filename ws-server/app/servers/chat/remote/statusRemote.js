@@ -51,7 +51,8 @@ DisconnectRemote.prototype.online = function (uid, welcome, globalCallback) {
         user_id: welcome.user.user_id,
         username: welcome.user.username,
         avatar: welcome.user.avatar,
-        rooms_id: roomsId
+        rooms_id: roomsId,
+        time: Date.now()
       };
 
       that.app.globalChannelService.pushMessageToRelatedUsers('connector', roomsId, onesId, 'user:online', event, uid, {}, callback);
@@ -191,7 +192,8 @@ DisconnectRemote.prototype.offline = function (uid) {
             user_id: user.id,
             username: user.username,
             avatar: user._avatar(),
-            rooms_id: roomsId
+            rooms_id: roomsId,
+            time: Date.now()
           };
           that.app.globalChannelService.pushMessageToRelatedUsers('connector', roomsId, usersId, 'user:offline', event, uid, {}, function (err) {
             return callback(err, user);

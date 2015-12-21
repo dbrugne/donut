@@ -23,6 +23,9 @@ module.exports.filter = function (files) {
 
   var filtered = [];
   _.each(files, function (i) {
+    if (!i || !_.isObject(i)) {
+      return;
+    }
     var _i = {};
     _.each(allowedFields, function (key) {
       if (i[key]) {
@@ -31,5 +34,5 @@ module.exports.filter = function (files) {
     });
     filtered.push(_i);
   });
-  return filtered;
+  return (filtered.length) ? filtered : null;
 };

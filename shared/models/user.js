@@ -36,7 +36,6 @@ var userSchema = mongoose.Schema({
     name: String
   },
   preferences: mongoose.Schema.Types.Mixed,
-  onetoones: [{type: mongoose.Schema.ObjectId, ref: 'User'}], // @todo yfuks remove after prod migration (allow migration task to work with model)
   ones: [{
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
     last_event_at: {type: Date, default: Date.now},

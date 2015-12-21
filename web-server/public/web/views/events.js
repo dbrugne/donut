@@ -192,6 +192,11 @@ module.exports = Backbone.View.extend({
   scrollDown: function () {
     this.$scrollable.scrollTop(this.$scrollableContent.outerHeight(true));
   },
+  scrollTo: function (top, timing) {
+    this.$scrollable.animate({
+      scrollTop: top
+    }, timing || 0);
+  },
   markAsViewed: function () {
     var elt = this.$el.find('.block.unviewed');
     if (elt) {

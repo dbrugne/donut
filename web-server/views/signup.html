@@ -1,6 +1,9 @@
-<% layout('form') %>
-<div class="content">
-    <div id="signup">
+<%- partial('head') %>
+<body>
+    <div id="signup" class="flex-parent column">
+
+        <%- partial('header-landing') %>
+
         <div class="login">
             <div class="content">
                 <form class="login-form form flex-parent column" method="post" role="form">
@@ -8,7 +11,7 @@
 
                     <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | &nbsp;<%= t('landing.signup-self') %> <%= t('login.withfacebook') %></a>
 
-                    <div class="method-facebook-or">
+                    <div class="method-facebook-or mt20">
                         <div class="outer"><div class="inner"><%= t('global.or') %></div></div>
                     </div>
 
@@ -43,4 +46,8 @@
             </div>
         </div>
     </div>
-</div>
+
+    <%- partial('contact') %>
+    <%- partial('foot') %>
+</body>
+</html>
