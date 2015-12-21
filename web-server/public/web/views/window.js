@@ -236,7 +236,7 @@ var WindowView = Backbone.View.extend({
       });
     } else if (type === 'user:message') {
       title = i18next.t('chat.notifications.messages.usermessage', {
-        username: data.from_username,
+        username: data.username,
         message: data.message
       });
     } else {
