@@ -19,6 +19,7 @@ module.exports = Backbone.View.extend({
     'shown.bs.dropdown .actions': 'onMessageMenuShow'
   },
 
+  markAsViewedDelay: 5000, // 5s
   markAsViewedTimeout: null,
 
   scrollTopTimeout: null,
@@ -162,7 +163,7 @@ module.exports = Backbone.View.extend({
         return;
       }
       this.model.markAsViewed();
-    }, this), 2000); // 2s
+    }, this), this.markAsViewedDelay);
   },
   _scrollTimeoutCleanup: function () {
     if (this.scrollTopTimeout) {
