@@ -28,6 +28,7 @@ var WindowView = Backbone.View.extend({
     this.listenTo(app, 'playSoundForce', this._play);
     this.listenTo(app, 'newEvent', this.onNewEvent);
     this.listenTo(app, 'setTitle', this.setTitle);
+    this.listenTo(app, 'viewedEvent', this.renderTitle);
 
     this.$window = $(window);
 
