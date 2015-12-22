@@ -1168,15 +1168,14 @@
     &.date { margin-top: 25px; margin-bottom: 25px; clear: both; border-top: 0; height: 1px; background-color: @cl-subtext10; text-align: center;
       .moment { position: relative; top: -0.7em; background-color: @cl-background; text-align: center; font-size: 1.5rem; font-weight: bold; color: @cl-subtext30; padding: 0 10px; text-transform: capitalize; }
     }
-    &.unviewed { .opacity(0.6); margin: 25px 10px 25px 5px; clear: both; border-top: 0; height: 1px; background-color: @cl-first; text-align: center;
-      .title { position: absolute; right:0; height:20px; top: -0.7em; background-color: @cl-background; text-align: center; font-size: 1.5rem; font-weight: bold; color: @cl-first; padding: 0 10px; }
+    &.unviewed { margin: 25px 10px 25px 5px; clear: both; border-top: 0; height: 1px; background-color: @cl-first; text-align: center;
+      .title { position: absolute; right:0; height:20px; top: -0.9rem; background-color: @cl-background; text-transform: uppercase; font-size: 1rem; color: @cl-first; padding: 0 10px; font-weight:700; }
     }
-    &.unviewed-top { .border-radius(3px);
-      .jumpto, .mark-as-viewed { font-weight:bold; }
-      background-color: @cl-nav-left-back;
+    &.unviewed-top { .border-radius(3px); text-transform: uppercase; font-size: 1rem;
+      .jumpto, .mark-as-viewed { font-weight:700; }
+      background-color: @cl-first;
       padding: 5px 10px;
       color: #FFF;
-      opacity: 0.6;
     }
   }
 
