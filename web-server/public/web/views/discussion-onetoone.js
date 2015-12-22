@@ -58,6 +58,9 @@ var OneToOnePanelView = Backbone.View.extend({
       data: data
     });
 
+    if (data.location) {
+      data.user_location = data.location;
+    }
     // render
     var html = this.template(data);
     this.$el.attr('data-identifier', this.model.get('identifier'));
