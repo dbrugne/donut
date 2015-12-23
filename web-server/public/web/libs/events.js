@@ -297,7 +297,7 @@ exports.prototype._data = function (type, data) {
         f.href = common.cloudinary.prepare(f.url, 1500, 'limit');
         f.thumbnail = common.cloudinary.prepare(f.url, 100, 'fill');
       }
-      f.extension = f.url.match(/[^.]*$/),
+      f.extension = f.url.match(/[^.]*$/);
       files.push(f);
     });
 
