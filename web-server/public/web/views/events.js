@@ -1,6 +1,5 @@
 var $ = require('jquery');
 var _ = require('underscore');
-var async = require('async');
 var Backbone = require('backbone');
 var app = require('../libs/app');
 var date = require('../libs/date');
@@ -11,6 +10,8 @@ var EventsEditView = require('./events-edit');
 var windowView = require('./window');
 var EventsEngine = require('../libs/events');
 var currentUser = require('../libs/app').user;
+
+var debug = require('../libs/donut-debug')('donut:discussions');
 
 module.exports = Backbone.View.extend({
   template: require('../templates/events.html'),
@@ -25,6 +26,8 @@ module.exports = Backbone.View.extend({
   scrollTopTimeout: null,
 
   chatmode: false,
+
+  loading: false,
 
   scrollWasOnBottom: true, // ... before unfocus (scroll position is not
                            // available when discussion is hidden (default:
@@ -66,16 +69,17 @@ module.exports = Backbone.View.extend({
       el: this.$el
     });
 
+    this.listenTo(this.model, 'scrollDown', this.scrollDown);
     this.listenTo(this.eventsHistoryView, 'addBatchEvents', _.bind(function (data) {
       this.addBatchEvents(data.history, data.more);
     }, this));
-    this.listenTo(app, 'scrollDown', _.bind(function () {
-      this.scrollDown();
-    }, this));
-
     this.listenTo(app, 'resetDate', _.bind(function () {
       this.eventsDateView.reset();
     }, this));
+
+    // everything is ready
+    debug('first focus', this.model.get('identifier'));
+    this.eventsHistoryView.requestHistory('bottom');
   },
   render: function () {
     // render view
@@ -100,8 +104,6 @@ module.exports = Backbone.View.extend({
     this.$scrollable.on('scroll', _.bind(function () {
       this.onScroll();
     }, this));
-
-    this.scrollDown();
   },
   _remove: function () {
     this.eventsDateView.remove();
@@ -113,6 +115,25 @@ module.exports = Backbone.View.extend({
   },
   onFocusChange: function () {
     if (this.model.get('focused')) {
+      this.onRefocus();
+    } else {
+      // persist scroll position before hiding
+      this.scrollWasOnBottom = this.isScrollOnBottom();
+    }
+  },
+  onRefocus: function () {
+    debug('refocus', this.model.get('identifier'));
+    var last = this.$realtime.find('.block[id]').last();
+    var from = (!last || !last.length)
+      ? null
+      : last.attr('id'); // @todo : improve by storing last event on each insertion in DOM
+
+    this.historyLoading = true; // @todo add spinner
+    debug('fetch from ', from, 'to now');
+    this.model.history(from, 'asc', 50, _.bind(function (data) {
+      // render and insert
+      this.engine.insertBottom(data.history);
+
       if (this.scrollWasOnBottom) {
         // will trigger visible element detection implicitly
         this.scrollDown();
@@ -120,10 +141,7 @@ module.exports = Backbone.View.extend({
         this.onScroll();
       }
       this.scrollWasOnBottom = false;
-    } else {
-      // persist scroll position before hiding
-      this.scrollWasOnBottom = this.isScrollOnBottom();
-    }
+    }, this));
   },
   isVisible: function () {
     return !(!this.model.get('focused') || !windowView.focused);
@@ -178,7 +196,6 @@ module.exports = Backbone.View.extend({
   _scrollBottomPosition: function () {
     var contentHeight = this.$scrollableContent.outerHeight(true);
     var viewportHeight = this.$scrollable.height();
-//    console.log('scroll', contentHeight, viewportHeight, this.$el.height(), (contentHeight - viewportHeight));
     return contentHeight - viewportHeight;
   },
   isScrollOnBottom: function () {
@@ -191,6 +208,7 @@ module.exports = Backbone.View.extend({
     return (this.$scrollable.scrollTop() >= bottom);
   },
   scrollDown: function () {
+    debug('scroll down', this.model.get('identifier'));
     this.$scrollable.scrollTop(this.$scrollableContent.outerHeight(true));
   },
   scrollTo: function (top, timing) {
@@ -214,6 +232,11 @@ module.exports = Backbone.View.extend({
    *
    *****************************************************************************************************************/
   addFreshEvent: function (type, data) {
+    if (this.model.get('focused') !== true) {
+      // render realtime event only if discussion is focused
+      return;
+    }
+
     // scrollDown only if already on bottom before DOM insertion
     var needToScrollDown = (
       (this.model.get('focused') === true && this.isScrollOnBottom()) ||
@@ -221,7 +244,7 @@ module.exports = Backbone.View.extend({
     );
 
     // render and insert
-    this.engine.insertBottom(type, data);
+    this.engine.insertBottom([{type: type, data: data}]);
 
     // scrollDown
     if (needToScrollDown && !this.eventsEditView.messageUnderEdition) {
@@ -230,9 +253,6 @@ module.exports = Backbone.View.extend({
   },
   addBatchEvents: function (events) {
     this.engine.insertTop(events);
-  },
-  requestHistory: function (scrollTo) {
-    this.eventsHistoryView.requestHistory(scrollTo);
   },
   onMessageMenuShow: function (event) {
     var $event = $(event.currentTarget).closest('.block.message');
@@ -261,41 +281,5 @@ module.exports = Backbone.View.extend({
       }
     });
     $(event.currentTarget).find('.dropdown-menu').html(html);
-  },
-  replaceDisconnectBlocks: function () {
-    var $lastEventDisconnect = this.$el.find('.realtime div.block.disconnect:last');
-    var that = this;
-
-    async.whilst(
-      function test () {
-        return $lastEventDisconnect.length;
-      },
-      function action (callback) {
-        var beforeLastDisconnectId = $lastEventDisconnect
-          .prevAll('div.block')
-          .not('.hello, .date')
-          .first()
-          .attr('id');
-
-        var afterLastDisconnectId = $lastEventDisconnect
-          .nextAll('div.block')
-          .not('.hello, .date')
-          .first()
-          .attr('id');
-
-        var $previousEvent = $lastEventDisconnect.prevAll('div.block').not('hello').first();
-
-        that.model.history(beforeLastDisconnectId, afterLastDisconnectId, null, function (event) {
-          if (!event.err) {
-            that.engine.replaceLastDisconnectBlock($lastEventDisconnect, $previousEvent, event.history);
-          }
-          $lastEventDisconnect = that.$el.find('.realtime div.block.disconnect:last');
-          return callback(null);
-        });
-      },
-      function back (err) {
-        return err;
-      }
-    );
   }
 });

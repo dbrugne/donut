@@ -1,4 +1,5 @@
 var $ = require('jquery');
+var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../libs/app');
 
@@ -32,33 +33,32 @@ module.exports = Backbone.View.extend({
 
     // since
     var first = this.$realtime.find('.block[id]').first();
-    var end = (!first || !first.length)
+    var from = (!first || !first.length)
       ? null
       : first.attr('id');
 
-    var that = this;
-    this.model.history(null, end, 50, function (data) {
+    this.model.history(from, 'desc', 50, _.bind(function (data) {
       data.history.reverse();
-      that.trigger('addBatchEvents', {
+      this.trigger('addBatchEvents', {
         history: data.history,
         more: data.more
       });
 
-      that.historyLoading = false;
-      that.historyNoMore = !data.more;
-      that.toggleHistoryLoader(data.more);
+      this.historyLoading = false;
+      this.historyNoMore = !data.more;
+      this.toggleHistoryLoader(data.more);
 
       if (scrollTo === 'top') { // on manual request
         var targetTop = $nextTopElement.position().top;
-        that.$el.scrollTop(targetTop - 8); // add a 8px margin
+        this.$el.scrollTop(targetTop - 8); // add a 8px margin
         $nextTopElement.remove();
       }
 
       if (scrollTo === 'bottom') {
         // on first focus history load
-        app.trigger('scrollDown');
+        this.model.trigger('scrollDown');
       }
-    });
+    }, this));
   },
   toggleHistoryLoader: function (more) {
     app.trigger('resetDate');

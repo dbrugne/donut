@@ -38,63 +38,6 @@ var exports = module.exports = function (options) {
   this.bottomEvent = '';
 };
 
-exports.prototype.insertBottom = function (type, data) {
-  var event = this._data(type, data);
-
-  var id = event.data.id;
-  if (this.$el.find('#' + id).length && type !== 'room:message:cant:respond') {
-    return console.warn('history and realtime event colision', id);
-  }
-
-  var html = '';
-
-  // only update topbar message for all users for which this discussion is inactive and not current user
-  if (this.currentUserId !== data.user_id) {
-    this.$unviewedContainer = this.$el.closest('.discussion').find('.date-ctn').find('.ctn-unviewed');
-    this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({
-      time: data.time,
-      date: date.dayMonthTime(data.time),
-      id: (data.room_id ? data.room_id : data.user_id)
-    }));
-
-    // look for a previous new message separator, if not, insert one
-    if (this.$el.children('.block.unviewed').length === 0) {
-      html = require('../templates/event/block-unviewed.html')({
-        time: event.data.time,
-        id: (data.room_id ? data.room_id : data.user_id)
-      }) + html;
-    }
-  }
-
-  var previous = this.bottomEvent;
-
-  // new date block
-  if (!previous || !date.isSameDay(event.data.time, previous.data.time)) {
-    html += require('../templates/event/block-date.html')({
-      time: event.data.time,
-      date: date.block(event.data.time)
-    });
-  }
-
-  // new message block
-  if (this.block(event, previous)) {
-    html += this.renderBlockUser(event);
-  }
-
-  // render event
-  html += this._renderEvent(event);
-
-  // previous saving
-  if (!this.topEvent && !this.bottomEvent) {
-    this.topEvent = this.bottomEvent = event; // first inserted element
-  } else {
-    this.bottomEvent = event;
-  }
-
-  this.empty = false;
-  this.$el.append(html);
-};
-
 exports.prototype.insertTop = function (events) {
   if (events.length === 0) {
     return;
@@ -158,6 +101,68 @@ exports.prototype.insertTop = function (events) {
 
   this.empty = false;
   this.$el.prepend(html);
+};
+
+exports.prototype.insertBottom = function (events) {
+  if (events.length === 0) {
+    return;
+  }
+  this.$unviewedContainer = this.$el.closest('.discussion').find('.date-ctn').find('.ctn-unviewed');
+
+  var html = '';
+  _.each(events, _.bind(function (e) {
+    var event = this._data(e.type, e.data);
+
+    var id = event.data.id;
+    if (this.$el.find('#' + id).length && e.type !== 'room:message:cant:respond') {
+      return console.warn('history and realtime event colision', id);
+    }
+
+    // only update topbar message for users for which this discussion is inactive and not current user
+    if (this.currentUserId !== event.data.user_id) {
+      this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({
+        time: event.data.time,
+        date: date.dayMonthTime(event.data.time),
+        id: (event.data.room_id ? event.data.room_id : event.data.user_id)
+      }));
+
+      // look for a previous new message separator, if not, insert one
+      if (this.$el.children('.block.unviewed').length === 0) {
+        html = require('../templates/event/block-unviewed.html')({
+          time: event.data.time,
+          id: (event.data.room_id ? event.data.room_id : event.data.user_id)
+        }) + html;
+      }
+    }
+
+    var previous = this.bottomEvent;
+
+    // new date block
+    if (!previous || !date.isSameDay(event.data.time, previous.data.time)) {
+      html += require('../templates/event/block-date.html')({
+        time: event.data.time,
+        date: date.block(event.data.time)
+      });
+    }
+
+    // new message block
+    if (this.block(event, previous)) {
+      html += this.renderBlockUser(event);
+    }
+
+    // render event
+    html += this._renderEvent(event);
+
+    // previous saving
+    if (!this.topEvent && !this.bottomEvent) {
+      this.topEvent = this.bottomEvent = event; // first inserted element
+    } else {
+      this.bottomEvent = event;
+    }
+  }, this));
+
+  this.empty = false;
+  this.$el.append(html);
 };
 
 exports.prototype.replaceLastDisconnectBlock = function ($lastDisconnectBlock, $previousEventDiv, events) {

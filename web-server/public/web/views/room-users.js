@@ -28,6 +28,7 @@ var RoomUsersView = Backbone.View.extend({
 
   initialize: function () {
     this.listenTo(this.collection, 'users-redraw', this.render);
+    this.listenTo(this.model, 'change:focused', this.onFocusChange);
 
     this.$users = this.$('.users');
     this.$popinUsers = $('#popin-user');
@@ -40,6 +41,9 @@ var RoomUsersView = Backbone.View.extend({
     }, this));
 
     this.initialRender();
+
+    // everything is ready
+    this.model.users.fetchUsers();
   },
   initialRender: function () {
     var html = this.template({});
@@ -77,7 +81,7 @@ var RoomUsersView = Backbone.View.extend({
     var countHtml = i18next.t('chat.userscount', {count: this.model.get('users_number')});
     this.$count.html(countHtml);
 
-    this.initializeTooltips();
+    this.$('[data-toggle="tooltip"]').tooltip({container: 'body'});
 
     debug.end('room-users' + that.model.get('name'));
     return this;
@@ -85,10 +89,11 @@ var RoomUsersView = Backbone.View.extend({
   _remove: function () {
     this.remove();
   },
-  initializeTooltips: function () {
-    this.$('[data-toggle="tooltip"]').tooltip({
-      container: 'body'
-    });
+  onFocusChange: function () {
+    if (this.model.get('focused')) {
+      // @todo : need to reduce call to fetchUsers on dicussion focus
+      this.collection.fetchUsers();
+    }
   },
   compact: function () {
     this.$el.toggleClass('compact');
