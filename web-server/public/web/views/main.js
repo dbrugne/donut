@@ -35,10 +35,6 @@ var DrawerUserAccountView = require('./drawer-account');
 var ModalView = require('./modal');
 var ModalJoinGroupView = require('./modal-join-group');
 var ModalChooseUsernameView = require('./modal-choose-username');
-var GroupView = require('./group');
-var RoomView = require('./discussion-room');
-var RoomViewBlocked = require('./discussion-room-blocked');
-var OneView = require('./discussion-onetoone');
 var NavOnesView = require('./nav-ones');
 var NavRoomsView = require('./nav-rooms');
 var ConfirmationView = require('./modal-confirmation');
@@ -48,19 +44,11 @@ var SearchView = require('./home-search');
 var MainView = Backbone.View.extend({
   el: $('body'),
 
-  $discussionsPanelsContainer: $('#center'),
-
   firstConnection: true,
 
   defaultColor: '',
 
   currentColor: '',
-
-  views: {},
-
-  interval: null,
-
-  intervalDuration: 240000, // ms
 
   events: {
     'click .go-to-search': 'goToSearch',
@@ -107,13 +95,6 @@ var MainView = Backbone.View.extend({
 
     this.listenTo(app.client, 'welcome', this.onWelcome);
     this.listenTo(app.client, 'admin:message', this.onAdminMessage);
-    this.listenTo(app.client, 'disconnect', this.onDisconnect);
-    this.listenTo(app.groups, 'add', this.addView);
-    this.listenTo(app.groups, 'remove', this.onRemoveGroupView);
-    this.listenTo(app.rooms, 'add', this.addView);
-    this.listenTo(app.rooms, 'remove', this.onRemoveDiscussion);
-    this.listenTo(app.ones, 'add', this.addView);
-    this.listenTo(app.ones, 'remove', this.onRemoveDiscussion);
     this.listenTo(app.rooms, 'deleted', this.roomDeleted);
     this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
     this.listenTo(app, 'openGroupProfile', this.openGroupProfile);
@@ -122,7 +103,6 @@ var MainView = Backbone.View.extend({
     this.listenTo(app, 'changeColor', this.onChangeColor);
   },
   run: function () {
-    // generate and attach subviews
     this.currentUserView = new CurrentUserView({el: this.$el.find('#block-current-user'), model: app.user});
     this.navOnes = new NavOnesView();
     this.navRooms = new NavRoomsView();
@@ -140,7 +120,6 @@ var MainView = Backbone.View.extend({
     this.$dropdownResults = this.$('.search .results');
     this.$search = this.$('.search');
 
-    // @todo dbr : mount only on debug mode
     // @debug
     window.d = {
       $: $,
@@ -166,6 +145,7 @@ var MainView = Backbone.View.extend({
     app.user.onWelcome(data);
     app.ones.onWelcome(data);
     app.rooms.onWelcome(data);
+    app.groups.onWelcome(data);
 
     // Only on first connection
     if (this.firstConnection) { // show if true or if undefined
@@ -184,18 +164,6 @@ var MainView = Backbone.View.extend({
   },
   onAdminMessage: function (data) {
     app.trigger('alert', 'info', data.message);
-  },
-  onDisconnect: function () {
-    // disable interval
-    clearInterval(this.interval);
-
-    // force data re-fetching on next focus
-    _.each(this.views, function (view) {
-      view.reconnect = true;
-      if (view.eventsView) {
-        view.eventsView.$realtime.append('<div class="block disconnect"></div>');
-      }
-    });
   },
   _color: function (color) {
     $('body').removeClass(function (index, css) {
@@ -540,7 +508,7 @@ var MainView = Backbone.View.extend({
     this.drawerView.setSize('450px').setView(view).open();
   },
 
-  // MODAL
+  // MODALS
   // ======================================================================
 
   openGroupJoin: function (data) {
@@ -550,42 +518,11 @@ var MainView = Backbone.View.extend({
     var view = new ModalJoinGroupView({data: data});
     this.modalView.setView(view).open();
   },
-
   openModalChooseUsername: function () {
     var view = new ModalChooseUsernameView();
     this.modalView.setView(view).open({'show': true, keyboard: false, backdrop: 'static'});
   },
 
-  // DISCUSSIONS MANAGEMENT
-  // ======================================================================
-
-  addView: function (model, collection) {
-    var constructor;
-    if (model.get('type') === 'room') {
-      if (model.get('blocked')) {
-        constructor = RoomViewBlocked;
-      } else {
-        constructor = RoomView;
-      }
-    } else if (model.get('type') === 'group') {
-      constructor = GroupView;
-    } else {
-      constructor = OneView;
-    }
-
-    // create view
-    var view = new constructor({
-      collection: collection,
-      model: model
-    });
-
-    // add to views list
-    this.views[model.get('id')] = view;
-
-    // append to DOM
-    this.$discussionsPanelsContainer.append(view.$el);
-    app.trigger('viewAdded', model, collection);
-  },
   onCloseDiscussion: function (event) {
     this._handleAction(event);
 
@@ -615,27 +552,6 @@ var MainView = Backbone.View.extend({
 
     return false; // stop propagation
   },
-  onRemoveDiscussion: function (model) {
-    var view = this.views[model.get('id')];
-    if (view === undefined) {
-      return debug('close discussion error: unable to find view');
-    }
-    var wasFocused = model.get('focused');
-
-    view.removeView();
-    delete this.views[model.get('id')];
-
-    if (model.get('type') === 'room') {
-      app.trigger('redrawNavigationRooms');
-    } else {
-      app.trigger('redrawNavigationOnes');
-    }
-
-    // focus default (home)
-    if (wasFocused) {
-      Backbone.history.navigate('#', {trigger: true});
-    }
-  },
   onCloseGroup: function (event) {
     event.preventDefault();
 
@@ -662,23 +578,7 @@ var MainView = Backbone.View.extend({
       return app.trigger('alert', 'error', i18next.t('global.cannot-leave-group'));
     }
   },
-  onRemoveGroupView: function (model, collection) {
-    var view = this.views[model.get('id')];
-    if (view === undefined) {
-      return debug('close group view error: unable to find view');
-    }
-    var wasFocused = model.get('focused');
 
-    view.removeView();
-    delete this.views[model.get('id')];
-
-    app.trigger('refreshRoomsList');
-
-    // focus default (home)
-    if (wasFocused) {
-      Backbone.history.navigate('#', {trigger: true});
-    }
-  },
   userBan: function (event) {
     event.preventDefault();
 

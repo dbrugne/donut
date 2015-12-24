@@ -111,7 +111,7 @@ var WindowView = Backbone.View.extend({
     this.focused = true;
 
     // on window refocus execute some logic on current focused model
-    var model = this._getFocusedModel();
+    var model = app.getFocusedModel();
     if (model) {
       model.trigger('windowRefocused'); // mark visible as read for focused discussion when window recover its focus
     }
@@ -140,15 +140,6 @@ var WindowView = Backbone.View.extend({
     if (app.user.shouldDisplayExitPopin()) {
       return i18next.t('chat.closemessage');
     }
-  },
-
-  _getFocusedModel: function () {
-    var model = app.rooms.findWhere({focused: true});
-    if (!model) {
-      model = app.ones.findWhere({focused: true});
-    }
-
-    return model; // could be 'undefined'
   },
 
   /** *************************************************

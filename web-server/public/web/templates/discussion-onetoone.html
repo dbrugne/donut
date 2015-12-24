@@ -17,9 +17,11 @@
             </span>
 
             <div class="flex-parent">
-                <span class="  flex-parent center">
-                    <span class="location"><%= location %></span>
-                </span>
+                <% if (typeof user_location !== "undefined" && user_location !== "") { %>
+                    <span class="flex-parent center">
+                        <span class="location"><%= user_location %></span>
+                    </span>
+                <% } %>
                 <%= dropdown %>
             </div>
         </div>

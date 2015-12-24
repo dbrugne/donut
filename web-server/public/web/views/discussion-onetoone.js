@@ -11,10 +11,6 @@ var OneToOnePanelView = Backbone.View.extend({
 
   className: 'discussion',
 
-  hasBeenFocused: false,
-
-  reconnect: false,
-
   template: require('../templates/discussion-onetoone.html'),
 
   events: {
@@ -58,11 +54,13 @@ var OneToOnePanelView = Backbone.View.extend({
       data: data
     });
 
+    if (data.location) {
+      data.user_location = data.location;
+    }
     // render
     var html = this.template(data);
     this.$el.attr('data-identifier', this.model.get('identifier'));
     this.$el.html(html);
-    this.$el.hide();
 
     this.$statusBlock = this.$('.header .status-block');
 
@@ -85,32 +83,13 @@ var OneToOnePanelView = Backbone.View.extend({
     if (this.model.get('focused')) {
       this.$el.show();
 
-      // need to load history?
-      if (!this.hasBeenFocused) {
-        this.onFirstFocus();
-      }
-
-      if (this.reconnect) {
-        this.onFirstFocusAfterReconnect();
-      }
-      this.hasBeenFocused = true;
-      this.reconnect = false;
-
       // refocus an offline one after few times
       date.from('fromnow', this.$('.ago span'));
-      this.eventsView.onScroll();
     } else {
       this.$el.hide();
     }
   },
-  onFirstFocus: function () {
-    this.eventsView.requestHistory('bottom');
-    this.eventsView.scrollDown();
-  },
-  onFirstFocusAfterReconnect: function () {
-    this.eventsView.replaceDisconnectBlocks();
-    this.eventsView.scrollDown();
-  },
+
   /**
    * Update user details methods
    */

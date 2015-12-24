@@ -1,6 +1,5 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
-var app = require('../libs/app');
 var keyboard = require('../libs/keyboard');
 var common = require('@dbrugne/donut-common/browser');
 var i18next = require('i18next-client');
@@ -53,7 +52,7 @@ module.exports = Backbone.View.extend({
   editNext: function (event) {
     var key = keyboard._getLastKeyCode(event);
     if (key.key !== keyboard.UP && key.key !== keyboard.DOWN) {
-      return app.trigger('scrollDown');
+      return this.model.trigger('scrollDown');
     }
 
     var $listMessages = this.$realtime.find('.block.message[data-user-id="' + currentUser.get('user_id') + '"]');
@@ -85,7 +84,7 @@ module.exports = Backbone.View.extend({
       this.editMessage($candidate);
     }
 
-    app.trigger('scrollDown');
+    this.model.trigger('scrollDown');
   },
   editMessage: function ($event) {
     if (this.messageUnderEdition) {
@@ -99,7 +98,7 @@ module.exports = Backbone.View.extend({
       model: this.model
     });
 
-    app.trigger('scrollDown');
+    this.model.trigger('scrollDown');
   },
   onEdited: function (data) {
     var $event = this.$('#' + data.event);
@@ -117,7 +116,7 @@ module.exports = Backbone.View.extend({
     data.message += '<span class="text-edited">&nbsp;(' + i18next.t('chat.message.edition.edited') + ')</span>';
     $event.find('.ctn').find('.text').html(data.message);
 
-    app.trigger('scrollDown');
+    this.model.trigger('scrollDown');
   },
   _remove: function () {
     if (this.messageUnderEdition) {

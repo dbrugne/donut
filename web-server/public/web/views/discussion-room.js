@@ -13,10 +13,6 @@ var RoomView = Backbone.View.extend({
 
   className: 'discussion',
 
-  hasBeenFocused: false,
-
-  reconnect: false,
-
   template: require('../templates/discussion-room.html'),
 
   events: {
@@ -105,7 +101,6 @@ var RoomView = Backbone.View.extend({
     });
     this.$el.attr('data-identifier', this.model.get('identifier'));
     this.$el.html(html);
-    this.$el.hide();
 
     this.initializeTooltips();
 
@@ -126,32 +121,9 @@ var RoomView = Backbone.View.extend({
   onFocusChange: function () {
     if (this.model.get('focused')) {
       this.$el.show();
-
-      // need to load history?
-      if (!this.hasBeenFocused) {
-        this.onFirstFocus();
-      }
-
-      if (this.reconnect) {
-        this.onFirstFocusAfterReconnect();
-      }
-      this.reconnect = false;
-      this.hasBeenFocused = true;
-
-      this.eventsView.onScroll();
     } else {
       this.$el.hide();
     }
-  },
-  onFirstFocus: function () {
-    this.eventsView.requestHistory('bottom');
-    this.eventsView.scrollDown();
-    this.model.users.fetchUsers();
-  },
-  onFirstFocusAfterReconnect: function () {
-    this.eventsView.replaceDisconnectBlocks();
-    this.eventsView.scrollDown();
-    this.model.users.fetchUsers();
   },
 
   /**
