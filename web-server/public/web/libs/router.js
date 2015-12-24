@@ -37,8 +37,6 @@ var DonutRouter = Backbone.Router.extend({
     this.listenTo(app, 'readyToRoute', _.bind(function () {
       this.clientOnline = true;
       Backbone.history.start();
-
-      // @todo trigger refocus on focused view
     }, this));
     // on disconnection
     this.listenTo(app.client, 'disconnect', _.bind(function () {
