@@ -6,8 +6,10 @@ var app = require('../libs/app');
 module.exports = Backbone.View.extend({
   historyLoading: false,
   historyNoMore: false,
+  numberOfEventsToRetrieve: 50,
 
   initialize: function (options) {
+    this.parent = options.parent;
     this.render();
   },
   render: function () {
@@ -33,20 +35,16 @@ module.exports = Backbone.View.extend({
 
     // since
     var first = this.$realtime.find('.block[id]').first();
-    var from = (!first || !first.length)
+    var id = (!first || !first.length)
       ? null
       : first.attr('id');
 
-    this.model.history(from, 'desc', 50, _.bind(function (data) {
-      data.history.reverse();
-      this.trigger('addBatchEvents', {
-        history: data.history,
-        more: data.more
-      });
-
+    this.model.history(id, 'older', this.numberOfEventsToRetrieve, _.bind(function (data) {
       this.historyLoading = false;
       this.historyNoMore = !data.more;
       this.toggleHistoryLoader(data.more);
+
+      this.parent.engine.insertTop(data.history);
 
       if (scrollTo === 'top') { // on manual request
         var targetTop = $nextTopElement.position().top;

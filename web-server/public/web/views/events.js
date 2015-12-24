@@ -23,6 +23,8 @@ module.exports = Backbone.View.extend({
   markAsViewedDelay: 5000, // 5s
   markAsViewedTimeout: null,
 
+  numberOfEventsToRetrieve: 50,
+
   scrollTopTimeout: null,
 
   chatmode: false,
@@ -42,7 +44,10 @@ module.exports = Backbone.View.extend({
     }, this));
     this.chatmode = currentUser.discussionMode();
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
-    this.listenTo(this.model, 'windowRefocused', this.onScroll);
+    this.listenTo(this.model, 'windowRefocused', _.bind(function () {
+      debug('windowRefocused', this.model.get('identifier'));
+      this.onScroll();
+    }, this));
     this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
     this.listenTo(this.model, 'messageSent', this.scrollDown);
 
@@ -55,7 +60,8 @@ module.exports = Backbone.View.extend({
     });
     this.eventsHistoryView = new EventsHistoryView({
       el: this.$el,
-      model: this.model
+      model: this.model,
+      parent: this
     });
     this.eventsSpamView = new EventsSpamView({
       el: this.$el,
@@ -70,9 +76,6 @@ module.exports = Backbone.View.extend({
     });
 
     this.listenTo(this.model, 'scrollDown', this.scrollDown);
-    this.listenTo(this.eventsHistoryView, 'addBatchEvents', _.bind(function (data) {
-      this.addBatchEvents(data.history, data.more);
-    }, this));
     this.listenTo(app, 'resetDate', _.bind(function () {
       this.eventsDateView.reset();
     }, this));
@@ -122,16 +125,21 @@ module.exports = Backbone.View.extend({
     }
   },
   onRefocus: function () {
+    // triggered on discussion focus AND on reconnect (when Backbone.history is restarted)
     debug('refocus', this.model.get('identifier'));
     var last = this.$realtime.find('.block[id]').last();
-    var from = (!last || !last.length)
+    var id = (!last || !last.length)
       ? null
-      : last.attr('id'); // @todo : improve by storing last event on each insertion in DOM
+      : last.attr('id');
 
     this.historyLoading = true; // @todo add spinner
-    debug('fetch from ', from, 'to now');
-    this.model.history(from, 'asc', 50, _.bind(function (data) {
-      // render and insert
+    debug('fetch from now to ', id);
+    this.model.history(id, 'later', this.numberOfEventsToRetrieve, _.bind(function (data) {
+      if (data.more === true) {
+        // there are too many events to display, reset discussion DOM
+        this.engine.reset();
+      }
+
       this.engine.insertBottom(data.history);
 
       if (this.scrollWasOnBottom) {
@@ -250,9 +258,6 @@ module.exports = Backbone.View.extend({
     if (needToScrollDown && !this.eventsEditView.messageUnderEdition) {
       this.scrollDown();
     }
-  },
-  addBatchEvents: function (events) {
-    this.engine.insertTop(events);
   },
   onMessageMenuShow: function (event) {
     var $event = $(event.currentTarget).closest('.block.message');

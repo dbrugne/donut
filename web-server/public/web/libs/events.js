@@ -38,6 +38,13 @@ var exports = module.exports = function (options) {
   this.bottomEvent = '';
 };
 
+exports.prototype.reset = function () {
+  this.$el.empty();
+  this.empty = true;
+  this.topEvent = '';
+  this.bottomEvent = '';
+};
+
 exports.prototype.insertTop = function (events) {
   if (events.length === 0) {
     return;
@@ -145,7 +152,7 @@ exports.prototype.insertBottom = function (events) {
       });
     }
 
-    // new message block
+    // new user block
     if (this.block(event, previous)) {
       html += this.renderBlockUser(event);
     }
