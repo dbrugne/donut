@@ -8,8 +8,6 @@ var templates = {
   'hello': require('../templates/event/block-hello.html'),
   'command:help': require('../templates/event/help.html'),
   'ping': require('../templates/event/ping.html'),
-  'user:online': require('../templates/event/status.html'),
-  'user:offline': require('../templates/event/status.html'),
   'room:out': require('../templates/event/status.html'),
   'room:in': require('../templates/event/status.html'),
   'room:message': require('../templates/event/message.html'),
