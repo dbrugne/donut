@@ -16,7 +16,7 @@ var RoomUsersView = Backbone.View.extend({
   userPreviewTemplate: require('../templates/user-preview.html'),
 
   maxDisplayedUsers: 20,
-  timeBuffer: 200,
+  timeBuffer: 750,
   timeoutShow: 0,
   timeoutHide: 0,
 
