@@ -135,16 +135,8 @@ var OneToOnePanelView = Backbone.View.extend({
     }
   },
 
-  removeUnviewedBlock: function (event) {
-    event.preventDefault();
-    var elt = $(event.currentTarget).closest('.unviewed-top ');
-    var separator = $('#unviewed-separator-' + elt.data('id'));
-    elt.fadeOut(1000, function () {
-      elt.remove();
-    });
-    separator.fadeOut(1000, function () {
-      separator.remove();
-    });
+  removeUnviewedBlock: function () {
+    this.eventsView.markAsViewed();
   },
   // only care about models to set a viewed
   onMarkAsViewed: function (data) {
@@ -166,7 +158,7 @@ var OneToOnePanelView = Backbone.View.extend({
       return this.removeUnviewedBlock(event);
     }
 
-    this.eventsView.scrollTo(target.position().top - 31, 1000);
+    this.eventsView.scrollTo(target.position().top - 31, 1000); // 31 = height of top unview block
   }
 });
 

@@ -231,6 +231,7 @@ module.exports = Backbone.View.extend({
         elt.remove();
       });
     }
+    this.model.markAsViewed();
     this.eventsDateView.markAsViewed();
   },
 
