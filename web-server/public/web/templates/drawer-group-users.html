@@ -1,12 +1,16 @@
 <div class="relative">     <span class="close icon icon-times"></span> </div>
 
 <div class="title">
-    <%= t('chat.users.link') %>
+    <%= t('group.members') %>
     <%= '#' + group.name %>
 </div>
 
 <div class="ctn-drawer">
     <div class="errors block"></div>
+
+    <div class="block">
+        <p class="description"><%= t('drawers.users-group.disclaimer', { group_id: group.id }) %></p>
+    </div>
 
     <div class="search block inline">
         <label for="input-search"><%= t('chat.users.username') %></label>

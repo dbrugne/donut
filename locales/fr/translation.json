@@ -1006,6 +1006,7 @@
     "administrator": "Modérateurs",
     "users": "Utilisateurs",
     "invite": "Gérer les membres",
+    "members": "Liste des membres",
     "ask-membership": "devenir membre",
     "blocked": "Saisissez le mot de passe d'accès direct à la communauté",
     "already-allowed": "<strong>@__username__</strong> est déjà un utilisateur autorisés",
@@ -1524,6 +1525,9 @@
       "disclaimer": "Vous avez la possibilité d'inviter un utilisateur à rejoindre cette communauté.",
       "pending-disclaimer" : "Utilisateurs en attente de votre autorisation.",
       "allowed-disclaimer" : "Utilisateurs invités à rejoindre cette communauté."
+    },
+    "users-group": {
+      "disclaimer" : "Vous avez la possibilité d'inviter un utilisateur à rejoindre cette communauté. Pour ce faire, <a href=\"#\" class=\"open-group-users-allowed\" data-group-id=\"__group_id__\">cliquez ici</a>"
     }
   }
 }
