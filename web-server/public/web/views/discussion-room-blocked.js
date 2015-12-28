@@ -31,9 +31,6 @@ var RoomBlockedView = Backbone.View.extend({
     this.render();
   },
   render: function () {
-    // @todo handle groupban and groupdisallow blocked values
-    // @todo persist blocked room on user on groupban and groupdisallow blocked values
-
     var data = this.model.toJSON();
 
     // banned_at

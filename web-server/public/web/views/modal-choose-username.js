@@ -1,7 +1,9 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../libs/app');
+var keyboard = require('../libs/keyboard');
+var common = require('@dbrugne/donut-common/browser');
+var i18next = require('i18next-client');
 
 module.exports = Backbone.View.extend({
   template: require('../templates/modal-choose-username.html'),

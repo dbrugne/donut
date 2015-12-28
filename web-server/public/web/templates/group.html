@@ -56,7 +56,7 @@
                     </li>
                     <% } %>
                 </ul>
-                <% } else { %>
+                <% } else if (!isBanned) { %>
                 <ul class="dropdown-menu" role="menu">
                     <li role="presentation">
                         <a role="menuitem" tabindex="-1" class="close-group" data-group-id="<%= group.group_id %>">
@@ -89,7 +89,7 @@
             <p class="fl-left"><%= t('group.default-member') %></p>
             <% if (isOwner || isOp || isAdmin) { %>
                 <div class="pull-right mt5 ml5">
-                    <input type="button" class="btn btn-block btn-primary open-group-access" data-group-id="<%= group.group_id %>" value="<%= t('group.invite') %>" />
+                        <input type="button" class="btn btn-block btn-primary open-group-users" data-group-id="<%= group.group_id %>" value="<%= t('group.invite') %>" />
                 </div>
             <% } %>
             <div class="pull-right mt5">

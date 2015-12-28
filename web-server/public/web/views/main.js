@@ -145,7 +145,6 @@ var MainView = Backbone.View.extend({
     app.user.onWelcome(data);
     app.ones.onWelcome(data);
     app.rooms.onWelcome(data);
-    app.groups.onWelcome(data);
 
     // Only on first connection
     if (this.firstConnection) { // show if true or if undefined
@@ -268,10 +267,6 @@ var MainView = Backbone.View.extend({
       view = new DrawerRoomCreateView({name: name});
       this.drawerView.setSize('450px').setView(view).open();
       return view.focusField();
-    }
-
-    if (app.groups.isMemberBanned(groupId)) {
-      return app.trigger('alert', 'error', i18next.t('chat.form.errors.group-banned'));
     }
 
     if (!app.groups.isMemberOwnerAdmin(groupId)) {

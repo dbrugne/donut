@@ -1006,6 +1006,7 @@
     "administrator": "Moderators",
     "users": "Users",
     "invite": "Manage members",
+    "members": "Members list",
     "ask-membership": "request membership",
     "blocked": "This community is blocked by a password, to join we invite you to type it",
     "already-allowed": "<strong>@__username__</strong> is already an authorized user",
@@ -1524,6 +1525,9 @@
       "disclaimer": "You can invite a user to join this community.",
       "pending-disclaimer" : "Users pending for your approval.",
       "allowed-disclaimer" : "Users invited to join this community."
+    },
+    "users-group": {
+      "disclaimer" : "You can invite a user to join this community. To do so, <a href=\"#\" class=\"open-group-users-allowed\" data-group-id=\"__group_id__\">click here</a>"
     }
   }
 }

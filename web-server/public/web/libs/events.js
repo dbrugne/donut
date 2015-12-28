@@ -47,13 +47,10 @@ exports.prototype.insertTop = function (events) {
   if (events.length === 0) {
     return;
   }
-  this.$unviewedContainer = this.$el.closest('.discussion').find('.date-ctn').find('.ctn-unviewed');
-
   var html = '';
   var previous;
   _.each(events, _.bind(function (e) {
     var event = this._data(e.type, e.data);
-    var firstUnviewed = (this.discussion.get('first_unviewed') === event.data.id);
 
     // try to render event (before)
     var _html = this._renderEvent(event);
@@ -64,19 +61,6 @@ exports.prototype.insertTop = function (events) {
     // new message block
     if (this.block(event, previous)) {
       _html = this.renderBlockUser(event) + _html;
-    }
-
-    // new unviewed block
-    if (firstUnviewed) {
-      _html = require('../templates/event/block-unviewed.html')({
-        time: event.data.time,
-        id: (event.data.room_id ? event.data.room_id : event.data.user_id)
-      }) + _html;
-      this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({
-        time: event.data.time,
-        date: date.dayMonthTime(event.data.time),
-        id: (event.data.room_id ? event.data.room_id : event.data.user_id)
-      }));
     }
 
     // new date block
@@ -106,13 +90,14 @@ exports.prototype.insertTop = function (events) {
 
   this.empty = false;
   this.$el.prepend(html);
+
+  this._renderUnviewedBlocks();
 };
 
 exports.prototype.insertBottom = function (events) {
   if (events.length === 0) {
     return;
   }
-  this.$unviewedContainer = this.$el.closest('.discussion').find('.date-ctn').find('.ctn-unviewed');
 
   var html = '';
   _.each(events, _.bind(function (e) {
@@ -121,23 +106,6 @@ exports.prototype.insertBottom = function (events) {
     var id = event.data.id;
     if (this.$el.find('#' + id).length && e.type !== 'room:message:cant:respond') {
       return console.warn('history and realtime event colision', id);
-    }
-
-    // only update topbar message for users for which this discussion is inactive and not current user
-    if (this.currentUserId !== event.data.user_id) {
-      this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({
-        time: event.data.time,
-        date: date.dayMonthTime(event.data.time),
-        id: (event.data.room_id ? event.data.room_id : event.data.user_id)
-      }));
-
-      // look for a previous new message separator, if not, insert one
-      if (this.$el.children('.block.unviewed').length === 0) {
-        html = require('../templates/event/block-unviewed.html')({
-          time: event.data.time,
-          id: (event.data.room_id ? event.data.room_id : event.data.user_id)
-        }) + html;
-      }
     }
 
     var previous = this.bottomEvent;
@@ -168,6 +136,8 @@ exports.prototype.insertBottom = function (events) {
 
   this.empty = false;
   this.$el.append(html);
+
+  this._renderUnviewedBlocks();
 };
 
 exports.prototype.replaceLastDisconnectBlock = function ($lastDisconnectBlock, $previousEventDiv, events) {
@@ -347,5 +317,32 @@ exports.prototype._renderEvent = function (event) {
   } catch (e) {
     console.error('render exception, see below: ' + event.type, e);
     return ''; // avoid 'undefined'
+  }
+};
+
+exports.prototype._renderUnviewedBlocks = function () {
+  this.$unviewedContainer = this.$el.closest('.discussion').find('.date-ctn').find('.ctn-unviewed');
+  var id = this.discussion.get('first_unviewed');
+  var target = $('#' + id);
+
+  if (target.length === 0) {
+    return;
+  }
+
+  // only update topbar message for users for which this discussion is inactive and not current user
+  if (this.currentUserId !== target.data('user_id')) {
+    this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({ // always override topbar
+      time: target.data('time'),
+      date: date.dayMonthTime(target.data('time')),
+      id: id
+    }));
+
+    // look for a previous new message separator, if not, insert one after "event"
+    if (this.$el.children('.block.unviewed').length === 0) {
+      $( require('../templates/event/block-unviewed.html')({
+        time: target.data('time'),
+        id: id
+      })).insertBefore(target);
+    }
   }
 };
