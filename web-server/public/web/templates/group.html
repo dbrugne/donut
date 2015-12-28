@@ -56,7 +56,7 @@
                     </li>
                     <% } %>
                 </ul>
-                <% } else { %>
+                <% } else if (!isBanned) { %>
                 <ul class="dropdown-menu" role="menu">
                     <li role="presentation">
                         <a role="menuitem" tabindex="-1" class="close-group" data-group-id="<%= group.group_id %>">
