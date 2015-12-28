@@ -3,6 +3,7 @@ var _ = require('underscore');
 var async = require('async');
 var recorder = require('../../../shared/models/historyroom').record();
 var UserModel = require('../../../shared/models/user');
+var GroupModel = require('../../../shared/models/group');
 var cloudinary = require('../../../shared/util/cloudinary');
 
 /**
@@ -77,11 +78,8 @@ module.exports = function (app, user, room, eventName, eventData, callback) {
         return fn(null);
       }
 
-      room.group.last_event_at = Date.now();
-      room.group.last_event = model._id;
-      room.group.save(function (err) {
-        return fn(err);
-      });
+      var id = (room.group._id) ? room.group._id : room.group;
+      GroupModel.update({_id: id}, {last_event_at: Date.now(), last_event: model._id}, fn);
     },
 
     function (fn) {
