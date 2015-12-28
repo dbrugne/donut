@@ -22,7 +22,8 @@ var DrawerUserNotificationsView = Backbone.View.extend({
   events: {
     'click .actions .read-more': 'onReadMore',
     'click .action-tag-as-read': 'onTagAsRead',
-    'click .action-tag-as-done': 'onTagAsDone'
+    'click .action-tag-as-done': 'onTagAsDone',
+    'click a.message': 'onMessageClick'
   },
 
   more: false,
@@ -286,6 +287,9 @@ var DrawerUserNotificationsView = Backbone.View.extend({
   },
   countNotificationsInDropdown: function () {
     return this.$menu.find('.message').length;
+  },
+  onMessageClick: function(event) {
+    this.trigger('close');
   }
 });
 
