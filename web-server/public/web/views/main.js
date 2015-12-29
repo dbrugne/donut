@@ -155,6 +155,7 @@ var MainView = Backbone.View.extend({
     }
 
     this.notificationsView.updateCount(data.notifications.unread);
+    this.notificationsView.updateHandle();
 
     // Run routing only when everything in interface is ready
     this.firstConnection = false;

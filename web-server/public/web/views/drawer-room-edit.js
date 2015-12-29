@@ -49,6 +49,7 @@ var DrawerRoomEditView = Backbone.View.extend({
     }
 
     var currentAvatar = room.avatar;
+    room.isAdmin = app.user.isAdmin();
 
     var html = this.template({room: room});
     this.$el.html(html);

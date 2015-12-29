@@ -38,7 +38,7 @@ var userSchema = mongoose.Schema({
   preferences: mongoose.Schema.Types.Mixed,
   ones: [{
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
-    last_event_at: {type: Date, default: Date.now},
+    last_event_at: {type: Date},
     last_event: {type: mongoose.Schema.ObjectId, ref: 'HistoryOne'}
   }],
   blocked: [{type: mongoose.Schema.ObjectId, ref: 'Room'}],
