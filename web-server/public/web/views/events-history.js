@@ -45,6 +45,8 @@ module.exports = Backbone.View.extend({
       this.toggleHistoryLoader(data.more);
 
       this.parent.engine.insertTop(data.history);
+      this.parent.updateDateBlocks();
+      this.parent.updateUnviewedBlocks();
 
       if (scrollTo === 'top') { // on manual request
         var targetTop = $nextTopElement.position().top;

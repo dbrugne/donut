@@ -50,7 +50,7 @@ var DrawerGroupEditView = Backbone.View.extend({
       ? (group.owner_id === currentUser.get('user_id'))
       : false;
 
-    group.isAdmin = (currentUser.get('admin') === true);
+    group.isAdmin = app.user.isAdmin();
 
     var currentAvatar = group.avatar;
 

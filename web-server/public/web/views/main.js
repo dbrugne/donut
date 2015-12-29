@@ -74,6 +74,7 @@ var MainView = Backbone.View.extend({
     'click .open-group-create': 'openGroupCreate',
     'click .open-group-users': 'openGroupUsers',
     'click .open-group-users-allowed': 'openGroupUsersAllowed',
+    'click .quit-group': 'onQuitGroup',
     'click .close-group': 'onCloseGroup',
     'click .close-discussion': 'onCloseDiscussion',
     'click .open-room-access': 'openRoomAccess',
@@ -549,6 +550,23 @@ var MainView = Backbone.View.extend({
     return false; // stop propagation
   },
   onCloseGroup: function (event) {
+    var $target = $(event.currentTarget);
+    if (!$target) {
+      return;
+    }
+    var groupId = $(event.currentTarget).data('groupId');
+    if (!groupId) {
+      return;
+    }
+    var model = app.groups.iwhere('id', groupId);
+    if (!model) {
+      return;
+    }
+    app.groups.remove(model);
+    app.trigger('redrawNavigationRooms');
+    app.trigger('discussionRemoved', model);
+  },
+  onQuitGroup: function (event) {
     event.preventDefault();
 
     var groupId = $(event.currentTarget).data('groupId');
@@ -558,7 +576,7 @@ var MainView = Backbone.View.extend({
 
     // Current user is a member of the selected group
     if (app.groups.isMember(groupId)) {
-      ConfirmationView.open({message: 'close-group'}, _.bind(function () {
+      ConfirmationView.open({message: 'quit-group'}, _.bind(function () {
         app.client.groupLeave(groupId, function (response) {
           if (response.err) {
             return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
@@ -633,7 +651,7 @@ var MainView = Backbone.View.extend({
     }
 
     if (confirm) {
-      if (input) {
+      if (!input) {
         ConfirmationView.open({message: key}, function () {
           app.client[method](room.get('id'), user.get('id'));
         });
