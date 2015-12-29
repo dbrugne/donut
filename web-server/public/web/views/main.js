@@ -633,7 +633,7 @@ var MainView = Backbone.View.extend({
     }
 
     if (confirm) {
-      if (input) {
+      if (!input) {
         ConfirmationView.open({message: key}, function () {
           app.client[method](room.get('id'), user.get('id'));
         });
