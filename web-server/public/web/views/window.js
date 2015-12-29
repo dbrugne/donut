@@ -180,10 +180,11 @@ var WindowView = Backbone.View.extend({
     collection.sort();
     if (model.get('type') === 'room') {
       app.trigger('redrawNavigationRooms');
-      app.trigger('nav-active');
+      //app.trigger('nav-active');
     } else {
       app.trigger('redrawNavigationOnes');
     }
+    app.trigger('unviewedEvent');
 
     // ignore event from current user
     if (app.user.get('user_id') === data.user_id) {
