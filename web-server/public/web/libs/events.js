@@ -31,7 +31,6 @@ var exports = module.exports = function (options) {
   this.discussion = options.model;
   this.currentUserId = options.currentUserId;
   this.$el = options.el; // at this time it's empty
-  this.$elDate = options.elDate;
   this.empty = true;
   this.topEvent = '';
   this.bottomEvent = '';
@@ -94,8 +93,6 @@ exports.prototype.insertTop = function (events) {
 
   this.empty = false;
   this.$el.prepend(html);
-
-  this._renderUnviewedBlocks();
 };
 
 exports.prototype.insertBottom = function (events) {
@@ -143,8 +140,6 @@ exports.prototype.insertBottom = function (events) {
 
   this.empty = false;
   this.$el.append(html);
-
-  this._renderUnviewedBlocks();
 };
 
 exports.prototype.block = function (event, previous) {
@@ -284,33 +279,5 @@ exports.prototype._renderEvent = function (event) {
   } catch (e) {
     console.error('render exception, see below: ' + event.type, e);
     return ''; // avoid 'undefined'
-  }
-};
-
-exports.prototype._renderUnviewedBlocks = function () {
-  this.$unviewedContainer = this.$elDate.find('.ctn-unviewed');
-  var id = this.discussion.get('first_unviewed');
-  var target = $('#' + id);
-
-  if (target.length === 0) {
-    return;
-  }
-
-  // only update topbar message for users for which this discussion is inactive and not current user
-  if (this.currentUserId !== target.data('userId')) {
-    this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({ // always override topbar
-      time: target.data('time'),
-      date: date.dayMonthTime(target.data('time')),
-      id: id
-    }));
-
-    // look for a previous new message separator, if not, insert one after "event"
-    if (this.$el.children('.block.unviewed').length === 0) {
-      var tpl = require('../templates/event/block-unviewed.html');
-      $(tpl({
-        time: target.data('time'),
-        id: id
-      })).insertBefore(target);
-    }
   }
 };

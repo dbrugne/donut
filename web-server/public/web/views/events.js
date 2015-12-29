@@ -19,7 +19,7 @@ module.exports = Backbone.View.extend({
   events: {
     'shown.bs.dropdown .actions': 'onMessageMenuShow',
     'click .mark-as-viewed': 'onMarkAsViewed',
-    'click .jumpto': 'onScrollTo'
+    'click .jumpto': 'onScrollToEvent'
   },
 
   markAsViewedDelay: 4000,
@@ -37,24 +37,6 @@ module.exports = Backbone.View.extend({
                            // available when discussion is hidden (default:
                            // true, for first focus)
 
-  onMarkAsViewed: function () {
-    this._scrollTimeoutCleanup();
-    this.model.markAsViewed();
-  },
-  onScrollTo: function (event) {
-    event.preventDefault();
-    var elt = $(event.currentTarget);
-    if (!elt.data('id')) {
-      return this.onMarkAsViewed();
-    }
-
-    var target = $('#unviewed-separator-' + elt.data('id'));
-    if (!target) {
-      return this.onMarkAsViewed();
-    }
-
-    this.scrollTo(target.position().top - 31, 1000); // 31 = height of top unview block
-  },
   initialize: function () {
     this.listenTo(app.client, 'preferences:update', _.bind(function () {
       if (currentUser.discussionMode() !== this.chatmode) {
@@ -76,8 +58,7 @@ module.exports = Backbone.View.extend({
     this.engine = new EventsEngine({
       model: this.model,
       currentUserId: currentUser.get('user_id'),
-      el: this.$realtime,
-      elDate: this.$('.date-ctn')
+      el: this.$realtime
     });
     this.eventsHistoryView = new EventsHistoryView({
       el: this.$('.events'),
@@ -124,6 +105,7 @@ module.exports = Backbone.View.extend({
     this.$scrollable = this.$('.events');
     this.$scrollableContent = this.$scrollable.find('.scrollable-content');
     this.$realtime = this.$scrollableContent.find('.realtime');
+    this.$unviewedContainer = this.$('.ctn-unviewed');
 
     this.$scrollable.on('scroll', _.bind(function () {
       this.onScroll();
@@ -162,6 +144,8 @@ module.exports = Backbone.View.extend({
       }
 
       this.engine.insertBottom(data.history);
+      this.updateDateBlocks();
+      this.updateUnviewedBlocks();
 
       if (this.scrollWasOnBottom) {
         // will trigger visible element detection implicitly
@@ -266,10 +250,24 @@ module.exports = Backbone.View.extend({
       });
     }
   },
+  onScrollToEvent: function (event) {
+    event.preventDefault();
+    var elt = $(event.currentTarget);
+    if (!elt.data('id')) {
+      return this.onMarkAsViewed();
+    }
+
+    var target = $('#unviewed-separator-' + elt.data('id'));
+    if (!target) {
+      return this.onMarkAsViewed();
+    }
+
+    this.scrollTo(target.position().top - 31, 1000); // 31 = height of top unview block
+  },
 
   /** ***************************************************************************************************************
    *
-   * Date block methods
+   * Special blocks method
    *
    *****************************************************************************************************************/
 
@@ -286,6 +284,37 @@ module.exports = Backbone.View.extend({
 
     this.$('.events').find('.block.date[data-date="' + today + '"]').addClass('today');
     this.$('.events').find('.block.date[data-date="' + yesterday + '"]').addClass('yesterday');
+  },
+  updateUnviewedBlocks: function () {
+    var id = this.model.get('first_unviewed');
+    var target = $('#' + id);
+
+    if (!target.length) {
+      return;
+    }
+    if (currentUser.get('user_id') === target.data('userId')) {
+      return;
+    }
+
+    // topbar
+    this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({
+      time: target.data('time'),
+      date: date.dayMonthTime(target.data('time')),
+      id: id
+    }));
+
+    // look for a previous new message separator, if not, insert one after "event"
+    if (this.$('.events .block.unviewed').length === 0) {
+      var tpl = require('../templates/event/block-unviewed.html');
+      $(tpl({
+        time: target.data('time'),
+        id: id
+      })).insertBefore(target);
+    }
+  },
+  onMarkAsViewed: function () {
+    this._scrollTimeoutCleanup();
+    this.model.markAsViewed();
   },
 
   /** **************************************************************************************************************
@@ -307,6 +336,7 @@ module.exports = Backbone.View.extend({
 
     // render and insert
     this.engine.insertBottom([{type: type, data: data}]);
+    this.updateUnviewedBlocks();
 
     // scrollDown
     if (needToScrollDown && !this.eventsEditView.messageUnderEdition) {
