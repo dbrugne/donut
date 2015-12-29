@@ -497,7 +497,7 @@
         "refuseuser": "You are about to refuse @__username__",
         "acceptuser": "You are about to authorize @__username__",
         "disallowuser": "You are about to disallow @__username__",
-        "close-group": "You will leave this community",
+        "quit-group": "You will leave this community",
         "op-room-user": "Your are about to promote this user to moderator of this donut. Moderators can manage mute/unmute, kick and ban other users.",
         "deop-room-user": "You are about to remove as moderateur this user from this donut.",
         "ban-room-user": "You are about to ban this user from this donut.",

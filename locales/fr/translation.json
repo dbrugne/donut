@@ -503,7 +503,7 @@
         "deban-room-user": "Vous allez débannir cet utilisateur de ce donut.",
         "kick-room-user": "Vous allez expulser cet utilisateur de ce donut.",
         "devoice-room-user": "Vous allez rendre muet cet utilisateur.",
-        "close-group": "Vous allez quitter cette communauté",
+        "quit-group": "Vous allez quitter cette communauté",
         "ban-group-user": "Vous allez bannir l'utilisateur @__username__ de cette communauté",
         "deban-group-user": "Vous allez débannir l'utilisateur @__username__ de cette communauté",
         "op-group-user": "Vous allez promouvoir @__username__ modérateur de cette communauté. Les modérateurs peuvent gérer les demandes d'adhésion, inviter et bannir des membres.",
