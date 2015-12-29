@@ -50,7 +50,7 @@ var roomSchema = mongoose.Schema({
   disclaimer: String,
   website: mongoose.Schema.Types.Mixed,
   created_at: {type: Date, default: Date.now},
-  last_event_at: {type: Date, default: Date.now},
+  last_event_at: {type: Date},
   last_event: {type: mongoose.Schema.ObjectId, ref: 'HistoryRoom'}
 });
 
