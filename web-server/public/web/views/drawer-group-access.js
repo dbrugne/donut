@@ -48,7 +48,7 @@ var GroupAccessView = Backbone.View.extend({
   },
   onResponse: function (data) {
     data.isOwner = (data.owner_id === currentUser.get('user_id'));
-    data.isAdmin = currentUser.isAdmin();
+    data.isAdmin = app.user.isAdmin();
     data.isOp = !!_.find(data.members, function (item) {
       return (item.user_id === currentUser.get('user_id') && item.is_op === true);
     });
