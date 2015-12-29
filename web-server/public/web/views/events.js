@@ -235,6 +235,27 @@ module.exports = Backbone.View.extend({
     this.eventsDateView.markAsViewed();
   },
 
+  /** ***************************************************************************************************************
+   *
+   * Date block methods
+   *
+   *****************************************************************************************************************/
+
+  updateDateBlocks: function () {
+    this.$el.find('.block.date').removeClass(function (index, css) {
+      return (css.match(/today|yesterday/g) || []).join(' ');
+    }).addClass('current'); // always display dates as dddd Do MMMM YYYY
+
+    var _date = new Date();
+    var today = _date.getFullYear() + '-' + (_date.getMonth() + 1) + '-' + _date.getDate();
+
+    _date.setDate(_date.getDate() - 1);
+    var yesterday = _date.getFullYear() + '-' + (_date.getMonth() + 1) + '-' + _date.getDate();
+
+    this.$el.find('.block.date[data-date="' + today + '"]').addClass('today');
+    this.$el.find('.block.date[data-date="' + yesterday + '"]').addClass('yesterday');
+  },
+
   /** **************************************************************************************************************
    *
    * Events rendering

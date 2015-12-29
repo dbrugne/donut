@@ -135,8 +135,7 @@
       "yy": "__years__ ans"
     },
     "today" : "Aujourd'hui",
-    "yesterday" : "Hier",
-    "the-day-before" : "Avant hier"
+    "yesterday" : "Hier"
   },
   "baseline": "vous avez des choses à (vous) dire !",
   "actions": {

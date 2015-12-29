@@ -65,9 +65,12 @@ exports.prototype.insertTop = function (events) {
 
     // new date block
     if (!previous || !date.isSameDay(event.data.time, previous.data.time)) {
+      var myDate = new Date(event.data.time);
       _html = require('../templates/event/block-date.html')({
         time: event.data.time,
-        date: date.block(event.data.time)
+        date: myDate.getFullYear() + '-' + (myDate.getMonth() + 1) + '-' + myDate.getDate(),
+        str: date.longDate(event.data.time),
+        dateClass: date.block(event.data.time)
       }) + _html;
     }
 
@@ -112,9 +115,12 @@ exports.prototype.insertBottom = function (events) {
 
     // new date block
     if (!previous || !date.isSameDay(event.data.time, previous.data.time)) {
+      var myDate = new Date(event.data.time);
       html += require('../templates/event/block-date.html')({
         time: event.data.time,
-        date: date.block(event.data.time)
+        date: myDate.getFullYear() + '-' + myDate.getMonth() + '-' + myDate.getDay(),
+        str: date.longDate(event.data.time),
+        dateClass: date.block(event.data.time)
       });
     }
 
@@ -140,50 +146,8 @@ exports.prototype.insertBottom = function (events) {
   this._renderUnviewedBlocks();
 };
 
-exports.prototype.replaceLastDisconnectBlock = function ($lastDisconnectBlock, $previousEventDiv, events) {
-  if (!events.length) {
-    $lastDisconnectBlock.replaceWith('');
-    return;
-  }
-
-  events = events.reverse();
-
-  var html = '';
-  var previous;
-  _.each(events, _.bind(function (e) {
-    var event = this._data(e.type, e.data);
-
-    // try to render event (before)
-    var _html = this._renderEvent(event);
-    if (!_html) {
-      return;
-    }
-
-    // new message block
-    if ((previous && this.block(event, previous)) || (!previous && event.data.user_id !== $previousEventDiv.data('userId'))) {
-      _html = this.renderBlockUser(event) + _html;
-    }
-
-    // new date block
-    if ((!previous && !date.isSameDay(event.data.time, $previousEventDiv.data('time'))) ||
-      (previous && !date.isSameDay(event.data.time, previous.data.time))) {
-      _html = require('../templates/event/block-date.html')({
-        time: event.data.time,
-        date: date.block(event.data.time)
-      }) + _html;
-    }
-
-    previous = event;
-    this.bottomEvent = event;
-    html += _html;
-  }, this));
-
-  this.empty = false;
-  $lastDisconnectBlock.replaceWith(html);
-};
-
 exports.prototype.block = function (event, previous) {
-  var messagesTypes = [ 'room:message', 'user:message' ];
+  var messagesTypes = ['room:message', 'user:message'];
   if (messagesTypes.indexOf(event.type) === -1) {
     return false;
   }
@@ -210,7 +174,9 @@ exports.prototype._data = function (type, data) {
     return;
   }
 
-  data = (!data) ? {} : _.clone(data);
+  data = (!data)
+    ? {}
+    : _.clone(data);
 
   data.id = data.id || _.uniqueId('auto_');
   data.time = data.time || Date.now();
@@ -339,7 +305,8 @@ exports.prototype._renderUnviewedBlocks = function () {
 
     // look for a previous new message separator, if not, insert one after "event"
     if (this.$el.children('.block.unviewed').length === 0) {
-      $( require('../templates/event/block-unviewed.html')({
+      var tpl = require('../templates/event/block-unviewed.html');
+      $(tpl({
         time: target.data('time'),
         id: id
       })).insertBefore(target);
