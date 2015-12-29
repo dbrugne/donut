@@ -595,7 +595,7 @@
         "roomtopic": "Nouveau sujet dans <span>__name__</span>, __topic__",
         "roommessage": "Nouveaux messages dans <span>__name__</span>",
         "usermention": "Vous êtes mentionné dans <span>__name__</span>",
-        "usermessage": "<span>@__username__</span>: __message__",
+        "usermessage": "<span>@__username__</span> __message__",
         "roominvite": "<span>@__username__</span> vous invite à rejoindre <span>__name__</span>",
         "roomdelete": "<span>@__username__</span> à supprimé votre donut <span>__name__</span>",
         "roomcreate": "<span>@__username__</span> à crée le donut <span>__name__</span>",
@@ -607,7 +607,8 @@
         "groupban": "Vous êtes banni de la communauté <span>#__name__</span>",
         "groupdeban": "Vous n'êtes plus banni de la communauté <span>#__name__</span>",
         "groupop": "Vous êtes maintenant modérateur de la communauté <span>#__name__</span>",
-        "groupdeop": "Vous n'êtes plus modérateur de la communauté <span>#__name__</span>"
+        "groupdeop": "Vous n'êtes plus modérateur de la communauté <span>#__name__</span>",
+        "empty": ""
       },
       "userban-me": "__who__ vous a bloqué",
       "userban-other": "vous avez bloqué __who__",

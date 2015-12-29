@@ -595,7 +595,7 @@
         "roomtopic": "New topic in <span>__name__</span>, __topic__",
         "roommessage": "New message in <span>__name__</span>",
         "usermention": "You were mentionned in <span>__name__</span>",
-        "usermessage": "<span>@__username__</span>: __message__",
+        "usermessage": "<span>@__username__</span> __message__",
         "roominvite": "<span>@__username__</span> invites you to join <span>__name__</span>",
         "roomdelete": "<span>@__username__</span> delete your donut <span>__name__</span>",
         "roomcreate": "<span>@__username__</span> create the donut <span>__name__</span>",
