@@ -17,7 +17,7 @@ var NotificationsView = Backbone.View.extend({
     this.listenTo(app, 'notification:decreaseCount', this.decreaseCount);
     this.listenTo(app, 'notification:readAll', this.readAll);
     this.listenTo(app, 'viewedEvent', this.updateHandle);
-    this.listenTo(app, 'newEvent', this.updateHandle);
+    this.listenTo(app, 'unviewedEvent', this.updateHandle);
 
     this.$badge = $('#notifications').find('.unread-count');
     this.$badgeHover = $('.hover-menu-notifications');
