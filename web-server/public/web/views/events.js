@@ -17,10 +17,12 @@ module.exports = Backbone.View.extend({
   template: require('../templates/events.html'),
 
   events: {
-    'shown.bs.dropdown .actions': 'onMessageMenuShow'
+    'shown.bs.dropdown .actions': 'onMessageMenuShow',
+    'click .mark-as-viewed': 'onMarkAsViewed',
+    'click .jumpto': 'onScrollTo'
   },
 
-  markAsViewedDelay: 5000, // 5s
+  markAsViewedDelay: 4000,
   markAsViewedTimeout: null,
 
   numberOfEventsToRetrieve: 50,
@@ -35,6 +37,24 @@ module.exports = Backbone.View.extend({
                            // available when discussion is hidden (default:
                            // true, for first focus)
 
+  onMarkAsViewed: function () {
+    this._scrollTimeoutCleanup();
+    this.model.markAsViewed();
+  },
+  onScrollTo: function (event) {
+    event.preventDefault();
+    var elt = $(event.currentTarget);
+    if (!elt.data('id')) {
+      return this.onMarkAsViewed();
+    }
+
+    var target = $('#unviewed-separator-' + elt.data('id'));
+    if (!target) {
+      return this.onMarkAsViewed();
+    }
+
+    this.scrollTo(target.position().top - 31, 1000); // 31 = height of top unview block
+  },
   initialize: function () {
     this.listenTo(app.client, 'preferences:update', _.bind(function () {
       if (currentUser.discussionMode() !== this.chatmode) {
@@ -56,23 +76,24 @@ module.exports = Backbone.View.extend({
     this.engine = new EventsEngine({
       model: this.model,
       currentUserId: currentUser.get('user_id'),
-      el: this.$realtime
+      el: this.$realtime,
+      elDate: this.$('.date-ctn')
     });
     this.eventsHistoryView = new EventsHistoryView({
-      el: this.$el,
+      el: this.$('.events'),
       model: this.model,
       parent: this
     });
     this.eventsSpamView = new EventsSpamView({
-      el: this.$el,
+      el: this.$('.events'),
       model: this.model
     });
     this.eventsEditView = new EventsEditView({
-      el: this.$el,
+      el: this.$('.events'),
       model: this.model
     });
     this.eventsDateView = new EventsDateView({
-      el: this.$el
+      el: this.$el // at this point, ".discussion"
     });
 
     this.listenTo(this.model, 'scrollDown', this.scrollDown);
@@ -98,9 +119,9 @@ module.exports = Backbone.View.extend({
       model: modelJson,
       isOwner: (this.model.get('type') === 'room' && this.model.currentUserIsOwner())
     });
-    this.$el.append(html);
+    this.$('.events').append(html);
 
-    this.$scrollable = this.$el;
+    this.$scrollable = this.$('.events');
     this.$scrollableContent = this.$scrollable.find('.scrollable-content');
     this.$realtime = this.$scrollableContent.find('.realtime');
 
@@ -162,6 +183,7 @@ module.exports = Backbone.View.extend({
    *****************************************************************************************************************/
 
   onScroll: function () {
+    console.log('onscroll');
     // cleanup scroll timeout
     this._scrollTimeoutCleanup();
 
@@ -185,7 +207,9 @@ module.exports = Backbone.View.extend({
 
     // start timeout for mark as viewed detection
     this.markAsViewedTimeout = setTimeout(_.bind(function () {
+      console.log('timedout');
       if (!this.isVisible()) {
+        console.log('avoid');
         return;
       }
       this.model.markAsViewed();
@@ -224,15 +248,23 @@ module.exports = Backbone.View.extend({
       scrollTop: top
     }, timing || 0);
   },
-  markAsViewed: function () {
-    var elt = this.$el.find('.block.unviewed');
-    if (elt) {
-      elt.fadeOut(1000, function () {
-        elt.remove();
+  /**
+   * Function called to hide the unviewed block on top of the discussion
+   * and the unread messages inside the discussion
+   */
+  hideUnviewedBlocks: function () {
+    var insideBlock = this.$('.events').find('.block.unviewed');
+    var topBlock = this.$('.date-ctn .ctn-unviewed');
+    if (insideBlock) {
+      insideBlock.fadeOut(1000, function () {
+        insideBlock.remove();
       });
     }
-    this.model.markAsViewed();
-    this.eventsDateView.markAsViewed();
+    if (topBlock) {
+      topBlock.find('.unviewed-top').fadeOut(1000, function () {
+        topBlock.html('');
+      });
+    }
   },
 
   /** ***************************************************************************************************************
@@ -242,7 +274,7 @@ module.exports = Backbone.View.extend({
    *****************************************************************************************************************/
 
   updateDateBlocks: function () {
-    this.$el.find('.block.date').removeClass(function (index, css) {
+    this.$('.events').find('.block.date').removeClass(function (index, css) {
       return (css.match(/today|yesterday/g) || []).join(' ');
     }).addClass('current'); // always display dates as dddd Do MMMM YYYY
 
@@ -252,8 +284,8 @@ module.exports = Backbone.View.extend({
     _date.setDate(_date.getDate() - 1);
     var yesterday = _date.getFullYear() + '-' + (_date.getMonth() + 1) + '-' + _date.getDate();
 
-    this.$el.find('.block.date[data-date="' + today + '"]').addClass('today');
-    this.$el.find('.block.date[data-date="' + yesterday + '"]').addClass('yesterday');
+    this.$('.events').find('.block.date[data-date="' + today + '"]').addClass('today');
+    this.$('.events').find('.block.date[data-date="' + yesterday + '"]').addClass('yesterday');
   },
 
   /** **************************************************************************************************************

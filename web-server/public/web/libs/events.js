@@ -31,6 +31,7 @@ var exports = module.exports = function (options) {
   this.discussion = options.model;
   this.currentUserId = options.currentUserId;
   this.$el = options.el; // at this time it's empty
+  this.$elDate = options.elDate;
   this.empty = true;
   this.topEvent = '';
   this.bottomEvent = '';
@@ -287,7 +288,7 @@ exports.prototype._renderEvent = function (event) {
 };
 
 exports.prototype._renderUnviewedBlocks = function () {
-  this.$unviewedContainer = this.$el.closest('.discussion').find('.date-ctn').find('.ctn-unviewed');
+  this.$unviewedContainer = this.$elDate.find('.ctn-unviewed');
   var id = this.discussion.get('first_unviewed');
   var target = $('#' + id);
 
@@ -296,7 +297,7 @@ exports.prototype._renderUnviewedBlocks = function () {
   }
 
   // only update topbar message for users for which this discussion is inactive and not current user
-  if (this.currentUserId !== target.data('user_id')) {
+  if (this.currentUserId !== target.data('userId')) {
     this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({ // always override topbar
       time: target.data('time'),
       date: date.dayMonthTime(target.data('time')),
