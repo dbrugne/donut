@@ -261,6 +261,8 @@ var DonutRouter = Backbone.Router.extend({
       }
     }
 
+    // @todo use app.setFocusedModel() instead following 2 instructions
+
     // unfocus every model
     this.unfocusAll();
 
