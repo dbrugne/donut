@@ -51,6 +51,12 @@ var userSchema = mongoose.Schema({
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
     banned_at: {type: Date, default: Date.now}
   }],
+  devices: [{
+    device_token: String,
+    details: mongoose.Schema.Types.Mixed,
+    created_at: {type: Date},
+    updated_at: {type: Date}
+  }],
   created_at: {type: Date, default: Date.now},
   lastlogin_at: {type: Date},
   online: Boolean,
@@ -528,4 +534,42 @@ userSchema.methods.updateActivity = function (userId, eventId, callback) {
     this.update({$addToSet: {ones: oneuser}}, callback);
   }
 };
+
+userSchema.methods.findDevice = function (deviceToken) {
+  if (!this.devices || !this.devices.length) {
+    return;
+  }
+  return _.find(this.devices, function (doc) {
+    return (doc.device_token === deviceToken);
+  });
+};
+userSchema.methods.hasDevice = function (deviceToken) {
+  var doc = this.findDevice(deviceToken);
+  return (typeof doc !== 'undefined');
+};
+userSchema.methods.registerDevice = function (deviceToken, details, callback) {
+  if (this.hasDevice(deviceToken)) {
+    this.constructor.update({
+      _id: this._id,
+      'devices.device_token': deviceToken
+    }, {
+      $set: {
+        'devices.$.details': details,
+        'devices.$.updated_at': Date.now()
+      }
+    }, function (err) {
+      return callback(err);
+    });
+  } else {
+    var device = {
+      device_token: deviceToken,
+      details: details,
+      created_at: Date.now()
+    };
+    this.update({$addToSet: {devices: device}}, function (err) {
+      return callback(err);
+    });
+  }
+};
+
 module.exports = mongoose.model('User', userSchema);
