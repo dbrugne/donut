@@ -338,7 +338,7 @@
             &.more, &.less { padding-left:20px; text-align: left; padding-right: 20px; }
             a { color: @cl-nav-left-text-lighter;
               i { color: @cl-nav-left-text-lighter; }
-              &.close-discussion { display:none; }
+              &.close-discussion, &.close-group { display:none; }
             }
             .item { position: relative; color: @cl-nav-left-text-lighter; padding: 0 10px;
               .avatar-ctn { margin: auto;
@@ -349,7 +349,7 @@
                   > span { font-size: 13px; }
                 }
               }
-              .close-discussion { font-size: 1.6rem; margin:auto; }
+              .close-discussion, .close-group { font-size: 1.6rem; margin:auto; }
               &.blocked { span.name { text-decoration: line-through; } }
               &.grouped {
                 a { padding-left:5px;
@@ -361,10 +361,11 @@
               .item .name-ctn .name, .item .name-ctn .username { color:@cl-nav-left-text-lighter; }
               &.group-block { background-color: transparent; }
               .close-discussion + .unread { display:none; }
-              .close-discussion { display:block; }
+              .close-discussion, .close-group { display:block; }
             }
             &.active { background-color: @cl-background;
               &.group a, .item .name-ctn .name { color:@cl-text; }
+              .close-group  i { color:@cl-nav-left-back; }
               .close-discussion  i { color:@cl-nav-left-back; }
             }
             &.highlighted.group-block { background-color: rgba(255,255,255,0.2); }
@@ -1147,6 +1148,7 @@
   .ban-user,
   .deban-user,
   .open-room-preferences,
+  .quit-group,
   .close-group,
   .close-discussion {
     cursor:pointer;
@@ -1166,7 +1168,13 @@
 
   .block { margin: 0;
     &.date { margin-top: 25px; margin-bottom: 25px; clear: both; border-top: 0; height: 1px; background-color: @cl-subtext10; text-align: center;
-      .moment { position: relative; top: -0.7em; background-color: @cl-background; text-align: center; font-size: 1.5rem; font-weight: bold; color: @cl-subtext30; padding: 0 10px; text-transform: capitalize; }
+      .moment { position: relative; top: -0.7em; background-color: @cl-background; text-align: center; font-size: 1.5rem; font-weight: bold; color: @cl-subtext30; padding: 0 10px; text-transform: capitalize;
+        &.today, &.yesterday { display:none; }
+      }
+      &.today .moment.today,
+      &.yesterday .moment.yesterday{ display:inline; }
+      &.today .moment.current,
+      &.yesterday .moment.current{ display:none; }
     }
     &.unviewed { margin: 25px 10px 25px 5px; clear: both; border-top: 0; height: 1px; background-color: @cl-first; text-align: center;
       .title { position: absolute; right:0; height:20px; top: -0.9rem; background-color: @cl-background; text-transform: uppercase; font-size: 1rem; color: @cl-first; padding: 0 10px; font-weight:700; }

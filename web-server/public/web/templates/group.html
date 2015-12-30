@@ -48,23 +48,15 @@
                         </a>
                     </li>
                     <% }; %>
-                    <% if (!isOwner) { %>
+                    <% if (!isOwner && isMember) { %>
                     <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="close-group" data-group-id="<%= group.group_id %>">
+                        <a role="menuitem" tabindex="-1" class="quit-group" data-group-id="<%= group.group_id %>">
                             <i class="icon icon-times"></i> <%= t('group.close') %>
                         </a>
                     </li>
                     <% } %>
                 </ul>
-                <% } else if (!isBanned) { %>
-                <ul class="dropdown-menu" role="menu">
-                    <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="close-group" data-group-id="<%= group.group_id %>">
-                            <i class="icon icon-times"></i> <%= t('group.exit') %>
-                        </a>
-                    </li>
-                </ul>
-                <% } %>
+            <% } %>
             </div>
 
             <div class="owner mt5">
@@ -83,7 +75,7 @@
         </div>
     </div>
 
-    <% if ((isMember || isOwner || isAdmin) && !isBanned) { %>
+    <% if ((isMember || isOwner) && !isBanned) { %>
     <div class="members mt10 alert alert-success">
         <div class="actions">
             <p class="fl-left"><%= t('group.default-member') %></p>
@@ -99,7 +91,7 @@
     </div>
     <% } %>
 
-    <% if (!isMember && !isBanned && !isOwner && !isAdmin) { %>
+    <% if (!isMember && !isBanned && !isOwner) { %>
         <div class="disclaimer mt10 alert alert-warning" role="alert">
             <% if (group.disclaimer) { %>
                 <p><%= t('group.disclaimer-start') %><strong><span class="open-user-profile fs15 dc-text" data-user-id="<%=group.owner_id %>"></span></strong><%= t('group.disclaimer-end') %></p>

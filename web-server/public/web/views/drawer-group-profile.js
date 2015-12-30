@@ -49,7 +49,7 @@ var DrawerGroupProfileView = Backbone.View.extend({
     }
 
     group.isOwner = (group.owner_id === currentUser.get('user_id'));
-    group.isAdmin = currentUser.isAdmin();
+    group.isAdmin = app.user.isAdmin();
     group.isOp = !!_.find(group.members, function (item) {
       return (item.user_id === currentUser.get('user_id') && item.is_op === true);
     });

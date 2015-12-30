@@ -180,7 +180,6 @@ var WindowView = Backbone.View.extend({
     collection.sort();
     if (model.get('type') === 'room') {
       app.trigger('redrawNavigationRooms');
-      //app.trigger('nav-active');
     } else {
       app.trigger('redrawNavigationOnes');
     }
@@ -220,10 +219,18 @@ var WindowView = Backbone.View.extend({
       return;
     }
 
-    var title = i18next.t('chat.notifications.messages.usermessage', {
-      username: data.username,
-      message: (data.message) ? common.markup.toText(data.message) : ''
-    });
+    var title;
+    if (type === 'room:message') {
+      title = i18next.t('chat.notifications.messages.roommessage', {
+        name: model.get('identifier')
+        message: data.message ? common.markup.toText(data.message) : ''
+      });
+    } else {
+      title = i18next.t('chat.notifications.messages.usermessage', {
+        username: data.username,
+        message: data.message ? common.markup.toText(data.message) : ''
+      });
+    }
     if (!title) {
       return;
     }

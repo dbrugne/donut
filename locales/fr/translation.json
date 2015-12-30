@@ -135,8 +135,7 @@
       "yy": "__years__ ans"
     },
     "today" : "Aujourd'hui",
-    "yesterday" : "Hier",
-    "the-day-before" : "Avant hier"
+    "yesterday" : "Hier"
   },
   "baseline": "vous avez des choses à (vous) dire !",
   "actions": {
@@ -504,7 +503,7 @@
         "deban-room-user": "Vous allez débannir cet utilisateur de ce donut.",
         "kick-room-user": "Vous allez expulser cet utilisateur de ce donut.",
         "devoice-room-user": "Vous allez rendre muet cet utilisateur.",
-        "close-group": "Vous allez quitter cette communauté",
+        "quit-group": "Vous allez quitter cette communauté",
         "ban-group-user": "Vous allez bannir l'utilisateur @__username__ de cette communauté",
         "deban-group-user": "Vous allez débannir l'utilisateur @__username__ de cette communauté",
         "op-group-user": "Vous allez promouvoir @__username__ modérateur de cette communauté. Les modérateurs peuvent gérer les demandes d'adhésion, inviter et bannir des membres.",
@@ -596,7 +595,7 @@
         "roomtopic": "Nouveau sujet dans <span>__name__</span>, __topic__",
         "roommessage": "Nouveaux messages dans <span>__name__</span>",
         "usermention": "Vous êtes mentionné dans <span>__name__</span>",
-        "usermessage": "<span>@__username__</span>: __message__",
+        "usermessage": "<span>@__username__</span> __message__",
         "roominvite": "<span>@__username__</span> vous invite à rejoindre <span>__name__</span>",
         "roomdelete": "<span>@__username__</span> à supprimé votre donut <span>__name__</span>",
         "roomcreate": "<span>@__username__</span> à crée le donut <span>__name__</span>",
@@ -608,7 +607,8 @@
         "groupban": "Vous êtes banni de la communauté <span>#__name__</span>",
         "groupdeban": "Vous n'êtes plus banni de la communauté <span>#__name__</span>",
         "groupop": "Vous êtes maintenant modérateur de la communauté <span>#__name__</span>",
-        "groupdeop": "Vous n'êtes plus modérateur de la communauté <span>#__name__</span>"
+        "groupdeop": "Vous n'êtes plus modérateur de la communauté <span>#__name__</span>",
+        "empty": ""
       },
       "userban-me": "__who__ vous a bloqué",
       "userban-other": "vous avez bloqué __who__",
@@ -818,8 +818,8 @@
           },
           "visibility": {
             "label": "Visibilité (administrateur)",
-            "true": "Le donut est visible sur la homepage",
-            "false": "Le donut <strong>n'est pas</strong> visible sur la homepage"
+            "true": "La communauté est visible sur la homepage",
+            "false": "La communauté<strong>&nbsp;n'est pas&nbsp;</strong>visible sur la homepage"
           },
           "priority": {
             "label": "Priorité (administrateur)",
@@ -883,7 +883,7 @@
           "visibility": {
             "label": "Visibilité (administrateur)",
             "true": "Le donut est visible sur la homepage",
-            "false": "Le donut <strong>n'est pas</strong> visible sur la homepage"
+            "false": "Le donut<strong>&nbsp;n'est pas&nbsp;</strong>visible sur la homepage"
           },
           "priority": {
             "label": "Priorité (administrateur)",

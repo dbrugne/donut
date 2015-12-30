@@ -7,6 +7,9 @@
             <a class="clean flex-child" href="#g/<%- item.name %>" data-group-id="<%- item.id %>">
                 #<%= item.name %>
             </a>
+            <a href="#" class="ml5 close-group" data-group-id="<%- item.group_id %>">
+                <i class="icon hover icon-times" title="<%= t('global.close') %>"></i>
+            </a>
         </span>
     </li>
 <% }); %>

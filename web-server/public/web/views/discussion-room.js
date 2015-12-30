@@ -18,9 +18,7 @@ var RoomView = Backbone.View.extend({
   events: {
     'click .share .facebook': 'shareFacebook',
     'click .share .twitter': 'shareTwitter',
-    'click .share .googleplus': 'shareGoogle',
-    'click .mark-as-viewed': 'removeUnviewedBlock',
-    'click .jumpto': 'onScrollTo'
+    'click .share .googleplus': 'shareGoogle'
   },
 
   initialize: function () {
@@ -36,7 +34,7 @@ var RoomView = Backbone.View.extend({
     this.render();
 
     this.eventsView = new EventsView({
-      el: this.$('.events'),
+      el: this.$el,
       model: this.model
     });
     this.inputView = new InputView({
@@ -205,32 +203,13 @@ var RoomView = Backbone.View.extend({
     });
   },
 
-  removeUnviewedBlock: function (event) {
-    this.eventsView.markAsViewed();
-  },
-
   // only care about models to set a viewed
   onMarkAsViewed: function (data) {
     if (data.get('unviewed') === true) {
       return;
     }
 
-    this.eventsView.markAsViewed();
-  },
-
-  onScrollTo: function (event) {
-    event.preventDefault();
-    var elt = $(event.currentTarget);
-    if (!elt.data('id')) {
-      return this.removeUnviewedBlock(event);
-    }
-
-    var target = $('#unviewed-separator-' + elt.data('id'));
-    if (!target) {
-      return this.removeUnviewedBlock(event);
-    }
-
-    this.eventsView.scrollTo(target.position().top - 31, 1000); // 31 = height of top unview block
+    this.eventsView.hideUnviewedBlocks();
   }
 });
 

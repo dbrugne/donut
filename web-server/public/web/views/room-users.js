@@ -7,6 +7,7 @@ var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
 var urls = require('../../../../shared/util/url');
 var debug = donutDebug('donut:room-users');
+var currentUser = require('../libs/app').user;
 
 var RoomUsersView = Backbone.View.extend({
   template: require('../templates/room-users.html'),
@@ -108,13 +109,14 @@ var RoomUsersView = Backbone.View.extend({
       }
 
       var offset = elt.offset();
-      var user = this.collection.get(elt.data('user-id')).toJSON();
+      var user = this.collection.get(elt.data('user-id')).toJSON()
       user.avatar = common.cloudinary.prepare(user.avatar, 100);
       user.uri = urls(user, 'user', 'uri');
 
       var data = {
         user: user,
         room_id: this.model.get('id'),
+        isCurrentUser: (user.id === currentUser.get('user_id')),
         isOwner: this.model.currentUserIsOwner(),
         isOp: this.model.currentUserIsOp(),
         isAdmin: this.model.currentUserIsAdmin()
