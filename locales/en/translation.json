@@ -817,8 +817,8 @@
           },
           "visibility": {
             "label": "Visibility (admin only)",
-            "true": "This donut is displayed on homepage",
-            "false": "This donut <strong>is not</strong> displayed on homepage"
+            "true": "This community is displayed on homepage",
+            "false": "This community<strong>&nbsp;is not&nbsp;</strong>displayed on homepage"
           },
           "priority": {
             "label": "Priority (admin only)",
@@ -882,7 +882,7 @@
           "visibility": {
             "label": "Visibility (admin only)",
             "true": "This donut is displayed on homepage",
-            "false": "This donut <strong>is not</strong> displayed on homepage"
+            "false": "This donut<strong>&nbsp;is not&nbsp;</strong>displayed on homepage"
           },
           "priority": {
             "label": "Priority (admin only)",
