@@ -222,7 +222,7 @@ var WindowView = Backbone.View.extend({
     var title;
     if (type === 'room:message') {
       title = i18next.t('chat.notifications.messages.roommessage', {
-        name: model.get('identifier')
+        name: model.get('identifier'),
         message: data.message ? common.markup.toText(data.message) : ''
       });
     } else {
