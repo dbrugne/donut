@@ -818,8 +818,8 @@
           },
           "visibility": {
             "label": "Visibilité (administrateur)",
-            "true": "Le donut est visible sur la homepage",
-            "false": "Le donut <strong>n'est pas</strong> visible sur la homepage"
+            "true": "La communauté est visible sur la homepage",
+            "false": "La communauté<strong>&nbsp;n'est pas&nbsp;</strong>visible sur la homepage"
           },
           "priority": {
             "label": "Priorité (administrateur)",
@@ -883,7 +883,7 @@
           "visibility": {
             "label": "Visibilité (administrateur)",
             "true": "Le donut est visible sur la homepage",
-            "false": "Le donut <strong>n'est pas</strong> visible sur la homepage"
+            "false": "Le donut<strong>&nbsp;n'est pas&nbsp;</strong>visible sur la homepage"
           },
           "priority": {
             "label": "Priorité (administrateur)",
