@@ -128,7 +128,7 @@ var WindowView = Backbone.View.extend({
     }
 
     // only if connected
-    if (!app.client.sConnected()) {
+    if (!app.client.isConnected()) {
       return;
     }
 
