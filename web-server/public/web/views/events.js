@@ -22,7 +22,7 @@ module.exports = Backbone.View.extend({
     'click .jumpto': 'onScrollToEvent'
   },
 
-  markAsViewedDelay: 4000,
+  markAsViewedDelay: 2000,
   markAsViewedTimeout: null,
 
   numberOfEventsToRetrieve: 50,

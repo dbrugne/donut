@@ -41,7 +41,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
 
     app.client.notificationRead(null, null, 10, _.bind(function (data) {
       this.isThereMoreNotifications = data.more;
-      this.$el.html(this.template({}));
+      this.$el.html(this.template({user_id: this.userId}));
 
       this.$unreadCount = this.$('.unread-count');
       this.$count = this.$unreadCount.find('.nb');

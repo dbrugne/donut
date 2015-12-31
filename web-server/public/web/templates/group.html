@@ -39,7 +39,7 @@
                     </li>
                     <li role="presentation">
                         <a role="menuitem" tabindex="-1" class="open-group-users" data-group-id="<%= group.group_id %>">
-                            <i class="icon icon-users"></i> <%= t('chat.users.link') %>
+                            <i class="icon icon-users"></i> <%= t('group.members') %>
                         </a>
                     </li>
                     <li role="presentation">
@@ -81,7 +81,10 @@
             <p class="fl-left"><%= t('group.default-member') %></p>
             <% if (isOwner || isOp || isAdmin) { %>
                 <div class="pull-right mt5 ml5">
-                        <input type="button" class="btn btn-block btn-primary open-group-users" data-group-id="<%= group.group_id %>" value="<%= t('group.invite') %>" />
+                        <input type="button" class="btn btn-block btn-primary open-group-users" data-group-id="<%= group.group_id %>" value="<%= t('group.manage') %>" />
+                </div>
+                <div class="pull-right mt5 ml5">
+                    <input type="button" class="btn btn-block btn-primary open-group-users-allowed" data-group-id="<%= group.group_id %>" value="<%= t('group.invite') %>" />
                 </div>
             <% } %>
             <div class="pull-right mt5">

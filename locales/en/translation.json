@@ -576,7 +576,7 @@
       "online": "is online,",
       "offline": "is offline,",
       "read-more": "Read more",
-      "count" : "<strong class=\"nb\"></strong><strong> New</strong> Notification(s)",
+      "count" : "<span class=\"nb\"></span> new notification(s)",
       "tag-as-read" : "Tag as read",
       "empty": "You have no new notification",
       "random": "Gets __result__ (randomly between __min__ and __max__)",
@@ -1004,7 +1004,8 @@
   "group": {
     "administrator": "Moderators",
     "users": "Users",
-    "invite": "Manage members",
+    "manage": "Manage members",
+    "invite": "Invite members",
     "members": "Members list",
     "ask-membership": "request membership",
     "blocked": "This community is blocked by a password, to join we invite you to type it",
