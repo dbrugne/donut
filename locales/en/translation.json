@@ -1004,7 +1004,8 @@
   "group": {
     "administrator": "Moderators",
     "users": "Users",
-    "invite": "Manage members",
+    "manage": "Manage members",
+    "invite": "Invite members",
     "members": "Members list",
     "ask-membership": "request membership",
     "blocked": "This community is blocked by a password, to join we invite you to type it",

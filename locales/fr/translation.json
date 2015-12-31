@@ -1005,7 +1005,8 @@
   "group": {
     "administrator": "Modérateurs",
     "users": "Utilisateurs",
-    "invite": "Gérer les membres",
+    "manage": "Gérer les membres",
+    "invite": "Inviter des membres",
     "members": "Liste des membres",
     "ask-membership": "devenir membre",
     "blocked": "Saisissez le mot de passe d'accès direct à la communauté",
