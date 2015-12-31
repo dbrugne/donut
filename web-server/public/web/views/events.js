@@ -1,6 +1,5 @@
 var $ = require('jquery');
 var _ = require('underscore');
-var async = require('async');
 var Backbone = require('backbone');
 var app = require('../libs/app');
 var date = require('../libs/date');
@@ -12,18 +11,27 @@ var windowView = require('./window');
 var EventsEngine = require('../libs/events');
 var currentUser = require('../libs/app').user;
 
+var debug = require('../libs/donut-debug')('donut:discussions');
+
 module.exports = Backbone.View.extend({
   template: require('../templates/events.html'),
 
   events: {
-    'shown.bs.dropdown .actions': 'onMessageMenuShow'
+    'shown.bs.dropdown .actions': 'onMessageMenuShow',
+    'click .mark-as-viewed': 'onMarkAsViewed',
+    'click .jumpto': 'onScrollToEvent'
   },
 
+  markAsViewedDelay: 2000,
   markAsViewedTimeout: null,
+
+  numberOfEventsToRetrieve: 50,
 
   scrollTopTimeout: null,
 
   chatmode: false,
+
+  loading: false,
 
   scrollWasOnBottom: true, // ... before unfocus (scroll position is not
                            // available when discussion is hidden (default:
@@ -38,7 +46,10 @@ module.exports = Backbone.View.extend({
     }, this));
     this.chatmode = currentUser.discussionMode();
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
-    this.listenTo(this.model, 'windowRefocused', this.onScroll);
+    this.listenTo(this.model, 'windowRefocused', _.bind(function () {
+      debug('windowRefocused', this.model.get('identifier'));
+      this.onScroll();
+    }, this));
     this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
     this.listenTo(this.model, 'messageSent', this.scrollDown);
 
@@ -50,31 +61,30 @@ module.exports = Backbone.View.extend({
       el: this.$realtime
     });
     this.eventsHistoryView = new EventsHistoryView({
-      el: this.$el,
-      model: this.model
+      el: this.$('.events'),
+      model: this.model,
+      parent: this
     });
     this.eventsSpamView = new EventsSpamView({
-      el: this.$el,
+      el: this.$('.events'),
       model: this.model
     });
     this.eventsEditView = new EventsEditView({
-      el: this.$el,
+      el: this.$('.events'),
       model: this.model
     });
     this.eventsDateView = new EventsDateView({
-      el: this.$el
+      el: this.$el // at this point, ".discussion"
     });
 
-    this.listenTo(this.eventsHistoryView, 'addBatchEvents', _.bind(function (data) {
-      this.addBatchEvents(data.history, data.more);
-    }, this));
-    this.listenTo(app, 'scrollDown', _.bind(function () {
-      this.scrollDown();
-    }, this));
-
+    this.listenTo(this.model, 'scrollDown', this.scrollDown);
     this.listenTo(app, 'resetDate', _.bind(function () {
       this.eventsDateView.reset();
     }, this));
+
+    // everything is ready
+    debug('first focus', this.model.get('identifier'));
+    this.eventsHistoryView.requestHistory('bottom');
   },
   render: function () {
     // render view
@@ -90,17 +100,16 @@ module.exports = Backbone.View.extend({
       model: modelJson,
       isOwner: (this.model.get('type') === 'room' && this.model.currentUserIsOwner())
     });
-    this.$el.append(html);
+    this.$('.events').append(html);
 
-    this.$scrollable = this.$el;
+    this.$scrollable = this.$('.events');
     this.$scrollableContent = this.$scrollable.find('.scrollable-content');
     this.$realtime = this.$scrollableContent.find('.realtime');
+    this.$unviewedContainer = this.$('.ctn-unviewed');
 
     this.$scrollable.on('scroll', _.bind(function () {
       this.onScroll();
     }, this));
-
-    this.scrollDown();
   },
   _remove: function () {
     this.eventsDateView.remove();
@@ -112,6 +121,32 @@ module.exports = Backbone.View.extend({
   },
   onFocusChange: function () {
     if (this.model.get('focused')) {
+      this.onRefocus();
+    } else {
+      // persist scroll position before hiding
+      this.scrollWasOnBottom = this.isScrollOnBottom();
+    }
+  },
+  onRefocus: function () {
+    // triggered on discussion focus AND on reconnect (when Backbone.history is restarted)
+    debug('refocus', this.model.get('identifier'));
+    var last = this.$realtime.find('.block[id]').last();
+    var id = (!last || !last.length)
+      ? null
+      : last.attr('id');
+
+    this.historyLoading = true; // @todo add spinner
+    debug('fetch from now to ', id);
+    this.model.history(id, 'later', this.numberOfEventsToRetrieve, _.bind(function (data) {
+      if (data.more === true) {
+        // there are too many events to display, reset discussion DOM
+        this.engine.reset();
+      }
+
+      this.engine.insertBottom(data.history);
+      this.updateDateBlocks();
+      this.updateUnviewedBlocks();
+
       if (this.scrollWasOnBottom) {
         // will trigger visible element detection implicitly
         this.scrollDown();
@@ -119,10 +154,7 @@ module.exports = Backbone.View.extend({
         this.onScroll();
       }
       this.scrollWasOnBottom = false;
-    } else {
-      // persist scroll position before hiding
-      this.scrollWasOnBottom = this.isScrollOnBottom();
-    }
+    }, this));
   },
   isVisible: function () {
     return !(!this.model.get('focused') || !windowView.focused);
@@ -135,6 +167,7 @@ module.exports = Backbone.View.extend({
    *****************************************************************************************************************/
 
   onScroll: function () {
+    console.log('onscroll');
     // cleanup scroll timeout
     this._scrollTimeoutCleanup();
 
@@ -158,11 +191,13 @@ module.exports = Backbone.View.extend({
 
     // start timeout for mark as viewed detection
     this.markAsViewedTimeout = setTimeout(_.bind(function () {
+      console.log('timedout');
       if (!this.isVisible()) {
+        console.log('avoid');
         return;
       }
       this.model.markAsViewed();
-    }, this), 2000); // 2s
+    }, this), this.markAsViewedDelay);
   },
   _scrollTimeoutCleanup: function () {
     if (this.scrollTopTimeout) {
@@ -177,7 +212,6 @@ module.exports = Backbone.View.extend({
   _scrollBottomPosition: function () {
     var contentHeight = this.$scrollableContent.outerHeight(true);
     var viewportHeight = this.$scrollable.height();
-//    console.log('scroll', contentHeight, viewportHeight, this.$el.height(), (contentHeight - viewportHeight));
     return contentHeight - viewportHeight;
   },
   isScrollOnBottom: function () {
@@ -190,16 +224,97 @@ module.exports = Backbone.View.extend({
     return (this.$scrollable.scrollTop() >= bottom);
   },
   scrollDown: function () {
+    debug('scroll down', this.model.get('identifier'));
     this.$scrollable.scrollTop(this.$scrollableContent.outerHeight(true));
   },
-  markAsViewed: function () {
-    var elt = this.$el.find('.block.unviewed');
-    if (elt) {
-      elt.fadeOut(1000, function () {
-        elt.remove();
+  scrollTo: function (top, timing) {
+    this.$scrollable.animate({
+      scrollTop: top
+    }, timing || 0);
+  },
+  /**
+   * Function called to hide the unviewed block on top of the discussion
+   * and the unread messages inside the discussion
+   */
+  hideUnviewedBlocks: function () {
+    var insideBlock = this.$('.events').find('.block.unviewed');
+    var topBlock = this.$('.date-ctn .ctn-unviewed');
+    if (insideBlock) {
+      insideBlock.fadeOut(1000, function () {
+        insideBlock.remove();
       });
     }
-    this.eventsDateView.markAsViewed();
+    if (topBlock) {
+      topBlock.find('.unviewed-top').fadeOut(1000, function () {
+        topBlock.html('');
+      });
+    }
+  },
+  onScrollToEvent: function (event) {
+    event.preventDefault();
+    var elt = $(event.currentTarget);
+    if (!elt.data('id')) {
+      return this.onMarkAsViewed();
+    }
+
+    var target = $('#unviewed-separator-' + elt.data('id'));
+    if (!target) {
+      return this.onMarkAsViewed();
+    }
+
+    this.scrollTo(target.position().top - 31, 1000); // 31 = height of top unview block
+  },
+
+  /** ***************************************************************************************************************
+   *
+   * Special blocks method
+   *
+   *****************************************************************************************************************/
+
+  updateDateBlocks: function () {
+    this.$('.events').find('.block.date').removeClass(function (index, css) {
+      return (css.match(/today|yesterday/g) || []).join(' ');
+    }).addClass('current'); // always display dates as dddd Do MMMM YYYY
+
+    var _date = new Date();
+    var today = _date.getFullYear() + '-' + (_date.getMonth() + 1) + '-' + _date.getDate();
+
+    _date.setDate(_date.getDate() - 1);
+    var yesterday = _date.getFullYear() + '-' + (_date.getMonth() + 1) + '-' + _date.getDate();
+
+    this.$('.events').find('.block.date[data-date="' + today + '"]').addClass('today');
+    this.$('.events').find('.block.date[data-date="' + yesterday + '"]').addClass('yesterday');
+  },
+  updateUnviewedBlocks: function () {
+    var id = this.model.get('first_unviewed');
+    var target = $('#' + id);
+
+    if (!target.length) {
+      return;
+    }
+    if (currentUser.get('user_id') === target.data('userId')) {
+      return;
+    }
+
+    // topbar
+    this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({
+      time: target.data('time'),
+      date: date.dayMonthTime(target.data('time')),
+      id: id
+    }));
+
+    // look for a previous new message separator, if not, insert one after "event"
+    if (this.$('.events .block.unviewed').length === 0) {
+      var tpl = require('../templates/event/block-unviewed.html');
+      $(tpl({
+        time: target.data('time'),
+        id: id
+      })).insertBefore(target);
+    }
+  },
+  onMarkAsViewed: function () {
+    this._scrollTimeoutCleanup();
+    this.model.markAsViewed();
   },
 
   /** **************************************************************************************************************
@@ -208,6 +323,11 @@ module.exports = Backbone.View.extend({
    *
    *****************************************************************************************************************/
   addFreshEvent: function (type, data) {
+    if (this.model.get('focused') !== true) {
+      // render realtime event only if discussion is focused
+      return;
+    }
+
     // scrollDown only if already on bottom before DOM insertion
     var needToScrollDown = (
       (this.model.get('focused') === true && this.isScrollOnBottom()) ||
@@ -215,18 +335,13 @@ module.exports = Backbone.View.extend({
     );
 
     // render and insert
-    this.engine.insertBottom(type, data);
+    this.engine.insertBottom([{type: type, data: data}]);
+    this.updateUnviewedBlocks();
 
     // scrollDown
     if (needToScrollDown && !this.eventsEditView.messageUnderEdition) {
       this.scrollDown();
     }
-  },
-  addBatchEvents: function (events) {
-    this.engine.insertTop(events);
-  },
-  requestHistory: function (scrollTo) {
-    this.eventsHistoryView.requestHistory(scrollTo);
   },
   onMessageMenuShow: function (event) {
     var $event = $(event.currentTarget).closest('.block.message');
@@ -255,41 +370,5 @@ module.exports = Backbone.View.extend({
       }
     });
     $(event.currentTarget).find('.dropdown-menu').html(html);
-  },
-  replaceDisconnectBlocks: function () {
-    var $lastEventDisconnect = this.$el.find('.realtime div.block.disconnect:last');
-    var that = this;
-
-    async.whilst(
-      function test () {
-        return $lastEventDisconnect.length;
-      },
-      function action (callback) {
-        var beforeLastDisconnectId = $lastEventDisconnect
-          .prevAll('div.block')
-          .not('.hello, .date')
-          .first()
-          .attr('id');
-
-        var afterLastDisconnectId = $lastEventDisconnect
-          .nextAll('div.block')
-          .not('.hello, .date')
-          .first()
-          .attr('id');
-
-        var $previousEvent = $lastEventDisconnect.prevAll('div.block').not('hello').first();
-
-        that.model.history(beforeLastDisconnectId, afterLastDisconnectId, null, function (event) {
-          if (!event.err) {
-            that.engine.replaceLastDisconnectBlock($lastEventDisconnect, $previousEvent, event.history);
-          }
-          $lastEventDisconnect = that.$el.find('.realtime div.block.disconnect:last');
-          return callback(null);
-        });
-      },
-      function back (err) {
-        return err;
-      }
-    );
   }
 });

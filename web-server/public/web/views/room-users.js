@@ -7,6 +7,7 @@ var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
 var urls = require('../../../../shared/util/url');
 var debug = donutDebug('donut:room-users');
+var currentUser = require('../libs/app').user;
 
 var RoomUsersView = Backbone.View.extend({
   template: require('../templates/room-users.html'),
@@ -16,7 +17,7 @@ var RoomUsersView = Backbone.View.extend({
   userPreviewTemplate: require('../templates/user-preview.html'),
 
   maxDisplayedUsers: 20,
-  timeBuffer: 200,
+  timeBuffer: 750,
   timeoutShow: 0,
   timeoutHide: 0,
 
@@ -28,6 +29,7 @@ var RoomUsersView = Backbone.View.extend({
 
   initialize: function () {
     this.listenTo(this.collection, 'users-redraw', this.render);
+    this.listenTo(this.model, 'change:focused', this.onFocusChange);
 
     this.$users = this.$('.users');
     this.$popinUsers = $('#popin-user');
@@ -40,6 +42,9 @@ var RoomUsersView = Backbone.View.extend({
     }, this));
 
     this.initialRender();
+
+    // everything is ready
+    this.model.users.fetchUsers();
   },
   initialRender: function () {
     var html = this.template({});
@@ -77,7 +82,7 @@ var RoomUsersView = Backbone.View.extend({
     var countHtml = i18next.t('chat.userscount', {count: this.model.get('users_number')});
     this.$count.html(countHtml);
 
-    this.initializeTooltips();
+    this.$('[data-toggle="tooltip"]').tooltip({container: 'body'});
 
     debug.end('room-users' + that.model.get('name'));
     return this;
@@ -85,10 +90,11 @@ var RoomUsersView = Backbone.View.extend({
   _remove: function () {
     this.remove();
   },
-  initializeTooltips: function () {
-    this.$('[data-toggle="tooltip"]').tooltip({
-      container: 'body'
-    });
+  onFocusChange: function () {
+    if (this.model.get('focused')) {
+      // @todo : need to reduce call to fetchUsers on dicussion focus
+      this.collection.fetchUsers();
+    }
   },
   compact: function () {
     this.$el.toggleClass('compact');
@@ -103,13 +109,14 @@ var RoomUsersView = Backbone.View.extend({
       }
 
       var offset = elt.offset();
-      var user = this.collection.get(elt.data('user-id')).toJSON();
+      var user = this.collection.get(elt.data('user-id')).toJSON()
       user.avatar = common.cloudinary.prepare(user.avatar, 100);
       user.uri = urls(user, 'user', 'uri');
 
       var data = {
         user: user,
         room_id: this.model.get('id'),
+        isCurrentUser: (user.id === currentUser.get('user_id')),
         isOwner: this.model.currentUserIsOwner(),
         isOp: this.model.currentUserIsOp(),
         isAdmin: this.model.currentUserIsAdmin()

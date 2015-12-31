@@ -8,21 +8,21 @@
     <div class="errors block mb20"></div>
 
     <form class="user-form" role="form">
-        <div class="form-group">
-            <label><%= t('preferences.welcome.title') %></label>
-            <div class="radio">
-                <label>
-                    <input type="radio" class="savable" name="browser:welcome" value="browser:welcome:true" <% if (preferences['browser:welcome']) { print('checked'); } %>>
-                    <%= t('preferences.welcome.label-true') %>
-                </label>
-            </div>
-            <div class="radio">
-                <label>
-                    <input type="radio" class="savable" name="browser:welcome" value="browser:welcome:false" <% if (!preferences['browser:welcome']) { print('checked'); } %>>
-                    <%= t('preferences.welcome.label-false') %>
-                </label>
-            </div>
-        </div>
+        <!--<div class="form-group">-->
+            <!--<label><%= t('preferences.welcome.title') %></label>-->
+            <!--<div class="radio">-->
+                <!--<label>-->
+                    <!--<input type="radio" class="savable" name="browser:welcome" value="browser:welcome:true" <% if (preferences['browser:welcome']) { print('checked'); } %>>-->
+                    <!--<%= t('preferences.welcome.label-true') %>-->
+                <!--</label>-->
+            <!--</div>-->
+            <!--<div class="radio">-->
+                <!--<label>-->
+                    <!--<input type="radio" class="savable" name="browser:welcome" value="browser:welcome:false" <% if (!preferences['browser:welcome']) { print('checked'); } %>>-->
+                    <!--<%= t('preferences.welcome.label-false') %>-->
+                <!--</label>-->
+            <!--</div>-->
+        <!--</div>-->
         <div class="form-group">
             <label><%= t('preferences.sounds.title') %></label>
             <div class="radio">

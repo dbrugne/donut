@@ -25,6 +25,7 @@ var GroupView = Backbone.View.extend({
     this.listenTo(this.model, 'change:color', this.onColor);
     this.listenTo(this.model, 'redraw', this.render);
     this.listenTo(app, 'askMembership', this.askMembership);
+    this.render();
   },
   render: function () {
     var group = this.model.toJSON();
@@ -32,8 +33,6 @@ var GroupView = Backbone.View.extend({
     var isOwner = this.model.currentUserIsOwner();
     var isOp = this.model.currentUserIsOp();
     var isAdmin = this.model.currentUserIsAdmin();
-
-    this.bannedObject = this.model.currentUserIsBanned();
 
     // prepare avatar for group
     group.avatarUrl = common.cloudinary.prepare(group.avatar, 160);
@@ -59,13 +58,13 @@ var GroupView = Backbone.View.extend({
       isOp: isOp,
       isOwner: isOwner,
       isAdmin: isAdmin,
-      isBanned: !!this.bannedObject,
+      isBanned: group.i_am_banned,
       group: group,
       created: date.longDate(group.created)
     };
-    if (typeof this.bannedObject !== 'undefined') {
-      data.banned_at = date.longDate(this.bannedObject.banned_at);
-      data.reason = this.bannedObject.reason;
+    if (group.i_am_banned) {
+      data.banned_at = date.longDate(group.banned_at);
+      data.reason = group.reason;
     }
 
     var html = this.template(data);

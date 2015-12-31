@@ -401,4 +401,63 @@ router.route('/oauth/forgot').post(function (req, res) {
   });
 });
 
+/**
+ * Route handler - register a mobile device for a given user
+ *
+ * Used by mobile client
+ *
+ * @post token
+ * @post device_token
+ * @post details
+ * @response {}
+ */
+router.route('/oauth/register-device').post(function (req, res) {
+  var token = req.body.token;
+  var deviceToken = req.body.device_token;
+  var details = req.body.details;
+
+  async.waterfall([
+    function checkData (callback) {
+      if (!deviceToken) {
+        return callback('no-device-token');
+      }
+      if (details && !_.isObject(details)) {
+        return callback('invalid-details');
+      }
+
+      return callback(null);
+    },
+    function checkToken (callback) {
+      jwt.verify(token, conf.oauth.secret, function (err, decoded) {
+        if (err) {
+          return callback(err);
+        }
+        if (!decoded.id) {
+          return callback('invalid-token');
+        }
+
+        User.findOne({_id: decoded.id}, function (err, user) {
+          if (err) {
+            return callback(err);
+          }
+          if (!user) {
+            return callback('unknown-user');
+          }
+
+          return callback(null, user);
+        });
+      });
+    },
+    function registerDevice (user, callback) {
+      user.registerDevice(deviceToken, details, callback);
+    }
+  ], function (err) {
+    if (err) {
+      return res.json({err: err});
+    }
+
+    return res.json({});
+  });
+});
+
 module.exports = router;

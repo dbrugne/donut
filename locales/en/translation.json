@@ -85,8 +85,8 @@
     ],
     "sitename": "DONUT.me",
     "landing": {
-      "title": "Chat about what you like!",
-      "description": "On DONUT chat with fun people who share your passions. This is the great return of chat rooms!",
+      "title": "Chat with your community",
+      "description": "DONUT is the chat app built for your community, university, association. Join them !",
       "keywords": "discussion,chat,chatroom,irc"
     },
     "profile": {
@@ -99,27 +99,27 @@
   },
   "date": {
     "days": {
-      "0": "sunday",
-      "1": "monday",
-      "2": "tuesday",
-      "3": "wednesday",
-      "4": "thursday",
-      "5": "friday",
-      "6": "saturday"
+      "0": "Sunday",
+      "1": "Monday",
+      "2": "Tuesday",
+      "3": "Wednesday",
+      "4": "Thursday",
+      "5": "Friday",
+      "6": "Saturday"
     },
     "months": {
-      "0": "january",
-      "1": "february",
-      "2": "march",
-      "3": "april",
-      "4": "may",
-      "5": "june",
-      "6": "july",
-      "7": "august",
-      "8": "september",
-      "9": "october",
-      "10": "november",
-      "11": "december"
+      "0": "January",
+      "1": "February",
+      "2": "March",
+      "3": "April",
+      "4": "May",
+      "5": "June",
+      "6": "July",
+      "7": "August",
+      "8": "September",
+      "9": "October",
+      "10": "November",
+      "11": "December"
     },
     "relativetime": {
       "s": "a few seconds",
@@ -135,8 +135,7 @@
       "yy": "__years__ years"
     },
     "today": "Today",
-    "yesterday": "Yesterday",
-    "the-day-before": "The day before"
+    "yesterday": "Yesterday"
   },
   "baseline": "Chat about your interests!",
   "actions": {
@@ -384,7 +383,7 @@
     "room-discussion": {
       "input-placeholder": "click here to type a message",
       "new-messages": "new messages",
-      "count-since": "new messages since __date__",
+      "count-since": "last message: __date__",
       "jumpto": "Jump to",
       "mark-as-read": "Mark as read"
     },
@@ -486,7 +485,7 @@
     "confirmation": {
       "placeholder": "Explain why, visible in the donut (optional)",
       "placeholderarea": "200 characters maximum",
-      "placeholder-domain": "example: @donut.me",
+      "placeholder-domain": "@example.com",
       "label": "Explain why (optional)",
       "label-requestallowance": "Explain why you request membership. (optional) ",
       "cancel": "Cancel",
@@ -498,7 +497,7 @@
         "refuseuser": "You are about to refuse @__username__",
         "acceptuser": "You are about to authorize @__username__",
         "disallowuser": "You are about to disallow @__username__",
-        "close-group": "You will leave this community",
+        "quit-group": "You will leave this community",
         "op-room-user": "Your are about to promote this user to moderator of this donut. Moderators can manage mute/unmute, kick and ban other users.",
         "deop-room-user": "You are about to remove as moderateur this user from this donut.",
         "ban-room-user": "You are about to ban this user from this donut.",
@@ -515,7 +514,7 @@
         "send-email": "A confirmation mail gonna be send to __email__",
         "delete-email": "__email__ will be deleted of your address",
         "change-email": "You are about to make __email__ your main email. It will be your log-in e-mail and the only one we use to send you notifications.",
-        "add-domain": "You are about to add an email domain to the allowed domain, an user with the given email could join this community without previous invitation",
+        "add-domain": "Enter the trusted e-mail domain to add.<br>Reminder: Any user with such an e-mail can join the community directly. No membership request, invitation, or password required.",
         "delete-domain": "You are about to delete the email domain __domain__ to the allowed domain, a new user with the given email could no more join this community without previous invitation, old user with this email domain will remain members"
       }
     },
@@ -577,7 +576,7 @@
       "online": "is online,",
       "offline": "is offline,",
       "read-more": "Read more",
-      "count" : "<strong class=\"nb\"></strong><strong> New</strong> Notification(s)",
+      "count" : "<span class=\"nb\"></span> new notification(s)",
       "tag-as-read" : "Tag as read",
       "empty": "You have no new notification",
       "random": "Gets __result__ (randomly between __min__ and __max__)",
@@ -596,7 +595,7 @@
         "roomtopic": "New topic in <span>__name__</span>, __topic__",
         "roommessage": "New message in <span>__name__</span>",
         "usermention": "You were mentionned in <span>__name__</span>",
-        "usermessage": "<span>@__username__</span>: __message__",
+        "usermessage": "<span>@__username__</span> __message__",
         "roominvite": "<span>@__username__</span> invites you to join <span>__name__</span>",
         "roomdelete": "<span>@__username__</span> delete your donut <span>__name__</span>",
         "roomcreate": "<span>@__username__</span> create the donut <span>__name__</span>",
@@ -792,10 +791,10 @@
       },
       "group-form": {
         "mode": {
-          "domain": "Allowed email domains",
+          "domain": "Trusted e-mail domain",
           "disclaimer": {
             "group-password": "Users with the password can join this community without prior invitation.",
-            "domain": "Users with the given email domain can join this community without prior invitation."
+            "domain": "Authorize any user having a trusted e-mail to join (e.g. **@college.edu)."
           }
         },
         "create": {
@@ -818,8 +817,8 @@
           },
           "visibility": {
             "label": "Visibility (admin only)",
-            "true": "This donut is displayed on homepage",
-            "false": "This donut <strong>is not</strong> displayed on homepage"
+            "true": "This community is displayed on homepage",
+            "false": "This community<strong>&nbsp;is not&nbsp;</strong>displayed on homepage"
           },
           "priority": {
             "label": "Priority (admin only)",
@@ -861,7 +860,7 @@
             "public": "Any user can join, participate and access history. Moderation tools available.",
             "private": "Only users you authorize can join, participate and access history. Moderation tools available.",
             "password": "Users with the password can join without prior invitation.",
-            "memberscondition": "Membership conditions or procedures"
+            "memberscondition": "Display a message"
           }
         },
         "create": {
@@ -878,12 +877,12 @@
             "label": "Description",
             "placeholder": "Describe the donut in a few words",
             "help": "Optional",
-            "conditions": "Displayed tout any user on the access page_ selection criteria, password hint,..."
+            "conditions": "Displayed to any user on the access page_ selection criteria, password hint,..."
           },
           "visibility": {
             "label": "Visibility (admin only)",
             "true": "This donut is displayed on homepage",
-            "false": "This donut <strong>is not</strong> displayed on homepage"
+            "false": "This donut<strong>&nbsp;is not&nbsp;</strong>displayed on homepage"
           },
           "priority": {
             "label": "Priority (admin only)",
@@ -1005,7 +1004,9 @@
   "group": {
     "administrator": "Moderators",
     "users": "Users",
-    "invite": "Manage members",
+    "manage": "Manage members",
+    "invite": "Invite members",
+    "members": "Members list",
     "ask-membership": "request membership",
     "blocked": "This community is blocked by a password, to join we invite you to type it",
     "already-allowed": "<strong>@__username__</strong> is already an authorized user",
@@ -1032,7 +1033,7 @@
         "format": "Invalid e-mail",
         "alreadyexists": "This e-mail is already used by another account",
         "alreadyyours": "You already use this e-mail",
-        "domain": "Error - Use a permanent email"
+        "domain": "Disposable emails website addresses are not allowed"
       },
       "new": "New E-mail",
       "confirm": "Confirm"
@@ -1524,6 +1525,9 @@
       "disclaimer": "You can invite a user to join this community.",
       "pending-disclaimer" : "Users pending for your approval.",
       "allowed-disclaimer" : "Users invited to join this community."
+    },
+    "users-group": {
+      "disclaimer" : "You can invite a user to join this community. To do so, <a href=\"#\" class=\"open-group-users-allowed\" data-group-id=\"__group_id__\">click here</a>"
     }
   }
 }

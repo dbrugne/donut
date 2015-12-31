@@ -1,3 +1,4 @@
+var $ = require('jquery');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
@@ -9,10 +10,6 @@ var OneToOnePanelView = Backbone.View.extend({
   tagName: 'div',
 
   className: 'discussion',
-
-  hasBeenFocused: false,
-
-  reconnect: false,
 
   template: require('../templates/discussion-onetoone.html'),
 
@@ -31,11 +28,12 @@ var OneToOnePanelView = Backbone.View.extend({
     this.listenTo(this.model, 'change:website', this.onWebsite);
     this.listenTo(this.model, 'change:status', this.onStatus);
     this.listenTo(this.model, 'change:banned', this.onBannedChange);
+    this.listenTo(this.model, 'change:unviewed', this.onMarkAsViewed);
 
     this.render();
 
     this.eventsView = new EventsView({
-      el: this.$('.events'),
+      el: this.$el,
       model: this.model
     });
     this.inputView = new InputView({
@@ -54,11 +52,13 @@ var OneToOnePanelView = Backbone.View.extend({
       data: data
     });
 
+    if (data.location) {
+      data.user_location = data.location;
+    }
     // render
     var html = this.template(data);
     this.$el.attr('data-identifier', this.model.get('identifier'));
     this.$el.html(html);
-    this.$el.hide();
 
     this.$statusBlock = this.$('.header .status-block');
 
@@ -81,32 +81,13 @@ var OneToOnePanelView = Backbone.View.extend({
     if (this.model.get('focused')) {
       this.$el.show();
 
-      // need to load history?
-      if (!this.hasBeenFocused) {
-        this.onFirstFocus();
-      }
-
-      if (this.reconnect) {
-        this.onFirstFocusAfterReconnect();
-      }
-      this.hasBeenFocused = true;
-      this.reconnect = false;
-
       // refocus an offline one after few times
       date.from('fromnow', this.$('.ago span'));
-      this.eventsView.onScroll();
     } else {
       this.$el.hide();
     }
   },
-  onFirstFocus: function () {
-    this.eventsView.requestHistory('bottom');
-    this.eventsView.scrollDown();
-  },
-  onFirstFocusAfterReconnect: function () {
-    this.eventsView.replaceDisconnectBlocks();
-    this.eventsView.scrollDown();
-  },
+
   /**
    * Update user details methods
    */
@@ -150,6 +131,15 @@ var OneToOnePanelView = Backbone.View.extend({
     } else {
       this.$('#onetoone .user').removeClass('is-banned');
     }
+  },
+
+  // only care about models to set a viewed
+  onMarkAsViewed: function (data) {
+    if (data.get('unviewed') === true) {
+      return;
+    }
+
+    this.eventsView.hideUnviewedBlocks();
   }
 });
 

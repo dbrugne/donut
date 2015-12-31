@@ -1,12 +1,15 @@
 var $ = require('jquery');
+var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../libs/app');
 
 module.exports = Backbone.View.extend({
   historyLoading: false,
   historyNoMore: false,
+  numberOfEventsToRetrieve: 50,
 
   initialize: function (options) {
+    this.parent = options.parent;
     this.render();
   },
   render: function () {
@@ -32,33 +35,30 @@ module.exports = Backbone.View.extend({
 
     // since
     var first = this.$realtime.find('.block[id]').first();
-    var end = (!first || !first.length)
+    var id = (!first || !first.length)
       ? null
       : first.attr('id');
 
-    var that = this;
-    this.model.history(null, end, 50, function (data) {
-      data.history.reverse();
-      that.trigger('addBatchEvents', {
-        history: data.history,
-        more: data.more
-      });
+    this.model.history(id, 'older', this.numberOfEventsToRetrieve, _.bind(function (data) {
+      this.historyLoading = false;
+      this.historyNoMore = !data.more;
+      this.toggleHistoryLoader(data.more);
 
-      that.historyLoading = false;
-      that.historyNoMore = !data.more;
-      that.toggleHistoryLoader(data.more);
+      this.parent.engine.insertTop(data.history);
+      this.parent.updateDateBlocks();
+      this.parent.updateUnviewedBlocks();
 
       if (scrollTo === 'top') { // on manual request
         var targetTop = $nextTopElement.position().top;
-        that.$el.scrollTop(targetTop - 8); // add a 8px margin
+        this.$el.scrollTop(targetTop - 8); // add a 8px margin
         $nextTopElement.remove();
       }
 
       if (scrollTo === 'bottom') {
         // on first focus history load
-        app.trigger('scrollDown');
+        this.model.trigger('scrollDown');
       }
-    });
+    }, this));
   },
   toggleHistoryLoader: function (more) {
     app.trigger('resetDate');

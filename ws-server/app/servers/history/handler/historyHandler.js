@@ -21,7 +21,9 @@ handler.call = function (data, session, next) {
   var room = session.__room__;
   var one = session.__user__;
 
-  var criteria = {};
+  var direction = (data.direction === 'older')
+    ? 'older'
+    : 'later';
   var limit = data.limit || 100;
   var event = {
     history: []
@@ -45,19 +47,19 @@ handler.call = function (data, session, next) {
     },
     function request (callback) {
       /**
-       * I can have NO start and NO end = request last n records
-       * I can have start and NO end = request n record since start
-       * I can have NO start and end = request n record until end (current)
+       * We can request a discussion history in following ways:
+       * - initial load: last n events from last in desc direction
+       * - load more: from 'id' in desc direction
+       * - refocus: from last until 'id' in desc direction
        */
-      if (data.start && common.validate.objectId(data.start)) {
+      var criteria = {};
+
+      if (data.id && common.validate.objectId(data.id)) {
+        var operator = (direction === 'older')
+          ? '$lt'
+          : '$gt';
         criteria._id = {};
-        criteria._id['$gt'] = data.start;
-      }
-      if (data.end && common.validate.objectId(data.end)) {
-        if (!_.isObject(criteria._id)) {
-          criteria._id = {};
-        }
-        criteria._id['$lt'] = data.end;
+        criteria._id[operator] = data.id;
       }
 
       var q;
@@ -74,7 +76,6 @@ handler.call = function (data, session, next) {
         q = HistoryOneModel.find(criteria);
       }
 
-      // important for timeline logic but also optimize rendering on frontend
       q.sort({ _id: 'desc' });
       q.limit(limit + 1);
 
@@ -100,6 +101,9 @@ handler.call = function (data, session, next) {
       _.each(docs, function (model) {
         event.history.push(model.toClientJSON());
       });
+
+      // events are sent in chronological order
+      event.history.reverse();
 
       return callback(null);
     }

@@ -163,7 +163,7 @@ Notification.prototype.sendEmail = function (model, done) {
           data = {
             username: model.data.by_user.username,
             roomname: room.getIdentifier(),
-            groupname: model.data.room.group.name
+            groupname: (model.data.room.group) ? model.data.room.group.name : ''
           };
           break;
         case 'roomcreate':

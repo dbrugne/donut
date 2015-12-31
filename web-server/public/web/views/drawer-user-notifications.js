@@ -22,7 +22,8 @@ var DrawerUserNotificationsView = Backbone.View.extend({
   events: {
     'click .actions .read-more': 'onReadMore',
     'click .action-tag-as-read': 'onTagAsRead',
-    'click .action-tag-as-done': 'onTagAsDone'
+    'click .action-tag-as-done': 'onTagAsDone',
+    'click a.message': 'onMessageClick'
   },
 
   more: false,
@@ -40,7 +41,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
 
     app.client.notificationRead(null, null, 10, _.bind(function (data) {
       this.isThereMoreNotifications = data.more;
-      this.$el.html(this.template({}));
+      this.$el.html(this.template({user_id: this.userId}));
 
       this.$unreadCount = this.$('.unread-count');
       this.$count = this.$unreadCount.find('.nb');
@@ -55,7 +56,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
         html += this.renderNotification(element);
       }, this));
 
-      this.unread = data.unread;
+      this.setUnreadCount(data.unread);
 
       this.$menu.html(this.$menu.html() + html);
 
@@ -178,7 +179,6 @@ var DrawerUserNotificationsView = Backbone.View.extend({
 
     // Only call Client if at least something to tag as viewed
     if (ids.length === 0) {
-      this.setUnreadCount(0);
       return;
     }
 
@@ -287,6 +287,9 @@ var DrawerUserNotificationsView = Backbone.View.extend({
   },
   countNotificationsInDropdown: function () {
     return this.$menu.find('.message').length;
+  },
+  onMessageClick: function(event) {
+    this.trigger('close');
   }
 });
 

@@ -28,6 +28,7 @@ var WindowView = Backbone.View.extend({
     this.listenTo(app, 'playSoundForce', this._play);
     this.listenTo(app, 'newEvent', this.onNewEvent);
     this.listenTo(app, 'setTitle', this.setTitle);
+    this.listenTo(app, 'viewedEvent', this.renderTitle);
 
     this.$window = $(window);
 
@@ -110,7 +111,7 @@ var WindowView = Backbone.View.extend({
     this.focused = true;
 
     // on window refocus execute some logic on current focused model
-    var model = this._getFocusedModel();
+    var model = app.getFocusedModel();
     if (model) {
       model.trigger('windowRefocused'); // mark visible as read for focused discussion when window recover its focus
     }
@@ -127,7 +128,7 @@ var WindowView = Backbone.View.extend({
     }
 
     // only if connected
-    if (!app.client.sConnected()) {
+    if (!app.client.isConnected()) {
       return;
     }
 
@@ -139,15 +140,6 @@ var WindowView = Backbone.View.extend({
     if (app.user.shouldDisplayExitPopin()) {
       return i18next.t('chat.closemessage');
     }
-  },
-
-  _getFocusedModel: function () {
-    var model = app.rooms.findWhere({focused: true});
-    if (!model) {
-      model = app.ones.findWhere({focused: true});
-    }
-
-    return model; // could be 'undefined'
   },
 
   /** *************************************************
@@ -191,6 +183,7 @@ var WindowView = Backbone.View.extend({
     } else {
       app.trigger('redrawNavigationOnes');
     }
+    app.trigger('unviewedEvent');
 
     // ignore event from current user
     if (app.user.get('user_id') === data.user_id) {
@@ -215,42 +208,35 @@ var WindowView = Backbone.View.extend({
 
     // desktop notification
     var key = (model.get('type') === 'room')
-      ? 'room:' + model.get('username')
-      : 'one:' + model.get('username');
+      ? 'room:' + model.get('id')
+      : 'one:' + model.get('id');
     var last = this.desktopNotificationsLimiters[key];
     if (last && (Date.now() - last) <= 60 * 1000) { // 1mn
       return;
     }
 
-    var title;
-    if (type === 'room:topic') {
-      title = i18next.t('chat.notifications.messages.roomtopic', {
-        name: data.name,
-        topic: data.topic
-      });
-    } else if (type === 'room:message') {
-      // same message as user:message
-      title = i18next.t('chat.notifications.messages.usermessage', {
-        username: data.username,
-        message: data.message
-      });
-    } else if (type === 'user:message') {
-      title = i18next.t('chat.notifications.messages.usermessage', {
-        username: data.from_username,
-        message: data.message
-      });
-    } else {
+    if (type !== 'room:message' && type !== 'user:message') {
       return;
     }
 
-    if (title) {
-      title = common.markup.toText(title);
-      if (title) {
-        title = title.replace(/<\/*span>/g, '');
-        this.desktopNotify(title, '');
-        this.desktopNotificationsLimiters[key] = Date.now();
-      }
+    var title;
+    if (type === 'room:message') {
+      title = i18next.t('chat.notifications.messages.roommessage', {
+        name: model.get('identifier'),
+        message: data.message ? common.markup.toText(data.message) : ''
+      });
+    } else {
+      title = i18next.t('chat.notifications.messages.usermessage', {
+        username: data.username,
+        message: data.message ? common.markup.toText(data.message) : ''
+      });
     }
+    if (!title) {
+      return;
+    }
+    title = title.replace(/<\/*span>/g, '');
+    this.desktopNotify(title, '');
+    this.desktopNotificationsLimiters[key] = Date.now();
   },
   play: function () {
     if (!app.user.shouldPlaySound()) {

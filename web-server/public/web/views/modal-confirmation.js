@@ -124,8 +124,8 @@ var ConfirmationModalView = Backbone.View.extend({
         this.$message.text(i18next.t('chat.confirmation.message.acceptuser', {username: this.options.username}));
       } else if (this.options.message === 'disallow-user') {
         this.$message.text(i18next.t('chat.confirmation.message.disallowuser', {username: this.options.username}));
-      } else if (this.options.message === 'close-group') {
-        this.$message.text(i18next.t('chat.confirmation.message.close-group'));
+      } else if (this.options.message === 'quit-group') {
+        this.$message.text(i18next.t('chat.confirmation.message.quit-group'));
       } else if (this.options.message === 'ban-group-user') {
         this.$message.text(i18next.t('chat.confirmation.message.ban-group-user', {username: this.options.username}));
       } else if (this.options.message === 'deban-group-user') {
@@ -166,7 +166,7 @@ var ConfirmationModalView = Backbone.View.extend({
       } else if (this.options.message === 'devoice-room-user') {
         this.$message.text(i18next.t('chat.confirmation.message.devoice-room-user'));
       } else if (this.options.message === 'add-domain') {
-        this.$message.text(i18next.t('chat.confirmation.message.add-domain'));
+        this.$message.html(i18next.t('chat.confirmation.message.add-domain'));
         this.$input.attr('placeholder', i18next.t('chat.confirmation.placeholder-domain'));
       } else if (this.options.message === 'delete-domain') {
         this.$message.text(i18next.t('chat.confirmation.message.delete-domain', {domain: this.options.domain}));

@@ -5,6 +5,12 @@ var app = require('./app');
 var i18next = require('i18next-client');
 var HomeView = require('../views/home');
 var SearchView = require('../views/search');
+var GroupView = require('../views/group');
+var RoomView = require('../views/discussion-room');
+var RoomViewBlocked = require('../views/discussion-room-blocked');
+var OneView = require('../views/discussion-onetoone');
+
+var debug = require('./donut-debug')('donut:discussions');
 
 var DonutRouter = Backbone.Router.extend({
   routes: {
@@ -17,6 +23,8 @@ var DonutRouter = Backbone.Router.extend({
     '*default': 'default'
   },
 
+  $discussionsPanelsContainer: $('#center'), // router is reponsible to add views in DOM
+
   clientOnline: false,
 
   nextFocus: null,
@@ -25,20 +33,22 @@ var DonutRouter = Backbone.Router.extend({
   searchView: null,
 
   initialize: function (options) {
-    var that = this;
+    // on connection/reconnection
     this.listenTo(app, 'readyToRoute', _.bind(function () {
-      that.clientOnline = true;
+      this.clientOnline = true;
       Backbone.history.start();
     }, this));
+    // on disconnection
     this.listenTo(app.client, 'disconnect', _.bind(function () {
-      that.clientOnline = false;
+      this.clientOnline = false;
       Backbone.history.stop();
     }, this));
     this.listenTo(app, 'focus', this.focus);
+    this.listenTo(app, 'discussionAdded', this.onDiscussionAdded);
+    this.listenTo(app, 'discussionRemoved', this.onDiscussionRemoved);
     this.listenTo(app, 'joinRoom', this.focusRoom);
     this.listenTo(app, 'joinOnetoone', this.focusOne);
     this.listenTo(app, 'joinGroup', this.joinGroup);
-    this.listenTo(app, 'viewAdded', this.viewAdded);
     this.listenTo(app, 'goToSearch', this.goToSearch);
     this.listenTo(app, 'updateSearch', this.search);
 
@@ -100,7 +110,12 @@ var DonutRouter = Backbone.Router.extend({
     var model = app.groups.iwhere('name', name);
     if (model) {
       model.onRefresh();
-      return this.focus(model);
+      this.focus(model);
+      return app.trigger('nav-active-group', {
+        group_id: model.get('group_id'),
+        group_name: model.get('name'),
+        popin: data.popin
+      });
     }
 
     app.client.groupId(name, _.bind(function (response) {
@@ -246,11 +261,17 @@ var DonutRouter = Backbone.Router.extend({
       }
     }
 
+    // @todo use app.setFocusedModel() instead following 2 instructions
+
     // unfocus every model
     this.unfocusAll();
 
     // Focus the one we want
     model.set('focused', true);
+
+    if (!this.views[model.get('id')]) {
+      this.addView(model);
+    }
 
     // color
     if (model.get('color')) {
@@ -269,12 +290,66 @@ var DonutRouter = Backbone.Router.extend({
 
     app.trigger('drawerClose');
   },
-  viewAdded: function (model, collection) {
+
+  views: {},
+
+  addView: function (model) {
+    var constructor;
+    if (model.get('type') === 'room') {
+      if (model.get('blocked')) {
+        constructor = RoomViewBlocked;
+      } else {
+        constructor = RoomView;
+      }
+    } else if (model.get('type') === 'group') {
+      constructor = GroupView;
+    } else {
+      constructor = OneView;
+    }
+
+    debug('add view', model.get('identifier'));
+
+    // create view
+    var view = new constructor({ model: model });
+
+    // add to views list
+    // @todo : store view on model, check for cyclic ref problems
+    this.views[model.get('id')] = view;
+
+    // append to DOM
+    this.$discussionsPanelsContainer.append(view.$el);
+  },
+  onDiscussionAdded: function (model) {
+    if (!model) {
+      return;
+    }
+
+    // focus after join
     if (this.nextFocus === model.get('identifier')) {
       this.focus(model); // implicit navigation updating
-      this.thisDiscussionShouldBeFocusedOnSuccess = null;
+      this.nextFocus = null;
     }
-  }
+  },
+  onDiscussionRemoved: function (model) {
+    if (!model) {
+      return;
+    }
+    var view = this.views[model.get('id')];
+    if (!view) {
+      return;
+    }
+
+    debug('remove view', model.get('identifier'));
+
+    var wasFocused = model.get('focused');
+    view.removeView();
+    delete this.views[model.get('id')];
+
+    if (wasFocused) {
+      // focus default (home)
+      Backbone.history.navigate('#', {trigger: true});
+    }
+  },
 });
 
 module.exports = new DonutRouter();

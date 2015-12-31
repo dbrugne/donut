@@ -1,4 +1,4 @@
-.btn-facebook { margin-top: 10px; position: relative; margin-bottom: 15px; background-color: #4a649d; color: @cl-background; text-transform: uppercase; border-radius: 25px; padding: 11px 20px; .ft-opensans-bold; font-size: 1.3rem;
+.btn-facebook { margin-top: 10px; position: relative; background-color: #4a649d; color: @cl-background; text-transform: uppercase; border-radius: 25px; padding: 11px 20px; .ft-opensans-bold; font-size: 1.2rem;
   span { margin-left: 7px; color: @cl-background; }
   i { font-size: 1.4em; margin-right: 2px; vertical-align: middle; color: @cl-background; }
   &:hover { color: @cl-background;
@@ -7,33 +7,8 @@
   }
 }
 
-.header-out {  background-color: rgba(255,255,255, 0.5); height: 55px;
-  .navbar { margin-bottom:0; border:0;
-    .nav .open>a, .nav .open>a:hover, .nav .open>a:focus { background-color: transparent; }
-    .nav>li>a { text-decoration:underline;
-      &:hover, &:active, &:visited { text-decoration:none;background-color: transparent; }
-    }
-    .dropdown-toggle i { font-size:18px;
-      &:hover { .opacity(0.5); }
-    }
-    .dropdown-menu { padding:10px 0;
-      li.colored {
-        a { text-decoration:none; }
-        &:hover { background-color: @cl-first;
-          a { color:#fff; background-color: @cl-first; }
-        }
-      }
-    }
-    .navbar-brand { .display-flex; .flex-flow(column nowrap); padding:0; margin-left:0;
-      .logo { height:45px; margin: auto 0; }
-    }
-    .signup a, .login a { font-size:1.6rem; color:@cl-text; .ft-opensans; text-decoration:none !important; font-weight: bold; text-transform: lowercase;
-      &:hover { text-decoration:underline; }
-    }
-  }
-}
-
 #signup, #login, #forgot, #reset {
+  .content { max-width:450px; margin: 100px auto 0; }
   .form {
     .form-group {
       .form-control { padding: 4px 14px 4px 48px; }
@@ -43,7 +18,7 @@
         &::after { content: ''; width: 0; height: 0; border-style: solid; border-width: 8px 0 8px 8px; border-color: transparent transparent transparent #FFF; position: absolute; top: 7px; right: -8px; display: block; padding: 0; }
       }
     }
-    a.btn-facebook { .align-self(center); text-decoration: none; color:#FFF; display: inline-block; font-size:1.3rem; }
+    a.btn-facebook { .align-self(center); text-decoration: none; color:#FFF; display: inline-block; font-size:1.2rem; }
   }
   .method-facebook-or { border-bottom: 1px solid @cl-subtext10; margin-bottom: 20px; padding: 20px 0 0 0;
     .outer { width:150px;
@@ -52,13 +27,13 @@
   }
 }
 
-#landing { background-color: #FFF; @height:500px;
-  header { position: fixed; width: 100%; z-index: 100; .transition(background-color 300ms);
+#signup, #landing, #forgot, #reset, .body-static  {
+  header { background-color: #1d252f; width: 100%; z-index: 100; .transition(background-color 300ms);
     .navbar-toggle { float:left;
       .icon-bar { background-color:#FFF; }
     }
     .navbar { margin-bottom:0; }
-    .navbar li a { /*font-family: FreightSansProMedium-Regular;*/ .ft-opensans; font-size: 12px; color: #FFFFFF; line-height: 28.57px; }
+    .navbar li a { .ft-opensans; font-size: 12px; color: #FFFFFF; line-height: 28.57px; }
     .nav .open>a, .nav .open>a:hover, .nav .open>a:focus { background-color: transparent; }
     .nav>li>a { text-transform: uppercase;
       &:hover, &:active, &:visited { text-decoration:none; background-color: transparent; }
@@ -69,6 +44,10 @@
     }
     .lang:last-child a:after { background-color: transparent; }
   }
+}
+
+#landing { background-color: #FFF; @height:500px;
+  header { position: fixed; background-color: transparent; }
   &.clean header { background-color: #1d252f; }
   .authenticate { width: 100%;
     .login {
@@ -93,7 +72,6 @@
       .justify-content(center);
       .align-items(center);
       .border-radius(6px);
-      /*font-family: FreightSansProSemibold-Regular;*/
       font-size: 15px;
       color: #FFFFFF;
       line-height: 28.57px;
@@ -196,7 +174,7 @@
       }
     }
 
-    .background2 { margin:40px auto 0; background: transparent url('@{img-path}/landing/background2.jpg') no-repeat; width:1400px; height:591px; background-position: center center; }
+    .background2 { margin:40px auto 0; background: transparent url('@{img-path}/landing/background2.jpg') no-repeat; width:100%; height:591px; background-position: center center; }
     .overlays { width:780px; height:195px;
       .left1  { position: absolute; bottom: -40px; left: 0; background: transparent url('@{img-path}/landing/left1.svg') no-repeat;  background-size: cover;  width:88px; height:93px;    background-position: center center; }
       .left2  { position: absolute; top: 0; left: 120px; background: transparent url('@{img-path}/landing/left2.svg') no-repeat;  background-size: cover;     width:134px; height:151px;  background-position: center center; }
@@ -223,7 +201,7 @@
       margin-bottom:25px;
     }
     .description {
-      .ft-opensans-light;
+      .ft-opensans;
       font-size: 14px;
       color: #1D252F;
       line-height: 22.85px;
@@ -295,15 +273,11 @@
   }
 }
 
-.body-static { padding-top: 10px;
+.body-static {
   a { font-weight: bold; }
   blockquote { font-size: 1em; }
 
-  div.logo { .row; padding-top: 10px;
-    img { width: 280px; }
-  }
-
-  div.main { .row;
+  div.main {
     div.content {
       h1 { .ft-opensans-extra-bold; }
     }
@@ -425,11 +399,8 @@
   }
 }
 
-/*
-  FQDN : /signup
-*/
 #signup {
-  .login .content { background-color: #fff; margin: 0 auto; padding: 20px 30px 15px; .border-radius(5px); .box-shadow(0 1px 0 rgba(0,0,0,.25)); border: 1px solid #e8e8e8;
+  .login .content { background-color: #fff; padding: 20px 30px 15px; .border-radius(5px); .box-shadow(0 1px 0 rgba(0,0,0,.25)); border: 1px solid #e8e8e8;
     .input-icon { border-left: 2px solid @cl-first; }
     .form-title { font-weight: 300; margin-bottom: 25px; }
     .form-actions { background-color: #fff; clear: both; border: 0; border-bottom: 1px solid #eee; padding: 0 30px 25px 30px;  }

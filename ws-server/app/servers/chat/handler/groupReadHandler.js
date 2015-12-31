@@ -140,19 +140,11 @@ handler.call = function (data, session, next) {
         });
       }
 
-      read.bans = [];
-      if (group.bans && group.bans.length > 0) {
-        _.each(group.bans, function (ban) {
-          var el = {
-            user_id: ban.user.id,
-            username: ban.user.username,
-            avatar: ban.user._avatar(),
-            color: ban.user.color,
-            banned_at: ban.banned_at,
-            reason: ban.reason
-          };
-          read.bans.push(el);
-        });
+      var banned = group.isInBanned(user.id);
+      if (typeof banned !== "undefined") {
+        read.i_am_banned = true;
+        read.banned_at = banned.banned_at;
+        read.reason = banned.reason
       }
 
       return callback(null);

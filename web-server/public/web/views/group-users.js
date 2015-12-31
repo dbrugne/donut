@@ -1,8 +1,6 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
-var donutDebug = require('../libs/donut-debug');
-var debug = donutDebug('donut:group-users');
 
 var GroupUsersView = Backbone.View.extend({
   template: require('../templates/group-users.html'),
@@ -12,8 +10,6 @@ var GroupUsersView = Backbone.View.extend({
     this.render();
   },
   render: function () {
-    debug.start('group-users' + this.model.get('name'));
-
     var isMember = this.model.currentUserIsMember();
     var isOwner = this.model.currentUserIsOwner();
     var isOp = this.model.currentUserIsOp();
@@ -48,7 +44,6 @@ var GroupUsersView = Backbone.View.extend({
     this.$el.html(html);
     this.initializeTooltips();
 
-    debug.end('group-users' + this.model.get('name'));
     return this;
   },
   _remove: function () {

@@ -18,6 +18,9 @@ var ModalJoinGroupView = Backbone.View.extend({
   },
 
   render: function () {
+    if (this.data.disclaimer) {
+      this.data.disclaimer = _.escape(this.data.disclaimer);
+    }
     this.$el.html(this.template({data: this.data}));
 
     // error and success

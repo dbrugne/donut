@@ -16,8 +16,6 @@ var RoomBlockedView = Backbone.View.extend({
 
   passwordPattern: /(.{4,255})$/i,
 
-  hasBeenFocused: false,
-
   template: require('../templates/discussion-room-blocked.html'),
 
   events: {
@@ -33,9 +31,6 @@ var RoomBlockedView = Backbone.View.extend({
     this.render();
   },
   render: function () {
-    // @todo dbr : handle groupban and groupdisallow blocked values
-    // @todo dbr : persist blocked room on user on groupban and groupdisallow blocked values
-
     var data = this.model.toJSON();
 
     // banned_at
@@ -67,7 +62,6 @@ var RoomBlockedView = Backbone.View.extend({
     this.$el.attr('data-identifier', this.model.get('identifier'));
     this.$el.html(html);
     this.$error = this.$('.error');
-    this.$el.hide();
 
     this.initializeTooltips();
 
@@ -84,8 +78,6 @@ var RoomBlockedView = Backbone.View.extend({
   onFocusChange: function () {
     if (this.model.get('focused')) {
       this.$el.show();
-      this.$error.hide();
-      this.hasBeenFocused = true;
     } else {
       this.$el.hide();
     }

@@ -7,7 +7,8 @@ module.exports = Backbone.View.extend({
     this.render();
   },
   render: function () {
-    this.$dateContainer = this.$el.closest('.discussion').find('.date-ctn');
+    this.$ctn = this.$('.date-ctn .ctn');
+    this.$scrollable = this.$('.scrollable .block.date');
     return this;
   },
   scroll: function (options) {
@@ -18,7 +19,7 @@ module.exports = Backbone.View.extend({
     var currentScrollPosition = options.currentScrollPosition;
 
     var last = null;
-    this.$('.scrollable .block.date').each(function (index) {
+    this.$scrollable.each(function (index) {
       if ($(this).position().top > currentScrollPosition) {
         return false; // break on first visible
       }
@@ -29,15 +30,9 @@ module.exports = Backbone.View.extend({
       return this.reset();
     }
 
-    this.$dateContainer.find('.ctn').html(last.clone());
+    this.$ctn.html(last.clone());
   },
   reset: function () {
-    this.$dateContainer.find('.ctn').html('');
-  },
-  markAsViewed: function() {
-    var elt = this.$dateContainer.find('.ctn-unviewed');
-    elt.find('.unviewed-top').fadeOut(1000, function(){
-      elt.html('');
-    });
+    this.$ctn.html('');
   }
 });

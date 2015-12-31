@@ -1,3 +1,5 @@
-<div class="block date" data-time="<%= time %>">
-    <span class="moment"><%= date %></span>
+<div class="block date <%=dateClass%>" data-time="<%= time %>" data-date="<%= date %>">
+    <span class="moment current"><%= str %></span>
+    <span class="moment today"><%= t('date.today') %></span>
+    <span class="moment yesterday"><%= t('date.yesterday') %></span>
 </div>

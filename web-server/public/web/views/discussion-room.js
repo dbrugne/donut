@@ -13,17 +13,12 @@ var RoomView = Backbone.View.extend({
 
   className: 'discussion',
 
-  hasBeenFocused: false,
-
-  reconnect: false,
-
   template: require('../templates/discussion-room.html'),
 
   events: {
     'click .share .facebook': 'shareFacebook',
     'click .share .twitter': 'shareTwitter',
-    'click .share .googleplus': 'shareGoogle',
-    'click .mark-as-viewed': 'removeUnviewedBlock'
+    'click .share .googleplus': 'shareGoogle'
   },
 
   initialize: function () {
@@ -39,7 +34,7 @@ var RoomView = Backbone.View.extend({
     this.render();
 
     this.eventsView = new EventsView({
-      el: this.$('.events'),
+      el: this.$el,
       model: this.model
     });
     this.inputView = new InputView({
@@ -104,7 +99,6 @@ var RoomView = Backbone.View.extend({
     });
     this.$el.attr('data-identifier', this.model.get('identifier'));
     this.$el.html(html);
-    this.$el.hide();
 
     this.initializeTooltips();
 
@@ -125,32 +119,9 @@ var RoomView = Backbone.View.extend({
   onFocusChange: function () {
     if (this.model.get('focused')) {
       this.$el.show();
-
-      // need to load history?
-      if (!this.hasBeenFocused) {
-        this.onFirstFocus();
-      }
-
-      if (this.reconnect) {
-        this.onFirstFocusAfterReconnect();
-      }
-      this.reconnect = false;
-      this.hasBeenFocused = true;
-
-      this.eventsView.onScroll();
     } else {
       this.$el.hide();
     }
-  },
-  onFirstFocus: function () {
-    this.eventsView.requestHistory('bottom');
-    this.eventsView.scrollDown();
-    this.model.users.fetchUsers();
-  },
-  onFirstFocusAfterReconnect: function () {
-    this.eventsView.replaceDisconnectBlocks();
-    this.eventsView.scrollDown();
-    this.model.users.fetchUsers();
   },
 
   /**
@@ -232,21 +203,13 @@ var RoomView = Backbone.View.extend({
     });
   },
 
-  removeUnviewedBlock: function (event) {
-    event.preventDefault();
-    var elt = $(event.currentTarget).closest('.unviewed-top ');
-    elt.fadeOut(1000, function () {
-      elt.remove();
-    });
-  },
-
   // only care about models to set a viewed
   onMarkAsViewed: function (data) {
     if (data.get('unviewed') === true) {
       return;
     }
 
-    this.eventsView.markAsViewed();
+    this.eventsView.hideUnviewedBlocks();
   }
 });
 

@@ -1,4 +1,4 @@
-<div class="side oneside dc-back <% if (!poster) { %>poster-empty<% } %>" style="<% if (poster) { %>background-image: url(<%= poster %>);<% }; %>"></div>
+<div class="side oneside dc-back <% if (typeof(poster) === 'undefined' || !poster) { %>poster-empty<% } %>" style="<% if (typeof(poster) !== 'undefined' && poster) { %>background-image: url(<%= poster %>);<% }; %>"></div>
 <div class="content" id="onetoone">
     <div class="header user <% if (banned === true) { %> is-banned <% } %>">
         <div class="avatar relative open-user-profile border-shadow" data-user-id="<%= user_id %>">
@@ -17,9 +17,11 @@
             </span>
 
             <div class="flex-parent">
-                <span class="  flex-parent center">
-                    <span class="location"><%= location %></span>
-                </span>
+                <% if (typeof user_location !== "undefined" && user_location !== "") { %>
+                    <span class="flex-parent center">
+                        <span class="location"><%= user_location %></span>
+                    </span>
+                <% } %>
                 <%= dropdown %>
             </div>
         </div>
@@ -33,7 +35,9 @@
                     <%= t('global.offline') %>
                 </span>
             </em>
-            <span class="ago display-offline">(<%= t('profile.user.onlined', {time: '<span data-time="'+onlined+'"></span>'}) %>)</span>
+            <% if(typeof(onlined) !== 'undefined' && onlined) { %>
+                <span class="ago display-offline">(<%= t('profile.user.onlined', {time: '<span data-time="'+onlined+'"></span>'}) %>)</span>
+            <% } %>
             <span class="hello-block   display-offline">
                 <%= t('chat.welcome.onetoone') %>
             </span>
@@ -45,7 +49,7 @@
                     </span>
                 </span>
             </span>
-            <% if (confirmed === false) { %>
+            <% if (typeof(confirmed) !== 'undefined' && confirmed === false) { %>
                 <span class="not-confirmed">
                     - <%= t('chat.blocked.cant-answer', {username: username}) %>
                 </span>

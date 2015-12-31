@@ -51,7 +51,7 @@ var DrawerRoomProfileView = Backbone.View.extend({
 
     room.isGroupOwner = (room.group_id && room.group_owner === currentUser.get('user_id'));
 
-    room.isAdmin = currentUser.isAdmin();
+    room.isAdmin = app.user.isAdmin();
     room.avatar = common.cloudinary.prepare(room.avatar, 90);
 
     room.uri = room.identifier;

@@ -98,10 +98,8 @@ app.use(function (err, req, res, next) {
   if (req.xhr || req.accepts(['html', 'json']) === 'json') {
     res.json({err: err.message});
   } else {
-    res.render('error', {
-      message: err.message,
-      meta: {title: 'Error'}
-    });
+    logger.error('web-server error', err);
+    res.status(500).send('<html>internal</html>');
   }
 });
 

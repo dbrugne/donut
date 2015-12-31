@@ -12,7 +12,14 @@ expressValidator.validator.extend('isUsername', function (str) {
 });
 
 expressValidator.validator.extend('isEmailDomainAllowed', function (str) {
-  var domain = str.split('@')[1].toLowerCase();
+  if (!str) {
+    return false;
+  }
+  var domain = str.split('@')[1];
+  if (!domain) {
+    return false;
+  }
+  domain = domain.toLowerCase();
   return (disposableDomains.indexOf(domain) === -1);
 });
 

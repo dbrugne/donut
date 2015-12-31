@@ -45,16 +45,18 @@
                     <div class="col-md-6">
                         <span class="btn btn-block btn-default btn-sm open-user-profile" data-user-id="<%=user.user_id%>"><%= t('global.view-profile') %></span>
                     </div>
-                    <div class="col-md-6">
-                        <a href="<%=user.uri%>" class="btn btn-block btn-default btn-sm"><%= t('actions.discuss') %></a>
-                    </div>
+                    <% if (!isCurrentUser) { %>
+                        <div class="col-md-6">
+                            <a href="<%=user.uri%>" class="btn btn-block btn-default btn-sm"><%= t('actions.discuss') %></a>
+                        </div>
+                    <% } %>
                 </div>
             </div>
         </div>
 
         <% if (isAdmin === true || isOwner === true || isOp === true) { %>
             <div class="modal-footer">
-                <% if (!user.is_owner || isAdmin === true) { %>
+                <% if (!user.is_owner) { %>
                     <% if (user.is_op === true) { %>
                         <a role="menuitem" tabindex="-1" class="deop deop-user" data-dismiss="modal" data-user-id="<%=user.user_id %>" data-room-id="<%=room_id%>">
                             <i class="icon icon-fw icon-op cl-neutral"></i><p><%= t('chat.deop.infobox') %></p>
@@ -66,7 +68,7 @@
                     <% }; %>
                 <% }; %>
 
-                <% if (!user.is_owner || isAdmin === true) { %>
+                <% if (!user.is_owner) { %>
                     <% if (!user.is_devoice) { %>
                         <a role="menuitem" tabindex="-1" class="devoice devoice-user" data-dismiss="modal" data-user-id="<%=user.user_id %>" data-room-id="<%=room_id%>">
                             <i class="icon icon-fw icon-microphone-slash"></i><p><%= t('chat.devoice.infobox') %></p>

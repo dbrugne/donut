@@ -1,6 +1,9 @@
-<% layout('form') %>
-<div class="content">
+<%- partial('head') %>
+<body>
     <div id="signup">
+
+        <%- partial('header-landing') %>
+
         <div class="login">
             <div class="content">
                 <form class="login-form form flex-parent column" method="post" role="form">
@@ -8,13 +11,13 @@
 
                     <a href="/login/facebook" class="btn-facebook"><i class="icon icon-facebook"></i> | &nbsp;<%= t('landing.login-self') %> <%= t('login.withfacebook') %></a>
 
-                    <div class="method-facebook-or">
+                    <div class="method-facebook-or mt20">
                         <div class="outer"><div class="inner"><%= t('global.or') %></div></div>
                     </div>
 
                     <%= partial('errors') %>
 
-                    <div class="form-group mb10">
+                    <div class="form-group mb10 mt20">
                         <input type="text" id="signin-email"    class="form-control" name="email" placeholder="<%= t('login.email-placeholder') %>" value="<%- userFields.email %>" tabindex="2">
                         <img src="/images/arrow.svg">
                     </div>
@@ -38,4 +41,8 @@
             </div>
         </div>
     </div>
-</div>
+
+    <%- partial('contact') %>
+    <%- partial('foot') %>
+</body>
+</html>
