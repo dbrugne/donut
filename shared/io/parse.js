@@ -42,6 +42,7 @@ function sendToMobile (toUid, data, img, callback) {
 
   var query = new Parse.Query(Parse.Installation);
   query.equalTo('uid', toUid);
+  query.equalTo('env', conf.parse.env);
 
   process.nextTick(function () {
     Parse.Push.send({
@@ -52,7 +53,7 @@ function sendToMobile (toUid, data, img, callback) {
         callback(null);
       },
       error: function (err) {
-        logger.error('Error while sending notification to "' + toUid + '": ' + err);
+        logger.error('Error while sending notification to "' + toUid + '"', err);
         callback(err);
       }
     });
