@@ -535,6 +535,10 @@ userSchema.methods.updateActivity = function (userId, eventId, callback) {
   }
 };
 
+userSchema.methods.hasAtLeastOneDevice = function () {
+  // @todo : improve by .find() at least one event with .env === conf.parse.env
+  return (this.devices && this.devices.length);
+};
 userSchema.methods.findDevice = function (deviceToken) {
   if (!this.devices || !this.devices.length) {
     return;

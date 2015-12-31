@@ -212,10 +212,10 @@ Facade.prototype.retrieveScheduledNotifications = function (callback) {
     ]
   });
 
+  // @important: select everything to simplify (need .devices)
   q.populate({
     path: 'user',
-    model: 'User',
-    select: 'facebook username local avatar color'
+    model: 'User'
   });
   q.populate({
     path: 'data.user',

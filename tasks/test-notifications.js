@@ -37,7 +37,7 @@ module.exports = function (grunt) {
             config: 'notifIdentifier',
             type: 'input',
             message: 'Choose a "room" name',
-            default: '#donut/donut'
+            default: '#donut'
           } ]
         }
       },
@@ -47,7 +47,7 @@ module.exports = function (grunt) {
             config: 'notifGroupIdentifier',
             type: 'input',
             message: 'Choose a "group" name',
-            default: '#donut'
+            default: null
           } ]
         }
       },
@@ -68,7 +68,7 @@ module.exports = function (grunt) {
     var usernameFrom = grunt.config('notifUsernameFrom') || 'yangs';
     var usernameTo = grunt.config('notifUsernameTo') || 'david';
     var identifier = grunt.config('notifIdentifier') || '#donut/donut';
-    var groupidentifier = grunt.config('notifGroupIdentifier') || '#donut';
+    var groupidentifier = grunt.config('notifGroupIdentifier') || null;
     var message = grunt.config('notifMessage') || '';
 
     var userFrom = null;
@@ -126,6 +126,9 @@ module.exports = function (grunt) {
       },
 
       function retrieveGroup (callback) {
+        if (!groupidentifier) {
+          return callback(null);
+        }
         GroupModel.findByName(groupidentifier.replace('#', '')).exec(function (err, g) {
           if (err) {
             return callback('Error while retrieving group ' + identifier + ': ' + err);
@@ -376,6 +379,9 @@ module.exports = function (grunt) {
       },
 
       function groupRequestTypes (callback) {
+        if (!group) {
+          return callback(null);
+        }
         async.each([
           { notification: 'groupallowed' },
           { notification: 'groupdisallow' },

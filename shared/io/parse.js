@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../util/logger').getLogger('emailer', __filename);
+var logger = require('../util/logger').getLogger('parse', __filename);
 var common = require('@dbrugne/donut-common/server');
 var Parse = require('parse/node');
 var conf = require('../../config/index');
@@ -26,10 +26,10 @@ Parse.initialize(
  */
 function sendToMobile (toUid, data, img, callback) {
   if (!toUid) {
-    return callback('"toUid" param is mandatory');
+    return callback('toUid is mandatory');
   }
   if (!_.isObject(data)) {
-    return callback('Second argument should be an object');
+    return callback('data should be an object');
   }
 
   // iOS only, increment the value indicated in the top right corner of the app icon
@@ -42,6 +42,7 @@ function sendToMobile (toUid, data, img, callback) {
 
   var query = new Parse.Query(Parse.Installation);
   query.equalTo('uid', toUid);
+  query.equalTo('env', conf.parse.env);
 
   process.nextTick(function () {
     Parse.Push.send({
@@ -52,7 +53,7 @@ function sendToMobile (toUid, data, img, callback) {
         callback(null);
       },
       error: function (err) {
-        logger.error('Error while sending notification to "' + toUid + '": ' + err);
+        logger.error('Error while sending notification to ' + toUid, err);
         callback(err);
       }
     });

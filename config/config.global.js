@@ -84,7 +84,8 @@ module.exports = {
   parse: {
     applicationId: 'HLZpzyuliql75EGfdH1o9En9VwDIp4h8KmRHaQ9g',
     javaScriptKey: 'MMy5SXN7vCXgWogV3I4mGVhlTKLJ9tJSqq459lar',
-    masterKey: '7c6ycSLa7gBHzQ9w2KMJBKoVWrVwBw8606x7PtVA'
+    masterKey: '7c6ycSLa7gBHzQ9w2KMJBKoVWrVwBw8606x7PtVA',
+    env: 'test' // scope Parse.com installations by env
   },
   i18n: {
     cookie: 'donut.lng'
