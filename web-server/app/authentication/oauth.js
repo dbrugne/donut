@@ -451,7 +451,7 @@ router.route('/oauth/register-device').post(function (req, res) {
       }, {$pull: {devices: {parse_object_id: parseObjectId}}
       }, {multi: true}
       ).exec(function (err) {
-        return callback(err);
+        return callback(err, user);
       });
     },
     function registerDevice (user, callback) {
