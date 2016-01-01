@@ -52,9 +52,6 @@ function sendToMobile (toUid, data, img, cb) {
       });
     },
     function setData (user, callback) {
-      // iOS only, increment the value indicated in the top right corner of the app icon
-      data.badge = 'Increment';
-
       // Image display on the notification
       if (img != null) {
         data.img = common.cloudinary.prepare(img, 48);
