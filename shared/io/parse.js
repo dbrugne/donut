@@ -4,6 +4,8 @@ var common = require('@dbrugne/donut-common/server');
 var Parse = require('parse/node');
 var conf = require('../../config/index');
 var i18next = require('../util/i18next');
+var UserModel = require('../models/user');
+var async = require('async');
 var _ = require('underscore');
 
 var parse = {};
@@ -20,43 +22,81 @@ Parse.initialize(
  * @param {string} toUid
  * @param {object} data
  * @param {string} img
- * @param {function} callback
+ * @param {function} cb
  *
- * https://parse.com/docs/js/guide#push-notifications-sending-options
+ * @doc https://parse.com/docs/js/guide#push-notifications-sending-options
  */
-function sendToMobile (toUid, data, img, callback) {
-  if (!toUid) {
-    return callback('toUid is mandatory');
-  }
-  if (!_.isObject(data)) {
-    return callback('data should be an object');
-  }
-
-  // iOS only, increment the value indicated in the top right corner of the app icon
-  data.badge = 'Increment';
-
-  // Image display on the notification
-  if (img != null) {
-    data.img = common.cloudinary.prepare(img, 48);
-  }
-
-  var query = new Parse.Query(Parse.Installation);
-  query.equalTo('uid', toUid);
-  query.equalTo('env', conf.parse.env);
-
-  process.nextTick(function () {
-    Parse.Push.send({
-      where: query,
-      data: data
-    }, {
-      success: function () {
-        callback(null);
-      },
-      error: function (err) {
-        logger.error('Error while sending notification to ' + toUid, err);
-        callback(err);
+function sendToMobile (toUid, data, img, cb) {
+  async.waterfall([
+    function checkData (callback) {
+      if (!toUid) {
+        return callback('toUid is mandatory');
       }
-    });
+      if (!_.isObject(data)) {
+        return callback('data should be an object');
+      }
+      return callback(null);
+    },
+    function retrieveUser (callback) {
+      UserModel.findOne({_id: toUid}).exec(function (err, user) {
+        if (err) {
+          return callback(err);
+        }
+        if (!user) {
+          return callback('user-not-found');
+        }
+        if (!user.devices || !user.devices.length) {
+          return callback('no-devices');
+        }
+        return callback(null, user);
+      });
+    },
+    function setData (user, callback) {
+      // iOS only, increment the value indicated in the top right corner of the app icon
+      data.badge = 'Increment';
+
+      // Image display on the notification
+      if (img != null) {
+        data.img = common.cloudinary.prepare(img, 48);
+      }
+
+      return callback(null, user);
+    },
+    function createQuery (user, callback) {
+      var query = new Parse.Query(Parse.Installation);
+
+      // stub in non-production environment (@debug)
+      if (process.env.NODE_ENV !== 'production') {
+        query.equalTo('env', 'test');
+      } else {
+        query.equalTo('env', 'production');
+      }
+
+      // match only user devices
+      var devices = _.map(user.devices, 'parse_object_id');
+      query.containedIn('objectId', devices);
+      return callback(null, query);
+    },
+    function send (query, callback) {
+      process.nextTick(function () {
+        Parse.Push.send({
+          where: query,
+          data: data
+        }, {
+          success: function () {
+            callback(null);
+          },
+          error: function (err) {
+            callback(err);
+          }
+        });
+      });
+    }
+  ], function (err) {
+    if (err) {
+      logger.error('Error while sending mobile notification to ' + toUid, err);
+    }
+    return cb(err);
   });
 }
 
