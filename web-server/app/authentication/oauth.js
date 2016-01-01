@@ -413,16 +413,12 @@ router.route('/oauth/forgot').post(function (req, res) {
  */
 router.route('/oauth/register-device').post(function (req, res) {
   var token = req.body.token;
-  var deviceToken = req.body.device_token;
-  var details = req.body.details;
+  var parseObjectId = req.body.parse_object_id;
 
   async.waterfall([
     function checkData (callback) {
-      if (!deviceToken) {
-        return callback('no-device-token');
-      }
-      if (details && !_.isObject(details)) {
-        return callback('invalid-details');
+      if (!parseObjectId) {
+        return callback('no-parse-object-id');
       }
 
       return callback(null);
@@ -448,8 +444,18 @@ router.route('/oauth/register-device').post(function (req, res) {
         });
       });
     },
+    function removeOnOtherUsers (user, callback) {
+      User.update({
+        _id: {$ne: user._id},
+        'devices.parse_object_id': parseObjectId
+      }, {$pull: {devices: {parse_object_id: parseObjectId}}
+      }, {multi: true}
+      ).exec(function (err) {
+        return callback(err);
+      });
+    },
     function registerDevice (user, callback) {
-      user.registerDevice(deviceToken, details, callback);
+      user.registerDevice(parseObjectId, callback);
     }
   ], function (err) {
     if (err) {
