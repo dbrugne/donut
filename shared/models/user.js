@@ -534,6 +534,14 @@ userSchema.methods.updateActivity = function (userId, eventId, callback) {
   }
 };
 
+userSchema.statics.removeDeviceOnOthers = function (userId, parseObjectId, callback) {
+  this.update({
+    _id: {$ne: userId},
+    'devices.parse_object_id': parseObjectId
+  }, {$pull: {devices: {parse_object_id: parseObjectId}}
+  }, {multi: true}
+  , callback);
+};
 userSchema.methods.hasAtLeastOneDevice = function () {
   // @todo : improve by .find() at least one event with .env === conf.parse.env
   return (this.devices && this.devices.length);
