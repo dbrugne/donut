@@ -167,7 +167,6 @@ module.exports = Backbone.View.extend({
    *****************************************************************************************************************/
 
   onScroll: function () {
-    console.log('onscroll');
     // cleanup scroll timeout
     this._scrollTimeoutCleanup();
 
@@ -191,9 +190,7 @@ module.exports = Backbone.View.extend({
 
     // start timeout for mark as viewed detection
     this.markAsViewedTimeout = setTimeout(_.bind(function () {
-      console.log('timedout');
       if (!this.isVisible()) {
-        console.log('avoid');
         return;
       }
       this.model.markAsViewed();

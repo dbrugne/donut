@@ -14,7 +14,7 @@ module.exports = function (grunt) {
             config: 'notifUsernameTo',
             type: 'input',
             message: 'Choose a "to" username (the one who receives the message...)',
-            default: 'david'
+            default: 'damien'
           } ]
         }
       },
@@ -46,9 +46,9 @@ module.exports = function (grunt) {
 
     var groupName = 'donut';
     var usernameFrom = 'yangs';
-    var roomIdentifier = '#donut/donut';
-    var message = 'grunt Test push notification';
-    var topic = 'grunt topic @yangs';
+    var roomIdentifier = '#donut';
+    var message = 'Salut, ça va ? (test)';
+    var topic = 'Topic de test avec @yangs en invité';
     var userFrom = null;
     var userTo = null;
     var room = null;
