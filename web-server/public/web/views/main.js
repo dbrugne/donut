@@ -583,13 +583,6 @@ var MainView = Backbone.View.extend({
           }
         });
       }, this));
-    // current user is not a member
-    } else {
-      var model = app.groups.findWhere({id: groupId});
-      if (!app.rooms.getByGroup(groupId)) {
-        return app.groups.remove(model);
-      }
-      return app.trigger('alert', 'error', i18next.t('global.cannot-leave-group'));
     }
   },
 
