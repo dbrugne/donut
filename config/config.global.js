@@ -97,7 +97,7 @@ module.exports = {
   },
   notifications: {
     scheduler: 10, // seconds
-    delay: 5 * 60, // seconds
+    delay: 10, // seconds
     done: 1, // months
     types: {
       usermessage: {
