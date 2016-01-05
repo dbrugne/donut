@@ -293,9 +293,11 @@ module.exports = Backbone.View.extend({
       return;
     }
 
+    var _time = target.data('time');
+
     // topbar
     this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({
-      time: target.data('time'),
+      time: _time,
       date: date.dayMonthTime(target.data('time')),
       id: id
     }));
@@ -303,8 +305,11 @@ module.exports = Backbone.View.extend({
     // look for a previous new message separator, if not, insert one after "event"
     if (this.$('.events .block.unviewed').length === 0) {
       var tpl = require('../templates/event/block-unviewed.html');
+      if (target.prev().hasClass('user')) {
+        target = target.prev();
+      }
       $(tpl({
-        time: target.data('time'),
+        time: _time,
         id: id
       })).insertBefore(target);
     }
