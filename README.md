@@ -3,6 +3,8 @@ donut
 
 DONUT is a node.js/backbonejs based chatroom platform. Usage is inspired of IRC on a side and modern social platform on other hand.
 
+A production demo account is created (for AppStore review process) and available with demo@donut.me : happy1234space
+
 ## Pre-requisites
 **Server**
 * node.js (4.x) and npm (3.x)
