@@ -109,4 +109,21 @@ notificationSchema.statics.bulkInsert = function (models, fn) {
   });
 };
 
+/**
+ * Count unread notification for the given user
+ *
+ * @param userId
+ * @param callback
+ */
+notificationSchema.statics.unreadCount = function (userId, callback) {
+  this.find({
+    user: userId,
+    done: false,
+    viewed: false,
+    to_browser: true
+  }).count().exec(function (err, num) {
+    callback(err, num);
+  });
+};
+
 module.exports = mongoose.model('Notification', notificationSchema);

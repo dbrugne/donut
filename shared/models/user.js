@@ -52,8 +52,7 @@ var userSchema = mongoose.Schema({
     banned_at: {type: Date, default: Date.now}
   }],
   devices: [{
-    device_token: String,
-    details: mongoose.Schema.Types.Mixed,
+    parse_object_id: String,
     created_at: {type: Date},
     updated_at: {type: Date}
   }],
@@ -539,26 +538,25 @@ userSchema.methods.hasAtLeastOneDevice = function () {
   // @todo : improve by .find() at least one event with .env === conf.parse.env
   return (this.devices && this.devices.length);
 };
-userSchema.methods.findDevice = function (deviceToken) {
+userSchema.methods.findDevice = function (parseObjectId) {
   if (!this.devices || !this.devices.length) {
     return;
   }
   return _.find(this.devices, function (doc) {
-    return (doc.device_token === deviceToken);
+    return (doc.parse_object_id === parseObjectId);
   });
 };
-userSchema.methods.hasDevice = function (deviceToken) {
-  var doc = this.findDevice(deviceToken);
+userSchema.methods.hasDevice = function (parseObjectId) {
+  var doc = this.findDevice(parseObjectId);
   return (typeof doc !== 'undefined');
 };
-userSchema.methods.registerDevice = function (deviceToken, details, callback) {
-  if (this.hasDevice(deviceToken)) {
+userSchema.methods.registerDevice = function (parseObjectId, callback) {
+  if (this.hasDevice(parseObjectId)) {
     this.constructor.update({
       _id: this._id,
-      'devices.device_token': deviceToken
+      'devices.parse_object_id': parseObjectId
     }, {
       $set: {
-        'devices.$.details': details,
         'devices.$.updated_at': Date.now()
       }
     }, function (err) {
@@ -566,8 +564,7 @@ userSchema.methods.registerDevice = function (deviceToken, details, callback) {
     });
   } else {
     var device = {
-      device_token: deviceToken,
-      details: details,
+      parse_object_id: parseObjectId,
       created_at: Date.now()
     };
     this.update({$addToSet: {devices: device}}, function (err) {
