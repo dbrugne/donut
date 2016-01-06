@@ -45,10 +45,18 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function broadcast (notification, callback) {
+    function retrieveUnreadCount (notification, callback) {
+      Notifications(that.app).retrieveUserNotificationsUnviewedCount(user.id, function (err, count) {
+        return callback(err, notification, count);
+      });
+    },
+
+    function broadcast (notification, count, callback) {
       var event = {
+        unread: count || 0,
         notification: notification.id
       };
+
       that.app.globalChannelService.pushMessage('connector', 'notification:done', event, 'user:' + user.id, {}, function (err) {
         return callback(err, event);
       });

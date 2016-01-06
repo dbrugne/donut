@@ -6,6 +6,7 @@ var RoomModel = require('../../../../shared/models/room');
 var GroupModel = require('../../../../shared/models/group');
 var HistoryOneModel = require('../../../../shared/models/historyone');
 var HistoryRoomModel = require('../../../../shared/models/historyroom');
+var NotificationModel = require('../../../../shared/models/notification');
 var conf = require('../../../../config/index');
 var common = require('@dbrugne/donut-common/server');
 var i18next = require('i18next');
@@ -158,6 +159,16 @@ module.exports = {
     var h = myDate.getHours();
     var m = myDate.getMinutes();
     return ((h < 10) ? '0' : '') + h + ':' + ((m < 10) ? '0' : '') + m;
-  }
+  },
 
+  decorateWithUnreadAndPushMessage: function (app, event, userId, callback) {
+    NotificationModel.unreadCount(userId, _.bind(function (err, num) {
+      if (err) {
+        return callback(err);
+      }
+
+      event.unread = num;
+      app.globalChannelService.pushMessage('connector', 'notification:new', event, 'user:' + userId, {}, callback);
+    }, this));
+  }
 };

@@ -106,11 +106,17 @@ handler.call = function (data, session, next) {
       });
 
       return callback(null, event);
+    },
+
+    function broadcast (event, callback) {
+      that.app.globalChannelService.pushMessage('connector', 'notification:read', event, 'user:' + user.id, {}, function (err) {
+        return callback(err, event);
+      });
     }
 
   ], function (err, event) {
     if (err) {
-      return errors.getHandler('notification:done', next)(err);
+      return errors.getHandler('notification:read', next)(err);
     }
 
     next(null, event);

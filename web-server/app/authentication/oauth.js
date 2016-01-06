@@ -70,7 +70,8 @@ router.route('/oauth/get-token-from-credentials').post(function (req, res) {
     return res.json({err: 'no-email-or-password'});
   }
 
-  User.findOne({'local.email': req.body.email}, function (err, user) {
+  var email = req.body.email.toLowerCase();
+  User.findOne({'local.email': email}, function (err, user) {
     if (err) {
       logger.error('internal error: ' + err);
       return res.json({err: 'internal-error'});
