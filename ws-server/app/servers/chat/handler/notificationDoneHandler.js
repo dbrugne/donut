@@ -1,8 +1,9 @@
 'use strict';
 var errors = require('../../../util/errors');
+var _ = require('underscore');
 var async = require('async');
-var NotificationModel = require('../../../../../shared/models/notification');
 var Notifications = require('../../../components/notifications');
+var common = require('@dbrugne/donut-common/server');
 
 var Handler = function (app) {
   this.app = app;
@@ -22,39 +23,53 @@ handler.call = function (data, session, next) {
   async.waterfall([
 
     function check (callback) {
-      if (!data.id) {
-        return callback('params-id');
+      // Mark all as read
+      if (data.all) {
+        Notifications(that.app).retrieveUserNotificationsUndone(user.id, function (err, notifications) {
+          if (err) {
+            return callback(err);
+          }
+
+          return callback(null, notifications);
+        });
+      } else {
+        var notifications = [];
+        if (!data.ids || !_.isArray(data.ids)) {
+          return callback('params-ids');
+        }
+
+        // filter array to preserve only valid
+        _.each(data.ids, function (element) {
+          if (common.validate.objectId(element)) {
+            notifications.push(element);
+          }
+        });
+
+        // test if at least one entry remain
+        if (notifications.length === 0) {
+          return callback('notification-not-found');
+        }
+
+        return callback(null, notifications);
       }
+    },
 
-      NotificationModel.findOne({_id: data.id}, function (err, notification) {
-        if (err) {
-          return callback('Error while retrieving notification: ' + err);
-        }
-
-        if (notification.user.toString() !== user.id) {
-          return callback('wrong-user');
-        }
-
-        return callback(null, notification);
+    function markAsDone (notifications, callback) {
+      Notifications(that.app).markNotificationsAsDone(user.id, notifications, function (err) {
+        return callback(err, notifications);
       });
     },
 
-    function markAsDone (notification, callback) {
-      Notifications(that.app).markNotificationsAsDone(user.id, [notification.id], function (err) {
-        return callback(err, notification);
-      });
-    },
-
-    function retrieveUnreadCount (notification, callback) {
+    function retrieveUnreadCount (notifications, callback) {
       Notifications(that.app).retrieveUserNotificationsUnviewedCount(user.id, function (err, count) {
-        return callback(err, notification, count);
+        return callback(err, notifications, count);
       });
     },
 
-    function broadcast (notification, count, callback) {
+    function broadcast (notifications, count, callback) {
       var event = {
         unread: count || 0,
-        notification: notification.id
+        notifications: notifications
       };
 
       that.app.globalChannelService.pushMessage('connector', 'notification:done', event, 'user:' + user.id, {}, function (err) {
