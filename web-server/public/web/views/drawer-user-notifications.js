@@ -5,6 +5,7 @@ var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
 var i18next = require('i18next-client');
 var date = require('../libs/date');
+var currentUser = require('../libs/app').user;
 
 var DrawerUserNotificationsView = Backbone.View.extend({
   template: require('../templates/drawer-user-notifications.html'),
@@ -33,6 +34,9 @@ var DrawerUserNotificationsView = Backbone.View.extend({
 
     this.listenTo(app.client, 'notification:new', this.onNewNotification);
     this.listenTo(app.client, 'notification:done', this.onDoneNotification);
+    this.listenTo(currentUser, 'change:unreadNotifications', _.bind(function () {
+      this.setUnreadCount(currentUser.getUnreadNotifications());
+    }, this));
 
     this.$badge = $('#notifications').find('.unread-count').first();
     this.$badgeResponsive = $('.hover-menu-notifications');
@@ -85,14 +89,8 @@ var DrawerUserNotificationsView = Backbone.View.extend({
   },
   // A new Notification is pushed from server
   onNewNotification: function (data) {
-    this.setUnreadCount(this.unread + 1);
     this.$menu.html(this.renderNotification(data) + this.$menu.html());
     this.$scrollable.scrollTop(0);
-
-    // Set Timeout to clear new notification
-    this.markHasRead = setTimeout(_.bind(function () {
-      this.clearNotifications();
-    }, this), this.timeToMarkAsRead);
   },
   renderNotification: function (n) {
     n.css = '';
@@ -188,10 +186,6 @@ var DrawerUserNotificationsView = Backbone.View.extend({
         notification.classList.remove('unread');
       });
 
-      // Update Badge & Count
-      this.setUnreadCount(that.unread - ids.length);
-      app.trigger('notification:decreaseCount', ids.length); // update badge in notification view & responsive view
-
       that.markHasRead = null;
     }, this));
   },
@@ -251,10 +245,6 @@ var DrawerUserNotificationsView = Backbone.View.extend({
       _.each(this.$menu.find('.message.unread'), function (notification) {
         notification.classList.remove('unread');
       });
-
-      // Update Badge & Count
-      this.setUnreadCount(0);
-      app.trigger('notification:readAll'); // update badge in notification view & responsive view
     }, this));
   },
   onTagAsDone: function (event) {
@@ -268,11 +258,6 @@ var DrawerUserNotificationsView = Backbone.View.extend({
     clearTimeout(this.markHasRead);
 
     var message = $('.message[data-notification-id=' + data.notification + ']');
-
-    if (message.hasClass('unread')) {
-      this.setUnreadCount(this.unread - 1);
-      app.trigger('notification:decreaseCount', 1); // update badge in notification view & responsive view
-    }
 
     message.fadeOut(500, function () {
       $(this).remove();
@@ -288,7 +273,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
   countNotificationsInDropdown: function () {
     return this.$menu.find('.message').length;
   },
-  onMessageClick: function(event) {
+  onMessageClick: function (event) {
     this.trigger('close');
   }
 });

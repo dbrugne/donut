@@ -115,7 +115,8 @@ Notification.prototype.sendToBrowser = function (model, user, room, event, done)
       }
     }
   };
-  this.facade.app.globalChannelService.pushMessage('connector', 'notification:new', eventData, 'user:' + user.id, {}, done);
+  utils.decorateWithUnreadAndPushMessage(this.facade.app, eventData, user.id, done);
+  //this.facade.app.globalChannelService.pushMessage('connector', 'notification:new', eventData, 'user:' + user.id, {}, done);
 };
 
 Notification.prototype.sendEmail = function (model, done) {
