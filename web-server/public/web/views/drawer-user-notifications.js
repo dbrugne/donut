@@ -250,17 +250,17 @@ var DrawerUserNotificationsView = Backbone.View.extend({
   onTagAsDone: function (event) {
     event.preventDefault();
     var message = $(event.currentTarget).parents('.message');
-    app.client.notificationDone(message.data('notification-id'), true);
+    app.client.notificationDone([message.data('notification-id')], false);
     return false;
   },
-  // A Notification is tagged as done on the server
+  // some notifications are tagged as done on the server
   onDoneNotification: function (data) {
     clearTimeout(this.markHasRead);
 
-    var message = $('.message[data-notification-id=' + data.notification + ']');
-
-    message.fadeOut(500, function () {
-      $(this).remove();
+    _.each(data.notifications, function (elt) {
+      $('.message[data-notification-id=' + elt + ']').fadeOut(500, function () {
+        $(this).remove();
+      });
     });
 
     var that = this;
