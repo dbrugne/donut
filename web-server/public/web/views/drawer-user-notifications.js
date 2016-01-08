@@ -274,7 +274,9 @@ var DrawerUserNotificationsView = Backbone.View.extend({
     return this.$menu.find('.message').length;
   },
   onMessageClick: function (event) {
-    this.trigger('close');
+    if (!$(event.currentTarget).hasClass('open-group-users-allowed')) {
+      this.trigger('close');
+    }
   }
 });
 
