@@ -147,7 +147,9 @@ Notification.prototype.sendToBrowser = function (model, user, room, history, don
       message: history.data.message
     }
   };
-  this.facade.app.globalChannelService.pushMessage('connector', 'notification:new', event, 'user:' + user.id, {}, done);
+
+  utils.decorateWithUnreadAndPushMessage(this.facade.app, event, user.id, done);
+  //this.facade.app.globalChannelService.pushMessage('connector', 'notification:new', event, 'user:' + user.id, {}, done);
 };
 
 Notification.prototype.sendEmail = function (model, done) {
@@ -183,8 +185,12 @@ Notification.prototype.sendEmail = function (model, done) {
 
     function send (events, callback) {
       var messages = [];
+      var toUsername = events[0]['data']['username'];
       _.each(events, function (event) {
         var isCurrentMessage = (model.data.event.toString() === event.data.id);
+        if (isCurrentMessage) {
+          toUsername = event.data.username;
+        }
         messages.push({
           current: isCurrentMessage,
           user_avatar: common.cloudinary.prepare(event.data.avatar, 90),
@@ -195,7 +201,7 @@ Notification.prototype.sendEmail = function (model, done) {
       });
 
       if (model.user.getEmail()) {
-        emailer.userMention(model.user.getEmail(), messages, events[0]['data']['username'], model.data.room.getIdentifier(), callback);
+        emailer.userMention(model.user.getEmail(), messages, toUsername, model.data.room.getIdentifier(), callback);
       }
     },
 
