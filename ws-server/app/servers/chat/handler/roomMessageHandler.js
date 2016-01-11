@@ -8,7 +8,6 @@ var inputUtil = require('../../../util/input');
 var filesUtil = require('../../../util/files');
 var keenio = require('../../../../../shared/io/keenio');
 var Notifications = require('../../../components/notifications');
-var GroupModel = require('../../../../../shared/models/group');
 var UserModel = require('../../../../../shared/models/user');
 
 var Handler = function (app) {
@@ -121,6 +120,11 @@ handler.call = function (data, session, next) {
         UserModel.findByUid(m.id).exec(function (err, model) {
           if (err) {
             return cb(err);
+          }
+
+          // robustness code
+          if (!model) {
+            return cb(null);
           }
 
           if (!model.confirmed && usersBlocked.indexOf(model.id) === -1) {
