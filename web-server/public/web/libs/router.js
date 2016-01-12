@@ -349,7 +349,7 @@ var DonutRouter = Backbone.Router.extend({
       // focus default (home)
       Backbone.history.navigate('#', {trigger: true});
     }
-  },
+  }
 });
 
 module.exports = new DonutRouter();
