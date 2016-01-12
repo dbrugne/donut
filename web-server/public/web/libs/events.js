@@ -11,7 +11,6 @@ var templates = {
   'room:out': require('../templates/event/status.html'),
   'room:in': require('../templates/event/status.html'),
   'room:message': require('../templates/event/message.html'),
-  'room:message:cant:respond': require('../templates/event/message-cant-respond.html'),
   'user:message': require('../templates/event/message.html'),
   'room:topic': require('../templates/event/room-topic.html'),
   'room:deop': require('../templates/event/promote.html'),
@@ -105,7 +104,7 @@ exports.prototype.insertBottom = function (events) {
     var event = this._data(e.type, e.data);
 
     var id = event.data.id;
-    if (this.$el.find('#' + id).length && e.type !== 'room:message:cant:respond') {
+    if (this.$el.find('#' + id).length) {
       return console.warn('history and realtime event colision', id);
     }
 
@@ -150,7 +149,7 @@ exports.prototype.block = function (event, previous) {
   if (!previous) {
     return true;
   }
-  if (messagesTypes.indexOf(previous.type) === -1 && previous.type !== 'room:message:cant:respond') {
+  if (messagesTypes.indexOf(previous.type) === -1) {
     return true;
   }
   if (!date.isSameDay(event.data.time, previous.data.time)) {
