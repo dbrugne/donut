@@ -22,6 +22,7 @@ handler.call = function (data, session, next) {
   var what = data.what || {};
 
   var alreadyIn = [];
+  var that = this;
 
   async.waterfall([
 
@@ -141,13 +142,24 @@ handler.call = function (data, session, next) {
       }
 
       var banned = group.isInBanned(user.id);
-      if (typeof banned !== "undefined") {
+      if (typeof banned !== 'undefined') {
         read.i_am_banned = true;
         read.banned_at = banned.banned_at;
-        read.reason = banned.reason
+        read.reason = banned.reason;
       }
 
-      return callback(null);
+      var ids = _.map(read.members, 'user_id');
+      that.app.statusService.getStatusByUids(ids, function (err, results) {
+        if (err) {
+          return callback(err);
+        }
+        _.each(read.members, function (element, index, list) {
+          list[index].status = (results[element.user_id])
+            ? 'online'
+            : 'offline';
+        });
+        return callback(null);
+      });
     },
 
     function rooms (callback) {
