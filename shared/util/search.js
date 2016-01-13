@@ -66,6 +66,7 @@ module.exports = function (search, options, callback) {
   var users = [];
   var rooms = [];
   var groups = [];
+  var roomsInGroups = [];
   var statuses;
 
   var limit = options.limit || {users: 25, groups: 25, rooms: 25};
@@ -118,8 +119,22 @@ module.exports = function (search, options, callback) {
         }
 
         groups = dbgroups;
+        async.eachLimit(dbgroups, 10, function (group, fn) {
+          criteria = {deleted: {$ne: true}, group: group._id};
+          var query = RoomModel.find(criteria, 'avatar identifier name group');
+          query.populate('group', 'name');
+          query.sort('-last_event_at');
+          query.exec(function (err, rooms) {
+            if (err) {
+              return fn(err);
+            }
 
-        return callback(null);
+            roomsInGroups[group.name] = rooms;
+            return fn(null);
+          });
+        }, function (err) {
+          return callback(err);
+        });
       });
     },
 
@@ -276,6 +291,14 @@ module.exports = function (search, options, callback) {
 
       if (options.groups && groups.length > 0) {
         _.each(groups, function (group) {
+          var _roomsData = [];
+          _.each(roomsInGroups[group.name], function (r) {
+            _roomsData.push({
+              avatar: r._avatar(),
+              identifier: r.getIdentifier(),
+              room_id: r._id
+            });
+          });
           var _data = {
             type: 'group',
             name: group.name,
@@ -284,7 +307,8 @@ module.exports = function (search, options, callback) {
             description: group.description,
             color: group.color,
             avatar: group._avatar(),
-            users: group.count()
+            users: group.count(),
+            rooms: _roomsData
           };
 
           if (group.owner) {
