@@ -10,10 +10,14 @@ var CurrentUserView = Backbone.View.extend({
 
   initialize: function (options) {
     this.listenTo(this.model, 'change', this.render);
-    this.$toggle = this.$el.find('#block-current-user');
+    this.$toggle = this.$('#block-current-user');
     this.$message = $('#chat').find('.mail-not-confirmed').hide();
+    this.$status = this.$('.user-status');
   },
   render: function () {
+    if (currentUser.get('status')) {
+      this.$status.removeClass().addClass('user-status').addClass(currentUser.get('status'));
+    }
     if (!currentUser.get('user_id')) {
       return this;
     } // nothing to render if welcome wasn't received
@@ -22,6 +26,7 @@ var CurrentUserView = Backbone.View.extend({
 
     data.avatar = common.cloudinary.prepare(currentUser.get('avatar'), 35);
     data.realname = currentUser.get('realname');
+    data.status = this.model.get('status');
 
     if (!data.confirmed) {
       this.$message.html(i18next.t('account.manageemail.mail-notconfirmed')).show();
