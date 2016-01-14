@@ -121,7 +121,7 @@ module.exports = function (search, options, callback) {
         groups = dbgroups;
         async.eachLimit(dbgroups, 10, function (group, fn) {
           criteria = {deleted: {$ne: true}, group: group._id};
-          var query = RoomModel.find(criteria, 'avatar identifier name group');
+          var query = RoomModel.find(criteria, 'avatar identifier name group color');
           query.populate('group', 'name');
           query.sort('-last_event_at');
           query.exec(function (err, rooms) {

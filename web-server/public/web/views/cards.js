@@ -33,24 +33,36 @@ var CardsView = Backbone.View.extend({
     _.each(list, function (card) {
       switch (card.type) {
         case 'user':
-          card.avatar = common.cloudinary.prepare(card.avatar, 135);
+          card.avatar = common.cloudinary.prepare(card.avatar, 300);
           card.join = urls(card, 'user', 'uri');
           card.chat = urls(card, 'user', 'chat');
           card.owner_url = urls(card, 'user', 'chat');
           break;
         case 'room':
-          card.avatar = common.cloudinary.prepare(card.avatar, 135);
+          card.avatar = common.cloudinary.prepare(card.avatar, 300);
           card.join = urls(card, 'room', 'uri');
           card.url = urls(card, 'room', 'url');
           if (card.group_id) {
             card.group_url = urls({name: card.group_name}, 'group', 'chat');
-            card.group_avatar = common.cloudinary.prepare(card.group_avatar, 200);
+            card.group_avatar = common.cloudinary.prepare(card.group_avatar, 22);
           }
           break;
         case 'group':
-          card.avatar = common.cloudinary.prepare(card.avatar, 200);
+          card.avatar = common.cloudinary.prepare(card.avatar, 300);
           card.join = urls(card, 'group', 'uri');
           card.url = urls(card, 'group', 'url');
+
+          if (card.rooms) {
+            // Prepare the 2/3 first rooms avatars
+            card.roomsCount = card.rooms.length;
+            card.rooms = _.first(card.rooms, 3);
+            if (card.roomsCount > 3) { // if more than 3, display only 2 first avatars & room Count
+              card.rooms.pop();
+            }
+            _.each(card.rooms, function (c) {
+              c.avatar = common.cloudinary.prepare(c.avatar, 23);
+            });
+          }
           break;
       }
       cards.push(card);
