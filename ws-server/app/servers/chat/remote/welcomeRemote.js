@@ -4,6 +4,7 @@ var _ = require('underscore');
 var async = require('async');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
+var Group = require('../../../../../shared/models/group');
 var roomDataHelper = require('../../../util/room-data');
 var oneDataHelper = require('../../../util/one-data');
 var featuredRooms = require('../../../../../shared/util/featured-rooms');
@@ -156,6 +157,41 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, data, globalCall
           }, function (err) {
             return callback(err, user);
           });
+        });
+    },
+
+    function populateGroups (user, callback) {
+      if (!user.groups || !user.groups.length) {
+        return callback(null, user);
+      }
+
+      Group.find({_id: {$in: user.groups}})
+        .populate('owner', 'username avatar')
+        .exec(function (err, groups) {
+          if (err) {
+            return callback(err);
+          }
+
+          welcomeEvent.groups = [];
+          _.each(groups, function (grp) {
+            welcomeEvent.groups.push({
+              avatar: grp._avatar(),
+              name: grp.name,
+              identifier: grp.getIdentifier(),
+              group_id: grp.id,
+              color: grp.color,
+              website: grp.website,
+              description: grp.description,
+              disclaimer: grp.disclaimer,
+              created: grp.created_at,
+              owner: {
+                avatar: grp.owner._avatar(),
+                username: grp.owner.username,
+                user_id: grp.owner.id
+              }
+            });
+          });
+          return callback(null, user);
         });
     },
 
