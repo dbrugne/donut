@@ -579,7 +579,7 @@ var MainView = Backbone.View.extend({
     // Current user is a member of the selected group
     if (app.groups.isMember(groupId)) {
       ConfirmationView.open({message: 'quit-group'}, _.bind(function () {
-        app.client.groupLeave(groupId, function (response) {
+        app.client.groupQuitMembership(groupId, function (response) {
           if (response.err) {
             return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
           }

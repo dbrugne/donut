@@ -107,6 +107,11 @@ handler.call = function (data, session, next) {
       );
     },
 
+    function persistUser (callback) {
+      user.groups.pull(group.id);
+      user.save(function (err) { callback(err); });
+    },
+
     function persistGroup (callback) {
       group.deleted = true;
       group.save(callback);
