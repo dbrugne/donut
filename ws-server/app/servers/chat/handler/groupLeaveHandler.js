@@ -60,7 +60,8 @@ handler.call = function (data, session, next) {
     function broadcastToUser (callback) {
       var event = {
         group_id: group.id,
-        group_name: '#' + group.name
+        group_name: '#' + group.name,
+        reason: 'quit'
       };
       that.app.globalChannelService.pushMessage('connector', 'group:leave', event, 'user:' + user.id, {}, function (err) {
         return callback(err);
