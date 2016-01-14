@@ -36,21 +36,24 @@
                 <div class="mail-not-confirmed relative" style="display: none"></div>
                 <div id="navbar">
                     <div class="links">
-                        <a href="/!#"><i class="icon icon-fw icon-home"></i></a>
-                            <span id="notifications" class="empty" role="presentation">
-                                <a href="#" class="empty open-user-notifications relative">
-                                    <i class="icon icon-fw icon-globe"></i>
-                                    <span class="unread-count badge pull-right"></span>
-                                </a>
-                            </span>
-                        <a href="#" class="open-create-room"><i class="icon icon-fw icon-plus"></i></a>
-                        <a role="menuitem" tabindex="-1" class="toggle-current-user-sounds" id="mute"><i class="icon icon-fw icon-volume-up"></i></a>
+                        <a href="/!#" class="link flex-parent center jc-center">
+                            <span class="home"></span>
+                        </a>
+
+                        <span id="notifications" class="empty link flex-parent center jc-center" role="presentation">
+                            <a href="#" class="empty open-user-notifications relative flex-parent center jc-center">
+                                <i class="icon-notification"></i>
+                                <span class="unread-count badge pull-right"></span>
+                            </a>
+                        </span>
+                        <!--<a href="#" class="open-create-room"><i class="icon icon-fw icon-plus"></i></a>-->
+                        <!--<a role="menuitem" tabindex="-1" class="toggle-current-user-sounds" id="mute"><i class="icon icon-fw icon-volume-up"></i></a>-->
 
                         <div class="search flex-parent column">
                             <div class="input-group relative">
                                 <div class="relative">
                                     <input type="text" class="form-control" placeholder="<%= t('chat.search.placeholder') %>">
-                                    <i class="icon icon-search curp"></i>
+                                    <i class="searchicon curp"></i>
                                 </div>
                             </div>
                             <div class="search-results" style="display: none;">
