@@ -103,7 +103,7 @@ var GroupView = Backbone.View.extend({
     }
   },
   askMembership: function () {
-    app.client.groupJoin(this.model.get('group_id'), null, _.bind(function (response) {
+    app.client.groupBecomeMember(this.model.get('group_id'), null, _.bind(function (response) {
       if (response.err) {
         return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
       }

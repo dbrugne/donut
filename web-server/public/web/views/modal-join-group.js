@@ -62,7 +62,7 @@ var ModalJoinGroupView = Backbone.View.extend({
     if (!password || !this.data.password) {
       return this.$error.text(i18next.t('chat.joingroup.options.password.error')).show();
     }
-    app.client.groupJoin(this.data.group_id, password, _.bind(function (response) {
+    app.client.groupBecomeMember(this.data.group_id, password, _.bind(function (response) {
       if (response.err) {
         if (response.err === 'wrong-password' || response.err === 'params-password') {
           this.$error.text(i18next.t('chat.joingroup.options.password.error')).show();
