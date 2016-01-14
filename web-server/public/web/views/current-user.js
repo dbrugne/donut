@@ -20,7 +20,7 @@ var CurrentUserView = Backbone.View.extend({
 
     var data = currentUser.toJSON();
 
-    data.avatar = common.cloudinary.prepare(currentUser.get('avatar'), 60);
+    data.avatar = common.cloudinary.prepare(currentUser.get('avatar'), 35);
     data.realname = currentUser.get('realname');
 
     if (!data.confirmed) {

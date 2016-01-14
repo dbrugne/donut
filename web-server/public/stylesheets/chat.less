@@ -30,23 +30,24 @@
   }
 }
 
-#welcome {
-  .modal-dialog {
-    z-index: 1041; // fix .modal-dialog behind .modal-backdrop for unknown reason
-  }
-  .modal-body {
-    font-size: 1.1em;
-    .room {
-      font-size: 0.9em;
-    }
-  }
-  .modal-footer {
-    span.checkbox {
-      .pull-left;
-      margin: 0;
-    }
-  }
-}
+//#welcome {
+//  .modal-dialog {
+//    z-index: 1041; // fix .modal-dialog behind .modal-backdrop for unknown reason
+//  }
+//  .modal-body {
+//    font-size: 1.1em;
+//    .room {
+//      font-size: 0.9em;
+//    }
+//  }
+//  .modal-footer {
+//    span.checkbox {
+//      .pull-left;
+//      margin: 0;
+//    }
+//  }
+//}
+
 #connection {
   .modal-backdrop {
     background-color: @cl-background;
@@ -186,12 +187,16 @@
     width: 100%;
   }
 
-  #left { float: left; width: @size-left; background-color: @cl-nav-left-back; color:@cl-nav-left-text; z-index: 12; position: relative; font-size: 14px; height:100%; .transition(margin-left 300ms);
+  #left { float: left; width: @size-left; background-color: @cl-nav-left-back; color:@cl-nav-left-text; z-index: 12; position: relative; font-size: 14px; height:100%; .transition(margin-left 300ms); border-left: 2px solid @cl-first;
     .hover-menu { display: none; }
-    #block-current-user { margin: 1rem; padding: 0.5rem; cursor: pointer; overflow: hidden; .border-radius(4px); .transition(max-height 200ms); max-height: 40px;
+    .mail-not-confirmed { .ft-opensans; font-size: 12px; color: #FFFFFF; line-height: 21px; background: @cl-first; box-shadow: 0 2px 6px 0 rgba(0,0,0,0.50); BORDER-radius: 0; margin: 6px; padding: 10px;
+      &::before { content: ""; width: 0; height: 0; border-style: solid; border-width: 0 9px 5px 9px; border-color: transparent transparent @cl-first transparent; position: absolute; top: -5px; left: 8px; }
+      strong { .ft-opensans-extra-bold; color: #FFFFFF; }
+    }
+    #block-current-user { padding: 0.5rem; cursor: pointer; overflow: hidden; .transition(max-height 200ms); max-height: 45px;
       .not-confirmed {     z-index: 1; position: absolute; top: 15px; font-size: 28px; left: 17px; color: @cl-pomegranate; opacity: 0.7; }
-      i, .username { color:@cl-nav-left-text-lighter; }
-      img { width: 28px; height: 28px; }
+      img { width: 35px; height: 35px; }
+      i { color: rgba(207,217,229,0.40); }
       &.open { .transition(max-height 400ms); max-height: 600px;
         .dropdown-toggle i { .rotate(180deg); }
       }
@@ -215,7 +220,7 @@
         }
       }
       .dropdown-toggle { width: 100%; padding: 0;
-        .username { max-width: 165px; text-overflow: ellipsis; overflow: hidden; font-size:1.8rem; }
+        .username {  .ft-opensans; font-size: 1.3rem; color: #FFFFFF; letter-spacing: 1px; line-height: 14px; max-width: 185px; text-overflow: ellipsis; overflow: hidden; }
         i { .transition(all 300ms ease); }
       }
     }

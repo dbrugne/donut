@@ -21,7 +21,7 @@
                         <span class="mr5 ml5 dc-text-contrast username flex-child">
                             <% if (user.realname) { print (user.realname) } else { print ('@'+user.username) } %>
                         </span>
-                        <i class="icon icon-chevron-down fs20 dc-text-contrast hover"></i>
+                        <i class="icon icon-cog fs16"></i>
                     </a>
                     <ul class="dropdown-menu" role="menu">
                         <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-current-user-profile"><i class="icon icon-fw icon-eye"></i> <%= t('global.view-profile') %></a></li>
@@ -32,7 +32,7 @@
                         <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" href="/logout"><i class="icon icon-fw icon-power-off"></i> <%= t('actions.logout') %></a></li>
                     </ul>
                 </div>
-                <div class="mail-not-confirmed alert alert-warning" style="display: none"></div>
+                <div class="mail-not-confirmed relative" style="display: none"></div>
                 <div id="navbar">
                     <div class="links">
                         <a href="/!#"><i class="icon icon-fw icon-home"></i></a>
