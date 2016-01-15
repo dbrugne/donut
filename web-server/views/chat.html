@@ -17,8 +17,8 @@
 
                 <div id="block-current-user" class="flex-parent column relative">
                     <a id="block-current-user-toggle" href="#" class="clean dropdown-toggle toggle flex-parent center" data-toggle="dropdown" role="button" aria-expanded="false">
-                        <img class="mr5 dc-border-darker curp" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
-                        <span class="mr5 ml5 dc-text-contrast username flex-child">
+                        <img class="mr5 curp" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
+                        <span class="mr10 ml10 username flex-child">
                             <% if (user.realname) { print (user.realname) } else { print ('@'+user.username) } %>
                         </span>
                         <span class="user-status offline"></span>
@@ -64,21 +64,31 @@
                     </div>
                 </div><!--/.nav-collapse -->
 
-                <div class="scrollable flex-child mt10">
+                <div class="scrollable flex-child">
                     <ul class="page-sidebar-menu">
-                        <li id="ones" class="mb15" >
-                            <ul class="list"><!--ones--></ul>
-                        </li>
-                        <li id="rooms">
-                            <ul class="list"><!--rooms--></ul>
-                            <ul class="empty">
+                        <li id="rooms" class="navlist empty relative">
+                            <span class="create open-create-room"><%= t('chat.actions.create') %></span>
+                            <span class="curp navlist-title" data-toggle="collapse" data-target="#collapseNavRooms" aria-expanded="true" aria-controls="collapseNavRooms"><%= t('global.rooms') %></span>
+                            <ul class="list collapse in" id="collapseNavRooms"><!--rooms--></ul>
+                            <ul class="disclaimer-empty">
                                 <li><%= t('chat.noroomopened') %> <a class="go-to-search dc-text" data-type="rooms" href="#"><%= t('chat.actions.search').toLowerCase() %></a> <%= t('global.or') %> <a class="open-create-room dc-text" href="#"><%= t('chat.actions.create') %></a> <%= t('global.one') %>.</li>
                             </ul>
+                        </li>
+                        <li id="ones" class="navlist empty" >
+                            <span class="curp navlist-title hide-empty" data-toggle="collapse" data-target="#collapseNavOnes" aria-expanded="true" aria-controls="collapseNavOnes"><%= t('global.ones') %></span>
+                            <ul class="list collapse in" id="collapseNavOnes"><!--ones--></ul>
+                        </li>
+                        <li id="groups" class="navlist empty">
+                            <span class="curp navlist-title hide-empty" data-toggle="collapse" data-target="#collapseNavGroups" aria-expanded="true" aria-controls="collapseNavGroups"><%= t('global.groups') %></span>
+                            <ul class="list collapse in" id="collapseNavGroups"><!--groups--></ul>
                         </li>
                     </ul>
                 </div>
 
-                <div class="logo"></div>
+                <div class="bottom">
+                    <div class="logo"></div>
+                    <div class="crunch"></div>
+                </div>
             </div><!-- /#left -->
             <div id="center">
                 <div id="drawer">

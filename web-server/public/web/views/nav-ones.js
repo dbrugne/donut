@@ -17,14 +17,15 @@ module.exports = Backbone.View.extend({
     this.listenTo(app, 'nav-active', this.highlightFocused);
     this.listenTo(app, 'viewedEvent', this.setAsViewed);
     this.listenTo(app.ones, 'change:avatar', this.render);
+
     this.$list = this.$('.list');
   },
   render: function () {
     if (!app.ones.models.length) {
       this.$list.empty();
-      return this.$el.hide();
+      return this.$el.addClass('empty');
     } else {
-      this.$el.show();
+      this.$el.removeClass('empty');
     }
     var data = [];
     _.each(app.ones.models, function (o) {

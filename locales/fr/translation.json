@@ -160,6 +160,9 @@
     "verify": "Verification de votre email"
   },
   "global": {
+    "ones": "Tête à tête",
+    "rooms": "Discussions",
+    "groups": "Communautés",
     "validate": "valider",
     "collapse": "réduire",
     "members": "<strong>__count__</strong> membre",

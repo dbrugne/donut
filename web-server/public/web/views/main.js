@@ -37,7 +37,7 @@ var ModalJoinGroupView = require('./modal-join-group');
 var ModalChooseUsernameView = require('./modal-choose-username');
 var NavOnesView = require('./nav-ones');
 var NavRoomsView = require('./nav-rooms');
-//var NavGroupsView = require('./nav-groups');
+var NavGroupsView = require('./nav-groups');
 var ConfirmationView = require('./modal-confirmation');
 var MuteView = require('./mute');
 var SearchView = require('./home-search');
@@ -108,7 +108,7 @@ var MainView = Backbone.View.extend({
     this.currentUserView = new CurrentUserView({el: this.$el.find('#block-current-user'), model: app.user});
     this.navOnes = new NavOnesView();
     this.navRooms = new NavRoomsView();
-    //this.navGroups = new NavGroupsView();
+    this.navGroups = new NavGroupsView();
     this.drawerView = new DrawerView();
     this.modalView = new ModalView();
     this.alertView = new AlertView();
@@ -579,7 +579,7 @@ var MainView = Backbone.View.extend({
     // Current user is a member of the selected group
     if (app.groups.isMember(groupId)) {
       ConfirmationView.open({message: 'quit-group'}, _.bind(function () {
-        app.client.groupLeave(groupId, function (response) {
+        app.client.groupQuitMembership(groupId, function (response) {
           if (response.err) {
             return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
           }

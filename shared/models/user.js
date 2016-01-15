@@ -41,7 +41,7 @@ var userSchema = mongoose.Schema({
     last_event_at: {type: Date},
     last_event: {type: mongoose.Schema.ObjectId, ref: 'HistoryOne'}
   }],
-  groups: [{type: mongoose.Schema.ObjectId, ref: 'group'}],
+  groups: [{type: mongoose.Schema.ObjectId, ref: 'Group'}],
   blocked: [{type: mongoose.Schema.ObjectId, ref: 'Room'}],
   unviewed: [{
     room: {type: mongoose.Schema.ObjectId, ref: 'Room'},

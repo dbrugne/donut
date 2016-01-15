@@ -160,6 +160,9 @@
     "verify": "Verification of your email"
   },
   "global": {
+    "ones": "One to one",
+    "rooms": "Discussions",
+    "groups": "Communities",
     "validate": "validate",
     "collapse": "collapse",
     "members": "<strong>__count__</strong> member",

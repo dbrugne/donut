@@ -167,6 +167,7 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, data, globalCall
 
       Group.find({_id: {$in: user.groups}})
         .populate('owner', 'username avatar')
+        .populate('members', 'username avatar color')
         .exec(function (err, groups) {
           if (err) {
             return callback(err);
@@ -174,6 +175,15 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, data, globalCall
 
           welcomeEvent.groups = [];
           _.each(groups, function (grp) {
+            var members = [];
+            _.each(grp.members, function (m) {
+              members.push({
+                avatar: m._avatar(),
+                color: m.color,
+                username: m.username,
+                user_id: m.id
+              });
+            });
             welcomeEvent.groups.push({
               avatar: grp._avatar(),
               name: grp.name,
@@ -184,11 +194,14 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, data, globalCall
               description: grp.description,
               disclaimer: grp.disclaimer,
               created: grp.created_at,
+              last_event_at: grp.last_event_at,
               owner: {
                 avatar: grp.owner._avatar(),
                 username: grp.owner.username,
-                user_id: grp.owner.id
-              }
+                user_id: grp.owner.id,
+                color: grp.owner.color
+              },
+              members: members
             });
           });
           return callback(null, user);
