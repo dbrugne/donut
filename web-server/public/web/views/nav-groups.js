@@ -59,26 +59,26 @@ module.exports = Backbone.View.extend({
 
     return this;
   },
-  //onToggleCollapse: function (event) {
-  //  $(event.currentTarget).parents('.group-block').toggleClass('collapsed');
-  //},
+  // onToggleCollapse: function (event) {
+  //   $(event.currentTarget).parents('.group-block').toggleClass('collapsed');
+  // },
   highlightFocused: function () {
     var that = this;
     this.$list.find('.active').each(function (item) {
       $(this).removeClass('active');
-      //var group = $(this).parents('.group-block')
-      //group.removeClass('highlighted');
-      //if (group.find('li.room-type').length > that.toggleCount) {
-      //  group.addClass('collapsed');
-      //}
+      var group = $(this).parents('.group');
+      group.removeClass('highlighted');
+      // if (group.find('li.room-type').length > that.toggleCount) {
+      //   group.addClass('collapsed');
+      // }
     });
     _.find(this.filterRooms(), function (room) {
       if (room.get('focused') === true) {
         var elt = that.$list.find('[data-room-id="' + room.get('id') + '"]');
         elt.addClass('active');
-        //var group = elt.parents('.group-block');
-        //group.addClass('highlighted');
-        //group.removeClass('collapsed'); // always expand a group when one of its room is selected
+        var group = elt.parents('.group');
+        group.addClass('highlighted');
+        group.removeClass('collapsed'); // always expand a group when one of its room is selected
         return true;
       }
     });
@@ -86,7 +86,6 @@ module.exports = Backbone.View.extend({
   highlightGroup: function (data) {
     var elt = this.$list.find('[data-type="group"][data-group-id="' + data.group_id + '"]');
     elt.addClass('active');
-    elt.parents('.group-block').addClass('highlighted');
 
     if (data.popin) {
       var $popin = $('#popin');

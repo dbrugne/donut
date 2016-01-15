@@ -316,7 +316,7 @@
         }
       }
     }
-    .scrollable { .align-self(flex-start); width: 100%; .flex(1 1 0); .scrollbar-grey-thin; overflow: auto; margin-top: 6px; margin-left: -2px;
+    .scrollable { .align-self(flex-start); width: 100%; .flex(1 1 0); .scrollbar-grey-thin; overflow: auto; margin-top: 6px; margin-left: -2px; margin-bottom: 70px;
       .page-sidebar-menu { padding: 0; margin:0; .display-flex; .flex-flow(column nowrap); width: 100%; }
       .navlist { padding: 0; margin: 0; display: inline-block; margin-bottom: 13px;
         .disclaimer-empty { display:none; }
@@ -389,9 +389,9 @@
         }
       }
     }
-    .bottom { position:relative; height: 70px;
+    .bottom { position:fixed; height: 70px; width: @size-left; bottom: 0; left: 0;
       .logo { position:absolute; background-image: url('@{img-path}/logo-onecolor-gr.svg'); background-repeat: no-repeat; background-position: center center; background-size: 100%; width: 82px; height: 19px; left: 16px; bottom: 16px; }
-      .crunch { position:absolute; background-image: url('@{img-path}/svg/crunch.svg'); background-repeat: no-repeat; background-position: center center; background-size: 100%; width: 45px; height: 75px; right: -13px; bottom: 0; }
+      .crunch { position:absolute; background-image: url('@{img-path}/svg/crunch.svg'); background-repeat: no-repeat; background-position: center center; background-size: 100%; width: 30px; height: 83px; right: 0; bottom: -15px; }
     }
   }
 

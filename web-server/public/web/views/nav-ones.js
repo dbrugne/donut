@@ -9,7 +9,12 @@ module.exports = Backbone.View.extend({
 
   template: require('../templates/nav-ones.html'),
 
-  events: {},
+  events: {
+    'click .more': 'onToggleCollapse',
+    'click .less': 'onToggleCollapse'
+  },
+
+  toggleCount: 4,
 
   initialize: function (options) {
     this.listenTo(app, 'redrawNavigation', this.render);
@@ -34,9 +39,12 @@ module.exports = Backbone.View.extend({
       data.push(json);
     });
 
-    var html = this.template({list: data});
+    var html = this.template({list: data,  toggleCount: this.toggleCount});
     this.$list.html(html);
     return this;
+  },
+  onToggleCollapse: function (event) {
+    $(event.currentTarget).parents('.list').toggleClass('collapsed');
   },
   highlightFocused: function () {
     this.$list.find('.active').each(function (item) {
