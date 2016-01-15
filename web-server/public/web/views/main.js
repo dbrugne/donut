@@ -564,6 +564,7 @@ var MainView = Backbone.View.extend({
     if (!model) {
       return;
     }
+    app.client.groupLeave(groupId);
     app.groups.remove(model);
     app.trigger('redrawNavigationGroups');
     app.trigger('discussionRemoved', model);
