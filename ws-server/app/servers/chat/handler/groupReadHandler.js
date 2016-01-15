@@ -49,7 +49,8 @@ handler.call = function (data, session, next) {
         description: group.description,
         disclaimer: group.disclaimer,
         created: group.created_at,
-        members: []
+        members: [],
+        last_event_at: group.last_event_at
       };
 
       // owner

@@ -194,6 +194,7 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, data, globalCall
               description: grp.description,
               disclaimer: grp.disclaimer,
               created: grp.created_at,
+              last_event_at: grp.last_event_at,
               owner: {
                 avatar: grp.owner._avatar(),
                 username: grp.owner.username,
