@@ -11,9 +11,11 @@ module.exports = Backbone.View.extend({
   template: require('../templates/nav-groups.html'),
 
   events: {
-    //'click .more': 'onToggleCollapse',
-    //'click .less': 'onToggleCollapse'
+    'click .more': 'onToggleCollapse',
+    'click .less': 'onToggleCollapse'
   },
+
+  toggleCount: 4,
 
   initialize: function (options) {
     this.listenTo(app, 'redrawNavigation', this.render);
@@ -54,14 +56,14 @@ module.exports = Backbone.View.extend({
 
     groups = _.sortBy(groups, 'name'); // @todo sort by last_event
 
-    var html = this.template({listGroups: groups});
+    var html = this.template({listGroups: groups, toggleCount: this.toggleCount});
     this.$list.html(html);
 
     return this;
   },
-  // onToggleCollapse: function (event) {
-  //   $(event.currentTarget).parents('.group-block').toggleClass('collapsed');
-  // },
+   onToggleCollapse: function (event) {
+     $(event.currentTarget).parents('.list').toggleClass('collapsed');
+   },
   highlightFocused: function () {
     var that = this;
     this.$list.find('.active').each(function (item) {

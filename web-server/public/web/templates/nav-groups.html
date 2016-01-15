@@ -1,47 +1,67 @@
+<% var count = 0; %>
+<% var more = false; %>
+
 <% _.each(listGroups, function(item) { %>
-<li class="group <% if (item.focused) { %> active <% } %>" data-type="group" data-group-id="<%= item.id %>">
-    <% if(item.rooms.length !== 0) { %>
-        <i class="icon icon-fw toggle-icon curp" data-toggle="collapse" data-target="#collapseRoomlist-<%= item.id %>" aria-expanded="true" aria-controls="collapseRoomlist-<%= item.id %>"></i>
+    <% if(count === toggleCount) { %>
+        <% more = true; %>
+        <li class="more curp">
+            <%= t('chat.navroom.seemore') %>
+        </li>
     <% } %>
-    <span class="item flex-parent center">
-        <a class="clean avatar-ctn item center flex-parent jc-center" href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
-            <img src="<%= item.avatar %>" class="avatar" alt="<%= item.identifier %> avatar">
-        </a>
-        <a class="clean name-ctn flex-child" href="#g/<%- item.name %>" data-group-id="<%- item.id %>">
-            <span class="name">#<%= item.name %></span>
-        </a>
-        <% if (item.unviewed === true) { %>
-            <!--<span class="icon icon-circle unread cl-first fs10"></span>-->
-            <div class="container-unread-pulse">
-                <div class="unread-dot"></div>
-                <div class="unread-pulse"></div>
-            </div>
+
+    <li class="group <% if (more) { %> additional <% } %> <% if (item.focused) { %> active <% } %>" data-type="group" data-group-id="<%= item.id %>">
+        <% if(item.rooms.length !== 0) { %>
+            <i class="icon icon-fw toggle-icon curp" data-toggle="collapse" data-target="#collapseRoomlist-<%= item.id %>" aria-expanded="true" aria-controls="collapseRoomlist-<%= item.id %>"></i>
         <% } %>
-        <% if(item.rooms.length === 0) { %>
-            <a href="#" class="ml5 mr5 close-group" data-group-id="<%- item.group_id %>">
-                <i class="icon hover icon-times" title="<%= t('global.close') %>"></i>
+        <span class="item flex-parent center">
+            <a class="clean avatar-ctn item center flex-parent jc-center" href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
+                <img src="<%= item.avatar %>" class="avatar" alt="<%= item.identifier %> avatar">
             </a>
+            <a class="clean name-ctn flex-child" href="#g/<%- item.name %>" data-group-id="<%- item.id %>">
+                <span class="name">#<%= item.name %></span>
+            </a>
+            <% if (item.unviewed === true) { %>
+                <!--<span class="icon icon-circle unread cl-first fs10"></span>-->
+                <div class="container-unread-pulse">
+                    <div class="unread-dot"></div>
+                    <div class="unread-pulse"></div>
+                </div>
+            <% } %>
+            <% if(item.rooms.length === 0) { %>
+                <a href="#" class="ml5 mr5 close-group" data-group-id="<%- item.group_id %>">
+                    <i class="icon hover icon-times" title="<%= t('global.close') %>"></i>
+                </a>
+            <% } %>
+        </span>
+        <% if(item.rooms.length !== 0) { %>
+            <ul class="roomlist collapse" id="collapseRoomlist-<%= item.id %>">
+                <% _.each(item.rooms, function(room){ %>
+                    <li class="room-type <% if (room.focused) { %> active <% } %>" data-room-id="<%= room.room_id %>">
+                        <span class="item flex-parent center <% if (room.blocked) { %> blocked <% } %>">
+                            <a class="clean name-ctn  " href="<%= room.uri %>" data-type="<%= room.type %>" data-identifier="<%= room.identifier %>">
+                                <span class="name"><span>/</span><%= room.name %></span>
+                            </a>
+                            <% if (item.unviewed === true) { %>
+                                <!--<span class="icon icon-circle unread cl-first fs10"></span>-->
+                                <div class="container-unread-pulse">
+                                    <div class="unread-dot"></div>
+                                    <div class="unread-pulse"></div>
+                                </div>
+                            <% } %>
+                        </span>
+                    </li>
+                <% }) %>
+            </ul>
         <% } %>
-    </span>
-    <% if(item.rooms.length !== 0) { %>
-        <ul class="roomlist collapse" id="collapseRoomlist-<%= item.id %>">
-            <% _.each(item.rooms, function(room){ %>
-                <li class="room-type <% if (room.focused) { %> active <% } %>" data-room-id="<%= room.room_id %>">
-                    <span class="item flex-parent center <% if (room.blocked) { %> blocked <% } %>">
-                        <a class="clean name-ctn  " href="<%= room.uri %>" data-type="<%= room.type %>" data-identifier="<%= room.identifier %>">
-                            <span class="name"><span>/</span><%= room.name %></span>
-                        </a>
-                        <% if (item.unviewed === true) { %>
-                            <!--<span class="icon icon-circle unread cl-first fs10"></span>-->
-                            <div class="container-unread-pulse">
-                                <div class="unread-dot"></div>
-                                <div class="unread-pulse"></div>
-                            </div>
-                        <% } %>
-                    </span>
-                </li>
-            <% }) %>
-        </ul>
-    <% } %>
-</li>
+    </li>
+
+    <% count++ %>
 <% }); %>
+
+<% if(more) { %>
+    <% more = false; %>
+    <li class="less curp">
+        <%= t('chat.navroom.seeless') %>
+    </li>
+<% } %>
+
