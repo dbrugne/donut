@@ -197,7 +197,8 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, data, globalCall
               owner: {
                 avatar: grp.owner._avatar(),
                 username: grp.owner.username,
-                user_id: grp.owner.id
+                user_id: grp.owner.id,
+                color: grp.owner.color
               },
               members: members
             });
