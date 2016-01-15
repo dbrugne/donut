@@ -11,8 +11,8 @@ module.exports = Backbone.View.extend({
   template: require('../templates/nav-groups.html'),
 
   events: {
-    'click .more': 'onToggleCollapse',
-    'click .less': 'onToggleCollapse'
+    //'click .more': 'onToggleCollapse',
+    //'click .less': 'onToggleCollapse'
   },
 
   initialize: function (options) {
@@ -59,9 +59,9 @@ module.exports = Backbone.View.extend({
 
     return this;
   },
-  onToggleCollapse: function (event) {
-    $(event.currentTarget).parents('.group-block').toggleClass('collapsed');
-  },
+  //onToggleCollapse: function (event) {
+  //  $(event.currentTarget).parents('.group-block').toggleClass('collapsed');
+  //},
   highlightFocused: function () {
     var that = this;
     this.$list.find('.active').each(function (item) {
