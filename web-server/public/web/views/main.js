@@ -560,11 +560,11 @@ var MainView = Backbone.View.extend({
     if (!groupId) {
       return;
     }
+    app.client.groupLeave(groupId);
     var model = app.groups.iwhere('id', groupId);
     if (!model) {
       return;
     }
-    app.client.groupLeave(groupId);
     app.groups.remove(model);
     app.trigger('redrawNavigationGroups');
     app.trigger('discussionRemoved', model);
