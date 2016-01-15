@@ -5,7 +5,6 @@
     <% if(count === toggleCount) { %>
         <% more = true; %>
         <li class="more curp">
-            <i class="icon icon-fw ellipsis-h"></i>
             <%= t('chat.navroom.seemore') %>
         </li>
     <% } %>
@@ -27,7 +26,6 @@
 <% if(more) { %>
     <% more = false; %>
     <li class="less curp">
-        <i class="icon icon-fw ellipsis-h"></i>
         <%= t('chat.navroom.seeless') %>
     </li>
 <% } %>

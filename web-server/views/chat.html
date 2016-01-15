@@ -64,7 +64,7 @@
                     </div>
                 </div><!--/.nav-collapse -->
 
-                <div class="scrollable flex-child mt5">
+                <div class="scrollable flex-child">
                     <ul class="page-sidebar-menu">
                         <li id="rooms" class="navlist empty relative">
                             <span class="create open-create-room"><%= t('chat.actions.create') %></span>
@@ -74,7 +74,7 @@
                                 <li><%= t('chat.noroomopened') %> <a class="go-to-search dc-text" data-type="rooms" href="#"><%= t('chat.actions.search').toLowerCase() %></a> <%= t('global.or') %> <a class="open-create-room dc-text" href="#"><%= t('chat.actions.create') %></a> <%= t('global.one') %>.</li>
                             </ul>
                         </li>
-                        <li id="ones" class="navlist mb15 empty" >
+                        <li id="ones" class="navlist empty" >
                             <span class="curp navlist-title hide-empty" data-toggle="collapse" data-target="#collapseNavOnes" aria-expanded="true" aria-controls="collapseNavOnes"><%= t('global.ones') %></span>
                             <ul class="list collapse in" id="collapseNavOnes"><!--ones--></ul>
                         </li>

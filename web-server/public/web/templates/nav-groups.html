@@ -7,7 +7,7 @@
             <a class="clean flex-child" href="#g/<%- item.name %>" data-group-id="<%- item.id %>">
                 #<%= item.name %>
             </a>
-            <a href="#" class="ml5 close-group" data-group-id="<%- item.group_id %>">
+            <a href="#" class="ml5 mr5 close-group" data-group-id="<%- item.group_id %>">
                 <i class="icon hover icon-times" title="<%= t('global.close') %>"></i>
             </a>
         </span>
@@ -63,7 +63,7 @@
                 <% } %>
             </a>
             <% if (item.unviewed === true) { %>
-                <span class="icon icon-circle unread cl-sun_flower fs10"></span>
+                <span class="icon icon-circle unread cl-first fs10"></span>
             <% } %>
         </span>
     </li>
