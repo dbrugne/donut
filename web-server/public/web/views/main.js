@@ -34,6 +34,7 @@ var DrawerUserPreferencesView = require('./drawer-user-preferences');
 var DrawerUserAccountView = require('./drawer-account');
 var ModalView = require('./modal');
 var ModalJoinGroupView = require('./modal-join-group');
+var ModalJoinRoomView = require('./modal-join-room');
 var ModalChooseUsernameView = require('./modal-choose-username');
 var NavOnesView = require('./nav-ones');
 var NavRoomsView = require('./nav-rooms');
@@ -102,6 +103,7 @@ var MainView = Backbone.View.extend({
     this.listenTo(app, 'openGroupProfile', this.openGroupProfile);
     this.listenTo(app, 'openUserProfile', this.openUserProfile);
     this.listenTo(app, 'openGroupJoin', this.openGroupJoin);
+    this.listenTo(app, 'openRoomJoin', this.openRoomJoin);
     this.listenTo(app, 'changeColor', this.onChangeColor);
   },
   run: function () {
@@ -515,6 +517,10 @@ var MainView = Backbone.View.extend({
       return;
     }
     var view = new ModalJoinGroupView({data: data});
+    this.modalView.setView(view).open();
+  },
+  openRoomJoin: function (data) {
+    var view = new ModalJoinRoomView({data: data});
     this.modalView.setView(view).open();
   },
   openModalChooseUsername: function () {

@@ -38,6 +38,8 @@ handler.call = function (data, session, next) {
 };
 
 handler.blocked = function (user, room, blocked, next) {
+  var options = {};
+
   async.waterfall([
     function (callback) {
       if (blocked === 'groupbanned') {
@@ -52,6 +54,22 @@ handler.blocked = function (user, room, blocked, next) {
         return callback(err);
       });
     },
+    function prepareOptions (callback) {
+      options.room_id = room._id;
+      options.name = room.name;
+      options.identifier = room.getIdentifier();
+      options.disclaimer = room.disclaimer;
+
+      if (room.password) {
+        options.password = true;
+      }
+
+      options.isAllowedPending = room.isAllowedPending(user.id);
+      if (room.allow_user_request) {
+        options.request = true;
+      }
+      return callback(null);
+    },
     function (callback) {
       roomDataHelper(user, room, callback);
     }
@@ -60,7 +78,7 @@ handler.blocked = function (user, room, blocked, next) {
       return errors.getHandler('room:join', next)(err);
     }
 
-    return next(null, {code: 403, err: blocked, room: data});
+    return next(null, {code: 403, err: blocked, room: data, options: options});
   });
 };
 
