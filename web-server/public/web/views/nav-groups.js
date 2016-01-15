@@ -11,15 +11,13 @@ module.exports = Backbone.View.extend({
   template: require('../templates/nav-groups.html'),
 
   events: {
-    'click .more': 'onToggleCollapse',
-    'click .less': 'onToggleCollapse'
+    //'click .more': 'onToggleCollapse',
+    //'click .less': 'onToggleCollapse'
   },
-
-  toggleCount: 4,
 
   initialize: function (options) {
     this.listenTo(app, 'redrawNavigation', this.render);
-    this.listenTo(app, 'redrawNavigationRooms', this.render);
+    this.listenTo(app, 'redrawNavigationGroups', this.render);
     this.listenTo(app, 'nav-active', this.highlightFocused);
     this.listenTo(app, 'nav-active-group', this.highlightGroup);
     this.listenTo(app, 'viewedEvent', this.setAsViewed);
@@ -27,7 +25,7 @@ module.exports = Backbone.View.extend({
     this.$list = this.$('.list');
   },
   render: function () {
-    if (!app.rooms.models.length && !app.groups.models.length) {
+    if (!this.filterRooms().length && !app.groups.models.length) {
       this.$list.empty();
       this.$el.addClass('empty');
       return;
@@ -35,51 +33,52 @@ module.exports = Backbone.View.extend({
       this.$el.removeClass('empty');
     }
 
-    var groupIds = [];
-    var dataGroups = [];
-    var dataRooms = [];
-    _.each(this.filterRooms(), function (o) {
-      var json = o.toJSON();
-      json.avatar = common.cloudinary.prepare(json.avatar, 40);
-      groupIds.push(json.group_id);
-      dataRooms.push(json);
-    });
-    groupIds = _.uniq(groupIds, false); // return array id unique. delete doubloon
-
+    var groups = [];
     _.each(app.groups.models, function (g) {
       var json = g.toJSON();
       json.avatar = common.cloudinary.prepare(json.avatar, 40);
-      if (_.indexOf(groupIds, json.id) === -1) {
-        dataGroups.push(json);
-      }
+      json.rooms = [];
+      groups.push(json);
     });
-    dataGroups = _.sortBy(dataGroups, 'name');
 
-    var html = this.template({listRooms: dataRooms, listGroups: dataGroups, toggleCount: this.toggleCount, expand: true});
+    _.each(this.filterRooms(), function (o) {
+      var json = o.toJSON();
+      _.find(groups, function(group) {
+        if (group.id !== json.group_id) {
+          return false;
+        }
+        group.rooms.push(json);
+        return true;
+      });
+    });
+
+    groups = _.sortBy(groups, 'name'); // @todo sort by last_event
+
+    var html = this.template({listGroups: groups});
     this.$list.html(html);
 
     return this;
   },
-  onToggleCollapse: function (event) {
-    $(event.currentTarget).parents('.group-block').toggleClass('collapsed');
-  },
+  //onToggleCollapse: function (event) {
+  //  $(event.currentTarget).parents('.group-block').toggleClass('collapsed');
+  //},
   highlightFocused: function () {
     var that = this;
     this.$list.find('.active').each(function (item) {
       $(this).removeClass('active');
-      var group = $(this).parents('.group-block')
-      group.removeClass('highlighted');
-      if (group.find('li.room-type').length > that.toggleCount) {
-        group.addClass('collapsed');
-      }
+      //var group = $(this).parents('.group-block')
+      //group.removeClass('highlighted');
+      //if (group.find('li.room-type').length > that.toggleCount) {
+      //  group.addClass('collapsed');
+      //}
     });
     _.find(this.filterRooms(), function (room) {
       if (room.get('focused') === true) {
         var elt = that.$list.find('[data-room-id="' + room.get('id') + '"]');
         elt.addClass('active');
-        var group = elt.parents('.group-block');
-        group.addClass('highlighted');
-        group.removeClass('collapsed'); // always expand a group when one of its room is selected
+        //var group = elt.parents('.group-block');
+        //group.addClass('highlighted');
+        //group.removeClass('collapsed'); // always expand a group when one of its room is selected
         return true;
       }
     });

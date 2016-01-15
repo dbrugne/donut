@@ -565,7 +565,7 @@ var MainView = Backbone.View.extend({
       return;
     }
     app.groups.remove(model);
-    app.trigger('redrawNavigationRooms');
+    app.trigger('redrawNavigationGroups');
     app.trigger('discussionRemoved', model);
   },
   onQuitGroup: function (event) {
