@@ -111,11 +111,12 @@ var DonutRouter = Backbone.Router.extend({
     if (model && model.get('rooms')) { // if no room found it's model from welcome
       model.onRefresh();
       this.focus(model);
-      return app.trigger('nav-active-group', {
+      app.trigger('nav-active-group', {
         group_id: model.get('group_id'),
         group_name: model.get('name'),
         popin: data.popin
       });
+      return app.trigger('redrawNavigationGroups');
     }
 
     app.client.groupId(name, _.bind(function (response) {
@@ -131,13 +132,14 @@ var DonutRouter = Backbone.Router.extend({
             if (!response.err) {
               model = app.groups.addModel(response);
               model.trigger('redraw');
-              app.trigger('redrawNavigationRooms');
+              app.trigger('redrawNavigationGroups');
               this.focus(model);
               app.trigger('nav-active-group', {
                 group_id: response.group_id,
                 group_name: name,
                 popin: data.popin
               });
+              app.trigger('redrawNavigationGroups');
             }
           }, this));
         }

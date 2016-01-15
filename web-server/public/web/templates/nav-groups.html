@@ -1,71 +1,38 @@
-<% var lastGroup = null; %>
-<% var count = 0; %>
-<% var more = false; %>
 <% _.each(listGroups, function(item) { %>
-    <li class="group simple-group <% if (item.focused) { %> active <% } %>" data-type="group" data-group-id="<%= item.id %>">
-        <span class="item flex-parent center">
-            <a class="clean flex-child" href="#g/<%- item.name %>" data-group-id="<%- item.id %>">
-                #<%= item.name %>
-            </a>
+<li class="group <% if (item.focused) { %> active <% } %>" data-type="group" data-group-id="<%= item.id %>">
+    <% if(item.rooms.length !== 0) { %>
+        <i class="icon icon-fw toggle-icon curp" data-toggle="collapse" data-target="#collapseRoomlist-<%= item.id %>" aria-expanded="true" aria-controls="collapseRoomlist-<%= item.id %>"></i>
+    <% } %>
+    <span class="item flex-parent center">
+        <a class="clean avatar-ctn item center flex-parent jc-center" href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
+            <img src="<%= item.avatar %>" class="avatar" alt="<%= item.identifier %> avatar">
+        </a>
+        <a class="clean flex-child" href="#g/<%- item.name %>" data-group-id="<%- item.id %>">
+            #<%= item.name %>
+        </a>
+        <% if (item.unviewed === true) { %>
+            <span class="icon icon-circle unread cl-first fs10"></span>
+        <% } %>
+        <% if(item.rooms.length === 0) { %>
             <a href="#" class="ml5 mr5 close-group" data-group-id="<%- item.group_id %>">
                 <i class="icon hover icon-times" title="<%= t('global.close') %>"></i>
             </a>
-        </span>
-    </li>
-<% }); %>
-<% _.each(listRooms, function(item) { %>
-    <% if(more && ( !item.group_id || ( item.group_id && item.group_id !== lastGroup ) )) { %>
-        <% more = false; %>
-        <li class="less curp">
-            <%= t('chat.navroom.seeless') %>
-        </li>
-    <% } %>
-    <% if (item.group_id && item.group_id !== lastGroup) { %> <!-- new group block -->
-        <% if (lastGroup !== null) { %> <!-- new group block, not first one : close last one -->
+        <% } else { %>
+            <ul class="roomlist collapse" id="collapseRoomlist-<%= item.id %>">
+                <% _.each(item.rooms, function(room){ %>
+                    <li class="grouped room-type <% if (item.focused) { %> active <% } %>" data-room-id="<%= item.id %>">
+                        <span class="item flex-parent center <% if (item.blocked) { %> blocked <% } %>">
+                            <a class="clean name-ctn  " href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
+                                <span class="name"><span>/</span><%= item.name %></span>
+                            </a>
+                            <% if (item.unviewed === true) { %>
+                                <span class="icon icon-circle unread cl-first fs10"></span>
+                            <% } %>
+                        </span>
+                    </li>
+                <% }) %>
             </ul>
-        </li>
         <% } %>
-
-        <li class="group-block">
-            <ul>
-                <li class="group" data-type="group" data-group-id="<%= item.group_id %>">
-                    <span class="item flex-parent center <% if (item.focused) { %> active <% } %>">
-                        <a class="clean flex-child" href="#g/<%- item.group_name %>" data-group-id="<%- item.group_id %>">
-                            #<%= item.group_name %>
-                        </a>
-                    </span>
-                </li>
-    <% } %>
-    <% if (!item.group_id && lastGroup !== null) { %>  <!--no more groups and at least one group to close -->
-           </ul>
-        </li>
-    <% } %>
-    <%
-    if (item.group_id && item.group_id === lastGroup) {
-        count++;
-    } else {
-        count = 0;
-    }
-    %>
-    <% if(count === toggleCount) { %>
-        <% more = true; %>
-        <li class="more curp">
-            <%= t('chat.navroom.seemore') %>
-        </li>
-    <% } %>
-    <li class="room-type <% if (item.group_id) { %> grouped <% } else { %> ungrouped <% } %> <% if (item.focused) { %> active <% } %>" data-type="<%= item.type %>" data-room-id="<%= item.id %>">
-        <span class="item flex-parent center <% if (item.group_id) { %> grouped <% } %> <% if (item.blocked) { %> blocked <% } %>">
-            <a class="clean name-ctn  " href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
-                <% if (item.group_id) { %>
-                    <span class="name">/<%= item.name %></span>
-                <% } else { %>
-                    <span class="name"><span>#</span><%= item.name %></span>
-                <% } %>
-            </a>
-            <% if (item.unviewed === true) { %>
-                <span class="icon icon-circle unread cl-first fs10"></span>
-            <% } %>
-        </span>
-    </li>
-    <% lastGroup = item.group_id; %>
+    </span>
+</li>
 <% }); %>

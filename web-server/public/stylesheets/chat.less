@@ -345,19 +345,19 @@
 
 
           li { list-style: none; margin: 0 18px; .border-radius(4px); height: 29px; font-size: 13px; color: #AFBAC8; letter-spacing: 1px; line-height: 29px;
-            &.group-block { padding: 0; overflow: hidden; max-height: initial;
-              > ul { padding-left: 0; }
-              .more { display:none; }
-              &.collapsed { max-height: 155px;
-                .less { display:none; }
-                .more { display:block; }
-              }
-            }
-            &.group { margin-top: 15px;
-              &:first-child { margin-top: 0; }
-              a { color: #AFBAC8; }
-            }
-            &.group.simple-group { padding: 0 5px 5px 5px; margin-top: 0;}
+            //&.group-block { padding: 0; overflow: hidden; max-height: initial;
+            //  > ul { padding-left: 0; }
+            //  .more { display:none; }
+            //  &.collapsed { max-height: 155px;
+            //    .less { display:none; }
+            //    .more { display:block; }
+            //  }
+            //}
+            //&.group { margin-top: 15px;
+            //  &:first-child { margin-top: 0; }
+            //  a { color: #AFBAC8; }
+            //}
+            //&.group.simple-group { padding: 0 5px 5px 5px; margin-top: 0;}
             &.more, &.less { padding-left:10px; text-align: left; padding-right: 20px; .ft-opensans; font-size: 10px; color: #8491A1; letter-spacing: 0.76px; line-height: 29px; text-decoration: none; }
             a { color: #AFBAC8;
               i { color: #AFBAC8; }
@@ -379,16 +379,21 @@
               }
             }
             &:hover { background-color: rgba(255,255,255,0.05);
-              &.group-block { background-color: transparent; }
+              //&.group-block { background-color: transparent; }
               .close-discussion + .unread { display:none; }
               .close-discussion, .close-group { display:block; }
             }
             &.active { background-color: @cl-nav-left-back-active;
-              &.group a, .item .name-ctn .name { color:#FFF; }
+              /*&.group a, */.item .name-ctn .name { color:#FFF; }
               .close-group  i { color:#FFF; }
               .close-discussion  i { color:#FFF; }
             }
-            &.highlighted.group-block { background-color: rgba(255,255,255,0.2); }
+            &.group { position:relative;
+              .toggle-icon { position: absolute; left: -16px; top: 6px; }
+              .toggle-icon:before { .icon-caret-left; width:12px; height:12px; }
+              &.collapse.in .toggle-icon:before {  }
+            }
+            //&.highlighted.group-block { background-color: rgba(255,255,255,0.2); }
           }
         }
       }

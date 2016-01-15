@@ -180,6 +180,7 @@ var WindowView = Backbone.View.extend({
     collection.sort();
     if (model.get('type') === 'room') {
       app.trigger('redrawNavigationRooms');
+      app.trigger('redrawNavigationGroups');
     } else {
       app.trigger('redrawNavigationOnes');
     }
