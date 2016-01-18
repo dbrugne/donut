@@ -19,7 +19,6 @@ module.exports = Backbone.View.extend({
   toggleCount: 4,
 
   expanded: [], // by default, no group expanded at first load
-  groups: [],
 
   initialize: function (options) {
     this.listenTo(app, 'redrawNavigation', this.render);
@@ -111,10 +110,15 @@ module.exports = Backbone.View.extend({
       var group = $(this).parents('.group');
       group.removeClass('highlighted');
     });
-    _.find(this.filterRooms(), function (room) {
+    _.find(this.filterRooms(), _.bind(function (room) {
       if (room.get('focused') === true) {
         var elt = that.$list.find('[data-room-id="' + room.get('id') + '"]');
         elt.addClass('active');
+
+        // save expanded
+        if (_.indexOf(this.expanded, room.get('group_id')) === -1) {
+          this.expanded.push(room.get('group_id'));
+        }
 
         // expand roomlist container
         elt.parents('.roomlist').addClass('in');
@@ -122,7 +126,7 @@ module.exports = Backbone.View.extend({
         group.addClass('highlighted');
         return true;
       }
-    });
+    }, this));
   },
   highlightGroup: function (data) {
     var elt = this.$list.find('[data-type="group"][data-group-id="' + data.group_id + '"]');
