@@ -9,16 +9,11 @@ module.exports = function (user, room, fn) {
   }
 
   var data = {
+    room_id: room.id,
     name: room.name,
     identifier: room.getIdentifier(),
-    room_id: room.id,
     mode: room.mode,
-    hasPassword: !!room.password,
-    avatar: room._avatar(),
-    users_number: room.numberOfUsers(),
-    created_at: room.created_at,
-    last_event_at: room.last_event_at,
-    last_event: room.last_event
+    avatar: room._avatar()
   };
   if (room.group) {
     data.group_id = room.group.id;
@@ -30,13 +25,6 @@ module.exports = function (user, room, fn) {
   if (room.owner) {
     data.owner_id = room.owner.id;
     data.owner_username = room.owner.username;
-  }
-  if (room.disclaimer) {
-    data.disclaimer = room.disclaimer;
-  }
-  if (room.mode !== 'public') {
-    data.allow_user_request = room.allow_user_request; // @todo remove obsolete
-    data.allow_group_member = (room.group) ? room.allow_group_member : false; // @todo remove obsolete
   }
 
   var isRoomBlocked = room.isUserBlocked(user.id);
@@ -54,15 +42,22 @@ module.exports = function (user, room, fn) {
     } else {
       data.blocked_why = 'other';
     }
-  } else {
+  }
+
+  if (data.blocked !== true) {
     data.blocked = false;
+    data.topic = room.topic;
+    data.poster = room._poster();
+    data.posterblured = room._poster(true);
+    data.users_number = room.numberOfUsers(); // @todo remove obsolete
+    data.created_at = room.created_at;
+    data.last_event_at = room.last_event_at;
+    data.last_event = room.last_event;
+
     data.op = room.op;
     data.devoices = _.map(room.devoices, function (element) {
       return element.user.toString();
     });
-    data.topic = room.topic;
-    data.poster = room._poster();
-    data.posterblured = room._poster(true);
 
     var firstUnviewed = user.findRoomFirstUnviewed(room);
     data.unviewed = !!(firstUnviewed);

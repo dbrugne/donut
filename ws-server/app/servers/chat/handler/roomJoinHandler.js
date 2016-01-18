@@ -32,6 +32,12 @@ handler.call = function (data, session, next) {
       return errors.getHandler('room:join', next)(err);
     }
 
+    // @hack to detect particular case for kicked rejoin
+    if (roomData.blocked_why === 'kick') {
+      roomData.blocked = false;
+      delete roomData.blocked_why;
+    }
+
     if (roomData.blocked === false) {
       this.join(user, room, roomData, next);
     } else {
