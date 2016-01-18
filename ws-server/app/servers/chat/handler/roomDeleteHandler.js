@@ -79,7 +79,7 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function kick (callback) {
+    function kickOut (callback) {
       event = {
         by_user_id: user._id,
         by_username: user.username,
@@ -102,18 +102,12 @@ handler.call = function (data, session, next) {
 
     function removeBlockedUser (callback) {
       UserModel.update(
-        {
-          blocked: {$in: [room.id]}
-        },
-        {
-          $pull: {blocked: room.id}
-        },
-        {
-          multi: true
-        }
+        {'blocked.room': {$in: [room.id]}},
+        {$pull: {blocked: {room: room.id}}},
+        {multi: true}
       ).exec(function (err) {
-          return callback(err);
-        });
+        return callback(err);
+      });
     },
 
     function destroy (callback) {

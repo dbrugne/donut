@@ -2,10 +2,10 @@ var _ = require('underscore');
 
 module.exports = function (user, room, fn) {
   if (!user) {
-    return fn('need to received a valid User model as parameter');
+    return fn('need to received a User model as parameter');
   }
   if (!room) {
-    return fn('need to received a valid Room model as parameter');
+    return fn('need to received a Room model as parameter');
   }
 
   var data = {
@@ -14,7 +14,6 @@ module.exports = function (user, room, fn) {
     room_id: room.id,
     mode: room.mode,
     hasPassword: !!room.password,
-    blocked: false,
     avatar: room._avatar(),
     color: room.color,
     users_number: room.numberOfUsers(),
@@ -27,6 +26,7 @@ module.exports = function (user, room, fn) {
     data.group_name = room.group.name;
     data.group_owner = room.group.owner;
     data.group_default = room.group.default;
+    data.group_avatar = room.group._avatar();
   }
   if (room.owner) {
     data.owner_id = room.owner.id;
@@ -36,41 +36,27 @@ module.exports = function (user, room, fn) {
     data.disclaimer = room.disclaimer;
   }
   if (room.mode !== 'public') {
-    data.allow_user_request = room.allow_user_request;
-    data.allow_group_member = (room.group) ? room.allow_group_member : false;
+    data.allow_user_request = room.allow_user_request; // @todo remove obsolete
+    data.allow_group_member = (room.group) ? room.allow_group_member : false; // @todo remove obsolete
   }
 
-  // kicked user
-  if (room.mode === 'private' && room.isAllowed(user.id) && !room.isIn(user.id)) {
-    data.blocked = 'kicked';
-  }
-
-  var doc;
-
-  // banned user
-  if (room.isBanned(user.id)) {
+  var isRoomBlocked = room.isUserBlocked(user.id);
+  var isUserBlocked = user.isRoomBlocked(room.id);
+  if (isRoomBlocked || isUserBlocked) {
     data.blocked = true;
-    doc = room.isInBanned(user.id);
-    data.banned_at = doc.banned_at;
-    data.blocked = 'banned';
-    if (doc.reason) {
-      data.reason = doc.reason;
+    if (isRoomBlocked === 'groupbanned') {
+      data.blocked_why = 'groupban';
+    } else if (isRoomBlocked === 'banned') {
+      data.blocked_why = 'ban';
+    } else if (isRoomBlocked === 'group-members-only' || isRoomBlocked === 'notallowed') {
+      data.blocked_why = 'disallow';
+    } else if (isRoomBlocked === false) {
+      data.blocked_why = 'kick';
+    } else {
+      data.blocked_why = 'other';
     }
-  }
-
-  // group banned user
-  if (room.group && room.isGroupBanned(user.id)) {
-    data.blocked = true;
-    doc = room.isInGroupBanned(user.id);
-    data.banned_at = doc.banned_at;
-    data.blocked = 'groupbanned';
-    if (doc.reason) {
-      data.reason = doc.reason;
-    }
-  }
-
-  // user can join
-  if (!data.blocked) {
+  } else {
+    data.blocked = false;
     data.op = room.op;
     data.devoices = _.map(room.devoices, function (element) {
       return element.user.toString();

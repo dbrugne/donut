@@ -23,8 +23,6 @@ handler.call = function (data, session, next) {
 
   var wasPending = false;
 
-  var event = {};
-
   async.waterfall([
 
     function check (callback) {
@@ -55,10 +53,42 @@ handler.call = function (data, session, next) {
       return callback(null);
     },
 
-    function createEvent (callback) {
-      wasPending = room.isAllowedPending(user.id);
+    function persist (callback) {
+      Room.update(
+        {_id: { $in: [room.id] }},
+        {$addToSet: {allowed: user.id}}, function (err) {
+          if (wasPending) {
+            Room.update(
+              {_id: { $in: [room.id] }},
+              {$pull: {allowed_pending: {user: user.id}},
+              $addToSet: {users: user.id}}, function (err) {
+                return callback(err);
+              }
+            );
+          } else {
+            return callback(err);
+          }
+        }
+      );
+    },
 
-      event = {
+    function persistOnUser (callback) {
+      user.removeBlockedRoom(room.id, function (err) {
+        return callback(err);
+      });
+    },
+
+    function broadcastToUser (callback) {
+      if (room.isUserBlocked(user.id) !== false) {
+        return callback(null);
+      }
+      that.app.globalChannelService.pushMessage('connector', 'room:unblocked', {room_id: room.id}, 'user:' + user.id, {}, function (err) {
+        return callback(err);
+      });
+    },
+
+    function notification (callback) {
+      var event = {
         by_user_id: currentUser._id,
         by_username: currentUser.username,
         by_avatar: currentUser._avatar(),
@@ -68,48 +98,15 @@ handler.call = function (data, session, next) {
         room_id: room.id,
         identifier: room.getIdentifier()
       };
-      callback(null, event);
-    },
 
-    function broadcastToUser (eventData, callback) {
-      that.app.globalChannelService.pushMessage('connector', 'room:allow', event, 'user:' + user.id, {}, function (reponse) {
-        callback(null, eventData);
-      });
-    },
-
-    function persist (eventData, callback) {
-      Room.update(
-        {_id: { $in: [room.id] }},
-        {$addToSet: {allowed: user.id}}, function (err) {
-          if (wasPending) {
-            Room.update(
-              {_id: { $in: [room.id] }},
-              {$pull: {allowed_pending: {user: user.id}},
-              $addToSet: {users: user.id}}, function (err) {
-                return callback(err, eventData);
-              }
-            );
-          } else {
-            return callback(err, eventData);
-          }
-        }
-      );
-    },
-
-    function persistOnUser (eventData, callback) {
-      user.update({$pull: {blocked: room.id}}, function (err) {
-        return callback(err, eventData);
-      });
-    },
-
-    function notification (event, callback) {
+      wasPending = room.isAllowedPending(user.id);
       if (!wasPending) {
         Notifications(that.app).getType('roominvite').create(user.id, room, event, function (err) {
-          return callback(err, event);
+          return callback(err);
         });
       } else {
         Notifications(that.app).getType('roomallowed').create(user.id, room, event, function (err) {
-          return callback(err, event);
+          return callback(err);
         });
       }
     }

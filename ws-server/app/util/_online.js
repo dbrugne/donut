@@ -109,25 +109,13 @@ module.exports = function (app, msg, session, next) {
         return callback(null);
       }
 
-      var parallels = [];
-      _.each(welcome.rooms, function (room) {
-        parallels.push(function (fn) {
-          app.globalChannelService.add(room.room_id, uid, session.frontendId, function (err) {
-            if (err) {
-              return fn('Error while registering user in room channel: ' + err);
-            }
-
-            return fn(null, room.name);
-          });
-        });
-      });
-      async.parallel(parallels, function (err, results) {
-        if (err) {
-          return callback('Error while registering user in rooms channels: ' + err);
+      async.each(welcome.rooms, function (room, fn) {
+        if (room.blocked === true) {
+          return fn(null);
         }
 
-        return callback(null);
-      });
+        app.globalChannelService.add(room.room_id, uid, session.frontendId, fn);
+      }, callback);
     },
 
     function subscribeUserChannel (callback) {
