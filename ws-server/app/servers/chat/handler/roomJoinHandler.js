@@ -48,12 +48,11 @@ handler.blocked = function (user, room, blocked, next) {
         return callback(blocked);
       }
 
-      room.blocked.addToSet(room.id);
+      var addToSet = { blocked: room.id };
       if (room.get('group')) {
-        user.groups.addToSet(room.get('group').id);
+        addToSet.groups = room.get('group').id;
       }
-
-      user.save(function (err) {
+      user.update({ $addToSet: addToSet }, function (err) {
         return callback(err);
       });
     },
@@ -74,7 +73,6 @@ handler.join = function (user, room, next) {
   async.waterfall([
 
     function persistUser (callback) {
-
       user.blocked.pull(room._id);
       if (room.get('group')) {
         user.groups.addToSet(room.get('group').id);

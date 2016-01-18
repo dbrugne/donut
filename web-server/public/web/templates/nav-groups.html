@@ -23,11 +23,11 @@
                 <span class="name">#<%= item.name %></span>
             </a>
             <% if (item.unviewed === true) { %>
-                <!--<span class="icon icon-circle unread cl-first fs10"></span>-->
-                <div class="container-unread-pulse">
-                    <div class="unread-dot"></div>
-                    <div class="unread-pulse"></div>
-                </div>
+                <span class="icon icon-circle unread cl-first fs10 mr5"></span>
+                <!--<div class="container-unread-pulse">-->
+                    <!--<div class="unread-dot"></div>-->
+                    <!--<div class="unread-pulse"></div>-->
+                <!--</div>-->
             <% } %>
             <% if(item.rooms.length === 0) { %>
                 <a href="#" class="ml5 mr5 close-group" data-group-id="<%- item.group_id %>">
@@ -43,12 +43,12 @@
                             <a class="clean name-ctn  " href="<%= room.uri %>" data-type="<%= room.type %>" data-identifier="<%= room.identifier %>">
                                 <span class="name"><span>/</span><%= room.name %></span>
                             </a>
-                            <% if (item.unviewed === true) { %>
-                                <!--<span class="icon icon-circle unread cl-first fs10"></span>-->
-                                <div class="container-unread-pulse">
-                                    <div class="unread-dot"></div>
-                                    <div class="unread-pulse"></div>
-                                </div>
+                            <% if (room.unviewed === true) { %>
+                                <span class="icon icon-circle unread cl-first fs10 mr5"></span>
+                                <!--<div class="container-unread-pulse">-->
+                                    <!--<div class="unread-dot"></div>-->
+                                    <!--<div class="unread-pulse"></div>-->
+                                <!--</div>-->
                             <% } %>
                         </span>
                     </li>

@@ -23,6 +23,7 @@ module.exports = Backbone.View.extend({
   initialize: function (options) {
     this.listenTo(app, 'redrawNavigation', this.render);
     this.listenTo(app, 'redrawNavigationGroups', this.render);
+    this.listenTo(app, 'redrawNavigationRooms', this.render);
     this.listenTo(app, 'nav-active', this.highlightFocused);
     this.listenTo(app, 'nav-active-group', this.highlightGroup);
     this.listenTo(app, 'viewedEvent', this.setAsViewed);
@@ -105,17 +106,16 @@ module.exports = Backbone.View.extend({
       $(this).removeClass('active');
       var group = $(this).parents('.group');
       group.removeClass('highlighted');
-      // if (group.find('li.room-type').length > that.toggleCount) {
-      //   group.addClass('collapsed');
-      // }
     });
     _.find(this.filterRooms(), function (room) {
       if (room.get('focused') === true) {
         var elt = that.$list.find('[data-room-id="' + room.get('id') + '"]');
         elt.addClass('active');
+
+        // expand roomlist container
+        elt.parents('.roomlist').addClass('in');
         var group = elt.parents('.group');
         group.addClass('highlighted');
-        group.removeClass('collapsed'); // always expand a group when one of its room is selected
         return true;
       }
     });
