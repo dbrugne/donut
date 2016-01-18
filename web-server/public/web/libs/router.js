@@ -108,7 +108,6 @@ var DonutRouter = Backbone.Router.extend({
     var name = data.name;
     var model = app.groups.iwhere('name', name);
     if (model) {
-      model.onRefresh();
       this.focus(model);
       return app.trigger('nav-active-group', {
         group_id: model.get('group_id'),
@@ -123,17 +122,22 @@ var DonutRouter = Backbone.Router.extend({
       } else if (response.code === 500) {
         return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
       }
-      app.client.groupRead(response.group_id, {users: true, rooms: true}, _.bind(function (response) {
+      var groupId = response.group_id;
+      app.client.groupJoin(groupId, _.bind(function (response) {
         if (!response.err) {
-          model = app.groups.addModel(response);
-          model.trigger('redraw');
-          app.trigger('redrawNavigationRooms');
-          this.focus(model);
-          app.trigger('nav-active-group', {
-            group_id: response.group_id,
-            group_name: name,
-            popin: data.popin
-          });
+          app.client.groupRead(groupId, {users: true, rooms: true}, _.bind(function (response) {
+            if (!response.err) {
+              model = app.groups.addModel(response);
+              model.trigger('redraw');
+              this.focus(model);
+              app.trigger('nav-active-group', {
+                group_id: response.group_id,
+                group_name: name,
+                popin: data.popin
+              });
+              app.trigger('redrawNavigationGroups');
+            }
+          }, this));
         }
       }, this));
     }, this));

@@ -15,7 +15,6 @@ module.exports = function (user, room, fn) {
     mode: room.mode,
     hasPassword: !!room.password,
     avatar: room._avatar(),
-    color: room.color,
     users_number: room.numberOfUsers(),
     created_at: room.created_at,
     last_event_at: room.last_event_at,

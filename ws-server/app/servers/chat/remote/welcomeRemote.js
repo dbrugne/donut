@@ -4,6 +4,7 @@ var _ = require('underscore');
 var async = require('async');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
+var Group = require('../../../../../shared/models/group');
 var roomDataHelper = require('../../../util/room-data');
 var oneDataHelper = require('../../../util/one-data');
 var featuredRooms = require('../../../../../shared/util/featured-rooms');
@@ -133,7 +134,32 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, data, globalCall
       });
     },
 
-    function featured (callback) {
+    function populateGroups (callback) {
+      if (!user.groups || !user.groups.length) {
+        return callback(null);
+      }
+
+      Group.find({_id: {$in: user.groups}})
+        .populate('owner', 'username avatar')
+        .exec(function (err, groups) {
+          if (err) {
+            return callback(err);
+          }
+
+          welcomeEvent.groups = [];
+          _.each(groups, function (grp) {
+            welcomeEvent.groups.push({
+              group_id: grp.id,
+              name: grp.name,
+              identifier: grp.getIdentifier(),
+              avatar: grp._avatar()
+            });
+          });
+          return callback(null);
+        });
+    },
+
+    function featured (user, callback) {
       if (data.device === 'mobile' && !(user.preferences && user.preferences[ 'browser:welcome' ] === true)) {
         return callback(null);
       }

@@ -82,7 +82,7 @@ handler.call = function (data, session, next) {
       // website
       var website = null;
       if (_.has(data.data, 'website') && data.data.website) {
-        if (data.data.website.length < 5 && data.data.website.length > 255) {
+        if (data.data.website.length < 5 || data.data.website.length > 255) {
           errors.website = 'website-size'; // website should be 5 characters min and 255 characters max.;
         } else {
           var link = linkify.find(data.data.website);

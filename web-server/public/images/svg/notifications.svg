@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="16px" height="17px" viewBox="0 0 16 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4.4 (17249) - http://www.bohemiancoding.com/sketch -->
+    <title>notifications</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="02-copy" sketch:type="MSArtboardGroup" transform="translate(-56.000000, -54.000000)" fill-opacity="0.399371603" fill="#D0DAE6">
+            <g id="Group-+-Rectangle-1576-+-2" sketch:type="MSLayerGroup">
+                <g id="Group" sketch:type="MSShapeGroup">
+                    <g id="sidebar-+-Triangle-1-+-Triangle-1-Copy-+-Triangle-1-Copy-2-+-Group">
+                        <g id="sidebar">
+                            <g id="Rectangle-1480-+-selection-+-pictos_menu" transform="translate(13.000000, 42.000000)">
+                                <g id="selection-+-pictos_menu">
+                                    <g id="pictos_menu" transform="translate(0.000000, 12.000000)">
+                                        <path d="M51.9086191,1.87126658 C54.0250593,2.3601382 56.897606,4.6614203 57.5,11.2122943 L57.5,11.1391612 C57.5,12.3039392 58.5405,12.3686632 58.6075,12.3768175 C58.789,12.4007705 59,12.5360794 59,12.8864556 L59,13.9057319 C59,13.9057319 54.1875,13.3960938 51,13.3960938 C47.8125,13.3960938 43,13.9057319 43,13.9057319 L43,12.8864556 C43,12.4843511 43.31825,12.4058668 43.39275,12.3768175 C44.2735,12.3531193 44.5,11.1391612 44.5,11.1391612 C45.0491749,4.72376153 47.9657773,2.38921205 50.0975003,1.87935717 C49.9469249,1.68206528 49.85725,1.43409586 49.85725,1.16477801 C49.85725,0.521488877 50.3688766,0 51,0 C51.6311234,0 52.14275,0.521488877 52.14275,1.16477801 C52.14275,1.43042725 52.0555015,1.6753057 51.9086191,1.87126658 L51.9086191,1.87126658 L51.9086191,1.87126658 Z M51,17 C52.26375,17 53.28575,15.9442846 53.28575,14.6701892 C53.28575,14.6701892 52.625,14.4153701 51,14.4153701 C49.375,14.4153701 48.71425,14.6701892 48.71425,14.6701892 C48.71425,15.9442846 49.7365,17 51,17 L51,17 Z" id="notifications"></path>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -179,7 +179,11 @@ var WindowView = Backbone.View.extend({
     // update navigation
     collection.sort();
     if (model.get('type') === 'room') {
-      app.trigger('redrawNavigationRooms');
+      if (model.get('group_id')) {
+        app.trigger('redrawNavigationGroups');
+      } else {
+        app.trigger('redrawNavigationRooms');
+      }
     } else {
       app.trigger('redrawNavigationOnes');
     }

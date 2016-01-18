@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="18px" height="17px" viewBox="0 0 18 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4.4 (17249) - http://www.bohemiancoding.com/sketch -->
+    <title>home</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="02-copy" sketch:type="MSArtboardGroup" transform="translate(-13.000000, -54.000000)" fill-opacity="0.399371603" fill="#D0DAE6">
+            <g id="Group-+-Rectangle-1576-+-2" sketch:type="MSLayerGroup">
+                <g id="Group" sketch:type="MSShapeGroup">
+                    <g id="sidebar-+-Triangle-1-+-Triangle-1-Copy-+-Triangle-1-Copy-2-+-Group">
+                        <g id="sidebar">
+                            <g id="Rectangle-1480-+-selection-+-pictos_menu" transform="translate(13.000000, 42.000000)">
+                                <g id="selection-+-pictos_menu">
+                                    <g id="pictos_menu" transform="translate(0.000000, 12.000000)">
+                                        <path d="M8.33204802,0.28041283 C8.71594325,-0.094845974 9.33837414,-0.0930213769 9.72117461,0.283210546 L17.581174,8.01232551 C18.2997003,8.71893115 18.0642057,9.291733 17.0578796,9.291733 L15.1789095,9.291733 L14.2452023,14.7907037 C14.0762446,15.7846226 13.1230751,16.5899998 12.1158975,16.5899998 L5.7886813,16.5899998 C4.78126042,16.5899998 3.8327132,15.784501 3.66971586,14.7907037 L2.76727013,9.291733 L0.937929079,9.291733 C-0.0696134407,9.291733 -0.301458913,8.71990427 0.418527104,8.01609635 L8.33204802,0.28041283 L8.33204802,0.28041283 Z M7.43262172,10.1534358 C6.89477448,10.1534358 6.56885438,10.5744919 6.70486732,11.0945772 L7.3496514,13.562032 C7.48554268,14.0816307 8.03020274,14.5030518 8.56902325,14.5030518 L9.27183789,14.5030518 C9.80932016,14.5030518 10.353007,14.0821173 10.4865868,13.5592339 L11.116407,11.0972537 C11.2497435,10.5761951 10.9229718,10.1534358 10.3840296,10.1534358 L7.43262172,10.1534358 L7.43262172,10.1534358 Z" id="home"></path>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
