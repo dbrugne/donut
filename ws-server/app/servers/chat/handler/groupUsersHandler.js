@@ -163,6 +163,11 @@ handler.call = function (data, session, next) {
         }
         return userData;
       });
+      var currentUserInfos = {
+        is_op: group.isOp(user.id),
+        is_owner: group.isOwner(user.id),
+        is_member: group.isMember(user.id)
+      };
       var ids = _.map(users, 'user_id');
       that.app.statusService.getStatusByUids(ids, function (err, results) {
         if (err) {
@@ -173,18 +178,19 @@ handler.call = function (data, session, next) {
             ? 'online'
             : 'offline';
         });
-        return callback(null, users, count);
+        return callback(null, users, count, currentUserInfos);
       });
     }
 
-  ], function (err, users, count) {
+  ], function (err, users, count, currentUserInfos) {
     if (err) {
       return errors.getHandler('group:users', next)(err);
     }
 
     return next(null, {
       users: users,
-      count: count // number of users that match the search
+      count: count, // number of users that match the search
+      currentUserInfos: currentUserInfos
     });
   });
 };

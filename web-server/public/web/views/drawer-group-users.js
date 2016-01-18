@@ -67,7 +67,7 @@ var DrawerRoomUsersView = Backbone.View.extend({
     return this;
   },
   onResponse: function (data) {
-    this.tableView.render(data.users);
+    this.tableView.render(data.users, data.currentUserInfos);
     this.numberUsers.text(data.count);
     this.$usersLabel.text(i18next.t('chat.users.users', {count: data.count}));
     this.pagination.html(this.paginationTemplate({

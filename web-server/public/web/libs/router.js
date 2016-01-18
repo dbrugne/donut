@@ -108,8 +108,7 @@ var DonutRouter = Backbone.Router.extend({
   joinGroup: function (data) {
     var name = data.name;
     var model = app.groups.iwhere('name', name);
-    if (model && model.get('rooms')) { // if no room found it's model from welcome
-      model.onRefresh();
+    if (model) {
       this.focus(model);
       app.trigger('nav-active-group', {
         group_id: model.get('group_id'),

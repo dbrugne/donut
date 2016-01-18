@@ -50,7 +50,10 @@ handler.call = function (data, session, next) {
         disclaimer: group.disclaimer,
         created: group.created_at,
         members: [],
-        last_event_at: group.last_event_at
+        last_event_at: group.last_event_at,
+        is_member: group.isMember(user.id),
+        is_op: group.isOp(user.id),
+        is_owner: group.isOwner(user.id)
       };
 
       // owner
