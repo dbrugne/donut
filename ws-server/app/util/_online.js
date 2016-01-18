@@ -210,7 +210,7 @@ module.exports = function (app, msg, session, next) {
 
   ], function (err) {
     if (err) {
-      logger.error(err);
+      logger.error('Error during online process', err);
       return next(null, { code: 500, error: true, msg: err });
     }
 
