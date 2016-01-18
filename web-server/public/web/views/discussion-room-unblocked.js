@@ -52,7 +52,7 @@ var RoomView = Backbone.View.extend({
     // owner
     data.isOwner = this.model.currentUserIsOwner();
     data.isOp = this.model.currentUserIsOp();
-    data.isAdmin = this.model.currentUserIsAdmin();
+    data.isAdmin = app.user.isAdmin();
 
     // avatar
     data.avatar = common.cloudinary.prepare(data.avatar, 100);

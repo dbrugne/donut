@@ -7,7 +7,7 @@ var debug = require('../libs/donut-debug')('donut:main');
 
 var i18next = require('i18next-client');
 var ConnectionModalView = require('./modal-connection');
-//var WelcomeModalView = require('./modal-welcome');
+// var WelcomeModalView = require('./modal-welcome');
 var CurrentUserView = require('./current-user');
 var AlertView = require('./alert');
 var DrawerView = require('./drawer');
@@ -113,7 +113,7 @@ var MainView = Backbone.View.extend({
     this.modalView = new ModalView();
     this.alertView = new AlertView();
     this.connectionView = new ConnectionModalView();
-    //this.welcomeView = new WelcomeModalView();
+    // this.welcomeView = new WelcomeModalView();
     this.muteView = new MuteView();
     this.notificationsView = new NotificationsView();
     this.searchView = new SearchView({
@@ -151,12 +151,12 @@ var MainView = Backbone.View.extend({
     app.groups.onWelcome(data);
 
     // Only on first connection
-    //if (this.firstConnection) { // show if true or if undefined
-    //  if (app.user.shouldDisplayWelcome()) {
-    //    this.welcomeView.render(data);
-    //    this.welcomeView.show();
-    //  }
-    //}
+    // if (this.firstConnection) { // show if true or if undefined
+    //   if (app.user.shouldDisplayWelcome()) {
+    //     this.welcomeView.render(data);
+    //     this.welcomeView.show();
+    //   }
+    // }
 
     this.notificationsView.updateHandle();
 
@@ -271,10 +271,6 @@ var MainView = Backbone.View.extend({
       view = new DrawerRoomCreateView({name: name});
       this.drawerView.setSize('450px').setView(view).open();
       return view.focusField();
-    }
-
-    if (!app.groups.isMemberOwnerAdmin(groupId)) {
-      return app.trigger('alert', 'error', i18next.t('chat.form.errors.not-admin-owner-groupowner'));
     }
 
     view = new DrawerRoomCreateView({
@@ -577,16 +573,13 @@ var MainView = Backbone.View.extend({
       return;
     }
 
-    // Current user is a member of the selected group
-    if (app.groups.isMember(groupId)) {
-      ConfirmationView.open({message: 'quit-group'}, _.bind(function () {
-        app.client.groupQuitMembership(groupId, function (response) {
-          if (response.err) {
-            return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
-          }
-        });
-      }, this));
-    }
+    ConfirmationView.open({message: 'quit-group'}, _.bind(function () {
+      app.client.groupQuitMembership(groupId, function (response) {
+        if (response.err) {
+          return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+        }
+      });
+    }, this));
   },
 
   userBan: function (event) {
@@ -632,7 +625,7 @@ var MainView = Backbone.View.extend({
     }
 
     // check that I am op or owner or admin
-    if (!room.currentUserIsOp() && !room.currentUserIsOwner() && !room.currentUserIsAdmin()) {
+    if (!room.currentUserIsOp() && !room.currentUserIsOwner() && !app.user.isAdmin()) {
       return null;
     }
 

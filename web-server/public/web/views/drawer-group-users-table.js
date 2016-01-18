@@ -25,7 +25,7 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
 
   render: function (users, currentUserInfos) {
     this.users = users;
-    this.op = (currentUserInfos.is_owner || currentUserInfos.is_op || this.model.currentUserIsAdmin());
+    this.op = (currentUserInfos.is_owner || currentUserInfos.is_op || app.user.isAdmin());
 
     _.each(users, function (element, index, list) {
       list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 20);
@@ -34,7 +34,7 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
     this.$el.html(this.template({
       users: users,
       op: this.op,
-      admin: this.model.currentUserIsAdmin()
+      admin: app.user.isAdmin()
     }));
 
     this.initializeTooltips();

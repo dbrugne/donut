@@ -70,7 +70,7 @@ var GroupView = Backbone.View.extend({
       isMember: response.is_member,
       isOp: response.is_op,
       isOwner: response.is_owner,
-      isAdmin: this.model.currentUserIsAdmin(),
+      isAdmin: app.user.isAdmin(),
       isBanned: response.i_am_banned,
       group: response,
       created: date.longDate(response.created)
