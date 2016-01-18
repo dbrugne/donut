@@ -26,6 +26,8 @@ var DonutRouter = Backbone.Router.extend({
 
   clientOnline: false,
 
+  views: {},
+
   nextFocus: null,
 
   homeView: null,
@@ -277,8 +279,6 @@ var DonutRouter = Backbone.Router.extend({
 
     app.trigger('drawerClose');
   },
-
-  views: {},
 
   addView: function (model) {
     var constructor;
