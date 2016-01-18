@@ -10,7 +10,7 @@ var posterDefault = 'poster-default.png';
 
 function imageUrl (data, width, height) {
   var identifier = data.identifier;
-  var background = data.color || '#ffffff';
+  var background = '#fc2063'; //data.color || '#ffffff'; // @todo dbr remove that when refactoring colors
   var facebook = data.facebook;
 
   width = (width && width > 0)
