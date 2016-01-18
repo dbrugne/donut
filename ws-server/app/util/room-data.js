@@ -29,6 +29,8 @@ module.exports = function (user, room, fn) {
     data.group_name = room.group.name;
     data.group_owner = room.group.owner;
     data.group_default = room.group.default;
+    data.group_color = room.group.color;
+    data.group_avatar = room.group._avatar();
   }
   if (room.owner) {
     data.owner_id = room.owner.id;

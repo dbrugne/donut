@@ -380,8 +380,10 @@
                 > .item { background-color: rgba(29,37,47,0.43); .border-radius(4px); }
               }
               .toggle-icon { position: absolute; left: -16px; top: 0; height: 29px; }
-              .toggle-icon:before { .icon-caret-right; width:12px; height:12px; top: 7px; position: absolute; left: 3px; }
-              &.collapse.in .toggle-icon:before { .icon-caret-down; }
+              .toggle-icon:before { .icon-caret-down; width:12px; height:12px; top: 7px; position: absolute; left: 3px; .transition(tranform 300ms); }
+              .toggle-icon.collapsed:before {
+                .transform(rotate(-90deg));
+              }
               .roomlist { padding-left:0; }
               .room-type { margin: 0; padding-left: 40px; }
             }

@@ -4,6 +4,7 @@ var Backbone = require('backbone');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
 var i18next = require('i18next-client');
+var urls = require('../../../../shared/util/url');
 
 module.exports = Backbone.View.extend({
   el: $('#groups'),
@@ -17,6 +18,8 @@ module.exports = Backbone.View.extend({
 
   toggleCount: 4,
 
+  expanded: [],
+
   initialize: function (options) {
     this.listenTo(app, 'redrawNavigation', this.render);
     this.listenTo(app, 'redrawNavigationGroups', this.render);
@@ -27,6 +30,7 @@ module.exports = Backbone.View.extend({
     this.$list = this.$('.list');
   },
   render: function () {
+    console.log('___render nav groups___');
     if (!this.filterRooms().length && !app.groups.models.length) {
       this.$list.empty();
       this.$el.addClass('empty');
@@ -36,35 +40,68 @@ module.exports = Backbone.View.extend({
     }
 
     var groups = [];
-    _.each(app.groups.models, function (g) {
-      var json = g.toJSON();
-      json.avatar = common.cloudinary.prepare(json.avatar, 40);
-      json.rooms = [];
-      groups.push(json);
-    });
-
+    // first hydrate non empty groups
     _.each(this.filterRooms(), function (o) {
       var json = o.toJSON();
-      _.find(groups, function(group) {
+      // append current room to the room list of his group, if aleady initialized
+      var found = _.find(groups, function (group) {
         if (group.id !== json.group_id) {
           return false;
         }
         group.rooms.push(json);
         return true;
       });
+
+      if (found) {
+        return;
+      }
+
+      // group not found, initialize it
+      var group = {
+        id: json.group_id,
+        type: 'group',
+        identifier: '#' + json.group_name,
+        name: json.group_name,
+        avatar: common.cloudinary.prepare(json.group_avatar, 40),
+        rooms: []
+      };
+      group.uri = urls(group, 'group', 'uri');
+      group.rooms.push(json);
+      groups.push(group);
     });
 
-    groups = _.sortBy(groups, 'name'); // @todo sort by last_event
+    // Now append empty groups to previous list
+    _.each(app.groups.models, function (g) {
+      var json = g.toJSON();
+      if (_.find(groups, function (group) {
+          return (group.id === json.id);
+        })) {
+        return;
+      }
+      json.avatar = common.cloudinary.prepare(json.avatar, 40);
+      json.rooms = [];
+      groups.push(json);
+    });
 
-    var html = this.template({listGroups: groups, toggleCount: this.toggleCount});
+    groups = _.sortBy(groups, 'last_event_at');
+
+    var html = this.template({
+      listGroups: groups,
+      toggleCount: this.toggleCount,
+      expanded: this.expanded
+    });
     this.$list.html(html);
+
+    this.$list.on('shown.bs.collapse', this.onUncollapsed);
+    this.$list.on('hidden.bs.collapse	', this.onCollapsed);
 
     return this;
   },
-   onToggleCollapse: function (event) {
-     $(event.currentTarget).parents('.list').toggleClass('collapsed');
-   },
+  onToggleCollapse: function (event) {
+    $(event.currentTarget).parents('.list').toggleClass('collapsed');
+  },
   highlightFocused: function () {
+    console.log('___highlightFocused groups___');
     var that = this;
     this.$list.find('.active').each(function (item) {
       $(this).removeClass('active');
@@ -86,6 +123,7 @@ module.exports = Backbone.View.extend({
     });
   },
   highlightGroup: function (data) {
+    console.log('___highlightGroup groups___');
     var elt = this.$list.find('[data-type="group"][data-group-id="' + data.group_id + '"]');
     elt.addClass('active');
 
@@ -109,5 +147,11 @@ module.exports = Backbone.View.extend({
     return _.filter(app.rooms.models, function (room) {
       return room.get('group_id');
     });
+  },
+  onUncollapsed: function (event) {
+    console.log('___onUncollapsed groups___');
+  },
+  onCollapsed: function (event) {
+    console.log('___onCollapsed groups___');
   }
 });

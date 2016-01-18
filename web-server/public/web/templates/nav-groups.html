@@ -11,7 +11,7 @@
 
     <li class="group <% if (more) { %> additional <% } %> <% if (item.focused) { %> active <% } %>" data-type="group" data-group-id="<%= item.id %>">
         <% if(item.rooms.length !== 0) { %>
-            <i class="icon icon-fw toggle-icon curp" data-toggle="collapse" data-target="#collapseRoomlist-<%= item.id %>" aria-expanded="true" aria-controls="collapseRoomlist-<%= item.id %>"></i>
+            <i class="icon icon-fw toggle-icon curp collapsed" data-toggle="collapse" data-target="#collapseRoomlist-<%= item.id %>" aria-expanded="true" aria-controls="collapseRoomlist-<%= item.id %>"></i>
         <% } %>
         <span class="item flex-parent center">
             <a class="clean avatar-ctn item center flex-parent jc-center" href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
