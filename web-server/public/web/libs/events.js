@@ -16,6 +16,7 @@ var templates = {
   'room:deop': require('../templates/event/promote.html'),
   'room:kick': require('../templates/event/promote.html'),
   'room:ban': require('../templates/event/promote.html'),
+  'room:disallow': require('../templates/event/promote.html'),
   'room:deban': require('../templates/event/promote.html'),
   'room:voice': require('../templates/event/promote.html'),
   'room:devoice': require('../templates/event/promote.html'),
@@ -42,7 +43,7 @@ exports.prototype.reset = function () {
 };
 
 exports.prototype.insertTop = function (events) {
-  if (events.length === 0) {
+  if (!events || !events.length) {
     return;
   }
   var html = '';

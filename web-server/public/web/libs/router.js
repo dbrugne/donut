@@ -7,7 +7,6 @@ var HomeView = require('../views/home');
 var SearchView = require('../views/search');
 var GroupView = require('../views/group');
 var RoomView = require('../views/discussion-room');
-var RoomViewBlocked = require('../views/discussion-room-blocked');
 var OneView = require('../views/discussion-onetoone');
 
 var debug = require('./donut-debug')('donut:discussions');
@@ -16,10 +15,10 @@ var DonutRouter = Backbone.Router.extend({
   routes: {
     '': 'root',
     '_=_': 'root', // workaround for facebook redirect uri bug https://github.com/jaredhanson/passport-facebook/issues/12#issuecomment-5913711
+    'search': 'search',
     'u/:user': 'focusOne',
     'g/:group': 'focusGroup',
-    'search': 'search',
-    ':group(/:room)': 'identifierRoom',
+    ':group(/:room)': 'focusRoom',
     '*default': 'default'
   },
 
@@ -46,7 +45,7 @@ var DonutRouter = Backbone.Router.extend({
     this.listenTo(app, 'focus', this.focus);
     this.listenTo(app, 'discussionAdded', this.onDiscussionAdded);
     this.listenTo(app, 'discussionRemoved', this.onDiscussionRemoved);
-    this.listenTo(app, 'joinRoom', this.focusRoom);
+    this.listenTo(app, 'joinRoom', this._focusRoom);
     this.listenTo(app, 'joinOnetoone', this.focusOne);
     this.listenTo(app, 'joinGroup', this.joinGroup);
     this.listenTo(app, 'goToSearch', this.goToSearch);
@@ -140,56 +139,40 @@ var DonutRouter = Backbone.Router.extend({
     }, this));
   },
 
-  identifierRoom: function () {
+  focusRoom: function () {
     var identifier;
     if (!arguments[1]) {
       identifier = '#' + arguments[0];
     } else {
       identifier = '#' + arguments[0] + '/' + arguments[1];
     }
-    this.focusRoom(identifier);
+    this._focusRoom(identifier);
   },
 
-  focusRoom: function (identifier, forceRedraw) {
+  _focusRoom: function (identifier) {
+    // already joined
     var model = app.rooms.iwhere('identifier', identifier);
-    if (typeof model !== 'undefined' && !forceRedraw) {
+    if (typeof model !== 'undefined') {
       return this.focus(model);
     }
 
-    // not already open or force redraw
+    // not already joined
     this.nextFocus = identifier;
     var that = this;
     app.client.roomId(identifier, function (responseRoom) {
-      if (responseRoom.code === 404) {
-        return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', {name: identifier}));
-      } else if (responseRoom.code === 500) {
+      if (responseRoom.code === 500) {
         return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
       }
+      if (responseRoom.code === 404) {
+        return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', {name: identifier}));
+      }
       app.client.roomJoin(responseRoom.room_id, null, _.bind(function (response) {
-        if (response.err === 'group-members-only') {
-          return app.trigger('alert', 'error', i18next.t('chat.groupmembersonly', {
-            name: identifier,
-            group_name: responseRoom.group.name
-          }));
-        } else if (response.code === 404) {
-          return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', {name: identifier}));
-        } else if (response.code === 403) {
-          if (model) {
-            var isFocused = model.get('focused');
-            model.unbindUsers();
-            app.rooms.remove(model);
-          }
-          app.rooms.addModel(response.room, response.err);
-          app.trigger('redrawNavigationRooms'); // also trigger a redraw when displaying a room blocked
-
-          if (model && isFocused) {
-            that.focus(model);
-          }
-          return;
-        } else if (response.code === 500) {
+        if (response.code === 500) {
           return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
         }
-        return app.trigger('redrawNavigationRooms');
+        if (response.code === 404) {
+          return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', {name: identifier}));
+        }
       }, this));
     });
   },
@@ -296,11 +279,7 @@ var DonutRouter = Backbone.Router.extend({
   addView: function (model) {
     var constructor;
     if (model.get('type') === 'room') {
-      if (model.get('blocked')) {
-        constructor = RoomViewBlocked;
-      } else {
-        constructor = RoomView;
-      }
+      constructor = RoomView;
     } else if (model.get('type') === 'group') {
       constructor = GroupView;
     } else {

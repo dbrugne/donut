@@ -10,10 +10,6 @@ var ConfirmationView = require('./modal-confirmation');
 var currentUser = require('../libs/app').user;
 
 var RoomBlockedView = Backbone.View.extend({
-  tagName: 'div',
-
-  className: 'discussion',
-
   passwordPattern: /(.{4,255})$/i,
 
   template: require('../templates/discussion-room-blocked.html'),
@@ -27,7 +23,6 @@ var RoomBlockedView = Backbone.View.extend({
   },
 
   initialize: function () {
-    this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.render();
   },
   render: function () {
@@ -59,7 +54,6 @@ var RoomBlockedView = Backbone.View.extend({
 
     // render
     var html = this.template({data: data, confirmed: currentUser.isConfirmed()});
-    this.$el.attr('data-identifier', this.model.get('identifier'));
     this.$el.html(html);
     this.$error = this.$('.error');
 
@@ -73,13 +67,6 @@ var RoomBlockedView = Backbone.View.extend({
   changeColor: function () {
     if (this.model.get('focused')) {
       app.trigger('changeColor', this.model.get('color'));
-    }
-  },
-  onFocusChange: function () {
-    if (this.model.get('focused')) {
-      this.$el.show();
-    } else {
-      this.$el.hide();
     }
   },
   onRequestAllowance: function (event) {
@@ -131,7 +118,13 @@ var RoomBlockedView = Backbone.View.extend({
     }, this));
   },
   onRejoin: function (event) {
-    app.trigger('joinRoom', this.model.get('identifier'), true);
+    app.client.roomJoin(this.model.get('id'), function (response) {
+      if (response.err) {
+        this.$error
+          .show()
+          .text(i18next.t('chat.form.errors.' + response.err));
+      }
+    });
   },
   onCloseRoom: function (event) {
     event.preventDefault();

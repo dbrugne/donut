@@ -32,7 +32,6 @@ var DrawerRoomUsersView = Backbone.View.extend({
   initialize: function (options) {
     this.model = options.model;
 
-    this.listenTo(app.client, 'group:ban', this.render);
     this.listenTo(app.client, 'group:deban', this.render);
     this.listenTo(app.client, 'group:op', this.render);
     this.listenTo(app.client, 'group:deop', this.render);
