@@ -1,12 +1,8 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var keyboard = require('../libs/keyboard');
-var i18next = require('i18next-client');
 var date = require('../libs/date');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
-var ConfirmationView = require('./modal-confirmation');
 var currentUser = require('../libs/app').user;
 
 var RoomBlockedView = Backbone.View.extend({
@@ -16,8 +12,6 @@ var RoomBlockedView = Backbone.View.extend({
 
   events: {
     'click .ask-for-allowance': 'onRequestAllowance',
-    'click .valid-password': 'onValidPassword',
-    'keyup .input-password': 'onValidPassword',
     'click .close-room': 'onCloseRoom',
     'click .rejoin': 'onRejoin'
   },
@@ -62,48 +56,11 @@ var RoomBlockedView = Backbone.View.extend({
   onRequestAllowance: function (event) {
     event.preventDefault();
 
-    ConfirmationView.open({message: 'request-allowance', area: true}, _.bind(function (message) {
-      app.client.roomJoinRequest(this.model.get('id'), message, _.bind(function (response) {
-        if (response.err) {
-          this.$error.show();
-          if (response.err === 'not-confirmed') {
-            this.$error.text(i18next.t('chat.form.errors.' + response.err));
-          }
-          if (response.err === 'not-allowed') {
-            this.$error.text(i18next.t('chat.form.errors.' + response.err));
-          } else if (response.code !== 500) {
-            this.$error.text(i18next.t('chat.allowed.error.' + response.err));
-          } else {
-            this.$error.text(i18next.t('global.unknownerror'));
-          }
-        } else {
-          app.trigger('alert', 'info', i18next.t('chat.allowed.success'));
-        }
-      }, this));
-    }, this));
-  },
-  onValidPassword: function (event) {
-    var key = keyboard._getLastKeyCode(event);
-    if (event.type !== 'click' && key.key !== keyboard.RETURN) {
-      return;
-    }
-
-    var password = $(event.currentTarget).closest('.password-form').find('.input-password').val();
-    if (!this.passwordPattern.test(password)) {
-      this.$error.show();
-      this.$error.text(i18next.t('chat.password.invalid-password'));
-      return;
-    }
-    app.client.roomJoin(this.model.get('id'), password, _.bind(function (response) {
-      if (!response.err) {
-        return;
-      }
-
-      this.$error.show();
-      if (response.err === 'not-confirmed') {
-        this.$error.text(i18next.t('chat.form.errors.' + response.err));
+    app.client.roomJoin(this.model.get('id'), null, _.bind(function (response) {
+      if (response && response.room) {
+        app.trigger('openRoomJoin', response.room);
       } else {
-        this.$error.text(i18next.t('chat.password.wrong-password'));
+        app.trigger('joinRoom', {name: this.model.get('name'), popin: false});
       }
     }, this));
   },

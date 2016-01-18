@@ -75,7 +75,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
 
     if (userId && userName) {
       confirmationView.open({message: 'accept-user', username: userName}, _.bind(function () {
-        app.client.roomAllow(this.roomId, userId, _.bind(function (data) {
+        app.client.roomAccept(this.roomId, userId, _.bind(function (data) {
           app.trigger('redraw-tables');
         }, this));
       }, this));

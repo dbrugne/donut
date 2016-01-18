@@ -20,26 +20,12 @@
                         <%= t('chat.blocked.not-confirmed') %>
                     </div>
                 <% } else if (data.mode === 'private' && data.blocked !== 'groupbanned' && data.blocked !== 'banned' && data.blocked !== 'kicked') { %>
-                    <% if (data.hasPassword) { %>
-                        <div class="password-form mt15 fs15">
-                            <%= t('chat.blocked.allowed') %>
-                            <% if(data.allow_user_request) { %>
-                                <%= t('chat.blocked.ask-for-access') %>
-                            <% } %>
-                            <div class="form-inline mt15">
-                                <span class="mt15"><%= t('chat.blocked.password') %></span>
-                                <input class="input-password form-control " type="text" placeholder="<%= t('chat.blocked.password_placeholder') %>">
-                                <button class="valid-password btn btn-success"><%= t('chat.blocked.password_button') %></button>
-                            </div>
-                        </div>
-                    <% } else { %>
-                        <div class="mt15 mb5 fs15">
-                            <%= t('chat.blocked.allowed') %>
-                            <% if(data.allow_user_request) { %>
-                                <%= t('chat.blocked.ask-for-access') %>
-                            <% } %>
-                        </div>
-                    <% } %>
+                    <div class="mt15 mb5 fs15">
+                        <%= t('chat.blocked.allowed') %>
+                        <% if(data.allow_user_request || data.hasPassword) { %>
+                            <%= t('chat.blocked.ask-for-access') %>
+                        <% } %>
+                    </div>
                 <% } else if (data.blocked === 'banned' || data.blocked === 'groupbanned') { %>
                     <div class="mt15 fs15">
                         <% if (data.banned_at) { print(t('chat.blocked.' + data.blocked, { at: data.banned_at })); } %>
