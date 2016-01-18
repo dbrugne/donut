@@ -18,7 +18,7 @@ module.exports = Backbone.View.extend({
 
   toggleCount: 4,
 
-  expanded: [],
+  expanded: [], // by default, no group expanded at first load
 
   initialize: function (options) {
     this.listenTo(app, 'redrawNavigation', this.render);
@@ -27,10 +27,12 @@ module.exports = Backbone.View.extend({
     this.listenTo(app, 'nav-active-group', this.highlightGroup);
     this.listenTo(app, 'viewedEvent', this.setAsViewed);
 
+    this.$el.on('shown.bs.collapse', this.onUncollapsed.bind(this));
+    this.$el.on('hidden.bs.collapse	', this.onCollapsed.bind(this));
+
     this.$list = this.$('.list');
   },
   render: function () {
-    console.log('___render nav groups___');
     if (!this.filterRooms().length && !app.groups.models.length) {
       this.$list.empty();
       this.$el.addClass('empty');
@@ -92,16 +94,12 @@ module.exports = Backbone.View.extend({
     });
     this.$list.html(html);
 
-    this.$list.on('shown.bs.collapse', this.onUncollapsed);
-    this.$list.on('hidden.bs.collapse	', this.onCollapsed);
-
     return this;
   },
   onToggleCollapse: function (event) {
     $(event.currentTarget).parents('.list').toggleClass('collapsed');
   },
   highlightFocused: function () {
-    console.log('___highlightFocused groups___');
     var that = this;
     this.$list.find('.active').each(function (item) {
       $(this).removeClass('active');
@@ -123,7 +121,6 @@ module.exports = Backbone.View.extend({
     });
   },
   highlightGroup: function (data) {
-    console.log('___highlightGroup groups___');
     var elt = this.$list.find('[data-type="group"][data-group-id="' + data.group_id + '"]');
     elt.addClass('active');
 
@@ -149,9 +146,14 @@ module.exports = Backbone.View.extend({
     });
   },
   onUncollapsed: function (event) {
-    console.log('___onUncollapsed groups___');
+    this.expanded.push($(event.target)[0].dataset.groupId);
   },
   onCollapsed: function (event) {
-    console.log('___onCollapsed groups___');
+    var idx = this.expanded.indexOf($(event.target)[0].dataset.groupId);
+    if (idx === -1) {
+      return;
+    }
+
+    this.expanded = this.expanded.splice(idx, 1); // remove the found element
   }
 });

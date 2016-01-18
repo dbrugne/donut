@@ -2,6 +2,8 @@
 <% var more = false; %>
 
 <% _.each(listGroups, function(item) { %>
+    <% var iconGroupClass = (_.indexOf(expanded, item.id) === -1 ? 'collapsed' : '' ); %>
+    <% var ulGroupClass = (_.indexOf(expanded, item.id) === -1 ? '' : 'in' ); %>
     <% if(count === toggleCount) { %>
         <% more = true; %>
         <li class="more curp">
@@ -11,7 +13,7 @@
 
     <li class="group <% if (more) { %> additional <% } %> <% if (item.focused) { %> active <% } %>" data-type="group" data-group-id="<%= item.id %>">
         <% if(item.rooms.length !== 0) { %>
-            <i class="icon icon-fw toggle-icon curp collapsed" data-toggle="collapse" data-target="#collapseRoomlist-<%= item.id %>" aria-expanded="true" aria-controls="collapseRoomlist-<%= item.id %>"></i>
+            <i class="icon icon-fw toggle-icon curp <%=iconGroupClass%>" data-toggle="collapse" data-target="#collapseRoomlist-<%= item.id %>" aria-expanded="true" aria-controls="collapseRoomlist-<%= item.id %>"></i>
         <% } %>
         <span class="item flex-parent center">
             <a class="clean avatar-ctn item center flex-parent jc-center" href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
@@ -34,7 +36,7 @@
             <% } %>
         </span>
         <% if(item.rooms.length !== 0) { %>
-            <ul class="roomlist collapse" id="collapseRoomlist-<%= item.id %>">
+            <ul class="roomlist collapse <%=ulGroupClass%>" id="collapseRoomlist-<%= item.id %>" data-group-id="<%= item.id %>">
                 <% _.each(item.rooms, function(room){ %>
                     <li class="room-type <% if (room.focused) { %> active <% } %>" data-room-id="<%= room.room_id %>">
                         <span class="item flex-parent center <% if (room.blocked) { %> blocked <% } %>">
