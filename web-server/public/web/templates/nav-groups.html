@@ -11,7 +11,7 @@
         </li>
     <% } %>
 
-    <li class="group <% if (more) { %> additional <% } %> <% if (item.focused) { %> active <% } %>" data-type="group" data-group-id="<%= item.id %>">
+    <li class="group <% if (more) { %> additional <% } %> <% if (item.focused) { %> active <% } %> <% if (item.highlighted) { %> highlighted <% } %> " data-type="group" data-group-id="<%= item.id %>">
         <% if(item.rooms.length !== 0) { %>
             <i class="icon icon-fw toggle-icon curp <%=iconGroupClass%>" data-toggle="collapse" data-target="#collapseRoomlist-<%= item.id %>" aria-expanded="true" aria-controls="collapseRoomlist-<%= item.id %>"></i>
         <% } %>

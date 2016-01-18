@@ -53,6 +53,7 @@ module.exports = Backbone.View.extend({
         }
         group.rooms.push(json);
         group.unviewed = group.unviewed || json.unviewed;
+        group.highlighted = group.highlighted || json.focused;
         return true;
       });
 
@@ -68,6 +69,7 @@ module.exports = Backbone.View.extend({
         name: json.group_name,
         avatar: common.cloudinary.prepare(json.group_avatar, 40),
         unviewed: json.unviewed,
+        highlighted: json.focused,
         rooms: []
       };
       group.uri = urls(group, 'group', 'uri');
