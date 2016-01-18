@@ -1,17 +1,17 @@
-<% var nbOptions = (data.allowed_domains ? 1 : 0) + (data.password ? 1 : 0) + (data.request ? 1 : 0); %>
+<% var nbOptions = (data.hasPassword ? 1 : 0) + (data.allow_user_request ? 1 : 0); %>
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="icon icon-times"></i></span></button>
-    <h4 class="modal-title"><%= t('chat.joingroup.title', {identifier: data.identifier}) %></h4>
+    <h4 class="modal-title"><%= t('chat.joinroom.title', {identifier: data.identifier}) %></h4>
 </div>
 <div id="join-group" class="modal-body">
 
     <div class="alert alert-success success mt10" style="display: none"></div>
     <div class="alert alert-danger error mt10" style="display: none"></div>
 
-    <div class="message mb10"><%= t('chat.joingroup.message') %></div>
+    <div class="message mb10"><%= t('chat.joinroom.message') %></div>
     <% if (data.owner_username && data.disclaimer) { %>
-    <div class="disclaimer alert alert-warning"><%= t('chat.joingroup.disclaimer', {username: data.owner_username ,disclaimer: data.disclaimer}) %></div>
+    <div class="disclaimer alert alert-warning"><%= t('chat.joinroom.disclaimer', {username: data.owner_username ,disclaimer: data.disclaimer}) %></div>
     <% } %>
 
 
@@ -22,11 +22,11 @@
 
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-            <% if(data.request) { %>
+            <% if(data.allow_user_request) { %>
             <li role="presentation" class="active"><a href="#groupjoin-request" aria-controls="groupjoin-request" role="tab" data-toggle="tab"><%= t('chat.joingroup.options.request.button') %></a></li>
             <% } %>
 
-            <% if(data.password) { %>
+            <% if(data.hasPassword) { %>
             <li role="presentation"><a href="#groupjoin-password" aria-controls="groupjoin-password" role="tab" data-toggle="tab"><%= t('chat.joingroup.options.password.button') %></a></li>
             <% } %>
         </ul>
@@ -37,24 +37,24 @@
             <% } %>
 
             <% var active = ''  %>
-            <% if(data.request) { %>
+            <% if(data.allow_user_request) { %>
             <% var active = ( nbOptions >= 1 ? 'active' : '' ) %>
             <div role="tabpanel" class="tab-pane <%= active %>" id="groupjoin-request">
                 <div class="join-request">
                     <% if (!data.isAllowedPending) { %>
-                    <div class="info-option"><%= t('chat.joingroup.options.request.info') %></div>
+                    <div class="info-option"><%= t('chat.joinroom.options.request.info') %></div>
                     <textarea class="form-control input-request"  rows="5" maxlength="200" placeholder="<%= t('chat.joingroup.options.request.placeholder') %>"></textarea>
                     <button type="button" class="confirm-request btn btn-primary pull-right"><%= t('chat.joingroup.options.request.confirm') %></button>
                     <div class="clearfix"></div>
                     <% } else { %>
-                    <%= t('chat.joingroup.allowedpending') %>
+                    <%= t('chat.joinroom.allowedpending') %>
                     <% } %>
                 </div>
             </div>
             <% } %>
 
-            <% if(data.password) { %>
-            <% var active = ( (nbOptions === 1 || !data.request) ? 'active' : '' ) %>
+            <% if(data.hasPassword) { %>
+            <% var active = ( (nbOptions === 1 || !data.allow_user_request) ? 'active' : '' ) %>
             <div role="tabpanel" class="tab-pane <%= active %>" id="groupjoin-password">
 
                 <div class="join-password">
@@ -74,9 +74,9 @@
         <% if(nbOptions === 0) { %>
         <div class="join-other">
             <% if (!data.isAllowedPending) { %>
-            <%= t('chat.joingroup.options.other') %>
+            <%= t('chat.joinroom.options.other') %>
             <% } else { %>
-            <%= t('chat.joingroup.allowedpending') %>
+            <%= t('chat.joinroom.allowedpending') %>
             <% } %>
         </div>
         <% } %>

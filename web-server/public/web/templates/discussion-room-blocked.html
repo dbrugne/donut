@@ -22,7 +22,7 @@
                 <% } else if (data.mode === 'private' && data.blocked !== 'groupbanned' && data.blocked !== 'banned' && data.blocked !== 'kicked') { %>
                     <div class="mt15 mb5 fs15">
                         <%= t('chat.blocked.allowed') %>
-                        <% if(data.allow_user_request) { %>
+                        <% if(data.allow_user_request || data.hasPassword) { %>
                             <%= t('chat.blocked.ask-for-access') %>
                         <% } %>
                     </div>

@@ -80,8 +80,8 @@ var RoomBlockedView = Backbone.View.extend({
     event.preventDefault();
 
     app.client.roomJoin(this.model.get('id'), null, _.bind(function (response) {
-      if (response && response.options) {
-        app.trigger('openRoomJoin', response.options);
+      if (response && response.room) {
+        app.trigger('openRoomJoin', response.room);
       } else {
         app.trigger('joinRoom', {name: this.model.get('name'), popin: false});
       }

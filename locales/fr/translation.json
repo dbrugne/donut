@@ -475,7 +475,8 @@
         "message-wrong-format": "Le message ne doit pas faire plus de 200 caractères",
         "banned": "Vous avez été banni de ce donut",
         "group-banned": "Vous avez été banni de la communauté",
-        "room-not-found": "Ce donut n'existe pas"
+        "room-not-found": "Ce donut n'existe pas",
+        "in-pending": "L'utilisateur a une demande d'accès en cours"
       }
     },
     "password": {
@@ -1002,6 +1003,18 @@
           "error": "Cet e-mail est déjà lié à un autre compte"
         },
         "other": "Cette communauté est uniquement accessible sur invitation des modérateurs."
+      }
+    },
+    "joinroom": {
+      "title": "Rejoindre le donut <strong>__identifier__</strong>",
+      "message": "Les membres peuvent participer à la conversation et recevoir des notifications depuis celle-ci.",
+      "disclaimer": "Message de <strong>@__username__</strong> :<br><i class=\"icon icon-quote\"></i>__disclaimer__",
+      "allowedpending": "L'accès à ce donut est sur invitation, et vous avez déjà une demande en cours.",
+      "options": {
+        "request": {
+          "info": "Vos coordonnées ainsi que votre message (facultatif) seront transmis aux modérateurs de ce donut."
+        },
+        "other": "Cette donut est uniquement accessible sur invitation des modérateurs."
       }
     }
   },

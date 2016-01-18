@@ -54,31 +54,21 @@ handler.blocked = function (user, room, blocked, next) {
         return callback(err);
       });
     },
-    function prepareOptions (callback) {
-      options.room_id = room._id;
-      options.name = room.name;
-      options.identifier = room.getIdentifier();
-      options.disclaimer = room.disclaimer;
-
-      if (room.password) {
-        options.password = true;
-      }
-
-      options.isAllowedPending = room.isAllowedPending(user.id);
-      if (room.allow_user_request) {
-        options.request = true;
-      }
-      return callback(null);
-    },
     function (callback) {
-      roomDataHelper(user, room, callback);
+      roomDataHelper(user, room, function (err, data) {
+        if (err) {
+          return callback(err);
+        }
+        data.isAllowedPending = room.isAllowedPending(user.id);
+        return callback(null, data);
+      });
     }
   ], function (err, data) {
     if (err) {
       return errors.getHandler('room:join', next)(err);
     }
 
-    return next(null, {code: 403, err: blocked, room: data, options: options});
+    return next(null, {code: 403, err: blocked, room: data});
   });
 };
 

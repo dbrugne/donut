@@ -36,7 +36,7 @@ var ModalJoinRoomView = Backbone.View.extend({
     }
     var message = this.$('.input-request').val();
 
-    app.client.roomJoinRequest(this.data.group_id, message, _.bind(function (response) {
+    app.client.roomJoinRequest(this.data.room_id, message, _.bind(function (response) {
       if (response.err) {
         if (response.err === 'already-allowed') {
           app.trigger('askMembership');
@@ -59,17 +59,17 @@ var ModalJoinRoomView = Backbone.View.extend({
     var password = this.$('.input-password').val();
 
     if (!password || !this.data.password) {
-      return this.$error.text(i18next.t('chat.joingroup.options.password.error')).show();
+      return this.$error.text(i18next.t('chat.password.invalid-password')).show();
     }
-    app.client.roomJoin(this.data.group_id, password, _.bind(function (response) {
+    app.client.roomJoin(this.data.room_id, password, _.bind(function (response) {
       if (response.err) {
-        if (response.err === 'wrong-password' || response.err === 'params-password') {
-          this.$error.text(i18next.t('chat.joingroup.options.password.error')).show();
+        if (response.err === 'wrong-password' || response.err === 'params-password' || response.err === 'spam-password') {
+          this.$error.text(i18next.t('chat.password.password.' + response.err)).show();
         } else {
           this.$error.text(i18next.t('global.unknownerror')).show();
         }
-      } else if (response.success) {
-        app.trigger('joinRoom', {name: this.data.name, popin: false});
+      } else {
+        app.trigger('joinRoom', this.data.identifier);
         this.trigger('close');
       }
     }, this));

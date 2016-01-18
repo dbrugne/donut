@@ -102,7 +102,10 @@ var RoomAccessView = Backbone.View.extend({
         username: userName,
         room_name: this.room_name
       }, _.bind(function () {
-        app.client.roomAllow(this.roomId, userId, _.bind(function () {
+        app.client.roomInvite(this.roomId, userId, _.bind(function (response) {
+          if (response.err === 'allow-pending') {
+            this.setError(i18next.t('chat.allowed.error.in-pending'));
+          }
           this.renderTables();
         }, this));
       }, this));
