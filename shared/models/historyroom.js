@@ -1,7 +1,7 @@
 'use strict';
 var _ = require('underscore');
 var async = require('async');
-var mongoose = require('../io/mongoose');
+var mongoose = require('../io/mongoose')();
 var Room = require('./room');
 var cloudinary = require('../util/cloudinary');
 
