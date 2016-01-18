@@ -1,12 +1,10 @@
-var $ = require('jquery');
 var Backbone = require('backbone');
-var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
 var EventsView = require('./events');
 var InputView = require('./input');
-var TopicView = require('./room-topic');
 var UsersView = require('./room-users');
+var RoomHeaderView = require('./discussion-room-header');
 
 var RoomView = Backbone.View.extend({
   tagName: 'div',
@@ -16,9 +14,6 @@ var RoomView = Backbone.View.extend({
   template: require('../templates/discussion-room.html'),
 
   events: {
-    'click .share .facebook': 'shareFacebook',
-    'click .share .twitter': 'shareTwitter',
-    'click .share .googleplus': 'shareGoogle'
   },
 
   initialize: function () {
@@ -27,11 +22,14 @@ var RoomView = Backbone.View.extend({
     this.listenTo(this.model, 'change:poster', this.onPoster);
     this.listenTo(this.model, 'change:posterblured', this.onPosterBlured);
     this.listenTo(this.model, 'change:color', this.onColor);
-    this.listenTo(this.model, 'change:allow_group_member', this.onChangeAllowGroupMember);
-    this.listenTo(this.model, 'setPrivate', this.onPrivate);
     this.listenTo(this.model, 'change:unviewed', this.onMarkAsViewed);
 
     this.render();
+
+    this.headerView = new RoomHeaderView({
+      el: this.$el.find('.header'),
+      model: this.model
+    });
 
     this.eventsView = new EventsView({
       el: this.$el,
@@ -39,10 +37,6 @@ var RoomView = Backbone.View.extend({
     });
     this.inputView = new InputView({
       el: this.$('.input'),
-      model: this.model
-    });
-    this.topicView = new TopicView({
-      el: this.$('.topic'),
       model: this.model
     });
     this.usersView = new UsersView({
@@ -79,23 +73,9 @@ var RoomView = Backbone.View.extend({
       ? (this.model.get('group_default') === data.room_id)
       : false;
 
-    // share widget
-    var share = 'share-room-' + this.model.get('id');
-    this.share = {
-      class: share,
-      selector: '.' + share
-    };
-    data.share = this.share.class;
-
-    // dropdown
-    var dropdown = require('../templates/dropdown-room-actions.html')({
-      data: data
-    });
-
     // render
     var html = this.template({
-      data: data,
-      dropdown: dropdown
+      data: data
     });
     this.$el.attr('data-identifier', this.model.get('identifier'));
     this.$el.html(html);
@@ -107,8 +87,8 @@ var RoomView = Backbone.View.extend({
   removeView: function () {
     this.eventsView._remove();
     this.inputView._remove();
-    this.topicView._remove();
     this.usersView._remove();
+    this.headerView._remove();
     this.remove();
   },
   changeColor: function () {
@@ -151,50 +131,6 @@ var RoomView = Backbone.View.extend({
   },
   onPosterBlured: function (model, url) {
     this.$('div.blur').css('background-image', 'url(' + url + ')');
-  },
-  onChangeAllowGroupMember: function (model, value, options) {
-    this.$('span.label').attr('data-original-title', i18next.t('global.mode.description.private' + (value
-        ? '-group'
-        : '')));
-    this.$('span.label').text(i18next.t('global.mode.title.private' + (value
-        ? '-group'
-        : '')));
-  },
-  onPrivate: function (data) {
-    this.model.set('mode', 'private');
-    this.$('span.label').attr('data-original-title', i18next.t('global.mode.description.private' + (data.allow_user_request
-        ? '-invites'
-        : '') + (data.allow_group_member
-        ? '-group'
-        : '')));
-    this.$('span.label').text(i18next.t('global.mode.title.private' + (data.allow_user_request
-        ? '-invites'
-        : '') + (data.allow_group_member
-        ? '-group'
-        : '')));
-  },
-
-  /**
-   * Social sharing
-   */
-  shareFacebook: function () {
-    $.socialify.facebook({
-      url: this.model.getUrl(),
-      name: i18next.t('chat.share.title', {name: this.model.get('name')}),
-      picture: common.cloudinary.prepare(this.model.get('avatar'), 350),
-      description: i18next.t('chat.share.description', {name: this.model.get('name')})
-    });
-  },
-  shareTwitter: function () {
-    $.socialify.twitter({
-      url: this.model.getUrl(),
-      text: i18next.t('chat.share.description', {name: this.model.get('name')})
-    });
-  },
-  shareGoogle: function () {
-    $.socialify.google({
-      url: this.model.getUrl()
-    });
   },
 
   initializeTooltips: function () {

@@ -6,28 +6,7 @@
     </div>
 </div><!-- /.side -->
 <div class="content">
-    <div class="header room">
-        <div class="overlay-ctn">
-            <img class="avatar open-room-profile" data-room-id="<%= data.room_id %>" src="<%= data.avatar %>" alt="<%= data.identifier %> avatar">
-            <div class="overlay open-room-profile" data-room-id="<%= data.room_id %>" ></div>
-            <span class="overlay-text open-room-profile" data-room-id="<%= data.room_id %>" ><%= t('chat.actions.see') %></span>
-        </div>
-        <div class="info flex-parent center">
-            <div class="flex-parent center">
-                <div class="name open-room-profile" data-room-id="<%= data.room_id %>">
-                    <%= data.identifier %>
-                </div>
-                <span class="room-profile ml5 label label-default label-sm" data-toggle="tooltip" data-placement="right" title="<%= t('global.mode.description.' + (data.mode === 'public' ? 'public' : 'private' + (data.allow_user_request ? '-invites' : '') + (data.allow_group_member ? '-group' : ''))) %>">
-                    <%= t('global.mode.title.' + (data.mode === 'public' ? 'public' : 'private' + (data.allow_user_request ? '-invites' : '') + (data.allow_group_member ? '-group' : ''))) %>
-                </span>
-            </div>
-
-            <div class="flex-parent">
-                <%= dropdown %>
-            </div>
-        </div>
-        <div class="topic"><!-- topic view --></div>
-    </div>
+    <div class="header room"><!-- header view --></div>
     <div class="date-ctn">
         <div class="ctn"></div>
         <div class="ctn-unviewed"></div>
