@@ -159,7 +159,7 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, data, globalCall
         });
     },
 
-    function featured (user, callback) {
+    function featured (callback) {
       if (data.device === 'mobile' && !(user.preferences && user.preferences[ 'browser:welcome' ] === true)) {
         return callback(null);
       }
