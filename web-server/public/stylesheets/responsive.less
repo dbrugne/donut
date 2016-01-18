@@ -23,7 +23,9 @@
           .input-group input { width: 450px; }
           .search-results { display: block; }
         }
+        .bottom { margin-left: 0; .transition(margin-left 300ms ease-in-out 300ms); }
       }
+      .bottom { margin-left: (@size-left * -1); .transition(margin-left 300ms ease-in-out 300ms); }
     }
   }
 }
