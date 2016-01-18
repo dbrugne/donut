@@ -1,9 +1,10 @@
 'use strict';
 var errors = require('../../../util/errors');
 var async = require('async');
-var _ = require('underscore');
 var Notifications = require('../../../components/notifications');
 var roomEmitter = require('../../../util/room-emitter');
+var inputUtil = require('../../../util/input');
+var unsubscriber = require('../../../util/unsubscriber');
 
 var Handler = function (app) {
   this.app = app;
@@ -22,7 +23,7 @@ handler.call = function (data, session, next) {
 
   var that = this;
 
-  var event = {};
+  var reason = (data.reason) ? inputUtil.filter(data.reason, 512) : '';
 
   async.waterfall([
 
@@ -58,71 +59,45 @@ handler.call = function (data, session, next) {
       return callback(null);
     },
 
-    function persist (callback) {
-      room.update({$pull: { users: kickedUser.id }}, function (err) {
+    function persistOnRoom (callback) {
+      room.update({$pull: {
+        users: kickedUser.id
+      }}, function (err) {
         return callback(err);
       });
     },
 
     function persistOnUser (callback) {
-      kickedUser.update({
-        $addToSet: {blocked: room.id}
-      }, function (err) {
+      if (!room.isIn(kickedUser.id)) {
+        return callback(null);
+      }
+      kickedUser.addBlockedRoom(room.id, 'kick', reason, function (err) {
         return callback(err);
       });
     },
 
-    function broadcast (callback) {
-      event = {
+    function unsubscribeClients (callback) {
+      unsubscriber(that.app, kickedUser.id, room.id, callback);
+    },
+
+    function broadcastToUser (callback) {
+      that.app.globalChannelService.pushMessage('connector', 'room:blocked', {room_id: room.id, why: 'kick', reason: reason}, 'user:' + kickedUser.id, {}, function (err) {
+        return callback(err);
+      });
+    },
+
+    function broadcastToRoom (callback) {
+      var event = {
         by_user_id: user.id,
         by_username: user.username,
         by_avatar: user._avatar(),
         user_id: kickedUser.id,
         username: kickedUser.username,
-        avatar: kickedUser._avatar()
+        avatar: kickedUser._avatar(),
+        reason: reason
       };
 
-      if (data.reason) {
-        event.reason = data.reason;
-      }
-
       roomEmitter(that.app, user, room, 'room:kick', event, callback);
-    },
-
-    /**
-     * /!\ .unsubscribeClients come after .historizeAndEmit to allow kicked user to receive message
-     */
-    function unsubscribeClients (sentEvent, callback) {
-      // search for all the user sessions (any frontends)
-      that.app.statusService.getSidsByUid(kickedUser.id, function (err, sids) {
-        if (err) {
-          return callback('Error while retrieving user status: ' + err);
-        }
-
-        if (!sids || sids.length < 1) {
-          return callback(null, sentEvent); // the targeted user could be offline at this time
-        }
-
-        var parallels = [];
-        _.each(sids, function (sid) {
-          parallels.push(function (fn) {
-            that.app.globalChannelService.leave(room.id, kickedUser.id, sid, function (err) {
-              if (err) {
-                return fn(sid + ': ' + err);
-              }
-
-              return fn(null);
-            });
-          });
-        });
-        async.parallel(parallels, function (err, results) {
-          if (err) {
-            return callback('error while unsubscribing user ' + kickedUser.id + ' from ' + room.name + ': ' + err);
-          }
-
-          return callback(null, sentEvent);
-        });
-      });
     },
 
     function notification (sentEvent, callback) {
