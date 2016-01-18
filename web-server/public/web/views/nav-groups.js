@@ -19,6 +19,7 @@ module.exports = Backbone.View.extend({
   toggleCount: 4,
 
   expanded: [], // by default, no group expanded at first load
+  groups: [],
 
   initialize: function (options) {
     this.listenTo(app, 'redrawNavigation', this.render);
@@ -42,8 +43,8 @@ module.exports = Backbone.View.extend({
       this.$el.removeClass('empty');
     }
 
-    var groups = [];
     // first hydrate non empty groups
+    var groups = [];
     _.each(this.filterRooms(), function (o) {
       var json = o.toJSON();
       // append current room to the room list of his group, if aleady initialized
@@ -52,6 +53,7 @@ module.exports = Backbone.View.extend({
           return false;
         }
         group.rooms.push(json);
+        group.unviewed = group.unviewed || json.unviewed;
         return true;
       });
 
@@ -66,6 +68,7 @@ module.exports = Backbone.View.extend({
         identifier: '#' + json.group_name,
         name: json.group_name,
         avatar: common.cloudinary.prepare(json.group_avatar, 40),
+        unviewed: json.unviewed,
         rooms: []
       };
       group.uri = urls(group, 'group', 'uri');
@@ -83,6 +86,7 @@ module.exports = Backbone.View.extend({
       }
       json.avatar = common.cloudinary.prepare(json.avatar, 40);
       json.rooms = [];
+      json.unviewed = false; // default nothing to read on an empty group
       groups.push(json);
     });
 
@@ -135,9 +139,15 @@ module.exports = Backbone.View.extend({
     }
   },
   setAsViewed: function (model) {
-    this.$list
-      .find('[data-room-id="' + model.get('id') + '"] span.unread')
-      .remove();
+    // set room as viewed
+    var room = this.$list.find('[data-room-id="' + model.get('id') + '"]');
+    room.find('span.unread').remove();
+    // still some unread messages to read
+    if (room.parents('.group').find('.roomlist span.unread').length !== 0) {
+      return;
+    }
+
+    room.parents('.group').find('>.item span.unread').remove();
   },
   // Only keep rooms that are part of a group
   filterRooms: function () {
