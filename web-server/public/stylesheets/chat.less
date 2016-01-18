@@ -316,7 +316,7 @@
         }
       }
     }
-    .scrollable { .align-self(flex-start); width: 100%; .flex(1 1 0); .scrollbar-grey-thin; overflow: auto; margin-top: 6px; margin-left: -2px; margin-bottom: 70px;
+    .scrollable { .align-self(flex-start); width: 100%; .flex(1 1 0); .scrollbar-grey-thin; overflow: auto; margin-top: 6px; margin-left: -2px;
       .page-sidebar-menu { padding: 0; margin:0; .display-flex; .flex-flow(column nowrap); width: 100%; }
       .navlist { padding: 0; margin: 0; display: inline-block; margin-bottom: 13px;
         .disclaimer-empty { display:none; }
@@ -376,12 +376,15 @@
               .close-discussion  i { color:#FFF; }
             }
             &.group { position:relative;
+              &.highlighted { background-color: rgba(255,255,255,0.05); }
               &.active { background-color: rgba(255,255,255,0.05);
                 > .item { background-color: rgba(29,37,47,0.43); .border-radius(4px); }
               }
               .toggle-icon { position: absolute; left: -16px; top: 0; height: 29px; }
-              .toggle-icon:before { .icon-caret-right; width:12px; height:12px; top: 7px; position: absolute; left: 3px; }
-              &.collapse.in .toggle-icon:before { .icon-caret-down; }
+              .toggle-icon:before { .icon-caret-down; width:12px; height:12px; top: 7px; position: absolute; left: 3px; .transition(tranform 300ms); }
+              .toggle-icon.collapsed:before {
+                .transform(rotate(-90deg));
+              }
               .roomlist { padding-left:0; }
               .room-type { margin: 0; padding-left: 40px; }
             }
@@ -389,13 +392,12 @@
         }
       }
     }
-    .bottom { position:fixed; height: 70px; width: @size-left; bottom: 0; left: 0;
-      .logo { position:absolute; background-image: url('@{img-path}/logo-onecolor-gr.svg'); background-repeat: no-repeat; background-position: center center; background-size: 100%; width: 82px; height: 19px; left: 16px; bottom: 16px; }
+    .bottom { position:fixed; width: @size-left; bottom: 0; left: 0;
       .crunch { position:absolute; background-image: url('@{img-path}/svg/crunch.svg'); background-repeat: no-repeat; background-position: center center; background-size: 100%; width: 30px; height: 83px; right: 0; bottom: -15px; }
     }
   }
 
-  #center { height: 100%; z-index: 5; margin-left: @size-left; background-color: @cl-subtext0; background-image: url('@{img-path}/logo-onecolor-gr.svg'); background-repeat: no-repeat; background-position: center center; background-size: 60%;
+  #center { height: 100%; z-index: 5; margin-left: @size-left; background-color: #FFF; background-image: url('@{img-path}/logo-onecolor-gr.svg'); background-repeat: no-repeat; background-position: center center; background-size: 60%;
     .user-list { height: 100%;
       .list { overflow-y: auto; overflow-x: hidden; height: 100%; .scrollbar-white; padding-top:10px;
         .item { .pull-left; position: relative; margin:5px;

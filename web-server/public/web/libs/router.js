@@ -110,12 +110,11 @@ var DonutRouter = Backbone.Router.extend({
     var model = app.groups.iwhere('name', name);
     if (model) {
       this.focus(model);
-      app.trigger('nav-active-group', {
+      return app.trigger('nav-active-group', {
         group_id: model.get('group_id'),
         group_name: model.get('name'),
         popin: data.popin
       });
-      return app.trigger('redrawNavigationGroups');
     }
 
     app.client.groupId(name, _.bind(function (response) {
