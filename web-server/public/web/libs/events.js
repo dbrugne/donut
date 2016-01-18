@@ -95,7 +95,7 @@ exports.prototype.insertTop = function (events) {
 };
 
 exports.prototype.insertBottom = function (events) {
-  if (events.length === 0) {
+  if (!events.length) {
     return;
   }
 
