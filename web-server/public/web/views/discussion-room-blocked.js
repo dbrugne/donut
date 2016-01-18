@@ -2,6 +2,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var date = require('../libs/date');
 var common = require('@dbrugne/donut-common/browser');
+var i18next = require('i18next-client');
 var app = require('../libs/app');
 var currentUser = require('../libs/app').user;
 
@@ -65,7 +66,7 @@ var RoomBlockedView = Backbone.View.extend({
     }, this));
   },
   onRejoin: function (event) {
-    app.client.roomJoin(this.model.get('id'), function (response) {
+    app.client.roomJoin(this.model.get('id'), null, function (response) {
       if (response.err) {
         this.$error
           .show()
