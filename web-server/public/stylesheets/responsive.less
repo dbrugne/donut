@@ -1,7 +1,7 @@
 @media screen and (max-width: @screen-desktop) {
   #chat {
     #drawer { z-index: 13; }
-    #center { margin-left: 0;
+    #center { margin-left: 0; border-left: 2px solid #fc2063;
       .side { .compact-sidebar; // see mixin for shared compact sidebar
         .compact-mode { display:none; }
       }
@@ -9,7 +9,9 @@
     #left { margin-left: (@size-left * -1); overflow: visible; position:absolute;
       .hover-menu { height:100%; background-color:transparent; position:absolute; top: 0; bottom: 0; right: -25px; width: 25px; overflow-x: hidden; cursor:pointer; display:block;
         .transition(right 200ms ease-in-out 200ms,width 200ms ease-in-out 200ms);
-        .hover-menu-notifications { background-color: @cl-nav-left-back; top: 77px; right: 0; position: absolute; width: 25px; height: 30px; border-radius: 0 4px 4px 0; line-height: 30px; text-align: center; }
+        .hover-menu-notifications { top: 77px; left: 2px; position: absolute; width: 19px; height: 45px; border-radius: 0 4px 4px 0; text-align: center; background-image: url('@{img-path}/handle-active.png'); background-repeat: no-repeat; background-position: center center; background-size: 100%; .ft-opensans-semibold; font-size: 15px; color: #FFFFFF; line-height: 43px;
+          &.empty { background-image: url('@{img-path}/handle.png'); }
+        }
       }
       #navbar .search.open {
         .input-group input { width: 100%; }
