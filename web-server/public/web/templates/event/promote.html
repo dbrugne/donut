@@ -1,12 +1,16 @@
 <%
-var _icon = 'icon-';
+var _icon = '';
 switch (data.stype) {
   case 'ban':
   case 'disallow':
-  case 'deban':
     _icon += 'ban';
     break;
+  case 'deban':
+    _icon += 'deban';
+    break;
   case 'op':
+    _icon += 'deop';
+    break;
   case 'deop':
     _icon += 'op';
     break;
@@ -20,11 +24,12 @@ switch (data.stype) {
     _icon += 'kick';
     break;
 };
+_icon += '-icon';
 %>
 <div class="block promote <%= data.stype %>" id="<%= data.id %>" data-time="<%= data.time %>">
     <div class="event">
         <div class="text">
-            <i class="icon icon-fw <%= _icon %>"></i>
+            <i class="icon <%= _icon %>"></i>
             <div class="avatar open-user-profile" data-user-id="<%= data.user_id %>" style="background-image: url(<%= data.avatar %>)"></div>
             <span class="username open-user-profile"  data-user-id="<%= data.user_id %>">@<%= data.username %></span>
             <span class="message"><%= t('chat.notifications.' + data.type) %></span>
