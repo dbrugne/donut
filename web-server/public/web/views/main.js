@@ -98,7 +98,7 @@ var MainView = Backbone.View.extend({
 
     this.listenTo(app.client, 'welcome', this.onWelcome);
     this.listenTo(app.client, 'admin:message', this.onAdminMessage);
-    this.listenTo(app.rooms, 'deleted', this.roomDeleted);
+    this.listenTo(app.rooms, 'deleted', this.onRoomDeleted);
     this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
     this.listenTo(app, 'openGroupProfile', this.openGroupProfile);
     this.listenTo(app, 'openUserProfile', this.openUserProfile);
@@ -245,17 +245,8 @@ var MainView = Backbone.View.extend({
     event.preventDefault();
     event.stopPropagation();
   },
-  roomDeleted: function (data) {
-    if (data.was_focused) {
-      app.trigger('focus');
-    }
-
-    if (data.group_id) {
-      var model = app.groups.findWhere({id: data.group_id});
-      model.onDeleteRoom(data.room_id);
-    }
-
-    app.trigger('alert', 'warning', i18next.t('chat.deletemessage', {name: data.name}));
+  onRoomDeleted: function (identifier) {
+    app.trigger('alert', 'warning', i18next.t('chat.deletemessage', {name: identifier}));
   },
 
   // DRAWERS

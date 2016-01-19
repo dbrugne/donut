@@ -76,7 +76,7 @@ var RoomBlockedView = Backbone.View.extend({
   },
   onCloseRoom: function (event) {
     event.preventDefault();
-    app.client.roomLeaveBlock(this.model.get('id'));
+    this.model.leaveBlocked();
   },
   initializeTooltips: function () {
     this.$el.find('[data-toggle="tooltip"]').tooltip({

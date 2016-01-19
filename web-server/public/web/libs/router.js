@@ -44,7 +44,6 @@ var DonutRouter = Backbone.Router.extend({
       this.clientOnline = false;
       Backbone.history.stop();
     }, this));
-    this.listenTo(app, 'focus', this.focus);
     this.listenTo(app, 'discussionAdded', this.onDiscussionAdded);
     this.listenTo(app, 'discussionRemoved', this.onDiscussionRemoved);
     this.listenTo(app, 'joinRoom', this._focusRoom);
@@ -164,7 +163,6 @@ var DonutRouter = Backbone.Router.extend({
 
     // not already joined
     this.nextFocus = identifier;
-    var that = this;
     app.client.roomId(identifier, function (responseRoom) {
       if (responseRoom.code === 500) {
         return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
@@ -172,14 +170,14 @@ var DonutRouter = Backbone.Router.extend({
       if (responseRoom.code === 404) {
         return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', {name: identifier}));
       }
-      app.client.roomJoin(responseRoom.room_id, null, _.bind(function (response) {
+      app.client.roomJoin(responseRoom.room_id, null, function (response) {
         if (response.code === 500) {
           return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
         }
         if (response.code === 404) {
           return app.trigger('alert', 'error', i18next.t('chat.roomnotexists', {name: identifier}));
         }
-      }, this));
+      });
     });
   },
 
