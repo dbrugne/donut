@@ -46,8 +46,6 @@ var SearchView = require('./home-search');
 var MainView = Backbone.View.extend({
   el: $('body'),
 
-  firstConnection: true,
-
   defaultColor: '',
 
   currentColor: '',
@@ -96,9 +94,10 @@ var MainView = Backbone.View.extend({
   initialize: function () {
     this.defaultColor = window.room_default_color;
 
-    this.listenTo(app.client, 'welcome', this.onWelcome);
     this.listenTo(app.client, 'admin:message', this.onAdminMessage);
     this.listenTo(app.rooms, 'deleted', this.onRoomDeleted);
+    this.listenTo(app, 'usernameRequired', this.onUsernameRequired);
+    this.listenTo(app, 'ready', this.onReady);
     this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
     this.listenTo(app, 'openGroupProfile', this.openGroupProfile);
     this.listenTo(app, 'openUserProfile', this.openUserProfile);
@@ -134,25 +133,11 @@ var MainView = Backbone.View.extend({
 
     app.client.connect();
   },
-
-  /**
-   * Executed each time the connexion with server is re-up (can occurs multiple
-   * time in a same session)
-   * @param data
-   */
-  onWelcome: function (data) {
-    // Is username required
-    if (data.usernameRequired) {
-      this.connectionView.hide();
-      return this.openModalChooseUsername();
-    }
-
-    app.user.onWelcome(data);
-    app.ones.onWelcome(data);
-    app.rooms.onWelcome(data);
-    app.groups.onWelcome(data);
-
-    // Only on first connection
+  onUsernameRequired: function () {
+    this.connectionView.hide();
+    return this.openModalChooseUsername();
+  },
+  onReady: function () {
     // if (this.firstConnection) { // show if true or if undefined
     //   if (app.user.shouldDisplayWelcome()) {
     //     this.welcomeView.render(data);
@@ -161,10 +146,6 @@ var MainView = Backbone.View.extend({
     // }
 
     this.notificationsView.updateHandle();
-
-    // Run routing only when everything in interface is ready
-    this.firstConnection = false;
-    app.trigger('readyToRoute');
     this.connectionView.hide();
   },
   onAdminMessage: function (data) {

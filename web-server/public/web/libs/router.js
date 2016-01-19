@@ -35,7 +35,7 @@ var DonutRouter = Backbone.Router.extend({
 
   initialize: function (options) {
     // on connection/reconnection
-    this.listenTo(app, 'readyToRoute', _.bind(function () {
+    this.listenTo(app, 'ready', _.bind(function () {
       this.clientOnline = true;
       Backbone.history.start();
     }, this));
