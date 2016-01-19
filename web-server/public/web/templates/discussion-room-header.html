@@ -13,10 +13,10 @@
         </span>
     </div>
 
-    <div class="flex-parent">
+    <div class="flex-parent jc-center center">
         <div class="dropdown">
             <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                <i class="icon icon-chevron-down"></i>
+                <i class="icon icon-cog icon-fw"></i>
             </button>
             <ul class="dropdown-menu" role="menu">
                 <!--<li role="presentation">-->
@@ -61,22 +61,6 @@
                     </a>
                 </li>
                 <% }; %>
-                <li role="presentation" class="divider "></li>
-                <li role="presentation" class="share ">
-                    <a role="menuitem" class="facebook" tabindex="-1">
-                        <i class="icon icon-facebook-square"></i> Facebook
-                    </a>
-                </li>
-                <li role="presentation" class="share ">
-                    <a role="menuitem" class="twitter" tabindex="-1">
-                        <i class="icon icon-twitter-square"></i> Twitter
-                    </a>
-                </li>
-                <li role="presentation" class="share ">
-                    <a role="menuitem" class="googleplus" tabindex="-1">
-                        <i class="icon icon-google-plus-square"></i> Google
-                    </a>
-                </li>
                 <li role="presentation" class="divider"></li>
                 <li role="presentation">
                     <a role="menuitem" tabindex="-1" class="close-discussion" data-identifier="<%= data.room_id %>" data-type="room">
@@ -84,6 +68,22 @@
                     </a>
                 </li>
             </ul>
+        </div>
+        <div class="separator"></div>
+        <div role="presentation" class="share flex-parent jc-center center">
+            <a role="menuitem" class="clean facebook flex-parent jc-center center" tabindex="-1" data-toggle="tooltip" data-placement="left" title="<%= t('chat.share.on', {name: 'Facebook'}) %>" >
+                <i class="icon icon-facebook-square"></i>
+            </a>
+        </div>
+        <div role="presentation" class="share flex-parent jc-center center">
+            <a role="menuitem" class="clean twitter flex-parent jc-center center" tabindex="-1" data-toggle="tooltip" data-placement="left" title="<%= t('chat.share.on', {name: 'Twitter'}) %>" >
+                <i class="icon icon-twitter-square"></i>
+            </a>
+        </div>
+        <div role="presentation" class="share flex-parent jc-center center">
+            <a role="menuitem" class="clean googleplus flex-parent jc-center center" tabindex="-1" data-toggle="tooltip" data-placement="left" title="<%= t('chat.share.on', {name: 'Google'}) %>" >
+                <i class="icon icon-google-plus-square"></i>
+            </a>
         </div>
     </div>
 </div>

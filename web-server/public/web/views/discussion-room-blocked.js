@@ -52,11 +52,6 @@ var RoomBlockedView = Backbone.View.extend({
     // room mode
     data.mode = this.model.get('mode');
 
-    // dropdown
-    data.dropdown = require('../templates/dropdown-room-actions.html')({
-      data: data
-    });
-
     // render
     var html = this.template({data: data, confirmed: currentUser.isConfirmed()});
     this.$el.attr('data-identifier', this.model.get('identifier'));

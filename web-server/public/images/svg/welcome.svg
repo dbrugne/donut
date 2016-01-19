@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="20px" height="34px" viewBox="0 0 20 34" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4.4 (17249) - http://www.bohemiancoding.com/sketch -->
+    <title>Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="discussion-copy" sketch:type="MSArtboardGroup" transform="translate(-400.000000, -703.000000)" fill="#FC2063">
+            <g id="Rectangle-910-+-Group" sketch:type="MSLayerGroup" transform="translate(0.000000, 56.000000)">
+                <g id="Group" sketch:type="MSShapeGroup">
+                    <path d="M401.333333,647 C400.596667,647 400,647.596667 400,648.333333 L400,679 C400,679.736667 400.596667,680.333333 401.333333,680.333333 C402.069667,680.333333 402.666667,679.736667 402.666667,679 L402.666667,648.333333 C402.666667,647.596667 402.069667,647 401.333333,647 L401.333333,647 Z M414.624667,647.961 C413.461333,647.510333 412.142667,647 410.333333,647 C407.282,647 405.007,648.474333 404,649.270667 L404,659.478 C404.492,659.031667 406.916667,657 410.333333,657 C412.018,657 413.220667,657.465667 414.384,657.916 C416.015333,658.548 417.563,659.145667 420,658.172667 L420,648.114333 C417.664667,649.132 416.316,648.616 414.624667,647.961 L414.624667,647.961 Z" id="Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
