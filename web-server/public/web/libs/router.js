@@ -58,7 +58,8 @@ var DonutRouter = Backbone.Router.extend({
   },
 
   root: function () {
-    this.unfocusAll();
+    app.setFocusedModel();
+    this.unfocusStatics();
     app.trigger('redrawNavigation');
     this.homeView.focus();
     Backbone.history.navigate('#'); // just change URI, not run route action
@@ -72,7 +73,8 @@ var DonutRouter = Backbone.Router.extend({
       }
     }
 
-    this.unfocusAll();
+    app.setFocusedModel();
+    this.unfocusStatics();
     app.trigger('redrawNavigation');
     this.homeView.focus();
     Backbone.history.navigate('#'); // just change URI, not run route action
@@ -94,7 +96,8 @@ var DonutRouter = Backbone.Router.extend({
       }
     };
 
-    this.unfocusAll();
+    app.setFocusedModel();
+    this.unfocusStatics();
     app.trigger('redrawNavigation');
     app.trigger('drawerClose');
     this.searchView.render(data);
@@ -212,18 +215,7 @@ var DonutRouter = Backbone.Router.extend({
     Backbone.history.navigate('#', {trigger: true}); // redirect on home
   },
 
-  unfocusAll: function () {
-    app.groups.each(function (o) {
-      o.set('focused', false);
-    });
-    app.rooms.each(function (o) {
-      o.set('focused', false);
-    });
-    app.ones.each(function (o) {
-      o.set('focused', false);
-    });
-
-    // static pages
+  unfocusStatics: function () {
     this.homeView.$el.hide();
     this.searchView.$el.hide();
   },
@@ -248,13 +240,10 @@ var DonutRouter = Backbone.Router.extend({
       }
     }
 
-    // @todo use app.setFocusedModel() instead following 2 instructions
-
-    // unfocus every model
-    this.unfocusAll();
-
-    // Focus the one we want
-    model.set('focused', true);
+    // delegate model updating to donut-client
+    // (if model is null every model will be unfocused)
+    app.setFocusedModel(model);
+    this.unfocusStatics();
 
     if (!this.views[model.get('id')]) {
       this.addView(model);
