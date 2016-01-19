@@ -31,6 +31,8 @@ var RoomView = Backbone.View.extend({
     if (this.view) {
       this.view.removeView();
     }
+
+    this.remove(); // called from on router on room:leave only (destroy totally)
   },
   onFocusChange: function () {
     if (this.model.get('focused')) {
