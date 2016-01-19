@@ -118,6 +118,7 @@ module.exports = {
     } else {
       return {
         type: 'image',
+        filename: element.filename,
         url: imageUrl({
           identifier: element.path,
           gravity: 'center',
