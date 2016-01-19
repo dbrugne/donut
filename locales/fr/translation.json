@@ -160,6 +160,7 @@
     "verify": "Verification de votre email"
   },
   "global": {
+    "welcome": "Bienvenue !",
     "ones": "Tête à tête",
     "rooms": "Discussions",
     "groups": "Communautés",
@@ -171,6 +172,7 @@
     "group": "groupe",
     "view-profile": "voir le profil",
     "view-group": "voir communauté",
+    "view-room": "rejoindre la discussion",
     "onetoones": "tête-à-tête",
     "donuts": "donuts",
     "group": "communauté",
@@ -475,7 +477,8 @@
         "message-wrong-format": "Le message ne doit pas faire plus de 200 caractères",
         "banned": "Vous avez été banni de ce donut",
         "group-banned": "Vous avez été banni de la communauté",
-        "room-not-found": "Ce donut n'existe pas"
+        "room-not-found": "Ce donut n'existe pas",
+        "in-pending": "L'utilisateur a une demande d'accès en cours"
       }
     },
     "password": {
@@ -596,7 +599,7 @@
         "roomjoin": "<span>@__username__</span> rejoint <span>__name__</span>",
         "roomjoinrequest": "<span>@__username__</span> souhaite rejoindre <span>__name__</span>",
         "roomtopic": "Nouveau sujet dans <span>__name__</span>, __topic__",
-        "roommessage": "Nouveaux messages dans <span>__name__</span>",
+        "roommessage": "Nouveaux messages dans <span>__name__</span> __message__",
         "usermention": "Vous êtes mentionné dans <span>__name__</span>",
         "usermessage": "<span>@__username__</span> __message__",
         "roominvite": "<span>@__username__</span> vous invite à rejoindre <span>__name__</span>",
@@ -630,8 +633,8 @@
       "hasPassword": "Votre donut est privé. Cliquez sur \"Gérer les accès\" pour définir qui peut le rejoindre.",
       "onestart": "Cette conversation est privée. Seuls vous et votre interlocuteur pouvez y avoir accès.",
       "edit": "Editer le profil",
-      "users": "Gérer les utilisateurs",
-      "access": "Gérer les accès"
+      "access": "Gérer les accès",
+      "invite": "Inviter des utilisateurs"
     },
     "shouldauthenticated": "Vous devez être identifié pour accéder aux discussions (<a href='/signup'>créer un compte</a> ou <a href='/login'>se connecter</a>)",
     "closeapp": "Etes-vous sur de vouloir quitter ?",
@@ -685,26 +688,23 @@
     "share": {
       "label": "partager :",
       "title": "Rejoignez-moi dans le donut __name__",
-      "description": "Venez me rejoindre sur DONUT.me le nouveau site de chat. J'y discute sur __name__."
+      "description": "Venez me rejoindre sur DONUT.me le nouveau site de chat. J'y discute sur __name__.",
+      "on": "partager sur __name__"
     },
     "welcome": {
       "members-invites": [
-        "<p>Bienvenue!</p>",
         "<p>La conversation est privée. Seuls les membres de la communauté <a class=\"open-group-profile curp\" data-group-id=\"__group_id__\"><strong>#__group_name__</strong></a> ainsi que les utilisateurs autorisés par <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a> peuvent rejoindre ce donut, y participer et accéder à son historique.</p>",
         "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
       ],
       "invites": [
-        "<p>Bienvenue!</p>",
         "<p>La conversation est privée. Seuls les utilisateurs autorisés par <a class=\"open-user-profile\" data-user-id=\"__owner_id__\"><strong>@__owner__</strong></a> peuvent rejoindre ce donut, y participer et accéder à son historique.</p>",
         "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
       ],
       "public": [
-        "<p>Bienvenue !</p>",
         "<p>Cette conversation est publique donc accessible à tous de même que l'historique. Vous pouvez partager le lien avec vos amis.</p>",
         "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
       ],
       "private": [
-        "<p>Bienvenue !</p>",
         "<p>Cette conversation est privée donc uniquement accessible aux utilisateurs autorisés de même que l'historique.</p>",
         "<p>Dites 'bonjour' pour amorcer la conversation.</p>"
       ],
@@ -719,7 +719,7 @@
       "contactus": "Problèmes pour vous connecter ? Contactez-nous."
     },
     "message": {
-      "text-spammed": "Message indésirable d'après le modérateur [<a class=\"view-spammed-message\">Afficher</a>].",
+      "text-spammed": "Message indésirable d'après le modérateur <a class=\"view-spammed-message clean\">Afficher</a>",
       "text-remask": "Masquer à nouveau",
       "edition": {
         "edited": "édité",
@@ -739,19 +739,18 @@
       "typing_plural": "sont en train de taper"
     },
     "blocked": {
-      "allowed": "Ce donut est privé.",
-      "ask-for-access": "Pour demander un accès, <a href=\"#\" class=\"ask-for-allowance\"><strong>cliquer ici</strong></a>.",
-      "rejoin": " pour le rejoindre à nouveau.",
-      "allowed_button": "Demander l'accès",
-      "password": "Accès direct :",
+      "disallow": "Ce donut est privé.",
       "message-display": "Message à afficher",
       "password_placeholder": "Mot de passe",
       "password_button": "Rejoindre",
       "banned": "Vous avez été banni de ce donut le __at__",
+      "ban": "Vous avez été banni de ce donut.",
       "groupbanned": "Vous avez été banni de cette communauté le __at__",
+      "groupban": "Vous avez été banni de cette communauté.",
       "reason": "pour la raison suivante : ",
       "kicked": "Vous avez été expulsé de ce donut.",
-      "kicked_button": "Rejoindre",
+      "kick": "Vous avez été expulsé de ce donut.",
+      "join": "Rejoindre",
       "changemode": "Passer en mode privé",
       "disclaimer-private": "Ce donut est privé.",
       "disclaimer-public": "Ce donut est public. N'importe quel utilisateur pourra y accéder.",
@@ -1002,6 +1001,18 @@
           "error": "Cet e-mail est déjà lié à un autre compte"
         },
         "other": "Cette communauté est uniquement accessible sur invitation des modérateurs."
+      }
+    },
+    "joinroom": {
+      "title": "Rejoindre le donut <strong>__identifier__</strong>",
+      "message": "Les membres peuvent participer à la conversation et recevoir des notifications depuis celle-ci.",
+      "disclaimer": "Message de <strong>@__username__</strong> :<br><i class=\"icon icon-quote\"></i>__disclaimer__",
+      "allowedpending": "L'accès à ce donut est sur invitation, et vous avez déjà une demande en cours.",
+      "options": {
+        "request": {
+          "info": "Vos coordonnées ainsi que votre message (facultatif) seront transmis aux modérateurs de ce donut."
+        },
+        "other": "Ce donut est uniquement accessible sur invitation des modérateurs."
       }
     }
   },

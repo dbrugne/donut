@@ -1,6 +1,8 @@
 # Things to do on next deploy
 
-### Add group opened id on user
+### Remove old user.blocked records
+
 ```
-grunt donut-add-group-on-user
+db.getCollection('users').update({blocked: {$exists: true}}, {$unset: {blocked: true}}, {multi: true})
+
 ```

@@ -1,0 +1,16 @@
+<div class="side roomside dc-back <% if (!data.poster) { %>poster-empty<% } else { %> poster-full <% } %>" style="<% if (typeof data.poster !== 'undefined') { %>background-image: url(<%= data.poster %>);<% }; %>">
+    <div class="blur dc-back" style="<% if (typeof data.posterblured !== 'undefined') { %>background-image: url(<%= data.posterblured %>);<% }; %>">
+        <div class="users  ">
+            <div class="scrollable"></div>
+        </div>
+    </div>
+</div><!-- /.side -->
+<div class="content">
+    <div class="header room"><!-- header view --></div>
+    <div class="date-ctn">
+        <div class="ctn"></div>
+        <div class="ctn-unviewed"></div>
+    </div>
+    <div class="events flex-parent column"><!--/events view--></div>
+    <div class="input"><!-- input view --></div>
+</div><!-- /.content -->

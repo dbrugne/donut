@@ -1,6 +1,6 @@
 'use strict';
 var _ = require('underscore');
-var mongoose = require('../io/mongoose');
+var mongoose = require('../io/mongoose')();
 var bcrypt = require('bcrypt-nodejs');
 var colors = require('../../config/colors');
 var common = require('@dbrugne/donut-common/server');
@@ -42,7 +42,12 @@ var userSchema = mongoose.Schema({
     last_event: {type: mongoose.Schema.ObjectId, ref: 'HistoryOne'}
   }],
   groups: [{type: mongoose.Schema.ObjectId, ref: 'Group'}],
-  blocked: [{type: mongoose.Schema.ObjectId, ref: 'Room'}],
+  blocked: [{
+    room: {type: mongoose.Schema.ObjectId, ref: 'Room'},
+    why: String,
+    reason: String,
+    created_at: {type: Date}
+  }],
   unviewed: [{
     room: {type: mongoose.Schema.ObjectId, ref: 'Room'},
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
@@ -506,6 +511,13 @@ userSchema.methods.posterId = function () {
   var id = data[1].substr(0, data[1].lastIndexOf('.'));
   return id;
 };
+
+/** *******************************************************************************
+ *
+ * Onetoones
+ *
+ *********************************************************************************/
+
 userSchema.methods.findOnetoone = function (userId) {
   if (!this.ones || !this.ones.length) {
     return;
@@ -524,6 +536,13 @@ userSchema.methods.isOnetoone = function (userId) {
   var doc = this.findOnetoone(userId);
   return (typeof doc !== 'undefined');
 };
+
+/** *******************************************************************************
+ *
+ * Unviewed
+ *
+ *********************************************************************************/
+
 userSchema.methods.updateActivity = function (userId, eventId, callback) {
   if (this.isOnetoone(userId.toString())) {
     this.constructor.update(
@@ -535,14 +554,12 @@ userSchema.methods.updateActivity = function (userId, eventId, callback) {
   }
 };
 
-userSchema.statics.removeDeviceOnOthers = function (userId, parseObjectId, callback) {
-  this.update({
-    _id: {$ne: userId},
-    'devices.parse_object_id': parseObjectId
-  }, {$pull: {devices: {parse_object_id: parseObjectId}}
-  }, {multi: true}
-  , callback);
-};
+/** *******************************************************************************
+ *
+ * Devices
+ *
+ *********************************************************************************/
+
 userSchema.methods.hasAtLeastOneDevice = function () {
   // @todo : improve by .find() at least one event with .env === conf.parse.env
   return (this.devices && this.devices.length);
@@ -580,6 +597,78 @@ userSchema.methods.registerDevice = function (parseObjectId, callback) {
       return callback(err);
     });
   }
+};
+
+/** *******************************************************************************
+ *
+ * Blocked room
+ *
+ *********************************************************************************/
+
+userSchema.methods.addBlockedRoom = function (roomId, why, reason, callback) {
+  if (this.isRoomBlocked(roomId)) {
+    var doc = this.findBlocked(roomId);
+    doc.why = why;
+    doc.reason = reason;
+    doc.created_at = new Date();
+    return this.save(function (err) {
+      return callback(err);
+    });
+  }
+
+  this.blocked.push({
+    room: roomId,
+    why: why,
+    reason: reason,
+    created_at: new Date()
+  });
+  this.save(function (err) {
+    return callback(err);
+  });
+};
+userSchema.methods.removeBlockedRoom = function (roomId, callback) {
+  if (!this.isRoomBlocked(roomId)) {
+    return callback(null);
+  }
+
+  var doc = this.findBlocked(roomId);
+  doc.remove();
+
+  this.save(function (err) {
+    return callback(err);
+  });
+};
+userSchema.methods.findBlocked = function (roomId) {
+  if (!this.blocked || !this.blocked.length) {
+    return;
+  }
+
+  return _.find(this.blocked, function (blocked) {
+    if (blocked.room._id) {
+      // populated
+      return (blocked.room.id === roomId);
+    } else {
+      return (blocked.room.toString() === roomId);
+    }
+  });
+};
+userSchema.methods.isRoomBlocked = function (roomId) {
+  var doc = this.findBlocked(roomId);
+  return (typeof doc !== 'undefined');
+};
+userSchema.methods.isRoomGroupBanned = function (roomId) {
+  if (!this.blocked || !this.blocked.length) {
+    return;
+  }
+
+  return _.find(this.blocked, function (blocked) {
+    if (blocked.room._id) {
+      // populated
+      return (blocked.room.id === roomId && blocked.why === 'groupban');
+    } else {
+      return (blocked.room.toString() === roomId && blocked.why === 'groupban');
+    }
+  });
 };
 
 module.exports = mongoose.model('User', userSchema);

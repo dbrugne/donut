@@ -70,11 +70,15 @@ var NotificationsView = Backbone.View.extend({
     }
   },
   updateHandle: function () {
+    // @todo yls : should not be trigger on 'welcome'. View should be rendered on initial render with stable state (e.g.: no unviewed) and on unviewed count change should update dynamically
     var unviewed = app.getUnviewed();
 
-    this.$badgeHover.text('>');
     if (unviewed > 0) {
+      this.$badgeHover.removeClass('empty');
       this.$badgeHover.text(unviewed);
+    } else {
+      this.$badgeHover.addClass('empty');
+      this.$badgeHover.text('');
     }
   },
   readAll: function () {

@@ -3,7 +3,6 @@ var conf = require('./config.global.js');
 
 conf.url = 'https://donut.me';
 conf.fqdn = 'donut.me';
-conf.mongo.url = 'mongodb://localhost:27017/donut';
 conf.oauth.secret = 'aze6=h&o3u+sxig4+=e1&2^14*kclt!u^ky(far2s*i0n_g2l%)d6vbn';
 conf.facebook.clientID = '328569463966926';
 conf.facebook.clientSecret = 'e496a32d53acc5d7b855051fd15eb754';

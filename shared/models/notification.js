@@ -1,6 +1,6 @@
 'use strict';
 var _ = require('underscore');
-var mongoose = require('../io/mongoose');
+var mongoose = require('../io/mongoose')();
 
 var notificationSchema = mongoose.Schema({
   type: String,

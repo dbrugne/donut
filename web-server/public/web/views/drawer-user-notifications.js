@@ -39,7 +39,6 @@ var DrawerUserNotificationsView = Backbone.View.extend({
     }, this));
 
     this.$badge = $('#notifications').find('.unread-count').first();
-    this.$badgeResponsive = $('.hover-menu-notifications');
 
     this.render(); // show spinner as temp content
 

@@ -28,43 +28,56 @@ var GroupView = Backbone.View.extend({
     this.render();
   },
   render: function () {
-    var group = this.model.toJSON();
-    var isMember = this.model.currentUserIsMember();
-    var isOwner = this.model.currentUserIsOwner();
-    var isOp = this.model.currentUserIsOp();
-    var isAdmin = this.model.currentUserIsAdmin();
+    // render spinner only
+    this.$el.html(require('../templates/spinner.html'));
 
+    var what = {
+      rooms: true,
+      users: true,
+      admin: true
+    };
+
+    app.client.groupRead(this.model.get('group_id'), what, _.bind(function (data) {
+      if (data.err === 'group-not-found') {
+        return;
+      }
+      if (!data.err) {
+        this.onResponse(data);
+      }
+    }, this));
+  },
+  onResponse: function (response) {
     // prepare avatar for group
-    group.avatarUrl = common.cloudinary.prepare(group.avatar, 160);
+    response.avatarUrl = common.cloudinary.prepare(response.avatar, 160);
     // prepare room avatar & uri
     var rooms = [];
-    _.each(group.rooms, function (room) {
+    _.each(response.rooms, function (room) {
       room.avatar = common.cloudinary.prepare(room.avatar, 135);
       if (room.owner) {
         room.owner_id = room.owner.user_id;
         room.owner_username = room.owner.username;
       }
-      room.group_id = group.group_id;
-      room.group_name = group.name;
+      room.group_id = response.group_id;
+      room.group_name = response.name;
       room.join = urls(room, 'room', 'uri');
       room.type = 'room';
       rooms.push(room);
     });
-    if (group.disclaimer) {
-      group.disclaimer = _.escape(group.disclaimer);
+    if (response.disclaimer) {
+      response.disclaimer = _.escape(response.disclaimer);
     }
     var data = {
-      isMember: isMember,
-      isOp: isOp,
-      isOwner: isOwner,
-      isAdmin: isAdmin,
-      isBanned: group.i_am_banned,
-      group: group,
-      created: date.longDate(group.created)
+      isMember: response.is_member,
+      isOp: response.is_op,
+      isOwner: response.is_owner,
+      isAdmin: app.user.isAdmin(),
+      isBanned: response.i_am_banned,
+      group: response,
+      created: date.longDate(response.created)
     };
-    if (group.i_am_banned) {
-      data.banned_at = date.longDate(group.banned_at);
-      data.reason = group.reason;
+    if (response.i_am_banned) {
+      data.banned_at = date.longDate(response.banned_at);
+      data.reason = response.reason;
     }
 
     var html = this.template(data);
@@ -84,7 +97,8 @@ var GroupView = Backbone.View.extend({
 
     this.groupUsersView = new GroupUsersView({
       el: this.$('.users.user-list'),
-      model: this.model
+      model: this.model,
+      data: response
     });
     this.groupUsersView.render();
 
@@ -97,6 +111,7 @@ var GroupView = Backbone.View.extend({
   },
   onFocusChange: function () {
     if (this.model.get('focused')) {
+      this.render();
       this.$el.show();
     } else {
       this.$el.hide();

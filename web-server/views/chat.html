@@ -12,20 +12,20 @@
         <div class="row">
             <div id="left" class="flex-parent column">
                 <div class="hover-menu">
-                    <div class="hover-menu-notifications"></div>
+                    <div class="hover-menu-notifications empty"></div>
                 </div>
 
                 <div id="block-current-user" class="flex-parent column relative">
                     <a id="block-current-user-toggle" href="#" class="clean dropdown-toggle toggle flex-parent center" data-toggle="dropdown" role="button" aria-expanded="false">
                         <img class="mr5 curp" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
                         <span class="mr10 ml10 username flex-child">
-                            <% if (user.realname) { print (user.realname) } else { print ('@'+user.username) } %>
+                            <% if (user.realname) { print (user.realname) } else if (user.username) { print ('@'+user.username) } %>
                         </span>
                         <span class="user-status offline"></span>
                         <i class="icon icon-cog fs16"></i>
                     </a>
                     <ul class="dropdown-menu" role="menu">
-                        <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-current-user-profile"><i class="icon icon-fw icon-eye"></i> <%= t('global.view-profile') %></a></li>
+                        <li class="curp" role="presentation"><a role="menuitem" class="open-current-user-profile"><i class="icon icon-fw icon-eye"></i> <%= t('global.view-profile') %></a></li>
                         <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-user-account"><i class="icon icon-fw icon-lock"></i> <%= t('chat.actions.account') %></a></li>
                         <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-user-edit"><i class="icon icon-fw icon-pencil"></i> <%= t('chat.actions.edit') %></a></li>
                         <li class="curp" role="presentation"><a role="menuitem" tabindex="-1" class="open-user-preferences"><i class="icon icon-fw icon-check"></i> <%= t('chat.actions.preferences') %></a></li>
@@ -86,7 +86,6 @@
                 </div>
 
                 <div class="bottom">
-                    <div class="logo"></div>
                     <div class="crunch"></div>
                 </div>
             </div><!-- /#left -->

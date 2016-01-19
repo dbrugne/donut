@@ -33,21 +33,24 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, data, globalCall
 
   var welcomeEvent = {
     notifications: {},
-    blocked: []
+    rooms: []
   };
 
   var that = this;
+
+  var user;
 
   async.waterfall([
 
     function retrieveUser (callback) {
       User.findById(uid)
         .populate('ones.user')
-        .populate('blocked')
-        .exec(function (err, user) {
-          if (err || !user) {
+        .exec(function (err, _user) {
+          if (err || !_user) {
             return callback('Unable to find user: ' + err, null);
           }
+
+          user = _user;
 
           welcomeEvent.user = {
             user_id: user._id.toString(),
@@ -68,106 +71,76 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, data, globalCall
           welcomeEvent.preferences[ 'notif:channels:desktop' ] = (user.preferences && user.preferences[ 'notif:channels:desktop' ] === true);
           welcomeEvent.preferences[ 'chatmode:compact' ] = (user.preferences && user.preferences[ 'chatmode:compact' ] === true);
 
-          return callback(null, user);
+          return callback(null);
         });
     },
 
-    function populateOnes (user, callback) {
+    function populateOnes (callback) {
       if (user.ones.length < 1) {
-        return callback(null, user);
+        return callback(null);
       }
 
       oneDataHelper(that.app, user, user.ones, function (err, ones) {
         if (err) {
-          return callback(err, user);
+          return callback(err);
         }
 
         welcomeEvent.onetoones = ones;
-        return callback(null, user);
+        return callback(null);
       });
     },
 
-    function populateRooms (user, callback) {
-      Room.findByUser(user.id)
-        .populate('owner', 'username avatar color facebook')
-        .populate('group', 'name default')
-        .exec(function (err, rooms) {
-          if (err) {
-            return callback(err);
-          }
+    function populateRooms (callback) {
+      var roomsIds = [];
+      Room.findByUser(user.id, '_id').exec(function (err, _rooms) {
+        if (err) {
+          return callback(err);
+        }
+        if (_rooms && _rooms.length) {
+          roomsIds = _.map(_rooms, 'id');
+        }
 
-          if (!rooms || !rooms.length) {
-            return callback(null, user);
-          }
+        if (user.blocked && user.blocked.length) {
+          roomsIds = roomsIds.concat(_.map(user.blocked, function (r) {
+            return (r.room._id) // robustness
+              ? r.room.id
+              : r.room;
+          }));
+        }
 
-          var parallels = [];
-          _.each(rooms, function (room) {
-            if (room.isBanned(user.id)) {
-              logger.warn('User ' + uid + ' seems to be banned from ' + room.name + ' but still present in rooms.users');
-              return;
-            }
+        roomsIds = _.uniq(roomsIds);
+        if (!roomsIds.length) {
+          return callback(null);
+        }
 
-            parallels.push(function (fn) {
-              roomDataHelper(user, room, function (err, r) {
-                fn(err, r);
-              });
-            });
-          });
-
-          if (!parallels.length) {
-            return callback(null, user);
-          }
-
-          async.parallel(parallels, function (err, results) {
+        Room.find({_id: {$in: roomsIds}})
+          .populate('owner', 'username avatar facebook')
+          .populate('group', 'name avatar')
+          .exec(function (err, _rooms) {
             if (err) {
-              return callback('Error while populating rooms: ' + err);
+              return callback(err);
+            }
+            if (!_rooms || !_rooms.length) {
+              return callback(null);
             }
 
-            welcomeEvent.rooms = results;
-            return callback(null, user);
+            async.each(_rooms, function (room, cb) {
+              roomDataHelper(user, room, function (err, roomData) {
+                welcomeEvent.rooms.push(roomData);
+                return cb(err);
+              });
+            }, callback);
           });
-        });
+      });
     },
 
-    function populateBlocked (user, callback) {
-      if (!user.blocked || !user.blocked.length) {
-        return callback(null, user);
-      }
-
-      Room.find({_id: {$in: user.blocked}})
-        .populate('owner', 'username avatar color facebook')
-        .populate('group', 'name')
-        .exec(function (err, rooms) {
-          if (err) {
-            return callback(err);
-          }
-
-          if (!rooms.length) {
-            return callback(null, user);
-          }
-
-          async.forEach(rooms, function (room, fn) {
-            roomDataHelper(user, room, function (err, r) {
-              if (err) {
-                fn(err);
-              }
-              welcomeEvent.blocked.push(r);
-              fn(null);
-            });
-          }, function (err) {
-            return callback(err, user);
-          });
-        });
-    },
-
-    function populateGroups (user, callback) {
+    function populateGroups (callback) {
       if (!user.groups || !user.groups.length) {
-        return callback(null, user);
+        return callback(null);
       }
 
       Group.find({_id: {$in: user.groups}})
         .populate('owner', 'username avatar')
-        .populate('members', 'username avatar color')
         .exec(function (err, groups) {
           if (err) {
             return callback(err);
@@ -175,42 +148,20 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, data, globalCall
 
           welcomeEvent.groups = [];
           _.each(groups, function (grp) {
-            var members = [];
-            _.each(grp.members, function (m) {
-              members.push({
-                avatar: m._avatar(),
-                color: m.color,
-                username: m.username,
-                user_id: m.id
-              });
-            });
             welcomeEvent.groups.push({
-              avatar: grp._avatar(),
+              group_id: grp.id,
               name: grp.name,
               identifier: grp.getIdentifier(),
-              group_id: grp.id,
-              color: grp.color,
-              website: grp.website,
-              description: grp.description,
-              disclaimer: grp.disclaimer,
-              created: grp.created_at,
-              last_event_at: grp.last_event_at,
-              owner: {
-                avatar: grp.owner._avatar(),
-                username: grp.owner.username,
-                user_id: grp.owner.id,
-                color: grp.owner.color
-              },
-              members: members
+              avatar: grp._avatar()
             });
           });
-          return callback(null, user);
+          return callback(null);
         });
     },
 
-    function featured (user, callback) {
+    function featured (callback) {
       if (data.device === 'mobile' && !(user.preferences && user.preferences[ 'browser:welcome' ] === true)) {
-        return callback(null, user);
+        return callback(null);
       }
 
       featuredRooms(that.app, function (err, featured) {
@@ -220,22 +171,22 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, data, globalCall
 
         welcomeEvent.featured = _.first(featured, 4); // keep only n firsts
 
-        return callback(null, user);
+        return callback(null);
       });
     },
 
-    function notificationsUnread (user, callback) {
+    function notificationsUnread (callback) {
       Notifications(that.app).retrieveUserNotificationsUnviewedCount(user.id, function (err, count) {
         if (err) {
           logger.error('Error while retrieving unread notifications: ' + err);
         }
 
         welcomeEvent.notifications.unread = count || 0;
-        return callback(null, user);
+        return callback(null);
       });
     }
 
-  ], function (err, user) {
+  ], function (err) {
     if (err) {
       logger.error('welcomeRemote.welcome', {
         result: 'fail',

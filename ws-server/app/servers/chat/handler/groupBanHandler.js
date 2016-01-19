@@ -7,6 +7,7 @@ var RoomModel = require('../../../../../shared/models/room');
 var roomEmitter = require('../../../util/room-emitter');
 var Notifications = require('../../../components/notifications');
 var inputUtil = require('../../../util/input');
+var unsubscriber = require('../../../util/unsubscriber');
 
 var Handler = function (app) {
   this.app = app;
@@ -19,21 +20,15 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
-  var targetUser = session.__user__;
   var user = session.__currentUser__;
+  var bannedUser = session.__user__;
   var group = session.__group__;
 
   var that = this;
 
   var rooms = [];
-  var event = {};
-  var banUser = {
-    user: targetUser._id,
-    banned_at: new Date()
-  };
-  var reason = (data.reason)
-    ? inputUtil.filter(data.reason, 512)
-    : false;
+
+  var reason = (data.reason) ? inputUtil.filter(data.reason, 512) : '';
 
   async.waterfall(
     [
@@ -54,11 +49,11 @@ handler.call = function (data, session, next) {
           return callback('not-admin-owner');
         }
 
-        if (group.isOwner(targetUser.id)) {
+        if (group.isOwner(bannedUser.id)) {
           return callback('owner');
         }
 
-        if (group.isBanned(targetUser.id)) {
+        if (group.isBanned(bannedUser.id)) {
           return callback('banned');
         }
 
@@ -66,61 +61,38 @@ handler.call = function (data, session, next) {
       },
 
       function persistOnGroup (callback) {
-        if (reason) {
-          banUser.reason = reason;
-        }
-
-        GroupModel.update(
-          {_id: group._id},
-          {
-            $addToSet: {bans: banUser},
-            $pull: {
-              op: targetUser._id,
-              members: targetUser._id,
-              allowed: targetUser._id,
-              members_pending: {user: targetUser._id}
-            }
-          }, function (err) {
-            return callback(err);
-          }
-        );
-      },
-
-      function computeRoomsToProcess (callback) {
-        RoomModel.findByGroup(group._id)
-          .exec(function (err, dbrooms) {
-            if (err) {
-              return callback(err);
-            }
-            rooms = dbrooms;
+        var ban = {
+          user: bannedUser._id,
+          banned_at: new Date(),
+          reason: reason
+        };
+        GroupModel.update({_id: group._id}, {
+          $addToSet: {bans: ban},
+          $pull: {
+            op: bannedUser._id,
+            members: bannedUser._id,
+            allowed: bannedUser._id,
+            members_pending: {user: bannedUser._id}
+          }}, function (err) {
             return callback(err);
           });
       },
 
       function persistOnRooms (callback) {
-        event = {
-          by_user_id: user._id,
-          by_username: user.username,
-          by_avatar: user._avatar(),
-          user_id: targetUser._id,
-          username: targetUser.username,
-          avatar: targetUser._avatar(),
-          banned_at: banUser.banned_at
+        var ban = {
+          user: bannedUser._id,
+          banned_at: new Date()
         };
-
-        if (reason) {
-          event.reason = reason;
-        }
-
         RoomModel.update(
           {group: group._id},
           {
+            $addToSet: {bans: ban},
             $pull: {
-              users: targetUser._id,
-              op: targetUser._id,
-              allowed: targetUser._id,
-              devoices: {user: targetUser._id},
-              allowed_pending: {user: targetUser._id}
+              users: bannedUser._id,
+              op: bannedUser._id,
+              allowed: bannedUser._id,
+              devoices: {user: bannedUser._id},
+              allowed_pending: {user: bannedUser._id}
             }
           },
           {multi: true},
@@ -129,69 +101,79 @@ handler.call = function (data, session, next) {
           });
       },
 
-      function broadcast (callback) {
-        async.each(rooms, function (r, callback) {
-          roomEmitter(that.app, targetUser, r, 'room:groupban', _.clone(event), function (err) {
-            if (err) {
-              return callback(r.id + ': ' + err);
-            }
-            return callback(null);
-          });
-        }, function (err) {
-          return callback(err);
-        });
-      },
-
-      function broadcastToUser (callback) {
-        event.group_id = group.id;
-        event.group_name = '#' + group.name;
-        that.app.globalChannelService.pushMessage('connector', 'group:ban', event, 'user:' + targetUser.id, {}, function (reponse) {
+      function computeRooms (callback) {
+        RoomModel.findByGroup(group._id).exec(function (err, dbrooms) {
+          if (err) {
+            return callback(err);
+          }
+          rooms = dbrooms;
           return callback(null);
         });
       },
 
+      function persistOnUser (callback) {
+        if (!rooms.length) {
+          return callback(null);
+        }
+
+        async.each(rooms, function (r, fn) {
+          if (!r.isIn(bannedUser.id)) {
+            return fn(null);
+          }
+          bannedUser.addBlockedRoom(r.id, 'groupban', reason, fn);
+        }, callback);
+      },
+
       function unsubscribeClients (callback) {
-        // search for all the user sessions (any frontends)
-        that.app.statusService.getSidsByUid(targetUser.id, function (err, sids) {
-          if (err) {
-            return callback('Error while retrieving user status: ' + err);
-          }
+        var roomIds = _.map(rooms, 'id');
+        if (!roomIds.length) {
+          return callback(null);
+        }
 
-          if (!sids || sids.length < 1) {
-            return callback(null, event); // the targeted user could be offline at this time
-          }
+        unsubscriber(that.app, bannedUser.id, roomIds, callback);
+      },
 
-          var parallels = [];
-          _.each(sids, function (sid) {
-            _.each(rooms, function (room) {
-              parallels.push(function (fn) {
-                that.app.globalChannelService.leave(room.name, targetUser.id, sid, function (err) {
-                  if (err) {
-                    return fn(sid + ': ' + err);
-                  }
-                  return fn(null);
-                });
-              });
-            });
+      function broadcastToUser (callback) {
+        async.each(rooms, function (room, cb) {
+          // @todo optimise by allowing room:blocked with room_ids array of _id to block
+          that.app.globalChannelService.pushMessage('connector', 'room:blocked', {room_id: room.id, why: 'groupban', reason: reason}, 'user:' + bannedUser.id, {}, function (err) {
+            return cb(err);
           });
-          async.parallel(parallels, function (err, results) {
+        }, callback);
+      },
+
+      function broadcastToRoom (callback) {
+        var event = {
+          by_user_id: user._id,
+          by_username: user.username,
+          by_avatar: user._avatar(),
+          user_id: bannedUser._id,
+          username: bannedUser.username,
+          avatar: bannedUser._avatar(),
+          reason: reason
+        };
+
+        async.each(rooms, function (r, cb) {
+          roomEmitter(that.app, user, r, 'room:groupban', _.clone(event), function (err) {
             if (err) {
-              return callback('Error while unsubscribing user ' + targetUser.id + ' : ' + err);
+              return cb(r.id + ': ' + err);
             }
-
-            return callback(null, event);
+            return cb(null);
           });
+        }, function (err) {
+          return callback(err, event);
         });
       },
 
       function notification (event, callback) {
-        if (!group.isMember(targetUser.id)) {
+        if (!group.isMember(bannedUser.id)) {
           return callback(null);
         }
-        Notifications(that.app).getType('groupban').create(targetUser.id, group, event, function (err) {
+        Notifications(that.app).getType('groupban').create(bannedUser.id, group, event, function (err) {
           return callback(err);
         });
       }
+
     ],
     function (err) {
       if (err) {

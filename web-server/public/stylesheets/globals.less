@@ -452,3 +452,17 @@ table tr:hover { outline: 1px solid @cl-subtext15; background-color: @cl-subtext
 .connecting>.status, .status.connecting { color: @cl-warning; }
 .offline>.status, .status.offline { color: @cl-subtext15; }
 .error>.status, .status.error { color: @cl-pomegranate; }
+
+// custom non-font icons
+.icon { text-align: center; vertical-align: middle; line-height: normal; width: 15px; height: 19px;
+  &.quote-icon            { background-image: url('@{img-path}/topic.png');       background-repeat: no-repeat; background-position: center center; background-size: 100%;}
+  &.ban-icon              { background-image: url('@{img-path}/svg/ban.svg');     background-repeat: no-repeat; background-position: center center; background-size: 100%;}
+  &.deban-icon            { background-image: url('@{img-path}/svg/ban.svg');     background-repeat: no-repeat; background-position: center center; background-size: 100%;}
+  &.deop-icon             { background-image: url('@{img-path}/svg/op.svg');      background-repeat: no-repeat; background-position: center center; background-size: 100%;}
+  &.op-icon               { background-image: url('@{img-path}/svg/deop.svg');    background-repeat: no-repeat; background-position: center center; background-size: 100%;}
+  &.microphone-slash-icon { background-image: url('@{img-path}/svg/devoice.svg'); background-repeat: no-repeat; background-position: center center; background-size: 90%;}
+  &.microphone-icon       { background-image: url('@{img-path}/svg/voice.svg');   background-repeat: no-repeat; background-position: center center; background-size: 90%;}
+  &.kick-icon             { background-image: url('@{img-path}/svg/kick.svg');    background-repeat: no-repeat; background-position: center center; background-size: 100%;}
+  &.in-icon               { background-image: url('@{img-path}/svg/in.svg');      background-repeat: no-repeat; background-position: center center; background-size: 100%;}
+  &.out-icon              { background-image: url('@{img-path}/svg/out.svg');     background-repeat: no-repeat; background-position: center center; background-size: 100%;}
+}

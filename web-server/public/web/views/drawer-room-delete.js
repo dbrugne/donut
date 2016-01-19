@@ -69,12 +69,6 @@ var DrawerRoomDeleteView = Backbone.View.extend({
 
       app.trigger('alert', 'info', i18next.t('chat.form.room-form.edit.room.delete.success'));
       this.trigger('close');
-      if (this.groupId) {
-        var model = app.groups.findWhere({id: this.groupId});
-        if (model) {
-          model.onDeleteRoom(this.roomId);
-        }
-      }
     }, this));
   },
   onKeyup: function (event) {

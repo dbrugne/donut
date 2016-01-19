@@ -110,7 +110,7 @@
         </div>
     <% } %>
 
-    <% if(isBanned) { %>
+    <% if (isBanned) { %>
         <div class="reason mt10 alert alert-danger">
             <strong><%= t('chat.blocked.groupbanned', {at: banned_at}) %></strong>
             <% if (typeof reason !== 'undefined') { %>

@@ -16,12 +16,12 @@ var templates = {
   'room:deop': require('../templates/event/promote.html'),
   'room:kick': require('../templates/event/promote.html'),
   'room:ban': require('../templates/event/promote.html'),
+  'room:disallow': require('../templates/event/promote.html'),
   'room:deban': require('../templates/event/promote.html'),
   'room:voice': require('../templates/event/promote.html'),
   'room:devoice': require('../templates/event/promote.html'),
   'room:op': require('../templates/event/promote.html'),
   'room:groupban': require('../templates/event/group-promote.html'),
-  'room:groupdisallow': require('../templates/event/group-promote.html'),
   'user:ban': require('../templates/event/user-promote.html'),
   'user:deban': require('../templates/event/user-promote.html')
 };
@@ -43,7 +43,7 @@ exports.prototype.reset = function () {
 };
 
 exports.prototype.insertTop = function (events) {
-  if (events.length === 0) {
+  if (!events || !events.length) {
     return;
   }
   var html = '';
@@ -95,7 +95,7 @@ exports.prototype.insertTop = function (events) {
 };
 
 exports.prototype.insertBottom = function (events) {
-  if (events.length === 0) {
+  if (!events.length) {
     return;
   }
 
