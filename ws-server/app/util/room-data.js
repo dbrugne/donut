@@ -31,6 +31,9 @@ module.exports = function (user, room, fn) {
   var isUserBlocked = user.isRoomBlocked(room.id);
   if (isRoomBlocked || isUserBlocked) {
     data.blocked = true;
+    data.allow_user_request = room.allow_user_request;
+    data.hasPassword = !!room.password;
+    data.allow_group_member = room.allow_group_member;
     if (isRoomBlocked === 'groupbanned') {
       data.blocked_why = 'groupban';
     } else if (isRoomBlocked === 'banned') {

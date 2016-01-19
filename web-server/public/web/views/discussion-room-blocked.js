@@ -12,9 +12,8 @@ var RoomBlockedView = Backbone.View.extend({
   template: require('../templates/discussion-room-blocked.html'),
 
   events: {
-    'click .ask-for-allowance': 'onRequestAllowance',
     'click .close-room': 'onCloseRoom',
-    'click .rejoin': 'onRejoin'
+    'click .join': 'onJoin'
   },
 
   initialize: function () {
@@ -54,25 +53,17 @@ var RoomBlockedView = Backbone.View.extend({
       app.trigger('changeColor', this.model.get('color'));
     }
   },
-  onRequestAllowance: function (event) {
-    event.preventDefault();
-
-    app.client.roomJoin(this.model.get('id'), null, _.bind(function (response) {
-      if (response && response.room) {
-        app.trigger('openRoomJoin', response.room);
-      } else {
+  onJoin: function (event) {
+    app.client.roomBecomeMember(this.model.get('id'), _.bind(function (data) {
+      if (data.err) {
+        return;
+      }
+      if (data && data.infos) {
+        app.trigger('openRoomJoin', data.infos);
+      } else if (data.success) {
         app.trigger('joinRoom', {name: this.model.get('name'), popin: false});
       }
     }, this));
-  },
-  onRejoin: function (event) {
-    app.client.roomJoin(this.model.get('id'), null, function (response) {
-      if (response.err) {
-        this.$error
-          .show()
-          .text(i18next.t('chat.form.errors.' + response.err));
-      }
-    });
   },
   onCloseRoom: function (event) {
     event.preventDefault();
