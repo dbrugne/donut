@@ -2,7 +2,6 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var date = require('../libs/date');
 var common = require('@dbrugne/donut-common/browser');
-var i18next = require('i18next-client');
 var app = require('../libs/app');
 var currentUser = require('../libs/app').user;
 
@@ -59,9 +58,9 @@ var RoomBlockedView = Backbone.View.extend({
         return;
       }
       if (data && data.infos) {
-        app.trigger('openRoomJoin', data.infos);
+        return app.trigger('openRoomJoin', data.infos);
       } else if (data.success) {
-        app.trigger('joinRoom', {name: this.model.get('name'), popin: false});
+        app.client.roomJoin(this.model.get('id'), null, function (response) {});
       }
     }, this));
   },

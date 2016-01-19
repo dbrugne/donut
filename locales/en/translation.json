@@ -747,6 +747,7 @@
       "ban": "You were banned from this donut.",
       "groupbanned": "You were banned from this community on __at__",
       "groupban": "You were banned from this community.",
+      "reason": "for the following reason: ",
       "kicked": "You have been kicked out from this donut.",
       "kick": "You have been kicked out from this donut.",
       "join": "Join",

@@ -31,6 +31,10 @@ handler.call = function (data, session, next) {
     },
 
     function tryToJoin (callback) {
+      if (room.isOwner(currentUser.id)) {
+        return callback(null, false);
+      }
+
       if (room.isBanned(currentUser.id)) {
         return callback(null, true);
       }
@@ -47,7 +51,7 @@ handler.call = function (data, session, next) {
         return callback(null, true);
       }
 
-      return callback(null);
+      return callback(null, false);
     },
 
     function prepareInfos (isBlocked, callback) {

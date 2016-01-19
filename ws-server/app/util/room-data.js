@@ -33,7 +33,7 @@ module.exports = function (user, room, fn) {
     data.blocked = true;
     data.allow_user_request = room.allow_user_request;
     data.hasPassword = !!room.password;
-    data.allow_group_member = room.allow_group_member;
+    data.allow_group_member = room.allow_group_member && room.group;
     if (isRoomBlocked === 'groupbanned') {
       data.blocked_why = 'groupban';
     } else if (isRoomBlocked === 'banned') {

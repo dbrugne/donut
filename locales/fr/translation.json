@@ -748,6 +748,7 @@
       "ban": "Vous avez été banni de ce donut.",
       "groupbanned": "Vous avez été banni de cette communauté le __at__",
       "groupban": "Vous avez été banni de cette communauté.",
+      "reason": "pour la raison suivante : ",
       "kicked": "Vous avez été expulsé de ce donut.",
       "kick": "Vous avez été expulsé de ce donut.",
       "join": "Rejoindre",
@@ -1012,7 +1013,7 @@
         "request": {
           "info": "Vos coordonnées ainsi que votre message (facultatif) seront transmis aux modérateurs de ce donut."
         },
-        "other": "Cette donut est uniquement accessible sur invitation des modérateurs."
+        "other": "Ce donut est uniquement accessible sur invitation des modérateurs."
       }
     }
   },
