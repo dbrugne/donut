@@ -6,6 +6,23 @@ var conf = require('../../config/index');
 var User = require('../models/user');
 var pomeloBridge = require('../io/pomelo-bridge');
 
+var sendWelcomeEmail = function (email, userId, cb) {
+  // verification token with user profile inside
+  var profile = {
+    id: userId,
+    email: email
+  };
+  var token = jwt.sign(profile, conf.verify.secret, {expiresIn: conf.verify.expire});
+
+  emailer.welcome(email, token, function (err) {
+    if (err) {
+      return cb('verify-emailer: ', err);
+    }
+
+    return cb(null);
+  });
+};
+
 var sendEmail = function (user, email, cb) {
   if (!user || !user.id || !user.emails || user.emails.length < 1) {
     return cb('verify-email.sendEmail error: invalids params');
@@ -25,7 +42,7 @@ var sendEmail = function (user, email, cb) {
 
   emailer.verify(email, user, token, function (err) {
     if (err) {
-      return cb('verify-emailer: ' + err);
+      return cb('verify-emailer: ', err);
     }
 
     return cb(null);
@@ -77,5 +94,6 @@ var validate = function (token, cb) {
 
 module.exports = {
   sendEmail: sendEmail,
-  validate: validate
+  validate: validate,
+  sendWelcomeEmail: sendWelcomeEmail
 };

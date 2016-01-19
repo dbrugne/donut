@@ -116,16 +116,10 @@ passport.use('local-signup', new LocalStrategy(localStrategyOptions,
             // tracking
             keenIoTracking(newUser, 'email');
             // email will be send on next tick but done() is called immediately
-            verifyEmail.sendEmail(newUser, newUser.local.email, function (err) {
+            verifyEmail.sendWelcomeEmail(newUser.local.email, newUser.id, function (err) {
               if (err) {
-                return logger.error('Unable to sent verify email: ' + err);
+                return logger.error('Unable to sent welcome email: ' + err);
               }
-
-              emailer.welcome(newUser.local.email, function (err) {
-                if (err) {
-                  return logger.error('Unable to sent welcome email: ' + err);
-                }
-              });
             });
             return done(null, newUser);
           });

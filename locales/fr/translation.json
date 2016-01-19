@@ -1132,12 +1132,12 @@
       "reason": "Motif: __reason__"
     },
     "welcome": {
-      "subject": "Bienvenue sur DONUT.me ! Votre compte a été créé avec succès",
+      "subject": "Bienvenue ! Validez votre compte",
       "content": {
-        "title": "Bienvenue sur DONUT !",
-        "disclaimer": "Félicitations ! Votre compte utilisateur a bien été créé. Vous pouvez désormais nous rejoindre et discuter autour d'un bon donut en utilisant le bouton ci-dessous",
-        "button": "Connexion",
-        "info": "On s'en délecte d'avance !"
+        "title": "Bienvenue !",
+        "infos": "Validez votre compte",
+        "disclaimer": "Félicitations, il ne vous reste plus qu'à cliquer sur ce magnifique bouton rose !",
+        "button": "Valider mon compte"
       }
     },
     "forgot": {
@@ -1150,11 +1150,12 @@
       }
     },
     "verify": {
-      "subject": "Valider votre email DONUT.me",
+      "subject": "Validez votre compte",
       "content": {
-        "title": "Valider votre email",
-        "disclaimer": "L'email est rataché au compte utilisateur @__username__. Pour activer votre email cliquer sur le lien ci-dessous",
-        "button": "Valider votre email"
+        "title": "Bienvenue @__username__ !",
+        "infos": "Validez votre compte",
+        "disclaimer": "Pour lier votre e-mail au compte DONUT @__username__, il ne vous reste qu'à cliquer sur ce magnifique bouton rose:",
+        "button": "Valider mon compte"
       }
     },
     "passwordchanged": {
