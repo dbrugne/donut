@@ -19,7 +19,7 @@
                     <a id="block-current-user-toggle" href="#" class="clean dropdown-toggle toggle flex-parent center" data-toggle="dropdown" role="button" aria-expanded="false">
                         <img class="mr5 curp" src="<%- user.avatar %>" alt="@<%- user.username %> avatar">
                         <span class="mr10 ml10 username flex-child">
-                            <% if (user.realname) { print (user.realname) } else { print ('@'+user.username) } %>
+                            <% if (user.realname) { print (user.realname) } else if (user.username) { print ('@'+user.username) } %>
                         </span>
                         <span class="user-status offline"></span>
                         <i class="icon icon-cog fs16"></i>

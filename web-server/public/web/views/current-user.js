@@ -5,12 +5,13 @@ var currentUser = require('../libs/app').user;
 var i18next = require('i18next-client');
 var MuteView = require('./mute');
 
-var CurrentUserView = Backbone.View.extend({
+module.exports = Backbone.View.extend({
   template: require('../templates/current-user.html'),
 
   initialize: function (options) {
     this.listenTo(this.model, 'change', this.render);
-    this.$toggle = this.$('#block-current-user');
+
+    this.$toggle = this.$('#block-current-user-toggle');
     this.$message = $('#chat').find('.mail-not-confirmed').hide();
     this.$status = this.$('.user-status');
   },
@@ -21,7 +22,6 @@ var CurrentUserView = Backbone.View.extend({
     if (!currentUser.get('user_id')) {
       return this;
     } // nothing to render if welcome wasn't received
-
     var data = currentUser.toJSON();
 
     data.avatar = common.cloudinary.prepare(currentUser.get('avatar'), 35);
@@ -42,5 +42,3 @@ var CurrentUserView = Backbone.View.extend({
     return this;
   }
 });
-
-module.exports = CurrentUserView;

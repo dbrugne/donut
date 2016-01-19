@@ -1,6 +1,6 @@
 <img class="mr5 curp" src="<%= avatar %>" alt="<%= username %> avatar">
 <span class="mr10 ml10 username flex-child">
-    <% if (realname) { print (realname) } else { print ('@'+username) } %>
+    <% if (realname) { print (realname) } else if (username) { print ('@'+username) } %>
 </span>
-<span class="user-status <%= status %>">STATUS</span>
+<span class="user-status <%= status %>"></span>
 <i class="icon icon-cog fs16"></i>
