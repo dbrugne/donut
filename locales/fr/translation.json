@@ -477,7 +477,8 @@
         "message-wrong-format": "Le message ne doit pas faire plus de 200 caractères",
         "banned": "Vous avez été banni de ce donut",
         "group-banned": "Vous avez été banni de la communauté",
-        "room-not-found": "Ce donut n'existe pas"
+        "room-not-found": "Ce donut n'existe pas",
+        "in-pending": "L'utilisateur a une demande d'accès en cours"
       }
     },
     "password": {
@@ -738,19 +739,18 @@
       "typing_plural": "sont en train de taper"
     },
     "blocked": {
-      "allowed": "Ce donut est privé.",
-      "ask-for-access": "Pour demander un accès, <a href=\"#\" class=\"ask-for-allowance\"><strong>cliquer ici</strong></a>.",
-      "rejoin": " pour le rejoindre à nouveau.",
-      "allowed_button": "Demander l'accès",
-      "password": "Accès direct :",
+      "disallow": "Ce donut est privé.",
       "message-display": "Message à afficher",
       "password_placeholder": "Mot de passe",
       "password_button": "Rejoindre",
       "banned": "Vous avez été banni de ce donut le __at__",
+      "ban": "Vous avez été banni de ce donut.",
       "groupbanned": "Vous avez été banni de cette communauté le __at__",
+      "groupban": "Vous avez été banni de cette communauté.",
       "reason": "pour la raison suivante : ",
       "kicked": "Vous avez été expulsé de ce donut.",
-      "kicked_button": "Rejoindre",
+      "kick": "Vous avez été expulsé de ce donut.",
+      "join": "Rejoindre",
       "changemode": "Passer en mode privé",
       "disclaimer-private": "Ce donut est privé.",
       "disclaimer-public": "Ce donut est public. N'importe quel utilisateur pourra y accéder.",
@@ -1001,6 +1001,18 @@
           "error": "Cet e-mail est déjà lié à un autre compte"
         },
         "other": "Cette communauté est uniquement accessible sur invitation des modérateurs."
+      }
+    },
+    "joinroom": {
+      "title": "Rejoindre le donut <strong>__identifier__</strong>",
+      "message": "Les membres peuvent participer à la conversation et recevoir des notifications depuis celle-ci.",
+      "disclaimer": "Message de <strong>@__username__</strong> :<br><i class=\"icon icon-quote\"></i>__disclaimer__",
+      "allowedpending": "L'accès à ce donut est sur invitation, et vous avez déjà une demande en cours.",
+      "options": {
+        "request": {
+          "info": "Vos coordonnées ainsi que votre message (facultatif) seront transmis aux modérateurs de ce donut."
+        },
+        "other": "Ce donut est uniquement accessible sur invitation des modérateurs."
       }
     }
   },

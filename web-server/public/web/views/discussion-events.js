@@ -9,7 +9,6 @@ var EventsSpamView = require('./events-spam');
 var EventsEditView = require('./events-edit');
 var windowView = require('./window');
 var EventsEngine = require('../libs/events');
-var currentUser = require('../libs/app').user;
 
 var debug = require('../libs/donut-debug')('donut:discussions');
 
@@ -39,12 +38,12 @@ module.exports = Backbone.View.extend({
 
   initialize: function () {
     this.listenTo(app.client, 'preferences:update', _.bind(function () {
-      if (currentUser.discussionMode() !== this.chatmode) {
+      if (app.user.discussionMode() !== this.chatmode) {
         this.$realtime.toggleClass('compact');
-        this.chatmode = currentUser.discussionMode();
+        this.chatmode = app.user.discussionMode();
       }
     }, this));
-    this.chatmode = currentUser.discussionMode();
+    this.chatmode = app.user.discussionMode();
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(this.model, 'windowRefocused', _.bind(function () {
       debug('windowRefocused', this.model.get('identifier'));
@@ -57,7 +56,7 @@ module.exports = Backbone.View.extend({
 
     this.engine = new EventsEngine({
       model: this.model,
-      currentUserId: currentUser.get('user_id'),
+      currentUserId: app.user.get('user_id'),
       el: this.$realtime
     });
     this.eventsHistoryView = new EventsHistoryView({
@@ -289,7 +288,7 @@ module.exports = Backbone.View.extend({
     if (!target.length) {
       return;
     }
-    if (currentUser.get('user_id') === target.data('userId')) {
+    if (app.user.get('user_id') === target.data('userId')) {
       return;
     }
 
@@ -355,7 +354,7 @@ module.exports = Backbone.View.extend({
     if (this.model.get('type') === 'room') {
       var isOp = this.model.currentUserIsOp();
       var isOwner = this.model.currentUserIsOwner();
-      var isAdmin = this.model.currentUserIsAdmin();
+      var isAdmin = app.user.isAdmin();
     }
 
     if (((!isOwner && !isAdmin && !isOp) || (isOp && isMessageOwner)) && (!isEditable)) {

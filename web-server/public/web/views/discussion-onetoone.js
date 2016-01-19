@@ -2,8 +2,8 @@ var $ = require('jquery');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
-var EventsView = require('./events');
-var InputView = require('./input');
+var EventsView = require('./discussion-events');
+var InputView = require('./discussion-input');
 var date = require('../libs/date');
 
 var OneToOnePanelView = Backbone.View.extend({

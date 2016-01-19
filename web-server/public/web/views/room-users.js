@@ -73,7 +73,7 @@ var RoomUsersView = Backbone.View.extend({
       list: listJSON,
       isOwner: this.model.currentUserIsOwner(),
       isOp: this.model.currentUserIsOp(),
-      isAdmin: this.model.currentUserIsAdmin(),
+      isAdmin: app.user.isAdmin(),
       room_id: this.model.get('id')
     });
     this.$list.html(html);
@@ -119,7 +119,7 @@ var RoomUsersView = Backbone.View.extend({
         isCurrentUser: (user.id === currentUser.get('user_id')),
         isOwner: this.model.currentUserIsOwner(),
         isOp: this.model.currentUserIsOp(),
-        isAdmin: this.model.currentUserIsAdmin()
+        isAdmin: app.user.isAdmin()
       };
 
       this.$popinUsers.html(this.userPreviewTemplate(data));

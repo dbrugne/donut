@@ -26,8 +26,8 @@ module.exports = {
       max_password_time: 60 * 1000 // 1 min
     }
   },
-  mongo: {
-    'url': ''
+  mongodb: {
+    uri: 'mongodb://localhost:27017/donut'
   },
   sessions: {
     key: 'donut.sid',

@@ -1,9 +1,9 @@
 'use strict';
 var errors = require('../../../util/errors');
 var async = require('async');
-var _ = require('underscore');
 var Room = require('../../../../../shared/models/room');
 var roomEmitter = require('../../../util/room-emitter');
+var unsubscriber = require('../../../util/unsubscriber');
 
 var Handler = function (app) {
   this.app = app;
@@ -16,15 +16,11 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
-  var user = session.__user__;
-  var currentUser = session.__currentUser__;
+  var disallowUser = session.__user__;
+  var user = session.__currentUser__;
   var room = session.__room__;
 
   var that = this;
-
-  var event = {};
-
-  var wasInRoom = false;
 
   async.waterfall([
 
@@ -41,103 +37,75 @@ handler.call = function (data, session, next) {
         return callback('room-not-found');
       }
 
-      if (!user) {
+      if (!disallowUser) {
         return callback('user-not-found');
       }
 
-      if (!room.isOwner(currentUser.id) && session.settings.admin !== true) {
+      if (!room.isOwner(user.id) && session.settings.admin !== true) {
         return callback('not-admin-owner');
       }
 
-      if (room.isOwner(user)) {
+      if (room.isOwner(disallowUser)) {
         return callback('owner');
       }
 
-      if (!room.isAllowed(user.id)) {
+      if (!room.isAllowed(disallowUser.id)) {
         return callback('not-allowed');
       }
 
       return callback(null);
     },
 
-    function broadcast (callback) {
-      wasInRoom = room.isIn(user.id);
-
-      event = {
-        by_user_id: currentUser.id,
-        by_username: currentUser.username,
-        by_avatar: currentUser._avatar(),
-        user_id: user.id,
-        username: user.username,
-        avatar: user._avatar(),
-        reason: 'Disallow'
-      };
-
-      roomEmitter(that.app, user, room, 'room:kick', event, callback);
-    },
-
-    function broadcastToUser (eventData, callback) {
-      that.app.globalChannelService.pushMessage('connector', 'room:disallow', event, 'user:' + user.id, {}, function (reponse) {
-        callback(null, eventData);
-      });
-    },
-
-    /**
-     * /!\ .unsubscribeClients come after .historizeAndEmit to allow kicked user to receive message
-     */
-    function unsubscribeClients (sentEvent, callback) {
-      // search for all the user sessions (any frontends)
-      that.app.statusService.getSidsByUid(user.id, function (err, sids) {
-        if (err) {
-          return callback('Error while retrieving user status: ' + err);
-        }
-
-        if (!sids || sids.length < 1) {
-          return callback(null, sentEvent); // the targeted user could be offline at this time
-        }
-
-        var parallels = [];
-        _.each(sids, function (sid) {
-          parallels.push(function (fn) {
-            that.app.globalChannelService.leave(room.id, user.id, sid, function (err) {
-              if (err) {
-                return fn(sid + ': ' + err);
-              }
-
-              return fn(null);
-            });
-          });
-        });
-        async.parallel(parallels, function (err, results) {
-          if (err) {
-            return callback('error while unsubscribing user ' + user.id + ' from ' + room.name + ': ' + err);
+    function persistOnRoom (callback) {
+      Room.update({_id: { $in: [room.id] }},
+        {
+          $pull: {
+            users: disallowUser.id,
+            op: disallowUser.id,
+            allowed: disallowUser.id,
+            devoices: {user: disallowUser._id},
+            allowed_pending: {user: disallowUser._id}
           }
-
-          return callback(null, sentEvent);
-        });
-      });
-    },
-
-    function persistOnRoom (eventData, callback) {
-      Room.update(
-        {_id: { $in: [room.id] }},
-        {$pull: {allowed: user.id, users: user.id, op: user.id, devoices: {user: user.id}}}, function (err) {
-          return callback(err, eventData);
+        }, function (err) {
+          return callback(err);
         }
       );
     },
 
-    function persistOnUser (eventData, callback) {
-      if (!wasInRoom) {
-        return callback(null, eventData);
+    function persistOnUser (callback) {
+      if (!room.isIn(disallowUser.id)) {
+        return callback(null);
       }
 
-      user.update({
-        $addToSet: {blocked: room.id}
-      }, function (err) {
-        return callback(err, eventData);
+      disallowUser.addBlockedRoom(room.id, 'ban', null, function (err) {
+        return callback(err);
       });
+    },
+
+    function unsubscribeClients (callback) {
+      unsubscriber(that.app, disallowUser.id, room.id, callback);
+    },
+
+    function broadcastToUser (callback) {
+      that.app.globalChannelService.pushMessage('connector', 'room:blocked', {room_id: room.id, why: 'disallow'}, 'user:' + disallowUser.id, {}, function (err) {
+        return callback(err);
+      });
+    },
+
+    function broadcastToRoom (callback) {
+      var event = {
+        by_user_id: user.id,
+        by_username: user.username,
+        by_avatar: user._avatar(),
+        user_id: disallowUser.id,
+        username: disallowUser.username,
+        avatar: disallowUser._avatar()
+      };
+
+      roomEmitter(that.app, user, room, 'room:kick', event, callback);
     }
+
+    // @todo: notification ? (be careful with noisy notifications)
 
   ], function (err) {
     if (err) {

@@ -1,6 +1,7 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
+var app = require('../libs/app');
 
 var GroupUsersView = Backbone.View.extend({
   template: require('../templates/group-users.html'),
@@ -14,7 +15,7 @@ var GroupUsersView = Backbone.View.extend({
     var isMember = this.response.is_member;
     var isOwner = this.response.is_owner;
     var isOp = this.response.is_op;
-    var isAdmin = this.model.currentUserIsAdmin();
+    var isAdmin = app.user.isAdmin();
     var op = [];
     var members = [];
 

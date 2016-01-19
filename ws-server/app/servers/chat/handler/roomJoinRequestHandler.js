@@ -66,11 +66,13 @@ handler.call = function (data, session, next) {
       var event = {
         by_user_id: user._id,
         by_username: user.username,
-        by_avatar: user._avatar(),
-        user_id: room.owner._id,
-        username: room.owner.username,
-        avatar: room.owner._avatar()
+        by_avatar: user._avatar()
       };
+      if (room.owner) {
+        event.user_id = room.owner._id;
+        event.username = room.owner.username;
+        event.avatar = room.owner._avatar();
+      }
       callback(null, event);
     },
 
