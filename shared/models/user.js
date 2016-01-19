@@ -656,5 +656,19 @@ userSchema.methods.isRoomBlocked = function (roomId) {
   var doc = this.findBlocked(roomId);
   return (typeof doc !== 'undefined');
 };
+userSchema.methods.isRoomGroupBanned = function (roomId) {
+  if (!this.blocked || !this.blocked.length) {
+    return;
+  }
+
+  return _.find(this.blocked, function (blocked) {
+    if (blocked.room._id) {
+      // populated
+      return (blocked.room.id === roomId && blocked.why === 'groupban');
+    } else {
+      return (blocked.room.toString() === roomId && blocked.why === 'groupban');
+    }
+  });
+};
 
 module.exports = mongoose.model('User', userSchema);
