@@ -48,7 +48,7 @@ var DonutRouter = Backbone.Router.extend({
     this.listenTo(app, 'discussionRemoved', this.onDiscussionRemoved);
     this.listenTo(app, 'joinRoom', this._focusRoom);
     this.listenTo(app, 'joinOnetoone', this.focusOne);
-    this.listenTo(app, 'joinGroup', this.joinGroup);
+    this.listenTo(app, 'joinGroup', this._focusGroup);
     this.listenTo(app, 'goToSearch', this.goToSearch);
     this.listenTo(app, 'updateSearch', this.search);
 
@@ -102,10 +102,10 @@ var DonutRouter = Backbone.Router.extend({
   },
 
   focusGroup: function (name) {
-    this.joinGroup({name: name, popin: false});
+    this._focusGroup({name: name, popin: false});
   },
 
-  joinGroup: function (data) {
+  _focusGroup: function (data) {
     var name = data.name;
     var model = app.groups.iwhere('name', name);
     if (model) {
