@@ -441,11 +441,18 @@ router.route('/oauth/register-device').post(function (req, res) {
       });
     },
     function removeOnOtherUsers (user, callback) {
-      User.update({
+      var find = {
         _id: {$ne: user._id},
         'devices.parse_object_id': parseObjectId
-      }, {$pull: {devices: {parse_object_id: parseObjectId}}
-      }, {multi: true}
+      };
+      var update = {
+        $pull: {
+          devices: {
+            parse_object_id: parseObjectId
+          }
+        }
+      };
+      User.update(find, update, {multi: true}
       ).exec(function (err) {
         return callback(err, user);
       });
