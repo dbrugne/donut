@@ -31,11 +31,10 @@
                             <i class="icon file-icon"></i>
                         </a>
                         <span class="filename"><%=f.filename%>.<%= f.extension%></span>
-                        <h6><span class="filesize"><%= f.extension%> - <%=f.size%></span></h6>
                     </div>
                 <% } %>
             <% }); %>
-            <hr>
+            <div class="clearfix"></div>
         </div>
         <div class="collapse-toggle" data-toggle="collapse" data-target="#collapseMessages<%= data.id %>" aria-expanded="true" aria-controls="collapseMessages<%= data.id %>">
             <%= t('global.collapse') %>
@@ -47,11 +46,10 @@
     </div>
     <div class="date pull-right"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
     <% if(!data.is_admin) { %> <!--Only display for non admin messages-->
-    <div class="actions">
-        <a class="message-menu" data-toggle="dropdown" role="button" aria-expanded="false" id="messageMenu">
-            <i class="icon icon-cog"></i>
-        </a>
-        <div class="dropdown-menu" aria-labelledby="messageMenu"><!-- message dropdown menu content --></div>
-    </div>
+        <div class="actions">
+            <div class="action spammed ml5"><%= t('chat.message.dropdown.spam.mark-spam') %></div>
+            <div class="action unspam ml5"><%= t('chat.message.dropdown.spam.unmark-spam') %></div>
+            <div class="action edit ml5"><%= t('chat.message.dropdown.edit') %></div>
+        </div>
     <% } %>
 </div>

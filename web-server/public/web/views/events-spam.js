@@ -6,8 +6,8 @@ var i18next = require('i18next-client');
 module.exports = Backbone.View.extend({
 
   events: {
-    'click .dropdown-menu .spammed': 'onMarkAsSpam',
-    'click .dropdown-menu .unspam': 'onUnmarkAsSpam',
+    'click .actions .spammed': 'onMarkAsSpam',
+    'click .actions .unspam': 'onUnmarkAsSpam',
     'click .view-spammed-message': 'onViewSpammedMessage',
     'click .remask-spammed-message': 'onRemaskSpammedMessage'
   },

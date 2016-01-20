@@ -16,7 +16,7 @@ module.exports = Backbone.View.extend({
   template: require('../templates/events.html'),
 
   events: {
-    'shown.bs.dropdown .actions': 'onMessageMenuShow',
+    'mouseover .has-hover': 'mouseoverMessage',
     'click .mark-as-viewed': 'onMarkAsViewed',
     'click .jumpto': 'onScrollToEvent'
   },
@@ -31,6 +31,8 @@ module.exports = Backbone.View.extend({
   chatmode: false,
 
   loading: false,
+
+  timeoutHover: null,
 
   scrollWasOnBottom: true, // ... before unfocus (scroll position is not
                            // available when discussion is hidden (default:
@@ -344,32 +346,12 @@ module.exports = Backbone.View.extend({
       this.scrollDown();
     }
   },
-  onMessageMenuShow: function (event) {
-    var $event = $(event.currentTarget).closest('.block.message');
-    var userId = $event.closest('[data-user-id]').data('userId');
-    var isMessageOwner = (userId && this.model.get('owner_id') === userId);
-
-    var isEditable = this.eventsEditView.isEditable($event);
-
-    if (this.model.get('type') === 'room') {
-      var isOp = this.model.currentUserIsOp();
-      var isOwner = this.model.currentUserIsOwner();
-      var isAdmin = app.user.isAdmin();
+  mouseoverMessage: function (event) {
+    var $event = $(event.currentTarget);
+    if (this.eventsEditView.isEditable($event)) {
+      $event.addClass('editable');
+    } else {
+      $event.removeClass('editable');
     }
-
-    if (((!isOwner && !isAdmin && !isOp) || (isOp && isMessageOwner)) && (!isEditable)) {
-      $(event.currentTarget).find('.dropdown-menu').dropdown('toggle');
-      return;
-    }
-    var html = require('../templates/events-dropdown.html')({
-      data: {
-        isOp: isOp,
-        isOwner: isOwner,
-        isAdmin: isAdmin,
-        isMessageOwner: isMessageOwner,
-        isEditable: isEditable
-      }
-    });
-    $(event.currentTarget).find('.dropdown-menu').html(html);
   }
 });
