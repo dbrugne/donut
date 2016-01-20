@@ -4,6 +4,7 @@ var async = require('async');
 var _ = require('underscore');
 var Notifications = require('../../../components/notifications');
 var roomEmitter = require('../../../util/room-emitter');
+var UserModel = require('../../../../../shared/models/user');
 
 var Handler = function (app) {
   this.app = app;
@@ -71,9 +72,18 @@ handler.call = function (data, session, next) {
     },
 
     function persistOnUser (callback) {
-      bannedUser.removeBlockedRoom(room.id, function (err) {
-        return callback(err);
-      });
+      // if user no more banned but still can't join (private room)
+      if (room.isUserBlocked(bannedUser.id) !== false) {
+        UserModel.update({_id: bannedUser.id, 'blocked.room': room.id},
+          {$set: {'blocked.$.why': 'disallow'}})
+          .exec(function (err) {
+            return callback(err);
+          });
+      } else {
+        bannedUser.removeBlockedRoom(room.id, function (err) {
+          return callback(err);
+        });
+      }
     },
 
     function broadcastToBannedUser (callback) {
