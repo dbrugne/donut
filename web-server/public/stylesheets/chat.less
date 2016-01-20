@@ -933,11 +933,11 @@
             cursor: pointer;
           }
           .text-container { margin-bottom: 10px; position:relative;
-            .overlay { display:none; background-color: rgba(67, 74, 84, 0.8); height: 100%; width: 100%; position: absolute; top: 0; cursor: pointer; z-index: 2;
+            .overlay { display:none; background-color: #d0d9e6; height: 100%; width: 100%; position: absolute; top: 2px; cursor: pointer; z-index: 2;
               .overlay-text { color: white; width: 100%; text-align: center; cursor: pointer; font-size: 1.8rem;}
             }
-            .text { position: relative; padding: 15px 20px 5px 20px; border-top: 2px solid #FC2063; background-color: #fff;
-              .avatar { width: 35px; height: 35px; .border-radius(3px); }
+            .text { position: relative; padding: 15px 20px 5px 50px; border-top: 2px solid #FC2063; background-color: #fff;
+              .avatar { width: 35px; height: 35px; .border-radius(3px); margin-right: 10px; position:absolute; left: 5px; }
               .actions {
                 a { display: inline-block; margin-right: 3px; font-size: 1.5rem; }
                 .images.add-image { margin-top: 5px; }
@@ -950,13 +950,12 @@
                 font-size: 13px;
               }
               .mentions-input-box .mentions>div>strong { }
-              .editable { font-size: 14px; color: #1d252f; line-height: 21px; margin-left: 5px; width: 100%; padding: 0; display: block; min-height: 35px; border: none; overflow: auto; outline: none; resize: none; .box-shadow(none); }
+              .editable { font-size: 14px; color: #1d252f; line-height: 17px; width: 100%; padding: 0; display: block; height: 35px; border: none; overflow: auto; outline: none; resize: none; .box-shadow(none); .placeholder;}
               .send { cursor: pointer; }
             }
           }
           &.inactive .text-container {
             .overlay, .overlay::after { .display-flex; .align-items(center); }
-            &:after { content: ""; position: absolute; bottom: -7px; right: 12px; border-style: solid; border-width: 8px 8px 0; border-right-color: transparent; border-left-color: transparent; border-top-color: rgba(67, 74, 84, 0.8); border-bottom-color: rgba(67, 74, 84, 0.8); display: block; width: 0; z-index: 2; }
           }
           .typing-container { position: absolute; display: block; top: 15px; left: 5px; .transition(top 300ms);
             &.visible { top: -5px; }
@@ -977,28 +976,9 @@
             .add-image { background-color: #E2E8F0; display: inline-block; vertical-align: top; width: 80px; height: 80px; margin: 5px; padding-top: 19px; text-align: center; }
           }
           &.open {
-            .text-container .text { .border-radiuses(0, 4px, 4px, 0); padding: 4px 94px 4px 44px; border: 2px solid @cl-nav-left-back;
-              .avatar { left: 7px; top: 6px; }
-              .actions { top: -4px; right: 44px; }
-              .send { padding-top: 11px; padding-left: 4px;
-                .arrow-bottom:after { left: 13px; border-width: 9px 9px 0; }
-                .arrow-bottom:before { content: "";
-                  position: absolute;
-                  bottom: -11px;
-                  left: 12px;
-                  border-style: solid;
-                  border-width: 10px 10px 0;
-                  border-right-color: transparent;
-                  border-left-color: transparent;
-                  border-top-color: @cl-nav-left-back;
-                  border-bottom-color: @cl-nav-left-back;
-                  display: block;
-                  width: 0;
-                  z-index: 1; }
-              }
-            }
-            .rollup-container .ctn { border: 2px solid @cl-nav-left-back; .border-radiuses(4px, 0, 0, 4px); bottom:-2px; }
+            .rollup-container .ctn { border: 2px solid #d0d9e6; .border-radiuses(4px, 0, 0, 4px); bottom:-2px; }
           }
+          .popover-content { padding: 9px 10px; }
         }
       } // #chat #center .discussion .content
     }

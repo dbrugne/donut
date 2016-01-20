@@ -4,7 +4,6 @@
 
 .border-radius (@radius: 5px) {
   border-radius:         @radius;
-  background-clip:         padding-box;
 }
 .border-radiuses (@topright: 0, @bottomright: 0, @bottomleft: 0, @topleft: 0) {
   border-top-right-radius:            @topright;
@@ -64,6 +63,15 @@
   &::-webkit-scrollbar-thumb:hover{ background-color: @cl-background; }
   &::-webkit-scrollbar-thumb:active{ background-color: @cl-background; }
   &::-webkit-scrollbar-track{ background-color: transparent; }
+}
+
+.placeholder {
+  &::-webkit-input-placeholder  { padding-top: 4px; font-size: 15px; color: #AFBAC8; line-height: 21px; } /* Safari, Chrome and Opera */
+  &:-moz-placeholder            { padding-top: 4px; font-size: 15px; color: #AFBAC8; line-height: 21px; } /* Firefox 18- */
+  &::-moz-placeholder           { padding-top: 4px; font-size: 15px; color: #AFBAC8; line-height: 21px; } /* Firefox 19+ */
+  &:-ms-input-placeholder       { padding-top: 4px; font-size: 15px; color: #AFBAC8; line-height: 21px; } /* IE 10+ */
+  &::-ms-input-placeholder      { padding-top: 4px; font-size: 15px; color: #AFBAC8; line-height: 21px; } /* Edge */
+  &:placeholder-shown           { padding-top: 4px; font-size: 15px; color: #AFBAC8; line-height: 21px; } /* Standard one last! */
 }
 
 .blur(@value) {
