@@ -275,15 +275,10 @@ router.route('/oauth/signup').post(function (req, res) {
     },
 
     function email (user, callback) {
-      verifyEmail.sendEmail(user, user.local.email, function (err) {
+      verifyEmail.sendWelcomeEmail(user.local.email, user.id, function (err) {
         if (err) {
-          return logger.error('Unable to sent verify email: ' + err);
+          return logger.error('Unable to sent welcome email: ', err);
         }
-        emailer.welcome(user.local.email, function (err) {
-          if (err) {
-            return logger.error('Unable to sent welcome email: ' + err);
-          }
-        });
       });
       return callback(null, user);
     },

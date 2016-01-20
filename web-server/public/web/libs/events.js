@@ -236,7 +236,7 @@ exports.prototype._data = function (type, data) {
     _.each(data.files, function (f) {
       if (f.type !== 'raw') {
         f.href = common.cloudinary.prepare(f.url, 1500, 'limit');
-        f.thumbnail = common.cloudinary.prepare(f.url, 100, 'fill');
+        f.thumbnail = common.cloudinary.prepare(f.url, 135, 'fill');
       }
       f.extension = f.url.match(/[^.]*$/);
       files.push(f);

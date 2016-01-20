@@ -13,20 +13,22 @@
         <div class="text"><%= data.message %><% if (data.edited) { %><span class="text-edited">&nbsp;(<%= t('chat.message.edition.edited') %>)</span><% } %></div>
         <% } %>
         <% if (data.files) { %>
-        <div class="images">
+        <div class="images collapse in" id="collapseMessages<%= data.id %>">
             <% _.each(data.files, function(f) { %>
                 <% if (f.type === 'image') { %>
                     <a class="image"
                        target="_blank"
                        href="<%=f.href%>"
-                       style="background-image: url(<%= f.thumbnail %>);"></a>
+                       style="background-image: url(<%= f.thumbnail %>);">
+                        <span class="filename"><%=f.filename%>.<%= f.extension%></span>
+                    </a>
                 <% } else { %>
                     <div class="file-ctn relative">
                         <a class="file"
                            target="_blank"
                            href="<%=f.url%>"
                            title="<%= f.filename %>">
-                            <i class="icon icon-file"></i>
+                            <i class="icon file-icon"></i>
                         </a>
                         <span class="filename"><%=f.filename%>.<%= f.extension%></span>
                         <h6><span class="filesize"><%= f.extension%> - <%=f.size%></span></h6>
@@ -34,6 +36,9 @@
                 <% } %>
             <% }); %>
             <hr>
+        </div>
+        <div class="collapse-toggle" data-toggle="collapse" data-target="#collapseMessages<%= data.id %>" aria-expanded="true" aria-controls="collapseMessages<%= data.id %>">
+            <%= t('global.collapse') %>
         </div>
         <% } %>
         <% if (data.spammed) { %>
