@@ -60,6 +60,7 @@ handler.call = function (data, session, next) {
       }
 
       var infos = {
+        room_id: room.id,
         disclaimer: room.disclaimer,
         identifier: room.getIdentifier(),
         hasPassword: !!room.password,

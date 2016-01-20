@@ -31,9 +31,6 @@ var ModalJoinRoomView = Backbone.View.extend({
 
   onSendRequest: function () {
     this.resetMessage();
-    if (!this.data.request) {
-      return this.$error.text(i18next.t('global.unknownerror')).show();
-    }
     var message = this.$('.input-request').val();
 
     app.client.roomJoinRequest(this.data.room_id, message, _.bind(function (response) {
