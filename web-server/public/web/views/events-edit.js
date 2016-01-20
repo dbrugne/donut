@@ -27,11 +27,12 @@ module.exports = Backbone.View.extend({
     event.preventDefault();
 
     var $event = $(event.currentTarget).closest('.block.message');
-    $event.addClass('editing');
 
     if (!this.isEditable($event)) {
       return;
     }
+
+    $event.addClass('editing');
     this.editMessage($event);
   },
   isEditable: function ($event) {
