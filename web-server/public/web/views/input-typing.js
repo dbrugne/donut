@@ -21,11 +21,13 @@ var InputTypingView = Backbone.View.extend({
 
   render: function () {
     if (!_.keys(this.usersTyping).length) {
-      return this.$el.html('');
+      //return this.$el.html('');
+      return this.$el.removeClass('visible');
     }
 
     var html = this.template({users: this.usersTyping});
     this.$el.html(html);
+    this.$el.addClass('visible');
     return this;
   },
 

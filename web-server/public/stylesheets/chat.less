@@ -680,7 +680,7 @@
             } // #chat #center .discussion .content .header.user .status-block
           } // #chat #center .discussion .content .header.user
         }
-        .events { overflow-y: scroll; overflow-x: hidden; .flex(1); .scrollbar-grey; position: relative; margin-top: 30px;
+        .events { overflow-y: scroll; overflow-x: hidden; .flex(1); .scrollbar-grey; position: relative; margin-top: 30px; margin-bottom: 20px;
           .scrollable { margin-right: 5px;
             .scrollable-content { position: relative;
               hr { border-color: @cl-subtext5; }
@@ -928,7 +928,7 @@
             } // // #chat #center .discussion .content .events .scrollable .scrollable-content
           } // #chat #center .discussion .content .events .scrollable
         } // #chat #center .discussion .content .events
-        .input { padding-top: 5px; margin-right: 25px; padding-bottom: 10px; position: relative;
+        .input { padding-top: 15px; margin-right: 25px; padding-bottom: 10px; position: relative; margin-left: 20px;
           .add-image, .add-file, .add-smiley {
             cursor: pointer;
           }
@@ -936,25 +936,11 @@
             .overlay { display:none; background-color: rgba(67, 74, 84, 0.8); height: 100%; width: 100%; position: absolute; top: 0; cursor: pointer; z-index: 2;
               .overlay-text { color: white; width: 100%; text-align: center; cursor: pointer; font-size: 1.8rem;}
             }
-            .text {
-              position: relative;
-              padding: 5px 95px 5px 45px;
-              border: 1px solid @cl-subtext15;
-              background-color: @cl-background;
-              .border-radius(4px);
-              .avatar {
-                position: absolute;
-                left: 8px;
-                top: 7px;
-                width: 30px;
-                height: 30px;
-              }
-              .actions { position: absolute; top: 5px; right: 45px; text-align: center; height: 46px; width: 60px;
-                a { display: inline-block; margin-right: 3px; }
+            .text { position: relative; padding: 15px 20px 5px 20px; border-top: 2px solid #FC2063; background-color: #fff;
+              .avatar { width: 35px; height: 35px; .border-radius(3px); }
+              .actions {
+                a { display: inline-block; margin-right: 3px; font-size: 1.5rem; }
                 .images.add-image { margin-top: 5px; }
-                .images {
-                  font-size: 1.5rem;
-                }
               }
               .mentions { padding: 0; font-size: 13px; }
               .mentions-autocomplete-list {
@@ -964,78 +950,31 @@
                 font-size: 13px;
               }
               .mentions-input-box .mentions>div>strong { }
-              .editable {
-                width: 100%;
-                padding: 0;
-                display: block;
-                min-height: 30px;
-                border: none;
-                overflow: auto;
-                outline: none;
-                resize: none;
-                .box-shadow(none);
-                font-size: 13px;
-              }
-              .send { position: absolute; top: 0; bottom: 0; right: 0; width: 40px; margin: 0; border: 0; padding-top: 12px; padding-left: 2px; display: inline-block; text-align: center;
-                img { width: 15px; height: 17px; }
-                .arrow-bottom:after { content: ""; position: absolute; bottom: -8px; left: 12px; border-style: solid; border-width: 8px 8px 0; border-right-color: transparent; border-left-color: transparent; border-top-color: inherit; border-bottom-color: inherit; display: block; width: 0; z-index: 2; }
-              }
+              .editable { font-size: 14px; color: #1d252f; line-height: 21px; margin-left: 5px; width: 100%; padding: 0; display: block; min-height: 35px; border: none; overflow: auto; outline: none; resize: none; .box-shadow(none); }
+              .send { cursor: pointer; }
             }
           }
           &.inactive .text-container {
             .overlay, .overlay::after { .display-flex; .align-items(center); }
             &:after { content: ""; position: absolute; bottom: -7px; right: 12px; border-style: solid; border-width: 8px 8px 0; border-right-color: transparent; border-left-color: transparent; border-top-color: rgba(67, 74, 84, 0.8); border-bottom-color: rgba(67, 74, 84, 0.8); display: block; width: 0; z-index: 2; }
           }
-          .typing-container {
-            position: absolute;
-            display: block;
-            bottom: 1px;
+          .typing-container { position: absolute; display: block; top: 15px; left: 5px; .transition(top 300ms);
+            &.visible { top: -5px; }
           }
-          .preview {
-            padding-top: 2px;
-            display: none;
-            .image {
-              &.file{ border: 1px solid @cl-subtext10; .display-inline-flex;
+          .preview { margin-left: 70px; display: none;
+            .image { background-color: #e2e8f0; display: inline-block; vertical-align: top; width: 80px; height: 80px; margin: 5px; padding-top: 19px; text-align: center;
+              &.file{
                 &:hover { text-decoration: none; }
-                .icon-file { margin:auto; font-size: 4rem;  }
+                .file-icon { width: 30px; height: 40px; }
               }
-              background-size: contain;
-              background-position: center center;
-              display: inline-block;
-              vertical-align: top;
-              position: relative;
-              width: 80px;
-              height: 80px;
-              margin: 2px;
-              .remove-image {
-                position: absolute;
-                right: 5px;
-                display: none;
-                color: @cl-error;
-                cursor: pointer;
-                font-size: 1.3em;
-              }
+              .remove-image { position: absolute; right: 0; top: -2px; display: none; color: @cl-error; cursor: pointer; font-size: 1.3em; }
               &:hover {
                 .remove-image {
                   display: inline;
                 }
               }
             }
-            .add-image {
-              display: inline-block;
-              vertical-align: top;
-              border: 2px dashed @cl-subtext20;
-              .border-radius(2px);
-              width: 80px;
-              height: 80px;
-              margin: 2px;
-              padding-top: 28px;
-              text-align: center;
-              i {
-                font-size: 1.9em;
-                color: @cl-subtext20;
-              }
-            }
+            .add-image { background-color: #E2E8F0; display: inline-block; vertical-align: top; width: 80px; height: 80px; margin: 5px; padding-top: 19px; text-align: center; }
           }
           &.open {
             .text-container .text { .border-radiuses(0, 4px, 4px, 0); padding: 4px 94px 4px 44px; border: 2px solid @cl-nav-left-back;
