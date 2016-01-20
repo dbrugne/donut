@@ -62,6 +62,7 @@ var MessageEditView = Backbone.View.extend({
     return this;
   },
   remove: function () {
+    this.$el.removeClass('editing');
     this.model.trigger('inputFocus'); // refocus discussion input field
     $('html').off('click', this.onClickOutsideHandler);
     if (this.$el.data('edited') || this.$textEdited) {
