@@ -55,13 +55,13 @@ var ModalJoinRoomView = Backbone.View.extend({
     this.resetMessage();
     var password = this.$('.input-password').val();
 
-    if (!password || !this.data.password) {
+    if (!password || !this.data.hasPassword) {
       return this.$error.text(i18next.t('chat.password.invalid-password')).show();
     }
     app.client.roomJoin(this.data.room_id, password, _.bind(function (response) {
       if (response.err) {
         if (response.err === 'wrong-password' || response.err === 'params-password' || response.err === 'spam-password') {
-          this.$error.text(i18next.t('chat.password.password.' + response.err)).show();
+          this.$error.text(i18next.t('chat.password.' + response.err)).show();
         } else {
           this.$error.text(i18next.t('global.unknownerror')).show();
         }
