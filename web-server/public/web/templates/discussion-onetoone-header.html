@@ -1,75 +1,77 @@
-<div class="overlay-ctn">
-    <img class="avatar open-room-profile" data-room-id="<%= user_id %>" src="<%= avatar %>" alt="<%= username %> avatar">
-    <span class="user-status online"></span>
-</div>
-<div class="info flex-parent baseline">
-    <div class="flex-parent baseline">
-        <div class="name open-user-profile" data-user-id="<%= user_id %>">
-            <% if (typeof realname !== "undefined" && realname !== '') { %>
-                <%= realname %>
-            <% } else { %>
-                @<%= username %>
-            <% } %>
-        </div>
-        <div class="status-block flex-parent baseline">
-            <% if (typeof banned !== "undefined" && banned) { %>
-                <span class="banned-status flex-parent baseline">
-                    <%= t('chat.actions.banned') %>&nbsp;
-                    <span class="action-user-deban action curp" data-user-id="<%= user_id %>">
-                        <%= t('chat.actions.unlock') %>
-                    </span>
-                </span>
-            <% } %>
-            <% if (typeof(confirmed) !== 'undefined' && confirmed === false) { %>
-                <span class="not-confirmed">
-                    <%= t('chat.blocked.cant-answer', {username: username}) %>
-                </span>
-            <% } %>
-        </div>
+<div class="<% if (banned === true) { %> is-banned <% } %> <% if (i_am_banned === true) { %> i-am-banned <% } %>">
+    <div class="overlay-ctn">
+        <img class="avatar open-user-profile" data-user-id="<%= user_id %>" src="<%= avatar %>" alt="<%= username %> avatar">
+        <span class="user-status online"></span>
     </div>
-
-    <div class="flex-parent jc-center center">
-        <div class="dropdown flex-parent jc-center center">
-            <button class="dropdown-toggle flex-parent jc-center center" data-toggle="dropdown" aria-expanded="true">
-                <i class="icon icon-cog icon-fw"></i>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-                <li role="presentation">
-                    <a role="menuitem" tabindex="-1" class="open-user-profile" data-user-id="<%= user_id %>">
-                        <i class="icon icon-eye"></i> <%= t('global.viewprofile') %>
-                    </a>
-                </li>
-                <li role="presentation" class="divider"></li>
-                <li role="presentation" class="ban-menu">
-                    <% if (typeof banned !== "undefined" && banned) { %>
-                        <a role="menuitem" tabindex="-1" data-toggle="confirmation" style="cursor: pointer;" class="action-user-deban" data-user-id="<%= user_id %>">
-                            <i class="icon icon-ban"></i> <%= t('chat.actions.deban') %>
-                        </a>
-                    <% } else { %>
-                        <a role="menuitem" tabindex="-1" data-toggle="confirmation" style="cursor: pointer;" class="action-user-ban" data-user-id="<%= user_id %>">
-                            <i class="icon icon-ban"></i> <%= t('chat.actions.ban') %>
-                        </a>
-                    <% } %>
-                </li>
-                <li role="presentation" class="divider"></li>
-                <li role="presentation">
-                    <a role="menuitem" tabindex="-1" class="close-discussion" data-identifier="<%= user_id %>" data-type="user">
-                        <i class="icon icon-times"></i> <%= t('chat.actions.close') %>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
-<% if ( location ) { %>
-    <div class="location">
-        <p class="topic-current">
-            <span class="txt" title="<%= location %>">
-                <%= t('global.' + status) %>
-                <% if(onlined) { %>
-                    <span class="ago display-offline">(<%= t('profile.user.onlined', {time: '<span data-time="'+onlined+'"></span>'}) %>)</span>
+    <div class="info flex-parent baseline">
+        <div class="flex-parent baseline">
+            <div class="name open-user-profile" data-user-id="<%= user_id %>">
+                <% if (typeof realname !== "undefined" && realname !== '') { %>
+                    <%= realname %>
+                <% } else { %>
+                    @<%= username %>
                 <% } %>
-            </span>
-        </p>
+            </div>
+            <div class="status-block flex-parent baseline">
+                <% if (typeof banned !== "undefined" && banned) { %>
+                    <span class="banned-status flex-parent baseline">
+                        <%= t('chat.actions.banned') %>&nbsp;
+                        <span class="action-user-deban action curp" data-user-id="<%= user_id %>">
+                            <%= t('chat.actions.unlock') %>
+                        </span>
+                    </span>
+                <% } %>
+                <% if (typeof(confirmed) !== 'undefined' && confirmed === false) { %>
+                    <span class="not-confirmed">
+                        <%= t('chat.blocked.cant-answer', {username: username}) %>
+                    </span>
+                <% } %>
+            </div>
+        </div>
+
+        <div class="flex-parent jc-center center">
+            <div class="dropdown flex-parent jc-center center">
+                <button class="dropdown-toggle flex-parent jc-center center" data-toggle="dropdown" aria-expanded="true">
+                    <i class="icon icon-cog icon-fw"></i>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" class="open-user-profile" data-user-id="<%= user_id %>">
+                            <i class="icon icon-eye"></i> <%= t('global.viewprofile') %>
+                        </a>
+                    </li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation" class="ban-menu">
+                        <% if (typeof banned !== "undefined" && banned) { %>
+                            <a role="menuitem" tabindex="-1" data-toggle="confirmation" style="cursor: pointer;" class="action-user-deban" data-user-id="<%= user_id %>">
+                                <i class="icon icon-ban"></i> <%= t('chat.actions.deban') %>
+                            </a>
+                        <% } else { %>
+                            <a role="menuitem" tabindex="-1" data-toggle="confirmation" style="cursor: pointer;" class="action-user-ban" data-user-id="<%= user_id %>">
+                                <i class="icon icon-ban"></i> <%= t('chat.actions.ban') %>
+                            </a>
+                        <% } %>
+                    </li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" class="close-discussion" data-identifier="<%= user_id %>" data-type="user">
+                            <i class="icon icon-times"></i> <%= t('chat.actions.close') %>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
-<% } %>
+    <% if ( location ) { %>
+        <div class="location">
+            <p class="topic-current">
+                <span class="txt" title="<%= location %>">
+                    <%= t('global.' + status) %>
+                    <% if(onlined) { %>
+                        <span class="ago display-offline">(<%= t('profile.user.onlined', {time: '<span data-time="'+onlined+'">'+fromnow+'</span>'}) %>)</span>
+                    <% } %>
+                </span>
+            </p>
+        </div>
+    <% } %>
+</div>

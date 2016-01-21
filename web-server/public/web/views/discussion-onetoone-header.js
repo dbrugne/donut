@@ -1,8 +1,6 @@
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
-var EventsView = require('./discussion-events');
-var InputView = require('./discussion-input');
 var date = require('../libs/date');
 
 var OneToOnePanelView = Backbone.View.extend({
@@ -23,17 +21,9 @@ var OneToOnePanelView = Backbone.View.extend({
     this.listenTo(this.model, 'change:location', this.render);
     this.listenTo(this.model, 'change:status', this.render);
     this.listenTo(this.model, 'change:banned', this.render);
+    this.listenTo(this.model, 'change:i_am_banned', this.render);
 
     this.render();
-
-    this.eventsView = new EventsView({
-      el: this.$el,
-      model: this.model
-    });
-    this.inputView = new InputView({
-      el: this.$('.input'),
-      model: this.model
-    });
   },
   render: function () {
     var data = this.model.toJSON();
@@ -52,11 +42,6 @@ var OneToOnePanelView = Backbone.View.extend({
     this.$el.html(html);
 
     return this;
-  },
-  removeView: function (model) {
-    this.eventsView._remove();
-    this.inputView._remove();
-    this.remove();
   },
   onFocusChange: function () {
     if (this.model.get('focused')) {
