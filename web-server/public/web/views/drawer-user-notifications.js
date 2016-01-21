@@ -195,7 +195,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
     event.stopPropagation(); // Cancel dropdown close behaviour
     this.$readMore.addClass('hidden');
     this.$loader.removeClass('hidden');
-    return;
+
     app.client.notificationRead(null, this.lastNotifDisplayedTime(), 10, _.bind(function (data) {
       this.isThereMoreNotifications = data.more;
       var previousContent = this.$menu.html();
