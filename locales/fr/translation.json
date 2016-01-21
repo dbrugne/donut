@@ -193,9 +193,9 @@
     "accept": "accepter",
     "refuse": "refuser",
     "viewprofile": "voir le profil",
-    "online": "en ligne",
-    "offline": "hors ligne",
-    "connecting": "connexion ...",
+    "online": "online",
+    "offline": "offline",
+    "connecting": "connecting",
     "permalink": "permalien",
     "links": "Liens",
     "search": "Recherche",
@@ -382,7 +382,7 @@
         "room": "Vous êtes muet dans ce donut à la demande d'un modérateur",
         "confirm": "Action autorisée seulement pour les comptes validés. Validez votre e-mail."
       },
-      "unlock": "(Cliquez ici pour le débloquer)"
+      "unlock": "débloquer"
     },
     "help": "Aide",
     "room-discussion": {

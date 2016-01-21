@@ -382,7 +382,7 @@
         "room": "You are mute in this donut as requested by a moderator",
         "confirm": "Action authorized to verified accounts only. Verify your e-mail."
       },
-      "unlock": "(Click here to unblock)"
+      "unlock": "unblock"
     },
     "help": "Help",
     "room-discussion": {
