@@ -195,7 +195,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
     event.stopPropagation(); // Cancel dropdown close behaviour
     this.$readMore.addClass('hidden');
     this.$loader.removeClass('hidden');
-return;
+    return;
     app.client.notificationRead(null, this.lastNotifDisplayedTime(), 10, _.bind(function (data) {
       this.isThereMoreNotifications = data.more;
       var previousContent = this.$menu.html();
@@ -275,7 +275,8 @@ return;
     return this.$menu.find('.message').length;
   },
   onMessageClick: function (event) {
-    if (!$(event.currentTarget).hasClass('open-group-users-allowed') && !$(event.currentTarget).hasClass('open-room-users-allowed')) {
+    if (!$(event.currentTarget).hasClass('open-group-users-allowed') &&
+      !$(event.currentTarget).hasClass('open-room-users-allowed')) {
       this.trigger('close');
     }
   }
