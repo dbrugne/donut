@@ -606,7 +606,7 @@
     }
 
     .discussion { background-color: @cl-background; height: 100%;
-      > div {height: 100%;}
+      > div { height: 100%;}
       .content { height: 100%; position: relative; .display-flex; .flex-flow(column nowrap);
         &.blocked { .align-items(center);  .justify-content(center); position:relative;
           .header .info { padding:0; }
@@ -687,6 +687,7 @@
           .unviewed-top { .border-radius(3px); text-transform: uppercase; background-color: @cl-first; padding: 3px 20px; font-size: 9px; color: #FFFFFF; letter-spacing: 0.5px; line-height: 21px;
             i { font-size: 14px; }
           }
+          .date { .date-discussion; }
         }
         .events { overflow-y: scroll; overflow-x: hidden; .flex(1); .scrollbar-grey; position: relative; margin-top: 30px; margin-bottom: 20px; padding-left: 20px;
           .scrollable { margin-right: 5px;
@@ -745,6 +746,8 @@
                     i { margin-left: -25px; margin-right: 8px; }
                     .moment { position: absolute; top: 3px; right: 20px; font-size: 11px; color: #afbac8; line-height: 14px; }
                   }
+
+                  &.date { .date-discussion; }
 
                   // .block.promote
                   &.promote .avatar { margin-right:5px; }
@@ -871,17 +874,6 @@
 
                   // .block.ping .block.me .block.random
                   &.ping, &.me, &.random { font-style: italic; color: @cl-subtext30; }
-
-                  // .block.date
-                  &.date { margin-top: 25px; margin-bottom: 25px; clear: both; border-top: 0; height: 1px; background-color: #D0D9E6; text-align: center; margin-left: -40px;
-                    .moment { position: relative; top: -0.7em; background-color: @cl-background; text-align: center; font-size: 15px; color: #AFBAC8; line-height: 14px; padding: 0 20px; font-weight: normal;
-                      &.today, &.yesterday { display:none; }
-                    }
-                    &.today .moment.today,
-                    &.yesterday .moment.yesterday{ display:inline; }
-                    &.today .moment.current,
-                    &.yesterday .moment.current{ display:none; }
-                  }
                 }
 
                 // handle in & out display

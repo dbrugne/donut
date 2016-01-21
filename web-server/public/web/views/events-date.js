@@ -8,7 +8,7 @@ module.exports = Backbone.View.extend({
   },
   render: function () {
     this.$ctn = this.$('.date-ctn .ctn');
-    this.$scrollable = this.$('.scrollable .block.date');
+    this.$scrollable = this.$('.scrollable');
     return this;
   },
   scroll: function (options) {
@@ -19,7 +19,7 @@ module.exports = Backbone.View.extend({
     var currentScrollPosition = options.currentScrollPosition;
 
     var last = null;
-    this.$scrollable.each(function (index) {
+    this.$scrollable.find('.block.date').each(function (index) {
       if ($(this).position().top > currentScrollPosition) {
         return false; // break on first visible
       }
