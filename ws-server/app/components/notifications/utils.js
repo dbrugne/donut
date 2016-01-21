@@ -10,6 +10,7 @@ var NotificationModel = require('../../../../shared/models/notification');
 var conf = require('../../../../config/index');
 var common = require('@dbrugne/donut-common/server');
 var i18next = require('i18next');
+var badge = require('../../../../shared/util/badge');
 
 module.exports = {
   retrieveUser: function (user) {
@@ -161,14 +162,17 @@ module.exports = {
     return ((h < 10) ? '0' : '') + h + ':' + ((m < 10) ? '0' : '') + m;
   },
 
-  decorateWithUnreadAndPushMessage: function (app, event, userId, callback) {
-    NotificationModel.unreadCount(userId, _.bind(function (err, num) {
+  pushNotification: function (app, event, userId, callback) {
+    badge(userId, function (err, discussion, notification, total) {
       if (err) {
         return callback(err);
       }
 
-      event.unread = num;
+      event.unviewed_discussion = discussion;
+      event.unviewed_notification = notification;
+      event.badge = total;
+
       app.globalChannelService.pushMessage('connector', 'notification:new', event, 'user:' + userId, {}, callback);
-    }, this));
+    });
   }
 };

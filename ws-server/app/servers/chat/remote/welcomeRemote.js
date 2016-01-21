@@ -8,7 +8,7 @@ var Group = require('../../../../../shared/models/group');
 var roomDataHelper = require('../../../util/room-data');
 var oneDataHelper = require('../../../util/one-data');
 var featuredRooms = require('../../../../../shared/util/featured-rooms');
-var Notifications = require('../../../components/notifications');
+var badge = require('../../../../../shared/util/badge');
 
 module.exports = function (app) {
   return new WelcomeRemote(app);
@@ -175,13 +175,16 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, data, globalCall
       });
     },
 
-    function notificationsUnread (callback) {
-      Notifications(that.app).retrieveUserNotificationsUnviewedCount(user.id, function (err, count) {
+    function badgeState (callback) {
+      badge(user.id, function (err, discussion, notification, total) {
         if (err) {
-          logger.error('Error while retrieving unread notifications: ' + err);
+          return callback(err);
         }
 
-        welcomeEvent.notifications.unread = count || 0;
+        welcomeEvent.notifications.unviewed_discussion = discussion;
+        welcomeEvent.notifications.unviewed_notification = notification;
+        welcomeEvent.notifications.badge = total;
+
         return callback(null);
       });
     }

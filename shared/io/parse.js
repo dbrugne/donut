@@ -4,10 +4,10 @@ var common = require('@dbrugne/donut-common/server');
 var Parse = require('parse/node');
 var conf = require('../../config/index');
 var i18next = require('../util/i18next');
-var NotificationModel = require('../models/notification');
 var UserModel = require('../models/user');
 var async = require('async');
 var _ = require('underscore');
+var badge = require('../util/badge');
 
 var parse = {};
 module.exports = parse;
@@ -52,14 +52,18 @@ function sendToMobile (toUid, data, img, cb) {
         return callback(null, user);
       });
     },
-    function badge (user, callback) {
+    function badgeState (user, callback) {
       // for iOS device unviewed notification count is handled on server-side
-      NotificationModel.unreadCount(user._id, function (err, num) {
+      badge(user._id, function (err, discussion, notification, total) {
         if (err) {
           return callback(err);
         }
 
-        data.badge = num;
+//        data.badge = num;
+        data.unviewed_discussion = discussion;
+        data.unviewed_notification = notification;
+        data.badge = total;
+
         return callback(null, user);
       });
     },
