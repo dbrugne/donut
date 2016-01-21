@@ -11,6 +11,7 @@ var currentUser = require('../libs/app').user;
 
 var RoomUsersView = Backbone.View.extend({
   template: require('../templates/room-users.html'),
+  templateSpinner: require('../templates/spinner.html'),
 
   listTemplate: require('../templates/room-users-list.html'),
 
@@ -47,7 +48,8 @@ var RoomUsersView = Backbone.View.extend({
     this.model.users.fetchUsers();
   },
   initialRender: function () {
-    var html = this.template({});
+    var spinner = this.templateSpinner({});
+    var html = this.template({spinner: spinner});
     this.$users.html(html);
     this.$list = this.$users.find('.list');
   },

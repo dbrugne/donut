@@ -691,8 +691,10 @@
             .scrollable-content { position: relative;
               hr { border-color: @cl-subtext5; }
               .pad { min-height: 30px; text-align: center; font-size: 2em; margin-left:20px;
-                i { display: none; }
-                &.loading  i { display: inline-block; .spin; }
+                .spinner { display: none;
+                  > div { margin: 10px auto; }
+                }
+                &.loading  .spinner { display: block; }
               }
               .loader { padding: 10px; text-align: center; font-size: 1.1em; .border-radius(2px); margin-left:20px;
                 .arrow { font-size: 1.4em; padding-left: 50px; padding-right: 50px; }
