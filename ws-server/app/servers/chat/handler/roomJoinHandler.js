@@ -95,6 +95,7 @@ handler.join = function (user, room, roomData, next) {
 
     function persistRoom (callback) {
       room.users.addToSet(user._id);
+      room.allowed.addToSet(user._id);
       room.save(function (err) {
         return callback(err);
       });
