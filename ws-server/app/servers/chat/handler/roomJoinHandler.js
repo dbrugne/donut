@@ -45,7 +45,7 @@ handler.call = function (data, session, next) {
         roomData.blocked = false;
         delete roomData.blocked_why;
       } else {
-        return next(null, {code: 404, err: isGoodPassword});
+        return next(null, {code: 403, err: isGoodPassword});
       }
     }
 
