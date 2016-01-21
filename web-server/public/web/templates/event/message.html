@@ -13,27 +13,31 @@
         <div class="text"><%= data.message %><% if (data.edited) { %><span class="text-edited">&nbsp;(<%= t('chat.message.edition.edited') %>)</span><% } %></div>
         <% } %>
         <% if (data.files) { %>
-        <div class="images">
+        <div class="images collapse in" id="collapseMessages<%= data.id %>">
             <% _.each(data.files, function(f) { %>
                 <% if (f.type === 'image') { %>
                     <a class="image"
                        target="_blank"
                        href="<%=f.href%>"
-                       style="background-image: url(<%= f.thumbnail %>);"></a>
+                       style="background-image: url(<%= f.thumbnail %>);">
+                        <span class="filename"><%=f.filename%>.<%= f.extension%></span>
+                    </a>
                 <% } else { %>
                     <div class="file-ctn relative">
                         <a class="file"
                            target="_blank"
                            href="<%=f.url%>"
                            title="<%= f.filename %>">
-                            <i class="icon icon-file"></i>
+                            <i class="icon file-icon"></i>
                         </a>
                         <span class="filename"><%=f.filename%>.<%= f.extension%></span>
-                        <h6><span class="filesize"><%= f.extension%> - <%=f.size%></span></h6>
                     </div>
                 <% } %>
             <% }); %>
-            <hr>
+            <div class="clearfix"></div>
+        </div>
+        <div class="collapse-toggle" data-toggle="collapse" data-target="#collapseMessages<%= data.id %>" aria-expanded="true" aria-controls="collapseMessages<%= data.id %>">
+            <%= t('global.collapse') %>
         </div>
         <% } %>
         <% if (data.spammed) { %>
@@ -42,11 +46,10 @@
     </div>
     <div class="date pull-right"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
     <% if(!data.is_admin) { %> <!--Only display for non admin messages-->
-    <div class="actions">
-        <a class="message-menu" data-toggle="dropdown" role="button" aria-expanded="false" id="messageMenu">
-            <i class="icon icon-cog"></i>
-        </a>
-        <div class="dropdown-menu" aria-labelledby="messageMenu"><!-- message dropdown menu content --></div>
-    </div>
+        <div class="actions">
+            <div class="action spammed ml5"><%= t('chat.message.dropdown.spam.mark-spam') %></div>
+            <div class="action unspam ml5"><%= t('chat.message.dropdown.spam.unmark-spam') %></div>
+            <div class="action edit ml5"><%= t('chat.message.dropdown.edit') %></div>
+        </div>
     <% } %>
 </div>

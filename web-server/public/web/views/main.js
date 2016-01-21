@@ -7,7 +7,7 @@ var debug = require('../libs/donut-debug')('donut:main');
 
 var i18next = require('i18next-client');
 var ConnectionModalView = require('./modal-connection');
-//var WelcomeModalView = require('./modal-welcome');
+// var WelcomeModalView = require('./modal-welcome');
 var CurrentUserView = require('./current-user');
 var AlertView = require('./alert');
 var DrawerView = require('./drawer');
@@ -34,17 +34,17 @@ var DrawerUserPreferencesView = require('./drawer-user-preferences');
 var DrawerUserAccountView = require('./drawer-account');
 var ModalView = require('./modal');
 var ModalJoinGroupView = require('./modal-join-group');
+var ModalJoinRoomView = require('./modal-join-room');
 var ModalChooseUsernameView = require('./modal-choose-username');
 var NavOnesView = require('./nav-ones');
 var NavRoomsView = require('./nav-rooms');
+var NavGroupsView = require('./nav-groups');
 var ConfirmationView = require('./modal-confirmation');
 var MuteView = require('./mute');
 var SearchView = require('./home-search');
 
 var MainView = Backbone.View.extend({
   el: $('body'),
-
-  firstConnection: true,
 
   defaultColor: '',
 
@@ -94,24 +94,27 @@ var MainView = Backbone.View.extend({
   initialize: function () {
     this.defaultColor = window.room_default_color;
 
-    this.listenTo(app.client, 'welcome', this.onWelcome);
     this.listenTo(app.client, 'admin:message', this.onAdminMessage);
-    this.listenTo(app.rooms, 'deleted', this.roomDeleted);
+    this.listenTo(app.rooms, 'deleted', this.onRoomDeleted);
+    this.listenTo(app, 'usernameRequired', this.onUsernameRequired);
+    this.listenTo(app, 'ready', this.onReady);
     this.listenTo(app, 'openRoomProfile', this.openRoomProfile);
     this.listenTo(app, 'openGroupProfile', this.openGroupProfile);
     this.listenTo(app, 'openUserProfile', this.openUserProfile);
     this.listenTo(app, 'openGroupJoin', this.openGroupJoin);
+    this.listenTo(app, 'openRoomJoin', this.openRoomJoin);
     this.listenTo(app, 'changeColor', this.onChangeColor);
   },
   run: function () {
     this.currentUserView = new CurrentUserView({el: this.$el.find('#block-current-user'), model: app.user});
     this.navOnes = new NavOnesView();
     this.navRooms = new NavRoomsView();
+    this.navGroups = new NavGroupsView();
     this.drawerView = new DrawerView();
     this.modalView = new ModalView();
     this.alertView = new AlertView();
     this.connectionView = new ConnectionModalView();
-    //this.welcomeView = new WelcomeModalView();
+    // this.welcomeView = new WelcomeModalView();
     this.muteView = new MuteView();
     this.notificationsView = new NotificationsView();
     this.searchView = new SearchView({
@@ -130,37 +133,19 @@ var MainView = Backbone.View.extend({
 
     app.client.connect();
   },
+  onUsernameRequired: function () {
+    this.connectionView.hide();
+    return this.openModalChooseUsername();
+  },
+  onReady: function () {
+    // if (this.firstConnection) { // show if true or if undefined
+    //   if (app.user.shouldDisplayWelcome()) {
+    //     this.welcomeView.render(data);
+    //     this.welcomeView.show();
+    //   }
+    // }
 
-  /**
-   * Executed each time the connexion with server is re-up (can occurs multiple
-   * time in a same session)
-   * @param data
-   */
-  onWelcome: function (data) {
-    // Is username required
-    if (data.usernameRequired) {
-      this.connectionView.hide();
-      return this.openModalChooseUsername();
-    }
-
-    app.user.onWelcome(data);
-    app.ones.onWelcome(data);
-    app.rooms.onWelcome(data);
-
-    // Only on first connection
-    //if (this.firstConnection) { // show if true or if undefined
-    //  if (app.user.shouldDisplayWelcome()) {
-    //    this.welcomeView.render(data);
-    //    this.welcomeView.show();
-    //  }
-    //}
-
-    this.notificationsView.updateCount(data.notifications.unread);
     this.notificationsView.updateHandle();
-
-    // Run routing only when everything in interface is ready
-    this.firstConnection = false;
-    app.trigger('readyToRoute');
     this.connectionView.hide();
   },
   onAdminMessage: function (data) {
@@ -241,17 +226,8 @@ var MainView = Backbone.View.extend({
     event.preventDefault();
     event.stopPropagation();
   },
-  roomDeleted: function (data) {
-    if (data.was_focused) {
-      app.trigger('focus');
-    }
-
-    if (data.group_id) {
-      var model = app.groups.findWhere({id: data.group_id});
-      model.onDeleteRoom(data.room_id);
-    }
-
-    app.trigger('alert', 'warning', i18next.t('chat.deletemessage', {name: data.name}));
+  onRoomDeleted: function (identifier) {
+    app.trigger('alert', 'warning', i18next.t('chat.deletemessage', {name: identifier}));
   },
 
   // DRAWERS
@@ -269,10 +245,6 @@ var MainView = Backbone.View.extend({
       view = new DrawerRoomCreateView({name: name});
       this.drawerView.setSize('450px').setView(view).open();
       return view.focusField();
-    }
-
-    if (!app.groups.isMemberOwnerAdmin(groupId)) {
-      return app.trigger('alert', 'error', i18next.t('chat.form.errors.not-admin-owner-groupowner'));
     }
 
     view = new DrawerRoomCreateView({
@@ -515,6 +487,10 @@ var MainView = Backbone.View.extend({
     var view = new ModalJoinGroupView({data: data});
     this.modalView.setView(view).open();
   },
+  openRoomJoin: function (data) {
+    var view = new ModalJoinRoomView({data: data});
+    this.modalView.setView(view).open();
+  },
   openModalChooseUsername: function () {
     var view = new ModalChooseUsernameView();
     this.modalView.setView(view).open({'show': true, keyboard: false, backdrop: 'static'});
@@ -558,12 +534,13 @@ var MainView = Backbone.View.extend({
     if (!groupId) {
       return;
     }
+    app.client.groupLeave(groupId);
     var model = app.groups.iwhere('id', groupId);
     if (!model) {
       return;
     }
     app.groups.remove(model);
-    app.trigger('redrawNavigationRooms');
+    app.trigger('redrawNavigationGroups');
     app.trigger('discussionRemoved', model);
   },
   onQuitGroup: function (event) {
@@ -574,16 +551,13 @@ var MainView = Backbone.View.extend({
       return;
     }
 
-    // Current user is a member of the selected group
-    if (app.groups.isMember(groupId)) {
-      ConfirmationView.open({message: 'quit-group'}, _.bind(function () {
-        app.client.groupLeave(groupId, function (response) {
-          if (response.err) {
-            return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
-          }
-        });
-      }, this));
-    }
+    ConfirmationView.open({message: 'quit-group'}, _.bind(function () {
+      app.client.groupQuitMembership(groupId, function (response) {
+        if (response.err) {
+          return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
+        }
+      });
+    }, this));
   },
 
   userBan: function (event) {
@@ -629,7 +603,7 @@ var MainView = Backbone.View.extend({
     }
 
     // check that I am op or owner or admin
-    if (!room.currentUserIsOp() && !room.currentUserIsOwner() && !room.currentUserIsAdmin()) {
+    if (!room.currentUserIsOp() && !room.currentUserIsOwner() && !app.user.isAdmin()) {
       return null;
     }
 

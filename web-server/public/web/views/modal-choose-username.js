@@ -15,7 +15,7 @@ module.exports = Backbone.View.extend({
 
   initialize: function () {
     // is user lost connection during username choosing, hide this modal
-    // will be display again on next 'welcome'
+    // will be display again on next welcome
     this.listenTo(app.client, 'disconnect', _.bind(function () {
       this.trigger('close');
     }, this), this);

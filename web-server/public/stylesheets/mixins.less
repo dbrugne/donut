@@ -4,7 +4,6 @@
 
 .border-radius (@radius: 5px) {
   border-radius:         @radius;
-  background-clip:         padding-box;
 }
 .border-radiuses (@topright: 0, @bottomright: 0, @bottomleft: 0, @topleft: 0) {
   border-top-right-radius:            @topright;
@@ -29,6 +28,7 @@
 .transform(@string){
   -webkit-transform: @string;
   -ms-transform: 	 @string;
+  transform:         @string;
 }
 .rotate (@deg) {
   -webkit-transform: rotate(@deg);
@@ -65,6 +65,15 @@
   &::-webkit-scrollbar-track{ background-color: transparent; }
 }
 
+.placeholder {
+  &::-webkit-input-placeholder  { padding-top: 4px; font-size: 15px; color: #AFBAC8; line-height: 21px; } /* Safari, Chrome and Opera */
+  &:-moz-placeholder            { padding-top: 4px; font-size: 15px; color: #AFBAC8; line-height: 21px; } /* Firefox 18- */
+  &::-moz-placeholder           { padding-top: 4px; font-size: 15px; color: #AFBAC8; line-height: 21px; } /* Firefox 19+ */
+  &:-ms-input-placeholder       { padding-top: 4px; font-size: 15px; color: #AFBAC8; line-height: 21px; } /* IE 10+ */
+  &::-ms-input-placeholder      { padding-top: 4px; font-size: 15px; color: #AFBAC8; line-height: 21px; } /* Edge */
+  &:placeholder-shown           { padding-top: 4px; font-size: 15px; color: #AFBAC8; line-height: 21px; } /* Standard one last! */
+}
+
 .blur(@value) {
   -webkit-filter: blur(@value);
   -moz-filter: blur(@value);
@@ -97,6 +106,15 @@
     border-color: @cl-border;
     color: @cl-text;
   }
+}
+
+.gradient (@startColor: #eee, @endColor: white) {
+  background-color: @startColor;
+  background: -webkit-gradient(linear, left top, left bottom, from(@startColor), to(@endColor));
+  background: -webkit-linear-gradient(top, @startColor, @endColor);
+  background: -moz-linear-gradient(top, @startColor, @endColor);
+  background: -ms-linear-gradient(top, @startColor, @endColor);
+  background: -o-linear-gradient(top, @startColor, @endColor);
 }
 
 /*******************************************************************************
@@ -456,6 +474,70 @@
   to { transform:rotate(360deg) }
 }
 
+/**
+usage
+
+<div class="container-unread-pulse">
+  <div class="unread-dot"></div>
+  <div class="unread-pulse"></div>
+</div>
+
+**/
+
+
+
+.container-unread-pulse {
+  position: absolute;
+  right:10px;
+}
+
+.unread-dot {
+  border: 5px solid #FC2063;
+  background: transparent;
+  .border-radius(50px);
+  height: 40px;
+  width: 40px;
+  -webkit-animation: pulse 3s ease-out;
+  -moz-animation: pulse 3s ease-out;
+  animation: pulse 3s ease-out;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  z-index: 1;
+  opacity: 0;
+}
+
+.unread-pulse {
+  width: 10px;
+  height: 10px;
+  border: 5px solid #FC2063;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+  background-color: #FC2063;
+  z-index: 10;
+  position: absolute;
+}
+
+@-moz-keyframes pulse {
+  0% { -moz-transform: scale(0); opacity: 0.0; }
+  25% { -moz-transform: scale(0); opacity: 0.1; }
+  50% { -moz-transform: scale(0.1); opacity: 0.3; }
+  75% { -moz-transform: scale(0.5); opacity: 0.5; }
+  100% { -moz-transform: scale(1); opacity: 0.0; }
+}
+
+@-webkit-keyframes pulse {
+  0% { -webkit-transform: scale(0); opacity: 0.0; }
+  25% { -webkit-transform: scale(0); opacity: 0.1; }
+  50% { -webkit-transform: scale(0.1); opacity: 0.3; }
+  75% { -webkit-transform: scale(0.5); opacity: 0.5; }
+  100% { -webkit-transform: scale(1); opacity: 0.0; }
+}
+
 /*******************************************************************************
 
               Generate .ml5 .ml10 ... .ml120 utility classes
@@ -557,4 +639,14 @@
   }
   .hidden-compact { display:none; }
   .visible-compact { display:inline; }
+}
+
+.date-discussion() { margin-top: 25px; margin-bottom: 25px; clear: both; border-top: 0; height: 1px; background-color: #D0D9E6; text-align: center; margin-left: -40px;
+  .moment { position: relative; top: -0.7em; background-color: @cl-background; text-align: center; font-size: 15px; color: #AFBAC8; line-height: 14px; padding: 0 20px; font-weight: normal;
+    &.today, &.yesterday { display:none; }
+  }
+  &.today .moment.today,
+  &.yesterday .moment.yesterday{ display:inline; }
+  &.today .moment.current,
+  &.yesterday .moment.current{ display:none; }
 }

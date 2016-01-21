@@ -320,3 +320,12 @@ Facade.prototype.markOldNotificationsAsDone = function (callback) {
     $set: {done: true}
   }, {multi: true}).exec(callback);
 };
+
+Facade.prototype.retrieveUserNotificationsUndone = function (uid, callback) {
+  NotificationModel.find({
+    user: uid,
+    done: false
+  }).exec(function (err, results) {
+    callback(err, results);
+  });
+};

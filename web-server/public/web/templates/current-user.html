@@ -1,5 +1,6 @@
-<img class="mr5 dc-border-darker curp" src="<%= avatar %>" alt="<%= username %> avatar">
-<span class="mr5 ml5 dc-text-contrast username flex-child">
-    <% if (realname) { print (realname) } else { print ('@'+username) } %>
+<img class="mr5 curp" src="<%= avatar %>" alt="<%= username %> avatar">
+<span class="mr10 ml10 username flex-child">
+    <% if (realname) { print (realname) } else if (username) { print ('@'+username) } %>
 </span>
-<i class="icon icon-chevron-down fs20 dc-text-contrast hover"></i>
+<span class="user-status <%= status %>"></span>
+<i class="icon icon-cog fs16"></i>

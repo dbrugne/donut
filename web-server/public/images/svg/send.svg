@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="23px" height="28px" viewBox="0 0 23 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.4.4 (17249) - http://www.bohemiancoding.com/sketch -->
+    <title>Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="discussion-copy" sketch:type="MSArtboardGroup" transform="translate(-754.000000, -3093.000000)" fill="#FC2063">
+            <g id="Group" sketch:type="MSLayerGroup" transform="translate(17.000000, 3075.000000)">
+                <path d="M745.987502,27.5622223 L745.987502,20.5 L734.5,31.1909002 L745.987502,42.1928069 L745.987502,35.175244 C754.387259,35.2464577 761.279273,38.8047266 762.356695,43.5 C762.427739,42.9310954 762.5,42.3617885 762.5,41.7212679 C762.499594,34.5347234 755.320159,28.6292202 745.987502,27.5622223 L745.987502,27.5622223 Z" id="Shape" sketch:type="MSShapeGroup" transform="translate(748.500000, 32.000000) rotate(-270.000000) translate(-748.500000, -32.000000) "></path>
+            </g>
+        </g>
+    </g>
+</svg>

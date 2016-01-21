@@ -60,20 +60,22 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function prepare (notifications, callback) {
-      // count remaining unviewed notifications
+    function retrieveUnreadCount (notifications, callback) {
       Notifications(that.app).retrieveUserNotificationsUnviewedCount(user.id, function (err, count) {
-        if (err) {
-          return callback(err);
-        }
+        return callback(err, notifications, count);
+      });
+    },
 
-        return callback(null, {
-          notifications: notifications,
-          unviewed: count || 0
-        });
+    function broadcast (notifications, count, callback) {
+      var event = {
+        unread: count || 0,
+        notifications: notifications
+      };
+
+      that.app.globalChannelService.pushMessage('connector', 'notification:viewed', event, 'user:' + user.id, {}, function (err) {
+        return callback(err, event);
       });
     }
-
   ], function (err, event) {
     if (err) {
       return errors.getHandler('notification:viewed', next)(err);

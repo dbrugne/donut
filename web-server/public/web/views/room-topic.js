@@ -30,14 +30,14 @@ var RoomTopicView = Backbone.View.extend({
     this.$el.html(this.template({
       isOwner: this.model.currentUserIsOwner(),
       isOp: this.model.currentUserIsOp(),
-      isAdmin: this.model.currentUserIsAdmin(),
+      isAdmin: app.user.isAdmin(),
       roomId: this.model.get('id')
     }));
 
     this.$('.topic-current, .topic-form').hide();
     var currentTopic = this.model.get('topic');
     if (!currentTopic || currentTopic === '') {
-      if (this.model.currentUserIsOp() || this.model.currentUserIsOwner() || this.model.currentUserIsAdmin()) {
+      if (this.model.currentUserIsOp() || this.model.currentUserIsOwner() || app.user.isAdmin()) {
         this.$('.txt')
           .html(i18next.t('chat.topic.default'))
           .attr('title', i18next.t('chat.topic.default'));
@@ -66,7 +66,7 @@ var RoomTopicView = Backbone.View.extend({
     this.render();
   },
   showForm: function () {
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
+    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !app.user.isAdmin()) {
       return false;
     }
 
@@ -80,7 +80,7 @@ var RoomTopicView = Backbone.View.extend({
     this.$('.topic-current').css('display', 'inline-block');
   },
   sendNewTopic: function (event) {
-    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !this.model.currentUserIsAdmin()) {
+    if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !app.user.isAdmin()) {
       return false;
     }
 

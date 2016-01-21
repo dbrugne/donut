@@ -32,7 +32,6 @@ var DrawerRoomUsersView = Backbone.View.extend({
   initialize: function (options) {
     this.model = options.model;
 
-    this.listenTo(app.client, 'group:ban', this.render);
     this.listenTo(app.client, 'group:deban', this.render);
     this.listenTo(app.client, 'group:op', this.render);
     this.listenTo(app.client, 'group:deop', this.render);
@@ -67,7 +66,7 @@ var DrawerRoomUsersView = Backbone.View.extend({
     return this;
   },
   onResponse: function (data) {
-    this.tableView.render(data.users);
+    this.tableView.render(data.users, data.currentUserInfos);
     this.numberUsers.text(data.count);
     this.$usersLabel.text(i18next.t('chat.users.users', {count: data.count}));
     this.pagination.html(this.paginationTemplate({

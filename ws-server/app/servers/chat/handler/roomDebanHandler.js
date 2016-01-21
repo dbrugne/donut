@@ -4,6 +4,7 @@ var async = require('async');
 var _ = require('underscore');
 var Notifications = require('../../../components/notifications');
 var roomEmitter = require('../../../util/room-emitter');
+var UserModel = require('../../../../../shared/models/user');
 
 var Handler = function (app) {
   this.app = app;
@@ -50,7 +51,7 @@ handler.call = function (data, session, next) {
       return callback(null);
     },
 
-    function persist (callback) {
+    function persistOnRoom (callback) {
       if (!room.bans || !room.bans.length) {
         return callback('not-banned');
       }
@@ -71,12 +72,27 @@ handler.call = function (data, session, next) {
     },
 
     function persistOnUser (callback) {
-      bannedUser.update({
-        $pull: {blocked: room.id}
-      }, function (err) {
-        return callback(err);
+      // if user no more banned but still can't join (private room)
+      if (room.isUserBlocked(bannedUser.id) !== false) {
+        UserModel.update({_id: bannedUser.id, 'blocked.room': room.id},
+          {$set: {'blocked.$.why': 'disallow'}})
+          .exec(function (err) {
+            return callback(err);
+          });
+      } else {
+        bannedUser.removeBlockedRoom(room.id, function (err) {
+          return callback(err);
+        });
       }
-      );
+    },
+
+    function broadcastToBannedUser (callback) {
+      if (room.isUserBlocked(bannedUser.id) !== false) {
+        return callback(null);
+      }
+      that.app.globalChannelService.pushMessage('connector', 'room:unblocked', {room_id: room.id}, 'user:' + bannedUser.id, {}, function (err) {
+        return callback(err);
+      });
     },
 
     function broadcast (callback) {
@@ -91,12 +107,6 @@ handler.call = function (data, session, next) {
       };
 
       roomEmitter(that.app, user, room, 'room:deban', event, callback);
-    },
-
-    function broadcastToBannedUser (sentEvent, callback) {
-      that.app.globalChannelService.pushMessage('connector', 'room:deban', event, 'user:' + bannedUser.id, {}, function (reponse) {
-        callback(null, sentEvent);
-      });
     },
 
     function notification (event, callback) {

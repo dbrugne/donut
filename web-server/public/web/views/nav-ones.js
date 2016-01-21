@@ -9,7 +9,12 @@ module.exports = Backbone.View.extend({
 
   template: require('../templates/nav-ones.html'),
 
-  events: {},
+  events: {
+    'click .more': 'onToggleCollapse',
+    'click .less': 'onToggleCollapse'
+  },
+
+  toggleCount: 4,
 
   initialize: function (options) {
     this.listenTo(app, 'redrawNavigation', this.render);
@@ -17,14 +22,15 @@ module.exports = Backbone.View.extend({
     this.listenTo(app, 'nav-active', this.highlightFocused);
     this.listenTo(app, 'viewedEvent', this.setAsViewed);
     this.listenTo(app.ones, 'change:avatar', this.render);
+
     this.$list = this.$('.list');
   },
   render: function () {
     if (!app.ones.models.length) {
       this.$list.empty();
-      return this.$el.hide();
+      return this.$el.addClass('empty');
     } else {
-      this.$el.show();
+      this.$el.removeClass('empty');
     }
     var data = [];
     _.each(app.ones.models, function (o) {
@@ -33,9 +39,12 @@ module.exports = Backbone.View.extend({
       data.push(json);
     });
 
-    var html = this.template({list: data});
+    var html = this.template({list: data,  toggleCount: this.toggleCount});
     this.$list.html(html);
     return this;
+  },
+  onToggleCollapse: function (event) {
+    $(event.currentTarget).parents('.list').toggleClass('collapsed');
   },
   highlightFocused: function () {
     this.$list.find('.active').each(function (item) {

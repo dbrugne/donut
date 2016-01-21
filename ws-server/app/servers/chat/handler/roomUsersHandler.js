@@ -173,6 +173,7 @@ handler.call = function (data, session, next) {
         var userData = {
           user_id: u._id,
           username: u.username,
+          realname: u.realname,
           avatar: u._avatar(),
           isBanned: room.isBanned(u.id),
           isDevoiced: room.isDevoice(u.id),

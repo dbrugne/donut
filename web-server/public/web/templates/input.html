@@ -1,4 +1,5 @@
 <div class="rollup-container"></div>
+<div class="typing-container"></div>
 <div class="text-container">
     <div class="overlay">
         <span class="overlay-text">
@@ -9,20 +10,17 @@
             <% } %>
         </span>
     </div>
-    <div class="text">
-        <textarea class="editable" maxlength="512" placeholder="<%= t('chat.room-discussion.input-placeholder') %>"></textarea>
+    <div class="text flex-parent center">
         <% if (avatar) { %><img class="avatar" src="<%= avatar %>"><% } %>
-        <div class="actions">
-            <a class="images add-image"><i class="icon icon-camera dc-text"></i></a>
-            <a class="images add-file"><i class="icon icon-file dc-text"></i></a>
-            <a class="images add-smiley"><i class="icon icon-smile-o dc-text"></i></a>
-        </div>
-        <a class="send dc-back dc-border"><img src="/images/input-arrow.svg" alt="send message">
-            <span class="arrow-bottom dc-border"></span>
+        <textarea class="editable" maxlength="512" placeholder="<%= t('chat.room-discussion.input-placeholder') %>"></textarea>
+        <a class="images add-smiley ml20"><i class="icon smileys-icon dc-text"></i></a>
+        <a class="images add-file ml20"><i class="icon files-icon dc-text"></i></a>
+        <a class="images add-image ml20"><i class="icon picture-icon"></i></a>
+        <a class="send">
+            <i class="icon send-icon ml20"></i>
         </a>
     </div>
 </div>
-<div class="typing-container"></div>
 <div class="preview">
-    <a class="add-image"><i class="icon icon-plus"></i></a>
+    <a class="add-image"><i class="icon more-icon"></i></a>
 </div>

@@ -8,8 +8,8 @@ var MessageEditView = require('./message-edit');
 
 module.exports = Backbone.View.extend({
   events: {
-    'click .dropdown-menu .edited': 'onEdit',
-    'dblclick .block.message': 'onEdit',
+    'click .actions .action.edit': 'onEdit',
+    'click .block.message .text': 'onEdit',
     'keydown .form-message-edit': 'editNext'
   },
 
@@ -31,6 +31,8 @@ module.exports = Backbone.View.extend({
     if (!this.isEditable($event)) {
       return;
     }
+
+    $event.addClass('editing');
     this.editMessage($event);
   },
   isEditable: function ($event) {

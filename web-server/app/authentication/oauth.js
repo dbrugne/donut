@@ -70,7 +70,8 @@ router.route('/oauth/get-token-from-credentials').post(function (req, res) {
     return res.json({err: 'no-email-or-password'});
   }
 
-  User.findOne({'local.email': req.body.email}, function (err, user) {
+  var email = req.body.email.toLowerCase();
+  User.findOne({'local.email': email}, function (err, user) {
     if (err) {
       logger.error('internal error: ' + err);
       return res.json({err: 'internal-error'});
@@ -274,15 +275,10 @@ router.route('/oauth/signup').post(function (req, res) {
     },
 
     function email (user, callback) {
-      verifyEmail.sendEmail(user, user.local.email, function (err) {
+      verifyEmail.sendWelcomeEmail(user.local.email, user.id, function (err) {
         if (err) {
-          return logger.error('Unable to sent verify email: ' + err);
+          return logger.error('Unable to sent welcome email: ', err);
         }
-        emailer.welcome(user.local.email, function (err) {
-          if (err) {
-            return logger.error('Unable to sent welcome email: ' + err);
-          }
-        });
       });
       return callback(null, user);
     },
@@ -445,11 +441,18 @@ router.route('/oauth/register-device').post(function (req, res) {
       });
     },
     function removeOnOtherUsers (user, callback) {
-      User.update({
+      var find = {
         _id: {$ne: user._id},
         'devices.parse_object_id': parseObjectId
-      }, {$pull: {devices: {parse_object_id: parseObjectId}}
-      }, {multi: true}
+      };
+      var update = {
+        $pull: {
+          devices: {
+            parse_object_id: parseObjectId
+          }
+        }
+      };
+      User.update(find, update, {multi: true}
       ).exec(function (err) {
         return callback(err, user);
       });

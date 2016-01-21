@@ -104,13 +104,14 @@ emailer.verify = function (to, from, token, callback) {
   sendEmail(to, 'emails/verify.html', {
     token: token,
     username: from.username,
-    title: i18next.t('email.verify.content.title'),
+    title: i18next.t('email.verify.content.title', {username: from.username}),
     subject: i18next.t('email.verify.subject')
   }, callback);
 };
 
-emailer.welcome = function (to, callback) {
+emailer.welcome = function (to, token, callback) {
   sendEmail(to, 'emails/signup.html', {
+    token: token,
     title: i18next.t('email.welcome.content.title'),
     subject: i18next.t('email.welcome.subject'),
     email_heading_action: false

@@ -20,8 +20,6 @@ handler.call = function (data, session, next) {
   var user = session.__currentUser__;
   var room = session.__room__;
 
-  var blocked;
-
   if (!data.room_id && !data.name) {
     return next(null, {code: 400, err: 'params-room-id-name'});
   }
@@ -29,60 +27,81 @@ handler.call = function (data, session, next) {
     return next(null, {code: 404, err: 'room-not-found'});
   }
 
-  blocked = room.isUserBlocked(user.id, data.password);
-  if (blocked === false) {
-    this.join(user, room, next);
-  } else {
-    this.blocked(user, room, blocked, next);
-  }
-};
-
-handler.blocked = function (user, room, blocked, next) {
-  async.waterfall([
-    function (callback) {
-      if (blocked === 'groupbanned') {
-        return callback(null);
-      }
-
-      if (blocked === 'group-members-only') {
-        return callback(blocked);
-      }
-
-      user.update({ $addToSet: {blocked: room.id} }, function (err) {
-        return callback(err);
-      });
-    },
-    function (callback) {
-      roomDataHelper(user, room, callback);
-    }
-  ], function (err, data) {
+  roomDataHelper(user, room, _.bind(function (err, roomData) {
     if (err) {
       return errors.getHandler('room:join', next)(err);
     }
 
-    return next(null, {code: 403, err: blocked, room: data});
-  });
+    // @hack to detect particular case for kicked rejoin
+    if (roomData.blocked_why === 'kick') {
+      roomData.blocked = false;
+      delete roomData.blocked_why;
+    }
+
+    // @hack to detect particular case for password join
+    if (roomData.blocked_why === 'disallow' && room.password && data.password) {
+      var isGoodPassword = room.isGoodPassword(user.id, data.password);
+      if (isGoodPassword === true) {
+        roomData.blocked = false;
+        delete roomData.blocked_why;
+      } else {
+        return next(null, {code: 403, err: isGoodPassword});
+      }
+    }
+
+    if (roomData.blocked === false) {
+      this.join(user, room, roomData, next);
+    } else {
+      this.blocked(user, room, roomData, next);
+    }
+  }, this));
 };
 
-handler.join = function (user, room, next) {
+handler.blocked = function (user, room, roomData, next) {
   var that = this;
   async.waterfall([
 
     function persistUser (callback) {
-      user.update({$pull: {blocked: room._id}}, function (err) {
+      var isUserBlocked = user.isRoomBlocked(room.id);
+      if (!isUserBlocked) {
+        user.addBlockedRoom(room.id, roomData.blocked_why, '', callback);
+      } else {
+        return callback(null);
+      }
+    },
+
+    function sendToUserClients (callback) {
+      that.app.globalChannelService.pushMessage('connector', 'room:join', roomData, 'user:' + user.id, {}, function (err) {
         return callback(err);
       });
+    }
+
+  ], function (err) {
+    if (err) {
+      return errors.getHandler('room:join', next)(err);
+    }
+
+    return next(null);
+  });
+};
+
+handler.join = function (user, room, roomData, next) {
+  var that = this;
+  async.waterfall([
+
+    function persistUser (callback) {
+      user.removeBlockedRoom(room.id, callback);
     },
 
     function persistRoom (callback) {
-      room.update({$pull: {allowed_pending: {user: user._id}}}, function (err) {
+      room.users.addToSet(user._id);
+      room.save(function (err) {
         return callback(err);
       });
     },
 
     function broadcast (callback) {
-      // this step happen BEFORE user/room persistence and room subscription
-      // to avoid noisy notifications
+      // this step happen BEFORE room subscription to avoid noisy notifications
       var event = {
         user_id: user.id,
         username: user.username,
@@ -91,26 +110,6 @@ handler.join = function (user, room, next) {
       };
 
       roomEmitter(that.app, user, room, 'room:in', event, callback);
-    },
-
-    function persistRoom (eventData, callback) {
-      room.users.addToSet(user._id);
-
-      // private room only
-      if (room.mode === 'private') {
-        room.allowed.addToSet(user._id);
-        var sub = _.find(room.allowed_pending, function (s) {
-          return (s.user.id === user.id);
-        });
-        if (sub) {
-          // @source: http://stackoverflow.com/a/23255415
-          room.allowed_pending.id(sub.id).remove();
-        }
-      }
-
-      room.save(function (err) {
-        return callback(err, eventData);
-      });
     },
 
     function joinClients (eventData, callback) {
@@ -139,16 +138,7 @@ handler.join = function (user, room, next) {
       });
     },
 
-    function roomData (eventData, callback) {
-      roomDataHelper(user, room, function (err, roomData) {
-        if (err) {
-          return callback(err);
-        }
-        return callback(null, eventData, roomData);
-      });
-    },
-
-    function sendToUserClients (eventData, roomData, callback) {
+    function sendToUserClients (eventData, callback) {
       that.app.globalChannelService.pushMessage('connector', 'room:join', roomData, 'user:' + user.id, {}, function (err) {
         if (err) {
           return callback(err);

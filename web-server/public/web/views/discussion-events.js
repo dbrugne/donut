@@ -9,7 +9,6 @@ var EventsSpamView = require('./events-spam');
 var EventsEditView = require('./events-edit');
 var windowView = require('./window');
 var EventsEngine = require('../libs/events');
-var currentUser = require('../libs/app').user;
 
 var debug = require('../libs/donut-debug')('donut:discussions');
 
@@ -17,7 +16,7 @@ module.exports = Backbone.View.extend({
   template: require('../templates/events.html'),
 
   events: {
-    'shown.bs.dropdown .actions': 'onMessageMenuShow',
+    'mouseover .has-hover': 'mouseoverMessage',
     'click .mark-as-viewed': 'onMarkAsViewed',
     'click .jumpto': 'onScrollToEvent'
   },
@@ -33,18 +32,20 @@ module.exports = Backbone.View.extend({
 
   loading: false,
 
+  timeoutHover: null,
+
   scrollWasOnBottom: true, // ... before unfocus (scroll position is not
                            // available when discussion is hidden (default:
                            // true, for first focus)
 
   initialize: function () {
     this.listenTo(app.client, 'preferences:update', _.bind(function () {
-      if (currentUser.discussionMode() !== this.chatmode) {
+      if (app.user.discussionMode() !== this.chatmode) {
         this.$realtime.toggleClass('compact');
-        this.chatmode = currentUser.discussionMode();
+        this.chatmode = app.user.discussionMode();
       }
     }, this));
-    this.chatmode = currentUser.discussionMode();
+    this.chatmode = app.user.discussionMode();
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(this.model, 'windowRefocused', _.bind(function () {
       debug('windowRefocused', this.model.get('identifier'));
@@ -57,7 +58,7 @@ module.exports = Backbone.View.extend({
 
     this.engine = new EventsEngine({
       model: this.model,
-      currentUserId: currentUser.get('user_id'),
+      currentUserId: app.user.get('user_id'),
       el: this.$realtime
     });
     this.eventsHistoryView = new EventsHistoryView({
@@ -289,13 +290,15 @@ module.exports = Backbone.View.extend({
     if (!target.length) {
       return;
     }
-    if (currentUser.get('user_id') === target.data('userId')) {
+    if (app.user.get('user_id') === target.data('userId')) {
       return;
     }
 
+    var _time = target.data('time');
+
     // topbar
     this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({
-      time: target.data('time'),
+      time: _time,
       date: date.dayMonthTime(target.data('time')),
       id: id
     }));
@@ -303,8 +306,11 @@ module.exports = Backbone.View.extend({
     // look for a previous new message separator, if not, insert one after "event"
     if (this.$('.events .block.unviewed').length === 0) {
       var tpl = require('../templates/event/block-unviewed.html');
+      if (target.prev().hasClass('user')) {
+        target = target.prev();
+      }
       $(tpl({
-        time: target.data('time'),
+        time: _time,
         id: id
       })).insertBefore(target);
     }
@@ -340,32 +346,12 @@ module.exports = Backbone.View.extend({
       this.scrollDown();
     }
   },
-  onMessageMenuShow: function (event) {
-    var $event = $(event.currentTarget).closest('.block.message');
-    var userId = $event.closest('[data-user-id]').data('userId');
-    var isMessageOwner = (userId && this.model.get('owner_id') === userId);
-
-    var isEditable = this.eventsEditView.isEditable($event);
-
-    if (this.model.get('type') === 'room') {
-      var isOp = this.model.currentUserIsOp();
-      var isOwner = this.model.currentUserIsOwner();
-      var isAdmin = this.model.currentUserIsAdmin();
+  mouseoverMessage: function (event) {
+    var $event = $(event.currentTarget);
+    if (this.eventsEditView.isEditable($event)) {
+      $event.addClass('editable');
+    } else {
+      $event.removeClass('editable');
     }
-
-    if (((!isOwner && !isAdmin && !isOp) || (isOp && isMessageOwner)) && (!isEditable)) {
-      $(event.currentTarget).find('.dropdown-menu').dropdown('toggle');
-      return;
-    }
-    var html = require('../templates/events-dropdown.html')({
-      data: {
-        isOp: isOp,
-        isOwner: isOwner,
-        isAdmin: isAdmin,
-        isMessageOwner: isMessageOwner,
-        isEditable: isEditable
-      }
-    });
-    $(event.currentTarget).find('.dropdown-menu').html(html);
   }
 });

@@ -4,6 +4,7 @@ var Backbone = require('backbone');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
 var i18next = require('i18next-client');
+var currentUser = require('../libs/app').user;
 
 var NotificationsView = Backbone.View.extend({
   id: 'notifications',
@@ -13,11 +14,13 @@ var NotificationsView = Backbone.View.extend({
   events: {},
 
   initialize: function () {
-    this.listenTo(app.client, 'notification:new', this.onNewNotification);
-    this.listenTo(app, 'notification:decreaseCount', this.decreaseCount);
-    this.listenTo(app, 'notification:readAll', this.readAll);
     this.listenTo(app, 'viewedEvent', this.updateHandle);
     this.listenTo(app, 'unviewedEvent', this.updateHandle);
+
+    this.listenTo(app.client, 'notification:new', this.onNewNotification);
+    this.listenTo(currentUser, 'change:unreadNotifications', _.bind(function () {
+      this.updateCount(currentUser.getUnreadNotifications());
+    }, this));
 
     this.$badge = $('#notifications').find('.unread-count');
     this.$badgeHover = $('.hover-menu-notifications');
@@ -27,7 +30,6 @@ var NotificationsView = Backbone.View.extend({
   },
   // A new Notification is pushed from server
   onNewNotification: function (data) {
-    this.increaseCount(1);
     this._createDesktopNotify(data);
   },
   _createDesktopNotify: function (data) {
@@ -68,30 +70,16 @@ var NotificationsView = Backbone.View.extend({
     }
   },
   updateHandle: function () {
-    var unviewed = 0;
-    _.each(app.rooms.models, function (room) {
-      if (room.get('unviewed') === true) {
-        unviewed++;
-      }
-    });
-    _.each(app.ones.models, function (ones) {
-      if (ones.get('unviewed') === true) {
-        unviewed++;
-      }
-    });
+    // @todo yls : should not be trigger on 'welcome'. View should be rendered on initial render with stable state (e.g.: no unviewed) and on unviewed count change should update dynamically
+    var unviewed = app.getUnviewed();
 
-    this.$badgeHover.text('>');
     if (unviewed > 0) {
+      this.$badgeHover.removeClass('empty');
       this.$badgeHover.text(unviewed);
+    } else {
+      this.$badgeHover.addClass('empty');
+      this.$badgeHover.text('');
     }
-  },
-  increaseCount: function (val) {
-    this.updateCount(this.unread + val);
-  },
-  decreaseCount: function (val) {
-    this.updateCount((this.unread - val) >= 0
-      ? (this.unread - val)
-      : 0);
   },
   readAll: function () {
     this.updateCount(0);

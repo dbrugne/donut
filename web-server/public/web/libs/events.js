@@ -11,18 +11,17 @@ var templates = {
   'room:out': require('../templates/event/status.html'),
   'room:in': require('../templates/event/status.html'),
   'room:message': require('../templates/event/message.html'),
-  'room:message:cant:respond': require('../templates/event/message-cant-respond.html'),
   'user:message': require('../templates/event/message.html'),
   'room:topic': require('../templates/event/room-topic.html'),
   'room:deop': require('../templates/event/promote.html'),
   'room:kick': require('../templates/event/promote.html'),
   'room:ban': require('../templates/event/promote.html'),
+  'room:disallow': require('../templates/event/promote.html'),
   'room:deban': require('../templates/event/promote.html'),
   'room:voice': require('../templates/event/promote.html'),
   'room:devoice': require('../templates/event/promote.html'),
   'room:op': require('../templates/event/promote.html'),
   'room:groupban': require('../templates/event/group-promote.html'),
-  'room:groupdisallow': require('../templates/event/group-promote.html'),
   'user:ban': require('../templates/event/user-promote.html'),
   'user:deban': require('../templates/event/user-promote.html')
 };
@@ -44,7 +43,7 @@ exports.prototype.reset = function () {
 };
 
 exports.prototype.insertTop = function (events) {
-  if (events.length === 0) {
+  if (!events || !events.length) {
     return;
   }
   var html = '';
@@ -96,7 +95,7 @@ exports.prototype.insertTop = function (events) {
 };
 
 exports.prototype.insertBottom = function (events) {
-  if (events.length === 0) {
+  if (!events.length) {
     return;
   }
 
@@ -105,7 +104,7 @@ exports.prototype.insertBottom = function (events) {
     var event = this._data(e.type, e.data);
 
     var id = event.data.id;
-    if (this.$el.find('#' + id).length && e.type !== 'room:message:cant:respond') {
+    if (this.$el.find('#' + id).length) {
       return console.warn('history and realtime event colision', id);
     }
 
@@ -150,7 +149,7 @@ exports.prototype.block = function (event, previous) {
   if (!previous) {
     return true;
   }
-  if (messagesTypes.indexOf(previous.type) === -1 && previous.type !== 'room:message:cant:respond') {
+  if (messagesTypes.indexOf(previous.type) === -1) {
     return true;
   }
   if (!date.isSameDay(event.data.time, previous.data.time)) {
@@ -237,7 +236,7 @@ exports.prototype._data = function (type, data) {
     _.each(data.files, function (f) {
       if (f.type !== 'raw') {
         f.href = common.cloudinary.prepare(f.url, 1500, 'limit');
-        f.thumbnail = common.cloudinary.prepare(f.url, 100, 'fill');
+        f.thumbnail = common.cloudinary.prepare(f.url, 135, 'fill');
       }
       f.extension = f.url.match(/[^.]*$/);
       files.push(f);

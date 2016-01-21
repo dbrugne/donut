@@ -1,5 +1,5 @@
 var _ = require('underscore');
-var mongoose = require('../io/mongoose');
+var mongoose = require('../io/mongoose')();
 var common = require('@dbrugne/donut-common/server');
 var cloudinary = require('../util/cloudinary');
 

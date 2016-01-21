@@ -1,10 +1,10 @@
 'use strict';
 var errors = require('../../../util/errors');
 var async = require('async');
-var _ = require('underscore');
 var Notifications = require('../../../components/notifications');
 var roomEmitter = require('../../../util/room-emitter');
 var inputUtil = require('../../../util/input');
+var unsubscriber = require('../../../util/unsubscriber');
 
 var Handler = function (app) {
   this.app = app;
@@ -23,9 +23,7 @@ handler.call = function (data, session, next) {
 
   var that = this;
 
-  var event = {};
-
-  var reason = (data.reason) ? inputUtil.filter(data.reason, 512) : false;
+  var reason = (data.reason) ? inputUtil.filter(data.reason, 512) : '';
 
   async.waterfall([
 
@@ -64,91 +62,59 @@ handler.call = function (data, session, next) {
     function persistOnRoom (callback) {
       var ban = {
         user: bannedUser._id,
-        banned_at: new Date()
+        banned_at: new Date(),
+        reason: reason
       };
-      if (reason) {
-        ban.reason = reason;
-      }
-
       room.update({
         $addToSet: {bans: ban},
-        $pull: {users: bannedUser._id, op: bannedUser._id, allowed: bannedUser._id}
+        $pull: {
+          users: bannedUser._id,
+          op: bannedUser._id,
+          allowed: bannedUser._id,
+          devoices: {user: bannedUser._id},
+          allowed_pending: {user: bannedUser._id}
+        }
       }, function (err) {
-        return callback(err, ban);
+        return callback(err);
       });
     },
 
-    function persistOnUser (banEvent, callback) {
-      bannedUser.update({
-        $addToSet: {blocked: room.id}
-      }, function (err) {
-        return callback(err, banEvent);
+    function persistOnUser (callback) {
+      if (!room.isIn(bannedUser.id)) {
+        return callback(null);
+      }
+      bannedUser.addBlockedRoom(room.id, 'ban', reason, function (err) {
+        return callback(err);
       });
     },
 
-    function broadcast (banEvent, callback) {
-      event = {
+    function unsubscribeClients (callback) {
+      unsubscriber(that.app, bannedUser.id, room.id, callback);
+    },
+
+    function broadcastToUser (callback) {
+      // @todo optimise by allowing room:blocked with room_ids array of _id to block
+      that.app.globalChannelService.pushMessage('connector', 'room:blocked', {room_id: room.id, why: 'ban', reason: reason}, 'user:' + bannedUser.id, {}, function (err) {
+        return callback(err);
+      });
+    },
+
+    function broadcastToRoom (callback) {
+      var event = {
         by_user_id: user.id,
         by_username: user.username,
         by_avatar: user._avatar(),
         user_id: bannedUser.id,
         username: bannedUser.username,
         avatar: bannedUser._avatar(),
-        banned_at: banEvent.banned_at
+        reason: reason
       };
-
-      if (reason) {
-        event.reason = reason;
-      }
 
       roomEmitter(that.app, user, room, 'room:ban', event, callback);
     },
 
-    function broadcastToBannedUser (sentEvent, callback) {
-      that.app.globalChannelService.pushMessage('connector', 'room:ban', event, 'user:' + bannedUser.id, {}, function (reponse) {
-        callback(null, sentEvent);
-      });
-    },
-
-    function unsubscribeClients (event, callback) {
-      // /!\ .unsubscribeClients come after .historizeAndEmit to allow banned
-      // user to receive message
-
-      // search for all the user sessions (any frontends)
-      that.app.statusService.getSidsByUid(bannedUser.id, function (err, sids) {
-        if (err) {
-          return callback('Error while retrieving user status: ' + err);
-        }
-
-        if (!sids || sids.length < 1) {
-          return callback(null, event); // the targeted user could be offline
-                                        // at this time
-        }
-
-        var parallels = [];
-        _.each(sids, function (sid) {
-          parallels.push(function (fn) {
-            that.app.globalChannelService.leave(room.id, bannedUser.id, sid, function (err) {
-              if (err) {
-                return fn(sid + ': ' + err);
-              }
-
-              return fn(null);
-            });
-          });
-        });
-        async.parallel(parallels, function (err, results) {
-          if (err) {
-            return callback('Error while unsubscribing user ' + bannedUser.id + ' from ' + room.name + ': ' + err);
-          }
-
-          return callback(null, event);
-        });
-      });
-    },
-
-    function notification (event, callback) {
-      Notifications(that.app).getType('roomban').create(bannedUser, room, event.id, callback);
+    function notification (sentEvent, callback) {
+      Notifications(that.app).getType('roomban').create(bannedUser, room, sentEvent.id, callback);
     }
 
   ], function (err) {

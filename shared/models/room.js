@@ -1,6 +1,6 @@
 var logger = require('../util/logger').getLogger('models', __filename);
 var _ = require('underscore');
-var mongoose = require('../io/mongoose');
+var mongoose = require('../io/mongoose')();
 var common = require('@dbrugne/donut-common/server');
 var cloudinary = require('../util/cloudinary');
 var GroupModel = require('./group');
@@ -373,7 +373,11 @@ roomSchema.methods.isUserBlocked = function (userId, password) {
     return 'group-members-only';
   }
   if (this.password && password) {
-    return (this.isGoodPassword(userId, password) !== true);
+    var response;
+    if ((response = this.isGoodPassword(userId, password)) !== true) {
+      return response;
+    }
+    return false;
   }
 
   return 'notallowed';
@@ -411,9 +415,9 @@ roomSchema.methods.getIdsByType = function (type) {
     _.each(this.op, function (u) {
       ids.push(u.toString());
     });
-    if (this.owner._id) {
+    if (this.owner && this.owner._id) {
       ids.push(this.owner.id);
-    } else {
+    } else if (this.owner) {
       ids.push(this.owner.toString());
     }
   } else if (type === 'allowed') {
