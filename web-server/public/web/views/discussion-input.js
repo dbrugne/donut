@@ -20,7 +20,7 @@ var DiscussionInputView = Backbone.View.extend({
     'keyup .editable': 'onKeyUp',
     'keydown .editable': 'onKeyDown',
     'click .send': 'onSubmitMessage',
-    'click .editable': 'onInputClicked'
+    'dblclick .editable': 'onInputClicked'
   },
 
   initialize: function (options) {

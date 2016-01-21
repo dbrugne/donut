@@ -1134,10 +1134,17 @@
     "welcome": {
       "subject": "Bienvenue ! Validez votre compte",
       "content": {
-        "title": "Bienvenue !",
-        "infos": "Validez votre compte",
-        "disclaimer": "Félicitations, il ne vous reste plus qu'à cliquer sur ce magnifique bouton rose !",
+        "title": "Bienvenue @__username__",
+        "disclaimer": "Félicitations @__username__, il ne vous reste plus qu'à cliquer sur ce magnifique bouton rose !",
         "button": "Valider mon compte"
+      }
+    },
+    "welcomeFacebook": {
+      "subject": "Bienvenue sur DONUT",
+      "content": {
+        "title": "Bienvenue",
+        "disclaimer": "Félicitations, votre compte est créé, il ne vous reste plus qu'à venir profiter de DONUT",
+        "button": "Connexion"
       }
     },
     "forgot": {
@@ -1150,12 +1157,10 @@
       }
     },
     "verify": {
-      "subject": "Validez votre compte",
+      "subject": "Validez votre e-mail sur DONUT",
       "content": {
-        "title": "Bienvenue @__username__ !",
-        "infos": "Validez votre compte",
-        "disclaimer": "Pour lier votre e-mail au compte DONUT @__username__, il ne vous reste qu'à cliquer sur ce magnifique bouton rose:",
-        "button": "Valider mon compte"
+        "title": "Bonjour @__username__, validez votre e-mail.",
+        "button": "Valider mon e-mail"
       }
     },
     "passwordchanged": {
