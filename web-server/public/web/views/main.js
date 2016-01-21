@@ -7,7 +7,6 @@ var debug = require('../libs/donut-debug')('donut:main');
 
 var i18next = require('i18next-client');
 var ConnectionModalView = require('./modal-connection');
-// var WelcomeModalView = require('./modal-welcome');
 var CurrentUserView = require('./current-user');
 var AlertView = require('./alert');
 var DrawerView = require('./drawer');
@@ -138,14 +137,6 @@ var MainView = Backbone.View.extend({
     return this.openModalChooseUsername();
   },
   onReady: function () {
-    // if (this.firstConnection) { // show if true or if undefined
-    //   if (app.user.shouldDisplayWelcome()) {
-    //     this.welcomeView.render(data);
-    //     this.welcomeView.show();
-    //   }
-    // }
-
-    this.notificationsView.updateHandle();
     this.connectionView.hide();
   },
   onAdminMessage: function (data) {

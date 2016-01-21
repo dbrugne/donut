@@ -4,7 +4,6 @@ var Backbone = require('backbone');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
 var i18next = require('i18next-client');
-var currentUser = require('../libs/app').user;
 
 var NotificationsView = Backbone.View.extend({
   id: 'notifications',
@@ -18,8 +17,8 @@ var NotificationsView = Backbone.View.extend({
     this.listenTo(app, 'unviewedEvent', this.updateHandle);
 
     this.listenTo(app.client, 'notification:new', this.onNewNotification);
-    this.listenTo(currentUser, 'change:unreadNotifications', _.bind(function () {
-      this.updateCount(currentUser.getUnreadNotifications());
+    this.listenTo(app.user, 'change:unviewedNotification', _.bind(function (model, value) {
+      this.updateCount(value);
     }, this));
 
     this.$badge = $('#notifications').find('.unread-count');
@@ -70,10 +69,9 @@ var NotificationsView = Backbone.View.extend({
     }
   },
   updateHandle: function () {
-    // @todo yls : should not be trigger on 'welcome'. View should be rendered on initial render with stable state (e.g.: no unviewed) and on unviewed count change should update dynamically
-    var unviewed = app.getUnviewed();
+    var unviewed = app.user.get('unviewedDiscussion');
 
-    if (unviewed > 0) {
+    if (unviewed) {
       this.$badgeHover.removeClass('empty');
       this.$badgeHover.text(unviewed);
     } else {

@@ -19,8 +19,6 @@ var DrawerUserNotificationsView = Backbone.View.extend({
 
   timeToMarkAsRead: 1500, // mark notifications as read after n seconds
 
-  unread: 0,
-
   events: {
     'click .actions .read-more': 'onReadMore',
     'click .action-tag-as-read': 'onTagAsRead',
@@ -35,9 +33,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
 
     this.listenTo(app.client, 'notification:new', this.onNewNotification);
     this.listenTo(app.client, 'notification:done', this.onDoneNotification);
-    this.listenTo(currentUser, 'change:unreadNotifications', _.bind(function () {
-      this.setUnreadCount(currentUser.getUnreadNotifications());
-    }, this));
+    this.listenTo(currentUser, 'change:unviewedNotification', this.setUnreadCount);
 
     this.$badge = $('#notifications').find('.unread-count').first();
 
@@ -61,8 +57,6 @@ var DrawerUserNotificationsView = Backbone.View.extend({
         html += this.renderNotification(element);
       }, this));
 
-      this.setUnreadCount(data.unread);
-
       this.$menu.html(this.$menu.html() + html);
 
       this.markHasRead = setTimeout(_.bind(function () {
@@ -77,15 +71,12 @@ var DrawerUserNotificationsView = Backbone.View.extend({
     return this;
   },
   setUnreadCount: function (count) {
-    this.unread = count;
-
-    if (this.unread > 0) {
-      this.$count.html(this.unread); // update count in drawer
-      this.$unreadCount.removeClass('empty');
-      this.$unreadCount.addClass('full');
+    var unviewed = app.user.get('unviewedNotification');
+    if (unviewed) {
+      this.$count.html(unviewed);
+      this.$unreadCount.removeClass('empty').addClass('full');
     } else {
-      this.$unreadCount.addClass('empty');
-      this.$unreadCount.removeClass('full');
+      this.$unreadCount.addClass('empty').removeClass('full');
     }
   },
   // A new Notification is pushed from server
@@ -169,10 +160,10 @@ var DrawerUserNotificationsView = Backbone.View.extend({
     });
   },
   clearNotifications: function () {
-    var unreadNotifications = this.$menu.find('.message.unread');
+    var _targets = this.$menu.find('.message.unread');
     var that = this;
     var ids = [];
-    _.each(unreadNotifications, function (elt) {
+    _.each(_targets, function (elt) {
       ids.push(elt.dataset.notificationId);
     });
 
@@ -181,9 +172,9 @@ var DrawerUserNotificationsView = Backbone.View.extend({
       return;
     }
 
-    app.client.notificationViewed(ids, false, _.bind(function (data) {
+    app.client.notificationViewed(ids, false, _.bind(function () {
       // For each notification in the list, tag them as read
-      _.each(unreadNotifications, function (notification) {
+      _.each(_targets, function (notification) {
         notification.classList.remove('unread');
       });
 
@@ -195,7 +186,6 @@ var DrawerUserNotificationsView = Backbone.View.extend({
     event.stopPropagation(); // Cancel dropdown close behaviour
     this.$readMore.addClass('hidden');
     this.$loader.removeClass('hidden');
-return;
     app.client.notificationRead(null, this.lastNotifDisplayedTime(), 10, _.bind(function (data) {
       this.isThereMoreNotifications = data.more;
       var previousContent = this.$menu.html();
@@ -241,7 +231,7 @@ return;
   },
   onTagAsRead: function (event) {
     // Ask server to set notifications as viewed, and wait for response to set them likewise
-    app.client.notificationViewed([], true, _.bind(function (data) {
+    app.client.notificationViewed([], true, _.bind(function () {
       // For each notification in the list, tag them as read
       _.each(this.$menu.find('.message.unread'), function (notification) {
         notification.classList.remove('unread');
@@ -251,7 +241,8 @@ return;
   onTagAsDone: function (event) {
     event.preventDefault();
     var message = $(event.currentTarget).parents('.message');
-    app.client.notificationDone([message.data('notification-id')], false);
+    var list = [message.data('notification-id')];
+    app.client.notificationDone(list, false);
     return false;
   },
   // some notifications are tagged as done on the server
