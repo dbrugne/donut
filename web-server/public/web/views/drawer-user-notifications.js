@@ -9,6 +9,7 @@ var currentUser = require('../libs/app').user;
 
 var DrawerUserNotificationsView = Backbone.View.extend({
   template: require('../templates/drawer-user-notifications.html'),
+  templateSpinner: require('../templates/spinner.html'),
 
   id: 'user-notifications',
 
@@ -44,7 +45,8 @@ var DrawerUserNotificationsView = Backbone.View.extend({
 
     app.client.notificationRead(null, null, 10, _.bind(function (data) {
       this.isThereMoreNotifications = data.more;
-      this.$el.html(this.template({user_id: this.userId}));
+      var spinner = this.templateSpinner({});
+      this.$el.html(this.template({user_id: this.userId, spinner: spinner}));
 
       this.$unreadCount = this.$('.unread-count');
       this.$count = this.$unreadCount.find('.nb');
@@ -193,7 +195,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
     event.stopPropagation(); // Cancel dropdown close behaviour
     this.$readMore.addClass('hidden');
     this.$loader.removeClass('hidden');
-
+return;
     app.client.notificationRead(null, this.lastNotifDisplayedTime(), 10, _.bind(function (data) {
       this.isThereMoreNotifications = data.more;
       var previousContent = this.$menu.html();

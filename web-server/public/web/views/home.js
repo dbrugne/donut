@@ -7,6 +7,7 @@ var UsersView = require('./home-users');
 
 var HomeView = Backbone.View.extend({
   el: $('#home'),
+  templateSpinner: require('../templates/spinner.html'),
 
   empty: true,
 
@@ -15,6 +16,9 @@ var HomeView = Backbone.View.extend({
 
   initialize: function (options) {
     this.render();
+
+    var spinner = this.templateSpinner({});
+    this.$('.spinner-content').html(spinner);
     this.cardsView = new CardsView({
       el: this.$('.cards')
     });
