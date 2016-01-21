@@ -38,6 +38,17 @@ handler.call = function (data, session, next) {
       delete roomData.blocked_why;
     }
 
+    // @hack to detect particular case for password join
+    if (roomData.blocked_why === 'disallow' && room.password && data.password) {
+      var isGoodPassword = room.isGoodPassword(user.id, data.password);
+      if (isGoodPassword === true) {
+        roomData.blocked = false;
+        delete roomData.blocked_why;
+      } else {
+        return next(null, {code: 403, err: isGoodPassword});
+      }
+    }
+
     if (roomData.blocked === false) {
       this.join(user, room, roomData, next);
     } else {
