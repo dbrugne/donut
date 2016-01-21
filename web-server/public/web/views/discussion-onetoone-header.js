@@ -3,27 +3,29 @@ var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
 var EventsView = require('./discussion-events');
 var InputView = require('./discussion-input');
-var OneHeaderView = require('./discussion-onetoone-header');
 var date = require('../libs/date');
 
 var OneToOnePanelView = Backbone.View.extend({
   tagName: 'div',
 
-  className: 'discussion',
+  className: 'discussion-header-onetoone',
 
-  template: require('../templates/discussion-onetoone.html'),
+  template: require('../templates/discussion-onetoone-header.html'),
+
+  events: {
+    'click .ban-user': 'banUser',
+    'click .deban-user': 'debanUser'
+  },
 
   initialize: function () {
-    this.listenTo(this.model, 'change:focused', this.onFocusChange);
-    this.listenTo(this.model, 'change:poster', this.onPoster);
-    this.listenTo(this.model, 'change:unviewed', this.onMarkAsViewed);
+    this.listenTo(this.model, 'change:avatar', this.render);
+    this.listenTo(this.model, 'change:realname', this.render);
+    this.listenTo(this.model, 'change:location', this.render);
+    this.listenTo(this.model, 'change:status', this.render);
+    this.listenTo(this.model, 'change:banned', this.render);
 
     this.render();
 
-    this.headerView = new OneHeaderView({
-      el: this.$el.find('.header'),
-      model: this.model
-    });
     this.eventsView = new EventsView({
       el: this.$el,
       model: this.model
@@ -34,7 +36,18 @@ var OneToOnePanelView = Backbone.View.extend({
     });
   },
   render: function () {
-    var html = this.template(this.model.toJSON());
+    var data = this.model.toJSON();
+
+    // avatar
+    data.avatar = common.cloudinary.prepare(data.avatar, 100);
+    data.onlined = null;
+    if (this.model.get('status') !== 'online' && this.model.get('onlined')) {
+      data.onlined = this.model.get('onlined');
+      data.fromnow = date.fromnow(this.model.get('onlined'));
+    }
+
+    // render
+    var html = this.template(data);
     this.$el.attr('data-identifier', this.model.get('identifier'));
     this.$el.html(html);
 
@@ -43,7 +56,6 @@ var OneToOnePanelView = Backbone.View.extend({
   removeView: function (model) {
     this.eventsView._remove();
     this.inputView._remove();
-    this.headerView._remove();
     this.remove();
   },
   onFocusChange: function () {
@@ -56,19 +68,8 @@ var OneToOnePanelView = Backbone.View.extend({
       this.$el.hide();
     }
   },
-  onPoster: function (model, url, options) {
-    this.$('div.side').css('background-image', 'url(' + url + ')');
-    this.$('div.side').removeClass('poster-empty');
-    if (url === '') {
-      this.$('div.side').addClass('poster-empty');
-    }
-  },
-  onMarkAsViewed: function (data) {
-    if (data.get('unviewed') === true) {
-      return;
-    }
-
-    this.eventsView.hideUnviewedBlocks();
+  _remove: function () {
+    this.remove();
   }
 });
 
