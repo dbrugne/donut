@@ -51,7 +51,7 @@ var userSchema = mongoose.Schema({
   unviewed: [{
     room: {type: mongoose.Schema.ObjectId, ref: 'Room'},
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
-    event: {type: mongoose.Schema.ObjectId} // not use actually, first unviewed event, could be use to replace current "heavy" viewed management
+    event: {type: mongoose.Schema.ObjectId}
   }],
   bans: [{
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
@@ -427,6 +427,27 @@ userSchema.methods.resetUnviewedOne = function (userId, fn) {
     $pull: {unviewed: {user: userId}}
   }).exec(function (err) {
     fn(err); // there is a bug that cause a timeout when i call directly fn() without warping in a local function (!!!)
+  });
+};
+userSchema.statics.unviewedCount = function (userId, fn) {
+  var _id;
+  if (_.isString(userId)) {
+    _id = mongoose.Types.ObjectId(userId);
+  } else {
+    _id = userId;
+  }
+  this.aggregate([
+    {$match: {_id: _id}},
+    {$project: {unviewed: {$size: '$unviewed'}}}
+  ]).exec(function (err, results) {
+    if (err) {
+      return fn(err);
+    }
+    if (!results || !results.length || !results[0]) {
+      return fn(null, 0);
+    }
+
+    return fn(null, results[0].unviewed);
   });
 };
 
