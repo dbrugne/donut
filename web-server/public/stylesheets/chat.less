@@ -680,13 +680,15 @@
             } // #chat #center .discussion .content .header.user .status-block
           } // #chat #center .discussion .content .header.user
         }
-        .date-ctn { margin-top: 10px; padding: 0 12px 10px 0; position: absolute; width: 100%; background-color: white; z-index: 2; min-height: 22px; padding-left:20px;
-          .unviewed-top { .border-radius(3px); text-transform: uppercase; background-color: @cl-first; padding: 3px 20px; font-size: 9px; color: #FFFFFF; letter-spacing: 0.5px; line-height: 21px;
+        .date-ctn { position: absolute; width: 100%; background-color: white; z-index: 2; min-height: 22px; padding-left:20px;
+          .unviewed-top { .border-radius(3px); text-transform: uppercase; background-color: @cl-first; padding: 3px 20px; font-size: 9px; color: #FFFFFF; letter-spacing: 0.5px; line-height: 21px; margin-right: 20px;
             i { font-size: 14px; }
           }
-          .date { .date-discussion; }
+          .date { .date-discussion;
+            margin-top: 15px; margin-bottom: 15px; margin-left: -20px;
+          }
         }
-        .events { overflow-y: scroll; overflow-x: hidden; .flex(1); .scrollbar-grey; position: relative; margin-top: 30px; margin-bottom: 20px; padding-left: 20px;
+        .events { overflow-y: scroll; overflow-x: hidden; .flex(1); .scrollbar-grey; position: relative; margin-top: 30px; padding-left: 20px;
           .scrollable { margin-right: 5px;
             .scrollable-content { position: relative;
               hr { border-color: @cl-subtext5; }
@@ -920,7 +922,7 @@
             } // // #chat #center .discussion .content .events .scrollable .scrollable-content
           } // #chat #center .discussion .content .events .scrollable
         } // #chat #center .discussion .content .events
-        .input { padding-top: 15px; margin-right: 25px; padding-bottom: 10px; position: relative; margin-left: 20px;
+        .input { margin-right: 25px; padding-bottom: 10px; position: relative; margin-left: 20px;
           .add-image, .add-file, .add-smiley {
             cursor: pointer;
           }
@@ -928,8 +930,8 @@
             .overlay { display:none; background-color: #d0d9e6; height: 100%; width: 100%; position: absolute; top: 2px; cursor: pointer; z-index: 2;
               .overlay-text { color: white; width: 100%; text-align: center; cursor: pointer; font-size: 1.8rem;}
             }
-            .text { position: relative; padding: 15px 20px 5px 65px; border-top: 2px solid #FC2063; background-color: #fff;
-              .avatar { width: 35px; height: 35px; .border-radius(3px); margin-right: 10px; position:absolute; left: 20px; }
+            .text { position: relative; padding: 15px 20px 5px 70px; border-top: 2px solid #FC2063; background-color: #fff;
+              .avatar { width: 35px; height: 35px; .border-radius(3px); margin-right: 10px; position:absolute; left: 25px; }
               .actions {
                 a { display: inline-block; margin-right: 3px; font-size: 1.5rem; }
                 .images.add-image { margin-top: 5px; }
@@ -949,8 +951,8 @@
           &.inactive .text-container {
             .overlay, .overlay::after { .display-flex; .align-items(center); }
           }
-          .typing-container { position: absolute; display: block; top: 15px; left: 5px; .transition(top 300ms);
-            &.visible { top: -5px; }
+          .typing-container { position: absolute; display: block; bottom: 25px; left: 22px; .transition(bottom 300ms); color: #afbac8; font-size: 13px;
+            &.visible { bottom: 3px; }
           }
           .preview { margin-left: 70px; display: none;
             .image { background-color: #e2e8f0; display: inline-block; vertical-align: top; width: 80px; height: 80px; margin: 5px; padding-top: 19px; text-align: center;
