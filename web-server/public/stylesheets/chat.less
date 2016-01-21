@@ -680,6 +680,14 @@
             } // #chat #center .discussion .content .header.user .status-block
           } // #chat #center .discussion .content .header.user
         }
+        .date-ctn { margin-top: 10px; padding: 0 12px 10px 0; position: absolute; width: 100%; background-color: white; z-index: 2; min-height: 22px; padding-left:20px;
+          .unviewed { margin: 25px 10px 25px 5px; clear: both; border-top: 0; height: 1px; background-color: @cl-first; text-align: center;
+            .title { position: absolute; right:0; height:20px; top: -0.9rem; background-color: @cl-background; text-transform: uppercase; font-size: 1rem; color: @cl-first; padding: 0 10px; font-weight:700; }
+          }
+          .unviewed-top { .border-radius(3px); text-transform: uppercase; background-color: @cl-first; padding: 3px 20px; font-size: 9px; color: #FFFFFF; letter-spacing: 0.5px; line-height: 21px;
+            i { font-size: 14px; }
+          }
+        }
         .events { overflow-y: scroll; overflow-x: hidden; .flex(1); .scrollbar-grey; position: relative; margin-top: 30px; margin-bottom: 20px; padding-left: 20px;
           .scrollable { margin-right: 5px;
             .scrollable-content { position: relative;
@@ -874,16 +882,6 @@
                     &.today .moment.current,
                     &.yesterday .moment.current{ display:none; }
                   }
-
-                  // .block.unviewed
-                  &.unviewed { margin: 25px 10px 25px 5px; clear: both; border-top: 0; height: 1px; background-color: @cl-first; text-align: center;
-                    .title { position: absolute; right:0; height:20px; top: -0.9rem; background-color: @cl-background; text-transform: uppercase; font-size: 1rem; color: @cl-first; padding: 0 10px; font-weight:700; }
-                  }
-
-                  // .block.unviewed-top
-                  &.unviewed-top { .border-radius(3px); text-transform: uppercase; background-color: @cl-first; padding: 5px 20px; font-size: 9px; color: #FFFFFF; letter-spacing: 0.5px; line-height: 21px;
-                    i { font-size: 14px; }
-                  }
                 }
 
                 // handle in & out display
@@ -1038,8 +1036,6 @@
     .alert.warning { background-color: @cl-warning; }
     .alert.error { background-color: @cl-error; }
   }
-
-  .date-ctn { margin-top: 10px; padding: 0 12px 10px 0; position: absolute; width: 100%; background-color: white; z-index: 2; min-height: 22px; padding-left:20px; }
 
   @import './drawer';
 }
