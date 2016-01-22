@@ -1,3 +1,4 @@
+var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
@@ -16,7 +17,10 @@ var GroupView = Backbone.View.extend({
   className: 'group',
 
   events: {
-    'click .group-join': 'askMembership'
+    'click .group-join': 'askMembership',
+    'click .share .facebook': 'shareFacebook',
+    'click .share .twitter': 'shareTwitter',
+    'click .share .googleplus': 'shareGoogle'
   },
 
   initialize: function (options) {
@@ -48,11 +52,11 @@ var GroupView = Backbone.View.extend({
   },
   onResponse: function (response) {
     // prepare avatar for group
-    response.avatarUrl = common.cloudinary.prepare(response.avatar, 160);
+    response.avatarUrl = common.cloudinary.prepare(response.avatar, 100);
     // prepare room avatar & uri
     var rooms = [];
     _.each(response.rooms, function (room) {
-      room.avatar = common.cloudinary.prepare(room.avatar, 135);
+      room.avatar = common.cloudinary.prepare(room.avatar, 60);
       if (room.owner) {
         room.owner_id = room.owner.user_id;
         room.owner_username = room.owner.username;
@@ -79,6 +83,31 @@ var GroupView = Backbone.View.extend({
       data.banned_at = date.longDate(response.banned_at);
       data.reason = response.reason;
     }
+    // populate owner / op / users avatars
+    var users = {
+      owner: {},
+      op: [],
+      members: []
+    };
+    _.each(data.group.members, _.bind(function (u) {
+      u.avatar = common.cloudinary.prepare(u.avatar, 30);
+      if (u.is_owner) {
+        users.owner = u;
+      } else if (u.is_op) {
+        users.op.push(u);
+      } else {
+        users.members.push(u);
+      }
+    }, this));
+    data.group_users = users;
+
+    // share widget
+    var share = 'share-group-' + this.model.get('id');
+    this.share = {
+      class: share,
+      selector: '.' + share
+    };
+    data.share = this.share.class;
 
     var html = this.template(data);
     this.$el.html(html);
@@ -102,11 +131,14 @@ var GroupView = Backbone.View.extend({
     });
     this.groupUsersView.render();
 
+    this.initializeTooltips();
+
     return this;
   },
   removeView: function () {
     this.groupUsersView._remove();
     this.cardsView._remove();
+    this.headerView._remove();
     this.remove();
   },
   onFocusChange: function () {
@@ -147,6 +179,34 @@ var GroupView = Backbone.View.extend({
   onAvatar: function (model, value) {
     var url = common.cloudinary.prepare(value, 100);
     this.$('img.avatar').attr('src', url);
+  },
+  initializeTooltips: function () {
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
+    });
+  },
+
+  /**
+   * Social sharing
+   */
+  shareFacebook: function () {
+    $.socialify.facebook({
+      url: this.model.getUrl(),
+      name: i18next.t('chat.share.title', {name: this.model.get('name')}),
+      picture: common.cloudinary.prepare(this.model.get('avatar'), 350),
+      description: i18next.t('chat.share.description', {name: this.model.get('name')})
+    });
+  },
+  shareTwitter: function () {
+    $.socialify.twitter({
+      url: this.model.getUrl(),
+      text: i18next.t('chat.share.description', {name: this.model.get('name')})
+    });
+  },
+  shareGoogle: function () {
+    $.socialify.google({
+      url: this.model.getUrl()
+    });
   }
 });
 
