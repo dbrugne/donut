@@ -2,7 +2,6 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../libs/app');
-var common = require('@dbrugne/donut-common/browser');
 
 module.exports = Backbone.View.extend({
   el: $('#rooms'),
@@ -20,7 +19,8 @@ module.exports = Backbone.View.extend({
     this.listenTo(app, 'redrawNavigation', this.render);
     this.listenTo(app, 'redrawNavigationRooms', this.render);
     this.listenTo(app, 'nav-active', this.highlightFocused);
-    this.listenTo(app, 'viewedEvent', this.setAsViewed);
+
+    this.listenTo(app.rooms, 'change:unviewed', this.onUnviewedChange);
 
     this.$list = this.$('.list');
   },
@@ -62,15 +62,23 @@ module.exports = Backbone.View.extend({
       }
     });
   },
-  setAsViewed: function (model) {
-    this.$list
-      .find('[data-room-id="' + model.get('id') + '"] span.unread')
-      .remove();
-  },
   // Only keep rooms that are not in a group
   filterRooms: function () {
     return _.filter(app.rooms.models, function (room) {
       return !room.get('group_id');
     });
+  },
+  onUnviewedChange: function (model, nowIsUnviewed) {
+    if (model.get('group_id')) {
+      return;
+    }
+
+    if (nowIsUnviewed) {
+      this.render();
+    } else {
+      this.$list
+        .find('[data-room-id="' + model.get('id') + '"] span.unread')
+        .remove();
+    }
   }
 });

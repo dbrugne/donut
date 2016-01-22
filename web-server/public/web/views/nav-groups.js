@@ -26,7 +26,8 @@ module.exports = Backbone.View.extend({
     this.listenTo(app, 'redrawNavigationRooms', this.render);
     this.listenTo(app, 'nav-active', this.highlightFocused);
     this.listenTo(app, 'nav-active-group', this.highlightGroup);
-    this.listenTo(app, 'viewedEvent', this.setAsViewed);
+
+    this.listenTo(app.rooms, 'change:unviewed', this.onUnviewedChange);
 
     this.$el.on('shown.bs.collapse', this.onUncollapsed.bind(this));
     this.$el.on('hidden.bs.collapse	', this.onCollapsed.bind(this));
@@ -80,9 +81,10 @@ module.exports = Backbone.View.extend({
     // Now append empty groups to previous list
     _.each(app.groups.models, function (g) {
       var json = g.toJSON();
-      if (_.find(groups, function (group) {
-          return (group.id === json.id);
-        })) {
+      var found = _.find(groups, function (group) {
+        return (group.id === json.id);
+      });
+      if (found) {
         return;
       }
       json.avatar = common.cloudinary.prepare(json.avatar, 40);
@@ -144,17 +146,6 @@ module.exports = Backbone.View.extend({
       $popin.modal('show');
     }
   },
-  setAsViewed: function (model) {
-    // set room as viewed
-    var room = this.$list.find('[data-room-id="' + model.get('id') + '"]');
-    room.find('span.unread').remove();
-    // still some unread messages to read
-    if (room.parents('.group').find('.roomlist span.unread').length !== 0) {
-      return;
-    }
-
-    room.parents('.group').find('>.item span.unread').remove();
-  },
   // Only keep rooms that are part of a group
   filterRooms: function () {
     return _.filter(app.rooms.models, function (room) {
@@ -171,5 +162,24 @@ module.exports = Backbone.View.extend({
     }
 
     this.expanded = this.expanded.splice(idx, 1); // remove the found element
+  },
+  onUnviewedChange: function (model, nowIsUnviewed) {
+    if (!model.get('group_id')) {
+      return;
+    }
+
+    if (nowIsUnviewed) {
+      this.render();
+    } else {
+      var $room = this.$list.find('[data-room-id="' + model.get('id') + '"]');
+      $room.find('span.unread').remove();
+
+      // still some unread messages to read
+      if ($room.parents('.group').find('.roomlist span.unread').length !== 0) {
+        return;
+      }
+
+      $room.parents('.group').find('>.item span.unread').remove();
+    }
   }
 });

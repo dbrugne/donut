@@ -8,18 +8,12 @@ var i18next = require('i18next-client');
 var NotificationsView = Backbone.View.extend({
   id: 'notifications',
 
-  unread: 0,
-
   events: {},
 
   initialize: function () {
-    this.listenTo(app, 'viewedEvent', this.updateHandle);
-    this.listenTo(app, 'unviewedEvent', this.updateHandle);
-
-    this.listenTo(app.client, 'notification:new', this.onNewNotification);
-    this.listenTo(app.user, 'change:unviewedNotification', _.bind(function (model, value) {
-      this.updateCount(value);
-    }, this));
+    this.listenTo(app.user, 'change:unviewedNotification', this.updateIcon, this);
+    this.listenTo(app.user, 'change:unviewedDiscussion', this.updateNavigationHandle, this);
+    this.listenTo(app.client, 'notification:new', this.onNew);
 
     this.$badge = $('#notifications').find('.unread-count');
     this.$badgeHover = $('.hover-menu-notifications');
@@ -27,11 +21,7 @@ var NotificationsView = Backbone.View.extend({
   render: function () {
     return this;
   },
-  // A new Notification is pushed from server
-  onNewNotification: function (data) {
-    this._createDesktopNotify(data);
-  },
-  _createDesktopNotify: function (data) {
+  onNew: function (data) {
     var msg = (data.data.message)
       ? common.markup.toText(data.data.message)
       : '';
@@ -54,33 +44,24 @@ var NotificationsView = Backbone.View.extend({
     message = message.replace(/<\/*br>/g, '');
     app.trigger('desktopNotification', message, '');
   },
-  updateCount: function (count) {
-    if (_.isNaN(count)) {
-      count = 0;
-    }
-
-    this.unread = count;
-    this.$badge.text('');
-    if (count > 0) {
-      this.$badge.text(count).addClass('bounce');
+  updateIcon: function () {
+    var unviewed = app.user.get('unviewedNotification');
+    if (unviewed) {
+      this.$badge.text(unviewed).addClass('bounce');
       setTimeout(_.bind(function () {
         this.$badge.removeClass('bounce');
-      }, this), 1500); // Remove class after animation to trigger animation later if needed
-    }
-  },
-  updateHandle: function () {
-    var unviewed = app.user.get('unviewedDiscussion');
-
-    if (unviewed) {
-      this.$badgeHover.removeClass('empty');
-      this.$badgeHover.text(unviewed);
+      }, this), 1500); // remove class after animation to trigger animation later if needed
     } else {
-      this.$badgeHover.addClass('empty');
-      this.$badgeHover.text('');
+      this.$badge.text('');
     }
   },
-  readAll: function () {
-    this.updateCount(0);
+  updateNavigationHandle: function () {
+    var unviewed = app.user.get('unviewedDiscussion');
+    if (unviewed) {
+      this.$badgeHover.removeClass('empty').text(unviewed);
+    } else {
+      this.$badgeHover.addClass('empty').text('');
+    }
   }
 });
 
