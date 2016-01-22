@@ -195,6 +195,9 @@ exports.prototype._data = function (type, data) {
   data.spammed = (data.spammed === true);
   data.edited = (data.edited === true);
 
+  // user can mark as spam ?
+  data.isOwnerAdminOrOp = this.discussion.currentUserIsOwner() || this.discussion.currentUserIsOp() || this.discussion.app.user.isAdmin();
+
   // avatar
   if (data.avatar) {
     data.avatar = common.cloudinary.prepare(data.avatar, 40);
