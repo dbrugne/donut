@@ -1,5 +1,5 @@
 & { height: 100%; background-color: #F5F8FA; overflow-y: auto; .scrollbar-grey-thin; }
-.header {  background-color: #FFF; padding: 15px 100px 15px 170px; min-height: 200px; position: relative;
+.header {  background-color: #FFF; padding: 15px 100px 15px 170px; position: relative;
   > .avatar { width:100px; height:100px; position:absolute; top:15px; left:40px; }
   .info { .justify-content(space-between); padding-top: 6px;
     .name { .ft-opensans-light; font-size: 25px; color: #1D252F; line-height: 14px; }
@@ -31,23 +31,25 @@
       }
       .action-ctn { margin-right: 0;
         .banned-message { color: #FC2026; }
-        .open-create-room { width: 250px; }
-
+        .open-create-room, .group-join { width: 250px; }
         .toggle-collapse > i { display:none; }
-        &.is-member .toggle-collapse .show-is-member  { .display-inline-flex; }
-        &.is-owner .toggle-collapse .show-is-owner    { .display-inline-flex; }
-        &.is-op .toggle-collapse .show-is-op          { .display-inline-flex; }
-        &.is-admin .toggle-collapse .show-is-admin    { .display-inline-flex; }
+        &.is-member .toggle-collapse .show-is-member          { .display-inline-flex; }
+        &.is-not-member .toggle-collapse .show-is-not-member  { .display-inline-flex; }
+        &.is-owner .toggle-collapse .show-is-owner            { .display-inline-flex; }
+        &.is-op .toggle-collapse .show-is-op                  { .display-inline-flex; }
+        &.is-admin .toggle-collapse .show-is-admin            { .display-inline-flex; }
       }
     }
   }
   .actions .btn { white-space: nowrap; }
 }
-.header-bellow { .transition(margin-top 300ms); margin-top: 0; position:relative;
+.header-below { .transition(margin-top 300ms); margin-top: 0; position:relative;
   .arrow { width: 0; height: 0; border-style: solid; border-width: 0 20px 10px 20px; border-color: transparent transparent #e7ecf3 transparent; position: absolute; top: -10px; right: 205px; }
-  .block-ctn { background-color: #E7ECF3; height:100px; padding-right: 100px;
-    .group-icon { background-repeat: no-repeat; background-position: center center; background-size: 100%; }
-    .text { .ft-opensans; font-size: 13px; color: #394350; line-height: 21px; padding-left: 170px }
+  .block-ctn { background-color: #E7ECF3; min-height:100px; padding-right: 100px;
+    .group-icon-ctn { min-width: 170px;
+      .group-icon { background-repeat: no-repeat; background-position: center center; background-size: 100%; }
+    }
+    .text { .ft-opensans; font-size: 13px; color: #394350; line-height: 21px; padding: 20px 0; }
     .actions {
       .toggle-collapse { position: absolute; right: 40px; top: 33px; font-size: 16px;
         i { color: #586473; font-size:14px; }
@@ -55,20 +57,20 @@
     }
   }
   &.is-banned {
-    .group-icon { background-image: url('@{img-path}/error.png'); width: 32px; height: 32px; position: absolute; top: 16px; left: 73px;  }
+    .group-icon { background-image: url('@{img-path}/error.png'); width: 32px; height: 32px; }
   }
   &.is-member,
   &.is-owner,
   &.is-op {
-    .group-icon { background-image: url('@{img-path}/success.png'); width: 43px; height: 35px; position: absolute; top: 26px; left: 73px;  }
+    .group-icon { background-image: url('@{img-path}/success.png'); width: 43px; height: 35px;  }
   }
   &.is-op,
+  &.is-not-member,
   &.is-owner {
-    .arrow { right: 347px; }
+    .arrow { right: 345px; }
   }
-  &.is-op {  }
   &.is-not-member {
-    .group-icon { background-image: url('@{img-path}/warning.png'); width: 29px; height: 59px; position: absolute; top: 16px; left: 73px; }
+    .group-icon { background-image: url('@{img-path}/warning.png'); width: 29px; height: 59px; }
   }
 }
 

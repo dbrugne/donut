@@ -7,7 +7,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
 %>
 <div class="header flex-parent">
     <img class="avatar group open-group-profile curp" data-group-id="<%= group.group_id %>" src="<%= group.avatarUrl %>" alt="<%= group.identifier %> avatar">
-    <div class="info flex-parent column">
+    <div class="info flex-child flex-parent column">
         <div class="flex-parent">
             <div class="name open-group-profile curp" data-group-id="<%= group.group_id %>"><%= group.name %></div>
             <div class="flex-child"></div>
@@ -138,20 +138,21 @@ var statusClass =   (isBanned)  ? 'is-banned' :
                 <!--Banned message-->
                 <% if (isBanned) { %>
                     <span class="banned-message"><%= t('chat.blocked.groupban') %></span>
-                <% } else if (isOwner || isOp || isAdmin || isMember) { %>
-                    <!--Create a donut-->
-
+                <% } else { %>
                     <span class="donut-button transparent toggle-collapse">
-                        <i class="icon i-icon show-is-member"></i>
+                        <i class="icon i-icon show-is-member show-is-not-member"></i>
                         <i class="icon icon-owner show-is-owner"></i>
                         <i class="icon deop-icon show-is-op"></i>
                         <i class="icon icon-star cl-warning show-is-admin"></i>
                     </span>
 
-                    <span class="curp open-create-room donut-button black" data-group-id="<%=group.group_id%>" data-group-name="<%=group.name%>"><%= t('actions.create') %></span>
-                <% } else { %>
-                    <!--Ask membership button for non members-->
-                    <span class="curp btn btn-primary group-join"><%= t('group.ask-membership') %></span>
+                    <% if (isOwner || isOp || isAdmin || isMember) { %>
+                        <!--Create a donut-->
+                        <span class="curp open-create-room donut-button black" data-group-id="<%=group.group_id%>" data-group-name="<%=group.name%>"><%= t('actions.create') %></span>
+                    <% } else { %>
+                        <!--Ask membership button for non members-->
+                        <span class="curp btn btn-primary group-join"><%= t('group.ask-membership') %></span>
+                    <% } %>
                 <% } %>
             </div>
         </div>
@@ -160,13 +161,15 @@ var statusClass =   (isBanned)  ? 'is-banned' :
     </div>
 </div>
 
-<div class="header-bellow <%=statusClass%>">
+<div class="header-below <%=statusClass%>">
     <span class="arrow"></span>
     <div class="block-ctn flex-parent center">
-        <div class="group-icon"></div>
+        <div class="group-icon-ctn flex-parent jc-center center">
+            <div class="group-icon"></div>
+        </div>
 
         <% if (isBanned) { %>
-            <div class="text flex-child">
+            <div class="text">
                 <%= t('chat.blocked.groupbanned', {at: banned_at}) %>
                 <% if (reason) { %>
                     <%= t('chat.blocked.reason') %>
@@ -180,7 +183,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
             </div>
 
         <% } else if (isOwner || isOp || isAdmin) { %>
-            <div class="text flex-child">
+            <div class="text">
                 <% if (isOwner) { %>
                     <%= t('group.default-owner') %>
                 <% } else if (isOp) { %>
@@ -196,13 +199,13 @@ var statusClass =   (isBanned)  ? 'is-banned' :
             </div>
 
         <% } else if (isMember) { %>
-            <div class="text flex-child"><%= t('group.default-member') %></div>
+            <div class="text"><%= t('group.default-member') %></div>
             <div class="actions">
                 <span class="donut-button transparent toggle-collapse curp"><i class="icon icon-times"></i></span>
             </div>
 
         <% } else { %>
-            <div class="text flex-child">
+            <div class="text">
                 <% if (group.disclaimer) { %>
                     <p><%= t('group.disclaimer-start') %><strong><span class="open-user-profile fs15 dc-text" data-user-id="<%=group.owner_id %>"></span></strong><%= t('group.disclaimer-end') %></p>
                     <p class="mt10"><em><%= t('chat.joingroup.disclaimer', {username: group.owner_username ,disclaimer: group.disclaimer}) %></em></p>
