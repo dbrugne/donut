@@ -177,7 +177,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
                     <span class="reason"><em><%- reason %></em></span>
                 <% } %>
             </div>
-
+            <div class="flex-child"></div>
             <div class="actions">
                 <span class="donut-button transparent toggle-collapse curp"><i class="icon icon-times"></i></span>
             </div>
@@ -192,6 +192,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
                     <%= t('group.default-admin') %>
                 <% } %>
             </div>
+            <div class="flex-child"></div>
             <div class="actions">
                 <span type="button" class="curp donut-button gray open-group-users mr15" data-group-id="<%= group.group_id %>" ><%= t('group.manage') %></span>
                 <span type="button" class="curp donut-button gray open-group-users-allowed" data-group-id="<%= group.group_id %>"><%= t('group.invite')%></span>
@@ -200,6 +201,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
 
         <% } else if (isMember) { %>
             <div class="text"><%= t('group.default-member') %></div>
+            <div class="flex-child"></div>
             <div class="actions">
                 <span class="donut-button transparent toggle-collapse curp"><i class="icon icon-times"></i></span>
             </div>
@@ -213,7 +215,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
                     <p><%= t('group.default-disclaimer') %></p>
                 <% } %>
             </div>
-
+            <div class="flex-child"></div>
             <div class="actions">
                 <span class="donut-button transparent toggle-collapse curp"><i class="icon icon-times"></i></span>
             </div>
