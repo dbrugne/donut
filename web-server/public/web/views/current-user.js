@@ -8,7 +8,7 @@ module.exports = Backbone.View.extend({
   template: require('../templates/current-user.html'),
 
   initialize: function (options) {
-    this.listenTo(this.model, 'change', this.render);
+    this.listenTo(this.model, 'change:status change:realname change:username', this.render);
 
     this.$toggle = this.$('#block-current-user-toggle');
     this.$message = $('#chat').find('.mail-not-confirmed').hide();
