@@ -67,7 +67,7 @@ var RoomTopicView = Backbone.View.extend({
   },
   showForm: function () {
     if (!this.model.currentUserIsOp() && !this.model.currentUserIsOwner() && !app.user.isAdmin()) {
-      return false;
+      return;
     }
 
     var topic = common.markup.toText(this.model.get('topic'));

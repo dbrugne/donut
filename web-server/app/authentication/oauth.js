@@ -275,7 +275,7 @@ router.route('/oauth/signup').post(function (req, res) {
     },
 
     function email (user, callback) {
-      verifyEmail.sendWelcomeEmail(user.local.email, user.id, function (err) {
+      verifyEmail.sendWelcomeEmail(user.local.email, user, function (err) {
         if (err) {
           return logger.error('Unable to sent welcome email: ', err);
         }

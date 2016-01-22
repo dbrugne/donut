@@ -195,7 +195,7 @@
     }
     #block-current-user { padding: 3px; cursor: pointer; overflow: hidden; .transition(max-height 200ms); max-height: 41px; background-color: @cl-nav-left-back;
       .user-status { .transition(all 300ms ease); border: 2px solid #353F4C; position: absolute; left: 32px; top: 28px; }
-      .not-confirmed {     z-index: 1; position: absolute; top: 15px; font-size: 28px; left: 17px; color: @cl-pomegranate; opacity: 0.7; }
+      .not-confirmed { z-index: 1; position: absolute; top: 15px; font-size: 28px; left: 17px; color: @cl-pomegranate; opacity: 0.7; }
       img { width: 35px; height: 35px; }
       i { color: rgba(207,217,229,0.40); }
       &.open { .transition(max-height 400ms); max-height: 600px;
@@ -614,27 +614,35 @@
           .close-room { position: absolute; top: 20px; right: 20px; font-size: 1.4rem; }
         }
         .cover { text-align: center; }
-        .header { padding-top: 18px; padding-right: 40px; margin-left:40px;
-          .info { padding-left: 64px; .justify-content(space-between); }
-          .name { .display-inline-flex; word-break: break-all; .ft-opensans-light; font-size: 25px; color: #1D252F; line-height: 25px;
+        .header { padding-top: 18px; padding-right: 40px; margin-left:40px; min-height: 70px;
+          .overlay-ctn {
+            .avatar { position: absolute; width: 50px; height: 50px; }
+          }
+          .info { padding-left: 64px; .justify-content(space-between); padding-top: 6px;
+            .dropdown { display: inline-block; position: relative;
+              .dropdown-menu>li>a { color: @cl-subtext40; }
+              button { font-size: 14px; border: none; background-color: transparent; margin:0; padding:0;
+                i {  color: #D0D9E6;
+                  &:hover { color: darken(#D0D9E6, 10%); }
+                }
+              }
+            }
+          }
+          .name { .display-inline-flex; word-break: break-all; .ft-opensans-light; font-size: 25px; color: #1D252F; line-height: 14px;
             .username { color: @cl-subtext20; font-size: 1.8rem; }
           }
+          .topic, .location { padding-left: 64px; margin-top: 6px;
+            .topic-current { overflow: hidden; text-overflow: ellipsis; font-size: 13px; color: #AFBAC8; letter-spacing: 1px; line-height: 14px; font-style:initial; }
+          }
+
           &.room { min-height: 70px;
             .overlay-ctn {
-              .avatar { position: absolute; width: 50px; height: 50px; }
               .overlay { height: 50px; width: 50px; top:0; .border-radius(50%); }
               .overlay-text { width: 50px; top: 14px; font-size: 1.4rem; }
             }
+            .name .groupname { font-size: 13px; color: #AFBAC8; letter-spacing: 1px; line-height: 14px; margin-right: 2px; }
             .info {
               .room-profile { min-height:initial; min-width:initial; margin:auto; }
-              .dropdown { display: inline-block; position: relative;
-                .dropdown-menu>li>a { color: @cl-subtext40; }
-                button { font-size: 14px; border: none; background-color: transparent; margin:0; padding:0;
-                  i {  color: #D0D9E6;
-                    &:hover { color: darken(#D0D9E6, 10%); }
-                  }
-                }
-              }
               .separator { border-right: 1px solid #d0d9e6; padding: 0 20px 0 0; margin: 0 20px 0 0; height: 12px; }
               .share { width:18px; height:18px;
                 i { font-size: 14px; vertical-align: middle; cursor: pointer; color: #D0D9E6;
@@ -642,8 +650,7 @@
                 }
               }
             }
-            .topic { padding-left: 64px; margin-top: 8px;
-              .topic-current { overflow: hidden; text-overflow: ellipsis; font-size: 13px; color: #AFBAC8; letter-spacing: 1px; line-height: 14px; font-style:initial; }
+            .topic {
               .topic-form { display: none;
                 .input-group { .display-flex; .flex-flow(row nowrap); }
                 input[type=text] { width: 100%; height: 30px; }
@@ -651,22 +658,15 @@
             }
           }
           &.user {
-            .avatar { position: absolute; width: 70px; height: 70px;
-              img { width:100%;}
-            }
-            .banned-status { color: rgb(255, 78, 78); font-style: italic; }
-            .not-confirmed { color: rgb(255, 78, 78); font-style: italic; }
-            .show-if-banned { display:none; }
-            &.is-banned .show-if-banned { display:initial; }
-            &.is-banned .show-if-unbanned { display:none; }
-            &.is-banned .avatar::after { .icon-ban; position: absolute; font-size: 69px; color: rgba(119, 119, 119, 0.75); top: -4px; line-height: 70px; left:0; }
-            .info {
-              .othername { color: @cl-subtext20; font-weight: normal; }
-              .dropdown { display: inline-block; position: relative;
-                button { font-size: 24px; border: none; background-color: transparent; }
-              }
-            } // #chat #center .discussion .content .header.user .info
-            .status-block { font-size: 1.2em; margin-left: 80px; font-style: italic;
+            .overlay-ctn .avatar { .border-radius(3px); }
+            .user-status { .transition(all 300ms ease); border: 2px solid #FFF; position: absolute; left: 43px; bottom: -54px; z-index: 1; }
+            .banned-status { font-size: 13px; .ft-opensans; color: #FC2026; line-height: 14px; font-style: normal; }
+            .not-confirmed { font-size: 13px; .ft-opensans; color: #FC2026; line-height: 14px; font-style: normal; }
+
+            .i-am-banned .overlay-ctn:before { content: ''; z-index: 1; position:absolute; background-image: url('@{img-path}/userban.png'); background-repeat: no-repeat; background-position: center center; background-size: 100%;    width: 54px; height: 54px; display: block; top: -2px; left: -2px; }
+
+            .status-block { margin-left:15px;
+              .action { cursor: pointer; background: #E7ECF3; border-radius: 4px; .ft-opensans-semibold; font-size: 9px; color: #586473; letter-spacing: 0.69px; line-height: 21px; padding: 0 10px; text-transform: uppercase; }
               i { font-size: 0.9em; }
               .ago { display: none; font-size: 0.9em; font-style: italic; }
               &.online {
@@ -955,7 +955,7 @@
             &.visible { bottom: 3px; }
           }
           .preview { margin-left: 70px; display: none;
-            .image { background-color: #e2e8f0; display: inline-block; vertical-align: top; width: 80px; height: 80px; margin: 5px; padding-top: 19px; text-align: center;
+            .image { position: relative; background-color: #e2e8f0; display: inline-block; vertical-align: top; width: 80px; height: 80px; margin: 5px; padding-top: 19px; text-align: center;
               &.file{
                 &:hover { text-decoration: none; }
                 .file-icon { width: 30px; height: 40px; }

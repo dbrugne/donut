@@ -116,9 +116,9 @@ passport.use('local-signup', new LocalStrategy(localStrategyOptions,
             // tracking
             keenIoTracking(newUser, 'email');
             // email will be send on next tick but done() is called immediately
-            verifyEmail.sendWelcomeEmail(newUser.local.email, newUser.id, function (err) {
+            verifyEmail.sendWelcomeEmail(newUser.local.email, newUser, function (err) {
               if (err) {
-                return logger.error('Unable to sent welcome email: ' + err);
+                return logger.error('Unable to sent welcome email: ', err);
               }
             });
             return done(null, newUser);
@@ -204,6 +204,15 @@ function facebookCallback (req, token, refreshToken, profile, done) {
 
       user.confirmed = true;
       user.lastlogin_at = Date.now();
+
+      // send welcome to new facebook registration
+      if (!req.user && user.facebook.email) {
+        emailer.welcomeFacebook(user.facebook.email, function (err) {
+          if (err) {
+            console.error(err);
+          }
+        });
+      }
 
       // tracking
       if (user.isNew) {

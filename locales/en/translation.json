@@ -382,7 +382,7 @@
         "room": "You are mute in this donut as requested by a moderator",
         "confirm": "Action authorized to verified accounts only. Verify your e-mail."
       },
-      "unlock": "(Click here to unblock)"
+      "unlock": "unblock"
     },
     "help": "Help",
     "room-discussion": {
@@ -1134,10 +1134,17 @@
     "welcome": {
       "subject": "Welcome ! Activate your account",
       "content": {
-        "title": "Welcome !",
-        "infos": "Activate your account",
-        "disclaimer": "Congrats, just one click on this beautiful big pink button and you're done",
+        "title": "Welcome @__username__",
+        "disclaimer": "Congrats @__username__, just one click on this beautiful big pink button and you're done:",
         "button": "Activate my account"
+      }
+    },
+    "welcomeFacebook": {
+      "subject": "Welcome to DONUT",
+      "content": {
+        "title": "Welcome",
+        "disclaimer": "Congrats, your account was successfully created. Come and enjoy a tasty discussion with us:",
+        "button": "Sign in"
       }
     },
     "forgot": {
@@ -1150,12 +1157,10 @@
       }
     },
     "verify": {
-      "subject": "Activate your account",
+      "subject": "Verify your e-mail on DONUT",
       "content": {
-        "title": "Hello @__username__ !",
-        "infos": "Activate your account",
-        "disclaimer": "In order to link your e-mail to the DONUT account @__username__, click this beautiful big pink button",
-        "button": "Activate my account"
+        "title": "Hello @__username__, verify your e-mail.",
+        "button": "Verify my email"
       }
     },
     "passwordchanged": {

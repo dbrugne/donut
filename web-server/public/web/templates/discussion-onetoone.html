@@ -1,61 +1,6 @@
 <div class="side oneside dc-back <% if (typeof(poster) === 'undefined' || !poster) { %>poster-empty<% } %>" style="<% if (typeof(poster) !== 'undefined' && poster) { %>background-image: url(<%= poster %>);<% }; %>"></div>
 <div class="content" id="onetoone">
-    <div class="header user <% if (banned === true) { %> is-banned <% } %>">
-        <div class="avatar relative open-user-profile border-shadow" data-user-id="<%= user_id %>">
-            <img src="<%= avatar %>" alt="<%= username %> avatar">
-        </div>
-        <div class="info flex-parent center">
-            <span class="name open-user-profile" data-user-id="<%= user_id %>">
-                <span class="realname">
-                    <% if (typeof realname !== "undefined" && realname !== '') { %>
-                        <span class="mr5">
-                            <%= realname %>
-                        </span>
-                    <% } %>
-                </span>
-                <span class="username">@<%= username %></span>
-            </span>
-
-            <div class="flex-parent">
-                <% if (typeof user_location !== "undefined" && user_location !== "") { %>
-                    <span class="flex-parent center">
-                        <span class="location"><%= user_location %></span>
-                    </span>
-                <% } %>
-                <%= dropdown %>
-            </div>
-        </div>
-        <div class="status-block">
-            <i class="icon icon-dot-circle-o status contrast"></i>
-            <em>
-                <span class="display-online">
-                    <%= t('global.online') %>
-                </span>
-                <span class="display-offline">
-                    <%= t('global.offline') %>
-                </span>
-            </em>
-            <% if(typeof(onlined) !== 'undefined' && onlined) { %>
-                <span class="ago display-offline">(<%= t('profile.user.onlined', {time: '<span data-time="'+onlined+'"></span>'}) %>)</span>
-            <% } %>
-            <span class="hello-block   display-offline">
-                <%= t('chat.welcome.onetoone') %>
-            </span>
-            <span class="show-if-banned  ">
-                <span class="banned-status">
-                    &nbsp;-&nbsp;<%= t('chat.actions.banned') %>&nbsp;
-                    <span class="action-user-deban" data-user-id="<%= user_id %>" style="cursor: pointer; text-decoration: underline;">
-                        <%= t('chat.actions.unlock') %>
-                    </span>
-                </span>
-            </span>
-            <% if (typeof(confirmed) !== 'undefined' && confirmed === false) { %>
-                <span class="not-confirmed">
-                    - <%= t('chat.blocked.cant-answer', {username: username}) %>
-                </span>
-            <% } %>
-        </div>
-    </div>
+    <div class="header user"><!-- header view --></div>
     <div class="date-ctn">
         <div class="ctn"></div>
         <div class="ctn-unviewed"></div>
