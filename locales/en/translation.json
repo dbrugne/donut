@@ -166,6 +166,7 @@
     "groups": "Communities",
     "validate": "validate",
     "collapse": "collapse",
+    "expend": "expend",
     "members": "<strong>__count__</strong> member",
     "members_plural": "<strong>__count__</strong> members",
     "discover": "discover",

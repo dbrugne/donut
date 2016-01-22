@@ -37,7 +37,8 @@
             <div class="clearfix"></div>
         </div>
         <div class="collapse-toggle" data-toggle="collapse" data-target="#collapseMessages<%= data.id %>" aria-expanded="true" aria-controls="collapseMessages<%= data.id %>">
-            <%= t('global.collapse') %>
+            <span class="hide-collapsed"><%= t('global.expend') %></span>
+            <span class="show-collapsed"><%= t('global.collapse') %></span>
         </div>
         <% } %>
         <% if (data.spammed) { %>

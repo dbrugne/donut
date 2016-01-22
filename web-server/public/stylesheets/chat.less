@@ -810,7 +810,13 @@
                       hr { clear: both; border-color: @cl-background; margin: 0; }
                       .filename { .ft-opensans; font-size: 9px; color: #FFFFFF; letter-spacing: 0.5px; line-height: 21px; white-space: nowrap; background-color: rgba(29,37,47,0.65); position: absolute; bottom: 0; width: 100%; padding-left: 4px; }
                     }
-                    .collapse-toggle { .ft-opensans; font-size: 9px; color: #FFFFFF; letter-spacing: 0.5px; line-height: 17px; background: #D0D9E6; border-radius: 2px; padding: 2px 5px; display: inline-block; text-transform: uppercase; cursor: pointer; margin-left: 2px; }
+                    .collapse-toggle { .ft-opensans; font-size: 9px; color: #FFFFFF; letter-spacing: 0.5px; line-height: 17px; background: #D0D9E6; border-radius: 2px; padding: 2px 5px; display: inline-block; text-transform: uppercase; cursor: pointer; margin-left: 2px;
+                      .hide-collapsed { display: none}
+                      &.collapsed {
+                        .hide-collapsed { display: inline }
+                        .show-collapsed { display: none }
+                      }
+                    }
                     .actions { font-size: 14px; right: 13px; position: absolute; top: 2px; color: #777; display:none;
                       .action { .ft-opensans-light; background-color: #D0D9E6; border-radius: 2px; color: #FFFFFF; font-size: 9px; text-transform: uppercase; padding: 3px 8px; cursor: pointer; letter-spacing: 0.5px; float:right; line-height: 17px;
                         &:hover { background-color: darken(#D0D9E6, 10%); }
