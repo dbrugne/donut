@@ -160,8 +160,11 @@ var DiscussionInputView = Backbone.View.extend({
     var images = this.imagesView.list();
 
     // check if input is a command
-    if (this.commandsView.checkInput(message) !== false) {
-      this.$editable.val('');
+    var commandResult;
+    if ((commandResult = this.commandsView.checkInput(message)) !== false) {
+      if (commandResult !== 'error') {
+        this.$editable.val('');
+      }
       return false;
     }
 
