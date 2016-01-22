@@ -43,7 +43,8 @@
   }
   .actions .btn { white-space: nowrap; }
 }
-.header-below { .transition(margin-top 300ms); margin-top: 0; position:relative;
+.header-below { position:relative;
+  &.collapsed { display:none; }
   .arrow { width: 0; height: 0; border-style: solid; border-width: 0 20px 10px 20px; border-color: transparent transparent #e7ecf3 transparent; position: absolute; top: -10px; right: 205px; }
   .block-ctn { background-color: #E7ECF3; min-height:100px; padding-right: 100px;
     .group-icon-ctn { min-width: 170px;

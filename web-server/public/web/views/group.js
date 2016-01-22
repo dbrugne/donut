@@ -20,7 +20,8 @@ var GroupView = Backbone.View.extend({
     'click .group-join': 'askMembership',
     'click .share .facebook': 'shareFacebook',
     'click .share .twitter': 'shareTwitter',
-    'click .share .googleplus': 'shareGoogle'
+    'click .share .googleplus': 'shareGoogle',
+    'click .toggle-collapse': 'toggleCollapse'
   },
 
   initialize: function (options) {
@@ -111,9 +112,11 @@ var GroupView = Backbone.View.extend({
 
     var html = this.template(data);
     this.$el.html(html);
+
     this.cardsView = new CardsView({
       el: this.$('.cards')
     });
+
     this.cardsView.render({
       rooms: {
         list: rooms
@@ -130,6 +133,8 @@ var GroupView = Backbone.View.extend({
       data: response
     });
     this.groupUsersView.render();
+
+    this.$headerBelow = this.$('.header-below');
 
     this.initializeTooltips();
 
@@ -184,6 +189,18 @@ var GroupView = Backbone.View.extend({
     this.$el.find('[data-toggle="tooltip"]').tooltip({
       container: 'body'
     });
+  },
+
+  toggleCollapse: function (event) {
+    if (this.$headerBelow.hasClass('collapsed')) {
+      this.$headerBelow.slideDown(300, function () {
+        $(this).toggleClass('collapsed');
+      });
+    } else {
+      this.$headerBelow.slideUp(300, function () {
+        $(this).toggleClass('collapsed');
+      });
+    }
   },
 
   /**
