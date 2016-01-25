@@ -9,7 +9,7 @@ var quotesFr = [
   'Un petit café %u ?',
   "Un p'tit donut %u ?",
   'Bien le bonjour %u',
-  'Ouaish ouaish %u',
+  'Wesh wesh %u',
   'Salutations %u',
   'Ca fait un bail %u',
   'Yo %u',

@@ -314,7 +314,7 @@
         "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. <a href=\"/\">DONUT.me</a> vous permet de rejoindre ou créer un salon de discussion thématique (donut) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
       },
       "permalink": "Permalien de ce profil",
-      "editusers": "Gérer les utilisateurs",
+      "editusers": "Liste des utilisateurs",
       "createdat": "créé le",
       "usersallowed": "Gérer les invitations"
     },
@@ -518,7 +518,7 @@
         "invite": "Vous allez autoriser l'accès à @__username__. Une notification va lui être adressée pour l'inviter à rejoindre #__name__.",
         "requestallowance": "<strong>Demander à devenir membre.</strong><br>Le créateur de la communauté va avoir accès à votre vrai nom et votre e-mail.",
         "add-email": "Nouvel e-mail :",
-        "send-email": "Un email de confirmation va être envoyé à __email__",
+        "send-email": "Un email de validation va être envoyé à __email__",
         "delete-email": "__email__ va être supprimé de vos adresses mails",
         "change-email": "Vous allez faire __email__ votre e-mail principal. Dorénavant vous vous connecterez avec cet e-mail et vous recevrez toutes les notifications dessus.",
         "add-domain": "Entrez le domaine d'e-mail de confiance à ajouter.<br>Rappel : Avoir un e-mail de ce format suffira à rejoindre la communauté directement. Sans demande d'adhésion, ni invitation, ni mot de passe.",
@@ -838,7 +838,7 @@
                 "Veuillez confirmer la suppression en saisissant le nom de la communauté (<strong>__name__</strong>) puis en cliquant sur supprimer :"
               ],
               "placeholder": "Saisir le nom de la communauté",
-              "success": "Communauté supprimé !",
+              "success": "Communauté supprimée",
               "error": {
                 "permanent": "Il n'est pas possible de supprimer une communauté 'permanent'"
               }
@@ -1032,7 +1032,7 @@
     "default-owner": "Vous êtes propriétaire de cette communauté",
     "default-op": "Vous êtes administrateur de cette communauté",
     "default-admin": "Vous êtes administrateur",
-    "default-disclaimer": "Vous n'êtes pas encore membre de cette communauté. Cliquez sur \"devenir membre\" pour en faire la demande.",
+    "default-disclaimer": "Vous n'êtes pas encore membre de cette communauté donc vous ne voyez que du contenu public.",
     "disclaimer-start": "Vous n'êtes pas encore membre de cette communauté. Vous pouvez pouvez y rejoindre les donuts publics et éventuellement demander l'accès à des donuts privés. Les membres d'une communauté ont des privilèges tels que l'accès direct à certains donuts privés et aux autres membres de la communauté.",
     "disclaimer-end": " Avant de demander à devenir membre, jetez un oeil aux conditions d'accès de cette communauté :",
     "close": "quitter la communauté",
@@ -1047,7 +1047,7 @@
     },
     "email": {
       "label": "Email",
-      "success": "Votre nouvelle adresse email a bien été enregistrée",
+      "success": "Votre nouvelle adresse email a bien été enregistrée. Vous allez recevoir un e-mail pour la valider.",
       "error": {
         "format": "Cette adresse email n'est pas valide",
         "alreadyexists": "Cette adresse email est déjà utilisée par un autre compte",
