@@ -1,10 +1,12 @@
 'use strict';
 var _ = require('underscore');
+var async = require('async');
 var mongoose = require('../io/mongoose')();
 var bcrypt = require('bcrypt-nodejs');
 var colors = require('../../config/colors');
 var common = require('@dbrugne/donut-common/server');
 var cloudinary = require('../util/cloudinary');
+var RoomModel = require('./room');
 
 var userSchema = mongoose.Schema({
   username: String,
@@ -436,18 +438,54 @@ userSchema.statics.unviewedCount = function (userId, fn) {
   } else {
     _id = userId;
   }
-  this.aggregate([
-    {$match: {_id: _id}},
-    {$project: {unviewed: {$size: '$unviewed'}}}
-  ]).exec(function (err, results) {
-    if (err) {
-      return fn(err);
-    }
-    if (!results || !results.length || !results[0]) {
-      return fn(null, 0);
-    }
+  var that = this;
+  async.waterfall([
+    function roomsIsIn (callback) {
+      RoomModel.findByUser(_id).select('_id').exec(function (err, rooms) {
+        if (err) {
+          return callback(err);
+        }
 
-    return fn(null, results[0].unviewed);
+        var roomIds = [];
+        if (rooms.length) {
+          roomIds = _.map(rooms, 'id');
+        }
+
+        return callback(null, roomIds);
+      });
+    },
+    function retrieveUser (roomIds, callback) {
+      that.findOne({_id: _id}, 'unviewed ones').exec(function (err, user) {
+        if (err) {
+          return callback(err);
+        }
+
+        var count = 0;
+        if (user && user.unviewed && user.unviewed.length) {
+          // list open ones
+          var oneIds = [];
+          if (user.ones) {
+            oneIds = _.map(user.ones, function (one) {
+              return one.user.toString();
+            });
+          }
+
+          // count
+          _.each(user.unviewed, function (u) {
+            if (u.user && oneIds.indexOf(u.user.toString()) !== -1) {
+              count = count + 1;
+            }
+            if (u.room && roomIds.indexOf(u.room.toString()) !== -1) {
+              count = count + 1;
+            }
+          });
+        }
+
+        return callback(null, count);
+      });
+    }
+  ], function (err, count) {
+    return fn(err, count);
   });
 };
 
