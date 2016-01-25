@@ -105,24 +105,21 @@ var DonutRouter = Backbone.Router.extend({
   },
 
   focusGroup: function (name) {
-    this._focusGroup({name: name, popin: false});
+    this._focusGroup('#' + name);
   },
 
-  _focusGroup: function (data) {
-    var name = data.name;
-    var model = app.groups.iwhere('name', name);
-    if (model) {
-      this.focus(model);
-      return app.trigger('nav-active-group', {
-        group_id: model.get('group_id'),
-        group_name: model.get('name'),
-        popin: data.popin
-      });
+  _focusGroup: function (identifier) {
+    // already joined
+    var model = app.groups.iwhere('identifier', identifier);
+    if (typeof model !== 'undefined') {
+      return this.focus(model);
     }
 
-    app.client.groupId(name, _.bind(function (response) {
+    // not already joined
+    this.nextFocus = identifier;
+    app.client.groupId(identifier.replace('#', ''), _.bind(function (response) {
       if (response.code === 404) {
-        return app.trigger('alert', 'error', i18next.t('chat.groupnotexists', {name: name}));
+        return app.trigger('alert', 'error', i18next.t('chat.groupnotexists', {name: identifier}));
       } else if (response.code === 500) {
         return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
       }
@@ -134,11 +131,6 @@ var DonutRouter = Backbone.Router.extend({
               model = app.groups.addModel(response);
               model.trigger('redraw');
               this.focus(model);
-              app.trigger('nav-active-group', {
-                group_id: response.group_id,
-                group_name: name,
-                popin: data.popin
-              });
               app.trigger('redrawNavigationGroups');
             }
           }, this));
@@ -255,9 +247,6 @@ var DonutRouter = Backbone.Router.extend({
     } else {
       app.trigger('changeColor', this.defaultColor);
     }
-
-    // nav
-    app.trigger('nav-active');
 
     // Update URL (always!) and page title
     app.trigger('setTitle', model.get('identifier'));

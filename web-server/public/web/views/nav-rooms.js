@@ -18,13 +18,14 @@ module.exports = Backbone.View.extend({
   initialize: function () {
     this.listenTo(app, 'redrawNavigation', this.render);
     this.listenTo(app, 'redrawNavigationRooms', this.render);
-    this.listenTo(app, 'nav-active', this.highlightFocused);
+    this.listenTo(app, 'focusedModelChanged', this.highlightFocused);
 
     this.listenTo(app.rooms, 'change:unviewed', this.onUnviewedChange);
 
     this.$list = this.$('.list');
   },
   render: function () {
+    // console.warn('render nav-room');
     if (!this.filterRooms().length) {
       this.$list.empty();
       this.$el.addClass('empty');
@@ -50,17 +51,14 @@ module.exports = Backbone.View.extend({
   onToggleCollapse: function (event) {
     $(event.currentTarget).parents('.list').toggleClass('collapsed');
   },
-  highlightFocused: function () {
-    var that = this;
-    this.$list.find('.active').each(function (item) {
-      $(this).removeClass('active');
-    });
-    _.find(this.filterRooms(), function (room) {
-      if (room.get('focused') === true) {
-        that.$list.find('[data-room-id="' + room.get('id') + '"]').addClass('active');
-        return true;
-      }
-    });
+  highlightFocused: function (model) {
+    this.$list.find('.active').removeClass('active');
+
+    if (!model || model.get('type') !== 'room' || model.get('group_id')) {
+      return;
+    }
+
+    this.$list.find('[data-room-id="' + model.get('id') + '"]').addClass('active');
   },
   // Only keep rooms that are not in a group
   filterRooms: function () {

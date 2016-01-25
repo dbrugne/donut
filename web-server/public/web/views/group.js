@@ -126,7 +126,7 @@ var GroupView = Backbone.View.extend({
         app.trigger('openGroupJoin', response.options);
       } else {
         app.trigger('alert', 'info', i18next.t('group.default-member'));
-        app.trigger('joinGroup', {name: this.model.get('name'), popin: false});
+        app.trigger('joinGroup', this.model.get('identifier'));
       }
     }, this));
   },

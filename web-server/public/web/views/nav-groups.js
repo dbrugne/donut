@@ -3,7 +3,6 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
-var i18next = require('i18next-client');
 var urls = require('../../../../shared/util/url');
 
 module.exports = Backbone.View.extend({
@@ -23,9 +22,7 @@ module.exports = Backbone.View.extend({
   initialize: function (options) {
     this.listenTo(app, 'redrawNavigation', this.render);
     this.listenTo(app, 'redrawNavigationGroups', this.render);
-    this.listenTo(app, 'redrawNavigationRooms', this.render);
-    this.listenTo(app, 'nav-active', this.highlightFocused);
-    this.listenTo(app, 'nav-active-group', this.highlightGroup);
+    this.listenTo(app, 'focusedModelChanged', this.highlightFocused);
 
     this.listenTo(app.rooms, 'change:unviewed', this.onUnviewedChange);
 
@@ -35,6 +32,7 @@ module.exports = Backbone.View.extend({
     this.$list = this.$('.list');
   },
   render: function () {
+    // console.warn('render nav-group');
     if (!this.filterRooms().length && !app.groups.models.length) {
       this.$list.empty();
       this.$el.addClass('empty');
@@ -107,44 +105,48 @@ module.exports = Backbone.View.extend({
   onToggleCollapse: function (event) {
     $(event.currentTarget).parents('.list').toggleClass('collapsed');
   },
-  highlightFocused: function () {
-    var that = this;
-    this.$list.find('.active').each(function (item) {
-      $(this).removeClass('active');
-      var group = $(this).parents('.group');
-      group.removeClass('highlighted');
-    });
-    _.find(this.filterRooms(), _.bind(function (room) {
-      if (room.get('focused') === true) {
-        var elt = that.$list.find('[data-room-id="' + room.get('id') + '"]');
-        elt.addClass('active');
+  highlightFocused: function (model) {
+    this.$list.find('.active').removeClass('active');
+    this.$list.find('.group.highlighted').removeClass('highlighted');
 
-        // save expanded
-        if (_.indexOf(this.expanded, room.get('group_id')) === -1) {
-          this.expanded.push(room.get('group_id'));
-        }
+    if (!model) {
+      return;
+    }
 
-        // expand roomlist container
-        elt.parents('.roomlist').addClass('in');
-        var group = elt.parents('.group');
-        group.addClass('highlighted');
-        return true;
-      }
-    }, this));
-  },
-  highlightGroup: function (data) {
-    var elt = this.$list.find('[data-type="group"][data-group-id="' + data.group_id + '"]');
+    if (model.get('type') === 'group') {
+      this.$list.find('[data-type="group"][data-group-id="' + model.get('id') + '"]').addClass('active');
+      // @todo : group creation confirmation popin
+//      if (data.popin) {
+//        var $popin = $('#popin');
+//        $popin.find('.modal-title').html(i18next.t('popins.group-create.title'));
+//        $popin.find('.modal-body').html(i18next.t('popins.group-create.content', {
+//          groupname: data.group_name,
+//          groupid: data.group_id
+//        }));
+//        $popin.modal('show');
+//      }
+      return;
+    }
+
+    if (model.get('type') !== 'room' || !model.get('group_id')) {
+      return;
+    }
+
+    this.$list.find('[data-room-id="' + model.get('id') + '"]').addClass('active');
+
+    // room
+    var elt = this.$list.find('[data-room-id="' + model.get('id') + '"]');
     elt.addClass('active');
 
-    if (data.popin) {
-      var $popin = $('#popin');
-      $popin.find('.modal-title').html(i18next.t('popins.group-create.title'));
-      $popin.find('.modal-body').html(i18next.t('popins.group-create.content', {
-        groupname: data.group_name,
-        groupid: data.group_id
-      }));
-      $popin.modal('show');
+    // save expand/collapse state
+    if (_.indexOf(this.expanded, model.get('group_id')) === -1) {
+      this.expanded.push(model.get('group_id'));
     }
+
+    // expand
+    elt.parents('.roomlist').addClass('in');
+    var group = elt.parents('.group');
+    group.addClass('highlighted');
   },
   // Only keep rooms that are part of a group
   filterRooms: function () {

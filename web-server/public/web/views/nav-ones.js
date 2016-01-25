@@ -19,7 +19,7 @@ module.exports = Backbone.View.extend({
   initialize: function (options) {
     this.listenTo(app, 'redrawNavigation', this.render);
     this.listenTo(app, 'redrawNavigationOnes', this.render);
-    this.listenTo(app, 'nav-active', this.highlightFocused);
+    this.listenTo(app, 'focusedModelChanged', this.highlightFocused);
     this.listenTo(app.ones, 'change:avatar', this.render);
 
     this.listenTo(app.ones, 'change:unviewed', this.onUnviewedChange);
@@ -27,6 +27,7 @@ module.exports = Backbone.View.extend({
     this.$list = this.$('.list');
   },
   render: function () {
+    // console.warn('render nav-one');
     if (!app.ones.models.length) {
       this.$list.empty();
       return this.$el.addClass('empty');
@@ -40,17 +41,22 @@ module.exports = Backbone.View.extend({
       data.push(json);
     });
 
-    var html = this.template({list: data,  toggleCount: this.toggleCount});
+    var html = this.template({list: data, toggleCount: this.toggleCount});
     this.$list.html(html);
     return this;
   },
   onToggleCollapse: function (event) {
     $(event.currentTarget).parents('.list').toggleClass('collapsed');
   },
-  highlightFocused: function () {
+  highlightFocused: function (model) {
     this.$list.find('.active').each(function (item) {
       $(this).removeClass('active');
     });
+
+    if (!model || model.get('type') !== 'onetoone') {
+      return;
+    }
+
     var that = this;
     _.find(app.ones.models, function (one) {
       if (one.get('focused') === true) {
