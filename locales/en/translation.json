@@ -316,7 +316,7 @@
       "permalink": "Permalink of this profile",
       "editusers": "Manage users",
       "createdat": "Created on",
-      "usersallowed": "Allowed users"
+      "usersallowed": "Manage users"
     },
     "group": {
       "ownerops": "The regulars",
@@ -326,7 +326,7 @@
       "profilelink": "Profile of ",
       "editusers": "Manage users",
       "createdat": "Created on",
-      "usersallowed": "Allowed users"
+      "usersallowed": "Manage users"
     },
     "user": {
       "hisrooms": "Active in these donuts",

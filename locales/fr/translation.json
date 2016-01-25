@@ -316,7 +316,7 @@
       "permalink": "Permalien de ce profil",
       "editusers": "Gérer les utilisateurs",
       "createdat": "créé le",
-      "usersallowed": "Utilisateurs autorisés"
+      "usersallowed": "Gérer les invitations"
     },
     "group": {
       "ownerops": "Les habitués",
@@ -326,7 +326,7 @@
       "profilelink": "Profil de ",
       "editusers": "Gérer les utilisateurs",
       "createdat": "créé le",
-      "usersallowed": "Utilisateurs autorisés"
+      "usersallowed": "Gérer les invitations"
     },
     "user": {
       "hisrooms": "Ses donuts",
