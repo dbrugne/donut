@@ -53,6 +53,10 @@ module.exports = Backbone.View.extend({
         group.rooms.push(json);
         group.unviewed = group.unviewed || json.unviewed;
         group.highlighted = group.highlighted || json.focused;
+        // fill last event at with last event from room
+        if (!group.last_event_at || group.last_event_at < json.last) {
+          group.last_event_at = json.last;
+        }
         return true;
       });
 
@@ -69,6 +73,7 @@ module.exports = Backbone.View.extend({
         avatar: common.cloudinary.prepare(json.group_avatar, 40),
         unviewed: json.unviewed,
         highlighted: json.focused,
+        last_event_at: json.last,
         rooms: []
       };
       group.uri = urls(group, 'group', 'uri');
@@ -92,6 +97,7 @@ module.exports = Backbone.View.extend({
     });
 
     groups = _.sortBy(groups, 'last_event_at');
+    groups = groups.reverse();
 
     var html = this.template({
       listGroups: groups,

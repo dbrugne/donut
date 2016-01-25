@@ -193,7 +193,7 @@ var WindowView = Backbone.View.extend({
       title = i18next.t('chat.notifications.messages.roommessage', {
         name: model.get('identifier'),
         message: data.message ? common.markup.toText(data.message) : '',
-        username: (data.by_user) ? data.by_username : data.username
+        username: (data.by_username) ? data.by_username : data.username
       });
     } else {
       title = i18next.t('chat.notifications.messages.usermessage', {
@@ -205,6 +205,7 @@ var WindowView = Backbone.View.extend({
       return;
     }
     title = title.replace(/<\/*span>/g, '');
+    title = title.replace(/<\/*br>/g, '');
     this.desktopNotify(title, '');
     this.desktopNotificationsLimiters[key] = Date.now();
   },
