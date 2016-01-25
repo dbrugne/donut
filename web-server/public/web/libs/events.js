@@ -196,7 +196,11 @@ exports.prototype._data = function (type, data) {
   data.edited = (data.edited === true);
 
   // user can mark as spam ?
-  data.isOwnerAdminOrOp = this.discussion.currentUserIsOwner() || this.discussion.currentUserIsOp() || this.discussion.app.user.isAdmin();
+  if (this.discussion.get('type') === 'room') {
+    data.isOwnerAdminOrOp = this.discussion.currentUserIsOwner() || this.discussion.currentUserIsOp() || app.user.isAdmin();
+  } else {
+    data.isOwnerAdminOrOp = false;
+  }
 
   // avatar
   if (data.avatar) {
