@@ -10,7 +10,7 @@ var posterDefault = 'poster-default.png';
 
 function imageUrl (data, width, height) {
   var identifier = data.identifier;
-  var background = '#fc2063'; //data.color || '#ffffff'; // @todo dbr remove that when refactoring colors
+  var background = '#fc2063'; // data.color || '#ffffff'; // @todo dbr remove that when refactoring colors
   var facebook = data.facebook;
 
   width = (width && width > 0)
@@ -22,7 +22,6 @@ function imageUrl (data, width, height) {
 
   var options = {
     secure: true,
-    fetch_format: 'jpg',
     background: 'rgb:' + background.replace('#', '').toLocaleLowerCase()
   };
 

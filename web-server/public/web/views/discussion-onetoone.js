@@ -1,6 +1,4 @@
 var Backbone = require('backbone');
-var common = require('@dbrugne/donut-common/browser');
-var app = require('../libs/app');
 var EventsView = require('./discussion-events');
 var InputView = require('./discussion-input');
 var OneHeaderView = require('./discussion-onetoone-header');

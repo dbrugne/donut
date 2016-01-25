@@ -3,13 +3,12 @@ var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
 var currentUser = require('../libs/app').user;
 var i18next = require('i18next-client');
-var MuteView = require('./mute');
 
 module.exports = Backbone.View.extend({
   template: require('../templates/current-user.html'),
 
   initialize: function (options) {
-    this.listenTo(this.model, 'change', this.render);
+    this.listenTo(this.model, 'change:status change:realname change:username', this.render);
 
     this.$toggle = this.$('#block-current-user-toggle');
     this.$message = $('#chat').find('.mail-not-confirmed').hide();
@@ -36,8 +35,6 @@ module.exports = Backbone.View.extend({
 
     var html = this.template(data);
     this.$toggle.html(html);
-
-    this.muteView = new MuteView();
 
     return this;
   }
