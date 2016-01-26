@@ -40,30 +40,16 @@ module.exports = function (grunt) {
     };
 
     // add web
-    if (env === 'production') {
-      // @bug https://github.com/dbrugne/donut/issues/1126
-      ecosystem.apps.push({
-        name: 'web',
-        script: 'app.js',
-        env: {
-          NODE_ENV: env
-        },
-        exec_mode: 'fork',
-        cwd: './web-server'
-      });
-    } else {
-      ecosystem.apps.push({
-        name: 'web',
-        script: 'app.js',
-        env: {
-          NODE_ENV: env
-        },
-        exec_mode: 'cluster',
-        instances: 2,
-        merge_logs: true,
-        cwd: './web-server'
-      });
-    }
+    // @bug avoid cluster working in symlink dir https://github.com/dbrugne/donut/issues/1126
+    ecosystem.apps.push({
+      name: 'web',
+      script: 'app.js',
+      env: {
+        NODE_ENV: env
+      },
+      exec_mode: 'fork',
+      cwd: './web-server'
+    });
 
     // add master
     if (!pomeloMaster[ env ] || !pomeloMaster[ env ].id) {
