@@ -10,7 +10,6 @@ var posterDefault = 'poster-default.png';
 
 function imageUrl (data, width, height) {
   var identifier = data.identifier;
-  var background = '#fc2063'; // data.color || '#ffffff'; // @todo dbr remove that when refactoring colors
   var facebook = data.facebook;
 
   width = (width && width > 0)
@@ -21,8 +20,7 @@ function imageUrl (data, width, height) {
     : '__height__';
 
   var options = {
-    secure: true,
-    background: 'rgb:' + background.replace('#', '').toLocaleLowerCase()
+    secure: true
   };
 
   options.crop = (data.crop)
@@ -67,26 +65,24 @@ function imageUrl (data, width, height) {
 module.exports = {
   cloudinary: cloudinary,
 
-  roomAvatar: function (identifier, color, size) {
+  roomAvatar: function (identifier, size) {
     return imageUrl({
       default: roomAvatarDefault,
       identifier: identifier,
-      color: color,
       gravity: 'face'
     }, size, size);
   },
 
-  userAvatar: function (identifier, color, facebook, size) {
+  userAvatar: function (identifier, facebook, size) {
     return imageUrl({
       default: userAvatarDefault,
       identifier: identifier,
-      color: color,
       gravity: 'face',
       facebook: facebook
     }, size, size);
   },
 
-  poster: function (identifier, color, blur) {
+  poster: function (identifier, blur) {
     if (!identifier) {
       return '';
     }
@@ -94,7 +90,6 @@ module.exports = {
     return imageUrl({
       default: posterDefault,
       identifier: identifier,
-      color: color,
       gravity: 'center',
       effect: (blur === true)
         ? 'blur:800'

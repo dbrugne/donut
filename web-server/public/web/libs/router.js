@@ -241,13 +241,6 @@ var DonutRouter = Backbone.Router.extend({
       this.addView(model);
     }
 
-    // color
-    if (model.get('color')) {
-      app.trigger('changeColor', model.get('color'));
-    } else {
-      app.trigger('changeColor', this.defaultColor);
-    }
-
     // Update URL (always!) and page title
     app.trigger('setTitle', model.get('identifier'));
     // just change URI, not run route action

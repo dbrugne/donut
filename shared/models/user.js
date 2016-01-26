@@ -3,7 +3,6 @@ var _ = require('underscore');
 var async = require('async');
 var mongoose = require('../io/mongoose')();
 var bcrypt = require('bcrypt-nodejs');
-var colors = require('../../config/colors');
 var common = require('@dbrugne/donut-common/server');
 var cloudinary = require('../util/cloudinary');
 var RoomModel = require('./room');
@@ -24,7 +23,6 @@ var userSchema = mongoose.Schema({
   website: mongoose.Schema.Types.Mixed,
   avatar: String,
   poster: String,
-  color: String,
   local: {
     email: String,
     password: String,
@@ -77,8 +75,8 @@ var userSchema = mongoose.Schema({
  */
 userSchema.statics.getNewUser = function () {
   var model = new this();
-  var color = _.sample(colors.list);
-  model.color = color.hex;
+
+  // @todo default avatar
 
   var preferencesConfig = this.preferencesKeys();
   var preferences = {};
@@ -542,10 +540,10 @@ userSchema.methods._avatar = function (size) {
     ? this.facebook.id
     : null;
 
-  return cloudinary.userAvatar(this.avatar, this.color, facebook, size);
+  return cloudinary.userAvatar(this.avatar, facebook, size);
 };
 userSchema.methods._poster = function (blur) {
-  return cloudinary.poster(this.poster, this.color, blur);
+  return cloudinary.poster(this.poster, blur);
 };
 userSchema.methods.avatarId = function () {
   if (!this.avatar) {

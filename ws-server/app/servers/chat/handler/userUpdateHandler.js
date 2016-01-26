@@ -113,18 +113,6 @@ handler.call = function (data, session, next) {
       }
       sanitized.website = website;
 
-      // color
-      if (_.has(data.data, 'color')) {
-        if (data.data.color !== '' && !validator.isHexColor(data.data.color)) {
-          errors.color = 'color-hexadecimal'; // Color should be explained has hexadecimal (e.g.: #FF00AA).
-        } else {
-          var color = data.data.color.toLocaleUpperCase();
-          if (color !== user.color) {
-            sanitized.color = color;
-          }
-        }
-      }
-
       // welcome
       var welcome;
       if (_.has(data.data, 'welcome')) {
@@ -244,7 +232,7 @@ handler.call = function (data, session, next) {
     function prepareEventForOthers (sanitized, callback) {
       // notify only certain fields
       var sanitizedToNotify = {};
-      var fieldToNotify = ['username', 'avatar', 'poster', 'color', 'realname'];
+      var fieldToNotify = ['username', 'avatar', 'poster', 'realname'];
       _.each(Object.keys(sanitized), function (key) {
         if (fieldToNotify.indexOf(key) !== -1) {
           if (key === 'username') {
@@ -252,10 +240,6 @@ handler.call = function (data, session, next) {
           } else if (key === 'avatar') {
             sanitizedToNotify['avatar'] = user._avatar();
           } else if (key === 'poster') {
-            sanitizedToNotify['poster'] = user._poster();
-          } else if (key === 'color') {
-            sanitizedToNotify['color'] = sanitized[key];
-            sanitizedToNotify['avatar'] = user._avatar();
             sanitizedToNotify['poster'] = user._poster();
           } else if (key === 'realname') {
             sanitizedToNotify['realname'] = sanitized[key];

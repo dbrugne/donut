@@ -2,10 +2,7 @@
     <%= t('chat.search.noresults') %>
 <% } else { %>
     <% _.each(cards, function(card) { %>
-        <% var _color = card.color ? card.color.replace('#', '').toLowerCase() : 'default' %>
-
             <% if(card.type === 'user') { %>
-
                 <div class="card user">
                     <div class="top relative">
                         <div class="ctn flex-parent column center jc-center">

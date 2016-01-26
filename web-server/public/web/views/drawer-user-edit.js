@@ -4,7 +4,6 @@ var i18next = require('i18next-client');
 var app = require('../libs/app');
 var currentUser = require('../libs/app').user;
 var ImageUploader = require('./image-uploader');
-var ColorPicker = require('./color-picker');
 
 var DrawerUserEditView = Backbone.View.extend({
   template: require('../templates/drawer-user-edit.html'),
@@ -34,16 +33,11 @@ var DrawerUserEditView = Backbone.View.extend({
     return this;
   },
   _remove: function () {
-    this.colorPicker.remove();
     this.avatarUploader.remove();
     this.posterUploader.remove();
     this.remove();
   },
   onResponse: function (user) {
-    if (user.color) {
-      this.trigger('color', user.color);
-    }
-
     var currentAvatar = user.avatar;
 
     var html = this.template({user: user});
@@ -58,13 +52,6 @@ var DrawerUserEditView = Backbone.View.extend({
 
     // website
     this.$website = this.$('input[name=website]');
-
-    // color
-    this.colorPicker = new ColorPicker({
-      color: user.color,
-      name: 'color',
-      el: this.$('.user-color').first()
-    });
 
     // avatar
     this.avatarUploader = new ImageUploader({
@@ -101,8 +88,7 @@ var DrawerUserEditView = Backbone.View.extend({
       realname: this.$('input[name=realname]').val(),
       bio: this.$('textarea[name=bio]').val(),
       location: this.$('input[name=location]').val(),
-      website: this.$('input[name=website]').val(),
-      color: this.$('input[name=color]').val()
+      website: this.$('input[name=website]').val()
     };
 
     if (this.avatarUploader.data) {

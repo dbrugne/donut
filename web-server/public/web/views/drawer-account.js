@@ -49,9 +49,6 @@ var DrawerUserEditView = Backbone.View.extend({
     if (!user || !user.account) {
       return this.trigger('close');
     }
-    if (user.color) {
-      this.trigger('color', user.color);
-    }
 
     var html = this.template({user: user});
     this.$el.html(html);

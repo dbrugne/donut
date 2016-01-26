@@ -145,9 +145,7 @@ Notification.prototype.sendEmail = function (model, done) {
           return;
         }
 
-        list[ index ].data.message = utils.mentionize(event.data.message, {
-          style: 'color: ' + conf.room.default.color + ';'
-        });
+        list[ index ].data.message = utils.mentionize(event.data.message, {});
       });
 
       callback(null, history, events);
@@ -235,8 +233,8 @@ Notification.prototype.populateNotification = function (notification, done) {
   }
 
   var q = HistoryOneModel.findOne({_id: notification.data.event.toString()})
-    .populate('from', 'username avatar color facebook')
-    .populate('to', 'username avatar color facebook');
+    .populate('from', 'username avatar facebook')
+    .populate('to', 'username avatar facebook');
   q.exec(function (err, event) {
     if (err) {
       return done(err);

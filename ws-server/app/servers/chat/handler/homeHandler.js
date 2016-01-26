@@ -43,7 +43,7 @@ handler.call = function (data, session, next) {
         })
           .sort({priority: -1, 'last_event_at': -1})
           .limit(roomLimit + 1)
-          .populate('group', 'name avatar color')
+          .populate('group', 'name avatar')
           .populate('owner', 'username avatar');
 
         q.exec(function (err, dbrooms) {
@@ -88,7 +88,7 @@ handler.call = function (data, session, next) {
           return callback(null);
         }
 
-        var q = User.find({username: {$ne: null}}, 'username avatar color facebook location');
+        var q = User.find({username: {$ne: null}}, 'username avatar facebook location');
         q.sort({'lastonline_at': -1, 'lastoffline_at': -1})
           .limit(userLimit);
 
@@ -116,7 +116,6 @@ handler.call = function (data, session, next) {
             username: u.username,
             location: u.location,
             avatar: u._avatar(),
-            color: u.color,
             sort: index
           });
         });
@@ -166,7 +165,6 @@ handler.call = function (data, session, next) {
             room_id: room.id,
             topic: room.topic,
             description: room.description,
-            color: room.color,
             avatar: room._avatar(),
             users: count,
             last_event_at: new Date(room.last_event_at).getTime(),
@@ -196,7 +194,6 @@ handler.call = function (data, session, next) {
             identifier: group.getIdentifier(),
             group_id: group.id,
             disclaimer: group.disclaimer,
-            color: group.color,
             avatar: group._avatar(),
             users: count,
             priority: group.priority || 0

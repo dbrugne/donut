@@ -47,11 +47,6 @@ var RoomBlockedView = Backbone.View.extend({
   removeView: function () {
     this.remove();
   },
-  changeColor: function () {
-    if (this.model.get('focused')) {
-      app.trigger('changeColor', this.model.get('color'));
-    }
-  },
   onJoin: function (event) {
     app.client.roomBecomeMember(this.model.get('id'), _.bind(function (data) {
       if (data.err) {

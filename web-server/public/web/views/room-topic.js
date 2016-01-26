@@ -50,8 +50,7 @@ var RoomTopicView = Backbone.View.extend({
     } else {
       // mentions
       var htmlTopic = common.markup.toHtml(currentTopic, {
-        template: require('../templates/markup.html'),
-        style: 'color: ' + this.model.get('color')
+        template: require('../templates/markup.html')
       });
       this.$('.txt')
         .html(htmlTopic)

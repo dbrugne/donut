@@ -6,8 +6,6 @@ var app = require('../libs/app');
 var DrawerView = Backbone.View.extend({
   defaultSize: '280px',
 
-  defaultColor: '#000000',
-
   el: $('#drawer'),
 
   shown: false,
@@ -34,15 +32,10 @@ var DrawerView = Backbone.View.extend({
     this.currentSize = size;
     return this;
   },
-  setColor: function (color) {
-    this.currentColor = color;
-    return this;
-  },
   setView: function (view) {
     this.contentView = view;
     this.$content.html(view.$el);
 
-    this.listenTo(view, 'color', this.color);
     this.listenTo(view, 'close', this.close);
 
     return this;
@@ -58,13 +51,6 @@ var DrawerView = Backbone.View.extend({
     this._hide();
     $('body').removeClass('drawer-open');
   },
-  color: function (color) {
-    color = (this._validHex(color))
-      ? color
-      : this.defaultColor;
-
-    app.trigger('changeColor', color, true);
-  },
   detectOutsideClick: function (event) {
     var subject = this.$('.content').first();
     if (event.target.className !== subject.attr('class') && !subject.has(event.target).length) {
@@ -78,7 +64,6 @@ var DrawerView = Backbone.View.extend({
   _show: function () {
     this._height();
 
-    // this.color(this.currentColor, true);
     this.trigger('show');
     this.shown = true;
 
@@ -110,7 +95,6 @@ var DrawerView = Backbone.View.extend({
   _hide: function () {
     this.trigger('hide');
 
-    var wasShown = this.shown;
     this.shown = false;
 
     // escape key
@@ -125,9 +109,6 @@ var DrawerView = Backbone.View.extend({
       complete: function () {
         that.$wrap.css('left', '-10000px');
         that.$el.hide();
-        if (wasShown) {
-          app.trigger('changeColor', '', false, true);
-        }
         if (that.contentView) {
           if (_.isFunction(that.contentView._remove)) {
             that.contentView._remove();

@@ -109,8 +109,7 @@ module.exports = Backbone.View.extend({
       $('<div class="text"></div>').insertAfter(this.$('#' + data.event).find('.message-edit'));
     }
     var msg = common.markup.toHtml(data.message, {
-      template: require('../templates/markup.html'),
-      style: 'color: ' + this.model.get('color')
+      template: require('../templates/markup.html')
     });
     msg = $.smilify(msg);
     data.message = msg;

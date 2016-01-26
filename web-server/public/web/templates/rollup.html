@@ -15,8 +15,7 @@
                         </span><i class="icon status icon-dot-circle-o <%= result.status %>" title="<%= result.status %>"></i>
                         <span class="bio"><%= result.bio  %></span>
                     <% } else if (type === 'rooms') { %>
-                        <% var _color = result.color ? result.color.replace('#','').toLowerCase() : 'default' %>
-                        <span class="relative dc-i-<%=_color%>">
+                        <span class="relative">
                             <img class="avatar_ctn" src="<%= result.avatarUrl %>">
                             <% if (result.type === 'group') { %>
                                 <span class="group-type img-circle dc-back dc-text-contrast">

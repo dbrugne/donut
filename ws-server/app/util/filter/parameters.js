@@ -35,7 +35,7 @@ Filter.prototype.before = function (data, session, next) {
       var q = UserModel.findOne({ _id: session.uid });
 
       if (data.__route__ === 'chat.preferencesReadHandler.call') {
-        q.populate('bans.user', 'username avatar color facebook');
+        q.populate('bans.user', 'username avatar facebook');
       }
       q.exec(function (err, user) {
         if (err) {
@@ -58,10 +58,10 @@ Filter.prototype.before = function (data, session, next) {
 
       // @todo yls : need all this population for each route??
       GroupModel.findOne({ _id: data.group_id })
-        .populate('owner', 'username avatar color facebook online')
-        .populate('op', 'username avatar color facebook')
-        .populate('bans.user', 'username avatar color facebook')
-        .populate('members', 'username avatar color facebook')
+        .populate('owner', 'username avatar facebook online')
+        .populate('op', 'username avatar facebook')
+        .populate('bans.user', 'username avatar facebook')
+        .populate('members', 'username avatar facebook')
         .exec(callback);
     },
 
@@ -74,7 +74,7 @@ Filter.prototype.before = function (data, session, next) {
       }
 
       RoomModel.findOne({ _id: data.room_id })
-        .populate('owner', 'username avatar color facebook')
+        .populate('owner', 'username avatar facebook')
         .populate('group', 'name members bans owner default')
         .exec(callback);
     },

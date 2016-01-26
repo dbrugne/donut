@@ -28,7 +28,6 @@ var groupSchema = mongoose.Schema({
   password: String,
   password_indication: String,
   avatar: String,
-  color: String,
   description: String,
   disclaimer: String,
   website: mongoose.Schema.Types.Mixed,
@@ -131,7 +130,13 @@ groupSchema.methods.isMember = function (userId) {
 };
 
 groupSchema.statics.getNewGroup = function () {
-  return new this();
+  var model = new this();
+
+  // @todo default avatar
+
+  model.visibility = true;
+  model.priority = 0;
+  return model;
 };
 
 groupSchema.methods.isOwner = function (userId) {
@@ -168,7 +173,7 @@ groupSchema.methods.isOwnerOrOp = function (userId) {
 };
 
 groupSchema.methods._avatar = function (size) {
-  return cloudinary.roomAvatar(this.avatar, this.color, size);
+  return cloudinary.roomAvatar(this.avatar, size);
 };
 
 groupSchema.methods.avatarId = function () {

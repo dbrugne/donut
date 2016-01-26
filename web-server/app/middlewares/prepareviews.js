@@ -37,7 +37,6 @@ module.exports = function () {
     res.locals.cloudinary = conf.cloudinary;
     res.locals.facebook = conf.facebook;
     res.locals.recaptcha = conf.google.recaptcha;
-    res.locals.room_default_color = conf.room.default.color;
     res.locals.group_room_default = conf.group.default.name;
     res.locals.message_maxedittime = conf.chat.message.maxedittime * 60 * 1000;
 

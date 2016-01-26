@@ -44,10 +44,6 @@ var SearchView = require('./home-search');
 var MainView = Backbone.View.extend({
   el: $('body'),
 
-  defaultColor: '',
-
-  currentColor: '',
-
   events: {
     'click .go-to-search': 'goToSearch',
     'click .open-create-room': 'openCreateRoom',
@@ -89,8 +85,6 @@ var MainView = Backbone.View.extend({
   },
 
   initialize: function () {
-    this.defaultColor = window.room_default_color;
-
     this.listenTo(app.client, 'admin:message', this.onAdminMessage);
     this.listenTo(app.rooms, 'deleted', this.onRoomDeleted);
     this.listenTo(app, 'usernameRequired', this.onUsernameRequired);
@@ -100,7 +94,6 @@ var MainView = Backbone.View.extend({
     this.listenTo(app, 'openUserProfile', this.openUserProfile);
     this.listenTo(app, 'openGroupJoin', this.openGroupJoin);
     this.listenTo(app, 'openRoomJoin', this.openRoomJoin);
-    this.listenTo(app, 'changeColor', this.onChangeColor);
   },
   run: function () {
     this.currentUserView = new CurrentUserView({el: this.$el.find('#block-current-user'), model: app.user});
@@ -138,25 +131,6 @@ var MainView = Backbone.View.extend({
   },
   onAdminMessage: function (data) {
     app.trigger('alert', 'info', data.message);
-  },
-  _color: function (color) {
-    $('body').removeClass(function (index, css) {
-      return (css.match(/(dc-\S+)+/g) || []).join(' ');
-    }).addClass('dc-' + color.replace('#', '').toLowerCase());
-  },
-  color: function (color, temporary, reset) {
-    if (reset) {
-      return this._color(this.currentColor);
-    }
-    color = color || this.defaultColor;
-
-    if (!temporary) {
-      this.currentColor = color;
-    }
-    return this._color(color);
-  },
-  onChangeColor: function (color, temporary, reset) {
-    this.color(color, temporary, reset);
   },
   viewportIs: function (expression) {
     var pattern = /^(<|>|=)(xs|sm|md|lg)$/;

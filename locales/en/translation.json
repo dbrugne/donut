@@ -778,9 +778,6 @@
             "label": "Poster",
             "help": "The poster is the large vertical image on the right-hand side of the chat thread. Recommended dimensions: 430px width, 975px height."
           },
-          "color": {
-            "label": "Color"
-          },
           "upload": {
             "nopicture": "No picture",
             "failed": "Upload failed",
@@ -945,8 +942,7 @@
         "description": "Description must be 200 characters max.",
         "website-size": "Website must be 5 characters min. and 255 characters max.",
         "website-url": "Website must be a valid site URL.",
-        "color-hexadecimal": "Color must be explained has hexadecimal (e.g.: #FF00AA).",
-        "color-integer": "Priority must be explained has number (integer).",
+        "priority-integer": "Priority must be explained has number (integer).",
         "name-wrong-format": "Invalid name",
         "group-name-wrong-format": "Invalid name",
         "mode-wrong-format": "You must select a mode for this room",

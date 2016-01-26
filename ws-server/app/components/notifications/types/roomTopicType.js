@@ -144,9 +144,7 @@ Notification.prototype.sendEmail = function (model, done) {
     utils.retrieveHistoryRoom(model.data.event.toString()),
 
     function send (history, callback) {
-      var topic = utils.mentionize(history.data.topic, {
-        style: 'color: ' + conf.room.default.color + ';'
-      });
+      var topic = utils.mentionize(history.data.topic, {});
       if (model.user.getEmail()) {
         emailer.roomTopic(model.user.getEmail(), history.user.username, model.data.room.getIdentifier(), topic, callback);
       }
@@ -190,9 +188,9 @@ Notification.prototype.populateNotification = function (notification, done) {
   }
 
   HistoryRoomModel.findOne({_id: notification.data.event.toString()})
-    .populate('user', 'username avatar color facebook')
-    .populate('by_user', 'username avatar color facebook')
-    .populate('room', 'avatar color name group')
+    .populate('user', 'username avatar facebook')
+    .populate('by_user', 'username avatar facebook')
+    .populate('room', 'avatar name group')
     .exec(function (err, event) {
       if (err) {
         return done(err);

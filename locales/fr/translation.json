@@ -778,9 +778,6 @@
             "label": "Poster",
             "help": "Le poster est la grande image en pleine hauteur que vos interlocuteurs voient à droite de la conversation. Dimensions recommandées : largeur 430px, hauteur 1100px mini."
           },
-          "color": {
-            "label": "Couleur"
-          },
           "upload": {
             "nopicture": "Pas de photo",
             "failed": "Téléchargement échoué",
@@ -945,8 +942,7 @@
         "description": "La description devrait contenir 200 caractères max.",
         "website-size": "L'URL du site Web doit être comprise entre 5 et 200 caractères",
         "website-url": "Url du site web invalide.",
-        "color-hexadecimal": "La couleur doit être dans un format hexadécimale (e.g.: #FF00AA).",
-        "color-integer": "La priorité devrait être exprimer en nombre (entier).",
+        "priority-integer": "La priorité devrait être exprimer en nombre (entier).",
         "name-wrong-format": "Le nom du donut est invalide",
         "group-name-wrong-format": "Le nom de la communauté est invalide",
         "mode-wrong-format": "Vous devez séléctionner un mode pour ce donut",

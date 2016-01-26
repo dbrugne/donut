@@ -89,7 +89,7 @@ module.exports = function (app, msg, session, next) {
       session.set('uuid', uuid.v1());
       session.set('device', device);
 
-      // add username, avatar, color and admin flag on session
+      // add username and admin flag on session
       session.set('started', Date.now());
       session.set('username', welcome.user.username);
       if (welcome.user.admin === true) {

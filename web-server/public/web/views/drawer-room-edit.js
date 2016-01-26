@@ -4,7 +4,6 @@ var i18next = require('i18next-client');
 var app = require('../libs/app');
 var currentUser = require('../libs/app').user;
 var ImageUploader = require('./image-uploader');
-var ColorPicker = require('./color-picker');
 
 var DrawerRoomEditView = Backbone.View.extend({
   template: require('../templates/drawer-room-edit.html'),
@@ -38,16 +37,11 @@ var DrawerRoomEditView = Backbone.View.extend({
     return this;
   },
   _remove: function () {
-    this.colorPicker.remove();
     this.avatarUploader.remove();
     this.posterUploader.remove();
     this.remove();
   },
   onResponse: function (room) {
-    if (room.color) {
-      this.trigger('color', room.color);
-    }
-
     var currentAvatar = room.avatar;
     room.isAdmin = app.user.isAdmin();
 
@@ -63,13 +57,6 @@ var DrawerRoomEditView = Backbone.View.extend({
 
     // website
     this.$website = this.$('input[name=website]');
-
-    // color
-    this.colorPicker = new ColorPicker({
-      color: room.color,
-      name: 'color',
-      el: this.$('.room-color').first()
-    });
 
     // avatar
     this.avatarUploader = new ImageUploader({
@@ -106,8 +93,7 @@ var DrawerRoomEditView = Backbone.View.extend({
 
     var updateData = {
       description: this.$('textarea[name=description]').val(),
-      website: this.$website.val(),
-      color: this.$('input[name=color]').val()
+      website: this.$website.val()
     };
 
     if (currentUser.get('admin') === true) {

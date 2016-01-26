@@ -94,7 +94,6 @@ handler.call = function (data, session, next) {
 
       read.avatar = room._avatar();
       read.poster = room._poster();
-      read.color = room.color;
       read.website = room.website;
       read.topic = room.topic;
       read.description = room.description;
@@ -128,10 +127,10 @@ handler.call = function (data, session, next) {
       }
 
       RoomModel.populate(room, [
-        { path: 'op', select: 'username avatar color facebook' },
-        { path: 'users', select: 'username avatar color facebook' },
-        { path: 'bans.user', select: 'username avatar color facebook' },
-        { path: 'devoices.user', select: 'username avatar color facebook' }
+        { path: 'op', select: 'username avatar facebook' },
+        { path: 'users', select: 'username avatar facebook' },
+        { path: 'bans.user', select: 'username avatar facebook' },
+        { path: 'devoices.user', select: 'username avatar facebook' }
       ], function (err) {
         if (err) {
           return callback(err);
@@ -141,8 +140,7 @@ handler.call = function (data, session, next) {
           return {
             user_id: u.id,
             username: u.username,
-            avatar: u._avatar(),
-            color: u.color
+            avatar: u._avatar()
           };
         };
 

@@ -17,8 +17,8 @@ module.exports = function (req, res, next, groupname) {
   }
 
   GroupModel.findByName(groupname)
-    .populate('owner', 'username avatar color location website facebook')
-    .populate('op', 'username avatar color location website facebook')
+    .populate('owner', 'username avatar location website facebook')
+    .populate('op', 'username avatar location website facebook')
     .exec(function (err, model) {
       if (err) {
         req.flash('error', err);
@@ -30,7 +30,6 @@ module.exports = function (req, res, next, groupname) {
           id: model.id,
           name: model.name,
           avatar: model._avatar(160),
-          color: model.color,
           disclaimer: model.disclaimer,
           website: model.website,
           created_at: model.created_at
@@ -50,7 +49,6 @@ module.exports = function (req, res, next, groupname) {
             id: model.owner.id,
             username: model.owner.username,
             avatar: model.owner._avatar(80),
-            color: model.owner.color,
             chat: (model.owner.username)
               ? req.protocol + '://' + conf.fqdn + urls(model.owner, 'user', 'chat')
               : '',
@@ -72,7 +70,6 @@ module.exports = function (req, res, next, groupname) {
               id: _model.id,
               username: _model.username,
               avatar: _model._avatar(80),
-              color: _model.color,
               chat: (_model.username)
                 ? req.protocol + '://' + conf.fqdn + urls(_model, 'user', 'chat')
                 : '',
@@ -116,7 +113,6 @@ module.exports = function (req, res, next, groupname) {
               room_id: r.id,
               avatar: r._avatar(160),
               mode: r.mode,
-              color: r.color,
               name: r.name,
               users: (r.users)
                 ? r.users.length

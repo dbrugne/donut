@@ -66,11 +66,6 @@ var DrawerRoomProfileView = Backbone.View.extend({
     var html = this.template({room: room});
     this.$el.html(html);
     date.from('date', this.$('.created span'));
-
-    if (room.color) {
-      this.trigger('color', room.color);
-    }
-
     this.initializeTooltips();
   },
   initializeTooltips: function () {
@@ -83,7 +78,7 @@ var DrawerRoomProfileView = Backbone.View.extend({
       container: 'body',
       template: '<div class="tooltip tooltip-home-users" role="tooltip"><div class="tooltip-inner right"></div></div>',
       title: function () {
-        return '<div class="username" style="' + this.dataset.bgcolor + '">@' + this.dataset.username + '</div>';
+        return '<div class="username">@' + this.dataset.username + '</div>';
       }
     });
   }

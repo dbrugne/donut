@@ -4,7 +4,6 @@ var i18next = require('i18next-client');
 var app = require('../libs/app');
 var currentUser = require('../libs/app').user;
 var ImageUploader = require('./image-uploader');
-var ColorPicker = require('./color-picker');
 
 var DrawerGroupEditView = Backbone.View.extend({
   template: require('../templates/drawer-group-edit.html'),
@@ -37,15 +36,10 @@ var DrawerGroupEditView = Backbone.View.extend({
     return this;
   },
   _remove: function () {
-    this.colorPicker.remove();
     this.avatarUploader.remove();
     this.remove();
   },
   onResponse: function (group) {
-    if (group.color) {
-      this.trigger('color', group.color);
-    }
-
     group.isOwner = (group.owner)
       ? (group.owner_id === currentUser.get('user_id'))
       : false;
@@ -66,13 +60,6 @@ var DrawerGroupEditView = Backbone.View.extend({
 
     // website
     this.$website = this.$('input[name=website]');
-
-    // color
-    this.colorPicker = new ColorPicker({
-      color: group.color,
-      name: 'color',
-      el: this.$('.group-color').first()
-    });
 
     // avatar
     this.avatarUploader = new ImageUploader({
@@ -97,8 +84,7 @@ var DrawerGroupEditView = Backbone.View.extend({
 
     var updateData = {
       description: this.$('textarea[name=description]').val(),
-      website: this.$website.val(),
-      color: this.$('input[name=color]').val()
+      website: this.$website.val()
     };
 
     if (currentUser.get('admin') === true) {

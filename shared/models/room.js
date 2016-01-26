@@ -44,7 +44,6 @@ var roomSchema = mongoose.Schema({
   }],
   avatar: String,
   poster: String,
-  color: String,
   topic: String,
   description: String,
   disclaimer: String,
@@ -97,7 +96,7 @@ roomSchema.statics.findByIdentifier = function (identifier, callback) {
       return callback(null);
     }
     that.populate(room, [
-      {path: 'owner', select: 'username avatar color facebook'},
+      {path: 'owner', select: 'username avatar facebook'},
       {path: 'group', select: 'name members owner'}
     ], callback);
   };
@@ -135,14 +134,21 @@ roomSchema.statics.findByUser = function (userId) {
 };
 
 roomSchema.statics.getNewRoom = function () {
-  return new this();
+  var model = new this();
+
+  // @todo default avatar
+
+  model.last_event_at = Date.now();
+  model.visibility = false;
+  model.priority = 0;
+  return model;
 };
 
 roomSchema.methods._avatar = function (size) {
-  return cloudinary.roomAvatar(this.avatar, this.color, size);
+  return cloudinary.roomAvatar(this.avatar, size);
 };
 roomSchema.methods._poster = function (blur) {
-  return cloudinary.poster(this.poster, this.color, blur);
+  return cloudinary.poster(this.poster, blur);
 };
 
 roomSchema.methods.avatarId = function () {

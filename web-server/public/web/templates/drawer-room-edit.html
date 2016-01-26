@@ -28,11 +28,6 @@
             <div class="room-poster"></div>
             <p class="help-block"><%= t('chat.form.common.edit.poster.help') %></p>
         </div>
-        <div class="block">
-            <label><%= t('chat.form.common.edit.color.label') %></label>
-            <div class="room-color"></div>
-        </div>
-
         <% if (room.isAdmin) { %>
             <div class="block admin">
                 <label><%= t('chat.form.room-form.edit.visibility.label') %></label>

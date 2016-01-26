@@ -97,18 +97,6 @@ handler.call = function (data, session, next) {
       }
       sanitized.website = website;
 
-      // color
-      if (_.has(data.data, 'color')) {
-        if (data.data.color !== '' && !validator.isHexColor(data.data.color)) {
-          errors.color = 'color-hexadecimal'; // Color should be explained has hexadecimal (e.g.: #FF00AA).
-        } else {
-          var color = data.data.color.toLocaleUpperCase();
-          if (color !== group.color) {
-            sanitized.color = color;
-          }
-        }
-      }
-
       // A password is to update
       if (_.has(data.data, 'password')) {
         var password = data.data.password;
@@ -139,7 +127,7 @@ handler.call = function (data, session, next) {
         // priority
         if (_.has(data.data, 'priority')) {
           if (data.data.priority !== '' && !validator.isNumeric(data.data.priority)) {
-            errors.color = 'color-integer'; // Priority should be explained has number (integer).
+            errors.priority = 'priority-integer';
           } else {
             var priority = data.data.priority;
             if (priority !== group.priority) {
@@ -205,13 +193,10 @@ handler.call = function (data, session, next) {
     function broadcast (sanitized, callback) {
       // notify only certain fields
       var sanitizedToNotify = {};
-      var fieldToNotify = ['avatar', 'color'];
+      var fieldToNotify = ['avatar'];
       _.each(Object.keys(sanitized), function (key) {
         if (fieldToNotify.indexOf(key) !== -1) {
           if (key === 'avatar') {
-            sanitizedToNotify['avatar'] = group._avatar();
-          } else if (key === 'color') {
-            sanitizedToNotify['color'] = sanitized[key];
             sanitizedToNotify['avatar'] = group._avatar();
           }
         }

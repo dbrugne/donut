@@ -38,7 +38,6 @@ var HomeView = Backbone.View.extend({
     }
     this.$el.show();
     app.trigger('setTitle');
-    app.trigger('changeColor');
   },
   onHome: function (data) {
     data.fill = true;
