@@ -1,10 +1,12 @@
 'use strict';
 var _ = require('underscore');
+var async = require('async');
 var mongoose = require('../io/mongoose')();
 var bcrypt = require('bcrypt-nodejs');
 var colors = require('../../config/colors');
 var common = require('@dbrugne/donut-common/server');
 var cloudinary = require('../util/cloudinary');
+var RoomModel = require('./room');
 
 var userSchema = mongoose.Schema({
   username: String,
@@ -51,7 +53,7 @@ var userSchema = mongoose.Schema({
   unviewed: [{
     room: {type: mongoose.Schema.ObjectId, ref: 'Room'},
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
-    event: {type: mongoose.Schema.ObjectId} // not use actually, first unviewed event, could be use to replace current "heavy" viewed management
+    event: {type: mongoose.Schema.ObjectId}
   }],
   bans: [{
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
@@ -427,6 +429,63 @@ userSchema.methods.resetUnviewedOne = function (userId, fn) {
     $pull: {unviewed: {user: userId}}
   }).exec(function (err) {
     fn(err); // there is a bug that cause a timeout when i call directly fn() without warping in a local function (!!!)
+  });
+};
+userSchema.statics.unviewedCount = function (userId, fn) {
+  var _id;
+  if (_.isString(userId)) {
+    _id = mongoose.Types.ObjectId(userId);
+  } else {
+    _id = userId;
+  }
+  var that = this;
+  async.waterfall([
+    function roomsIsIn (callback) {
+      RoomModel.findByUser(_id).select('_id').exec(function (err, rooms) {
+        if (err) {
+          return callback(err);
+        }
+
+        var roomIds = [];
+        if (rooms.length) {
+          roomIds = _.map(rooms, 'id');
+        }
+
+        return callback(null, roomIds);
+      });
+    },
+    function retrieveUser (roomIds, callback) {
+      that.findOne({_id: _id}, 'unviewed ones').exec(function (err, user) {
+        if (err) {
+          return callback(err);
+        }
+
+        var count = 0;
+        if (user && user.unviewed && user.unviewed.length) {
+          // list open ones
+          var oneIds = [];
+          if (user.ones) {
+            oneIds = _.map(user.ones, function (one) {
+              return one.user.toString();
+            });
+          }
+
+          // count
+          _.each(user.unviewed, function (u) {
+            if (u.user && oneIds.indexOf(u.user.toString()) !== -1) {
+              count = count + 1;
+            }
+            if (u.room && roomIds.indexOf(u.room.toString()) !== -1) {
+              count = count + 1;
+            }
+          });
+        }
+
+        return callback(null, count);
+      });
+    }
+  ], function (err, count) {
+    return fn(err, count);
   });
 };
 

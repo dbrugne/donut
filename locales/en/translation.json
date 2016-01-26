@@ -166,6 +166,7 @@
     "groups": "Communities",
     "validate": "validate",
     "collapse": "collapse",
+    "expend": "expend",
     "members": "<strong>__count__</strong> member",
     "members_plural": "<strong>__count__</strong> members",
     "discover": "discover",
@@ -313,9 +314,9 @@
         "after": "on the chat platform <a href=\"/\">DONUT.me</a>. On <a href=\"/\">DONUT.me</a> you can join or create a thematic chat room (a donut) about whatever you like. You can chat with people who share your interests."
       },
       "permalink": "Permalink of this profile",
-      "editusers": "Manage users",
+      "editusers": "User list",
       "createdat": "Created on",
-      "usersallowed": "Allowed users"
+      "usersallowed": "Manage users"
     },
     "group": {
       "ownerops": "The regulars",
@@ -325,7 +326,7 @@
       "profilelink": "Profile of ",
       "editusers": "Manage users",
       "createdat": "Created on",
-      "usersallowed": "Allowed users"
+      "usersallowed": "Manage users"
     },
     "user": {
       "hisrooms": "Active in these donuts",
@@ -382,7 +383,7 @@
         "room": "You are mute in this donut as requested by a moderator",
         "confirm": "Action authorized to verified accounts only. Verify your e-mail."
       },
-      "unlock": "(Click here to unblock)"
+      "unlock": "unblock"
     },
     "help": "Help",
     "room-discussion": {
@@ -517,7 +518,7 @@
         "invite": "You are about to authorize @__username__. A notification will be sent to invite @__username__ to join #__name__.",
         "requestallowance": "<strong>Membership request.</strong><br>The community creator will have access to your real name and email.",
         "add-email": "New email:",
-        "send-email": "A confirmation mail gonna be send to __email__",
+        "send-email": "A verification e-mail will be sent to __email__",
         "delete-email": "__email__ will be deleted of your address",
         "change-email": "You are about to make __email__ your main email. It will be your log-in e-mail and the only one we use to send you notifications.",
         "add-domain": "Enter the trusted e-mail domain to add.<br>Reminder: Any user with such an e-mail can join the community directly. No membership request, invitation, or password required.",
@@ -599,7 +600,7 @@
         "roomjoin": "<span>@__username__</span> joined <span>__name__</span>",
         "roomjoinrequest": "<span>@__username__</span> wants to join <span>__name__</span>",
         "roomtopic": "New topic in <span>__name__</span>, __topic__",
-        "roommessage": "New message in <span>__name__</span> __message__",
+        "roommessage": "<span>__name__</span></br> @__username__: __message__",
         "usermention": "You were mentionned in <span>__name__</span>",
         "usermessage": "<span>@__username__</span> __message__",
         "roominvite": "<span>@__username__</span> invites you to join <span>__name__</span>",
@@ -837,7 +838,7 @@
                 "To confirm deletion please enter community name (<strong>__name__</strong>) and then click the button:"
               ],
               "placeholder": "Enter the community name",
-              "success": "community deleted!",
+              "success": "Community deleted",
               "error": {
                 "permanent": "It is not possible to delete a 'permanent' community"
               }
@@ -1005,7 +1006,7 @@
     },
     "joinroom": {
       "title": "Join donut <strong>__identifier__</strong>",
-      "message": "Users can participate to the conversation and receive notification from this donut",
+      "message": "Users can participate in the discussions and receive notifications about it.",
       "disclaimer": "Message from <strong>@__username__</strong> :<br><i class=\"icon icon-quote\"></i>__disclaimer__",
       "allowedpending": "Access to this donut is by invitation, and you already have a request in progress.",
       "options": {
@@ -1028,7 +1029,10 @@
     "already-member": "<strong>@__username__</strong> is already member this community",
     "banned": "<strong>@__username__</strong> is already ban this community",
     "default-member": "You are a member of this community",
-    "default-disclaimer": "You are not yet a member of this community. Click \"request membership\" to apply for.",
+    "default-owner": "You are owner of this community",
+    "default-op": "You are an admin of this community",
+    "default-admin": "You are an admin",
+    "default-disclaimer": "You are not yet a member of this community so you can only see public content.",
     "disclaimer-start": "You are not yet a member of this community You can join public donuts or request access to a private donut. Members have special priviledges such as direct access to certain private donuts and to other members of this community.",
     "disclaimer-end": "Before you request membership have a glance at this community access conditions :",
     "close": "leave this community",
@@ -1043,7 +1047,7 @@
     },
     "email": {
       "label": "E-mail",
-      "success": "Your new e-mail has been saved",
+      "success": "Your new email address has been saved. Check your inbox to verify it.",
       "error": {
         "format": "Invalid e-mail",
         "alreadyexists": "This e-mail is already used by another account",
@@ -1134,10 +1138,17 @@
     "welcome": {
       "subject": "Welcome ! Activate your account",
       "content": {
-        "title": "Welcome !",
-        "infos": "Activate your account",
-        "disclaimer": "Congrats, just one click on this beautiful big pink button and you're done",
+        "title": "Welcome @__username__",
+        "disclaimer": "Congrats @__username__, just one click on this beautiful big pink button and you're done:",
         "button": "Activate my account"
+      }
+    },
+    "welcomeFacebook": {
+      "subject": "Welcome to DONUT",
+      "content": {
+        "title": "Welcome",
+        "disclaimer": "Congrats, your account was successfully created. Come and enjoy a tasty discussion with us:",
+        "button": "Sign in"
       }
     },
     "forgot": {
@@ -1150,12 +1161,10 @@
       }
     },
     "verify": {
-      "subject": "Activate your account",
+      "subject": "Verify your e-mail on DONUT",
       "content": {
-        "title": "Hello @__username__ !",
-        "infos": "Activate your account",
-        "disclaimer": "In order to link your e-mail to the DONUT account @__username__, click this beautiful big pink button",
-        "button": "Activate my account"
+        "title": "Hello @__username__, verify your e-mail.",
+        "button": "Verify my email"
       }
     },
     "passwordchanged": {

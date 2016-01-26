@@ -178,15 +178,6 @@ Facade.prototype.retrieveUserNotificationsUnviewed = function (uid, callback) {
   });
 };
 
-Facade.prototype.retrieveUserNotificationsUnviewedCount = function (uid, callback) {
-  NotificationModel.find({
-    user: uid,
-    done: false,
-    viewed: false,
-    to_browser: true
-  }).count().exec(callback);
-};
-
 Facade.prototype.retrieveUserNotificationsCount = function (uid, time, callback) {
   var criteria = {
     user: uid,

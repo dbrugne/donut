@@ -9,7 +9,7 @@ var MessageEditView = require('./message-edit');
 module.exports = Backbone.View.extend({
   events: {
     'click .actions .action.edit': 'onEdit',
-    'click .block.message .text': 'onEdit',
+    'dblclick .block.message .text': 'onEdit',
     'keydown .form-message-edit': 'editNext'
   },
 

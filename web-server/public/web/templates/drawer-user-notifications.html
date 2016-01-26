@@ -23,7 +23,9 @@
             <div class="messages-list" id="main-navbar-messages"><!-- Loaded dynamically --></div>
             <div class="actions flex-parent mt5 jc-center">
                 <div class="read-more btn btn-default"><%= t('chat.notifications.read-more') %></div>
-                <div class="loading hidden"><i class="icon icon-spinner icon-spin"></i></div>
+                <div class="loading hidden">
+                    <%=spinner%>
+                </div>
             </div>
         </div>
     </div>

@@ -110,12 +110,12 @@ notificationSchema.statics.bulkInsert = function (models, fn) {
 };
 
 /**
- * Count unread notification for the given user
+ * Count unviewed notification for the given user
  *
  * @param userId
  * @param callback
  */
-notificationSchema.statics.unreadCount = function (userId, callback) {
+notificationSchema.statics.unviewedCount = function (userId, callback) {
   this.find({
     user: userId,
     done: false,

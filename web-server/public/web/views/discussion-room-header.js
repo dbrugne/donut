@@ -8,7 +8,7 @@ var TopicView = require('./room-topic');
 var RoomView = Backbone.View.extend({
   tagName: 'div',
 
-  className: 'discussion-header',
+  className: 'discussion-header-room',
 
   template: require('../templates/discussion-room-header.html'),
 

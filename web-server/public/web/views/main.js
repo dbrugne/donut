@@ -7,7 +7,6 @@ var debug = require('../libs/donut-debug')('donut:main');
 
 var i18next = require('i18next-client');
 var ConnectionModalView = require('./modal-connection');
-// var WelcomeModalView = require('./modal-welcome');
 var CurrentUserView = require('./current-user');
 var AlertView = require('./alert');
 var DrawerView = require('./drawer');
@@ -40,7 +39,6 @@ var NavOnesView = require('./nav-ones');
 var NavRoomsView = require('./nav-rooms');
 var NavGroupsView = require('./nav-groups');
 var ConfirmationView = require('./modal-confirmation');
-var MuteView = require('./mute');
 var SearchView = require('./home-search');
 
 var MainView = Backbone.View.extend({
@@ -58,7 +56,6 @@ var MainView = Backbone.View.extend({
     'click .open-user-account': 'openUserAccount',
     'click .open-user-profile': 'onOpenUserProfile',
     'click .open-current-user-profile': 'onOpenCurrentUserProfile',
-    'click .toggle-current-user-sounds': 'onToggleCurrentUserSounds',
     'click .open-user-notifications': 'onOpenUserNotifications',
     'dblclick .dbl-open-user-profile': 'onOpenUserProfile',
     'click .open-room-profile': 'onOpenRoomProfile',
@@ -115,7 +112,6 @@ var MainView = Backbone.View.extend({
     this.alertView = new AlertView();
     this.connectionView = new ConnectionModalView();
     // this.welcomeView = new WelcomeModalView();
-    this.muteView = new MuteView();
     this.notificationsView = new NotificationsView();
     this.searchView = new SearchView({
       el: this.$('#navbar .search')
@@ -138,14 +134,6 @@ var MainView = Backbone.View.extend({
     return this.openModalChooseUsername();
   },
   onReady: function () {
-    // if (this.firstConnection) { // show if true or if undefined
-    //   if (app.user.shouldDisplayWelcome()) {
-    //     this.welcomeView.render(data);
-    //     this.welcomeView.show();
-    //   }
-    // }
-
-    this.notificationsView.updateHandle();
     this.connectionView.hide();
   },
   onAdminMessage: function (data) {
@@ -327,10 +315,6 @@ var MainView = Backbone.View.extend({
 
     var view = new DrawerUserProfileView({user_id: userId});
     this.drawerView.setSize('380px').setView(view).open();
-  },
-  onToggleCurrentUserSounds: function (event) {
-    event.preventDefault();
-    this.muteView.toggle();
   },
   onOpenGroupProfile: function (event) {
     this.$el.find('.tooltip').tooltip('hide');

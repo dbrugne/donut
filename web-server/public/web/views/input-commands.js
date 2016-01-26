@@ -46,7 +46,9 @@ var InputCommandsView = Backbone.View.extend({
     }
 
     // run
-    this[commandName](paramsString, parameters);
+    if (this[commandName](paramsString, parameters) === 'error') {
+      return 'error';
+    }
 
     return true;
   },
@@ -201,8 +203,7 @@ var InputCommandsView = Backbone.View.extend({
       identifier = parameters[1] + parameters[2] + parameters[3];
     } else if (parameters[1] && parameters[2]) {
       // group (#donut/)
-      identifier = parameters[1].replace('#', '');
-      return app.trigger('joinGroup', {name: identifier, popin: false});
+      return app.trigger('joinGroup', parameters[1]);
     } else {
       // room not in group (#donut)
       identifier = parameters[1];
@@ -259,24 +260,52 @@ var InputCommandsView = Backbone.View.extend({
     });
   },
   op: function (paramString, parameters) {
+    if (!parameters) {
+      return this.errorCommand('op', 'parameters');
+    }
+
     this._promote('op', parameters[1]);
   },
   deop: function (paramString, parameters) {
+    if (!parameters) {
+      return this.errorCommand('deop', 'parameters');
+    }
+
     this._promote('deop', parameters[1]);
   },
   kick: function (paramString, parameters) {
+    if (!parameters) {
+      return this.errorCommand('kick', 'parameters');
+    }
+
     this._promote('kick', parameters[1]);
   },
   ban: function (paramString, parameters) {
+    if (!parameters) {
+      return this.errorCommand('kick', 'parameters');
+    }
+
     this._promote('ban', parameters[1]);
   },
   unban: function (paramString, parameters) {
+    if (!parameters) {
+      return this.errorCommand('unban', 'parameters');
+    }
+
     this._promote('unban', parameters[1]);
   },
   unmute: function (paramString, parameters) {
+    if (!parameters) {
+      return this.errorCommand('unmute', 'parameters');
+    }
+
     this._promote('unmute', parameters[1]);
   },
   mute: function (paramString, parameters) {
+    if (!parameters) {
+      return this.errorCommand('mute', 'parameters');
+    }
+
     this._promote('mute', parameters[1]);
   },
   _promote: function (what, username) {
@@ -316,9 +345,17 @@ var InputCommandsView = Backbone.View.extend({
     });
   },
   block: function (paramString, parameters) {
+    if (!parameters) {
+      return this.errorCommand('block', 'parameters');
+    }
+
     this._userPromote('block', parameters[0].replace(/^@/, ''));
   },
   unblock: function (paramString, parameters) {
+    if (!parameters) {
+      return this.errorCommand('unblock', 'parameters');
+    }
+
     this._userPromote('unblock', parameters[0].replace(/^@/, ''));
   },
   _userPromote: function (what, username) {
@@ -512,6 +549,7 @@ var InputCommandsView = Backbone.View.extend({
       var parameters = ['', stringCommand];
       this.help(null, parameters, error);
     }
+    return 'error';
   }
 
 });

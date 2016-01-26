@@ -131,8 +131,7 @@ Notification.prototype.sendToBrowser = function (room, model, history, done) {
       topic: history.data.topic
     }
   };
-  utils.decorateWithUnreadAndPushMessage(this.facade.app, event, model.user.toString(), done);
-  //this.facade.app.globalChannelService.pushMessage('connector', 'notification:new', event, 'user:' + model.user.toString(), {}, done);
+  utils.pushNotification(this.facade.app, event, model.user.toString(), done);
 };
 
 Notification.prototype.sendEmail = function (model, done) {

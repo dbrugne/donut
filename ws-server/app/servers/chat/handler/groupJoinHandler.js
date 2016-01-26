@@ -16,6 +16,8 @@ handler.call = function (data, session, next) {
   var user = session.__currentUser__;
   var group = session.__group__;
 
+  var that = this;
+
   async.waterfall([
 
     function check (callback) {
@@ -33,6 +35,19 @@ handler.call = function (data, session, next) {
     function persistOnUser (callback) {
       user.groups.addToSet(group.id);
       user.save(function (err) {
+        return callback(err);
+      });
+    },
+
+    function sendToUserClients (callback) {
+      var groupsInfos = {
+        identifier: group.getIdentifier(),
+        name: group.name,
+        group_id: group.id,
+        id: group.id,
+        last_event_at: group.last_event_at
+      };
+      that.app.globalChannelService.pushMessage('connector', 'group:join', groupsInfos, 'user:' + user.id, {}, function (err) {
         return callback(err);
       });
     }

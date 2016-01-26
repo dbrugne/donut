@@ -1,29 +1,29 @@
-<div class="content">
-    <div class="header room flex-parent">
-        <div class="overlay-ctn relative">
-            <img class="avatar group open-group-profile curp" data-group-id="<%= group.group_id %>" src="<%= group.avatarUrl %>" alt="<%= group.identifier %> avatar">
-            <span class="group-type img-circle dc-back dc-text-contrast">
-                <i class="icon icon-users"></i>
-            </span>
-            <div class="members fs16 text-center">
-                <%= t('global.members', { count: group.members.length }) %>
-            </div>
-        </div>
-        <div class="info">
-            <div class="name open-group-profile curp" data-group-id="<%= group.group_id %>">
-                <%= group.name %>
-            </div>
-            <div class="dropdown">
-                <button class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                    <i class="icon icon-chevron-down"></i>
+<%
+var statusClass =   (isBanned)  ? 'is-banned' :
+                    (isOp)      ? 'is-op' :
+                    (isOwner)   ? 'is-owner' :
+                    (isAdmin)   ? 'is-admin' :
+                    (isMember)  ? 'is-member' : 'is-not-member';
+%>
+<div class="header flex-parent">
+    <img class="avatar group open-group-profile curp" data-group-id="<%= group.group_id %>" src="<%= group.avatarUrl %>" alt="<%= group.identifier %> avatar">
+    <div class="info flex-child flex-parent column">
+        <div class="flex-parent">
+            <div class="name open-group-profile curp" data-group-id="<%= group.group_id %>"><%= group.name %></div>
+            <div class="flex-child"></div>
+            <div class="dropdown flex-parent jc-center center">
+                <button class="dropdown-toggle flex-parent jc-center center" data-toggle="dropdown" aria-expanded="true">
+                    <i class="icon icon-cog icon-fw"></i>
                 </button>
-            <% if (isMember || isOp || isOwner || isAdmin) { %>
                 <ul class="dropdown-menu" role="menu">
-                    <!--<li role="presentation">-->
-                        <!--<a role="menuitem" tabindex="-1" href="<%= group.url %>" target="_blank" title="<%= group.name %> <%= t('global.permalink') %>">-->
-                            <!--<i class="icon icon-link"></i> <%= t('global.permalink') %>-->
-                        <!--</a>-->
-                    <!--</li>-->
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" class="open-group-profile" data-group-id="<%= group.group_id %>">
+                            <i class="icon icon-eye"></i> <%= t('global.viewprofile') %>
+                        </a>
+                    </li>
+                    <% if (isOp || isOwner || isAdmin) { %>
+                        <li role="presentation" class="divider"></li>
+                    <% } %>
                     <% if (isOwner || isAdmin ) { %>
                     <li role="presentation">
                         <a role="menuitem" tabindex="-1" class="open-group-edit" data-group-id="<%= group.group_id %>">
@@ -56,74 +56,174 @@
                     </li>
                     <% } %>
                 </ul>
-            <% } %>
             </div>
-
-            <div class="owner mt5">
-                <i class="icon icon-fw icon-clock-o dc-text left"></i> <%= t('profile.group.createdat') %><span class="ml5"><%= created %></span> <%= t('global.by') %> <strong><span class="open-user-profile fs15 dc-text" data-user-id="<%=group.owner_id %>">@<%=group.owner_username%></span></strong>
+            <div class="separator"></div>
+            <div role="presentation" class="share flex-parent jc-center center">
+                <a role="menuitem" class="clean facebook flex-parent jc-center center" tabindex="-1" data-toggle="tooltip" data-placement="left" title="<%= t('chat.share.on', {name: 'Facebook'}) %>" >
+                    <i class="icon icon-facebook-square"></i>
+                </a>
             </div>
+            <div role="presentation" class="share flex-parent jc-center center">
+                <a role="menuitem" class="clean twitter flex-parent jc-center center" tabindex="-1" data-toggle="tooltip" data-placement="left" title="<%= t('chat.share.on', {name: 'Twitter'}) %>" >
+                    <i class="icon icon-twitter-square"></i>
+                </a>
+            </div>
+            <div role="presentation" class="share flex-parent jc-center center">
+                <a role="menuitem" class="clean googleplus flex-parent jc-center center" tabindex="-1" data-toggle="tooltip" data-placement="left" title="<%= t('chat.share.on', {name: 'Google'}) %>" >
+                    <i class="icon icon-google-plus-square"></i>
+                </a>
+            </div>
+        </div>
 
+        <div class="links flex-parent center">
             <% if(group.website) { %>
-                <div class="permalink mt5">
-                    <i class="icon icon-fw icon-link dc-text"></i> <a class="colored dc-text" href="<%= group.website.href %>" target="_blank"><%= group.website.title %></a>
+                <a class="link" href="<%= group.website.href %>" target="_blank"><%= group.website.title %></a>
+            <% } %>
+
+            <span class="link"><%= t('profile.group.createdat') %> <%= created %></span>
+            <span class="link flex-parent center"><i class="icon users-icon mr5"></i> <%=group.members.length%></span>
+
+        </div>
+
+        <% if(group.description) { %>
+            <div class="description"><%= group.description %></div>
+        <% } %>
+
+        <div class="users flex-parent center">
+
+            <!--Display owner-->
+            <div class="flex-parent column owner">
+                <span class="title">Owner</span>
+                <div class="flex-parent center">
+                    <img class="avatar group open-user-profile curp" data-user-id="<%= group_users.owner.user_id %>" src="<%= group_users.owner.avatar %>" title="<%= group_users.owner.username %>" data-toggle="tooltip" data-placement="top" />
+                    <span class="username">@<%=group_users.owner.username%></span>
+                </div>
+            </div>
+
+            <!--Display op-->
+            <% if(group_users.op.length > 0) { %>
+                <div class="flex-parent column">
+                    <span class="title">Op <span class="count"><%=group_users.op.length%></span></span>
+                    <div class="flex-parent center">
+                        <% var count = 0; %>
+                        <%_.find(group_users.op, function (u) { %>
+                        <img class="avatar group open-user-profile curp" data-user-id="<%= u.user_id %>" src="<%= u.avatar %>" title="<%= u.username %>" data-toggle="tooltip" data-placement="top" />
+                        <% count ++; %>
+                        <% if (count === 6) { %><i class="icon ellipsis-icon"></i><% return true; } %>
+                        <% }); %>
+                    </div>
                 </div>
             <% } %>
 
-            <div class="description fs18 mt5">
-                <%= group.description %>
+            <!--Display members-->
+            <% if ((isMember || isOwner) && !isBanned) { %>
+                <% if(group_users.members.length > 0) { %>
+                    <div class="flex-parent column">
+                        <span class="title">Members <span class="count"><%=group_users.members.length%></span></span>
+                        <div class="flex-parent center">
+                            <% var count = 0; %>
+                            <%_.find(group_users.members, function (u) { %>
+                                <img class="avatar group open-user-profile curp" data-user-id="<%= u.user_id %>" src="<%= u.avatar %>" title="<%= u.username %>" data-toggle="tooltip" data-placement="top" />
+                                <% count ++; %>
+                                <% if (count === 6) { %><i class="icon ellipsis-icon"></i><% return true; } %>
+                            <% }); %>
+                        </div>
+                    </div>
+                <% } %>
+            <% } %>
+
+            <div class="flex-child"></div>
+
+            <div class="action-ctn flex-parent <%=statusClass%>">
+                <!--Banned message-->
+                <% if (isBanned) { %>
+                    <span class="banned-message"><%= t('chat.blocked.groupban') %></span>
+                <% } else { %>
+                    <span class="donut-button transparent toggle-collapse">
+                        <i class="icon i-icon show-is-member show-is-not-member"></i>
+                        <i class="icon icon-owner show-is-owner"></i>
+                        <i class="icon deop-icon show-is-op"></i>
+                        <i class="icon icon-star cl-warning show-is-admin"></i>
+                    </span>
+
+                    <% if (isOwner || isOp || isAdmin || isMember) { %>
+                        <!--Create a donut-->
+                        <span class="curp open-create-room donut-button black" data-group-id="<%=group.group_id%>" data-group-name="<%=group.name%>"><%= t('actions.create') %></span>
+                    <% } else { %>
+                        <!--Ask membership button for non members-->
+                        <span class="curp btn btn-primary group-join"><%= t('group.ask-membership') %></span>
+                    <% } %>
+                <% } %>
             </div>
         </div>
+
+        <div class="flex-child"></div>
     </div>
+</div>
 
-    <% if ((isMember || isOwner) && !isBanned) { %>
-    <div class="members mt10 alert alert-success">
-        <div class="actions">
-            <p class="fl-left"><%= t('group.default-member') %></p>
-            <% if (isOwner || isOp || isAdmin) { %>
-                <div class="pull-right mt5 ml5">
-                        <input type="button" class="btn btn-block btn-primary open-group-users" data-group-id="<%= group.group_id %>" value="<%= t('group.manage') %>" />
-                </div>
-                <div class="pull-right mt5 ml5">
-                    <input type="button" class="btn btn-block btn-primary open-group-users-allowed" data-group-id="<%= group.group_id %>" value="<%= t('group.invite') %>" />
-                </div>
-            <% } %>
-            <div class="pull-right mt5">
-                <span class="curp open-create-room btn-block btn btn-primary" data-group-id="<%=group.group_id%>" data-group-name="<%=group.name%>"><%= t('actions.create') %></span>
-            </div>
+<div class="header-below <%=statusClass%>">
+    <span class="arrow"></span>
+    <div class="block-ctn flex-parent center">
+        <div class="group-icon-ctn flex-parent jc-center center">
+            <div class="group-icon"></div>
         </div>
+
+        <% if (isBanned) { %>
+            <div class="text">
+                <%= t('chat.blocked.groupbanned', {at: banned_at}) %>
+                <% if (reason) { %>
+                    <%= t('chat.blocked.reason') %>
+                    <br/>
+                    <span class="reason"><em><%- reason %></em></span>
+                <% } %>
+            </div>
+            <div class="flex-child"></div>
+            <div class="actions">
+                <span class="donut-button transparent toggle-collapse curp"><i class="icon icon-times"></i></span>
+            </div>
+
+        <% } else if (isOwner || isOp || isAdmin) { %>
+            <div class="text">
+                <% if (isOwner) { %>
+                    <%= t('group.default-owner') %>
+                <% } else if (isOp) { %>
+                    <%= t('group.default-op') %>
+                <% } else { %>
+                    <%= t('group.default-admin') %>
+                <% } %>
+            </div>
+            <div class="flex-child"></div>
+            <div class="actions">
+                <span type="button" class="curp donut-button gray open-group-users mr15" data-group-id="<%= group.group_id %>" ><%= t('group.manage') %></span>
+                <span type="button" class="curp donut-button gray open-group-users-allowed" data-group-id="<%= group.group_id %>"><%= t('group.invite')%></span>
+                <span class="donut-button transparent toggle-collapse curp"><i class="icon icon-times"></i></span>
+            </div>
+
+        <% } else if (isMember) { %>
+            <div class="text"><%= t('group.default-member') %></div>
+            <div class="flex-child"></div>
+            <div class="actions">
+                <span class="donut-button transparent toggle-collapse curp"><i class="icon icon-times"></i></span>
+            </div>
+
+        <% } else { %>
+            <div class="text">
+                <% if (group.disclaimer) { %>
+                    <p><%= t('group.disclaimer-start') %><strong><span class="open-user-profile fs15 dc-text" data-user-id="<%=group.owner_id %>"></span></strong><%= t('group.disclaimer-end') %></p>
+                    <p class="mt10"><em><%= t('chat.joingroup.disclaimer', {username: group.owner_username ,disclaimer: group.disclaimer}) %></em></p>
+                <% } else { %>
+                    <p><%= t('group.default-disclaimer') %></p>
+                <% } %>
+            </div>
+            <div class="flex-child"></div>
+            <div class="actions">
+                <span class="donut-button transparent toggle-collapse curp"><i class="icon icon-times"></i></span>
+            </div>
+        <% } %>
     </div>
-    <% } %>
+</div>
 
-    <% if (!isMember && !isBanned && !isOwner) { %>
-        <div class="disclaimer mt10 alert alert-warning" role="alert">
-            <% if (group.disclaimer) { %>
-                <p><%= t('group.disclaimer-start') %><strong><span class="open-user-profile fs15 dc-text" data-user-id="<%=group.owner_id %>"></span></strong><%= t('group.disclaimer-end') %></p>
-                <p class="mt10"><em><%= t('chat.joingroup.disclaimer', {username: group.owner_username ,disclaimer: group.disclaimer}) %></em></p>
-            <% } else { %>
-                <p><%= t('group.default-disclaimer') %></p>
-            <% } %>
-
-            <div class="pull-right mt5">
-                <span class="curp btn btn-primary group-join"><%= t('group.ask-membership') %></span>
-            </div>
-
-        </div>
-    <% } %>
-
-    <% if (isBanned) { %>
-        <div class="reason mt10 alert alert-danger">
-            <strong><%= t('chat.blocked.groupbanned', {at: banned_at}) %></strong>
-            <% if (typeof reason !== 'undefined') { %>
-                <br/>
-                <%= t('chat.blocked.reason') %>
-                <span class="reason"><em><%- reason %></em></span>
-            <% } %>
-        </div>
-    <% } %>
-
-
-    <div class="user-list users mt10 header"></div>
-    <div class="mt10 title"><%= t('global.donuts') %></div>
+<div class="content">
     <div class="cards mt10 mb30"><!--Cards list--></div>
 </div>
 

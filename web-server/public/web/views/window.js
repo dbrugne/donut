@@ -28,7 +28,6 @@ var WindowView = Backbone.View.extend({
     this.listenTo(app, 'playSoundForce', this._play);
     this.listenTo(app, 'newEvent', this.onNewEvent);
     this.listenTo(app, 'setTitle', this.setTitle);
-    this.listenTo(app, 'viewedEvent', this.renderTitle);
 
     this.$window = $(window);
 
@@ -63,20 +62,9 @@ var WindowView = Backbone.View.extend({
     this.listenTo(app.client, 'admin:reload', this.onAdminReload);
   },
 
-  renderTitle: function () {
+  renderTitle: function (action) {
     var title = '';
-
-    // determine if something 'new'
-    var thereIsNew = app.rooms.some(function (d) { // first looks in rooms
-      return d.get('unviewed');
-    });
-    if (!thereIsNew) {
-      thereIsNew = app.ones.some(function (d) { // then looks in ones
-        return d.get('unviewed');
-      });
-    }
-
-    if (thereIsNew) {
+    if (action === 'newEvent') {
       title += i18next.t('chat.unread.title') + ' ';
     }
     title += this.defaultTitle;
@@ -86,7 +74,7 @@ var WindowView = Backbone.View.extend({
     }
     document.title = title;
 
-    if (!thereIsNew) {
+    if (action !== 'newEvent') {
       clearInterval(this.titleBlinker);
       return;
     }
@@ -163,32 +151,6 @@ var WindowView = Backbone.View.extend({
       return;
     }
 
-    // last event time
-    model.set('last', Date.now());
-
-    var collection = (model.get('type') === 'room')
-      ? app.rooms
-      : app.ones;
-
-    // badge (even if focused), only if user sending the message is not current user
-    if (model.get('unviewed') !== true && app.user.get('user_id') !== data.user_id) {
-      model.set('unviewed', true);
-      model.set('first_unviewed', data.id);
-    }
-
-    // update navigation
-    collection.sort();
-    if (model.get('type') === 'room') {
-      if (model.get('group_id')) {
-        app.trigger('redrawNavigationGroups');
-      } else {
-        app.trigger('redrawNavigationRooms');
-      }
-    } else {
-      app.trigger('redrawNavigationOnes');
-    }
-    app.trigger('unviewedEvent');
-
     // ignore event from current user
     if (app.user.get('user_id') === data.user_id) {
       return;
@@ -202,13 +164,13 @@ var WindowView = Backbone.View.extend({
     // play sound
     this.play();
 
-    // blink title
-    this.renderTitle();
-
     // if current window is focused do nothing more
     if (this.focused) {
       return;
     }
+
+    // blink title
+    this.renderTitle('newEvent');
 
     // desktop notification
     var key = (model.get('type') === 'room')
@@ -227,7 +189,8 @@ var WindowView = Backbone.View.extend({
     if (type === 'room:message') {
       title = i18next.t('chat.notifications.messages.roommessage', {
         name: model.get('identifier'),
-        message: data.message ? common.markup.toText(data.message) : ''
+        message: data.message ? common.markup.toText(data.message) : '',
+        username: (data.by_username) ? data.by_username : data.username
       });
     } else {
       title = i18next.t('chat.notifications.messages.usermessage', {
@@ -239,6 +202,7 @@ var WindowView = Backbone.View.extend({
       return;
     }
     title = title.replace(/<\/*span>/g, '');
+    title = title.replace(/<\/*br>/g, '');
     this.desktopNotify(title, '');
     this.desktopNotificationsLimiters[key] = Date.now();
   },

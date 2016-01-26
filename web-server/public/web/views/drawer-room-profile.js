@@ -86,12 +86,7 @@ var DrawerRoomProfileView = Backbone.View.extend({
         return '<div class="username" style="' + this.dataset.bgcolor + '">@' + this.dataset.username + '</div>';
       }
     });
-  },
-  updateCount: function (count) {
-    this.$badge.text(count);
-    this.$badgeResponsive.text(count);
   }
-
 });
 
 module.exports = DrawerRoomProfileView;

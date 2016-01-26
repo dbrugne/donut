@@ -25,22 +25,15 @@ handler.call = function (data, session, next) {
       Notifications(that.app).retrieveUserNotifications(user.id, data, callback);
     },
 
-    function retrieveMore (notifications, callback) {
+    function retrieveMore (notifications, callback) { // @todo yls : wtf??
       Notifications(that.app).retrieveUserNotificationsCount(user.id, data.time, function (err, count) {
         callback(err, notifications, (count > notifications.length));
       });
     },
 
-    function retrieveUnreadCount (notifications, more, callback) {
-      Notifications(that.app).retrieveUserNotificationsUnviewedCount(user.id, function (err, count) {
-        return callback(err, notifications, more, count);
-      });
-    },
-
-    function prepare (notifications, more, count, callback) {
+    function prepare (notifications, more, callback) {
       var event = {
         notifications: [],
-        unread: count,
         more: more
       };
       _.each(notifications, function (notification) {
@@ -106,12 +99,6 @@ handler.call = function (data, session, next) {
       });
 
       return callback(null, event);
-    },
-
-    function broadcast (event, callback) {
-      that.app.globalChannelService.pushMessage('connector', 'notification:read', event, 'user:' + user.id, {}, function (err) {
-        return callback(err, event);
-      });
     }
 
   ], function (err, event) {

@@ -109,11 +109,20 @@ emailer.verify = function (to, from, token, callback) {
   }, callback);
 };
 
-emailer.welcome = function (to, token, callback) {
+emailer.welcome = function (to, user, token, callback) {
   sendEmail(to, 'emails/signup.html', {
     token: token,
-    title: i18next.t('email.welcome.content.title'),
+    username: user.username,
+    title: i18next.t('email.welcome.content.title', {username: user.username}),
     subject: i18next.t('email.welcome.subject'),
+    email_heading_action: false
+  }, callback);
+};
+
+emailer.welcomeFacebook = function (to, callback) {
+  sendEmail(to, 'emails/signupFacebook.html', {
+    title: i18next.t('email.welcomeFacebook.content.title'),
+    subject: i18next.t('email.welcomeFacebook.subject'),
     email_heading_action: false
   }, callback);
 };

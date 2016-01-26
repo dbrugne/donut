@@ -70,7 +70,7 @@ var ModalJoinGroupView = Backbone.View.extend({
           this.$error.text(i18next.t('global.unknownerror')).show();
         }
       } else if (response.success) {
-        app.trigger('joinGroup', {name: this.data.name, popin: false});
+        app.trigger('joinGroup', this.data.identifier);
         this.trigger('close');
       }
     }, this));

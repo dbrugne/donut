@@ -173,7 +173,7 @@ handler.call = function (data, session, next) {
             priority: room.priority || 0
           };
 
-          if (room.owner !== undefined) {
+          if (room.owner) {
             _data.owner_id = room.owner.id;
             _data.owner_username = room.owner.username;
           }

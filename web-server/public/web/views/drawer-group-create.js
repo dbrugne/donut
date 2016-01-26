@@ -83,12 +83,17 @@ var DrawerGroupCreateView = Backbone.View.extend({
           var uri = urls({name: name}, 'group', 'uri');
           return this.setError(i18next.t('chat.form.errors.' + response.err, {name: name, uri: uri, defaultValue: i18next.t('global.unknownerror')}));
         }
+        if (response.err === 'room-already-exist') {
+          var uriRoom = urls({name: name}, 'room', 'uri');
+          return this.setError(i18next.t('chat.form.errors.' + response.err, {name: name, uri: uriRoom, defaultValue: i18next.t('global.unknownerror')}));
+        }
         if (response.err === 'not-confirmed') {
           return this.setError(i18next.t('chat.form.errors.' + response.err));
         }
-        return this.setError(i18next.t('global.unknownerror'));
+        return this.setError(i18next.t('chat.form.errors.' + response.err, {defaultValue: i18next.t('global.unknownerror')}));
       }
-      app.trigger('joinGroup', {name: name, popin: true});
+      // @todo : group creation confirmation popin
+      app.trigger('joinGroup', '#' + name);
       this.reset();
       this.trigger('close');
     }, this));

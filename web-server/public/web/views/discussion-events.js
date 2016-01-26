@@ -14,6 +14,7 @@ var debug = require('../libs/donut-debug')('donut:discussions');
 
 module.exports = Backbone.View.extend({
   template: require('../templates/events.html'),
+  templateSpinner: require('../templates/spinner.html'),
 
   events: {
     'mouseover .has-hover': 'mouseoverMessage',
@@ -96,7 +97,9 @@ module.exports = Backbone.View.extend({
     modelJson.created_time = (this.model.get('created_at'))
       ? date.shortTimeSeconds(this.model.get('created_at'))
       : '';
+    var spinner = this.templateSpinner({});
     var html = this.template({
+      spinner: spinner,
       chatmode: this.chatmode,
       model: modelJson,
       isOwner: (this.model.get('type') === 'room' && this.model.currentUserIsOwner())
