@@ -28,7 +28,6 @@ var WindowView = Backbone.View.extend({
     this.listenTo(app, 'playSoundForce', this._play);
     this.listenTo(app, 'newEvent', this.onNewEvent);
     this.listenTo(app, 'setTitle', this.setTitle);
-    this.listenTo(app.user, 'change:unviewedDiscussion', this.renderTitle);
 
     this.$window = $(window);
 
@@ -63,11 +62,9 @@ var WindowView = Backbone.View.extend({
     this.listenTo(app.client, 'admin:reload', this.onAdminReload);
   },
 
-  renderTitle: function () {
-    var thereIsNew = !!(app.user.get('unviewedDiscussion'));
-
+  renderTitle: function (action) {
     var title = '';
-    if (thereIsNew) {
+    if (action === 'newEvent') {
       title += i18next.t('chat.unread.title') + ' ';
     }
     title += this.defaultTitle;
@@ -77,7 +74,7 @@ var WindowView = Backbone.View.extend({
     }
     document.title = title;
 
-    if (!thereIsNew) {
+    if (action !== 'newEvent') {
       clearInterval(this.titleBlinker);
       return;
     }
@@ -167,13 +164,13 @@ var WindowView = Backbone.View.extend({
     // play sound
     this.play();
 
-    // blink title
-    this.renderTitle();
-
     // if current window is focused do nothing more
     if (this.focused) {
       return;
     }
+
+    // blink title
+    this.renderTitle('newEvent');
 
     // desktop notification
     var key = (model.get('type') === 'room')
