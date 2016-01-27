@@ -1,6 +1,5 @@
 'use strict';
 var conf = require('../../../config');
-var urls = require('../../../shared/util/url');
 
 /**
  * Register systematically some variables in views
