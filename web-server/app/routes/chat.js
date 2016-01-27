@@ -41,6 +41,12 @@ router.get('/!', function (req, res) {
   });
 });
 
+// @hack: https://github.com/dbrugne/donut/issues/1167
+router.get('/%21*', function (req, res) {
+  // String.replace() by default only replace first occurrence
+  res.redirect(req.url.replace('%21', '!'));
+});
+
 router.param('group', require('../middlewares/group-param'));
 router.get('/g/join/:group', function (req, res) {
   bouncer.set(req, req.group.chat);
