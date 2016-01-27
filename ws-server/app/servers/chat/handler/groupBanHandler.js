@@ -139,7 +139,14 @@ handler.call = function (data, session, next) {
           that.app.globalChannelService.pushMessage('connector', 'room:blocked', {room_id: room.id, why: 'groupban', reason: reason}, 'user:' + bannedUser.id, {}, function (err) {
             return cb(err);
           });
-        }, callback);
+        }, function (err) {
+          if (err) {
+            return callback(err);
+          }
+          that.app.globalChannelService.pushMessage('connector', 'group:refresh', { group_id: group.id }, 'user:' + bannedUser.id, {}, function (err) {
+            return callback(err);
+          });
+        });
       },
 
       function broadcastToRoom (callback) {
