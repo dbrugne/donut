@@ -1,7 +1,7 @@
 <div class="<% if (banned === true) { %> is-banned <% } %> <% if (i_am_banned === true) { %> i-am-banned <% } %>">
     <div class="overlay-ctn">
         <img class="avatar open-user-profile" data-user-id="<%= user_id %>" src="<%= avatar %>" alt="<%= username %> avatar">
-        <span class="user-status online"></span>
+        <span class="user-status <%= status %>"></span>
     </div>
     <div class="info flex-parent baseline">
         <div class="flex-parent baseline">
