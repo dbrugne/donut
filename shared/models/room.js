@@ -172,10 +172,6 @@ roomSchema.methods.posterId = function () {
   return data[1].substr(0, data[1].lastIndexOf('.'));
 };
 
-roomSchema.methods.numberOfUsers = function () {
-  return this.users.length;
-};
-
 roomSchema.methods.isOwner = function (userId) {
   if (!this.owner) {
     return false;

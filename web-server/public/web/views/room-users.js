@@ -81,7 +81,7 @@ var RoomUsersView = Backbone.View.extend({
     this.$list.html(html);
 
     this.$count = this.$users.find('.count');
-    var countHtml = i18next.t('chat.userscount', {count: this.model.get('users_number')});
+    var countHtml = i18next.t('chat.userscount', {count: this.collection.length});
     this.$count.html(countHtml);
 
     this.$('[data-toggle="tooltip"]').tooltip({container: 'body'});
