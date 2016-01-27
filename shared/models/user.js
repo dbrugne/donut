@@ -540,7 +540,11 @@ userSchema.methods._avatar = function (size) {
     ? this.facebook.id
     : null;
 
-  return cloudinary.userAvatar(this.avatar, facebook, size);
+  if (!this.avatar && !facebook) {
+    return 'user-' + this.id;
+  } else {
+    return cloudinary.userAvatar(this.avatar, facebook, size);
+  }
 };
 userSchema.methods._poster = function (blur) {
   return cloudinary.poster(this.poster, blur);

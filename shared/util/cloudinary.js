@@ -4,8 +4,6 @@ var cloudinary = require('cloudinary');
 var conf = require('../../config');
 cloudinary.config(conf.cloudinary);
 
-var roomAvatarDefault = 'room-avatar-default.png';
-var userAvatarDefault = 'user-avatar-default.png';
 var posterDefault = 'poster-default.png';
 
 function imageUrl (data, width, height) {
@@ -67,7 +65,13 @@ module.exports = {
 
   roomAvatar: function (identifier, size) {
     return imageUrl({
-      default: roomAvatarDefault,
+      identifier: identifier,
+      gravity: 'face'
+    }, size, size);
+  },
+
+  groupAvatar: function (identifier, size) {
+    return imageUrl({
       identifier: identifier,
       gravity: 'face'
     }, size, size);
@@ -75,7 +79,6 @@ module.exports = {
 
   userAvatar: function (identifier, facebook, size) {
     return imageUrl({
-      default: userAvatarDefault,
       identifier: identifier,
       gravity: 'face',
       facebook: facebook

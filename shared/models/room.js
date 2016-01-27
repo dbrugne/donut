@@ -53,6 +53,14 @@ var roomSchema = mongoose.Schema({
   last_event: {type: mongoose.Schema.ObjectId, ref: 'HistoryRoom'}
 });
 
+roomSchema.statics.getNewRoom = function () {
+  var model = new this();
+  model.last_event_at = Date.now();
+  model.visibility = false;
+  model.priority = 0;
+  return model;
+};
+
 roomSchema.statics.findByName = function (name) {
   return this.findOne({
     name: common.regexp.exact(name, 'i'),
@@ -133,19 +141,10 @@ roomSchema.statics.findByUser = function (userId) {
   return this.find({users: {$in: [userId]}, deleted: {$ne: true}});
 };
 
-roomSchema.statics.getNewRoom = function () {
-  var model = new this();
-
-  // @todo default avatar
-
-  model.last_event_at = Date.now();
-  model.visibility = false;
-  model.priority = 0;
-  return model;
-};
-
 roomSchema.methods._avatar = function (size) {
-  return cloudinary.roomAvatar(this.avatar, size);
+  return (this.avatar)
+    ? cloudinary.roomAvatar(this.avatar, size)
+    : 'room-' + this.id;
 };
 roomSchema.methods._poster = function (blur) {
   return cloudinary.poster(this.poster, blur);
