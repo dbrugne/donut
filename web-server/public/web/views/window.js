@@ -1,5 +1,4 @@
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../libs/app');
 var i18next = require('i18next-client');
@@ -21,10 +20,7 @@ var WindowView = Backbone.View.extend({
   beepPlaying: false,
   beepOn: false,
 
-  desktopNotificationsLimiters: null,
-
   initialize: function (options) {
-    this.listenTo(app, 'desktopNotification', this.desktopNotify);
     this.listenTo(app, 'playSoundForce', this._play);
     this.listenTo(app, 'newEvent', this.onNewEvent);
     this.listenTo(app, 'setTitle', this.setTitle);
@@ -32,8 +28,6 @@ var WindowView = Backbone.View.extend({
     this.$window = $(window);
 
     this.defaultTitle = document.title; // save original title on page load
-
-    this.desktopNotificationsLimiters = {};
 
     // Load audio elements
     var that = this;
@@ -104,9 +98,6 @@ var WindowView = Backbone.View.extend({
       model.trigger('windowRefocused'); // mark visible as read for focused discussion when window recover its focus
     }
 
-    // reset limiters
-    this.desktopNotificationsLimiters = {};
-
     this.renderTitle();
   },
   onClose: function () {
@@ -173,14 +164,9 @@ var WindowView = Backbone.View.extend({
     this.renderTitle('newEvent');
 
     // desktop notification
-    var key = (model.get('type') === 'room')
-      ? 'room:' + model.get('id')
-      : 'one:' + model.get('id');
-    var last = this.desktopNotificationsLimiters[key];
-    if (last && (Date.now() - last) <= 60 * 1000) { // 1mn
+    if (!app.user.shouldDisplayDesktopNotif()) {
       return;
     }
-
     if (type !== 'room:message' && type !== 'user:message') {
       return;
     }
@@ -189,29 +175,41 @@ var WindowView = Backbone.View.extend({
     if (type === 'room:message') {
       title = i18next.t('chat.notifications.messages.roommessage', {
         name: model.get('identifier'),
-        message: data.message ? common.markup.toText(data.message) : '',
         username: (data.by_username) ? data.by_username : data.username
       });
     } else {
       title = i18next.t('chat.notifications.messages.usermessage', {
-        username: data.username,
-        message: data.message ? common.markup.toText(data.message) : ''
+        username: data.username
       });
     }
     if (!title) {
       return;
+    } else {
+      title = title.replace(/<\/*span>/g, '').replace(/<br>/g, '');
     }
-    title = title.replace(/<\/*span>/g, '');
-    title = title.replace(/<\/*br>/g, '');
-    this.desktopNotify(title, '');
-    this.desktopNotificationsLimiters[key] = Date.now();
+
+    var msg = (data.message)
+      ? common.markup.toText(data.message)
+      : '';
+    if (msg) {
+      msg = msg.replace(/<\/*span>/g, '').replace(/<br>/g, '');
+    }
+
+    var uri;
+    if (model.get('type') === 'room') {
+      uri = model.get('identifier');
+    } else {
+      uri = '#u/' + model.get('username').toLowerCase();
+    }
+
+    desktop.notify(model.get('id'), title, msg, uri);
   },
   play: function () {
     if (!app.user.shouldPlaySound()) {
       return;
     }
 
-    // @source: // http://stackoverflow.com/questions/9419263/playing-audio-with-javascript
+    // @source: http://stackoverflow.com/questions/9419263/playing-audio-with-javascript
     if (!this.beepOn) {
       return; // Audio not supported
     }
@@ -228,38 +226,6 @@ var WindowView = Backbone.View.extend({
       return;
     }
     beep.play();
-  },
-  desktopNotify: function (title, body, force) {
-    if (!force && !app.user.shouldDisplayDesktopNotif()) {
-      return;
-    }
-
-    // Not already accepted or denied notification permission, prompt popup
-    if (desktop.permissionLevel() === desktop.PERMISSION_DEFAULT) {
-      desktop.requestPermission(_.bind(function () {
-        desktop.createNotification(title, {
-          body: body,
-          icon: {
-            'x16': 'images/donut_16x16.ico',
-            'x32': 'images/donut_32x32.ico'
-          }
-        });
-      }, this));
-      return;
-    }
-
-    // User denied it
-    if (desktop.permissionLevel() === desktop.PERMISSION_DENIED) {
-      return;
-    }
-
-    desktop.createNotification(title, {
-      body: body,
-      icon: {
-        'x16': 'images/donut_16x16.ico',
-        'x32': 'images/donut_32x32.ico'
-      }
-    });
   }
 });
 

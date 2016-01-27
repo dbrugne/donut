@@ -8,21 +8,6 @@
     <div class="errors block mb20"></div>
 
     <form class="user-form" role="form">
-        <!--<div class="form-group">-->
-            <!--<label><%= t('preferences.welcome.title') %></label>-->
-            <!--<div class="radio">-->
-                <!--<label>-->
-                    <!--<input type="radio" class="savable" name="browser:welcome" value="browser:welcome:true" <% if (preferences['browser:welcome']) { print('checked'); } %>>-->
-                    <!--<%= t('preferences.welcome.label-true') %>-->
-                <!--</label>-->
-            <!--</div>-->
-            <!--<div class="radio">-->
-                <!--<label>-->
-                    <!--<input type="radio" class="savable" name="browser:welcome" value="browser:welcome:false" <% if (!preferences['browser:welcome']) { print('checked'); } %>>-->
-                    <!--<%= t('preferences.welcome.label-false') %>-->
-                <!--</label>-->
-            <!--</div>-->
-        <!--</div>-->
         <div class="form-group">
             <label><%= t('preferences.sounds.title') %></label>
             <div class="radio">
@@ -47,9 +32,9 @@
                     <label>
                         <input class="savable" type="checkbox" value="notif:channels:desktop" <% if (preferences['notif:channels:desktop']) { print('checked'); } %>> <%= t('preferences.notif.channels.desktop') %> (<a class="desktop-notification-test"><i class="icon icon-bolt"></i> <%= t('preferences.notif.channels.desktop-test') %></a>)
                     </label>
-                    <% if (desktop && desktop !== 'granted') { %>
+                    <% if (desktopNeedsPermission) { %>
                     <label style="font-style: italic; display: block;">
-                        <%= t('preferences.notif.channels.desktop-' + desktop) %>
+                        <%= t('preferences.notif.channels.desktop-default') %>
                     </label>
                     <% } %>
                 </div>

@@ -44,7 +44,7 @@ var DrawerUserPreferencesView = Backbone.View.extend({
       username: currentUser.get('username'),
       preferences: data.preferences,
       bannedUsers: data.bannedUsers,
-      desktop: desktop.permissionLevel()
+      desktopNeedsPermission: desktop.needsPermission()
     });
     this.$el.html(html);
 
@@ -58,7 +58,7 @@ var DrawerUserPreferencesView = Backbone.View.extend({
   },
   onTestDesktopNotify: function (event) {
     event.preventDefault();
-    app.trigger('desktopNotification', i18next.t('preferences.notif.channels.desktop-notify-test'), '', true);
+    desktop.notify('test', i18next.t('preferences.notif.channels.desktop-notify-test'));
   },
   onChangeValue: function (event) {
     var $target = $(event.currentTarget);
