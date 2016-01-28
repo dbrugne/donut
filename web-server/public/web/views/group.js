@@ -142,7 +142,6 @@ var GroupView = Backbone.View.extend({
   removeView: function () {
     this.groupUsersView._remove();
     this.cardsView._remove();
-    this.headerView._remove();
     this.remove();
   },
   onFocusChange: function () {
