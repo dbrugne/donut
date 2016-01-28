@@ -6,10 +6,6 @@ var Backbone = require('backbone');
 var debug = require('./donut-debug')('donut:desktop');
 
 window.n = module.exports = {
-//    @todo WARNING
-//    if (!force && !app.user.shouldDisplayDesktopNotif()) {
-//      return;
-//    }
   notify: function (tag, title, body, uri) {
     if (!Notify.needsPermission) {
       this._notify(tag, title, body, uri);
