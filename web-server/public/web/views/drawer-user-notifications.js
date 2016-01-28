@@ -109,7 +109,9 @@ var DrawerUserNotificationsView = Backbone.View.extend({
 
     n.username = (n.data.by_user)
       ? n.data.by_user.username
-      : n.data.user.username;
+      : (n.data.user)
+        ? n.data.user.username
+        : '';
     var message = (n.data.message)
       ? common.markup.toText(n.data.message)
       : '';

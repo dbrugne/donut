@@ -36,7 +36,9 @@ var NotificationsView = Backbone.View.extend({
         : '',
       username: (data.data.by_user)
         ? data.data.by_user.username
-        : data.data.user.username,
+        : (data.data.user)
+          ? data.data.user.username
+          : '',
       message: msg,
       topic: (data.data.topic)
         ? common.markup.toText(data.data.topic)
