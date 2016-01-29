@@ -28,7 +28,7 @@ var SearchView = Backbone.View.extend({
   onKeyup: function (event) {
     event.preventDefault();
 
-    var key = keyboard._getLastKeyCode(event);
+    var key = keyboard.getLastKeyCode(event);
     var current;
     if (key.key === keyboard.ESC) {
       return this.closeResults();

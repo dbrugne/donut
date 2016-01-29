@@ -81,7 +81,7 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     }
 
     // Enter in field handling
-    var key = keyboard._getLastKeyCode(event);
+    var key = keyboard.getLastKeyCode(event);
     if (event.type === 'keyup' && key.key === keyboard.RETURN) {
       return this.onSubmit(event);
     }

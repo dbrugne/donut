@@ -35,7 +35,7 @@ module.exports = Backbone.View.extend({
     return this;
   },
   onKeyUp: function (event) {
-    var key = keyboard._getLastKeyCode(event);
+    var key = keyboard.getLastKeyCode(event);
     if (key.key === keyboard.RETURN) {
       this.onSubmit();
     }

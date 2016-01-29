@@ -13,7 +13,7 @@ var keyboard = {
   END: 35
 };
 
-keyboard._getLastKeyCode = function (event) {
+keyboard.getLastKeyCode = function (event) {
   var e = event || window.event;
   return {
     key: e.which,
