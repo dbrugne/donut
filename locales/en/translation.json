@@ -340,6 +340,7 @@
         "commands": "List of available commands",
         "rooms": "List of available donuts",
         "users": "User list",
+        "emojis": "Emojis",
         "tonavigate": "to navigate",
         "toselect": "to select",
         "todismiss": "to dismiss"

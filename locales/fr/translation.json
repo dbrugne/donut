@@ -340,6 +340,7 @@
         "commands": "Liste des commandes disponibles",
         "rooms": "Liste des donuts disponibles",
         "users": "Liste des utilisateurs",
+        "emojis": "Emojis",
         "tonavigate": "pour naviguer",
         "toselect": "pour séléctionner",
         "todismiss": "pour fermer"

@@ -32,7 +32,8 @@ var MessageEditView = Backbone.View.extend({
 
     this.originalMessage = (this.$text.html() !== undefined) ? this.$text.html() : '';
     this.originalMessage = common.markup.toText(this.originalMessage).trim();
-    this.originalMessage = this.htmlSmileyToText(this.originalMessage);
+    // @todo emojione
+//    this.originalMessage = this.htmlSmileyToText(this.originalMessage);
 
     this.$messageForm = this.$('.message-form');
     this.$messageForm
@@ -100,7 +101,7 @@ var MessageEditView = Backbone.View.extend({
   },
   onKeydown: function (event) {
     this.updateFormSize();
-    var data = keyboard._getLastKeyCode(event);
+    var data = keyboard.getLastKeyCode(event);
     if (data.key === keyboard.ESC) {
       this.onEscape(event);
     } else if (data.key === keyboard.RETURN && !data.isShift) {
@@ -115,13 +116,6 @@ var MessageEditView = Backbone.View.extend({
     this.$formMessageEdit
       .css('height',
         (2 + this.$formMessageEdit.prop('scrollHeight')) + 'px');
-  },
-  htmlSmileyToText: function (html) {
-    var $html = $('<div>' + html + '</div>');
-    _.each($html.find('.smilify'), function (e) {
-      $(e).replaceWith($.smilifyGetSymbolFromCode($(e).data('smilify-code')));
-    });
-    return $html.text();
   }
 });
 module.exports = MessageEditView;

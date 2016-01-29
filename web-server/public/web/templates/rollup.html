@@ -5,7 +5,11 @@
     <div class="ctn_scroller">
         <% var nb = 0; %>
         <ul class="type_<%= type %>">
-            <% if (results.length > 0) { %>
+            <% if (results === 'empty') { %>
+            <li class="ctn_item empty">
+                Please type something (@todo)
+            </li>
+            <% } else if (results.length > 0) { %>
                 <% _.each(results, function(result, key) { %>
                 <li class="ctn_item <%= nb == 0 ? 'active' : '' %>" data-index="<%= nb %>">
                     <% if (type === 'users') { %>
@@ -13,7 +17,6 @@
                         <span class="username <% if (typeof result.realname === 'undefined') { %>value<% } %>">
                             <% if (typeof result.realname !== "undefined") { %><%= result.realname %>&nbsp;<span class="othername value">@<%= result.username %></span><% } else { %>@<%= result.username %><% } %>
                         </span><i class="icon status icon-dot-circle-o <%= result.status %>" title="<%= result.status %>"></i>
-                        <span class="bio"><%= result.bio  %></span>
                     <% } else if (type === 'rooms') { %>
                         <span class="relative">
                             <img class="avatar_ctn" src="<%= result.avatarUrl %>">

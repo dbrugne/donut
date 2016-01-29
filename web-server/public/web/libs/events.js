@@ -226,8 +226,7 @@ exports.prototype._data = function (type, data) {
       template: require('../templates/markup.html')
     });
 
-    // @todo dbr : replace with UTF-8 emojis
-    subject = $.smilify(subject);
+//    subject = $.smilify(subject); // @todo emojione
 
     if (data.message) {
       data.message = subject;

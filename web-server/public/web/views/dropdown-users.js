@@ -29,7 +29,7 @@ var DropdownUsersView = Backbone.View.extend({
     this.$dropdownMenu.html(this.templateContent({users: list}));
   },
   onKeyUp: function (event) {
-    var data = keyboard._getLastKeyCode(event);
+    var data = keyboard.getLastKeyCode(event);
 
     if (data.key === keyboard.DOWN || data.key === keyboard.UP || data.key === keyboard.TAB) {
       event.preventDefault(); // avoid triggering keyUp
@@ -80,7 +80,7 @@ var DropdownUsersView = Backbone.View.extend({
       this.$dropdown.removeClass('open');
       return;
     }
-    var key = keyboard._getLastKeyCode(event);
+    var key = keyboard.getLastKeyCode(event);
     if (event.type === 'click' || key.key === keyboard.RETURN) { // instant search when user click on icon or press enter
       this.trigger('onSearch', this.$search.val());
       return;

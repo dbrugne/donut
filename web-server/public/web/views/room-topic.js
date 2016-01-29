@@ -54,8 +54,8 @@ var RoomTopicView = Backbone.View.extend({
       });
       this.$('.txt')
         .html(htmlTopic)
-        .attr('title', common.markup.toText(currentTopic))
-        .smilify();
+        .attr('title', common.markup.toText(currentTopic));
+//        .smilify(); // @todo emojione
       this.$('.topic-current').css('display', 'inline-block');
     }
 

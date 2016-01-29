@@ -52,7 +52,7 @@ module.exports = Backbone.View.extend({
     return !$event.hasClass('spammed');
   },
   editNext: function (event) {
-    var key = keyboard._getLastKeyCode(event);
+    var key = keyboard.getLastKeyCode(event);
     if (key.key !== keyboard.UP && key.key !== keyboard.DOWN) {
       return this.model.trigger('scrollDown');
     }
@@ -111,7 +111,8 @@ module.exports = Backbone.View.extend({
     var msg = common.markup.toHtml(data.message, {
       template: require('../templates/markup.html')
     });
-    msg = $.smilify(msg);
+
+//    msg = $.smilify(msg); // @todo emojione
     data.message = msg;
 
     data.message += '<span class="text-edited">&nbsp;(' + i18next.t('chat.message.edition.edited') + ')</span>';

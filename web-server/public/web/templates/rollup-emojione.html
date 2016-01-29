@@ -1,0 +1,32 @@
+<%
+var categories = {
+    'people': 'icon-smile-o',
+    'nature': 'icon-nature',
+    'foods': 'icon-food',
+    'activity': 'icon-football',
+    'travel': 'icon-car',
+    'objects': 'icon-light-bulb',
+    'symbols': 'icon-code',
+    'flags': 'icon-flag-o'
+};
+%>
+<div class="ctn">
+    <div class="ctn_header"><span class="header_label"><%= t('chat.rollup.header.emojis') %></span>
+        <span class="header_help"><strong class="left_margin">esc</strong>&nbsp; <a href="#" class="close"><%= t('chat.rollup.header.todismiss') %></a></span>
+    </div>
+    <div class="nav_emojis">
+        <% _.each(categories, function (value, key) { %>
+            <span class="emojione-category icon-stack icon-lg" title="<%= key %>" data-category="<%= key %>">
+                <i class="icon icon-square icon-stack-2x"></i>
+                <i class="icon <%= value %> icon-stack-1x"></i>
+            </span>
+        <% }); %>
+    </div>
+    <% if (list === false) { print(spinner); } else { %>
+    <div class="ctn_emojis">
+        <% _.each(list, function (e) { %>
+            <div class="emojione-pick" data-shortname="<%= e.shortname %>"><%= e.img %></div>
+        <% }); %>
+    </div>
+    <% } %>
+</div>
