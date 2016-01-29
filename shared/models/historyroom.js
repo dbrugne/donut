@@ -149,9 +149,9 @@ historySchema.statics.retrieveEventWithContext = function (eventId, userId, limi
 
     function retrieveModel (callback) {
       that.findOne({ _id: eventId })
-        .populate('room', 'name avatar color')
-        .populate('user', 'username avatar color facebook')
-        .populate('by_user', 'username avatar color facebook')
+        .populate('room', 'name avatar')
+        .populate('user', 'username avatar facebook')
+        .populate('by_user', 'username avatar facebook')
         .exec(function (err, event) {
           model = event;
           criteria.room = model.room.id;
@@ -167,9 +167,9 @@ historySchema.statics.retrieveEventWithContext = function (eventId, userId, limi
       that.find(_criteria)
         .sort({ time: 'asc' })
         .limit(limit)
-        .populate('room', 'name avatar color')
-        .populate('user', 'username avatar color facebook')
-        .populate('by_user', 'username avatar color facebook')
+        .populate('room', 'name avatar')
+        .populate('user', 'username avatar facebook')
+        .populate('by_user', 'username avatar facebook')
         .exec(function (err, results) {
           if (err) {
             return callback(err);
@@ -192,9 +192,9 @@ historySchema.statics.retrieveEventWithContext = function (eventId, userId, limi
       that.find(_criteria)
         .sort({ time: 'desc' })
         .limit(limit)
-        .populate('room', 'name avatar color')
-        .populate('user', 'username avatar color facebook')
-        .populate('by_user', 'username avatar color facebook')
+        .populate('room', 'name avatar')
+        .populate('user', 'username avatar facebook')
+        .populate('by_user', 'username avatar facebook')
         .exec(function (err, results) {
           if (err) {
             return callback(err);

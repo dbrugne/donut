@@ -3,7 +3,6 @@ var express = require('express');
 var router = express.Router();
 var i18next = require('../../../shared/util/i18next');
 var bouncer = require('../middlewares/bouncer');
-var colors = require('../../../config/colors');
 var hello = require('../../../shared/util/hello-dolly');
 
 router.get('/!', function (req, res) {
@@ -15,8 +14,7 @@ router.get('/!', function (req, res) {
 
     // render an HTML DOM that redirect browser on corresponding profile page
     return res.render('chat_track_anchor', {
-      meta: {title: i18next.t('title.chat')},
-      colors: colors.toString()
+      meta: {title: i18next.t('title.chat')}
     });
   }
 
@@ -37,11 +35,16 @@ router.get('/!', function (req, res) {
 
   return res.render('chat', {
     meta: {title: i18next.t('title.chat')},
-    colors: colors.toString(),
     hello: helloMessage,
     avoidFa: true,
     script: script
   });
+});
+
+// @hack: https://github.com/dbrugne/donut/issues/1167
+router.get('/%21*', function (req, res) {
+  // String.replace() by default only replace first occurrence
+  res.redirect(req.url.replace('%21', '!'));
 });
 
 router.param('group', require('../middlewares/group-param'));

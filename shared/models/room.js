@@ -44,7 +44,6 @@ var roomSchema = mongoose.Schema({
   }],
   avatar: String,
   poster: String,
-  color: String,
   topic: String,
   description: String,
   disclaimer: String,
@@ -53,6 +52,14 @@ var roomSchema = mongoose.Schema({
   last_event_at: {type: Date},
   last_event: {type: mongoose.Schema.ObjectId, ref: 'HistoryRoom'}
 });
+
+roomSchema.statics.getNewRoom = function () {
+  var model = new this();
+  model.last_event_at = Date.now();
+  model.visibility = false;
+  model.priority = 0;
+  return model;
+};
 
 roomSchema.statics.findByName = function (name) {
   return this.findOne({
@@ -97,7 +104,7 @@ roomSchema.statics.findByIdentifier = function (identifier, callback) {
       return callback(null);
     }
     that.populate(room, [
-      {path: 'owner', select: 'username avatar color facebook'},
+      {path: 'owner', select: 'username avatar facebook'},
       {path: 'group', select: 'name members owner'}
     ], callback);
   };
@@ -134,15 +141,13 @@ roomSchema.statics.findByUser = function (userId) {
   return this.find({users: {$in: [userId]}, deleted: {$ne: true}});
 };
 
-roomSchema.statics.getNewRoom = function () {
-  return new this();
-};
-
 roomSchema.methods._avatar = function (size) {
-  return cloudinary.roomAvatar(this.avatar, this.color, size);
+  return (this.avatar)
+    ? cloudinary.roomAvatar(this.avatar, size)
+    : 'room-' + this.id;
 };
 roomSchema.methods._poster = function (blur) {
-  return cloudinary.poster(this.poster, this.color, blur);
+  return cloudinary.poster(this.poster, blur);
 };
 
 roomSchema.methods.avatarId = function () {
@@ -165,10 +170,6 @@ roomSchema.methods.posterId = function () {
     return '';
   }
   return data[1].substr(0, data[1].lastIndexOf('.'));
-};
-
-roomSchema.methods.numberOfUsers = function () {
-  return this.users.length;
 };
 
 roomSchema.methods.isOwner = function (userId) {

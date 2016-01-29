@@ -75,7 +75,6 @@ handler.add = function (data, session, next) {
         user_id: targetUser._id,
         username: targetUser.username,
         avatar: targetUser._avatar(),
-        color: targetUser.color,
         group_id: group.id
       };
       Notifications(that.app).getType('groupinvite').create(targetUser.id, group, event, function (err) {

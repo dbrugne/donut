@@ -28,13 +28,20 @@ var groupSchema = mongoose.Schema({
   password: String,
   password_indication: String,
   avatar: String,
-  color: String,
   description: String,
   disclaimer: String,
   website: mongoose.Schema.Types.Mixed,
   created_at: {type: Date, default: Date.now},
   last_event_at: {type: Date}
 });
+
+groupSchema.statics.getNewGroup = function () {
+  var model = new this();
+  model.last_event_at = Date.now();
+  model.visibility = true;
+  model.priority = 0;
+  return model;
+};
 
 groupSchema.statics.findByName = function (name) {
   return this.findOne({
@@ -130,10 +137,6 @@ groupSchema.methods.isMember = function (userId) {
   return (typeof subDocument !== 'undefined');
 };
 
-groupSchema.statics.getNewGroup = function () {
-  return new this();
-};
-
 groupSchema.methods.isOwner = function (userId) {
   if (!this.owner) {
     return false;
@@ -168,7 +171,9 @@ groupSchema.methods.isOwnerOrOp = function (userId) {
 };
 
 groupSchema.methods._avatar = function (size) {
-  return cloudinary.roomAvatar(this.avatar, this.color, size);
+  return (this.avatar)
+    ? cloudinary.groupAvatar(this.avatar, size)
+    : 'group-' + this.id;
 };
 
 groupSchema.methods.avatarId = function () {

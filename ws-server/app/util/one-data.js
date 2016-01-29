@@ -45,7 +45,6 @@ module.exports = function (app, user, users, fn) {
           username: u.username,
           avatar: u._avatar(),
           poster: u._poster(),
-          color: u.color,
           location: u.location,
           website: u.website,
           banned: user.isBanned(u.id), // for ban/deban menu

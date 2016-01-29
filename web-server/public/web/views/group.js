@@ -27,7 +27,6 @@ var GroupView = Backbone.View.extend({
   initialize: function (options) {
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(this.model, 'change:avatar', this.onAvatar);
-    this.listenTo(this.model, 'change:color', this.onColor);
     this.listenTo(this.model, 'redraw', this.render);
     this.listenTo(app, 'askMembership', this.askMembership);
     this.render();
@@ -143,7 +142,6 @@ var GroupView = Backbone.View.extend({
   removeView: function () {
     this.groupUsersView._remove();
     this.cardsView._remove();
-    this.headerView._remove();
     this.remove();
   },
   onFocusChange: function () {
@@ -167,20 +165,11 @@ var GroupView = Backbone.View.extend({
       }
     }, this));
   },
-  changeColor: function () {
-    if (this.model.get('focused')) {
-      app.trigger('changeColor', this.model.get('color'));
-    }
-  },
 
   /**
    * Update group details methods
    */
 
-  onColor: function (model, value, options) {
-    this.onAvatar(model, model.get('avatar'), options);
-    this.changeColor();
-  },
   onAvatar: function (model, value) {
     var url = common.cloudinary.prepare(value, 100);
     this.$('img.avatar').attr('src', url);

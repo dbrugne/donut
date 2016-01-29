@@ -306,11 +306,11 @@ Notification.prototype.populateNotification = function (notification, done) {
     .populate({
       path: 'data.by_user',
       model: 'User',
-      select: 'facebook username local avatar color'})
+      select: 'facebook username local avatar'})
     .populate({
       path: 'data.group',
       model: 'Group',
-      select: 'avatar color name'})
+      select: 'avatar name'})
     .exec(function (err, n) {
       if (err) {
         return done(err);

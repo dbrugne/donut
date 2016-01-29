@@ -44,7 +44,6 @@ handler.call = function (data, session, next) {
         name: group.name,
         group_id: group.id,
         avatar: group._avatar(),
-        color: group.color,
         website: group.website,
         description: group.description,
         disclaimer: group.disclaimer,
@@ -95,7 +94,6 @@ handler.call = function (data, session, next) {
           user_id: group.owner.id,
           username: group.owner.username,
           avatar: group.owner._avatar(),
-          color: group.owner.color,
           is_owner: true
         };
         read.members.push(owner);
@@ -109,7 +107,6 @@ handler.call = function (data, session, next) {
             user_id: op.id,
             username: op.username,
             avatar: op._avatar(),
-            color: op.color,
             is_op: true
           };
           read.members.push(el);
@@ -135,7 +132,6 @@ handler.call = function (data, session, next) {
             user_id: u.id,
             username: u.username,
             avatar: u._avatar(),
-            color: u.color
           };
           read.members.push(el);
 
@@ -174,7 +170,7 @@ handler.call = function (data, session, next) {
       RoomModel.findByGroup(group._id)
         .populate({
           path: 'owner',
-          select: 'username avatar color facebook'
+          select: 'username avatar facebook'
         })
         .populate('allowed')
         .exec(function (err, rooms) {
@@ -198,7 +194,6 @@ handler.call = function (data, session, next) {
               avatar: r._avatar(),
               poster: r._poster(),
               mode: r.mode,
-              color: r.color,
               description: r.description,
               users: (r.users)
                 ? r.users.length
@@ -215,7 +210,6 @@ handler.call = function (data, session, next) {
                 user_id: r.owner.id,
                 username: r.owner.username,
                 avatar: r.owner._avatar(),
-                color: r.owner.color,
                 is_owner: true
               };
             }

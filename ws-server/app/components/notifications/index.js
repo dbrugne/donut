@@ -135,7 +135,7 @@ Facade.prototype.retrieveUserNotifications = function (uid, what, callback) {
   q.populate({
     path: 'user',
     model: 'User',
-    select: 'local username color facebook avatar'
+    select: 'local username facebook avatar'
   });
 
   var that = this;
@@ -211,22 +211,22 @@ Facade.prototype.retrieveScheduledNotifications = function (callback) {
   q.populate({
     path: 'data.user',
     model: 'User',
-    select: 'facebook username local avatar color'
+    select: 'facebook username local avatar'
   });
   q.populate({
     path: 'data.by_user',
     model: 'User',
-    select: 'facebook username local avatar color'
+    select: 'facebook username local avatar'
   });
   q.populate({
     path: 'data.room',
     model: 'Room',
-    select: 'avatar color name group'
+    select: 'avatar name group'
   });
   q.populate({
     path: 'data.group',
     model: 'Group',
-    select: 'avatar color name'
+    select: 'avatar name'
   });
   q.exec(function (err, results) {
     if (err) {

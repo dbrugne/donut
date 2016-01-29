@@ -163,7 +163,6 @@ handler.accept = function (data, session, next) {
         user_id: targetUser._id,
         username: targetUser.username,
         avatar: targetUser._avatar(),
-        color: targetUser.color,
         group_id: group.id,
         pending: group.isAllowedPending(targetUser.id),
         reason: 'request-accept'

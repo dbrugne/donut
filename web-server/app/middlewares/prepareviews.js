@@ -1,6 +1,6 @@
 'use strict';
 var conf = require('../../../config');
-var urls = require('../../../shared/util/url');
+var cloudinary = require('@dbrugne/donut-common/server').cloudinary;
 
 /**
  * Register systematically some variables in views
@@ -10,7 +10,7 @@ module.exports = function () {
     // pass current session user to all views
     if (req.user) {
       res.locals.user = req.user.toObject(); // .toObject() avoid modification on original req.user object (like avatar)
-      res.locals.user.avatar = req.user._avatar(80);
+      res.locals.user.avatar = cloudinary.prepare(req.user._avatar(), 80);
     } else {
       res.locals.user = false;
     }
@@ -37,7 +37,6 @@ module.exports = function () {
     res.locals.cloudinary = conf.cloudinary;
     res.locals.facebook = conf.facebook;
     res.locals.recaptcha = conf.google.recaptcha;
-    res.locals.room_default_color = conf.room.default.color;
     res.locals.group_room_default = conf.group.default.name;
     res.locals.message_maxedittime = conf.chat.message.maxedittime * 60 * 1000;
 

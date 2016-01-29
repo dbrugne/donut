@@ -125,15 +125,8 @@ var DonutRouter = Backbone.Router.extend({
       }
       var groupId = response.group_id;
       app.client.groupJoin(groupId, _.bind(function (response) {
-        if (!response.err) {
-          app.client.groupRead(groupId, {users: true, rooms: true}, _.bind(function (response) {
-            if (!response.err) {
-              model = app.groups.addModel(response);
-              model.trigger('redraw');
-              this.focus(model);
-              app.trigger('redrawNavigationGroups');
-            }
-          }, this));
+        if (response.err) {
+          return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
         }
       }, this));
     }, this));
@@ -239,13 +232,6 @@ var DonutRouter = Backbone.Router.extend({
 
     if (!this.views[model.get('id')]) {
       this.addView(model);
-    }
-
-    // color
-    if (model.get('color')) {
-      app.trigger('changeColor', model.get('color'));
-    } else {
-      app.trigger('changeColor', this.defaultColor);
     }
 
     // Update URL (always!) and page title

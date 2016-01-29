@@ -13,7 +13,6 @@ var RoomView = Backbone.View.extend({
     this.listenTo(this.model, 'change:avatar', this.onAvatar);
     this.listenTo(this.model, 'change:poster', this.onPoster);
     this.listenTo(this.model, 'change:posterblured', this.onPosterBlured);
-    this.listenTo(this.model, 'change:color', this.onColor);
     this.listenTo(this.model, 'change:unviewed', this.onMarkAsViewed);
 
     this.render();
@@ -81,22 +80,11 @@ var RoomView = Backbone.View.extend({
     this.usersView._remove();
     this.remove();
   },
-  changeColor: function () {
-    if (this.model.get('focused')) {
-      app.trigger('changeColor', this.model.get('color'));
-    }
-  },
 
   /**
    * Update room details methods
    */
 
-  onColor: function (model, value, options) {
-    this.onAvatar(model, model.get('avatar'), options);
-    this.onPoster(model, model.get('poster'), options);
-    this.onPosterBlured(model, model.get('posterblured'), options);
-    this.changeColor();
-  },
   onAvatar: function (model, value) {
     var url = common.cloudinary.prepare(value, 100);
     this.$('.header img.avatar').attr('src', url);

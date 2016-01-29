@@ -1,18 +1,10 @@
 <%- partial('head') %>
-<% var color = (typeof room !== 'undefined'
-    ? room.color
-    : ( typeof _user !== 'undefined')
-        ? _user.color
-        : ( typeof group !== 'undefined')
-            ? group.color
-            : ''); %>
-<% color = (_.isString(color) ? color.replace('#','').toLowerCase() : 'default') %>
-<body class="body-chat body-profile dc-<%= color %>">
+<body class="body-chat body-profile dc">
 <div id="chat">
     <nav id="color" class="navbar navbar-fixed-top dc-back">
         <div class="container">
             <div id="navbar">
-                <a class="navbar-brand-a  " href="/"><img class="logo" src="/images/logo-bordered-small.png" alt="<%= t('title.chat') %>"> <span class="beta dc-text-contrast">alpha</span></a>
+                <a class="navbar-brand-a" href="/"><img class="logo" src="/images/logo-bordered-small.png" alt="<%= t('title.chat') %>"> <span class="beta dc-text-contrast">alpha</span></a>
                 <ul class="nav navbar-nav navbar-right">
 
                     <% if (typeof user === 'undefined' || typeof user.avatar === 'undefined') { %>

@@ -66,10 +66,6 @@ var DrawerGroupProfileView = Backbone.View.extend({
     this.$el.html(html);
     date.from('date', this.$('.created span'));
 
-    if (group.color) {
-      this.trigger('color', group.color);
-    }
-
     this.initializeTooltips();
   },
   initializeTooltips: function () {
@@ -79,7 +75,7 @@ var DrawerGroupProfileView = Backbone.View.extend({
       container: 'body',
       template: '<div class="tooltip tooltip-home-users" role="tooltip"><div class="tooltip-inner right"></div></div>',
       title: function () {
-        return '<div class="username" style="' + this.dataset.bgcolor + '">@' + this.dataset.username + '</div>';
+        return '<div class="username">@' + this.dataset.username + '</div>';
       }
     });
   }

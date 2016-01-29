@@ -52,7 +52,6 @@ module.exports = function (user, room, fn) {
     data.topic = room.topic;
     data.poster = room._poster();
     data.posterblured = room._poster(true);
-    data.users_number = room.numberOfUsers(); // @todo remove obsolete
     data.created_at = room.created_at;
     data.last_event_at = room.last_event_at;
     data.last_event = room.last_event;

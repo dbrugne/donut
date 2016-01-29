@@ -17,10 +17,11 @@ module.exports = Backbone.View.extend({
     // return;
 
     var currentScrollPosition = options.currentScrollPosition;
+    var topLimit = currentScrollPosition - 40;
 
     var last = null;
     this.$scrollable.find('.block.date').each(function (index) {
-      if ($(this).position().top > currentScrollPosition) {
+      if ($(this).position().top > topLimit) {
         return false; // break on first visible
       }
       last = $(this); // last not visible

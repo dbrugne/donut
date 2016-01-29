@@ -94,19 +94,12 @@ handler.call = function (data, session, next) {
       var room = RoomModel.getNewRoom();
       room.name = data.room_name;
       room.owner = user.id;
-      room.color = conf.room.default.color;
-      room.visibility = true; // always visible one homepage by default
-      room.priority = 0;
       room.mode = data.mode;
-      room.last_event_at = Date.now();
       if (data.group_id) {
         room.group = group.id;
       }
       if (data.mode === 'private') {
         room.allow_user_request = true; // always set this option to true on private room creation
-        if (data.password !== null) {
-          room.password = data.password; // user.generateHash(data.password);
-        }
       }
 
       room.save(function (err) {

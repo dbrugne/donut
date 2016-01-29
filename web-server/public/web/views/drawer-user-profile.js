@@ -57,16 +57,10 @@ var DrawerUserProfileView = Backbone.View.extend({
     this.$el.html(html);
     date.from('date', this.$('.created span'));
     date.from('fromnow', this.$('.onlined span'));
-
-    if (user.color) {
-      this.trigger('color', user.color);
-    }
-
     this.initializeTooltips();
   },
   /**
    * Construct the user room list for profile displaying
-   * For each set name, avatar and color
    * @param user
    * @private
    */
@@ -136,7 +130,7 @@ var DrawerUserProfileView = Backbone.View.extend({
       container: 'body',
       template: '<div class="tooltip tooltip-home-users" role="tooltip"><div class="tooltip-inner right"></div></div>',
       title: function () {
-        return '<div class="username" style="' + this.dataset.bgcolor + '">' + this.dataset.username + '</div>';
+        return '<div class="username">' + this.dataset.username + '</div>';
       }
     });
   }

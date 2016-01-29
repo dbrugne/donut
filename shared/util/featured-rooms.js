@@ -119,7 +119,7 @@ var retriever = function (app, fn) {
 
         Room.find({name: {$in: names}})
           .populate('owner', 'username')
-          .populate('group', 'name avatar color')
+          .populate('group', 'name avatar')
           .exec(function (err, result) {
             if (err) {
               return callback('Error while hydrating rooms from Mongo: ' + err);
@@ -146,7 +146,6 @@ var retriever = function (app, fn) {
             room_id: room.id,
             avatar: room._avatar(),
             poster: room._poster(),
-            color: room.color,
             description: room.description,
             users: (room.users)
               ? room.users.length

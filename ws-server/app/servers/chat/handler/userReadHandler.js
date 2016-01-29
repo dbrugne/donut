@@ -41,7 +41,6 @@ handler.call = function (data, session, next) {
       read.user_id = readUser.id;
       read.realname = readUser.realname;
       read.username = readUser.username;
-      read.color = readUser.color;
       read.avatar = readUser._avatar();
       read.banned = user.isBanned(readUser.id); // for ban/deban menu
       read.i_am_banned = readUser.isBanned(user.id); // for input enable/disable
@@ -86,7 +85,7 @@ handler.call = function (data, session, next) {
           {op: {$in: [readUser._id]}},
           {users: {$in: [readUser._id]}}
         ]
-      }, 'name avatar color owner op users group')
+      }, 'name avatar owner op users group')
         .populate('group', 'name')
         .exec(function (err, models) {
           if (err) {
@@ -103,8 +102,7 @@ handler.call = function (data, session, next) {
               name: room.name,
               identifier: room.getIdentifier(),
               id: room.id,
-              avatar: room._avatar(),
-              color: room.color
+              avatar: room._avatar()
             };
 
             if (room.owner && room.owner.toString() === readUser.id) {

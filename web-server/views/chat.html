@@ -136,24 +136,6 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /#welcome -->
-    <!--<div id="welcome" class="modal fade" role="dialog" aria-labelledby="welcomeMessage" aria-hidden="true">-->
-        <!--<div class="modal-dialog modal-lg">-->
-            <!--<div class="modal-content">-->
-                <!--<div class="modal-body">-->
-                    <!--<%= t('welcome.message') %>-->
-                    <!--<div class="cards">&lt;!&ndash;Cards list&ndash;&gt;</div>-->
-                <!--</div>-->
-                <!--<div class="modal-footer">-->
-                    <!--<span class="checkbox">-->
-                        <!--<label>-->
-                            <!--<input class="avoid" type="checkbox"> <%= t('welcome.donotshowagain') %>-->
-                        <!--</label>-->
-                    <!--</span>-->
-                    <!--<a href="#donut/donut" class="nothing"><%= t('welcome.nothing') %></a>-->
-                <!--</div>-->
-            <!--</div>&lt;!&ndash; /.modal-content &ndash;&gt;-->
-        <!--</div>&lt;!&ndash; /.modal-dialog &ndash;&gt;-->
-    <!--</div>&lt;!&ndash; /#welcome &ndash;&gt;-->
     <div id="connection" class="modal bs-example-modal-sm" role="dialog" aria-labelledby="welcomeMessage" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -203,10 +185,8 @@
     <script src='https://www.google.com/recaptcha/api.js' async defer></script>
     <script>
         window.recaptcha_site_key = '<%- recaptcha.sitekey %>';
-        window.room_default_color = '<%- room_default_color %>';
         window.group_room_default = '<%- group_room_default %>';
         window.message_maxedittime = <%= message_maxedittime %>;
-        window.colors = <%= colors %>;
 
         window.fbAsyncInit = function() {
             FB.init({

@@ -9,9 +9,6 @@ module.exports = {
     force: false
   },
   room: {
-    default: {
-      color: '#fc2063'
-    },
     password: {
       max_password_tries: 5,
       max_password_time: 60 * 1000 // 1 min

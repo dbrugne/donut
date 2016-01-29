@@ -98,18 +98,6 @@ handler.call = function (data, session, next) {
       }
       sanitized.website = website;
 
-      // color
-      if (_.has(data.data, 'color')) {
-        if (data.data.color !== '' && !validator.isHexColor(data.data.color)) {
-          errors.color = 'color-hexadecimal'; // Color should be explained has hexadecimal (e.g.: #FF00AA).
-        } else {
-          var color = data.data.color.toLocaleUpperCase();
-          if (color !== room.color) {
-            sanitized.color = color;
-          }
-        }
-      }
-
       // password
       if (room.mode === 'public') {
         if (_.has(data.data, 'password')) {
@@ -148,7 +136,7 @@ handler.call = function (data, session, next) {
         // priority
         if (_.has(data.data, 'priority')) {
           if (data.data.priority !== '' && !validator.isNumeric(data.data.priority)) {
-            errors.color = 'color-integer'; // Priority should be explained has number (integer).
+            errors.priority = 'priority-integer';
           } else {
             var priority = data.data.priority;
             if (priority !== room.priority) {
@@ -259,7 +247,7 @@ handler.call = function (data, session, next) {
     function broadcast (sanitized, callback) {
       // notify only certain fields
       var sanitizedToNotify = {};
-      var fieldToNotify = ['avatar', 'poster', 'color', 'allow_group_member'];
+      var fieldToNotify = ['avatar', 'poster', 'allow_group_member'];
       _.each(Object.keys(sanitized), function (key) {
         if (fieldToNotify.indexOf(key) !== -1) {
           if (key === 'avatar') {
@@ -267,10 +255,6 @@ handler.call = function (data, session, next) {
           } else if (key === 'poster') {
             sanitizedToNotify['poster'] = room._poster();
             sanitizedToNotify['posterblured'] = room._poster(true);
-          } else if (key === 'color') {
-            sanitizedToNotify['color'] = sanitized[key];
-            sanitizedToNotify['avatar'] = room._avatar();
-            sanitizedToNotify['poster'] = room._poster();
           } else if (key === 'allow_group_member') {
             sanitizedToNotify['allow_group_member'] = !!sanitized[key];
           }

@@ -600,9 +600,9 @@
         "roomjoin": "<span>@__username__</span> joined <span>__name__</span>",
         "roomjoinrequest": "<span>@__username__</span> wants to join <span>__name__</span>",
         "roomtopic": "New topic in <span>__name__</span>, __topic__",
-        "roommessage": "<span>__name__</span></br> @__username__: __message__",
+        "roommessage": "@__username__ wrote in __name__",
         "usermention": "You were mentionned in <span>__name__</span>",
-        "usermessage": "<span>@__username__</span> __message__",
+        "usermessage": "@__username__ send a message",
         "roominvite": "<span>@__username__</span> invites you to join <span>__name__</span>",
         "roomdelete": "<span>@__username__</span> delete your donut <span>__name__</span>",
         "roomcreate": "<span>@__username__</span> create the donut <span>__name__</span>",
@@ -778,9 +778,6 @@
             "label": "Poster",
             "help": "The poster is the large vertical image on the right-hand side of the chat thread. Recommended dimensions: 430px width, 975px height."
           },
-          "color": {
-            "label": "Color"
-          },
           "upload": {
             "nopicture": "No picture",
             "failed": "Upload failed",
@@ -945,8 +942,7 @@
         "description": "Description must be 200 characters max.",
         "website-size": "Website must be 5 characters min. and 255 characters max.",
         "website-url": "Website must be a valid site URL.",
-        "color-hexadecimal": "Color must be explained has hexadecimal (e.g.: #FF00AA).",
-        "color-integer": "Priority must be explained has number (integer).",
+        "priority-integer": "Priority must be explained has number (integer).",
         "name-wrong-format": "Invalid name",
         "group-name-wrong-format": "Invalid name",
         "mode-wrong-format": "You must select a mode for this room",
@@ -1493,7 +1489,6 @@
         "help": "",
         "desktop": "Desktop",
         "desktop-default": "Your browser will prompt for approval : approve !",
-        "desktop-denied" : "You have chosen to <strong>refuse</strong> notifications on your desktop. To modify this choice, you must modify the settings of your browser.",
         "desktop-test": "try",
         "desktop-notify-test": "test notification",
         "email": "Email (only if you are offline)",

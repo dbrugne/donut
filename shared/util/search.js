@@ -99,7 +99,7 @@ module.exports = function (search, options, callback) {
         criteria.name = _regexp;
       }
 
-      var q = GroupModel.find(criteria, 'name owner avatar color members op last_event_at description');
+      var q = GroupModel.find(criteria, 'name owner avatar members op last_event_at description');
       if (options.skip && options.skip.groups) {
         q.skip(options.skip.groups);
       }
@@ -121,7 +121,7 @@ module.exports = function (search, options, callback) {
         groups = dbgroups;
         async.eachLimit(dbgroups, 10, function (group, fn) {
           criteria = {deleted: {$ne: true}, group: group._id};
-          var query = RoomModel.find(criteria, 'avatar identifier name group color');
+          var query = RoomModel.find(criteria, 'avatar identifier name group');
           query.populate('group', 'name');
           query.sort('-last_event_at');
           query.exec(function (err, rooms) {
@@ -168,8 +168,8 @@ module.exports = function (search, options, callback) {
       }
 
       var select = (options.light)
-        ? 'name group avatar color last_event_at mode'
-        : 'name owner group description avatar color users last_event_at mode';
+        ? 'name group avatar last_event_at mode'
+        : 'name owner group description avatar users last_event_at mode';
 
       var q = RoomModel.find(criteria, select)
         .sort('-last_event_at -users avatar name');
@@ -181,7 +181,7 @@ module.exports = function (search, options, callback) {
         q.limit(limit.rooms + 1); // handle "more" logic
       }
 
-      q.populate('group', 'name avatar color')
+      q.populate('group', 'name avatar')
       if (!options.light) {
         q.populate('owner', 'username');
       }
@@ -212,7 +212,7 @@ module.exports = function (search, options, callback) {
         criteria.username = _regexp;
       }
 
-      var q = UserModel.find(criteria, 'username realname avatar color facebook bio ones location');
+      var q = UserModel.find(criteria, 'username realname avatar facebook bio ones location');
       q.sort('-lastonline_at -lastoffline_at -avatar username');
       if (options.skip && options.skip.users) {
         q.skip(options.skip.users);
@@ -263,7 +263,6 @@ module.exports = function (search, options, callback) {
             name: room.name,
             identifier: room.getIdentifier(),
             avatar: room._avatar(),
-            color: room.color,
             mode: room.mode
           };
 
@@ -305,7 +304,6 @@ module.exports = function (search, options, callback) {
             identifier: group.getIdentifier(),
             group_id: group.id,
             description: group.description,
-            color: group.color,
             avatar: group._avatar(),
             users: group.count(),
             rooms: _roomsData
@@ -329,7 +327,6 @@ module.exports = function (search, options, callback) {
             realname: user.realname,
             location: user.location,
             avatar: user._avatar(),
-            color: user.color,
             bio: user.bio
           };
           if (statuses) {

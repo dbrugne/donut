@@ -4,12 +4,11 @@ var Backbone = require('backbone');
 var app = require('../libs/app');
 var common = require('@dbrugne/donut-common/browser');
 var i18next = require('i18next-client');
+var desktop = require('../libs/desktop');
 
 var NotificationsView = Backbone.View.extend({
   id: 'notifications',
-
   events: {},
-
   initialize: function () {
     this.listenTo(app.user, 'change:unviewedNotification', this.updateIcon, this);
     this.listenTo(app.user, 'change:unviewedDiscussion', this.updateNavigationHandle, this);
@@ -22,10 +21,14 @@ var NotificationsView = Backbone.View.extend({
     return this;
   },
   onNew: function (data) {
+    if (!app.user.shouldDisplayDesktopNotif()) {
+      return;
+    }
+
     var msg = (data.data.message)
       ? common.markup.toText(data.data.message)
       : '';
-    var message = i18next.t('chat.notifications.messages.' + data.type, {
+    var title = i18next.t('chat.notifications.messages.' + data.type, {
       name: (data.data.room)
         ? data.data.room.name
         : (data.data.group)
@@ -33,16 +36,29 @@ var NotificationsView = Backbone.View.extend({
         : '',
       username: (data.data.by_user)
         ? data.data.by_user.username
-        : data.data.user.username,
+        : (data.data.user)
+          ? data.data.user.username
+          : '',
       message: msg,
       topic: (data.data.topic)
         ? common.markup.toText(data.data.topic)
         : ''
     });
 
-    message = message.replace(/<\/*span>/g, '');
-    message = message.replace(/<\/*br>/g, '');
-    app.trigger('desktopNotification', message, '');
+    title = title.replace(/<\/*span>/g, '').replace(/<br>/g, '');
+    msg = msg.replace(/<\/*span>/g, '').replace(/<br>/g, '');
+
+    var uri;
+    var tag = data.id;
+    if (data.data.room) {
+      uri = data.data.room.name;
+      tag = data.data.room.id;
+    } else if (data.data.group) {
+      uri = '#g/' + data.data.group.name;
+      tag = data.data.group.id;
+    }
+
+    desktop.notify(tag, title, msg, uri);
   },
   updateIcon: function () {
     var unviewed = app.user.get('unviewedNotification');

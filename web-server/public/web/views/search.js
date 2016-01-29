@@ -40,7 +40,6 @@ var SearchPageView = Backbone.View.extend({
     this.$searchMore = this.$('.load-more');
 
     app.trigger('setTitle');
-    app.trigger('changeColor');
 
     if (data && data.search && data.what) {
       return this.search(data.search, data.skip, data.what);

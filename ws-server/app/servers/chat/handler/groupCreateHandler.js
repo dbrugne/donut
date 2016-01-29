@@ -58,9 +58,6 @@ handler.call = function (data, session, next) {
           group = GroupModel.getNewGroup();
           group.name = data.group_name;
           group.owner = user.id;
-          group.color = conf.room.default.color;
-          group.visibility = true; // always visible one homepage by default
-          group.priority = 0;
 
           group.save(function (err) {
             return callback(err, group);
@@ -72,11 +69,9 @@ handler.call = function (data, session, next) {
     function createWelcome (group, callback) {
       var room = RoomModel.getNewRoom();
       room.name = conf.group.default.name;
-      room.group = group.id;
       room.owner = user.id;
-      room.color = conf.room.default.color;
-      room.visibility = false; // not visible on home until admin change this value
-      room.priority = 0;
+      room.mode = 'public';
+      room.group = group.id;
       room.users.addToSet(user._id);
       room.allowed.addToSet(user._id);
 

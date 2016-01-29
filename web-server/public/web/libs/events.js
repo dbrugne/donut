@@ -223,8 +223,7 @@ exports.prototype._data = function (type, data) {
   if (data.message || data.topic) {
     var subject = data.message || data.topic;
     subject = common.markup.toHtml(subject, {
-      template: require('../templates/markup.html'),
-      style: 'color: ' + this.discussion.get('color')
+      template: require('../templates/markup.html')
     });
 
     // @todo dbr : replace with UTF-8 emojis

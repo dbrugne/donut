@@ -3,8 +3,6 @@ var _ = require('underscore');
 var Room = require('../../../shared/models/room');
 var Group = require('../../../shared/models/group');
 var logger = require('pomelo-logger').getLogger('web', __filename);
-var urls = require('../../../shared/util/url');
-var conf = require('../../../config/index');
 
 module.exports = function (req, res, next, roomname) {
   if (roomname === undefined || roomname === '') {
@@ -26,9 +24,9 @@ module.exports = function (req, res, next, roomname) {
       var id = (group) ? group.id : null;
       Room.findByNameAndGroup(roomname, id)
         .populate('group', 'name')
-        .populate('owner', 'username avatar color location website facebook')
-        .populate('op', 'username avatar color location website facebook')
-        .populate('users', 'username avatar color location website facebook')
+        .populate('owner', 'username avatar location website facebook')
+        .populate('op', 'username avatar location website facebook')
+        .populate('users', 'username avatar location website facebook')
         .exec(function (err, model) {
           if (err) {
             req.flash('error', err);
@@ -44,7 +42,6 @@ module.exports = function (req, res, next, roomname) {
               avatar: model._avatar(160),
               poster: model._poster(),
               posterBlured: model._poster(true),
-              color: model.color,
               topic: model.topic,
               description: model.description,
               website: model.website,
@@ -60,12 +57,6 @@ module.exports = function (req, res, next, roomname) {
               room.group_id = model.group.id;
             }
 
-            // urls
-            var data = urls(room, 'room');
-            room.url = req.protocol + '://' + conf.fqdn + data.url;
-            room.chat = data.chat;
-            room.join = data.join;
-
             // owner
             var ownerId;
             if (model.owner && model.owner._id) {
@@ -74,10 +65,6 @@ module.exports = function (req, res, next, roomname) {
                 id: model.owner.id,
                 username: model.owner.username,
                 avatar: model.owner._avatar(80),
-                color: model.owner.color,
-                chat: (model.owner.username)
-                  ? req.protocol + '://' + conf.fqdn + urls(model.owner, 'user', 'chat')
-                  : '',
                 isOwner: true,
                 isOp: false // could not be both
               };
@@ -96,10 +83,6 @@ module.exports = function (req, res, next, roomname) {
                   id: _model.id,
                   username: _model.username,
                   avatar: _model._avatar(80),
-                  color: _model.color,
-                  chat: (_model.username)
-                    ? req.protocol + '://' + conf.fqdn + urls(_model, 'user', 'chat')
-                    : '',
                   isOp: true,
                   isOwner: false
                 };
@@ -125,10 +108,6 @@ module.exports = function (req, res, next, roomname) {
                   id: _model.id,
                   username: _model.username,
                   avatar: _model._avatar(80),
-                  color: _model.color,
-                  chat: (_model.username)
-                    ? req.protocol + '://' + conf.fqdn + urls(_model, 'user', 'chat')
-                    : '',
                   isOp: false,
                   isOwner: false
                 };

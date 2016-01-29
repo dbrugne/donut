@@ -251,15 +251,15 @@ Notification.prototype.populateNotification = function (notification, done) {
     .populate({
       path: 'data.user',
       model: 'User',
-      select: 'facebook username local avatar color'})
+      select: 'facebook username local avatar'})
     .populate({
       path: 'data.by_user',
       model: 'User',
-      select: 'facebook username local avatar color'})
+      select: 'facebook username local avatar'})
     .populate({
       path: 'data.room',
       model: 'Room',
-      select: 'avatar color name group'})
+      select: 'avatar name group'})
     .exec(function (err, n) {
       if (err) {
         return done(err);
