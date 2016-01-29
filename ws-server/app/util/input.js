@@ -15,7 +15,7 @@ var parser = require('@dbrugne/donut-common/server').markup.parser(linkify);
  * @return false || filtered String
  */
 module.exports.filter = function (value, maxLength) {
-  // @todo dbr : add without smileys code count
+  // @todo emojione
 
   if (!value) {
     return false;
