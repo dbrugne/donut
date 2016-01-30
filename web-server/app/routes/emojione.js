@@ -2,8 +2,12 @@
 var express = require('express');
 var router = express.Router();
 var _ = require('underscore');
+var path = require('path');
 
 var emojione = require('emojione');
+emojione.imageType = 'png';
+emojione.sprites = true;
+
 var emojioneList = require('emojione/emoji');
 
 var tonePattern = /_tone[0-9]+$/;
@@ -36,7 +40,8 @@ function getDictionary () {
     dictionary[e.category].push({
       name: e.name,
       shortname: e.shortname,
-      img: emojione.toImage(e.shortname)
+      img: emojione.toImage(e.shortname),
+      unicode: e.unicode
     });
   });
 
@@ -63,6 +68,10 @@ router.get('/emojione/:category', function (req, res) {
   }
 
   return res.json(dict[req.params.category]);
+});
+
+router.get('/stylesheets/emojione.sprites.png', function (req, res) {
+  res.sendfile('emojione.sprites.png', {root: path.join(__dirname, '../../../node_modules/emojione/assets/sprites')});
 });
 
 module.exports = router;

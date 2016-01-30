@@ -14,9 +14,9 @@ module.exports = Backbone.View.extend({
     'mouseover .rollup-container li': 'onRollupHover',
     'click .rollup-container li': 'onRollupClick',
     'click .close-rollup': 'onClose',
-    'click .add-emoji': 'openEmojis',
-    'click .emojione-category': 'onEmojioneCategory',
-    'click .emojione-pick': 'onEmojionePick'
+    'click .add-emoji': 'toggleEmojis',
+    'click .pick-emoji-category': 'onEmojioneCategory',
+    'click .pick-emoji': 'onEmojionePick'
   },
   initialize: function (options) {
     this.listenTo(this.model, 'messageSent', this.close);
@@ -226,9 +226,16 @@ module.exports = Backbone.View.extend({
         this.$rollup.html(this.templateEmojione({
           list: list
         }));
-        this.$rollup.find('.emojione-category[data-category="' + category + '"]').addClass('active');
+        this.$rollup.find('.pick-emoji-category[data-category="' + category + '"]').addClass('active');
       }, this)
     });
+  },
+  toggleEmojis: function (event) {
+    if (this.isOpen) {
+      this.close();
+    } else {
+      this.openEmojis();
+    }
   },
   onEmojioneCategory: function (event) {
     event.preventDefault();

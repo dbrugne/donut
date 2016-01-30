@@ -16,7 +16,7 @@ var categories = {
     </div>
     <div class="nav_emojis">
         <% _.each(categories, function (value, key) { %>
-            <span class="emojione-category icon-stack icon-lg" title="<%= key %>" data-category="<%= key %>">
+            <span class="pick-emoji-category icon-stack icon-lg" title="<%= key %>" data-category="<%= key %>">
                 <i class="icon icon-square icon-stack-2x"></i>
                 <i class="icon <%= value %> icon-stack-1x"></i>
             </span>
@@ -25,7 +25,7 @@ var categories = {
     <% if (list === false) { print(spinner); } else { %>
     <div class="ctn_emojis">
         <% _.each(list, function (e) { %>
-            <div class="emojione-pick" data-shortname="<%= e.shortname %>"><%= e.img %></div>
+            <div class="pick-emoji" data-shortname="<%= e.shortname %>"><%= e.img %></div>
         <% }); %>
     </div>
     <% } %>
