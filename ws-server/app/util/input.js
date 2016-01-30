@@ -9,14 +9,12 @@ var parser = require('@dbrugne/donut-common/server').markup.parser(linkify);
 
 /**
  * Check for maximal length, sanitize line breaks
- * Return filtered string or empty string if too long or empty.
+ * Return filtered string or false if string is invalid
  * @param value
  * @param maxLength
  * @return false || filtered String
  */
 module.exports.filter = function (value, maxLength) {
-  // @todo emojione
-
   if (!value) {
     return false;
   }
