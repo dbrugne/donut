@@ -13,7 +13,7 @@ module.exports = Backbone.View.extend({
   events: {
     'mouseover .rollup-container li': 'onRollupHover',
     'click .rollup-container li': 'onRollupClick',
-    'click .close': 'onClose',
+    'click .close-rollup': 'onClose',
     'click .add-emoji': 'openEmojis',
     'click .emojione-category': 'onEmojioneCategory',
     'click .emojione-pick': 'onEmojionePick'
@@ -104,7 +104,7 @@ module.exports = Backbone.View.extend({
     var firstCharacterIsSlash = (inputValue.trim().substr(0, 1) === '/');
     var hasSpace = (inputValue.indexOf(' ') !== -1);
     if (firstCharacterIsSlash && !hasSpace) {
-      return this.openCommand();
+      return this.openCommand(text);
     }
 
     if (prefix === '#') {
@@ -116,10 +116,21 @@ module.exports = Backbone.View.extend({
       this.openEmojis(text);
     }
   },
-  openCommand: function () {
+  openCommand: function (subject) {
+    var list = [];
+    if (!subject.length) {
+      list = this.commands;
+    } else {
+      list = _.filter(this.commands, function (c) {
+        if (c.name.indexOf(subject) === 0) {
+          return true;
+        }
+      });
+    }
+
     this.$rollup.html(this.template({
       type: 'commands',
-      results: this._getCommandList()
+      results: list
     }));
     this.open();
   },
@@ -282,22 +293,6 @@ module.exports = Backbone.View.extend({
     return this.cursorPosition === null
       ? this.$editable.getCursorPosition()
       : this.cursorPosition;
-  },
-  _getCommandList: function () {
-    var input = this._parseInput();
-    var selectedCommands = [];
-
-    if (input.length === 1) { // First call
-      selectedCommands = this.commands;
-    } else { // next calls
-      _.each(this.commands, function (command) {
-        if (command.name.indexOf(input.substr(1, input.length)) === 0) {
-          selectedCommands.push(command);
-        }
-      });
-    }
-
-    return selectedCommands;
   },
   _computeNewValue: function (replaceValue) {
     var oldValue = this.$editable.val();
