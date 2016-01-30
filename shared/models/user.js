@@ -75,9 +75,6 @@ var userSchema = mongoose.Schema({
  */
 userSchema.statics.getNewUser = function () {
   var model = new this();
-
-  // @todo default avatar
-
   var preferencesConfig = this.preferencesKeys();
   var preferences = {};
   _.each(preferencesConfig, function (value, key) {

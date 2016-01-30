@@ -17,7 +17,6 @@ var Renderer = function (options) {
   options = options || {};
 
   // @todo dbr : implement underscore template caching
-  // @todo dbr : implement default layout
 
   this.extension = options.extension || 'html';
   this.templateDir = options.templateDir || path.join(__dirname, '/../../web-server/views');
