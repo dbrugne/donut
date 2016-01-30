@@ -1,8 +1,8 @@
-var $ = require('jquery');
 var _ = require('underscore');
 var common = require('@dbrugne/donut-common/browser');
 var date = require('./date');
 var app = require('../libs/app');
+var emojione = require('emojione');
 
 var templates = {
   'hello': require('../templates/event/block-hello.html'),
@@ -226,7 +226,7 @@ exports.prototype._data = function (type, data) {
       template: require('../templates/markup.html')
     });
 
-//    subject = $.smilify(subject); // @todo emojione
+    subject = emojione.shortnameToImage(subject);
 
     if (data.message) {
       data.message = subject;
