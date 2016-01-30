@@ -58,25 +58,24 @@ module.exports = Backbone.View.extend({
       return;
     }
 
-    var pressedKey = keyboard.getLastKeyCode(event);
-    var inputValue = this.$editable.val();
+    var data = this.computeState(event);
 
     // rollup is opened, handle navigation
     if (this.isOpen) {
-      if (inputValue.length === 0 || pressedKey.key === keyboard.ESC) {
+      if (data.input.length === 0 || data.pressedKey.key === keyboard.ESC) {
         // empty input or esc pressed
         return this.close();
       }
 
       // select something (with enter)
-      if (pressedKey.key === keyboard.RETURN && !pressedKey.isShift && inputValue.length !== 0) {
+      if (data.pressedKey.key === keyboard.RETURN && !data.pressedKey.isShift && data.input.length !== 0) {
         var $targets = this.$rollup.find('li.active .value');
         if ($targets.length && event.target) {
           var value = $targets.html().trim();
           if (value.slice(-1) !== '/') {
             value += ' ';
           }
-          this._computeNewValue(value);
+          this.insertInInput(value);
           this.close();
           this.moveCursorToEnd();
           return;
@@ -84,36 +83,32 @@ module.exports = Backbone.View.extend({
       }
 
       // release UP/DOWN/TAB/LEFT/RIGHT
-      if (pressedKey.key === keyboard.UP || pressedKey.key === keyboard.DOWN || pressedKey.key === keyboard.LEFT || pressedKey.key === keyboard.RIGHT || pressedKey.key === keyboard.TAB || pressedKey.isCtrl || pressedKey.isAlt || pressedKey.isMeta) {
+      if (data.pressedKey.key === keyboard.UP || data.pressedKey.key === keyboard.DOWN || data.pressedKey.key === keyboard.LEFT || data.pressedKey.key === keyboard.RIGHT || data.pressedKey.key === keyboard.TAB || data.pressedKey.isCtrl || data.pressedKey.isAlt || data.pressedKey.isMeta) {
         return;
       }
     }
 
-    var subject = this._parseInput();
-    if (!subject) {
+    if (!data.subject) {
       return this.close();
     }
-    if (['#', '@', ':', '/'].indexOf(subject.substr(0, 1)) === -1) {
+    if (['#', '@', ':', '/'].indexOf(data.prefix) === -1) {
       return this.close();
     }
-
-    var prefix = subject.substr(0, 1);
-    var text = subject.substr(1);
 
     // command
-    var firstCharacterIsSlash = (inputValue.trim().substr(0, 1) === '/');
-    var hasSpace = (inputValue.indexOf(' ') !== -1);
+    var firstCharacterIsSlash = (data.input.trim().substr(0, 1) === '/');
+    var hasSpace = (data.input.indexOf(' ') !== -1);
     if (firstCharacterIsSlash && !hasSpace) {
-      return this.openCommand(text);
+      return this.openCommand(data.text);
     }
 
-    if (prefix === '#') {
+    if (data.prefix === '#') {
       // rooms/group
-      this.openRooms(text);
-    } else if (prefix === '@') {
-      this.openUsers(text);
-    } else if (prefix === ':') {
-      this.openEmojis(text);
+      this.openRooms(data.text);
+    } else if (data.prefix === '@') {
+      this.openUsers(data.text);
+    } else if (data.prefix === ':') {
+      this.openEmojis(data.text);
     }
   },
   openCommand: function (subject) {
@@ -253,20 +248,40 @@ module.exports = Backbone.View.extend({
       return;
     }
 
-    this._computeNewValue(shortname + ' ');
-//    this.close();
+    this.insertInInput(shortname + ' ');
+    this.close();
     this.moveCursorToEnd();
   },
-  _parseInput: function () {
-    var pos = this._getCursorPosition(); // Get current cursor position in textarea
+  computeState: function (event) {
+    var data = {
+      input: this.$editable.val(),
+      position: this._getCursorPosition(),
+      pressedKey: (event)
+        ? keyboard.getLastKeyCode(event)
+        : null,
+      subject: '',
+      prefix: '',
+      text: '',
+      subjectPosition: 0,
+      beforeSubject: ''
+    };
 
-    // If space of nothing found after getCursorPosition, we continue, else return null
-    if (this.$editable.val().length > pos && this.$editable.val().substr(pos, 1) !== ' ') {
-      return '';
+    // if space or nothing found after position we continue, else return
+    if (data.input.length > data.position && data.input.substr(data.position, 1) !== ' ') {
+      return data;
     }
 
-    var message = this.$editable.val().substr(0, pos); // Only keep text from start to current cursor position
-    return _.last(message.split(' ')); // only keep the last typed command / mention
+    // only keep text from start to current cursor position
+    var message = data.input.substr(0, data.position);
+
+    // only keep the last typed command / mention
+    data.subject = _.last(message.split(' '));
+    data.prefix = data.subject.substr(0, 1);
+    data.text = data.subject.substr(1);
+    data.subjectPosition = (data.position - data.subject.length);
+    data.beforeSubject = data.input.substr(0, data.subjectPosition);
+
+    return data;
   },
   _rollupNavigate: function (key) {
     var currentLi = this.$rollup.find('li.active');
@@ -286,7 +301,7 @@ module.exports = Backbone.View.extend({
     if (li.length !== 0) {
       currentLi.removeClass('active');
       li.addClass('active');
-      this._computeNewValue(li.find('.value').html().trim() + ' ');
+      this.insertInInput(li.find('.value').html().trim() + ' ');
     }
   },
   _getCursorPosition: function () {
@@ -294,24 +309,25 @@ module.exports = Backbone.View.extend({
       ? this.$editable.getCursorPosition()
       : this.cursorPosition;
   },
-  _computeNewValue: function (replaceValue) {
-    var oldValue = this.$editable.val();
-    var currentInput = this._parseInput();
-    var cursorPosition = this._getCursorPosition();
-    var newCursorPosition = (oldValue.substr(0, (cursorPosition - currentInput.length)) + replaceValue).length - 1; // Remove last space
-    var newValue = oldValue.substr(0, (cursorPosition - currentInput.length)) + replaceValue + oldValue.substr(cursorPosition, oldValue.length).trim();
+  insertInInput: function (string) {
+    var data = this.computeState();
 
-    this.$editable.val(newValue);
-    this.$editable.setCursorPosition(newCursorPosition, newCursorPosition);
+    // input content
+    var after = data.input.substr(data.position, data.input.length).trim();
+    this.$editable.val(data.beforeSubject + string + after);
+
+    // cursor position
+    var newPosition = (data.before + string).length - 1; // @important remove last space
+    this.$editable.setCursorPosition(newPosition, newPosition);
   },
   open: function () {
     this.$el.addClass('open');
-    this.opened = true;
+    this.isOpen = true;
   },
   close: function () {
     this.$rollup.html('');
     this.$el.removeClass('open');
-    this.opened = false;
+    this.isOpen = false;
   },
   onClose: function (event) {
     event.preventDefault();
@@ -334,9 +350,9 @@ module.exports = Backbone.View.extend({
     }
 
     if (li.find('.value').html().trim().slice(-1) !== '/') {
-      this._computeNewValue(li.find('.value').html().trim() + ' ');
+      this.insertInInput(li.find('.value').html().trim() + ' ');
     } else {
-      this._computeNewValue(li.find('.value').html().trim());
+      this.insertInInput(li.find('.value').html().trim());
     }
     this.close();
     this.moveCursorToEnd();
