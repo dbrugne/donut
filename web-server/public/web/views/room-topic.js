@@ -2,6 +2,7 @@ var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
+var emojione = require('emojione');
 
 var RoomTopicView = Backbone.View.extend({
   template: require('../templates/room-topic.html'),
@@ -52,10 +53,10 @@ var RoomTopicView = Backbone.View.extend({
       var htmlTopic = common.markup.toHtml(currentTopic, {
         template: require('../templates/markup.html')
       });
+      htmlTopic = emojione.shortnameToImage(htmlTopic);
       this.$('.txt')
         .html(htmlTopic)
         .attr('title', common.markup.toText(currentTopic));
-//        .smilify(); // @todo emojione
       this.$('.topic-current').css('display', 'inline-block');
     }
 

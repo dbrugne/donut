@@ -169,7 +169,6 @@ var DiscussionInputView = Backbone.View.extend({
     }
 
     // check length (max)
-    // @todo smilify
     if (message.length > 512) {
       debug('message is too long');
       return false;
