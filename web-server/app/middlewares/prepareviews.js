@@ -42,7 +42,6 @@ module.exports = function () {
 
     // default
     res.locals.meta = false;
-    res.locals.avoidFa = false;
 
     // language
     // @todo dbr: hotfix to workaround fr_FR or fr-FR, force 'en' or 'fr'
