@@ -1,5 +1,4 @@
 var _ = require('underscore');
-var app = require('./app');
 var Notify = require('notifyjs');
 var Backbone = require('backbone');
 
@@ -22,7 +21,7 @@ window.n = module.exports = {
   },
   _notify: function (tag, title, body, uri) {
     var n = new Notify(title, {
-      body: body,
+      body: body || '', // avoid 'undefined'
       tag: tag,
       timeout: 10,
       closeOnClick: true,
