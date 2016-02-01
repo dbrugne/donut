@@ -36,6 +36,14 @@
   -ms-transform: 		 rotate(@deg);
   -o-transform: 		 rotate(@deg);
 }
+.transform-origin (...) {
+  @props: ~`"@{arguments}".replace(/[\[\]]/g, '')`;
+  -webkit-transform-origin:@props;
+  -moz-transform-origin:@props;
+  -ms-transform-origin:@props;
+  -o-transform-origin:@props;
+  transform-origin: @props;
+}
 
 .user-select(@value) {
   -webkit-user-select: @value;

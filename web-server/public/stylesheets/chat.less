@@ -201,7 +201,8 @@
       img { width: 35px; height: 35px; }
       i { color: rgba(207,217,229,0.40); }
       &.open { .transition(max-height 400ms); max-height: 600px;
-        .dropdown-toggle i { .rotate(180deg); }
+        .dropdown-toggle i { .rotate(180deg); .transform-origin(50% 56%);
+        }
       }
       &.open, &:hover { background-color: @cl-nav-left-back2;
         .user-status { border-color: @cl-nav-left-back2; }
@@ -223,7 +224,8 @@
       }
       .dropdown-toggle { width: 100%; padding: 0;
         .username {  .ft-opensans; font-size: 1.3rem; color: #FFFFFF; letter-spacing: 1px; line-height: 20px; max-width: 185px; text-overflow: ellipsis; overflow: hidden; }
-        i { .transition(all 300ms ease); }
+        i { .transition(all 300ms ease);width: 15px;
+          height: 15px; }
       }
     }
     #navbar { border-color: @cl-nav-left-back2; padding-bottom: 1rem; background-color: @cl-nav-left-back; margin: 0; height: 40px; border-width: 1px 0 0; border-style: solid;
