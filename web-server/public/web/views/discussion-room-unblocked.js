@@ -65,6 +65,7 @@ var RoomView = Backbone.View.extend({
 
     // render
     var html = this.template({
+      spinner: require('../templates/spinner.html')(),
       data: data
     });
     this.$el.html(html);
