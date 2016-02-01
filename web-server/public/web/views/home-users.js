@@ -32,14 +32,8 @@ var UsersView = Backbone.View.extend({
   },
 
   initializeTooltips: function () {
-    $('[data-toggle="tooltip"][data-type="room-users"]').tooltip({
-      html: true,
-      animation: false,
-      container: 'body',
-      template: '<div class="tooltip tooltip-home-users" role="tooltip"><div class="tooltip-inner left"></div></div>',
-      title: function () {
-        return '<div class="username">@' + this.dataset.username + '</div>';
-      }
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
     });
   }
 });

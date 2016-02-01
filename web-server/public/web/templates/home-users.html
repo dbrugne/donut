@@ -6,7 +6,7 @@
         <div class="nothing"><%= t('chat.search.noresults') %></div>
     <% } %>
     <% _.each(users, function(u) { %>
-        <div class="item open-user-profile <%= u.status %>" data-type="room-users" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>" data-toggle="tooltip" data-placement="left">
+        <div class="item open-user-profile <%= u.status %>" data-user-id="<%= u.user_id %>" data-username="<%= u.username %>" data-toggle="tooltip" data-placement="left" title="@<%=u.username%>">
             <div class="avatar" style="background-image:url(<%= u.avatar %>)"></div>
         </div>
     <% }); %>
