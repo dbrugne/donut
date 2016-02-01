@@ -615,7 +615,9 @@
         "groupban": "You were banned from community <span>#__name__</span>",
         "groupdeban": "You are no longer banned from community <span>#__name__</span>",
         "groupop": "You are moderator of community <span>#__name__</span>",
-        "groupdeop": "You are no longer moderator of community <span>#__name__</span>"
+        "groupdeop": "You are no longer moderator of community <span>#__name__</span>",
+        "files": "1 file",
+        "files_plural": "__count__ files"
       },
       "userban-me": "__who__ blocked you",
       "userban-other": "you blocked __who__",
