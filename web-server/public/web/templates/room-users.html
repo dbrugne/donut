@@ -1,3 +1,41 @@
-<ul class="list">
-    <li class="pad loading"><%= spinner %></li>
-</ul>
+<% var previous; %>
+<% _.each(list, function(user) { %>
+<li data-user-id="<%=user.user_id%>" class="li-user" >
+    <% previous = user.status; %>
+    <div class="item <% if (user.is_op === true) { %>op<% }; %> <% if (user.is_owner === true) { %>owner<% }; %> <% if (user.is_devoice === true) { %> devoice<% }; %> <%= user.status %>" title="@<%- user.username %>" >
+            <span class="infos relative">
+                <span class="userstatus <%= user.status %>" title="<%= user.status %>"></span>
+                <span class="avatar relative curp" title="<% if (user.is_op === true) { %><%= t('chat.op.is') %><% } else if (user.is_owner === true) { %><%= t('chat.owner.is') %><% }; %>">
+                    <span class="background" style="background-image: url(<%= user.avatar %>)"></span>
+                </span>
+                <span class="username ml5">@<%=user.username%></span>
+            </span>
+    </div>
+</li>
+<% }); %>
+
+<li class="clearfix"></li>
+
+<li class="li-title text-center hidden-compact w100">
+    <div class="item count dc-text-contrast w100"><%= t('chat.userscount', {count: 0}) %></div>
+</li>
+
+<li class="li-title row mt5">
+    <div class="col-md-6">
+        <span class="curp open-room-users title btn btn-block btn-default btn-sm" data-room-id="<%= room_id %>">
+            <%= t('chat.users.label') %>
+        </span>
+    </div>
+    <div class="col-md-6">
+        <span class="curp compact-mode btn btn-block btn-default btn-sm">
+            <span class="hidden-compact">
+                <i class="icon icon-fw icon-ellipsis-v"></i> <%= t('global.collapse') %>
+            </span>
+            <span class="visible-compact">
+                <i class="icon icon-fw icon-list"></i>
+            </span>
+        </span>
+    </div>
+</li>
+
+

@@ -13,19 +13,18 @@ var RoomUsersView = Backbone.View.extend({
   template: require('../templates/room-users.html'),
   templateSpinner: require('../templates/spinner.html'),
 
-  listTemplate: require('../templates/room-users-list.html'),
+  listTemplate: require('../templates/room-users.html'),
 
   userPreviewTemplate: require('../templates/user-preview.html'),
 
   maxDisplayedUsers: 20,
-  timeBuffer: 750,
-  timeoutShow: 0,
+  timeBuffer: 250,
   timeoutHide: 0,
 
   events: {
     'click .compact-mode': 'compact',
-    'mouseenter .users > .list > li.li-user': 'fillPopin',
-    'mouseleave .users > .list > li.li-user': 'hidePopin'
+    'click li.li-user': 'fillPopin',
+    'mouseleave li.li-user': 'hidePopin'
   },
 
   initialize: function () {
@@ -42,16 +41,9 @@ var RoomUsersView = Backbone.View.extend({
       this.hidePopin();
     }, this));
 
-    this.initialRender();
-
-    // everything is ready
-    this.model.users.fetchUsers();
-  },
-  initialRender: function () {
-    var spinner = this.templateSpinner({});
-    var html = this.template({spinner: spinner});
-    this.$users.html(html);
     this.$list = this.$users.find('.list');
+
+    this.model.users.fetchUsers();
   },
   render: function () {
     debug.start('room-users' + this.model.get('name'));
@@ -102,44 +94,42 @@ var RoomUsersView = Backbone.View.extend({
     this.$el.toggleClass('compact');
   },
   fillPopin: function (event) {
-    clearTimeout(this.timeoutShow);
+    clearTimeout(this.timeoutHide);
 
-    this.timeoutShow = setTimeout(_.bind(function () {
-      var elt = $(event.currentTarget);
-      if (!elt.data('user-id')) {
+    var elt = $(event.currentTarget);
+    if (!elt.data('user-id')) {
+      return;
+    }
+
+    var offset = elt.offset();
+    var user = this.collection.get(elt.data('user-id')).toJSON()
+    user.avatar = common.cloudinary.prepare(user.avatar, 100);
+    user.uri = urls(user, 'user', 'uri');
+
+    var data = {
+      user: user,
+      room_id: this.model.get('id'),
+      isCurrentUser: (user.id === currentUser.get('user_id')),
+      isOwner: this.model.currentUserIsOwner(),
+      isOp: this.model.currentUserIsOp(),
+      isAdmin: app.user.isAdmin()
+    };
+
+    this.$popinUsers.html(this.userPreviewTemplate(data));
+    this.$popinUsers.modal({backdrop: false});
+    this.$popinUsers.css('left', (offset.left - this.$popinUsers.find('.modal-dialog').width()));
+    this.$popinUsers.css('top', offset.top);
+
+    this.$popinUsers.show();
+
+    app.client.userRead(user.user_id, {more: true}, _.bind(function (user) {
+      if (user.err) {
         return;
       }
-
-      var offset = elt.offset();
-      var user = this.collection.get(elt.data('user-id')).toJSON()
-      user.avatar = common.cloudinary.prepare(user.avatar, 100);
-      user.uri = urls(user, 'user', 'uri');
-
-      var data = {
-        user: user,
-        room_id: this.model.get('id'),
-        isCurrentUser: (user.id === currentUser.get('user_id')),
-        isOwner: this.model.currentUserIsOwner(),
-        isOp: this.model.currentUserIsOp(),
-        isAdmin: app.user.isAdmin()
-      };
-
-      this.$popinUsers.html(this.userPreviewTemplate(data));
-      this.$popinUsers.modal({backdrop: false});
-      this.$popinUsers.css('left', (offset.left - this.$popinUsers.find('.modal-dialog').width()));
-      this.$popinUsers.css('top', offset.top);
-
-      this.$popinUsers.show();
-
-      app.client.userRead(user.user_id, {more: true}, _.bind(function (user) {
-        if (user.err) {
-          return;
-        }
-        if (user.location) {
-          this.$popinUsers.find('.location').removeClass('hidden').find('.ctn').html(user.location);
-        }
-      }, this));
-    }, this), this.timeBuffer);
+      if (user.location) {
+        this.$popinUsers.find('.location').removeClass('hidden').find('.ctn').html(user.location);
+      }
+    }, this));
   },
   hidePopin: function () {
     clearTimeout(this.timeoutHide);
