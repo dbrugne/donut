@@ -96,22 +96,37 @@ Filter.prototype.before = function (data, session, next) {
       if (!common.validate.objectId(data.event)) {
         return callback('params-id');
       }
+
+      var q;
       switch (data.__route__) {
         case 'chat.userMessageEditHandler.call':
-          HistoryOneModel.findOne({ _id: data.event }).exec(callback);
+        case 'history.getUserEventHandler.call':
+          q = HistoryOneModel.findOne({ _id: data.event });
           break;
 
         case 'chat.roomMessageEditHandler.call':
         case 'chat.roomMessageSpamHandler.call':
         case 'chat.roomMessageUnspamHandler.call':
-          HistoryRoomModel.findOne({ _id: data.event }).exec(callback);
+        case 'history.getRoomEventHandler.call':
+          q = HistoryRoomModel.findOne({ _id: data.event });
           break;
 
         default:
           return callback(null);
       }
-    }
 
+      if (data.__route__ === 'history.getUserEventHandler.call') {
+        q.populate('from', 'realname username avatar facebook')
+          .populate('to', 'realname username avatar facebook');
+      }
+      if (data.__route__ === 'history.getRoomEventHandler.call') {
+        q.populate('room', 'name')
+          .populate('user', 'realname username avatar facebook')
+          .populate('by_user', 'realname username avatar facebook');
+      }
+
+      q.exec(callback);
+    }
   }, function (err, results) {
     if (err) {
       return errors.getFilterHandler(data.__route__.replace('chat.', ''), next)(err);
