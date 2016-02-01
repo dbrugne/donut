@@ -65,11 +65,11 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, data, globalCall
           }
 
           welcomeEvent.preferences = {};
-          welcomeEvent.preferences[ 'browser:exitpopin' ] = (typeof user.preferences[ 'browser:exitpopin' ] === 'undefined' || user.preferences[ 'browser:exitpopin' ] === true);
-          welcomeEvent.preferences[ 'browser:welcome' ] = (user.preferences && user.preferences[ 'browser:welcome' ] === true);
-          welcomeEvent.preferences[ 'browser:sounds' ] = (user.preferences && user.preferences[ 'browser:sounds' ] === true);
-          welcomeEvent.preferences[ 'notif:channels:desktop' ] = (user.preferences && user.preferences[ 'notif:channels:desktop' ] === true);
-          welcomeEvent.preferences[ 'chatmode:compact' ] = (user.preferences && user.preferences[ 'chatmode:compact' ] === true);
+          welcomeEvent.preferences['browser:exitpopin'] = (typeof user.preferences['browser:exitpopin'] === 'undefined' || user.preferences['browser:exitpopin'] === true);
+          welcomeEvent.preferences['browser:welcome'] = (user.preferences && user.preferences['browser:welcome'] === true);
+          welcomeEvent.preferences['browser:sounds'] = (user.preferences && user.preferences['browser:sounds'] === true);
+          welcomeEvent.preferences['notif:channels:desktop'] = (user.preferences && user.preferences['notif:channels:desktop'] === true);
+          welcomeEvent.preferences['chatmode:compact'] = (user.preferences && user.preferences['chatmode:compact'] === true);
 
           return callback(null);
         });
@@ -148,19 +148,29 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, data, globalCall
 
           welcomeEvent.groups = [];
           _.each(groups, function (grp) {
-            welcomeEvent.groups.push({
+            var group = {
               group_id: grp.id,
               name: grp.name,
               identifier: grp.getIdentifier(),
               avatar: grp._avatar()
-            });
+            };
+            if (grp.bans.length > 0) {
+              var u = _.find(grp.bans, function (u) {
+                if (u.user.toString() === user.id) {
+                  group.blocked = true;
+                  group.blocked_reason = u.reason;
+                  return true;
+                }
+              });
+            }
+            welcomeEvent.groups.push(group);
           });
           return callback(null);
         });
     },
 
     function featured (callback) {
-      if (data.device === 'mobile' && !(user.preferences && user.preferences[ 'browser:welcome' ] === true)) {
+      if (data.device === 'mobile' && !(user.preferences && user.preferences['browser:welcome'] === true)) {
         return callback(null);
       }
 
