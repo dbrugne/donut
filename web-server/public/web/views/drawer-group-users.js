@@ -88,7 +88,7 @@ var DrawerRoomUsersView = Backbone.View.extend({
     this.render();
   },
   onSearchEnter: function (event) {
-    var key = keyboard._getLastKeyCode(event);
+    var key = keyboard.getLastKeyCode(event);
     if (key.key === keyboard.RETURN) {
       this.page = 1;
       this.render();

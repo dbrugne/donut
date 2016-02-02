@@ -58,7 +58,7 @@ var DrawerGroupCreateView = Backbone.View.extend({
     }
 
     // Enter in field handling
-    var key = keyboard._getLastKeyCode(event);
+    var key = keyboard.getLastKeyCode(event);
     if (valid && event.type === 'keyup' && key.key === keyboard.RETURN) {
       this.submit();
     }

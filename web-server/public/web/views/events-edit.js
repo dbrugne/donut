@@ -3,7 +3,8 @@ var Backbone = require('backbone');
 var keyboard = require('../libs/keyboard');
 var common = require('@dbrugne/donut-common/browser');
 var i18next = require('i18next-client');
-var currentUser = require('../libs/app').user;
+var app = require('../libs/app');
+var emojione = require('emojione');
 var MessageEditView = require('./message-edit');
 
 module.exports = Backbone.View.extend({
@@ -41,7 +42,7 @@ module.exports = Backbone.View.extend({
       return false;
     }
     var userId = $event.data('userId');
-    if (currentUser.get('user_id') !== userId) {
+    if (app.user.get('user_id') !== userId) {
       return false;
     }
     var time = $event.data('time');
@@ -52,12 +53,12 @@ module.exports = Backbone.View.extend({
     return !$event.hasClass('spammed');
   },
   editNext: function (event) {
-    var key = keyboard._getLastKeyCode(event);
+    var key = keyboard.getLastKeyCode(event);
     if (key.key !== keyboard.UP && key.key !== keyboard.DOWN) {
       return this.model.trigger('scrollDown');
     }
 
-    var $listMessages = this.$realtime.find('.block.message[data-user-id="' + currentUser.get('user_id') + '"]');
+    var $listMessages = this.$realtime.find('.block.message[data-user-id="' + app.user.get('user_id') + '"]');
     if (!$listMessages.length) {
       return;
     }
@@ -111,7 +112,8 @@ module.exports = Backbone.View.extend({
     var msg = common.markup.toHtml(data.message, {
       template: require('../templates/markup.html')
     });
-    msg = $.smilify(msg);
+
+    msg = emojione.shortnameToImage(msg);
     data.message = msg;
 
     data.message += '<span class="text-edited">&nbsp;(' + i18next.t('chat.message.edition.edited') + ')</span>';

@@ -1,7 +1,7 @@
 var _ = require('underscore');
-var app = require('./app');
 var Notify = require('notifyjs');
 var Backbone = require('backbone');
+var emojione = require('emojione');
 
 var debug = require('./donut-debug')('donut:desktop');
 
@@ -21,8 +21,15 @@ window.n = module.exports = {
     }
   },
   _notify: function (tag, title, body, uri) {
+    title = (title)
+      ? emojione.shortnameToUnicode(title)
+      : '';
+    body = (body)
+      ? emojione.shortnameToUnicode(body)
+      : '';
+
     var n = new Notify(title, {
-      body: body,
+      body: body || '', // avoid 'undefined'
       tag: tag,
       timeout: 10,
       closeOnClick: true,

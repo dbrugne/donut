@@ -29,10 +29,8 @@ var donutDebug = function (namespace) {
       delete times[ name ];
     };
   } else {
-    dbg.start = function () {
-    };
-    dbg.end = function () {
-    };
+    dbg.start = function () {};
+    dbg.end = function () {};
   }
 
   return dbg;

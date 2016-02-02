@@ -13,9 +13,11 @@ module.exports = {
       if (err) {
         return logger.error('notificationsTask.send error: ' + err);
       }
+      if (!notifications.length) {
+        return logger.info('notificationsTask.send: nothing');
+      }
 
       logger.trace('notificationsTask.send ' + notifications.length + ' notification(s) to send found');
-
       async.each(notifications, function (notification, callback) {
         var type = facade.getType(notification.type);
         if (!type) {

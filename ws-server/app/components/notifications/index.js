@@ -192,12 +192,9 @@ Facade.prototype.retrieveUserNotificationsCount = function (uid, time, callback)
 };
 
 Facade.prototype.retrieveScheduledNotifications = function (callback) {
-  var time = new Date();
-  time.setSeconds(time.getSeconds() - conf.notifications.delay);
   var q = NotificationModel.find({
     done: false,
     viewed: false,
-    time: {$lt: time},
     $or: [
       {to_email: true, sent_to_email: false}
     ]
@@ -228,6 +225,9 @@ Facade.prototype.retrieveScheduledNotifications = function (callback) {
     model: 'Group',
     select: 'avatar name'
   });
+
+  q.limit(5);
+
   q.exec(function (err, results) {
     if (err) {
       callback(err);

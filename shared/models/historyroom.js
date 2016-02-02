@@ -74,10 +74,7 @@ historySchema.methods.toClientJSON = function () {
     ? _.clone(this.data)
     : {};
   data.id = this.id;
-  data.name = this.room.name;
-  data.room_name = this.room.name;
   data.room_id = this.room.id;
-  data.room_avatar = this.room._avatar();
   data.time = this.time;
   if (this.user) {
     data.user_id = this.user.id;

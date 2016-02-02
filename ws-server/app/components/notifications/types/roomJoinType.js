@@ -170,6 +170,8 @@ Notification.prototype.sendEmail = function (model, done) {
     function send (history, callback) {
       if (model.user.getEmail()) {
         emailer.roomJoin(model.user.getEmail(), history.user.username, model.data.room.getIdentifier(), callback);
+      } else {
+        callback(null);
       }
     },
 

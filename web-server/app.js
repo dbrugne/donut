@@ -82,6 +82,7 @@ app.use(require('./app/authentication/verify'));
 // public routes
 app.use(require('./app/routes/seo'));
 app.use(require('./app/routes/landing'));
+app.use(require('./app/routes/emojione'));
 app.use(require('./app/routes/chat'));
 app.use(require('./app/routes/contact-form'));
 app.use(require('./app/routes/static'));

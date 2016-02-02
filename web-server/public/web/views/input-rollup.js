@@ -5,17 +5,21 @@ var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
 var keyboard = require('../libs/keyboard');
 
-var InputRollupView = Backbone.View.extend({
+module.exports = Backbone.View.extend({
   template: require('../templates/rollup.html'),
-
+  templateEmojione: require('../templates/rollup-emojione.html'),
   cursorPosition: null,
-
+  isOpen: false,
   events: {
     'mouseover .rollup-container li': 'onRollupHover',
-    'click .rollup-container li': 'onRollupClick'
+    'click .rollup-container li': 'onRollupClick',
+    'click .close-rollup': 'onClose',
+    'click .add-emoji': 'toggleEmojis',
+    'click .pick-emoji-category': 'onEmojioneCategory',
+    'click .pick-emoji': 'onEmojionePick'
   },
-
   initialize: function (options) {
+    this.listenTo(this.model, 'messageSent', this.close);
     this.listenTo(this.model, 'inputKeyUp', this.onKeyUp);
     this.listenTo(this.model, 'inputKeyDown', this.onKeyDown);
     this.listenTo(this.model, 'input:clicked', this.onRollupClose);
@@ -30,109 +34,262 @@ var InputRollupView = Backbone.View.extend({
     this.$editable = this.$('.editable');
     this.$rollup = this.$('.rollup-container');
   },
-
   render: function () {
     return this;
   },
-
   onKeyDown: function (event) {
-    var data = keyboard._getLastKeyCode(event);
+    var data = keyboard.getLastKeyCode(event);
+    this.cursorPosition = null;
 
-    if (!this.isClosed()) {
+    if (this.isOpen) {
       // Avoid setting cursor at end or start of tab input when pressing up or down (used to navigate)
       if (data.key === keyboard.DOWN || data.key === keyboard.UP || data.key === keyboard.TAB) {
         this.cursorPosition = this.$editable.getCursorPosition();
         this._rollupNavigate(data.key);
         event.preventDefault(); // avoid triggering keyUp
-        return;
       } else if (data.key === keyboard.LEFT || data.key === keyboard.RIGHT || data.isCtrl || data.isAlt || data.isMeta) {
         this.cursorPosition = this.$editable.getCursorPosition();
-        if (!this.isClosed()) {
-          return this._closeRollup();
-        }
+        this.close();
       }
     }
-
-    this.cursorPosition = null;
   },
-
   onKeyUp: function (event) {
     if (event.type !== 'keyup') {
       return;
     }
 
-    var data = keyboard._getLastKeyCode(event);
-    var message = this.$editable.val();
+    var data = this.computeState(event);
 
-    if (this.isClosed()) {
-      // If different from @, #, /, close rollup & do nothing more
-      if (!this._isRollupCallValid(message)) {
-        return this._closeRollup();
+    // rollup is opened, handle navigation
+    if (this.isOpen) {
+      if (data.input.length === 0 || data.pressedKey.key === keyboard.ESC) {
+        // empty input or esc pressed
+        return this.close();
       }
 
-      return this._displayRollup();
+      // select something (with enter)
+      if (data.pressedKey.key === keyboard.RETURN && !data.pressedKey.isShift && data.input.length !== 0) {
+        var $targets = this.$rollup.find('li.active .value');
+        if ($targets.length && event.target) {
+          var value = $targets.html().trim();
+          if (value.slice(-1) !== '/') {
+            value += ' ';
+          }
+          this.insertInInput(value);
+          this.close();
+          this.moveCursorToEnd();
+          return;
+        }
+      }
+
+      // release UP/DOWN/TAB/LEFT/RIGHT
+      if (data.pressedKey.key === keyboard.UP || data.pressedKey.key === keyboard.DOWN || data.pressedKey.key === keyboard.LEFT || data.pressedKey.key === keyboard.RIGHT || data.pressedKey.key === keyboard.TAB || data.pressedKey.isCtrl || data.pressedKey.isAlt || data.pressedKey.isMeta) {
+        return;
+      }
+    }
+
+    if (!data.subject) {
+      return this.close();
+    }
+    if (['#', '@', ':', '/'].indexOf(data.prefix) === -1) {
+      return this.close();
+    }
+
+    // command
+    var firstCharacterIsSlash = (data.input.trim().substr(0, 1) === '/');
+    var hasSpace = (data.input.indexOf(' ') !== -1);
+    if (firstCharacterIsSlash && !hasSpace) {
+      return this.openCommand(data.text);
+    }
+
+    if (data.prefix === '#') {
+      // rooms/group
+      this.openRooms(data.text);
+    } else if (data.prefix === '@') {
+      this.openUsers(data.text);
+    } else if (data.prefix === ':') {
+      this.openEmojis(data.text);
+    }
+  },
+  openCommand: function (subject) {
+    var list = [];
+    if (!subject.length) {
+      list = this.commands;
     } else {
-      // Cleaned the input
-      // On key up, if input is empty or push Esc, close rollup
-      if (message.length === 0 || data.key === keyboard.ESC) {
-        return this._closeRollup();
-      }
-
-      // On Return && not Shift && something to select
-      if (data.key === keyboard.RETURN && !data.isShift && message.length !== 0) {
-        this._closeRollup(event.target);
-        this.moveCursorToEnd();
-        return;
-      }
-
-      // releasing UP / DOWN / TAB / LEFT / RIGHT : Do Nothing
-      if (data.key === keyboard.UP || data.key === keyboard.DOWN || data.key === keyboard.LEFT || data.key === keyboard.RIGHT || data.key === keyboard.TAB || data.isCtrl || data.isAlt || data.isMeta) {
-        return;
-      }
-
-      if (!this._isRollupCallValid(message)) {
-        return this._closeRollup();
-      }
-
-      return this._displayRollup();
-    }
-  },
-
-  isClosed: function () {
-    return (this.$rollup.html().length === 0);
-  },
-
-  _parseInput: function () {
-    var pos = this._getCursorPosition(); // Get current cursor position in textarea
-
-    // If space of nothing found after getCursorPosition, we continue, else return null
-    if (this.$editable.val().length > pos && this.$editable.val().substr(pos, 1) !== ' ') {
-      return '';
+      list = _.filter(this.commands, function (c) {
+        if (c.name.indexOf(subject) === 0) {
+          return true;
+        }
+      });
     }
 
-    var message = this.$editable.val().substr(0, pos); // Only keep text from start to current cursor position
-    return _.last(message.split(' ')); // only keep the last typed command / mention
+    this.$rollup.html(this.template({
+      type: 'commands',
+      results: list
+    })).fadeIn();
+    this.open();
   },
-
-  _isRollupCallValid: function () {
-    var message = this._parseInput();
-    if (message.length === 0) {
-      return false;
+  openRooms: function (subject) {
+    if (!subject) {
+      // only prefix was typed
+      this.$rollup.html(this.template({
+        type: 'rooms',
+        results: 'empty'
+      })).fadeIn();
+      this.open();
+      return;
     }
 
-    return !(_.indexOf(['#', '@', '/'], message.substr(0, 1)) === -1);
-  },
+    var options = {
+      rooms: true,
+      starts: true,
+      limit: {
+        groups: 15,
+        rooms: 15
+      }
+    };
 
-  _isCommandCallable: function () {
-    // First caracter is a /
-    if (this.$editable.val().trim().substr(0, 1) !== '/') {
-      return false;
+    // @todo : filter by group if in group or search only for non group and group if not
+    var search;
+    if (subject.indexOf('/') === -1) {
+      search = subject;
+      options.groups = true;
+    } else {
+      search = subject.split('/')[1]
+        ? subject.split('/')[1]
+        : '';
+      options.group_name = subject.split('/')[0];
     }
 
-    // no space typed after command
-    return !(this.$editable.val().split(' ').length > 1);
-  },
+    app.client.search(search, options, _.bind(function (data) {
+      var list = [];
+      if (data.rooms && data.rooms.list) {
+        list = _.union(data.rooms.list, list);
+      }
+      if (data.groups && data.groups.list) {
+        list = _.union(data.groups.list, list);
+      }
+      _.each(list, function (i) {
+        i.avatarUrl = common.cloudinary.prepare(i.avatar);
+      });
 
+      this.$rollup.html(this.template({
+        type: 'rooms',
+        results: list
+      })).fadeIn();
+      this.open();
+    }, this));
+  },
+  openUsers: function (subject) {
+    if (!subject) {
+      // only prefix was typed
+      this.$rollup.html(this.template({
+        type: 'users',
+        results: 'empty'
+      })).fadeIn();
+      this.open();
+      return;
+    }
+
+    var options = {
+      users: true,
+      starts: true,
+      limit: {
+        users: 10
+      }
+    };
+
+    // @todo : filter by room (or group ?)
+    app.client.search(subject, options, _.bind(function (data) {
+      _.each(data.users.list, function (d) {
+        d.avatarUrl = common.cloudinary.prepare(d.avatar);
+      });
+      this.$rollup.html(this.template({
+        type: 'users',
+        results: data.users.list
+      })).fadeIn();
+      this.open();
+    }, this));
+  },
+  openEmojis: function (subject) {
+    this.$rollup.html(this.templateEmojione({
+      list: false,
+      spinner: require('../templates/spinner.html')()
+    })).fadeIn();
+    this.open();
+    this.loadEmojione('people');
+  },
+  loadEmojione: function (category) {
+    $.ajax('/emojione/' + category, {
+      dataType: 'json',
+      success: _.bind(function (list) {
+        this.$rollup.html(this.templateEmojione({
+          list: list
+        })).fadeIn();
+        this.$rollup.find('.pick-emoji-category[data-category="' + category + '"]').addClass('active');
+      }, this)
+    });
+  },
+  toggleEmojis: function (event) {
+    if (this.isOpen) {
+      this.close();
+    } else {
+      this.openEmojis();
+    }
+  },
+  onEmojioneCategory: function (event) {
+    event.preventDefault();
+
+    var category = $(event.currentTarget).data('category');
+    if (!category) {
+      return;
+    }
+
+    this.loadEmojione(category);
+  },
+  onEmojionePick: function (event) {
+    event.preventDefault();
+
+    var shortname = $(event.currentTarget).data('shortname');
+    if (!shortname) {
+      return;
+    }
+
+    this.insertInInput(shortname + ' ');
+    this.close();
+    this.moveCursorToEnd();
+  },
+  computeState: function (event) {
+    var data = {
+      input: this.$editable.val(),
+      position: this._getCursorPosition(),
+      pressedKey: (event)
+        ? keyboard.getLastKeyCode(event)
+        : null,
+      subject: '',
+      prefix: '',
+      text: '',
+      subjectPosition: 0,
+      beforeSubject: ''
+    };
+
+    // if space or nothing found after position we continue, else return
+    if (data.input.length > data.position && data.input.substr(data.position, 1) !== ' ') {
+      return data;
+    }
+
+    // only keep text from start to current cursor position
+    var message = data.input.substr(0, data.position);
+
+    // only keep the last typed command / mention
+    data.subject = _.last(message.split(' '));
+    data.prefix = data.subject.substr(0, 1);
+    data.text = data.subject.substr(1);
+    data.subjectPosition = (data.position - data.subject.length);
+    data.beforeSubject = data.input.substr(0, data.subjectPosition);
+
+    return data;
+  },
   _rollupNavigate: function (key) {
     var currentLi = this.$rollup.find('li.active');
     var li = '';
@@ -151,7 +308,7 @@ var InputRollupView = Backbone.View.extend({
     if (li.length !== 0) {
       currentLi.removeClass('active');
       li.addClass('active');
-      this._computeNewValue(li.find('.value').html().trim() + ' ');
+      this.insertInInput(li.find('.value').html().trim() + ' ');
     }
   },
   _getCursorPosition: function () {
@@ -159,126 +316,31 @@ var InputRollupView = Backbone.View.extend({
       ? this.$editable.getCursorPosition()
       : this.cursorPosition;
   },
-  _getCommandList: function () {
-    var input = this._parseInput();
-    var selectedCommands = [];
+  insertInInput: function (string) {
+    var data = this.computeState();
 
-    if (input.length === 1) { // First call
-      selectedCommands = this.commands;
-    } else { // next calls
-      _.each(this.commands, function (command) {
-        if (command.name.indexOf(input.substr(1, input.length)) === 0) {
-          selectedCommands.push(command);
-        }
-      });
-    }
+    // input content
+    var after = data.input.substr(data.position, data.input.length).trim();
+    this.$editable.val(data.beforeSubject + string + after);
 
-    return selectedCommands;
+    // cursor position
+    var newPosition = (data.before + string).length - 1; // @important remove last space
+    this.$editable.setCursorPosition(newPosition, newPosition);
   },
-  _displayRollup: function () {
-    var input = this._parseInput();
-    if (this._isCommandCallable()) {
-      this.$rollup.html(this.template({
-        type: 'commands',
-        results: this._getCommandList()
-      }));
-      this.$el.addClass('open');
-      return;
-    }
-
-    if (input.length < 2) {
-      return this._closeRollup();
-    }
-
-    var prefix = input.substr(0, 1);
-    var search = input.substr(1);
-
-    var that = this;
-    var options = {};
-    if (prefix === '#') {
-      if (input.indexOf('/') === -1) {
-        options.rooms = true;
-        options.groups = true;
-        options.limit = {
-          groups: 15,
-          rooms: 15
-        };
-        options.starts = true;
-        app.client.search(search, options, function (data) {
-          _.each(_.union(data.groups.list, data.rooms.list), function (d) {
-            d.avatarUrl = common.cloudinary.prepare(d.avatar);
-          });
-          that.$rollup.html(that.template({
-            type: 'rooms',
-            results: _.union(data.groups.list, data.rooms.list)
-          }));
-          that.$el.addClass('open');
-        });
-      } else {
-        var roomSearch = search.split('/')[1] ? search.split('/')[1] : '';
-        options.rooms = true;
-        options.group_name = search.split('/')[0];
-        options.limit = {
-          groups: 15,
-          rooms: 15
-        };
-        options.starts = true;
-        app.client.search(roomSearch, options, function (data) {
-          _.each(data.rooms.list, function (d) {
-            d.avatarUrl = common.cloudinary.prepare(d.avatar);
-          });
-          that.$rollup.html(that.template({
-            type: 'rooms',
-            results: data.rooms.list
-          }));
-          that.$el.addClass('open');
-        });
-      }
-    }
-
-    if (prefix === '@') {
-      options.users = true;
-      options.limit = {
-        users: 15
-      };
-      options.starts = true;
-      app.client.search(search, options, function (data) {
-        _.each(data.users.list, function (d) {
-          d.avatarUrl = common.cloudinary.prepare(d.avatar);
-        });
-        that.$rollup.html(that.template({
-          type: 'users',
-          results: data.users.list
-        }));
-        that.$el.addClass('open');
-      });
-    }
+  open: function () {
+    this.$el.addClass('open');
+    this.isOpen = true;
   },
-  _computeNewValue: function (replaceValue) { // @michel
-    var oldValue = this.$editable.val(); // #LeagueofLegend @mich #donut
-    var currentInput = this._parseInput(); // @mich
-    var cursorPosition = this._getCursorPosition();
-    var newCursorPosition = (oldValue.substr(0, (cursorPosition - currentInput.length)) + replaceValue).length - 1; // Remove last space
-    var newValue = oldValue.substr(0, (cursorPosition - currentInput.length)) + replaceValue + oldValue.substr(cursorPosition, oldValue.length).trim();
-
-    this.$editable.val(newValue);
-    this.$editable.setCursorPosition(newCursorPosition, newCursorPosition);
+  close: function () {
+    this.$rollup.fadeOut(_.bind(function () {
+      this.$rollup.html('');
+      this.$el.removeClass('open');
+      this.isOpen = false;
+    }, this));
   },
-  _closeRollup: function (target) {
-    if (target) {
-      if (this.$rollup.find('li.active .value').length === 0) {
-        return;
-      }
-
-      if (this.$rollup.find('li.active .value').html().trim().slice(-1) !== '/') {
-        this._computeNewValue(this.$rollup.find('li.active .value').html().trim() + ' ');
-      } else {
-        this._computeNewValue(this.$rollup.find('li.active .value').html().trim());
-      }
-    }
-
-    this.$rollup.html('');
-    this.$el.removeClass('open');
+  onClose: function (event) {
+    event.preventDefault();
+    this.close();
   },
   onRollupHover: function (event) {
     var li = $(event.currentTarget);
@@ -297,23 +359,20 @@ var InputRollupView = Backbone.View.extend({
     }
 
     if (li.find('.value').html().trim().slice(-1) !== '/') {
-      this._computeNewValue(li.find('.value').html().trim() + ' ');
+      this.insertInInput(li.find('.value').html().trim() + ' ');
     } else {
-      this._computeNewValue(li.find('.value').html().trim());
+      this.insertInInput(li.find('.value').html().trim());
     }
-    this._closeRollup();
+    this.close();
     this.moveCursorToEnd();
   },
   onRollupClose: function () {
-    if (!this.isClosed()) {
-      this._closeRollup();
+    if (this.isOpen) {
+      this.close();
       this.moveCursorToEnd();
     }
   },
   moveCursorToEnd: function () {
     this.$editable.setCursorPosition(this.$editable.val().length, this.$editable.val().length);
   }
-
 });
-
-module.exports = InputRollupView;

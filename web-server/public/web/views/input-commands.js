@@ -50,6 +50,7 @@ var InputCommandsView = Backbone.View.extend({
       return 'error';
     }
 
+    this.model.trigger('messageSent');
     return true;
   },
 

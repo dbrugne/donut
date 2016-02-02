@@ -1,7 +1,8 @@
 .rollup-container { position:relative;
-  .ctn { bottom: 0; width: 100%; position: absolute; background: #fff; z-index: 10; padding: 0; line-height: 1.4rem; border-radius: .25rem; box-shadow: 0 1px 15px rgba(64,54,63,0.25); border: 1px solid #d0d9e6; min-width: 300px;
-    .ctn_header { padding: 5px 10px; background-color: #d0d9e6; color: #FFF; font-size: 12px;
+  .ctn { bottom: 0; width: 100%; position: absolute; background: #fff; z-index: 10; padding: 0; line-height: 1.4rem; border-radius: .25rem; box-shadow: 0 1px 15px rgba(64,54,63,0.25); border: 1px solid #626F7E; min-width: 300px;
+    .ctn_header { padding: 5px 10px; background-color: #626F7E; color: #FFF; font-size: 12px;
       .header_help{float:right}
+      a.close-rollup {color: #fff; text-decoration: underline;}
     }
     .ctn_scroller { max-height: 400px; overflow-y: auto; overflow-x: hidden; margin-top: 5px; width:100%;
       ul { list-style-type: none; margin: 0; padding: 0;
@@ -34,6 +35,28 @@
           .group-type { padding: 0 3px 3px 3px; position: absolute; top: -5px; left: -10px; border: 1px solid @cl-border; background-color: #FFF;
             i { font-size: 0.8rem; }
           }
+        }
+      }
+    }
+    .nav_emojis {
+      margin: 4px;
+      span.icon-stack {
+        i.icon {
+          color: #D0D9E6;
+        }
+        &:hover, &.active {
+          i.icon-stack-1x {
+            color: #424653;
+          }
+        }
+      }
+    }
+    .ctn_emojis {
+      padding: 0 5px 5px;
+      > div { display: inline-block;
+        [class*=emojione-] {
+          font-size: 20px;
+          margin: 3px;
         }
       }
     }

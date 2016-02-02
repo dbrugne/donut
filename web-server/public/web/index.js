@@ -3,7 +3,6 @@ var $ = require('jquery');
 global.jQuery = $; // expose jQuery globally, needed for some beside plugins
 require('../javascripts/jquery.insertatcaret');
 require('../javascripts/jquery.maxlength');
-require('../javascripts/jquery.smilify');
 require('../javascripts/jquery.socialify');
 require('../javascripts/jquery.contactform');
 require('bootstrap/js/transition');

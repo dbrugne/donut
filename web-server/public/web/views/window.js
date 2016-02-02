@@ -195,6 +195,14 @@ var WindowView = Backbone.View.extend({
       msg = msg.replace(/<\/*span>/g, '').replace(/<br>/g, '');
     }
 
+    // files
+    if (data.files && data.files.length) {
+      var suffix = i18next.t('chat.notifications.messages.files', {count: data.files.length});
+      msg = (msg)
+        ? msg + ' (+ ' + suffix + ')'
+        : suffix;
+    }
+
     var uri;
     if (model.get('type') === 'room') {
       uri = model.get('identifier');

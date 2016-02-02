@@ -9,7 +9,6 @@ var RollupView = require('./input-rollup');
 var CommandsView = require('./input-commands');
 var TypingView = require('./input-typing');
 var ImagesView = require('./input-images');
-var SmileysView = require('./input-smileys');
 
 var debug = donutDebug('donut:input');
 
@@ -48,17 +47,12 @@ var DiscussionInputView = Backbone.View.extend({
       el: this.$el,
       model: this.model
     });
-    this.smileysView = new SmileysView({
-      el: this.$el,
-      model: this.model
-    });
   },
   _remove: function () {
     this.commandsView.remove();
     this.rollupView.remove();
     this.typingView.remove();
     this.imagesView.remove();
-    this.smileysView.remove();
     this.remove();
   },
   render: function () {
@@ -122,7 +116,7 @@ var DiscussionInputView = Backbone.View.extend({
    * @param event
    */
   onKeyDown: function (event) {
-    var data = keyboard._getLastKeyCode(event);
+    var data = keyboard.getLastKeyCode(event);
 
     // Avoid loosing focus when tab is pushed
     if (data.key === keyboard.TAB) {
@@ -137,11 +131,11 @@ var DiscussionInputView = Backbone.View.extend({
   },
 
   onKeyUp: function (event) {
-    var data = keyboard._getLastKeyCode(event);
+    var data = keyboard.getLastKeyCode(event);
     var message = this.$editable.val();
     var images = this.imagesView.list();
 
-    if (this.rollupView.isClosed()) {
+    if (!this.rollupView.isOpen) {
       // Send message on Enter, not shift + Enter, only if there is something to send
       if (data.key === keyboard.RETURN && !data.isShift && (message.length || images.length)) {
         return this.sendMessage();
@@ -175,8 +169,7 @@ var DiscussionInputView = Backbone.View.extend({
     }
 
     // check length (max)
-    // @todo dbr: replace with a "withoutSmileysCodes" logic
-    if (message.length > 512) {
+    if (message.length > 1024) {
       debug('message is too long');
       return false;
     }

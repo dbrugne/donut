@@ -57,7 +57,7 @@ handler.call = function (data, session, next) {
 
     function prepareMessage (callback) {
       // text filtering
-      var message = inputUtil.filter(data.message, 512);
+      var message = inputUtil.filter(data.message, 1024);
 
       // files filtering
       var files = filesUtil.filter(data.files);
@@ -68,7 +68,10 @@ handler.call = function (data, session, next) {
 
       // mentions
       inputUtil.mentions(message, function (err, message, markups) {
-        return callback(err, message, files, markups.users);
+        var mentions = (markups && markups.users)
+          ? markups.users
+          : null;
+        return callback(err, message, files, mentions);
       });
     },
 

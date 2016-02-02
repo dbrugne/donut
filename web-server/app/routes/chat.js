@@ -36,7 +36,6 @@ router.get('/!', function (req, res) {
   return res.render('chat', {
     meta: {title: i18next.t('title.chat')},
     hello: helloMessage,
-    avoidFa: true,
     script: script
   });
 });

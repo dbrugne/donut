@@ -15,13 +15,34 @@ var MessageEditView = Backbone.View.extend({
   },
 
   initialize: function (options) {
-    this.render();
-  },
-  render: function () {
     this.$text = this.$('.text');
     this.$textEdited = this.$('.text-edited');
     this.$messageEdit = this.$('.message-edit');
 
+    var method = (this.model.get('type') === 'room')
+      ? 'getRoomEvent'
+      : 'getUserEvent';
+
+    var messageId = this.$el.attr('id');
+    if (!messageId) {
+      return this.model.trigger('editMessageClose');
+    }
+
+    app.client[method](this.model.get('id'), messageId, _.bind(function (response) {
+      if (response.err) {
+        return this.model.trigger('editMessageClose');
+      }
+      if (response.type !== 'room:message' && response.type !== 'user:message') {
+        return this.model.trigger('editMessageClose');
+      }
+      if (!response.data || !response.data.message) {
+        return this.model.trigger('editMessageClose');
+      }
+
+      this.render(response.data.message);
+    }, this));
+  },
+  render: function (message) {
     if (this.$el.data('edited') || this.$textEdited) {
       this.$textEdited.remove();
     }
@@ -30,9 +51,7 @@ var MessageEditView = Backbone.View.extend({
     this.$text.addClass('hidden');
     this.$el.removeClass('has-hover');
 
-    this.originalMessage = (this.$text.html() !== undefined) ? this.$text.html() : '';
-    this.originalMessage = common.markup.toText(this.originalMessage).trim();
-    this.originalMessage = this.htmlSmileyToText(this.originalMessage);
+    this.originalMessage = common.markup.toText(message).trim();
 
     this.$messageForm = this.$('.message-form');
     this.$messageForm
@@ -69,7 +88,9 @@ var MessageEditView = Backbone.View.extend({
       this.$text.append(this.$textEdited);
     }
     this.$text.removeClass('hidden');
-    this.$messageForm.remove();
+    if (this.$messageForm) {
+      this.$messageForm.remove();
+    }
     this.$el.addClass('has-hover');
     this.$el.find('.date.pull-right').show();
     this.undelegateEvents();
@@ -100,7 +121,7 @@ var MessageEditView = Backbone.View.extend({
   },
   onKeydown: function (event) {
     this.updateFormSize();
-    var data = keyboard._getLastKeyCode(event);
+    var data = keyboard.getLastKeyCode(event);
     if (data.key === keyboard.ESC) {
       this.onEscape(event);
     } else if (data.key === keyboard.RETURN && !data.isShift) {
@@ -115,13 +136,6 @@ var MessageEditView = Backbone.View.extend({
     this.$formMessageEdit
       .css('height',
         (2 + this.$formMessageEdit.prop('scrollHeight')) + 'px');
-  },
-  htmlSmileyToText: function (html) {
-    var $html = $('<div>' + html + '</div>');
-    _.each($html.find('.smilify'), function (e) {
-      $(e).replaceWith($.smilifyGetSymbolFromCode($(e).data('smilify-code')));
-    });
-    return $html.text();
   }
 });
 module.exports = MessageEditView;

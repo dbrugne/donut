@@ -69,17 +69,8 @@ var DrawerRoomProfileView = Backbone.View.extend({
     this.initializeTooltips();
   },
   initializeTooltips: function () {
-    this.$el.find('[data-toggle="tooltip"][data-type="mode"]').tooltip({
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
       container: 'body'
-    });
-    this.$el.find('[data-toggle="tooltip"][data-type="room-users"]').tooltip({
-      html: true,
-      animation: false,
-      container: 'body',
-      template: '<div class="tooltip tooltip-home-users" role="tooltip"><div class="tooltip-inner right"></div></div>',
-      title: function () {
-        return '<div class="username">@' + this.dataset.username + '</div>';
-      }
     });
   }
 });

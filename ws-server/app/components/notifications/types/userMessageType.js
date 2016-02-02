@@ -166,6 +166,8 @@ Notification.prototype.sendEmail = function (model, done) {
 
       if (model.user.getEmail()) {
         emailer.userMessage(model.user.getEmail(), events[0]['data']['username'], messages, callback);
+      } else {
+        callback(null);
       }
     },
 

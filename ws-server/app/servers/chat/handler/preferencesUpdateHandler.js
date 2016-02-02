@@ -60,16 +60,9 @@ handler.call = function (data, session, next) {
     },
 
     function broadcastUser (key, value, callback) {
-      // notify only certain fields
-      var fieldToNotify = ['browser:exitpopin', 'browser:welcome', 'browser:sounds', 'notif:channels:desktop', 'chatmode:compact'];
-      if (fieldToNotify.indexOf(key) === -1) {
-        return callback(null);
-      }
-
-      var event = {};
-      event[key] = value;
-
-      that.app.globalChannelService.pushMessage('connector', 'preferences:update', event, 'user:' + user.id, {}, callback);
+      that.app.globalChannelService.pushMessage('connector', 'preferences:update', {
+        key: value
+      }, 'user:' + user.id, {}, callback);
     }
 
   ], function (err) {

@@ -340,6 +340,7 @@
         "commands": "Liste des commandes disponibles",
         "rooms": "Liste des donuts disponibles",
         "users": "Liste des utilisateurs",
+        "emojis": "Emojis",
         "tonavigate": "pour naviguer",
         "toselect": "pour séléctionner",
         "todismiss": "pour fermer"
@@ -615,7 +616,8 @@
         "groupdeban": "Vous n'êtes plus banni de la communauté <span>#__name__</span>",
         "groupop": "Vous êtes maintenant modérateur de la communauté <span>#__name__</span>",
         "groupdeop": "Vous n'êtes plus modérateur de la communauté <span>#__name__</span>",
-        "empty": ""
+        "files": "1 fichier",
+        "files_plural": "__count__ fichiers"
       },
       "userban-me": "__who__ vous a bloqué",
       "userban-other": "vous avez bloqué __who__",
