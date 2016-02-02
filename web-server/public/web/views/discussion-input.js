@@ -169,7 +169,7 @@ var DiscussionInputView = Backbone.View.extend({
     }
 
     // check length (max)
-    if (message.length > 512) {
+    if (message.length > 1024) {
       debug('message is too long');
       return false;
     }

@@ -62,7 +62,7 @@ handler.call = function (data, session, next) {
       }
 
       if (data.message) {
-        var message = inputUtil.filter(data.message, 512);
+        var message = inputUtil.filter(data.message, 1024);
         if (!message) {
           return callback('params-message');
         }

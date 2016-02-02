@@ -57,7 +57,7 @@ handler.call = function (data, session, next) {
 
     function prepareMessage (callback) {
       // text filtering
-      var message = inputUtil.filter(data.message, 512);
+      var message = inputUtil.filter(data.message, 1024);
 
       // files filtering
       var files = filesUtil.filter(data.files);
