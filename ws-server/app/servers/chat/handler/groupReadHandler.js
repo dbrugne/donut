@@ -55,6 +55,14 @@ handler.call = function (data, session, next) {
         is_owner: group.isOwner(user.id)
       };
 
+      var banned = group.isInBanned(user.id);
+      if (typeof banned !== 'undefined') {
+        read.i_am_banned = true;
+        read.blocked = true;
+        read.banned_at = banned.banned_at;
+        read.reason = banned.reason;
+      }
+
       // owner
       if (group.owner) {
         read.owner_id = group.owner.id;
@@ -131,7 +139,7 @@ handler.call = function (data, session, next) {
           var el = {
             user_id: u.id,
             username: u.username,
-            avatar: u._avatar(),
+            avatar: u._avatar()
           };
           read.members.push(el);
 
@@ -139,13 +147,6 @@ handler.call = function (data, session, next) {
             return true; // stop iteration
           }
         });
-      }
-
-      var banned = group.isInBanned(user.id);
-      if (typeof banned !== 'undefined') {
-        read.i_am_banned = true;
-        read.banned_at = banned.banned_at;
-        read.reason = banned.reason;
       }
 
       var ids = _.map(read.members, 'user_id');
