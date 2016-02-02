@@ -126,7 +126,7 @@ module.exports = Backbone.View.extend({
     this.$rollup.html(this.template({
       type: 'commands',
       results: list
-    }));
+    })).fadeIn();
     this.open();
   },
   openRooms: function (subject) {
@@ -135,7 +135,7 @@ module.exports = Backbone.View.extend({
       this.$rollup.html(this.template({
         type: 'rooms',
         results: 'empty'
-      }));
+      })).fadeIn();
       this.open();
       return;
     }
@@ -176,7 +176,7 @@ module.exports = Backbone.View.extend({
       this.$rollup.html(this.template({
         type: 'rooms',
         results: list
-      }));
+      })).fadeIn();
       this.open();
     }, this));
   },
@@ -186,7 +186,7 @@ module.exports = Backbone.View.extend({
       this.$rollup.html(this.template({
         type: 'users',
         results: 'empty'
-      }));
+      })).fadeIn();
       this.open();
       return;
     }
@@ -207,7 +207,7 @@ module.exports = Backbone.View.extend({
       this.$rollup.html(this.template({
         type: 'users',
         results: data.users.list
-      }));
+      })).fadeIn();
       this.open();
     }, this));
   },
@@ -215,7 +215,7 @@ module.exports = Backbone.View.extend({
     this.$rollup.html(this.templateEmojione({
       list: false,
       spinner: require('../templates/spinner.html')()
-    }));
+    })).fadeIn();
     this.open();
     this.loadEmojione('people');
   },
@@ -225,7 +225,7 @@ module.exports = Backbone.View.extend({
       success: _.bind(function (list) {
         this.$rollup.html(this.templateEmojione({
           list: list
-        }));
+        })).fadeIn();
         this.$rollup.find('.pick-emoji-category[data-category="' + category + '"]').addClass('active');
       }, this)
     });
@@ -332,9 +332,11 @@ module.exports = Backbone.View.extend({
     this.isOpen = true;
   },
   close: function () {
-    this.$rollup.html('');
-    this.$el.removeClass('open');
-    this.isOpen = false;
+    this.$rollup.fadeOut(_.bind(function () {
+      this.$rollup.html('');
+      this.$el.removeClass('open');
+      this.isOpen = false;
+    }, this));
   },
   onClose: function (event) {
     event.preventDefault();
