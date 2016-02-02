@@ -14,7 +14,7 @@ module.exports = {
         return logger.error('notificationsTask.send error: ' + err);
       }
       if (!notifications.length) {
-        return logger.info('notificationsTask.send: nothing');
+        return logger.debug('notificationsTask.send: nothing');
       }
 
       logger.trace('notificationsTask.send ' + notifications.length + ' notification(s) to send found');
