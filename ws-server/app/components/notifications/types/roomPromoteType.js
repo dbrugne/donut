@@ -208,6 +208,8 @@ Notification.prototype.sendEmail = function (model, done) {
 
       if (model.user.getEmail()) {
         _.bind(method, emailer)(model.user.getEmail(), data, callback);
+      } else {
+        callback(null);
       }
     },
 

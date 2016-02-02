@@ -172,6 +172,8 @@ Notification.prototype.sendEmail = function (model, done) {
 
       if (model.user.getEmail()) {
         emailer.roomMessage(model.user.getEmail(), messages, model.data.room.getIdentifier(), common.cloudinary.prepare(events[0]['data']['room_avatar'], 90), callback);
+      } else {
+        callback(null);
       }
     },
 

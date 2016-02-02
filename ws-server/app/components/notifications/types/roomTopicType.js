@@ -9,7 +9,6 @@ var NotificationModel = require('../../../../../shared/models/notification');
 var HistoryRoomModel = require('../../../../../shared/models/historyroom');
 var emailer = require('../../../../../shared/io/emailer');
 var utils = require('./../utils');
-var conf = require('../../../../../config/index');
 var parse = require('../../../../../shared/io/parse');
 
 module.exports = function (facade) {
@@ -147,6 +146,8 @@ Notification.prototype.sendEmail = function (model, done) {
       var topic = utils.mentionize(history.data.topic, {});
       if (model.user.getEmail()) {
         emailer.roomTopic(model.user.getEmail(), history.user.username, model.data.room.getIdentifier(), topic, callback);
+      } else {
+        callback(null);
       }
     },
 
