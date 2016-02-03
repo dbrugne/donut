@@ -46,9 +46,10 @@ module.exports = Backbone.View.extend({
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(this.model, 'windowRefocused', _.bind(function () {
       debug('windowRefocused', this.model.get('identifier'));
-      this.renderUnviewed(true);
+      this.onDiscussionUpdated(true);
       this.onScroll();
     }, this));
+    this.listenTo(this.model, 'discussionUpdated', this.onDiscussionUpdated);
     this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
     this.listenTo(this.model, 'messageSent', this.onMessageSent);
 
@@ -150,8 +151,6 @@ module.exports = Backbone.View.extend({
       }
 
       this.engine.insertBottom(data.history);
-      this.updateDateBlocks();
-      this.renderUnviewed(true);
 
       if (this.scrollWasOnBottom) {
         // will trigger visible element detection implicitly
@@ -160,7 +159,14 @@ module.exports = Backbone.View.extend({
         this.onScroll();
       }
       this.scrollWasOnBottom = false;
+
+      // @important after scroll
+      this.onDiscussionUpdated(true);
     }, this));
+  },
+  onDiscussionUpdated: function (refocus) {
+    this.updateDateBlocks();
+    this.renderUnviewed(refocus);
   },
   isVisible: function () {
     return !(!this.model.get('focused') || !windowView.focused);
@@ -259,10 +265,10 @@ module.exports = Backbone.View.extend({
     this.$('.events').find('.block.date[data-date="' + yesterday + '"]').addClass('yesterday');
   },
   renderUnviewed: function (refocus) {
+    // reset
+    this.$scrollable.find('.block.unviewed').remove();
+    this.$unviewedContainer.html('').hide();
     if (this.model.get('unviewed') !== true) {
-      // @todo : re-add animation
-      this.$unviewedContainer.html('').hide();
-      this.$scrollable.find('.block.unviewed').remove();
       return;
     }
 
@@ -280,7 +286,7 @@ module.exports = Backbone.View.extend({
 
     // block (only if discussion isn't focus)
     var $block;
-    if (refocus === true) {
+    if (refocus === true || !this.isVisible()) {
       var _target = $target;
       if (_target.prev().hasClass('user')) {
         _target = _target.prev();
@@ -338,12 +344,14 @@ module.exports = Backbone.View.extend({
 
     // render and insert
     this.engine.insertBottom([{type: type, data: data}]);
-    this.renderUnviewed();
 
     // scrollDown
     if (needToScrollDown && !this.eventsEditView.messageUnderEdition) {
       this.scrollDown();
     }
+
+    // @important after scroll
+    this.onDiscussionUpdated();
   },
   mouseoverMessage: function (event) {
     var $event = $(event.currentTarget);
