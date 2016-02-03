@@ -279,11 +279,19 @@ module.exports = Backbone.View.extend({
     }
 
     // only keep text from start to current cursor position
-    var message = data.input.substr(0, data.position);
+    var before = data.input.substr(0, data.position);
 
     // only keep the last typed command / mention
-    data.subject = _.last(message.split(' '));
-    data.prefix = data.subject.substr(0, 1);
+    var subject = _.last(before.split(' '));
+
+    // determine if subject should be handled
+    var prefix = subject.substr(0, 1);
+    if (prefix !== ':' && prefix !== '@' && prefix !== '#') {
+      return data;
+    }
+
+    data.subject = subject;
+    data.prefix = prefix;
     data.text = data.subject.substr(1);
     data.subjectPosition = (data.position - data.subject.length);
     data.beforeSubject = data.input.substr(0, data.subjectPosition);
@@ -318,14 +326,20 @@ module.exports = Backbone.View.extend({
   },
   insertInInput: function (string) {
     var data = this.computeState();
+    var after = data.input.substr(data.position).trim();
 
-    // input content
-    var after = data.input.substr(data.position, data.input.length).trim();
-    this.$editable.val(data.beforeSubject + string + after);
+    if (!data.prefix) {
+      // particular case of emoji direct picking
+      this.$editable.val(data.input.substr(0, data.position) + string + after);
+      this.$editable.setCursorPosition(data.position, data.position);
+    } else {
+      // input content
+      this.$editable.val(data.beforeSubject + string + after);
 
-    // cursor position
-    var newPosition = (data.before + string).length - 1; // @important remove last space
-    this.$editable.setCursorPosition(newPosition, newPosition);
+      // cursor position
+      var newPosition = (data.before + string).length - 1; // @important remove last space
+      this.$editable.setCursorPosition(newPosition, newPosition);
+    }
   },
   open: function () {
     this.$el.addClass('open');
