@@ -172,7 +172,7 @@ var GroupView = Backbone.View.extend({
 
   onAvatar: function (model, value) {
     var url = common.cloudinary.prepare(value, 100);
-    this.$('img.avatar').attr('src', url);
+    this.$('.header img.avatar.group').attr('src', url);
   },
   initializeTooltips: function () {
     this.$el.find('[data-toggle="tooltip"]').tooltip({

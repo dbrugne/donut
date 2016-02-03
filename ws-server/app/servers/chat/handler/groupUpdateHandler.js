@@ -6,6 +6,7 @@ var validator = require('validator');
 var cloudinary = require('../../../../../shared/util/cloudinary').cloudinary;
 var linkify = require('linkifyjs');
 var errors = require('../../../util/errors');
+var UserModel = require('../../../../../shared/models/user');
 
 var Handler = function (app) {
   this.app = app;
@@ -190,7 +191,17 @@ handler.call = function (data, session, next) {
       });
     },
 
-    function broadcast (sanitized, callback) {
+    function listUsers (sanitized, callback) {
+      UserModel.findByGroup(group.id).select('_id').exec(function (err, users) {
+        return callback(err, sanitized, users);
+      });
+    },
+
+    function broadcast (sanitized, users, callback) {
+      if (!users.length) {
+        return callback(null);
+      }
+
       // notify only certain fields
       var sanitizedToNotify = {};
       var fieldToNotify = ['avatar'];
@@ -211,10 +222,8 @@ handler.call = function (data, session, next) {
         group_id: group.id,
         data: sanitizedToNotify
       };
-      var ids = group.getIdsByType('members');
-      var channelsName = [];
-      _.each(ids, function (uid) {
-        channelsName.push('user:' + uid);
+      var channelsName = _.map(users, function (u) {
+        return 'user:' + u.id;
       });
       that.app.globalChannelService.pushMessageToMultipleChannels('connector', 'group:updated', event, channelsName, {}, callback);
     }

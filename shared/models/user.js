@@ -263,6 +263,15 @@ userSchema.statics.retrieveUser = function (username) {
   }).populate('room', 'name');
 };
 
+/**
+ * Find user that have group page open
+ * @param groupId
+ * @returns {Query}
+ */
+userSchema.statics.findByGroup = function (groupId) {
+  return this.find({groups: {$in: [groupId]}, deleted: {$ne: true}});
+};
+
 /** *******************************************************************************
  *
  * Preferences

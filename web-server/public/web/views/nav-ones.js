@@ -20,7 +20,6 @@ module.exports = Backbone.View.extend({
     this.listenTo(app, 'redrawNavigation', this.render);
     this.listenTo(app, 'redrawNavigationOnes', this.render);
     this.listenTo(app, 'focusedModelChanged', this.highlightFocused);
-    this.listenTo(app.ones, 'change:avatar', this.render);
 
     this.listenTo(app.ones, 'change:unviewed', this.onUnviewedChange);
 
