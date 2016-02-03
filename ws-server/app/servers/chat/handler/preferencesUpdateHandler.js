@@ -60,9 +60,9 @@ handler.call = function (data, session, next) {
     },
 
     function broadcastUser (key, value, callback) {
-      that.app.globalChannelService.pushMessage('connector', 'preferences:update', {
-        key: value
-      }, 'user:' + user.id, {}, callback);
+      var event = {};
+      event[key] = value;
+      that.app.globalChannelService.pushMessage('connector', 'preferences:update', event, 'user:' + user.id, {}, callback);
     }
 
   ], function (err) {
