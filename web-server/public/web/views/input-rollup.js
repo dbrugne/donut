@@ -10,6 +10,7 @@ module.exports = Backbone.View.extend({
   templateEmojione: require('../templates/rollup-emojione.html'),
   cursorPosition: null,
   isOpen: false,
+  whichOpen: null,
   events: {
     'mouseover .rollup-container li': 'onRollupHover',
     'click .rollup-container li': 'onRollupClick',
@@ -77,7 +78,7 @@ module.exports = Backbone.View.extend({
           }
           this.insertInInput(value);
           this.close();
-          this.moveCursorToEnd();
+//          this.moveCursorToEnd();
           return;
         }
       }
@@ -128,6 +129,7 @@ module.exports = Backbone.View.extend({
       results: list
     })).fadeIn();
     this.open();
+    this.whichOpen = 'commands';
   },
   openRooms: function (subject) {
     if (!subject) {
@@ -178,6 +180,7 @@ module.exports = Backbone.View.extend({
         results: list
       })).fadeIn();
       this.open();
+      this.whichOpen = 'rooms';
     }, this));
   },
   openUsers: function (subject) {
@@ -209,6 +212,7 @@ module.exports = Backbone.View.extend({
         results: data.users.list
       })).fadeIn();
       this.open();
+      this.whichOpen = 'users';
     }, this));
   },
   openEmojis: function (subject) {
@@ -217,6 +221,7 @@ module.exports = Backbone.View.extend({
       spinner: require('../templates/spinner.html')()
     })).fadeIn();
     this.open();
+    this.whichOpen = 'emojis';
     this.loadEmojione('people');
   },
   loadEmojione: function (category) {
@@ -316,7 +321,7 @@ module.exports = Backbone.View.extend({
     if (li.length !== 0) {
       currentLi.removeClass('active');
       li.addClass('active');
-      this.insertInInput(li.find('.value').html().trim() + ' ');
+      //this.insertInInput(li.find('.value').html().trim() + ' ');
     }
   },
   _getCursorPosition: function () {
@@ -337,7 +342,7 @@ module.exports = Backbone.View.extend({
       this.$editable.val(data.beforeSubject + string + after);
 
       // cursor position
-      var newPosition = (data.before + string).length - 1; // @important remove last space
+      var newPosition = (data.beforeSubject + string).length - 1; // @important remove last space
       this.$editable.setCursorPosition(newPosition, newPosition);
     }
   },
@@ -350,6 +355,7 @@ module.exports = Backbone.View.extend({
       this.$rollup.html('');
       this.$el.removeClass('open');
       this.isOpen = false;
+      this.whichOpen = null;
     }, this));
   },
   onClose: function (event) {
