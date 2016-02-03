@@ -15,6 +15,7 @@ var debug = require('../libs/donut-debug')('donut:discussions');
 module.exports = Backbone.View.extend({
   template: require('../templates/events.html'),
   templateSpinner: require('../templates/spinner.html'),
+  templateUnviewed: require('../templates/event/block-unviewed.html'),
 
   events: {
     'mouseover .has-hover': 'mouseoverMessage',
@@ -45,6 +46,7 @@ module.exports = Backbone.View.extend({
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(this.model, 'windowRefocused', _.bind(function () {
       debug('windowRefocused', this.model.get('identifier'));
+      this.renderUnviewed(true);
       this.onScroll();
     }, this));
     this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
@@ -149,7 +151,7 @@ module.exports = Backbone.View.extend({
 
       this.engine.insertBottom(data.history);
       this.updateDateBlocks();
-      this.updateUnviewedBlocks();
+      this.renderUnviewed(true);
 
       if (this.scrollWasOnBottom) {
         // will trigger visible element detection implicitly
@@ -221,23 +223,6 @@ module.exports = Backbone.View.extend({
       scrollTop: top
     }, timing || 0);
   },
-  /**
-   * Function called to hide the unviewed block on top of the discussion
-   * and the unread messages inside the discussion
-   */
-  hideUnviewedBlocks: function () {
-    var insideBlock = this.$('.events').find('.block.unviewed');
-    if (insideBlock) {
-      insideBlock.fadeOut(1000, function () {
-        insideBlock.remove();
-      });
-    }
-    if (this.$unviewedContainer) {
-      this.$unviewedContainer.find('.unviewed-top').fadeOut(1000, _.bind(function () {
-        this.$unviewedContainer.html('');
-      }, this));
-    }
-  },
   onScrollToEvent: function (event) {
     event.preventDefault();
     var elt = $(event.currentTarget);
@@ -273,37 +258,58 @@ module.exports = Backbone.View.extend({
     this.$('.events').find('.block.date[data-date="' + today + '"]').addClass('today');
     this.$('.events').find('.block.date[data-date="' + yesterday + '"]').addClass('yesterday');
   },
-  updateUnviewedBlocks: function () {
-    var id = this.model.get('first_unviewed');
-    var $target = $('#' + id);
+  renderUnviewed: function (refocus) {
+    if (this.model.get('unviewed') !== true) {
+      // @todo : re-add animation
+      this.$unviewedContainer.html('').hide();
+      this.$scrollable.find('.block.unviewed').remove();
+      return;
+    }
 
+    var id = this.model.get('first_unviewed');
+    if (!id) {
+      return;
+    }
+    var $target = $('#' + id);
     if (!$target.length) {
       return;
     }
-    if (app.user.get('user_id') === $target.data('userId')) {
+    if ($target.data('userId') === app.user.get('user_id')) {
       return;
     }
 
-    var _time = $target.data('time');
+    // block (only if discussion isn't focus)
+    var $block;
+    if (refocus === true) {
+      var _target = $target;
+      if (_target.prev().hasClass('user')) {
+        _target = _target.prev();
+      }
+      $block = $(this.templateUnviewed({
+        id: id,
+        time: $target.data('time')
+      })).insertBefore(_target);
+    }
+
+    if ($block) {
+      var currentScrollPosition = this.$scrollable.scrollTop();
+      var topLimit = currentScrollPosition - 40;
+      var position = $block.position();
+      if (position.top > topLimit) {
+        // there is an unviewed block and he is under viewport limit
+        // @todo : re-add animation
+        this.$unviewedContainer.html('').hide();
+        return;
+      }
+    }
 
     // topbar
     this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({
-      time: _time,
+      time: $target.data('time'),
       date: date.dayMonthTime($target.data('time')),
       id: id
     }));
-
-    // look for a previous new message separator, if not, insert one after "event"
-    if (this.$('.events .block.unviewed').length === 0) {
-      var tpl = require('../templates/event/block-unviewed.html');
-      if ($target.prev().hasClass('user')) {
-        $target = $target.prev();
-      }
-      $(tpl({
-        time: _time,
-        id: id
-      })).insertBefore($target);
-    }
+    this.$unviewedContainer.show();
   },
   onClickToMarkAsViewed: function () {
     this.model.markAsViewed();
@@ -332,7 +338,7 @@ module.exports = Backbone.View.extend({
 
     // render and insert
     this.engine.insertBottom([{type: type, data: data}]);
-    this.updateUnviewedBlocks();
+    this.renderUnviewed();
 
     // scrollDown
     if (needToScrollDown && !this.eventsEditView.messageUnderEdition) {

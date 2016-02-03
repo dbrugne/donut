@@ -109,14 +109,8 @@ var RoomView = Backbone.View.extend({
       container: 'body'
     });
   },
-
-  // only care about models to set a viewed
-  onMarkAsViewed: function (data) {
-    if (data.get('unviewed') === true) {
-      return;
-    }
-
-    this.eventsView.hideUnviewedBlocks();
+  onMarkAsViewed: function () {
+    this.eventsView.renderUnviewed();
   }
 });
 

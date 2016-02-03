@@ -61,12 +61,8 @@ var OneToOnePanelView = Backbone.View.extend({
       this.$('div.side').addClass('poster-empty');
     }
   },
-  onMarkAsViewed: function (data) {
-    if (data.get('unviewed') === true) {
-      return;
-    }
-
-    this.eventsView.hideUnviewedBlocks();
+  onMarkAsViewed: function () {
+    this.eventsView.renderUnviewed();
   }
 });
 
