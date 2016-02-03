@@ -18,12 +18,9 @@ module.exports = Backbone.View.extend({
 
   events: {
     'mouseover .has-hover': 'mouseoverMessage',
-    'click .mark-as-viewed': 'onMarkAsViewed',
+    'click .mark-as-viewed': 'onClickToMarkAsViewed',
     'click .jumpto': 'onScrollToEvent'
   },
-
-  markAsViewedDelay: 2000,
-  markAsViewedTimeout: null,
 
   numberOfEventsToRetrieve: 50,
 
@@ -32,8 +29,6 @@ module.exports = Backbone.View.extend({
   chatmode: false,
 
   loading: false,
-
-  timeoutHover: null,
 
   scrollWasOnBottom: true, // ... before unfocus (scroll position is not
                            // available when discussion is hidden (default:
@@ -53,7 +48,7 @@ module.exports = Backbone.View.extend({
       this.onScroll();
     }, this));
     this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
-    this.listenTo(this.model, 'messageSent', this.scrollDown);
+    this.listenTo(this.model, 'messageSent', this.onMessageSent);
 
     this.render();
 
@@ -125,8 +120,14 @@ module.exports = Backbone.View.extend({
   },
   onFocusChange: function () {
     if (this.model.get('focused')) {
+      // go focus
       this.onRefocus();
     } else {
+      // go blur
+      if (this.model.get('unviewed') === true) {
+        this.model.markAsViewed();
+      }
+
       // persist scroll position before hiding
       this.scrollWasOnBottom = this.isScrollOnBottom();
     }
@@ -139,7 +140,6 @@ module.exports = Backbone.View.extend({
       ? null
       : last.attr('id');
 
-    this.historyLoading = true; // @todo add spinner
     debug('fetch from now to ', id);
     this.model.history(id, 'later', this.numberOfEventsToRetrieve, _.bind(function (data) {
       if (data.more === true) {
@@ -191,23 +191,11 @@ module.exports = Backbone.View.extend({
         }
       }, 1500);
     }
-
-    // start timeout for mark as viewed detection
-    this.markAsViewedTimeout = setTimeout(_.bind(function () {
-      if (!this.isVisible()) {
-        return;
-      }
-      this.model.markAsViewed();
-    }, this), this.markAsViewedDelay);
   },
   _scrollTimeoutCleanup: function () {
     if (this.scrollTopTimeout) {
       clearInterval(this.scrollTopTimeout);
       this.scrollTopTimeout = null;
-    }
-    if (this.markAsViewedTimeout) {
-      clearInterval(this.markAsViewedTimeout);
-      this.markAsViewedTimeout = null;
     }
   },
   _scrollBottomPosition: function () {
@@ -239,28 +227,27 @@ module.exports = Backbone.View.extend({
    */
   hideUnviewedBlocks: function () {
     var insideBlock = this.$('.events').find('.block.unviewed');
-    var topBlock = this.$('.date-ctn .ctn-unviewed');
     if (insideBlock) {
       insideBlock.fadeOut(1000, function () {
         insideBlock.remove();
       });
     }
-    if (topBlock) {
-      topBlock.find('.unviewed-top').fadeOut(1000, function () {
-        topBlock.html('');
-      });
+    if (this.$unviewedContainer) {
+      this.$unviewedContainer.find('.unviewed-top').fadeOut(1000, _.bind(function () {
+        this.$unviewedContainer.html('');
+      }, this));
     }
   },
   onScrollToEvent: function (event) {
     event.preventDefault();
     var elt = $(event.currentTarget);
     if (!elt.data('id')) {
-      return this.onMarkAsViewed();
+      return;
     }
 
     var target = $('#unviewed-separator-' + elt.data('id'));
     if (!target) {
-      return this.onMarkAsViewed();
+      return;
     }
 
     this.scrollTo(target.position().top - 31, 1000); // 31 = height of top unview block
@@ -288,38 +275,41 @@ module.exports = Backbone.View.extend({
   },
   updateUnviewedBlocks: function () {
     var id = this.model.get('first_unviewed');
-    var target = $('#' + id);
+    var $target = $('#' + id);
 
-    if (!target.length) {
+    if (!$target.length) {
       return;
     }
-    if (app.user.get('user_id') === target.data('userId')) {
+    if (app.user.get('user_id') === $target.data('userId')) {
       return;
     }
 
-    var _time = target.data('time');
+    var _time = $target.data('time');
 
     // topbar
     this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({
       time: _time,
-      date: date.dayMonthTime(target.data('time')),
+      date: date.dayMonthTime($target.data('time')),
       id: id
     }));
 
     // look for a previous new message separator, if not, insert one after "event"
     if (this.$('.events .block.unviewed').length === 0) {
       var tpl = require('../templates/event/block-unviewed.html');
-      if (target.prev().hasClass('user')) {
-        target = target.prev();
+      if ($target.prev().hasClass('user')) {
+        $target = $target.prev();
       }
       $(tpl({
         time: _time,
         id: id
-      })).insertBefore(target);
+      })).insertBefore($target);
     }
   },
-  onMarkAsViewed: function () {
-    this._scrollTimeoutCleanup();
+  onClickToMarkAsViewed: function () {
+    this.model.markAsViewed();
+  },
+  onMessageSent: function () {
+    this.scrollDown();
     this.model.markAsViewed();
   },
 
