@@ -75,7 +75,7 @@ module.exports = Backbone.View.extend({
     });
 
     this.listenTo(this.model, 'scrollDown', this.scrollDown);
-    this.listenTo(app, 'resetDate', _.bind(function () {
+    this.listenTo(this.model, 'resetDate', _.bind(function () {
       this.eventsDateView.reset();
     }, this));
 

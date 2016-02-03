@@ -1,7 +1,6 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var app = require('../libs/app');
 
 module.exports = Backbone.View.extend({
   historyLoading: false,
@@ -61,7 +60,7 @@ module.exports = Backbone.View.extend({
     }, this));
   },
   toggleHistoryLoader: function (more) {
-    app.trigger('resetDate');
+    this.model.trigger('resetDate');
     this.$loader.find('.help, .loading, .no-more').hide();
     this.$pad.removeClass('loading');
     if (more === 'loading') {
