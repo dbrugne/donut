@@ -297,7 +297,7 @@ module.exports = Backbone.View.extend({
 
     // determine if subject should be handled
     var prefix = subject.substr(0, 1);
-    if (prefix !== ':' && prefix !== '@' && prefix !== '#') {
+    if (prefix !== ':' && prefix !== '@' && prefix !== '#' && prefix !== '/') {
       return data;
     }
 
@@ -388,7 +388,7 @@ module.exports = Backbone.View.extend({
     if (li.find('.value').html().trim().slice(-1) !== '/') {
       this.insertInInput(li.find('.value').html().trim() + ' ');
     } else {
-      this.insertInInput(li.find('.value').html().trim());
+      this.insertInInput(li.find('.value').html().trim() + ' ');
     }
     this.close();
     this.moveCursorToEnd();
