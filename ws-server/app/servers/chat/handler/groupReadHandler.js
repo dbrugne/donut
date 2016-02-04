@@ -169,6 +169,17 @@ handler.call = function (data, session, next) {
         return callback(null);
       }
 
+      var decorateRoomUser = function (r, room) {
+        // user_is_op
+        room.is_op = r.isOp(user.id);
+        // user_is_owner
+        room.is_owner = r.isOwner(user.id);
+        // user_is_devoice
+        room.is_devoice = r.isDevoice(user.id);
+        // user_is_banned
+        room.is_banned = r.isBanned(user.id);
+      };
+
       RoomModel.findByGroup(group._id)
         .populate({
           path: 'owner',
@@ -215,6 +226,8 @@ handler.call = function (data, session, next) {
                 is_owner: true
               };
             }
+
+            decorateRoomUser(r, room);
 
             sanitizedRooms.push(room);
           });
