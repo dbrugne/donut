@@ -53,6 +53,9 @@ module.exports = Backbone.View.extend({
     this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
     this.listenTo(this.model, 'messageSent', this.onMessageSent);
 
+    this.listenTo(this.model, 'expand', this.onExpand);
+    this.listenTo(this.model, 'collapse', this.onCollapse);
+
     this.render();
 
     this.engine = new EventsEngine({
@@ -360,5 +363,23 @@ module.exports = Backbone.View.extend({
     } else {
       $event.removeClass('editable');
     }
+  },
+
+  /** **************************************************************************************************************
+   *
+   * Files
+   *
+   *****************************************************************************************************************/
+  onExpand: function () {
+    this.$scrollable.find('.files .collapse').addClass('in');
+    this.$scrollable.find('.files .hide-collapsed').hide();
+    this.$scrollable.find('.files .show-collapsed').show();
+    this.scrollDown();
+  },
+  onCollapse: function () {
+    this.$scrollable.find('.files .collapse.in').removeClass('in');
+    this.$scrollable.find('.files .hide-collapsed').show();
+    this.$scrollable.find('.files .show-collapsed').hide();
+    this.scrollDown();
   }
 });

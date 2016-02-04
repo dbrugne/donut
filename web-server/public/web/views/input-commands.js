@@ -160,6 +160,18 @@ var InputCommandsView = Backbone.View.extend({
       help: 'message',
       description: 'chat.commands.me'
     },
+    expand: {
+      parameters: 'nothing',
+      access: 'everywhere',
+      help: '',
+      description: 'chat.expand.me'
+    },
+    collapse: {
+      parameters: 'nothing',
+      access: 'everywhere',
+      help: '',
+      description: 'chat.collapse.me'
+    },
     ping: {
       parameters: 'nothing',
       access: 'everywhere',
@@ -474,6 +486,12 @@ var InputCommandsView = Backbone.View.extend({
     } else {
       app.client.userMessage(this.model.get('id'), message, null, 'me');
     }
+  },
+  expand: function (paramString, parameters) {
+    this.model.trigger('expand');
+  },
+  collapse: function (paramString, parameters) {
+    this.model.trigger('collapse');
   },
   ping: function (paramString, parameters) {
     app.client.ping(_.bind(function (duration) {

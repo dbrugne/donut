@@ -542,6 +542,8 @@
       "msg": "send a message",
       "profile": "open a donut or a user profile",
       "me": "tell what you are doing or feeling",
+      "expand": "expand all files/images in discussion (opposite to /collapse)",
+      "collapse": "collapse all files/images in discussion (opposite to /expand)",
       "ping": "pong",
       "clear": "remove all visible history from interface",
       "random": "display a random value (between 1 and 100 by default)",

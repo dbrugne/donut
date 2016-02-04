@@ -26,15 +26,15 @@
                         <%= t('chat.message.uploads.' + f.type) %> <a class="file" target="_blank" href="<%=f.url%>" title="<%= f.filename %>"><span class="filename"><%=f.filename%>.<%= f.extension%></span></a>
                         <% } %>
                     </div>
+                    <% if (f.type === 'image') { %>
                     <div class="collapse in" id="collapseMessages<%= data.id + '-' + index %>">
-                        <% if (f.type === 'image') { %>
                         <div class="image-ctn relative">
                             <a class="image" target="_blank" href="<%=f.href%>">
                                 <img src="<%= f.thumbnail %>" alt="<%=f.filename%>.<%= f.extension%>" width="<%= f.width %>px" height="<%= f.height %>px">
                             </a>
                         </div>
-                        <% } %>
                     </div>
+                    <% } %>
                 </div>
             <% }); %>
             <div class="clearfix"></div>
