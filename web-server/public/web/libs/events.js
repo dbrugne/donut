@@ -240,8 +240,26 @@ exports.prototype._data = function (type, data) {
     var files = [];
     _.each(data.files, function (f) {
       if (f.type !== 'raw') {
-        f.href = common.cloudinary.prepare(f.url, 1500, 'limit');
-        f.thumbnail = common.cloudinary.prepare(f.url, 135, 'fill');
+        var MAX = 500;
+        var width = f.width || 135;
+        var height = f.height || 135;
+        var ratio;
+        if (width <= MAX && height <= MAX) {
+          f.width = width;
+          f.height = height;
+        } else if (width >= height) {
+          // landing
+          ratio = width / MAX;
+          f.width = width / ratio;
+          f.height = height / ratio;
+        } else {
+          // portrait
+          ratio = height / MAX;
+          f.width = width / ratio;
+          f.height = height / ratio;
+        }
+        f.href = common.cloudinary.prepare(f.url, 15000, 'limit');
+        f.thumbnail = common.cloudinary.prepare(f.url, MAX, 'limit');
       }
       f.extension = f.url.match(/[^.]*$/);
       files.push(f);

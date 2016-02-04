@@ -13,32 +13,31 @@
         <div class="text"><%= data.message %><% if (data.edited) { %><span class="text-edited">&nbsp;(<%= t('chat.message.edition.edited') %>)</span><% } %></div>
         <% } %>
         <% if (data.files) { %>
-        <div class="images collapse in" id="collapseMessages<%= data.id %>">
-            <% _.each(data.files, function(f) { %>
-                <% if (f.type === 'image') { %>
-                    <a class="image"
-                       target="_blank"
-                       href="<%=f.href%>"
-                       style="background-image: url(<%= f.thumbnail %>);">
-                        <span class="filename"><%=f.filename%>.<%= f.extension%></span>
-                    </a>
-                <% } else { %>
-                    <div class="file-ctn relative">
-                        <a class="file"
-                           target="_blank"
-                           href="<%=f.url%>"
-                           title="<%= f.filename %>">
-                            <i class="icon file-icon"></i>
-                        </a>
-                        <span class="filename"><%=f.filename%>.<%= f.extension%></span>
+        <div class="files">
+            <% _.each(data.files, function(f, index) { %>
+                <div class="file">
+                    <div class="text">
+                        <% if (f.type === 'image') { %>
+                        <div class="collapse-toggle" data-toggle="collapse" data-target="#collapseMessages<%= data.id + '-' + index %>" aria-expanded="true" aria-controls="collapseMessages<%= data.id %>">
+                            <span class="hide-collapsed"><%= t('chat.message.uploads.' + f.type) %> <span class="filename"><%=f.filename%>.<%= f.extension%></span> <i class="icon icon-chevron-right" /></span>
+                            <span class="show-collapsed"> <%= t('chat.message.uploads.' + f.type) %> <span class="filename"><%=f.filename%>.<%= f.extension%></span> <i class="icon icon-chevron-down" /></span>
+                        </div>
+                        <% } else { %>
+                        <%= t('chat.message.uploads.' + f.type) %> <a class="file" target="_blank" href="<%=f.url%>" title="<%= f.filename %>"><span class="filename"><%=f.filename%>.<%= f.extension%></span></a>
+                        <% } %>
                     </div>
-                <% } %>
+                    <div class="collapse in" id="collapseMessages<%= data.id + '-' + index %>">
+                        <% if (f.type === 'image') { %>
+                        <div class="image-ctn relative">
+                            <a class="image" target="_blank" href="<%=f.href%>">
+                                <img src="<%= f.thumbnail %>" alt="<%=f.filename%>.<%= f.extension%>" width="<%= f.width %>px" height="<%= f.height %>px">
+                            </a>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
             <% }); %>
             <div class="clearfix"></div>
-        </div>
-        <div class="collapse-toggle" data-toggle="collapse" data-target="#collapseMessages<%= data.id %>" aria-expanded="true" aria-controls="collapseMessages<%= data.id %>">
-            <span class="hide-collapsed"><%= t('global.expend') %></span>
-            <span class="show-collapsed"><%= t('global.collapse') %></span>
         </div>
         <% } %>
         <% if (data.spammed) { %>

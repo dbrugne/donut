@@ -723,6 +723,10 @@
       "contactus": "Often problems to connect to us?"
     },
     "message": {
+      "uploads": {
+        "image": "added an image:",
+        "raw": "added a file:"
+      },
       "text-spammed": "Message tagged as junk by moderator <a class=\"view-spammed-message clean\">Show</a>",
       "text-remask": "Hide again",
       "edition": {

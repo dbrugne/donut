@@ -116,6 +116,8 @@ module.exports = {
       return {
         type: 'image',
         filename: element.filename,
+        width: element.width,
+        height: element.height,
         url: imageUrl({
           identifier: element.path,
           gravity: 'center',

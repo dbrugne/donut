@@ -41,6 +41,8 @@ var InputImagesView = Backbone.View.extend({
         path: i.path,
         type: i.resource_type,
         filename: i.original_filename,
+        width: i.width,
+        height: i.height,
         size: i.bytes >= 1000000
           ? (i.bytes / 1000000).toFixed(2) + ' Mb'
           : i.bytes >= 1000

@@ -750,23 +750,28 @@
                       .emojione { width: 24px; height: 24px; /* height is important to avoid issue when scrollDown when all emojis are not already loaded */ }
                       .text-edited { font-size: .9rem; color: #0480be; }
                     }
-                    .images {
-                      .file-ctn { width: 135px; height: 135px; float: left; margin: 2px; border: 1px solid @cl-subtext10;
-                        .file { .display-flex; width: 135px; height: 135px; background-size: contain; color:@cl-text; background-color: #D0D9E6; box-shadow: 0 1px 4px rgba(64,54,63,0.25);
-                          &:hover { text-decoration: none; }
-                          i { margin:auto; font-size: 4rem; color:@cl-subtext40; }
+                    .files {
+                      .file { margin-bottom: 4px;
+                        .text { color: #afbac8;
+                          i { color: #afbac8; }
+                          .filename, a.filename { .ft-opensans; color: @cl-first; font-weight: bold; white-space: nowrap; }
                         }
+                        .image-ctn { display: inline-block; position: relative; background-color: #D0D9E6; min-width: 30px; min-height: 30px; margin: 2px; box-shadow: 0 1px 4px rgba(64,54,63,0.25);
+                        }
+                        .file-ctn { width: 90px; height: 90px; margin: 2px; border: 1px solid @cl-subtext10;
+                          .file { .display-flex; width: 90px; height: 90px; background-size: contain; color: @cl-text; background-color: #D0D9E6; box-shadow: 0 1px 4px rgba(64,54,63,0.25);
+                            &:hover { text-decoration: none; }
+                            i { margin:auto; font-size: 4rem; color:@cl-subtext40; }
+                          }
+                        }
+                        .popover {
+                          .border-radius(0);
+                          .popover-content { padding: 2px 2px; }
+                        }
+                        hr { clear: both; border-color: @cl-background; margin: 0; }
                       }
-                      .image { float: left; display: block; position: relative; width: 135px; height: 135px; margin: 2px; background-position: center center; background-repeat: no-repeat; box-shadow: 0 1px 4px rgba(64,54,63,0.25);
-                      }
-                      .popover {
-                        .border-radius(0);
-                        .popover-content { padding: 2px 2px; }
-                      }
-                      hr { clear: both; border-color: @cl-background; margin: 0; }
-                      .filename { .ft-opensans; font-size: 9px; color: #FFFFFF; letter-spacing: 0.5px; line-height: 21px; white-space: nowrap; background-color: rgba(29,37,47,0.65); position: absolute; bottom: 0; width: 100%; padding-left: 4px; }
                     }
-                    .collapse-toggle { .ft-opensans; font-size: 9px; color: #FFFFFF; letter-spacing: 0.5px; line-height: 17px; background: #D0D9E6; border-radius: 2px; padding: 2px 5px; display: inline-block; text-transform: uppercase; cursor: pointer; margin-left: 2px;
+                    .collapse-toggle { .ft-opensans; line-height: 15px; /*background: #D0D9E6; border-radius: 2px; padding: 2px 5px;*/ display: inline-block; /*text-transform: uppercase;*/ cursor: pointer; margin-left: 2px;
                       .hide-collapsed { display: none}
                       &.collapsed {
                         .hide-collapsed { display: inline }
@@ -786,7 +791,7 @@
                     &.editing .actions { display:none; }
                     &.new { border-left: 3px solid #5C77B6; padding-left: 4px; }
                     &.spammed { // .block.message.spammed
-                      .text, .images, .collapse-toggle { display: none; }
+                      .text, .files, .collapse-toggle { display: none; }
                       .actions .unspam { display:inline-block; }
                       .actions .spammed { display:none; }
                       .text-spammed { display: block; padding-right:50px; .ft-opensans-light-italic; font-size: 15px; color: #AFBAC8; line-height: 21px;

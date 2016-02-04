@@ -722,6 +722,10 @@
       "contactus": "Problèmes pour vous connecter ? Contactez-nous."
     },
     "message": {
+      "uploads": {
+        "image": "a partagé une image :",
+        "raw": "a partagé un fichier :"
+      },
       "text-spammed": "Message indésirable d'après le modérateur <a class=\"view-spammed-message clean\">Afficher</a>",
       "text-remask": "Masquer à nouveau",
       "edition": {
