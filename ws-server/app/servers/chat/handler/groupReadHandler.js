@@ -42,6 +42,7 @@ handler.call = function (data, session, next) {
       read = {
         identifier: '#' + group.name,
         name: group.name,
+        default: group.default,
         group_id: group.id,
         avatar: group._avatar(),
         website: group.website,
