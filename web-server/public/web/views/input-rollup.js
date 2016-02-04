@@ -11,6 +11,7 @@ module.exports = Backbone.View.extend({
   cursorPosition: null,
   isOpen: false,
   whichOpen: null,
+  rollupOpenOnClick: false,
   events: {
     'mouseover .rollup-container li': 'onRollupHover',
     'click .rollup-container li': 'onRollupClick',
@@ -89,10 +90,10 @@ module.exports = Backbone.View.extend({
       }
     }
 
-    if (!data.subject) {
+    if (!data.subject && !this.rollupOpenOnClick) {
       return this.close();
     }
-    if (['#', '@', ':', '/'].indexOf(data.prefix) === -1) {
+    if (['#', '@', ':', '/'].indexOf(data.prefix) === -1 && !this.rollupOpenOnClick) {
       return this.close();
     }
 
@@ -100,13 +101,16 @@ module.exports = Backbone.View.extend({
     var firstCharacterIsSlash = (data.input.trim().substr(0, 1) === '/');
     var hasSpace = (data.input.indexOf(' ') !== -1);
     if (firstCharacterIsSlash && !hasSpace) {
+      this.rollupOpenOnClick = false;
       return this.openCommand(data.text);
     }
 
     if (data.prefix === '#') {
       // rooms/group
+      this.rollupOpenOnClick = false;
       this.openRooms(data.text);
     } else if (data.prefix === '@') {
+      this.rollupOpenOnClick = false;
       this.openUsers(data.text);
     } else if (data.prefix === ':') {
       this.openEmojis(data.text);
@@ -239,7 +243,9 @@ module.exports = Backbone.View.extend({
     if (this.isOpen) {
       this.close();
     } else {
+      this.rollupOpenOnClick = true;
       this.openEmojis();
+      this.$editable.focus();
     }
   },
   onEmojioneCategory: function (event) {
@@ -261,8 +267,8 @@ module.exports = Backbone.View.extend({
     }
 
     this.insertInInput(shortname + ' ');
-    this.close();
-    this.moveCursorToEnd();
+//    this.close();
+//    this.moveCursorToEnd();
   },
   computeState: function (event) {
     var data = {
@@ -356,6 +362,7 @@ module.exports = Backbone.View.extend({
       this.$el.removeClass('open');
       this.isOpen = false;
       this.whichOpen = null;
+      this.rollupOpenOnClick = false;
     }, this));
   },
   onClose: function (event) {
