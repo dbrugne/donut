@@ -41,7 +41,11 @@ handler.call = function (data, session, next) {
         room_id: room.id,
         identifier: room.getIdentifier(),
         name: room.name,
-        mode: room.mode
+        mode: room.mode,
+        is_op: room.isOp(user.id),
+        is_owner: room.isOwner(user.id),
+        is_devoice: room.isDevoice(user.id),
+        is_banned: room.isBanned(user.id)
       };
       if (room.group) {
         read.group_id = room.group.id;
