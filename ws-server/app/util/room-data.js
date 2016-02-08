@@ -13,6 +13,7 @@ module.exports = function (user, room, fn) {
     name: room.name,
     identifier: room.getIdentifier(),
     mode: room.mode,
+    disclaimer: room.disclaimer,
     avatar: room._avatar()
   };
   if (room.group) {
