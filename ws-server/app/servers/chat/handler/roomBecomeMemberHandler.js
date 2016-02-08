@@ -69,6 +69,7 @@ handler.call = function (data, session, next) {
       };
       if (room.owner && room.owner.username) {
         infos.owner_username = room.owner.username;
+        infos.owner_userid = room.owner.id;
       }
       return callback(null, infos);
     }
