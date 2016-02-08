@@ -266,6 +266,7 @@ exports.prototype._data = function (type, data) {
     });
 
     if (files && files.length > 0) {
+      data.collapsed = app.user.isDiscussionCollapsed(this.discussion.get('id'));
       data.files = files;
     }
   }

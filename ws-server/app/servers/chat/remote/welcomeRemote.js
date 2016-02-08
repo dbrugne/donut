@@ -70,10 +70,9 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, data, globalCall
           welcomeEvent.preferences['browser:sounds'] = (user.preferences && user.preferences['browser:sounds'] === true);
           welcomeEvent.preferences['notif:channels:desktop'] = (user.preferences && user.preferences['notif:channels:desktop'] === true);
           welcomeEvent.preferences['notif:usermessage'] = (!user.preferences || user.preferences['notif:usermessage'] !== false);
-          welcomeEvent.preferences['chatmode:compact'] = (user.preferences && user.preferences['chatmode:compact'] === true);
 
           _.each(user.preferences, function (value, key) {
-            if (key.indexOf('room:notif:') !== 0) {
+            if (key.indexOf('room:notif:') !== 0 && key.indexOf('discussion:collapse:') !== 0) {
               return;
             }
 

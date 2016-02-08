@@ -18,7 +18,7 @@
                 <div class="file">
                     <div class="text">
                         <% if (f.type === 'image') { %>
-                        <div class="collapse-toggle" data-toggle="collapse" data-target="#collapseMessages<%= data.id + '-' + index %>" aria-expanded="true" aria-controls="collapseMessages<%= data.id %>">
+                        <div class="collapse-toggle <% if (data.collapsed) { %>collapsed<% } %>" data-toggle="collapse" data-target="#collapseMessages<%= data.id + '-' + index %>" aria-expanded="true" aria-controls="collapseMessages<%= data.id %>">
                             <span class="hide-collapsed"><%= t('chat.message.uploads.' + f.type) %> <span class="filename"><%=f.filename%>.<%= f.extension%></span> <i class="icon icon-chevron-right" /></span>
                             <span class="show-collapsed"> <%= t('chat.message.uploads.' + f.type) %> <span class="filename"><%=f.filename%>.<%= f.extension%></span> <i class="icon icon-chevron-down" /></span>
                         </div>
@@ -27,7 +27,7 @@
                         <% } %>
                     </div>
                     <% if (f.type === 'image') { %>
-                    <div class="collapse in" id="collapseMessages<%= data.id + '-' + index %>">
+                    <div class="collapse <% if (!data.collapsed) { %>in<% } %>" id="collapseMessages<%= data.id + '-' + index %>">
                         <div class="image-ctn relative">
                             <a class="image" target="_blank" href="<%=f.href%>">
                                 <img src="<%= f.thumbnail %>" alt="<%=f.filename%>.<%= f.extension%>" width="<%= f.width %>px" height="<%= f.height %>px">

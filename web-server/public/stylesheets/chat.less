@@ -772,7 +772,8 @@
                       }
                     }
                     .collapse-toggle { .ft-opensans; line-height: 15px; /*background: #D0D9E6; border-radius: 2px; padding: 2px 5px;*/ display: inline-block; /*text-transform: uppercase;*/ cursor: pointer; margin-left: 2px;
-                      .hide-collapsed { display: none}
+                      .hide-collapsed { display: none }
+                      .show-collapsed { display: inline }
                       &.collapsed {
                         .hide-collapsed { display: inline }
                         .show-collapsed { display: none }
@@ -855,36 +856,6 @@
 
                 // handle block user specific display
                 .block.user+.block.message { margin-top:0; }
-
-                // &.compact {
-                //   .block { .display-flex; z-index: 1; padding-left:0;
-                //     &.user { padding-top: 5px; border-top: 1px solid @cl-subtext0; margin-top: 5px;
-                //       .username { display:none; }
-                //     }
-                //     &.date { display:block; }
-                //     &.date + .block { border-top: transparent; }
-                //     &.message {
-                //       .username { display:inline !important; .flex-order(2); margin-right: 5px; }
-                //       .ctn { .flex-order(3); width: 100%; }
-                //     }
-                //     &.topic, &.promote {
-                //       .event { .display-flex; z-index: 1;
-                //         .text { .flex-order(2);
-                //           i { font-size: 1.2rem; margin: auto; height: auto; width:auto; }
-                //         }
-                //       }
-                //     }
-                //     &.inout {
-                //       .username { display:inline; .flex-order(1); }
-                //       i { .flex-order(2); margin:0 !important; }
-                //     }
-                //     .username { white-space: nowrap; .ft-opensans-bold; font-size: 1.2rem; }
-                //     .avatar { display:none !important; }
-                //     .date { white-space: nowrap; .flex-order(1); position:relative; top: initial; right: initial; margin-right: 5px;
-                //       &.same { visibility: hidden; }
-                //     }
-                //   }
-                // }
               } // #chat #center .discussion .content .events .scrollable .scrollable-content .realtime
             } // // #chat #center .discussion .content .events .scrollable .scrollable-content
           } // #chat #center .discussion .content .events .scrollable

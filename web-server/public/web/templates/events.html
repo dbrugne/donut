@@ -34,6 +34,6 @@
             </div>
         </div>
         <div class="blank flex-child"></div>
-        <div class="realtime <%= chatmode ? 'compact' : '' %>"></div>
+        <div class="realtime <% if (collapsed) { %>collapsed<% }; %>"></div>
     </div>
 </div>

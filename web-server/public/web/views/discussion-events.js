@@ -27,8 +27,6 @@ module.exports = Backbone.View.extend({
 
   scrollTopTimeout: null,
 
-  chatmode: false,
-
   loading: false,
 
   scrollWasOnBottom: true, // ... before unfocus (scroll position is not
@@ -36,13 +34,7 @@ module.exports = Backbone.View.extend({
                            // true, for first focus)
 
   initialize: function () {
-    this.listenTo(app.client, 'preferences:update', _.bind(function () {
-      if (app.user.discussionMode() !== this.chatmode) {
-        this.$realtime.toggleClass('compact');
-        this.chatmode = app.user.discussionMode();
-      }
-    }, this));
-    this.chatmode = app.user.discussionMode();
+    this.listenTo(app.user, 'preferences:discussion:collapse:' + this.model.get('id'), this.onCollapse);
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(this.model, 'change:unviewed', this.onMarkAsViewed);
     this.listenTo(this.model, 'windowRefocused', _.bind(function () {
@@ -57,9 +49,6 @@ module.exports = Backbone.View.extend({
     }, this));
     this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
     this.listenTo(this.model, 'messageSent', this.onMessageSent);
-
-    this.listenTo(this.model, 'expand', this.onExpand);
-    this.listenTo(this.model, 'collapse', this.onCollapse);
 
     this.render();
 
@@ -106,8 +95,8 @@ module.exports = Backbone.View.extend({
     var spinner = this.templateSpinner({});
     var html = this.template({
       spinner: spinner,
-      chatmode: this.chatmode,
       model: modelJson,
+      collapsed: app.user.isDiscussionCollapsed(this.model.get('id')),
       isOwner: (this.model.get('type') === 'room' && this.model.currentUserIsOwner())
     });
     this.$('.events').append(html);
@@ -380,19 +369,19 @@ module.exports = Backbone.View.extend({
 
   /** **************************************************************************************************************
    *
-   * Files
+   * Display mode
    *
    *****************************************************************************************************************/
-  onExpand: function () {
-    this.$scrollable.find('.files .collapse').addClass('in');
-    this.$scrollable.find('.files .hide-collapsed').hide();
-    this.$scrollable.find('.files .show-collapsed').show();
-    this.scrollDown();
-  },
-  onCollapse: function () {
-    this.$scrollable.find('.files .collapse.in').removeClass('in');
-    this.$scrollable.find('.files .hide-collapsed').show();
-    this.$scrollable.find('.files .show-collapsed').hide();
+  onCollapse: function (nowIsCollapsed) {
+    if (nowIsCollapsed) {
+      this.$realtime.addClass('collapsed');
+      this.$scrollable.find('.files .collapse.in').removeClass('in');
+      this.$scrollable.find('.files .collapse-toggle').addClass('collapsed');
+    } else {
+      this.$realtime.removeClass('collapsed');
+      this.$scrollable.find('.files .collapse').addClass('in');
+      this.$scrollable.find('.files .collapse-toggle').removeClass('collapsed');
+    }
     this.scrollDown();
   }
 });

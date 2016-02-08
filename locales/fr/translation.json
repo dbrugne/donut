@@ -1467,11 +1467,6 @@
       "label-true": "Me demander une confirmation avant de quitter l'application",
       "label-false": "Pas de confirmation quand je quitte l'application"
     },
-    "chatmode": {
-      "title": "Mode de discussion",
-      "label-false": "Classique, plus joli, plus d'espace",
-      "label-true": "Compact, affiche plus de messages à l'écran"
-    },
     "welcome": {
       "title": "Fenêtre de bienvenue",
       "label-true": "Afficher la fenêtre de bienvenue à la connexion",

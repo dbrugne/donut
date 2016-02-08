@@ -488,10 +488,15 @@ var InputCommandsView = Backbone.View.extend({
     }
   },
   expand: function (paramString, parameters) {
-    this.model.trigger('expand');
+    this._collapse(false);
   },
   collapse: function (paramString, parameters) {
-    this.model.trigger('collapse');
+    this._collapse(true);
+  },
+  _collapse: function (value) {
+    var update = {};
+    update['discussion:collapse:' + this.model.get('id')] = value;
+    app.client.userPreferencesUpdate(update);
   },
   ping: function (paramString, parameters) {
     app.client.ping(_.bind(function (duration) {

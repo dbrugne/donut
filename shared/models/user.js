@@ -293,7 +293,8 @@ userSchema.statics.preferencesKeys = function () {
 
     'notif:usermessage': {default: true},
     'notif:invite': {default: true},
-    'chatmode:compact': {default: false},
+
+    'discussion:collapse:__what__': {default: false},
 
     'room:notif:nothing:__what__': {default: false},
     'room:notif:usermention:__what__': {default: true},
@@ -320,7 +321,7 @@ userSchema.statics.preferencesIsKeyAllowed = function (name) {
 
   // loop test
   var found = _.find(keys, function (key) {
-    if (key.indexOf('room:') !== 0) {
+    if (key.indexOf('room:') !== 0 && key.indexOf('discussion:') !== 0) {
       return false;
     } // plain key
 
