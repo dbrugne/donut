@@ -240,7 +240,7 @@ exports.prototype._data = function (type, data) {
     var files = [];
     _.each(data.files, function (f) {
       if (f.type !== 'raw') {
-        var MAX = 500;
+        var MAX = 350;
         var width = f.width || 135;
         var height = f.height || 135;
         var ratio;
