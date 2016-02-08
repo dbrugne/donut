@@ -44,12 +44,17 @@ module.exports = Backbone.View.extend({
     }, this));
     this.chatmode = app.user.discussionMode();
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
+    this.listenTo(this.model, 'change:unviewed', this.onMarkAsViewed);
     this.listenTo(this.model, 'windowRefocused', _.bind(function () {
       debug('windowRefocused', this.model.get('identifier'));
-      this.onDiscussionUpdated(true);
+      this.updateDateBlocks();
       this.onScroll();
     }, this));
-    this.listenTo(this.model, 'discussionUpdated', this.onDiscussionUpdated);
+    this.listenTo(this.model, 'discussionUpdated', _.bind(function () {
+      this.updateUnviewedBlock();
+      this.updateUnviewedTopbar();
+      this.updateDateBlocks();
+    }, this));
     this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
     this.listenTo(this.model, 'messageSent', this.onMessageSent);
 
@@ -164,12 +169,10 @@ module.exports = Backbone.View.extend({
       this.scrollWasOnBottom = false;
 
       // @important after scroll
-      this.onDiscussionUpdated(true);
+      this.updateUnviewedBlock();
+      this.updateUnviewedTopbar();
+      this.updateDateBlocks();
     }, this));
-  },
-  onDiscussionUpdated: function (refocus) {
-    this.updateDateBlocks();
-    this.renderUnviewed(refocus);
   },
   isVisible: function () {
     return !(!this.model.get('focused') || !windowView.focused);
@@ -267,58 +270,67 @@ module.exports = Backbone.View.extend({
     this.$('.events').find('.block.date[data-date="' + today + '"]').addClass('today');
     this.$('.events').find('.block.date[data-date="' + yesterday + '"]').addClass('yesterday');
   },
-  renderUnviewed: function (refocus) {
-    // reset
-    this.$scrollable.find('.block.unviewed').remove();
-    this.$unviewedContainer.html('').hide();
-    if (this.model.get('unviewed') !== true) {
-      return;
+  onMarkAsViewed: function () {
+    this.resetUnviewed();
+  },
+  updateUnviewedTopbar: function () {
+    var reset = _.bind(function () {
+      this.$unviewedContainer.html('').hide();
+    }, this);
+
+    if (!this.model.get('first_unviewed') || this.model.get('unviewed') !== true) {
+      return reset();
     }
 
-    var id = this.model.get('first_unviewed');
-    if (!id) {
-      return;
-    }
-    var $target = $('#' + id);
-    if (!$target.length) {
-      return;
-    }
-    if ($target.data('userId') === app.user.get('user_id')) {
-      return;
+    var $firstUnviewed = $('#' + this.model.get('first_unviewed'));
+
+    var isBlockAboveViewport;
+    if ($firstUnviewed.length) {
+      var scrollBottomPosition = this._scrollBottomPosition() + 15;
+      var position = $firstUnviewed.position();
+      isBlockAboveViewport = (position.top < scrollBottomPosition);
     }
 
-    // block (only if discussion isn't focus)
-    var $block;
-    if (refocus === true || !this.isVisible()) {
-      var _target = $target;
-      if (_target.prev().hasClass('user')) {
-        _target = _target.prev();
-      }
-      $block = $(this.templateUnviewed({
-        id: id,
-        time: $target.data('time')
-      })).insertBefore(_target);
+    // only if $firstUnviewed doesn't exist OR is above the top limit
+    var needTopBlock = !!(!$firstUnviewed || isBlockAboveViewport);
+    if (!needTopBlock) {
+      return reset();
     }
 
-    if ($block) {
-      var currentScrollPosition = this.$scrollable.scrollTop();
-      var topLimit = currentScrollPosition - 40;
-      var position = $block.position();
-      if (position.top > topLimit) {
-        // there is an unviewed block and he is under viewport limit
-        // @todo : re-add animation
-        this.$unviewedContainer.html('').hide();
-        return;
-      }
-    }
-
-    // topbar
     this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({
-      time: $target.data('time'),
-      date: date.dayMonthTime($target.data('time')),
-      id: id
+      time: $firstUnviewed.data('time'),
+      date: date.dayMonthTime($firstUnviewed.data('time')),
+      id: this.model.get('first_unviewed')
     }));
     this.$unviewedContainer.show();
+  },
+  updateUnviewedBlock: function (isFresh) {
+    if (this.model.get('unviewed') !== true || !this.model.get('first_unviewed')) {
+      return;
+    }
+    if (isFresh && this.isVisible()) {
+      // no block if discussion is visible for user
+      return;
+    }
+
+    var $firstUnviewed = $('#' + this.model.get('first_unviewed'));
+    if (!$firstUnviewed.length) {
+      return;
+    }
+    var _target = $firstUnviewed;
+    if ($firstUnviewed.prev().hasClass('user')) {
+      _target = $firstUnviewed.prev();
+    }
+
+    this.$('.block.unviewed').remove();
+    $(this.templateUnviewed({
+      id: this.model.get('first_unviewed'),
+      time: $firstUnviewed.data('time')
+    })).insertBefore(_target);
+  },
+  resetUnviewed: function () {
+    this.$scrollable.find('.block.unviewed').remove();
+    this.$unviewedContainer.html('').hide();
   },
   onClickToMarkAsViewed: function () {
     this.model.markAsViewed();
@@ -348,13 +360,14 @@ module.exports = Backbone.View.extend({
     // render and insert
     this.engine.insertBottom([{type: type, data: data}]);
 
+    this.updateUnviewedBlock(true);
+    this.updateUnviewedTopbar();
+    this.updateDateBlocks();
+
     // scrollDown
     if (needToScrollDown && !this.eventsEditView.messageUnderEdition) {
       this.scrollDown();
     }
-
-    // @important after scroll
-    this.onDiscussionUpdated();
   },
   mouseoverMessage: function (event) {
     var $event = $(event.currentTarget);

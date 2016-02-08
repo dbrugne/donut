@@ -57,7 +57,7 @@ module.exports = Backbone.View.extend({
       }
 
       // @import after scroll
-      this.model.trigger('discussionUpdated', true);
+      this.model.trigger('discussionUpdated');
     }, this));
   },
   toggleHistoryLoader: function (more) {
