@@ -342,7 +342,7 @@ module.exports = Backbone.View.extend({
     if (!data.prefix) {
       // particular case of emoji direct picking
       this.$editable.val(data.input.substr(0, data.position) + string + after);
-      this.$editable.setCursorPosition(data.position, data.position);
+      this.$editable.setCursorPosition(data.position + string.length, data.position + string.length);
     } else {
       // input content
       this.$editable.val(data.beforeSubject + string + after);
