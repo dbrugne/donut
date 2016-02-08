@@ -1,0 +1,40 @@
+<% layout('email') %>
+<p style="text-align: left;">User <strong>@<%= data.username %></strong> (<%= data.user_id %>) signaled an inappropriate content on DONUT.me at <em><%= time %></em>.</p>
+<ul style="text-align: left;">
+    <li>
+        <strong>Type</strong>
+        <span><%= data.type %></span>
+    </li>
+    <li>
+        <strong>Category</strong>
+        <span><%= data.category %></span>
+    </li>
+    <li>
+        <strong>Reason</strong>
+        <span><%= data.reason %></span>
+    </li>
+    <% if (data.target_user_id) { %>
+    <li>
+        <strong>User</strong>
+        <span>@<%= data.target_username %> (<%= data.target_user_id %>)</span>
+    </li>
+    <% } %>
+    <% if (data.in_room_id) { %>
+    <li>
+        <strong>In room</strong>
+        <span><%= data.in_room %> (<%= data.in_room_id %>)</span>
+    </li>
+    <% } %>
+    <% if (data.target_event_id) { %>
+    <li>
+        <strong>Event</strong>
+        <span><%= data.target_event_id %> of type <%= data.target_event_type %> at <%= data.target_event_time %></span>
+        <% if (data.target_message) { %>
+            <div style="font-size: 14px; padding: 10px; background-color: gainsboro; margin-top: 10px;"><%= data.target_message %></div>
+        <% } %>
+        <% if (data.target_files.length) { _.each(data.target_files, function (f) { %>
+        <div>File: <a href="https://res.cloudinary.com/roomly/image/upload/<%= f.path %>"><%= f.path %></a> (<%= f.type %>)</div>
+        <% }); } %>
+    </li>
+    <% } %>
+</ul>

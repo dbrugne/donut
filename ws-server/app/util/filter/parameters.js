@@ -108,6 +108,7 @@ Filter.prototype.before = function (data, session, next) {
         case 'chat.roomMessageSpamHandler.call':
         case 'chat.roomMessageUnspamHandler.call':
         case 'history.getRoomEventHandler.call':
+        case 'chat.signalHandler.event':
           q = HistoryRoomModel.findOne({ _id: data.event });
           break;
 
@@ -119,7 +120,8 @@ Filter.prototype.before = function (data, session, next) {
         q.populate('from', 'realname username avatar facebook')
           .populate('to', 'realname username avatar facebook');
       }
-      if (data.__route__ === 'history.getRoomEventHandler.call') {
+      if (data.__route__ === 'history.getRoomEventHandler.call' ||
+        data.__route__ === 'chat.signalHandler.event') {
         q.populate('room', 'name')
           .populate('user', 'realname username avatar facebook')
           .populate('by_user', 'realname username avatar facebook');

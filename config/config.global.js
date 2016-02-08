@@ -41,6 +41,7 @@ module.exports = {
   },
   email: {
     fake: 'donutmetest+__name__@gmail.com',
+    admin: 'hello@donut.me',
     from: {
       name: 'DONUT.me',
       email: 'hello@donut.me'
