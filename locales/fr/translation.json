@@ -1433,6 +1433,14 @@
       }
     }
   },
+  "mobile": {
+    "usermessage" : {
+      "subject": "@__username__"
+    },
+    "roommessage": {
+      "subject": "@__username__"
+    }
+  },
   "welcome": {
     "message": [
       "<p>Hello !</p>",
