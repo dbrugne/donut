@@ -78,25 +78,19 @@
                     <div class="join-email form-horizontal">
                         <div class="info-option"><%= t('chat.joingroup.options.email.info') %></div>
 
-                        <div class="form-group">
+                        <div class="form-group form-inline">
                             <label class="col-sm-2 control-label"><%= t('chat.joingroup.options.email.placeholder') %></label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control input-email" placeholder="<%= t('chat.joingroup.options.email.placeholder') %>">
+                            <div class="col-sm-10 flex-parent">
+                                <input type="text" class="form-control input-email flex-child mr5" placeholder="<%= t('chat.joingroup.options.email.placeholder') %>">
+                                <% if (data.allowed_domains && data.allowed_domains.length) { %>
+                                <select class="select-domain form-control">
+                                    <% _.each(data.allowed_domains, function(domain) { %>
+                                    <option value="<%= domain %>"><%= domain %></option>
+                                    <% }); %>
+                                </select>
+                                <% } %>
                             </div>
                         </div>
-
-                        <% if (data.allowed_domains && data.allowed_domains.length) { %>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label"><%= t('chat.joingroup.options.email.domain') %></label>
-                                <div class="col-sm-10">
-                                    <select class="select-domain form-control">
-                                        <% _.each(data.allowed_domains, function(domain) { %>
-                                        <option value="<%= domain %>"><%= domain %></option>
-                                        <% }); %>
-                                    </select>
-                                </div>
-                            </div>
-                        <% } %>
                         <button type="button" class="confirm-email btn btn-primary pull-right"><%= t('chat.joingroup.options.email.confirm') %></button>
                         <div class="clearfix"></div>
                     </div>
