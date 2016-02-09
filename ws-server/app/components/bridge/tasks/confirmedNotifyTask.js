@@ -10,6 +10,12 @@ var Task = function (options) {
 
 Task.prototype.notify = function (data, callback) {
   // serverType, route, data, channelName, opts, cb
-  this.app.get('globalChannelService').pushMessage('connector', 'user:confirmed', {}, 'user:' + data.user_id, {}, callback);
+  var event = {
+    email: data.email
+  };
+  if (data.group_id) {
+    event.now_is_member_of = data.group_id;
+  }
+  this.app.get('globalChannelService').pushMessage('connector', 'user:confirmed', event, 'user:' + data.user_id, {}, callback);
 };
 

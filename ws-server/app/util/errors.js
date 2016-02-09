@@ -18,6 +18,7 @@ var errors = {
   'params-data': 400,                 // data params not set
   'params-mode': 400,                 // mode params not set
   'params-message': 400,              // message params not set or not good
+  'params-email': 400,
   'params-password': 400,             // password params not set
   'wrong-format': 400,                // params are not well formatted
   'name-wrong-format': 400,           // name params are not well formatted
