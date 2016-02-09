@@ -112,7 +112,9 @@ handler.call = function (data, session, next) {
             members_pending: {user: user._id},
             allowed: user._id // when become member remove from allowed
           }
-        }, function (err) { return callback(err); }
+        }, function (err) {
+          return callback(err);
+        }
       );
     }
 
