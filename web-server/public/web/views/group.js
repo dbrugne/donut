@@ -28,7 +28,6 @@ var GroupView = Backbone.View.extend({
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(this.model, 'change:avatar', this.onAvatar);
     this.listenTo(this.model, 'redraw', this.render);
-    this.listenTo(app, 'user:confirmed', this.render);
     this.listenTo(app, 'askMembership', this.askMembership);
     this.render();
   },
@@ -161,8 +160,7 @@ var GroupView = Backbone.View.extend({
       if (!response.success) {
         app.trigger('openGroupJoin', response.options);
       } else {
-        app.trigger('alert', 'info', i18next.t('group.default-member'));
-        app.trigger('joinGroup', this.model.get('identifier'));
+        this.model.onRefresh();
       }
     }, this));
   },
