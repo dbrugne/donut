@@ -196,7 +196,8 @@ Facade.prototype.retrieveScheduledNotifications = function (callback) {
     done: false,
     viewed: false,
     $or: [
-      {to_email: true, sent_to_email: false}
+      {to_email: true, sent_to_email: false},
+      {to_mobile: true, sent_to_mobile: false}
     ]
   });
 
