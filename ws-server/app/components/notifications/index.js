@@ -227,6 +227,7 @@ Facade.prototype.retrieveScheduledNotifications = function (callback) {
     select: 'avatar name'
   });
 
+  q.sort({_id: -1});
   q.limit(5);
 
   q.exec(function (err, results) {
