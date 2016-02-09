@@ -87,10 +87,6 @@ var validate = function (token, cb) {
           return cb(err);
         }
 
-        if (user.confirmed) {
-          return cb(null);
-        }
-
         pomeloBridge.notify('chat', 'confirmedNotifyTask.notify', {user_id: user.id}, cb);
       });
   });
