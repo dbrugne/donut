@@ -158,7 +158,7 @@ var GroupView = Backbone.View.extend({
         return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
       }
       if (!response.success) {
-        app.trigger('openGroupJoin', response.options);
+        app.trigger('openGroupJoin', this.model, response.options);
       } else {
         this.model.onRefresh();
       }

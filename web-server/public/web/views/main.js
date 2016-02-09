@@ -438,11 +438,11 @@ var MainView = Backbone.View.extend({
   // MODALS
   // ======================================================================
 
-  openGroupJoin: function (data) {
-    if (!data) {
+  openGroupJoin: function (model, options) {
+    if (!model || !options) {
       return;
     }
-    var view = new ModalJoinGroupView({data: data});
+    var view = new ModalJoinGroupView({model: model, options: options});
     this.modalView.setView(view).open();
   },
   openRoomJoin: function (data) {

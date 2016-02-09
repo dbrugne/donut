@@ -13,7 +13,14 @@ var ModalJoinGroupView = Backbone.View.extend({
   },
 
   initialize: function (options) {
-    this.data = options.data;
+    this.model = options.model;
+    this.data = options.options;
+
+    // when request by email was confirmed for example
+    this.listenTo(this.model, 'redraw', function () {
+      this.trigger('close');
+    });
+
     this.render();
   },
 
@@ -89,7 +96,7 @@ var ModalJoinGroupView = Backbone.View.extend({
 
     this.resetMessage();
     var selectDomain = this.$('.select-domain').val();
-    var mail = input.replace(selectDomain, '') + selectDomain;
+    var email = input.replace(selectDomain, '') + selectDomain;
     if (!this.data.allowed_domains || !this.data.allowed_domains.length) {
       return this.$error.text(i18next.t('global.unknownerror')).show();
     }
@@ -98,9 +105,9 @@ var ModalJoinGroupView = Backbone.View.extend({
       return this.$error.text(i18next.t('global.unknownerror')).show();
     }
 
-    app.client.accountEmail(mail, 'add', _.bind(function (response) {
+    app.client.groupRequestEmail(this.data.group_id, email, _.bind(function (response) {
       if (response.success) {
-        this.$success.html(i18next.t('chat.joingroup.options.email.success', { email: mail })).show();
+        this.$success.html(i18next.t('chat.joingroup.options.email.success', { email: email })).show();
       } else {
         if (response.err === 'mail-already-exist') {
           this.$error.text(i18next.t('chat.joingroup.options.email.error')).show();
