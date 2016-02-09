@@ -164,13 +164,13 @@ var InputCommandsView = Backbone.View.extend({
       parameters: 'nothing',
       access: 'everywhere',
       help: '',
-      description: 'chat.expand.me'
+      description: 'chat.commands.expand'
     },
     collapse: {
       parameters: 'nothing',
       access: 'everywhere',
       help: '',
-      description: 'chat.collapse.me'
+      description: 'chat.commands.collapse'
     },
     ping: {
       parameters: 'nothing',
