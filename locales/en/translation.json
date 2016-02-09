@@ -313,20 +313,20 @@
         "before": "This page is the profile of the discussion ",
         "after": "on the chat platform <a href=\"/\">DONUT.me</a>. On <a href=\"/\">DONUT.me</a> you can join or create a thematic chat room (a discussion) about whatever you like. You can chat with people who share your interests."
       },
-      "permalink": "Permalink of this profile",
-      "editusers": "User list",
-      "createdat": "Created on",
-      "usersallowed": "Manage users"
+      "permalink": "permalink of this profile",
+      "editusers": "user list",
+      "createdat": "created on",
+      "usersallowed": "manage invitations"
     },
     "group": {
       "ownerops": "The regulars",
       "nouser": "No user in this community",
-      "permalink": "Permalink of this profile",
-      "editlink": "Edit",
-      "profilelink": "Profile of ",
-      "editusers": "Manage users",
-      "createdat": "Created on",
-      "usersallowed": "Manage users"
+      "permalink": "permalink of this profile",
+      "editlink": "edit",
+      "profilelink": "profile of ",
+      "editusers": "manage members",
+      "createdat": "created on",
+      "usersallowed": "manage invitations"
     },
     "user": {
       "hisrooms": "Active in these discussions",
@@ -605,7 +605,7 @@
         "roomtopic": "New topic in <span>__name__</span>, __topic__",
         "roommessage": "@__username__ wrote in __name__",
         "usermention": "You were mentionned in <span>__name__</span>",
-        "usermessage": "@__username__ send a message",
+        "usermessage": "@__username__ sent a one-to-one",
         "roominvite": "<span>@__username__</span> invites you to join <span>__name__</span>",
         "roomdelete": "<span>@__username__</span> delete your discussion <span>__name__</span>",
         "roomcreate": "<span>@__username__</span> create the discussion <span>__name__</span>",
@@ -637,10 +637,10 @@
       "currently": "This is it... You are at the very start of the conversation on <span class=\"name dc-text open-room-profile\" data-room-id=\"__room_id__\">__identifier__</span>, discussion created by <span class=\"owner dc-text open-user-profile\" data-user-id=\"__owner_id__\">@__owner_username__</span> on <span class=\"date\">__created_at__</span>",
       "hasPassword": "Your discussion is private. Configure access conditions so that other users can join.",
       "onestart": "This conversation is private. Only you and your interlocutor can see it.",
-      "edit": "Edit profile",
-      "users": "Manage users",
-      "access": "Manage access",
-      "invite": "Invite users"
+      "edit": "edit profile",
+      "users": "manage users",
+      "access": "manage invitations",
+      "invite": "invite users"
     },
     "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
     "closeapp": "Are you sure you want to leave ?",
