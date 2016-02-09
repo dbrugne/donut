@@ -212,7 +212,7 @@ var InputCommandsView = Backbone.View.extend({
 
     var identifier;
     if (parameters[1] && parameters[2] && parameters[3]) {
-      // room in group (#donut/help)
+      // room in group (#help)
       identifier = parameters[1] + parameters[2] + parameters[3];
     } else if (parameters[1] && parameters[2]) {
       // group (#donut/)
@@ -236,7 +236,7 @@ var InputCommandsView = Backbone.View.extend({
     var identifier;
     var model;
     if (parameters[1] && parameters[2] && parameters[3]) {
-      // room in group (#donut/help)
+      // room in group (#help)
       identifier = parameters[3];
       model = app.rooms.getByNameAndGroup(identifier, parameters[1].replace('#', ''));
     } else if (parameters[1] && parameters[2]) {

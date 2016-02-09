@@ -67,7 +67,7 @@ module.exports = function (grunt) {
   grunt.registerTask('donut-create-test-notifications', function () {
     var usernameFrom = grunt.config('notifUsernameFrom') || 'yangs';
     var usernameTo = grunt.config('notifUsernameTo') || 'david';
-    var identifier = grunt.config('notifIdentifier') || '#donut/donut';
+    var identifier = grunt.config('notifIdentifier') || '#donut';
     var groupidentifier = grunt.config('notifGroupIdentifier') || null;
     var message = grunt.config('notifMessage') || '';
 
