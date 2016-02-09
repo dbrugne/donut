@@ -714,8 +714,11 @@
 
                   // .block.topic
                   &.topic {
-                    .avatar { margin-right:5px; }
-                    .topic-content { .ft-opensans; font-style: normal; color: #1D252F; font-size: 15px; }
+                    .event .text { .align-items(flex-start); }
+                    .avatar { margin-right:5px; line-height: 22px; }
+                    .topic { .flex(1);
+                      .topic-content { .ft-opensans; font-style: normal; color: #1D252F; font-size: 15px; }
+                    }
                   }
 
                   // .block.hello
