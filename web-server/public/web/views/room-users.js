@@ -122,6 +122,12 @@ var RoomUsersView = Backbone.View.extend({
 
     this.$popinUsers.show();
 
+    // Check if popin is out of bottom screen
+    this.$popinUsers.removeClass('bottom');
+    if (this.$popinUsers.position().top + this.$popinUsers.height() > this.$el.height()) {
+      this.$popinUsers.addClass('bottom');
+    }
+
     app.client.userRead(user.user_id, {more: true}, _.bind(function (user) {
       if (user.err) {
         return;
