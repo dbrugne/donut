@@ -523,7 +523,10 @@
         "delete-email": "__email__ will be deleted of your address",
         "change-email": "You are about to make __email__ your main email. It will be your log-in e-mail and the only one we use to send you notifications.",
         "add-domain": "Enter the trusted e-mail domain to add.<br>Reminder: Any user with such an e-mail can join the community directly. No membership request, invitation, or password required.",
-        "delete-domain": "You are about to delete the email domain __domain__ to the allowed domain, a new user with the given email could no more join this community without previous invitation, old user with this email domain will remain members"
+        "delete-domain": [
+          "<p>Users having a __domain__ email will no longer auto-join the community.</p>",
+          "<p>However members who have joined thanks to a __domain__ email will remain members.</p>"
+        ]
       }
     },
     "commands": {

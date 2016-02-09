@@ -523,7 +523,10 @@
         "delete-email": "__email__ va être supprimé de vos adresses mails",
         "change-email": "Vous allez faire __email__ votre e-mail principal. Dorénavant vous vous connecterez avec cet e-mail et vous recevrez toutes les notifications dessus.",
         "add-domain": "Entrez le domaine d'e-mail de confiance à ajouter.<br>Rappel : Avoir un e-mail de ce format suffira à rejoindre la communauté directement. Sans demande d'adhésion, ni invitation, ni mot de passe.",
-        "delete-domain": "Vous êtes sur le point de supprimer le domaine __domain__ dans les domains d'email autorisé, un nouvel utilisateur ayant une addresse mail avec ce domaine ne pourra pas rejoindre cette communauté sans avoir fait une demande d'adhésion ou y être invité. Les membres qui ont rejoins cette communauté via ce domaine resterons membres."
+        "delete-domain": [
+          "<p>Les utilisateurs ayant un e-mail __domain__ ne pourront plus rejoindre automatiquement la communauté.</p>",
+          "<p>Cependant les membres ayant déjà rejoint la communauté grâce à un e-mail __domain__ resteront membres.</p>"
+        ]
       }
     },
     "commands": {
