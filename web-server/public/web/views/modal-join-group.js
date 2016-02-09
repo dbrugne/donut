@@ -82,9 +82,14 @@ var ModalJoinGroupView = Backbone.View.extend({
   },
 
   onConfirmEmail: function () {
+    var input = this.$('.input-email').val();
+    if (input === null || input === '') {
+      return;
+    }
+
     this.resetMessage();
     var selectDomain = this.$('.select-domain').val();
-    var mail = this.$('.input-email').val().replace(selectDomain, '') + selectDomain;
+    var mail = input.replace(selectDomain, '') + selectDomain;
     if (!this.data.allowed_domains || !this.data.allowed_domains.length) {
       return this.$error.text(i18next.t('global.unknownerror')).show();
     }
