@@ -1438,7 +1438,7 @@
       "subject": "@__username__"
     },
     "roommessage": {
-      "subject": "@__username__"
+      "subject": "__roomname__"
     }
   },
   "welcome": {
