@@ -121,7 +121,7 @@ function sendToMobile (toUid, data, img, cb) {
 
 parse.userMessage = function (toUid, fromUsername, message, avatar, callback) {
   sendToMobile(toUid, {
-    title: i18next.t('email.usermessage.subject', {username: fromUsername}),
+    title: i18next.t('mobile.usermessage.subject', {username: fromUsername}),
     alert: message,
     type: 'usermessage'
   }, avatar, callback);
@@ -145,7 +145,7 @@ parse.roomTopic = function (toUid, roomIdentifier, topic, avatar, callback) {
 
 parse.roomMessage = function (toUid, roomIdentifier, message, avatar, callback) {
   sendToMobile(toUid, {
-    title: i18next.t('email.roommessage.subject', {roomname: roomIdentifier}),
+    title: i18next.t('mobile.roommessage.subject', {roomname: roomIdentifier}),
     alert: message,
     type: 'roommessage'
   }, avatar, callback);

@@ -19,12 +19,7 @@
                         </span><i class="icon status icon-dot-circle-o <%= result.status %>" title="<%= result.status %>"></i>
                     <% } else if (type === 'rooms') { %>
                         <span class="relative">
-                            <img class="avatar_ctn" src="<%= result.avatarUrl %>">
-                            <% if (result.type === 'group') { %>
-                                <span class="group-type img-circle dc-back dc-text-contrast">
-                                    <i class="icon icon-users"></i>
-                                </span>
-                            <% } %>
+                            <img class="<% if (result.type === 'room') { %> img-circle <% } %> avatar_ctn" src="<%= result.avatarUrl %>">
                         </span>
                         <% if (result.type === 'group') { %>
                             <span class="name value"><%= result.identifier %>/</span>

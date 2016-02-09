@@ -12,7 +12,7 @@
   }
 }
 .mail-not-confirmed { margin: 1rem; }
-#popin-user { width: 350px; bottom: initial; overflow: visible; z-index: 2; .transition(none);
+#popin-user { width: 350px; bottom: initial; overflow: visible; z-index: 2;
   .arrow-right:before { z-index: 2; content: ""; width: 0; height: 0; border-style: solid; border-width: 10px 0 10px 7px; border-color: transparent transparent transparent #fff; position: absolute; right: -7px; top: 4px; }
   .arrow-right:after { z-index: 1; content: ""; width: 0; height: 0; border-style: solid; border-width: 12px 0 12px 8px; border-color: transparent transparent transparent #B8B8B8; position: absolute; right: -8px; top: 2px; }
   .modal-dialog { margin:0; .transition(none); width: 350px; }
@@ -28,6 +28,7 @@
   .modal-footer { border:0; background-color:@cl-subtext5;
     > a { float:left; clear:both; margin-right:5px; cursor:pointer; width: 100%; text-align: left; }
   }
+  &.bottom { position: fixed; bottom: 10px; top: initial !important; }
 }
 
 //#welcome {
@@ -570,8 +571,8 @@
             .dropdown { display: inline-block; position: relative;
               .dropdown-menu>li>a { color: @cl-subtext40; }
               button { font-size: 14px; border: none; background-color: transparent; margin:0; padding:0;
-                i {  color: #D0D9E6;
-                  &:hover { color: darken(#D0D9E6, 10%); }
+                i {  color: @cl-gray;
+                  &:hover { color: darken(@cl-gray, 10%); }
                 }
               }
             }
@@ -595,10 +596,10 @@
             .name .groupname { font-size: 13px; color: #AFBAC8; letter-spacing: 1px; line-height: 14px; margin-right: 2px; }
             .info {
               .room-profile { min-height:initial; min-width:initial; margin:auto; }
-              .separator { border-right: 1px solid #d0d9e6; padding: 0 20px 0 0; margin: 0 20px 0 0; height: 12px; }
+              .separator { border-right: 1px solid @cl-gray; padding: 0 20px 0 0; margin: 0 20px 0 0; height: 12px; }
               .share { width:18px; height:18px;
-                i { font-size: 14px; vertical-align: middle; cursor: pointer; color: #D0D9E6;
-                  &:hover { color: darken(#D0D9E6, 10%); }
+                i { font-size: 14px; vertical-align: middle; cursor: pointer; color: @cl-gray;
+                  &:hover { color: darken(@cl-gray, 10%); }
                 }
               }
             }
@@ -714,8 +715,11 @@
 
                   // .block.topic
                   &.topic {
-                    .avatar { margin-right:5px; }
-                    .topic-content { .ft-opensans; font-style: normal; color: #1D252F; font-size: 15px; }
+                    .event .text { .align-items(flex-start); }
+                    .avatar { margin-right:5px; line-height: 22px; }
+                    .topic { .flex(1);
+                      .topic-content { .ft-opensans; font-style: normal; color: #1D252F; font-size: 15px; }
+                    }
                   }
 
                   // .block.hello
@@ -756,10 +760,10 @@
                           i { color: #afbac8; }
                           .filename, a.filename { .ft-opensans; color: #333; font-weight: bold; white-space: nowrap; }
                         }
-                        .image-ctn { display: inline-block; position: relative; background-color: #D0D9E6; min-width: 30px; min-height: 30px; margin: 2px; box-shadow: 0 1px 4px rgba(64,54,63,0.25);
+                        .image-ctn { display: inline-block; position: relative; background-color: @cl-gray; min-width: 30px; min-height: 30px; margin: 2px; box-shadow: 0 1px 4px rgba(64,54,63,0.25);
                         }
                         .file-ctn { width: 90px; height: 90px; margin: 2px; border: 1px solid @cl-subtext10;
-                          .file { .display-flex; width: 90px; height: 90px; background-size: contain; color: @cl-text; background-color: #D0D9E6; box-shadow: 0 1px 4px rgba(64,54,63,0.25);
+                          .file { .display-flex; width: 90px; height: 90px; background-size: contain; color: @cl-text; background-color: @cl-gray; box-shadow: 0 1px 4px rgba(64,54,63,0.25);
                             &:hover { text-decoration: none; }
                             i { margin:auto; font-size: 4rem; color: @cl-subtext40; }
                           }
@@ -771,7 +775,7 @@
                         hr { clear: both; border-color: @cl-background; margin: 0; }
                       }
                     }
-                    .collapse-toggle { .ft-opensans; line-height: 15px; /*background: #D0D9E6; border-radius: 2px; padding: 2px 5px;*/ display: inline-block; /*text-transform: uppercase;*/ cursor: pointer; margin-left: 2px;
+                    .collapse-toggle { .ft-opensans; line-height: 15px; /*background: @cl-gray; border-radius: 2px; padding: 2px 5px;*/ display: inline-block; /*text-transform: uppercase;*/ cursor: pointer; margin-left: 2px;
                       .hide-collapsed { display: none }
                       .show-collapsed { display: inline }
                       &.collapsed {
@@ -780,8 +784,8 @@
                       }
                     }
                     .actions { font-size: 14px; right: 13px; position: absolute; top: 2px; color: #777; display:none;
-                      .action { .ft-opensans-light; background-color: #D0D9E6; border-radius: 2px; color: #FFFFFF; font-size: 9px; text-transform: uppercase; padding: 3px 8px; cursor: pointer; letter-spacing: 0.5px; float:right; line-height: 17px;
-                        &:hover { background-color: darken(#D0D9E6, 10%); }
+                      .action { .ft-opensans-light; background-color: @cl-gray; border-radius: 2px; color: #FFFFFF; font-size: 9px; text-transform: uppercase; padding: 3px 8px; cursor: pointer; letter-spacing: 0.5px; float:right; line-height: 17px;
+                        &:hover { background-color: darken(@cl-gray, 10%); }
                       }
                       .edit, .unspam { display:none; }
                     }
@@ -796,8 +800,8 @@
                       .actions .unspam { display:inline-block; }
                       .actions .spammed { display:none; }
                       .text-spammed { display: block; padding-right:50px; .ft-opensans-light-italic; font-size: 15px; color: #AFBAC8; line-height: 21px;
-                        a { .ft-opensans-light; background-color: #D0D9E6; border-radius: 2px; color: #FFFFFF; font-size: 9px; text-transform: uppercase; padding: 3px 8px; cursor: pointer; letter-spacing: 0.5px; line-height: 17px;
-                          &:hover { background-color: darken(#D0D9E6, 10%); }
+                        a { .ft-opensans-light; background-color: @cl-gray; border-radius: 2px; color: #FFFFFF; font-size: 9px; text-transform: uppercase; padding: 3px 8px; cursor: pointer; letter-spacing: 0.5px; line-height: 17px;
+                          &:hover { background-color: darken(@cl-gray, 10%); }
                         }
                       }
                     }
@@ -810,7 +814,7 @@
                         }
                       }
                     }
-                    .message-form { display:none; padding: 5px 5px 5px 5px; .border-radius(3px); #D0D9E6
+                    .message-form { display:none; padding: 5px 5px 5px 5px; .border-radius(3px);
                       textarea { resize:none;}
                       .enter { float:right;}
                       a { color: #2a80b9; text-decoration:none; }
@@ -865,7 +869,7 @@
             cursor: pointer;
           }
           .text-container { margin-bottom: 10px; position:relative;
-            .overlay { display:none; background-color: #d0d9e6; height: 100%; width: 100%; position: absolute; top: 2px; cursor: pointer; z-index: 2;
+            .overlay { display:none; background-color: @cl-gray; height: 100%; width: 100%; position: absolute; top: 2px; cursor: pointer; z-index: 2;
               .overlay-text { color: white; width: 100%; text-align: center; cursor: pointer; font-size: 1.8rem;}
             }
             .text { position: relative; padding: 15px 20px 5px 70px; border-top: 2px solid #FC2063; background-color: #fff;

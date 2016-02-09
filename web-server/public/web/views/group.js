@@ -28,6 +28,7 @@ var GroupView = Backbone.View.extend({
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(this.model, 'change:avatar', this.onAvatar);
     this.listenTo(this.model, 'redraw', this.render);
+    this.listenTo(app, 'user:confirmed', this.render);
     this.listenTo(app, 'askMembership', this.askMembership);
     this.render();
   },

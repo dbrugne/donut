@@ -71,6 +71,11 @@ var ModalJoinGroupView = Backbone.View.extend({
         }
       } else if (response.success) {
         app.trigger('joinGroup', this.data.identifier);
+
+        var group = app.groups.get(this.data.group_id);
+        if (group && group.get('focused')) {
+          group.trigger('redraw');
+        }
         this.trigger('close');
       }
     }, this));
