@@ -44,7 +44,7 @@ handler.call = function (data, session, next) {
       }
 
       // value
-      var value = validator.toBoolean(data.data[key]);
+      var value = !!(data.data[key]);
       if (user.preferences && user.preferences[key] === value) {
         return callback('same-preferences');
       }
