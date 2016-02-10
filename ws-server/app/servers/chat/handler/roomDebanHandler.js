@@ -87,9 +87,6 @@ handler.call = function (data, session, next) {
     },
 
     function broadcastToBannedUser (callback) {
-      if (room.isUserBlocked(bannedUser.id) !== false) {
-        return callback(null);
-      }
       that.app.globalChannelService.pushMessage('connector', 'room:unblocked', {room_id: room.id}, 'user:' + bannedUser.id, {}, function (err) {
         return callback(err);
       });

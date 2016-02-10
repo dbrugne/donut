@@ -7,7 +7,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
 %>
 <div class="header flex-parent">
     <img class="avatar group open-group-profile curp" data-group-id="<%= group.group_id %>" src="<%= group.avatarUrl %>" alt="<%= group.identifier %> avatar">
-    <div class="info flex-child flex-parent column">
+    <div class="info flex-child flex-shrink flex-parent column">
         <div class="flex-parent">
             <div class="name open-group-profile curp" data-group-id="<%= group.group_id %>"><%= group.name %></div>
             <div class="flex-child"></div>
@@ -95,7 +95,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
             <div class="flex-parent column owner">
                 <span class="title">Owner</span>
                 <div class="flex-parent center">
-                    <img class="avatar group open-user-profile curp" data-user-id="<%= group_users.owner.user_id %>" src="<%= group_users.owner.avatar %>" title="<%= group_users.owner.username %>" data-toggle="tooltip" data-placement="top" />
+                    <img class="avatar open-user-profile curp" data-user-id="<%= group_users.owner.user_id %>" src="<%= group_users.owner.avatar %>" title="<%= group_users.owner.username %>" data-toggle="tooltip" data-placement="top" />
                     <span class="username">@<%=group_users.owner.username%></span>
                 </div>
             </div>
@@ -107,7 +107,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
                     <div class="flex-parent center">
                         <% var count = 0; %>
                         <%_.find(group_users.op, function (u) { %>
-                        <img class="avatar group open-user-profile curp" data-user-id="<%= u.user_id %>" src="<%= u.avatar %>" title="<%= u.username %>" data-toggle="tooltip" data-placement="top" />
+                        <img class="avatar open-user-profile curp" data-user-id="<%= u.user_id %>" src="<%= u.avatar %>" title="<%= u.username %>" data-toggle="tooltip" data-placement="top" />
                         <% count ++; %>
                         <% if (count === 6) { %><i class="icon ellipsis-icon"></i><% return true; } %>
                         <% }); %>
@@ -123,7 +123,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
                         <div class="flex-parent center">
                             <% var count = 0; %>
                             <%_.find(group_users.members, function (u) { %>
-                                <img class="avatar group open-user-profile curp" data-user-id="<%= u.user_id %>" src="<%= u.avatar %>" title="<%= u.username %>" data-toggle="tooltip" data-placement="top" />
+                                <img class="avatar open-user-profile curp" data-user-id="<%= u.user_id %>" src="<%= u.avatar %>" title="<%= u.username %>" data-toggle="tooltip" data-placement="top" />
                                 <% count ++; %>
                                 <% if (count === 6) { %><i class="icon ellipsis-icon"></i><% return true; } %>
                             <% }); %>

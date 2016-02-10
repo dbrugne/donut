@@ -175,8 +175,8 @@ Notification.prototype.sendMobile = function (model, done) {
     },
 
     function persist (callback) {
-      model.sent_to_email = true;
-      model.sent_to_email_at = new Date();
+      model.sent_to_mobile = true;
+      model.sent_to_mobile_at = new Date();
       model.save(callback);
     }
 

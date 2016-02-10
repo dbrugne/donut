@@ -60,7 +60,7 @@ handler.add = function (email, user, next) {
         return callback('mail-already-exist');
       }
 
-      User.findOne({'emails': {$elemMatch: {'email': email, 'confirmed': true}}}).exec(function (err, user) {
+      User.findOne({emails: {$elemMatch: {email: email, confirmed: true}}}).exec(function (err, user) {
         if (err) {
           return callback(err);
         }

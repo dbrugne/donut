@@ -42,6 +42,7 @@ handler.call = function (data, session, next) {
       read = {
         identifier: '#' + group.name,
         name: group.name,
+        default: group.default,
         group_id: group.id,
         avatar: group._avatar(),
         website: group.website,
@@ -54,6 +55,14 @@ handler.call = function (data, session, next) {
         is_op: group.isOp(user.id),
         is_owner: group.isOwner(user.id)
       };
+
+      var banned = group.isInBanned(user.id);
+      if (typeof banned !== 'undefined') {
+        read.i_am_banned = true;
+        read.blocked = true;
+        read.banned_at = banned.banned_at;
+        read.reason = banned.reason;
+      }
 
       // owner
       if (group.owner) {
@@ -131,7 +140,7 @@ handler.call = function (data, session, next) {
           var el = {
             user_id: u.id,
             username: u.username,
-            avatar: u._avatar(),
+            avatar: u._avatar()
           };
           read.members.push(el);
 
@@ -139,13 +148,6 @@ handler.call = function (data, session, next) {
             return true; // stop iteration
           }
         });
-      }
-
-      var banned = group.isInBanned(user.id);
-      if (typeof banned !== 'undefined') {
-        read.i_am_banned = true;
-        read.banned_at = banned.banned_at;
-        read.reason = banned.reason;
       }
 
       var ids = _.map(read.members, 'user_id');
@@ -166,6 +168,17 @@ handler.call = function (data, session, next) {
       if (what.rooms !== true) {
         return callback(null);
       }
+
+      var decorateRoomUser = function (r, room) {
+        // user_is_op
+        room.is_op = r.isOp(user.id);
+        // user_is_owner
+        room.is_owner = r.isOwner(user.id);
+        // user_is_devoice
+        room.is_devoice = r.isDevoice(user.id);
+        // user_is_banned
+        room.is_banned = r.isBanned(user.id);
+      };
 
       RoomModel.findByGroup(group._id)
         .populate({
@@ -213,6 +226,8 @@ handler.call = function (data, session, next) {
                 is_owner: true
               };
             }
+
+            decorateRoomUser(r, room);
 
             sanitizedRooms.push(room);
           });

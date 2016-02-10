@@ -13,7 +13,6 @@ var RoomView = Backbone.View.extend({
     this.listenTo(this.model, 'change:avatar', this.onAvatar);
     this.listenTo(this.model, 'change:poster', this.onPoster);
     this.listenTo(this.model, 'change:posterblured', this.onPosterBlured);
-    this.listenTo(this.model, 'change:unviewed', this.onMarkAsViewed);
 
     this.render();
 
@@ -108,15 +107,6 @@ var RoomView = Backbone.View.extend({
     this.$el.find('[data-toggle="tooltip"]').tooltip({
       container: 'body'
     });
-  },
-
-  // only care about models to set a viewed
-  onMarkAsViewed: function (data) {
-    if (data.get('unviewed') === true) {
-      return;
-    }
-
-    this.eventsView.hideUnviewedBlocks();
   }
 });
 

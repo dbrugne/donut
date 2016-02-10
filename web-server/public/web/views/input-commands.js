@@ -160,6 +160,18 @@ var InputCommandsView = Backbone.View.extend({
       help: 'message',
       description: 'chat.commands.me'
     },
+    expand: {
+      parameters: 'nothing',
+      access: 'everywhere',
+      help: '',
+      description: 'chat.commands.expand'
+    },
+    collapse: {
+      parameters: 'nothing',
+      access: 'everywhere',
+      help: '',
+      description: 'chat.commands.collapse'
+    },
     ping: {
       parameters: 'nothing',
       access: 'everywhere',
@@ -200,7 +212,7 @@ var InputCommandsView = Backbone.View.extend({
 
     var identifier;
     if (parameters[1] && parameters[2] && parameters[3]) {
-      // room in group (#donut/help)
+      // room in group (#help)
       identifier = parameters[1] + parameters[2] + parameters[3];
     } else if (parameters[1] && parameters[2]) {
       // group (#donut/)
@@ -224,7 +236,7 @@ var InputCommandsView = Backbone.View.extend({
     var identifier;
     var model;
     if (parameters[1] && parameters[2] && parameters[3]) {
-      // room in group (#donut/help)
+      // room in group (#help)
       identifier = parameters[3];
       model = app.rooms.getByNameAndGroup(identifier, parameters[1].replace('#', ''));
     } else if (parameters[1] && parameters[2]) {
@@ -474,6 +486,17 @@ var InputCommandsView = Backbone.View.extend({
     } else {
       app.client.userMessage(this.model.get('id'), message, null, 'me');
     }
+  },
+  expand: function (paramString, parameters) {
+    this._collapse(false);
+  },
+  collapse: function (paramString, parameters) {
+    this._collapse(true);
+  },
+  _collapse: function (value) {
+    var update = {};
+    update['discussion:collapse:' + this.model.get('id')] = value;
+    app.client.userPreferencesUpdate(update);
   },
   ping: function (paramString, parameters) {
     app.client.ping(_.bind(function (duration) {

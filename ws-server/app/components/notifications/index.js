@@ -196,7 +196,8 @@ Facade.prototype.retrieveScheduledNotifications = function (callback) {
     done: false,
     viewed: false,
     $or: [
-      {to_email: true, sent_to_email: false}
+      {to_email: true, sent_to_email: false},
+      {to_mobile: true, sent_to_mobile: false}
     ]
   });
 
@@ -226,6 +227,7 @@ Facade.prototype.retrieveScheduledNotifications = function (callback) {
     select: 'avatar name'
   });
 
+  q.sort({_id: -1});
   q.limit(5);
 
   q.exec(function (err, results) {

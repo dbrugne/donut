@@ -14,7 +14,6 @@ var OneToOnePanelView = Backbone.View.extend({
   initialize: function () {
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(this.model, 'change:poster', this.onPoster);
-    this.listenTo(this.model, 'change:unviewed', this.onMarkAsViewed);
 
     this.render();
 
@@ -60,13 +59,6 @@ var OneToOnePanelView = Backbone.View.extend({
     if (url === '') {
       this.$('div.side').addClass('poster-empty');
     }
-  },
-  onMarkAsViewed: function (data) {
-    if (data.get('unviewed') === true) {
-      return;
-    }
-
-    this.eventsView.hideUnviewedBlocks();
   }
 });
 

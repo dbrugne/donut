@@ -244,15 +244,20 @@ Notification.prototype.sendMobile = function (model, done) {
 
     function send (events, callback) {
       async.eachLimit(events, 10, function (event, cb) {
-        parse.userMention(model.user._id.toString(), event.data.username, model.data.room.getIdentifier(), event.data.message, model.user._avatar(), cb);
+        var isCurrentMessage = (model.data.event.toString() === event.data.id);
+        if (isCurrentMessage) {
+          parse.userMention(model.user._id.toString(), event.data.username, model.data.room.getIdentifier(), event.data.message, model.user._avatar(), cb);
+        } else {
+          return cb(null);
+        }
       }, function (err) {
         return callback(err);
       });
     },
 
     function persist (callback) {
-      model.sent_to_email = true;
-      model.sent_to_email_at = new Date();
+      model.sent_to_mobile = true;
+      model.sent_to_mobile_at = new Date();
       model.save(callback);
     }
 

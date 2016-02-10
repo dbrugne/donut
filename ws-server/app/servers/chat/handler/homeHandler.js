@@ -23,7 +23,7 @@ handler.call = function (data, session, next) {
     rooms: {}
   };
   var roomLimit = (session.settings.device === 'mobile')
-    ? 10
+    ? 100
     : 100;
   var userLimit = 200;
 
@@ -194,6 +194,7 @@ handler.call = function (data, session, next) {
             identifier: group.getIdentifier(),
             group_id: group.id,
             disclaimer: group.disclaimer,
+            description: group.description,
             avatar: group._avatar(),
             users: count,
             priority: group.priority || 0

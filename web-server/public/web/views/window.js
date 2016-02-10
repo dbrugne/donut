@@ -164,10 +164,13 @@ var WindowView = Backbone.View.extend({
     this.renderTitle('newEvent');
 
     // desktop notification
-    if (!app.user.shouldDisplayDesktopNotif()) {
+    if (type !== 'room:message' && type !== 'user:message') {
       return;
     }
-    if (type !== 'room:message' && type !== 'user:message') {
+    if (model.get('type') === 'room' && !app.user.shouldDisplayDesktopNotifRoom(model.get('id'))) {
+      return;
+    }
+    if (model.get('type') === 'onetoone' && !app.user.shouldDisplayDesktopNotifOne()) {
       return;
     }
 

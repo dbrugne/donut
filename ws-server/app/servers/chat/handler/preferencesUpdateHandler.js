@@ -44,7 +44,7 @@ handler.call = function (data, session, next) {
       }
 
       // value
-      var value = validator.toBoolean(data.data[key]);
+      var value = !!(data.data[key]);
       if (user.preferences && user.preferences[key] === value) {
         return callback('same-preferences');
       }
@@ -60,9 +60,9 @@ handler.call = function (data, session, next) {
     },
 
     function broadcastUser (key, value, callback) {
-      that.app.globalChannelService.pushMessage('connector', 'preferences:update', {
-        key: value
-      }, 'user:' + user.id, {}, callback);
+      var event = {};
+      event[key] = value;
+      that.app.globalChannelService.pushMessage('connector', 'preferences:update', event, 'user:' + user.id, {}, callback);
     }
 
   ], function (err) {

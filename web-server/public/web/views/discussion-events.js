@@ -15,45 +15,40 @@ var debug = require('../libs/donut-debug')('donut:discussions');
 module.exports = Backbone.View.extend({
   template: require('../templates/events.html'),
   templateSpinner: require('../templates/spinner.html'),
+  templateUnviewed: require('../templates/event/block-unviewed.html'),
 
   events: {
     'mouseover .has-hover': 'mouseoverMessage',
-    'click .mark-as-viewed': 'onMarkAsViewed',
+    'click .mark-as-viewed': 'onClickToMarkAsViewed',
     'click .jumpto': 'onScrollToEvent'
   },
-
-  markAsViewedDelay: 2000,
-  markAsViewedTimeout: null,
 
   numberOfEventsToRetrieve: 50,
 
   scrollTopTimeout: null,
 
-  chatmode: false,
-
   loading: false,
-
-  timeoutHover: null,
 
   scrollWasOnBottom: true, // ... before unfocus (scroll position is not
                            // available when discussion is hidden (default:
                            // true, for first focus)
 
   initialize: function () {
-    this.listenTo(app.client, 'preferences:update', _.bind(function () {
-      if (app.user.discussionMode() !== this.chatmode) {
-        this.$realtime.toggleClass('compact');
-        this.chatmode = app.user.discussionMode();
-      }
-    }, this));
-    this.chatmode = app.user.discussionMode();
+    this.listenTo(app.user, 'preferences:discussion:collapse:' + this.model.get('id'), this.onCollapse);
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
+    this.listenTo(this.model, 'change:unviewed', this.onMarkAsViewed);
     this.listenTo(this.model, 'windowRefocused', _.bind(function () {
       debug('windowRefocused', this.model.get('identifier'));
+      this.updateDateBlocks();
       this.onScroll();
     }, this));
+    this.listenTo(this.model, 'discussionUpdated', _.bind(function () {
+      this.updateUnviewedBlock();
+      this.updateUnviewedTopbar();
+      this.updateDateBlocks();
+    }, this));
     this.listenTo(this.model, 'freshEvent', this.addFreshEvent);
-    this.listenTo(this.model, 'messageSent', this.scrollDown);
+    this.listenTo(this.model, 'messageSent', this.onMessageSent);
 
     this.render();
 
@@ -80,7 +75,7 @@ module.exports = Backbone.View.extend({
     });
 
     this.listenTo(this.model, 'scrollDown', this.scrollDown);
-    this.listenTo(app, 'resetDate', _.bind(function () {
+    this.listenTo(this.model, 'resetDate', _.bind(function () {
       this.eventsDateView.reset();
     }, this));
 
@@ -100,8 +95,8 @@ module.exports = Backbone.View.extend({
     var spinner = this.templateSpinner({});
     var html = this.template({
       spinner: spinner,
-      chatmode: this.chatmode,
       model: modelJson,
+      collapsed: app.user.isDiscussionCollapsed(this.model.get('id')),
       isOwner: (this.model.get('type') === 'room' && this.model.currentUserIsOwner())
     });
     this.$('.events').append(html);
@@ -125,8 +120,14 @@ module.exports = Backbone.View.extend({
   },
   onFocusChange: function () {
     if (this.model.get('focused')) {
+      // go focus
       this.onRefocus();
     } else {
+      // go blur
+      if (this.model.get('unviewed') === true) {
+        this.model.markAsViewed();
+      }
+
       // persist scroll position before hiding
       this.scrollWasOnBottom = this.isScrollOnBottom();
     }
@@ -139,7 +140,6 @@ module.exports = Backbone.View.extend({
       ? null
       : last.attr('id');
 
-    this.historyLoading = true; // @todo add spinner
     debug('fetch from now to ', id);
     this.model.history(id, 'later', this.numberOfEventsToRetrieve, _.bind(function (data) {
       if (data.more === true) {
@@ -148,8 +148,6 @@ module.exports = Backbone.View.extend({
       }
 
       this.engine.insertBottom(data.history);
-      this.updateDateBlocks();
-      this.updateUnviewedBlocks();
 
       if (this.scrollWasOnBottom) {
         // will trigger visible element detection implicitly
@@ -158,6 +156,11 @@ module.exports = Backbone.View.extend({
         this.onScroll();
       }
       this.scrollWasOnBottom = false;
+
+      // @important after scroll
+      this.updateUnviewedBlock();
+      this.updateUnviewedTopbar();
+      this.updateDateBlocks();
     }, this));
   },
   isVisible: function () {
@@ -191,23 +194,11 @@ module.exports = Backbone.View.extend({
         }
       }, 1500);
     }
-
-    // start timeout for mark as viewed detection
-    this.markAsViewedTimeout = setTimeout(_.bind(function () {
-      if (!this.isVisible()) {
-        return;
-      }
-      this.model.markAsViewed();
-    }, this), this.markAsViewedDelay);
   },
   _scrollTimeoutCleanup: function () {
     if (this.scrollTopTimeout) {
       clearInterval(this.scrollTopTimeout);
       this.scrollTopTimeout = null;
-    }
-    if (this.markAsViewedTimeout) {
-      clearInterval(this.markAsViewedTimeout);
-      this.markAsViewedTimeout = null;
     }
   },
   _scrollBottomPosition: function () {
@@ -233,34 +224,16 @@ module.exports = Backbone.View.extend({
       scrollTop: top
     }, timing || 0);
   },
-  /**
-   * Function called to hide the unviewed block on top of the discussion
-   * and the unread messages inside the discussion
-   */
-  hideUnviewedBlocks: function () {
-    var insideBlock = this.$('.events').find('.block.unviewed');
-    var topBlock = this.$('.date-ctn .ctn-unviewed');
-    if (insideBlock) {
-      insideBlock.fadeOut(1000, function () {
-        insideBlock.remove();
-      });
-    }
-    if (topBlock) {
-      topBlock.find('.unviewed-top').fadeOut(1000, function () {
-        topBlock.html('');
-      });
-    }
-  },
   onScrollToEvent: function (event) {
     event.preventDefault();
     var elt = $(event.currentTarget);
     if (!elt.data('id')) {
-      return this.onMarkAsViewed();
+      return;
     }
 
     var target = $('#unviewed-separator-' + elt.data('id'));
     if (!target) {
-      return this.onMarkAsViewed();
+      return;
     }
 
     this.scrollTo(target.position().top - 31, 1000); // 31 = height of top unview block
@@ -286,40 +259,73 @@ module.exports = Backbone.View.extend({
     this.$('.events').find('.block.date[data-date="' + today + '"]').addClass('today');
     this.$('.events').find('.block.date[data-date="' + yesterday + '"]').addClass('yesterday');
   },
-  updateUnviewedBlocks: function () {
-    var id = this.model.get('first_unviewed');
-    var target = $('#' + id);
-
-    if (!target.length) {
-      return;
-    }
-    if (app.user.get('user_id') === target.data('userId')) {
-      return;
-    }
-
-    var _time = target.data('time');
-
-    // topbar
-    this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({
-      time: _time,
-      date: date.dayMonthTime(target.data('time')),
-      id: id
-    }));
-
-    // look for a previous new message separator, if not, insert one after "event"
-    if (this.$('.events .block.unviewed').length === 0) {
-      var tpl = require('../templates/event/block-unviewed.html');
-      if (target.prev().hasClass('user')) {
-        target = target.prev();
-      }
-      $(tpl({
-        time: _time,
-        id: id
-      })).insertBefore(target);
-    }
-  },
   onMarkAsViewed: function () {
-    this._scrollTimeoutCleanup();
+    this.resetUnviewed();
+  },
+  updateUnviewedTopbar: function () {
+    var reset = _.bind(function () {
+      this.$unviewedContainer.html('').hide();
+    }, this);
+
+    if (!this.model.get('first_unviewed') || this.model.get('unviewed') !== true) {
+      return reset();
+    }
+
+    var $firstUnviewed = $('#' + this.model.get('first_unviewed'));
+
+    var isBlockAboveViewport;
+    if ($firstUnviewed.length) {
+      var scrollBottomPosition = this._scrollBottomPosition() + 15;
+      var position = $firstUnviewed.position();
+      isBlockAboveViewport = (position.top < scrollBottomPosition);
+    }
+
+    // only if $firstUnviewed doesn't exist OR is above the top limit
+    var needTopBlock = !!(!$firstUnviewed || isBlockAboveViewport);
+    if (!needTopBlock) {
+      return reset();
+    }
+
+    this.$unviewedContainer.html(require('../templates/event/block-unviewed-top.html')({
+      time: $firstUnviewed.data('time'),
+      date: date.dayMonthTime($firstUnviewed.data('time')),
+      id: this.model.get('first_unviewed')
+    }));
+    this.$unviewedContainer.show();
+  },
+  updateUnviewedBlock: function (isFresh) {
+    if (this.model.get('unviewed') !== true || !this.model.get('first_unviewed')) {
+      return;
+    }
+    if (isFresh && this.isVisible()) {
+      // no block if discussion is visible for user
+      return;
+    }
+
+    var $firstUnviewed = $('#' + this.model.get('first_unviewed'));
+    if (!$firstUnviewed.length) {
+      return;
+    }
+    var _target = $firstUnviewed;
+    if ($firstUnviewed.prev().hasClass('user')) {
+      _target = $firstUnviewed.prev();
+    }
+
+    this.$('.block.unviewed').remove();
+    $(this.templateUnviewed({
+      id: this.model.get('first_unviewed'),
+      time: $firstUnviewed.data('time')
+    })).insertBefore(_target);
+  },
+  resetUnviewed: function () {
+    this.$scrollable.find('.block.unviewed').remove();
+    this.$unviewedContainer.html('').hide();
+  },
+  onClickToMarkAsViewed: function () {
+    this.model.markAsViewed();
+  },
+  onMessageSent: function () {
+    this.scrollDown();
     this.model.markAsViewed();
   },
 
@@ -342,7 +348,10 @@ module.exports = Backbone.View.extend({
 
     // render and insert
     this.engine.insertBottom([{type: type, data: data}]);
-    this.updateUnviewedBlocks();
+
+    this.updateUnviewedBlock(true);
+    this.updateUnviewedTopbar();
+    this.updateDateBlocks();
 
     // scrollDown
     if (needToScrollDown && !this.eventsEditView.messageUnderEdition) {
@@ -356,5 +365,23 @@ module.exports = Backbone.View.extend({
     } else {
       $event.removeClass('editable');
     }
+  },
+
+  /** **************************************************************************************************************
+   *
+   * Display mode
+   *
+   *****************************************************************************************************************/
+  onCollapse: function (nowIsCollapsed) {
+    if (nowIsCollapsed) {
+      this.$realtime.addClass('collapsed');
+      this.$scrollable.find('.files .collapse.in').removeClass('in');
+      this.$scrollable.find('.files .collapse-toggle').addClass('collapsed');
+    } else {
+      this.$realtime.removeClass('collapsed');
+      this.$scrollable.find('.files .collapse').addClass('in');
+      this.$scrollable.find('.files .collapse-toggle').removeClass('collapsed');
+    }
+    this.scrollDown();
   }
 });

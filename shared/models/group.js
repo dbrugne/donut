@@ -19,6 +19,11 @@ var groupSchema = mongoose.Schema({
     message: String,
     created_at: {type: Date, default: Date.now}
   }],
+  emails_pending: [{
+    user: {type: mongoose.Schema.ObjectId, ref: 'User'},
+    email: String,
+    created_at: {type: Date, default: Date.now}
+  }],
   bans: [{
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
     reason: String,
@@ -214,6 +219,17 @@ groupSchema.methods.getAllowPendingByUid = function (userId) {
       return (doc.user.toString() === userId);
     }
   });
+};
+
+groupSchema.methods.isEmailPending = function (email) {
+  if (!this.emails_pending.length) {
+    return false;
+  }
+
+  var subDocument = _.find(this.emails_pending, function (doc) {
+    return (doc.email === email);
+  });
+  return (typeof subDocument !== 'undefined');
 };
 
 groupSchema.methods.getIdsByType = function (type) {

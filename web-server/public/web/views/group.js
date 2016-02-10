@@ -158,10 +158,9 @@ var GroupView = Backbone.View.extend({
         return app.trigger('alert', 'error', i18next.t('global.unknownerror'));
       }
       if (!response.success) {
-        app.trigger('openGroupJoin', response.options);
+        app.trigger('openGroupJoin', this.model, response.options);
       } else {
-        app.trigger('alert', 'info', i18next.t('group.default-member'));
-        app.trigger('joinGroup', this.model.get('identifier'));
+        this.model.onRefresh();
       }
     }, this));
   },
@@ -172,7 +171,7 @@ var GroupView = Backbone.View.extend({
 
   onAvatar: function (model, value) {
     var url = common.cloudinary.prepare(value, 100);
-    this.$('img.avatar').attr('src', url);
+    this.$('.header img.avatar.group').attr('src', url);
   },
   initializeTooltips: function () {
     this.$el.find('[data-toggle="tooltip"]').tooltip({

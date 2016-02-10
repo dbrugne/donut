@@ -91,6 +91,15 @@ function sendEmail (to, template, data, callback) {
  *
  * ================================================================== */
 
+emailer.signal = function (data, callback) {
+  sendEmail(conf.email.admin, 'emails/signal.html', {
+    subject: 'Inappropriate content or activity signaled',
+    title: 'Inappropriate content or activity signaled',
+    time: new Date(),
+    data: data
+  }, callback);
+};
+
 emailer.forgot = function (to, token, callback) {
   sendEmail(to, 'emails/forgot.html', {
     token: token,

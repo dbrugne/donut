@@ -7,6 +7,8 @@ var allowedFields = [
   'version',
   'filename',
   'size',
+  'width',
+  'height',
   'type' // 'image', 'raw'
 ];
 

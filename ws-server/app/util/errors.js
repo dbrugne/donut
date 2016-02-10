@@ -13,10 +13,12 @@ var errors = {
   'params-username': 400,             // username params not set
   'params-username-user-id': 400,     // username and user_id params not set
   'params-name': 400,                 // name params not set
+  'params-event': 400,
   'params-events': 400,               // events params not set or not good
   'params-data': 400,                 // data params not set
   'params-mode': 400,                 // mode params not set
   'params-message': 400,              // message params not set or not good
+  'params-email': 400,
   'params-password': 400,             // password params not set
   'wrong-format': 400,                // params are not well formatted
   'name-wrong-format': 400,           // name params are not well formatted

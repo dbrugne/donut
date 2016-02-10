@@ -1,7 +1,6 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var app = require('../libs/app');
 
 module.exports = Backbone.View.extend({
   historyLoading: false,
@@ -45,8 +44,6 @@ module.exports = Backbone.View.extend({
       this.toggleHistoryLoader(data.more);
 
       this.parent.engine.insertTop(data.history);
-      this.parent.updateDateBlocks();
-      this.parent.updateUnviewedBlocks();
 
       if (scrollTo === 'top') { // on manual request
         var targetTop = $nextTopElement.position().top;
@@ -58,10 +55,13 @@ module.exports = Backbone.View.extend({
         // on first focus history load
         this.model.trigger('scrollDown');
       }
+
+      // @import after scroll
+      this.model.trigger('discussionUpdated');
     }, this));
   },
   toggleHistoryLoader: function (more) {
-    app.trigger('resetDate');
+    this.model.trigger('resetDate');
     this.$loader.find('.help, .loading, .no-more').hide();
     this.$pad.removeClass('loading');
     if (more === 'loading') {

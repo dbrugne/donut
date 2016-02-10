@@ -95,22 +95,5 @@
                 </div>
             </div>
         <% } %>
-
-        <h2><%= t('preferences.appearance') %></h2>
-        <div class="form-group">
-            <label><%= t('preferences.chatmode.title') %></label>
-            <div class="radio">
-                <label>
-                    <input type="radio" class="savable" name="chatmode:compact" value="chatmode:compact:false" <% if (preferences['chatmode:compact'] === false) { print('checked'); } %>>
-                    <%= t('preferences.chatmode.label-false') %>
-                </label>
-            </div>
-            <div class="radio">
-                <label>
-                    <input type="radio" class="savable" name="chatmode:compact" value="chatmode:compact:true" <% if (typeof preferences['chatmode:compact'] == 'undefined' || preferences['chatmode:compact']) { print('checked'); } %>>
-                    <%= t('preferences.chatmode.label-true') %>
-                </label>
-            </div>
-        </div>
     </form>
 </div>

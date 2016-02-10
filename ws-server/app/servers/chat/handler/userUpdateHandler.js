@@ -116,7 +116,7 @@ handler.call = function (data, session, next) {
       // welcome
       var welcome;
       if (_.has(data.data, 'welcome')) {
-        welcome = validator.toBoolean(data.data.welcome);
+        welcome = !!(data.data.welcome);
         if (welcome !== user.welcome) {
           sanitized.welcome = welcome;
         }

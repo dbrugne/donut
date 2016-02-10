@@ -263,6 +263,15 @@ userSchema.statics.retrieveUser = function (username) {
   }).populate('room', 'name');
 };
 
+/**
+ * Find user that have group page open
+ * @param groupId
+ * @returns {Query}
+ */
+userSchema.statics.findByGroup = function (groupId) {
+  return this.find({groups: {$in: [groupId]}, deleted: {$ne: true}});
+};
+
 /** *******************************************************************************
  *
  * Preferences
@@ -284,7 +293,8 @@ userSchema.statics.preferencesKeys = function () {
 
     'notif:usermessage': {default: true},
     'notif:invite': {default: true},
-    'chatmode:compact': {default: false},
+
+    'discussion:collapse:__what__': {default: false},
 
     'room:notif:nothing:__what__': {default: false},
     'room:notif:usermention:__what__': {default: true},
@@ -311,7 +321,7 @@ userSchema.statics.preferencesIsKeyAllowed = function (name) {
 
   // loop test
   var found = _.find(keys, function (key) {
-    if (key.indexOf('room:') !== 0) {
+    if (key.indexOf('room:') !== 0 && key.indexOf('discussion:') !== 0) {
       return false;
     } // plain key
 

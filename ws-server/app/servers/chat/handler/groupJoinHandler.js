@@ -45,6 +45,7 @@ handler.call = function (data, session, next) {
         name: group.name,
         group_id: group.id,
         id: group.id,
+        avatar: group._avatar(),
         last_event_at: group.last_event_at
       };
       that.app.globalChannelService.pushMessage('connector', 'group:join', groupsInfos, 'user:' + user.id, {}, function (err) {

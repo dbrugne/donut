@@ -92,7 +92,6 @@ var DrawerGroupCreateView = Backbone.View.extend({
         }
         return this.setError(i18next.t('chat.form.errors.' + response.err, {defaultValue: i18next.t('global.unknownerror')}));
       }
-      // @todo : group creation confirmation popin
       app.trigger('joinGroup', '#' + name);
       this.reset();
       this.trigger('close');

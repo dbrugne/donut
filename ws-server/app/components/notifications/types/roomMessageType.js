@@ -218,7 +218,12 @@ Notification.prototype.sendMobile = function (model, done) {
 
     function send (events, callback) {
       async.eachLimit(events, 10, function (event, cb) {
-        parse.roomMessage(model.user._id.toString(), model.data.room.getIdentifier(), event.data.message, model.data.room._avatar(), cb);
+        var isCurrentMessage = (model.data.event.toString() === event.data.id);
+        if (isCurrentMessage) {
+          parse.roomMessage(model.user._id.toString(), model.data.room.getIdentifier(), event.data.message, model.data.room._avatar(), cb);
+        } else {
+          return cb(null);
+        }
       }, function (err) {
         return callback(err);
       });
