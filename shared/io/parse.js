@@ -129,7 +129,7 @@ parse.userMessage = function (toUid, fromUsername, message, avatar, callback) {
 
 parse.userMention = function (toUid, fromUsername, roomIdentifier, message, avatar, callback) {
   sendToMobile(toUid, {
-    title: i18next.t('email.usermention.subject', {username: fromUsername, roomname: roomIdentifier}),
+    title: i18next.t('mobile.usermention.subject', {username: fromUsername, roomname: roomIdentifier}),
     alert: message,
     type: 'usermention'
   }, avatar, callback);
@@ -137,7 +137,7 @@ parse.userMention = function (toUid, fromUsername, roomIdentifier, message, avat
 
 parse.roomTopic = function (toUid, roomIdentifier, topic, avatar, callback) {
   sendToMobile(toUid, {
-    title: i18next.t('email.roomtopic.subject', {roomname: roomIdentifier}),
+    title: i18next.t('mobile.roomtopic.subject', {roomname: roomIdentifier}),
     alert: topic,
     type: 'roomtopic'
   }, avatar, callback);
@@ -154,7 +154,7 @@ parse.roomMessage = function (toUid, roomIdentifier, message, avatar, callback) 
 parse.roomJoin = function (toUid, fromUsername, roomIdentifier, avatar, callback) {
   sendToMobile(toUid, {
     title: 'Donut.me',
-    alert: i18next.t('email.roomjoin.subject', {roomname: roomIdentifier, username: fromUsername}),
+    alert: i18next.t('mobile.roomjoin.subject', {roomname: roomIdentifier, username: fromUsername}),
     type: 'roomjoin'
   }, avatar, callback);
 };
@@ -165,48 +165,48 @@ parse.roomJoin = function (toUid, fromUsername, roomIdentifier, avatar, callback
 
 parse.roomJoinRequest = function (toUid, fromUsername, roomIdentifier, avatar, callback) {
   sendToMobile(toUid, {
-    title: i18next.t('email.roomjoinrequest.subject', {roomname: roomIdentifier}),
-    alert: i18next.t('email.roomjoinrequest.content.title', {roomname: roomIdentifier, username: fromUsername}),
+    title: i18next.t('mobile.roomjoinrequest.subject', {roomname: roomIdentifier}),
+    alert: i18next.t('mobile.roomjoinrequest.content.title', {roomname: roomIdentifier, username: fromUsername}),
     type: 'roomjoinrequest'
   }, avatar, callback);
 };
 
 parse.roomAllowed = function (toUid, fromUsername, roomIdentifier, avatar, callback) {
   sendToMobile(toUid, {
-    title: i18next.t('email.roomallow.subject', {roomname: roomIdentifier}),
-    alert: i18next.t('email.roomallow.content.title', {roomname: roomIdentifier}),
+    title: i18next.t('mobile.roomallow.subject', {roomname: roomIdentifier}),
+    alert: i18next.t('mobile.roomallow.content.title', {roomname: roomIdentifier}),
     type: 'roomallowed'
   }, avatar, callback);
 };
 
 parse.roomRefuse = function (toUid, fromUsername, roomIdentifier, avatar, callback) {
   sendToMobile(toUid, {
-    title: i18next.t('email.roomrefuse.subject', {roomname: roomIdentifier}),
-    alert: i18next.t('email.roomrefuse.content.title', {roomname: roomIdentifier}),
+    title: i18next.t('mobile.roomrefuse.subject', {roomname: roomIdentifier}),
+    alert: i18next.t('mobile.roomrefuse.content.title', {roomname: roomIdentifier}),
     type: 'roomrefuse'
   }, avatar, callback);
 };
 
 parse.roomInvite = function (toUid, fromUsername, roomIdentifier, avatar, callback) {
   sendToMobile(toUid, {
-    title: 'Donut.me',
-    alert: i18next.t('email.roominvite.content.title', {roomname: roomIdentifier, username: fromUsername}),
+    title: i18next.t('mobile.roominvite.content.subject', {roomname: roomIdentifier}),
+    alert: i18next.t('mobile.roominvite.content.title', {roomname: roomIdentifier, username: fromUsername}),
     type: 'roominvite'
   }, avatar, callback);
 };
 
 parse.roomDelete = function (toUid, fromUsername, roomIdentifier, avatar, callback) {
   sendToMobile(toUid, {
-    title: i18next.t('email.roomdelete.subject', {roomname: roomIdentifier}),
-    alert: i18next.t('email.roomdelete.content.title', {roomname: roomIdentifier}),
+    title: i18next.t('mobile.roomdelete.subject', {roomname: roomIdentifier}),
+    alert: i18next.t('mobile.roomdelete.content.title', {roomname: roomIdentifier}),
     type: 'roomdelete'
   }, avatar, callback);
 };
 
 parse.roomCreate = function (toUid, fromUsername, roomIdentifier, avatar, callback) {
   sendToMobile(toUid, {
-    title: i18next.t('email.roomcreate.subject', {roomname: roomIdentifier}),
-    alert: i18next.t('email.roomcreate.content.title', {roomname: roomIdentifier, username: fromUsername}),
+    title: i18next.t('mobile.roomcreate.subject', {roomname: roomIdentifier}),
+    alert: i18next.t('mobile.roomcreate.content.title', {roomname: roomIdentifier, username: fromUsername}),
     type: 'roomcreate'
   }, avatar, callback);
 };
@@ -217,56 +217,56 @@ parse.roomCreate = function (toUid, fromUsername, roomIdentifier, avatar, callba
 
 parse.roomOp = function (toUid, roomIdentifier, avatar, callback) {
   sendToMobile(toUid, {
-    title: i18next.t('email.roomop.subject', {roomname: roomIdentifier}),
-    alert: i18next.t('email.roomop.content.title', {roomname: roomIdentifier}),
+    title: i18next.t('mobile.roomop.subject', {roomname: roomIdentifier}),
+    alert: i18next.t('mobile.roomop.content.title', {roomname: roomIdentifier}),
     type: 'roomOp'
   }, avatar, callback);
 };
 
 parse.roomDeop = function (toUid, roomIdentifier, avatar, callback) {
   sendToMobile(toUid, {
-    title: i18next.t('email.roomdeop.subject', {roomname: roomIdentifier}),
-    alert: i18next.t('email.roomdeop.content.title', {roomname: roomIdentifier}),
+    title: i18next.t('mobile.roomdeop.subject', {roomname: roomIdentifier}),
+    alert: i18next.t('mobile.roomdeop.content.title', {roomname: roomIdentifier}),
     type: 'roomDeop'
   }, avatar, callback);
 };
 
 parse.roomKick = function (toUid, roomIdentifier, avatar, callback) {
   sendToMobile(toUid, {
-    title: 'Donut.me',
-    alert: i18next.t('email.roomkick.content.title', {roomname: roomIdentifier}),
+    title: i18next.t('mobile.roomkick.content.subject', {roomname: roomIdentifier}),
+    alert: i18next.t('mobile.roomkick.content.title', {roomname: roomIdentifier}),
     type: 'roomKick'
   }, avatar, callback);
 };
 
 parse.roomBan = function (toUid, roomIdentifier, avatar, callback) {
   sendToMobile(toUid, {
-    title: 'Donut.me',
-    alert: i18next.t('email.roomban.content.title', {roomname: roomIdentifier}),
+    title: i18next.t('mobile.roomban.content.subject', {roomname: roomIdentifier}),
+    alert: i18next.t('mobile.roomban.content.title', {roomname: roomIdentifier}),
     type: 'roomBan'
   }, avatar, callback);
 };
 
 parse.roomDeban = function (toUid, roomIdentifier, avatar, callback) {
   sendToMobile(toUid, {
-    title: 'Donut.me',
-    alert: i18next.t('email.roomdeban.content.title', {roomname: roomIdentifier}),
+    title: i18next.t('mobile.roomdeban.content.subject', {roomname: roomIdentifier}),
+    alert: i18next.t('mobile.roomdeban.content.title', {roomname: roomIdentifier}),
     type: 'roomDeban'
   }, avatar, callback);
 };
 
 parse.roomVoice = function (toUid, roomIdentifier, avatar, callback) {
   sendToMobile(toUid, {
-    title: 'Donut.me',
-    alert: i18next.t('email.roomvoice.content.title', {roomname: roomIdentifier}),
+    title: i18next.t('mobile.roomvoice.content.subject', {roomname: roomIdentifier}),
+    alert: i18next.t('mobile.roomvoice.content.title', {roomname: roomIdentifier}),
     type: 'roomVoice'
   }, avatar, callback);
 };
 
 parse.roomDevoice = function (toUid, roomIdentifier, avatar, callback) {
   sendToMobile(toUid, {
-    title: 'Donut.me',
-    alert: i18next.t('email.roomdevoice.content.title', {roomname: roomIdentifier}),
+    title: i18next.t('mobile.roomdevoice.content.subject', {roomname: roomIdentifier}),
+    alert: i18next.t('mobile.roomdevoice.content.title', {roomname: roomIdentifier}),
     type: 'roomDevoice'
   }, avatar, callback);
 };
@@ -277,24 +277,24 @@ parse.roomDevoice = function (toUid, roomIdentifier, avatar, callback) {
 
 parse.groupJoinRequest = function (toUid, fromUsername, groupIdentifier, avatar, callback) {
   sendToMobile(toUid, {
-    title: i18next.t('email.groupjoinrequest.subject', {groupname: groupIdentifier}),
-    alert: i18next.t('email.groupjoinrequest.content.title', {groupname: groupIdentifier, username: fromUsername}),
+    title: i18next.t('mobile.groupjoinrequest.subject', {groupname: groupIdentifier}),
+    alert: i18next.t('mobile.groupjoinrequest.content.title', {groupname: groupIdentifier, username: fromUsername}),
     type: 'groupJoinRequest'
   }, avatar, callback);
 };
 
 parse.groupAllowed = function (toUid, fromUsername, groupIdentifier, avatar, callback) {
   sendToMobile(toUid, {
-    title: i18next.t('email.groupallow.subject', {groupname: groupIdentifier}),
-    alert: i18next.t('email.groupallow.content.title', {groupname: groupIdentifier}),
+    title: i18next.t('mobile.groupallow.subject', {groupname: groupIdentifier}),
+    alert: i18next.t('mobile.groupallow.content.title', {groupname: groupIdentifier}),
     type: 'groupAllowed'
   }, avatar, callback);
 };
 
 parse.groupRefuse = function (toUid, fromUsername, groupIdentifier, avatar, callback) {
   sendToMobile(toUid, {
-    title: i18next.t('email.grouprefuse.subject', {groupname: groupIdentifier}),
-    alert: i18next.t('email.grouprefuse.content.title', {groupname: groupIdentifier}),
+    title: i18next.t('mobile.grouprefuse.subject', {groupname: groupIdentifier}),
+    alert: i18next.t('mobile.grouprefuse.content.title', {groupname: groupIdentifier}),
     type: 'groupRefuse'
   }, avatar, callback);
 };
@@ -302,7 +302,7 @@ parse.groupRefuse = function (toUid, fromUsername, groupIdentifier, avatar, call
 parse.groupInvite = function (toUid, fromUsername, groupIdentifier, avatar, callback) {
   sendToMobile(toUid, {
     title: 'Donut.me',
-    alert: i18next.t('email.groupinvite.content.title', {groupname: groupIdentifier, username: fromUsername}),
+    alert: i18next.t('mobile.groupinvite.content.title', {groupname: groupIdentifier, username: fromUsername}),
     type: 'groupInvite'
   }, avatar, callback);
 };
@@ -310,39 +310,39 @@ parse.groupInvite = function (toUid, fromUsername, groupIdentifier, avatar, call
 parse.groupDisallow = function (toUid, fromUsername, groupIdentifier, avatar, callback) {
   sendToMobile(toUid, {
     title: 'Donut.me',
-    alert: i18next.t('email.groupdisallow.content.title', {groupname: groupIdentifier}),
+    alert: i18next.t('mobile.groupdisallow.content.title', {groupname: groupIdentifier}),
     type: 'groupDisallow'
   }, avatar, callback);
 };
 
 parse.groupBan = function (toUid, fromUsername, groupIdentifier, avatar, callback) {
   sendToMobile(toUid, {
-    title: i18next.t('email.groupban.subject', {groupname: groupIdentifier}),
-    alert: i18next.t('email.groupban.content.title', {groupname: groupIdentifier}),
+    title: i18next.t('mobile.groupban.subject', {groupname: groupIdentifier}),
+    alert: i18next.t('mobile.groupban.content.title', {groupname: groupIdentifier}),
     type: 'groupBan'
   }, avatar, callback);
 };
 
 parse.groupDeban = function (toUid, fromUsername, groupIdentifier, avatar, callback) {
   sendToMobile(toUid, {
-    title: i18next.t('email.groupdeban.subject', {groupname: groupIdentifier}),
-    alert: i18next.t('email.groupdeban.content.title', {groupname: groupIdentifier}),
+    title: i18next.t('mobile.groupdeban.subject', {groupname: groupIdentifier}),
+    alert: i18next.t('mobile.groupdeban.content.title', {groupname: groupIdentifier}),
     type: 'groupDeban'
   }, avatar, callback);
 };
 
 parse.groupOp = function (toUid, fromUsername, groupIdentifier, avatar, callback) {
   sendToMobile(toUid, {
-    title: i18next.t('email.groupop.subject', {groupname: groupIdentifier}),
-    alert: i18next.t('email.groupop.content.title', {groupname: groupIdentifier}),
+    title: i18next.t('mobile.groupop.subject', {groupname: groupIdentifier}),
+    alert: i18next.t('mobile.groupop.content.title', {groupname: groupIdentifier}),
     type: 'groupOp'
   }, avatar, callback);
 };
 
 parse.groupDeop = function (toUid, fromUsername, groupIdentifier, avatar, callback) {
   sendToMobile(toUid, {
-    title: i18next.t('email.groupdeop.subject', {groupname: groupIdentifier}),
-    alert: i18next.t('email.groupdeop.content.title', {groupname: groupIdentifier}),
+    title: i18next.t('mobile.groupdeop.subject', {groupname: groupIdentifier}),
+    alert: i18next.t('mobile.groupdeop.content.title', {groupname: groupIdentifier}),
     type: 'groupDeop'
   }, avatar, callback);
 };

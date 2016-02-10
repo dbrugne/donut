@@ -1438,10 +1438,154 @@
   },
   "mobile": {
     "usermessage" : {
-      "subject": "@__username__"
+      "subject": "@__username__ one-to-one"
     },
     "roommessage": {
       "subject": "__roomname__"
+    },
+    "roomop": {
+      "subject": "__roomname__ moderator",
+      "content": {
+        "title": "You are now a moderator of __roomname__"
+      }
+    },
+    "roomdeop": {
+      "subject": "__roomname__ not moderator",
+      "content": {
+        "title": "You are no longer a moderator of __roomname__"
+      }
+    },
+    "roomkick": {
+      "subject": "__roomname__ kick",
+      "content": {
+        "title": "You have been kicked out of __roomname__"
+      }
+    },
+    "roomban": {
+      "subject": "__roomname__ ban",
+      "content": {
+        "title": "You were banned from __roomname__"
+      }
+    },
+    "roomdeban": {
+      "subject": "__roomname__ unban",
+      "content": {
+        "title": "You have been unbanned from __roomname__"
+      }
+    },
+    "roomvoice": {
+      "subject": "__roomname__ unmute",
+      "content": {
+        "title": "You are now unmute in __roomname__"
+      }
+    },
+    "roomdevoice": {
+      "subject": "__roomname__ mute",
+      "content": {
+        "title": "You are now mute in __roomname__"
+      }
+    },
+    "roomjoin": {
+      "subject": "@__username__ joined __roomname__",
+      "content": {
+        "title": "@__username__ joined __roomname__"
+      }
+    },
+    "roomjoinrequest": {
+      "subject": "An user want to join __roomname__",
+      "content": {
+        "title": "@__username__ ask for allowance in __roomname__"
+      }
+    },
+    "roomallow": {
+      "subject": "Welcome in __roomname__",
+      "content": {
+        "title": "Your request to join __roomname__ have been granted. You can now access this discussion !"
+      }
+    },
+    "roomrefuse": {
+      "subject": "Access refuse to __roomname__",
+      "content": {
+        "title": "Your access request to #__roomname__ have been refused"
+      }
+    },
+    "roominvite": {
+      "subject": "__roomname__ invite",
+      "content": {
+        "title": "@__username__ invites you to join __roomname__"
+      }
+    },
+    "roomcreate": {
+      "subject": "New discussion __roomname__",
+      "content": {
+        "title": "@__username__ create __roomname__"
+      }
+    },
+    "roomdelete": {
+      "subject": "Deletion of __roomname__",
+      "content": {
+        "title": "Your discussion __roomname__ has been deleted"
+      }
+    },
+    "roomtopic": {
+      "subject": "__roomname__ new topic"
+    },
+    "usermention": {
+      "subject": "Mention by @__username__ in __roomname__"
+    },
+    "groupjoinrequest": {
+      "subject": "An user want to join #__groupname__",
+      "content": {
+        "title": "@__username__ ask for membership in #__groupname__"
+      }
+    },
+    "groupallow": {
+      "subject": "Welcome in #__groupname__",
+      "content": {
+        "title": "You are now a member of #__groupname__"
+      }
+    },
+    "groupdisallow": {
+      "subject": "You are not longer a member of #__groupname__",
+      "content": {
+        "title": "You are not longer a member of #__groupname__"
+      }
+    },
+    "groupinvite": {
+      "subject": "An user invites you to join #__groupname__",
+      "content": {
+        "title": "@__username__ invites you to join #__groupname__"
+      }
+    },
+    "grouprefuse": {
+      "subject": "Access refuse to #__groupname__",
+      "content": {
+        "title": "Your access request to #__groupname__ have been refused"
+      }
+    },
+    "groupban": {
+      "subject": "You have been banned of #__groupname__",
+      "content": {
+        "title": "You have been banned of community #__groupname__"
+      }
+    },
+    "groupdeban": {
+      "subject": "You are no longer banned of #__groupname__",
+      "content": {
+        "title": "You are no longer banned from community #__groupname__"
+      }
+    },
+    "groupop": {
+      "subject": "You were promoted to moderator of #__groupname__",
+      "content": {
+        "title": "You were promoted to moderator of community #__groupname__"
+      }
+    },
+    "groupdeop": {
+      "subject": "You are no longer a moderator of #__groupname__",
+      "content": {
+        "title": "You are no longer a moderator of community #__groupname__"
+      }
     }
   },
   "welcome": {
