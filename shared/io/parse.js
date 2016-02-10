@@ -153,7 +153,7 @@ parse.roomMessage = function (toUid, roomIdentifier, message, avatar, callback) 
 
 parse.roomJoin = function (toUid, fromUsername, roomIdentifier, avatar, callback) {
   sendToMobile(toUid, {
-    title: 'Donut.me',
+    title: i18next.t('mobile.roomjoin.title', {roomname: roomIdentifier}),
     alert: i18next.t('mobile.roomjoin.subject', {roomname: roomIdentifier, username: fromUsername}),
     type: 'roomjoin'
   }, avatar, callback);
