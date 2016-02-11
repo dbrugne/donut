@@ -18,8 +18,8 @@
   },
   "repository": "https://github.com/dbrugne/donut",
   "dependencies": {
-    "@dbrugne/donut-client": "^1.1.0",
-    "@dbrugne/donut-common": "^1.1.0",
+    "@dbrugne/donut-client": "^1.0.0",
+    "@dbrugne/donut-common": "^1.0.0",
     "async": "1.x",
     "backbone": "^1.2.1",
     "bcrypt-nodejs": "latest",
