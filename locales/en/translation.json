@@ -397,7 +397,8 @@
     "createadonut": "Create a discussion",
     "home": {
       "roomstitle": "Welcome to DONUT, here are some active discussions. If you can not find one to your tastes, <a href=\"#\" class='open-create-room'> create one! </a>",
-      "userstitle": "Users"
+      "userstitle": "Users",
+      "whats-new-title": "NEW on DONUT!"
     },
     "search": {
       "placeholder": "Search",

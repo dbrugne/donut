@@ -3,7 +3,9 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../libs/app');
 var CardsView = require('./cards');
+var HomeNewsView = require('./home-news');
 var UsersView = require('./home-users');
+var HomeFeaturedView = require('./home-featured');
 
 var HomeView = Backbone.View.extend({
   el: $('#home'),
@@ -25,6 +27,14 @@ var HomeView = Backbone.View.extend({
     this.usersView = new UsersView({
       el: this.$('.users')
     });
+    this.whatsNew = new HomeNewsView({
+      el: this.$('.whats-new')
+    });
+    this.homeFeatured = new HomeFeaturedView({
+      el: this.$('.featured')
+    });
+
+    this.$stats = this.$('.stats');
   },
   render: function () {
     return this;
@@ -42,6 +52,11 @@ var HomeView = Backbone.View.extend({
   onHome: function (data) {
     data.fill = true;
     this.$el.removeClass('loading');
+
+    // fill in stats
+    // @todo implement stats
+
+
     this.cardsView.render(_.omit(data, 'users'));
     this.usersView.render(_.omit(data, ['rooms', 'groups']));
     this.empty = false;
