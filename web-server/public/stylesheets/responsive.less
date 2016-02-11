@@ -1,9 +1,30 @@
-@media screen and (max-width: @screen-desktop) {
+@media screen and (max-width: 1420px) {
+  #chat {
+    #center {
+      #home>.left  {
+        .featured .featured-communities,
+        .featured .featured-discussions,
+        .cards-content .title1,
+        .cards-content .cards
+        { width: 660px; }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1090px) {
   #chat {
     #drawer { z-index: 13; }
     #center { margin-left: 0; border-left: 2px solid #fc2063;
       .side { .compact-sidebar; // see mixin for shared compact sidebar
         .compact-mode { display:none; }
+      }
+      #home>.left  {
+        .featured .featured-communities,
+        .featured .featured-discussions,
+        .cards-content .title1,
+        .cards-content .cards
+        { width: 660px; }
       }
     }
     #left { margin-left: (@size-left * -1); overflow: visible; position:absolute;
@@ -31,6 +52,13 @@
 }
 
 @media screen and (max-width: @screen-tablet) {
+  #chat #center #home>.left {
+    .featured .featured-communities,
+    .featured .featured-discussions,
+    .cards-content .title1,
+    .cards-content .cards
+    { width: 330px; }
+  }
   #signup, #landing, #forgot, #reset, .body-static  {
     header { background-color: #1d252f;
       .lang a:after { background-color: transparent; }
