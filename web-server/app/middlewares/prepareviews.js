@@ -44,8 +44,7 @@ module.exports = function () {
     res.locals.meta = false;
 
     // language
-    // @todo dbr: hotfix to workaround fr_FR or fr-FR, force 'en' or 'fr'
-    //        see https://github.com/smhg/express-locale in remplacement
+    // @hack to workaround fr_FR or fr-FR, force 'en' or 'fr'
     var short = 'fr';
     if (/en/i.test(req.locale)) {
       short = 'en';
