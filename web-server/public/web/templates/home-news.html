@@ -1,0 +1,11 @@
+<% if(list.length > 0) { %>
+    <div class="ctn">
+        <div class="title"><%= t('chat.home.whats-new-title') %></div>
+        <div class="close curp"><i class="icon icon-times"></i></div>
+        <ul>
+            <% _.each(list, function(item) { %>
+                <li class="item"><%= item %></li>
+            <% }); %>
+        </ul>
+    </div>
+<% } %>
