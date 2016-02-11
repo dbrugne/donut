@@ -396,9 +396,16 @@
     },
     "createadonut": "Nouveau",
     "home": {
-      "roomstitle": "Bienvenue sur DONUT, voici quelques discussions actives. Si vous n'en trouvez pas à votre goût, <a href=\"#\" class='open-create-room'>créez-en un !</a>",
+      "title": "Bienvenue!",
+      "disclaimer": "Trouvez votre chemin sur Donut en rejoignant ou en créant des communautés et des discussions qui vous ressemblent.",
       "userstitle": "Utilisateurs",
-      "whats-new-title": "NOUVEAU sur DONUT!"
+      "whats-new-title": "NOUVEAU sur DONUT!",
+      "communities-title": "COMMUNAUTES sélectionnées",
+      "communities-disclaimer": "Rejoignez une communauté pour accéder à toutes ses discussions associées et passer du temps avec ses membres",
+      "communities-create": "CREEZ VOTRE COMMUNAUTE",
+      "discussions-title": "DISCUSSIONS sélectionnées",
+      "discussions-disclaimer": "Rejoignez une discussion à propos de tout ce qui vous intéresse",
+      "discussions-create": "CREEZ VOTRE DISCUSSION"
     },
     "search": {
       "placeholder": "Rechercher",

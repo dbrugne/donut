@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="22px" height="54px" viewBox="0 0 22 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.5.1 (25234) - http://www.bohemiancoding.com/sketch -->
+    <title>Triangle 1</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="05" sketch:type="MSArtboardGroup" transform="translate(-309.000000, -574.000000)" stroke="#AFBAC8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <g id="Group" sketch:type="MSLayerGroup" transform="translate(278.000000, 446.000000)">
+                <g transform="translate(32.000000, 0.000000)" id="Triangle-1" sketch:type="MSShapeGroup">
+                    <path d="M20,181 L0,155 L20,129 L20,129"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

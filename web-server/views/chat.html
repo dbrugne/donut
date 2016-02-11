@@ -108,19 +108,14 @@
                             <div class="spinner-content"></div>
                         </div>
                         <div class="stats"><!--STATS CONTENT--></div>
-                        <div class="disclaimer">
-                            <%= t('chat.home.roomstitle') %>
+                        <div class="disclaimer flex-parent column jc-center center">
+                            <div class="title"><%= t('chat.home.title') %></div>
+                            <div class="content"><%= t('chat.home.disclaimer') %></div>
                         </div>
                         <div class="whats-new hidden"><!--WHATS NEW CONTENT--></div>
-                        <div class="featured">
-                            <div class="featured-communities"></div>
-                            <div class="featured-discussions"></div>
-                        </div>
+                        <div class="featured flex-parent column center jc-center"><!--FEATURED CONTENT--></div>
                         <div class="cards"><!--cards list--></div>
                         <button class="load-more btn btn-pink btn-big center-block mt20 mb20 hidden"><%= t('landing.loadmore') %></button>
-                    </div>
-                    <div class="right">
-                        <div class="users"><!--user list--></div>
                     </div>
                 </div>
                 <div id="search"><!-- Search content --></div>

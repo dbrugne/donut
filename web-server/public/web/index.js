@@ -13,6 +13,7 @@ require('bootstrap/js/tooltip');
 require('bootstrap/js/button');
 require('bootstrap/js/popover');
 require('bootstrap/js/collapse');
+require('bootstrap/js/carousel');
 
 // contact form
 $('[data-toggle="contactform"]').contactform({});
