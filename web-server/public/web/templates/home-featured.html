@@ -8,10 +8,10 @@
         <div class="create curp open-group-create"><%= t('chat.home.communities-create') %></div>
     </div>
 
-    <span class="action left curp">
-        <span class="icon triangle-left"></span>
-    </span>
     <div class="flex-parent cards-container">
+        <span class="action left curp" data-type="groups">
+            <span class="icon triangle-left"></span>
+        </span>
         <% _.each(groups, function(card) { %>
             <div class="card-small group">
                 <div class="top relative">
@@ -43,10 +43,10 @@
                 </div>
             </div>
         <% }); %>
+        <span class="action right curp" data-type="groups">
+            <span class="icon triangle-right"></span>
+        </span>
     </div>
-    <span class="action right curp">
-        <span class="icon triangle-right"></span>
-    </span>
 </div>
 <div class="featured-discussions mt40 relative">
     <div class="flex-parent center">
@@ -58,7 +58,7 @@
         <div class="create curp open-room-create"><%= t('chat.home.discussions-create') %></div>
     </div>
 
-    <span class="action left curp">
+    <span class="action left curp" data-type="rooms">
         <span class="icon triangle-left"></span>
     </span>
     <div class="flex-parent cards-container">
@@ -107,7 +107,7 @@
             </div>
         <% }); %>
     </div>
-    <span class="action right curp">
+    <span class="action right curp" data-type="rooms">
         <span class="icon triangle-right"></span>
     </span>
 </div>
