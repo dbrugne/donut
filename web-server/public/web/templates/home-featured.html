@@ -58,10 +58,10 @@
         <div class="create curp open-room-create"><%= t('chat.home.discussions-create') %></div>
     </div>
 
-    <span class="action left curp" data-type="rooms">
-        <span class="icon triangle-left"></span>
-    </span>
     <div class="flex-parent cards-container">
+        <span class="action left curp" data-type="rooms">
+            <span class="icon triangle-left"></span>
+        </span>
         <% _.each(rooms, function(card) { %>
             <% var mode = (card.mode === 'public' ? 'public' : 'private' + (card.allow_user_request ? '-invites' : '') + (card.allow_group_member ? '-group' : '')) %>
             <% var roomname = card.group_name ? '/' + card.name : '#' + card.name; %>
@@ -106,8 +106,8 @@
                 </div>
             </div>
         <% }); %>
+        <span class="action right curp" data-type="rooms">
+            <span class="icon triangle-right"></span>
+        </span>
     </div>
-    <span class="action right curp" data-type="rooms">
-        <span class="icon triangle-right"></span>
-    </span>
 </div>
