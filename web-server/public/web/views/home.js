@@ -11,7 +11,7 @@ var HomeView = Backbone.View.extend({
   templateSpinner: require('../templates/spinner.html'),
 
   empty: true,
-  active: 'groups',
+  featuredCount: 5, // number of featured to display in header
 
   events: {
     'click .filter-action': 'onClickFilterAction'
@@ -63,11 +63,9 @@ var HomeView = Backbone.View.extend({
       groups.push(item);
     });
 
-    // @todo sort on position
-
-    this.homeFeatured.render(data);
-    this.cardsRoomsView.render({rooms: {list: rooms}});
-    this.cardsGroupsView.render({groups: {list: groups}});
+    this.homeFeatured.render(_.first(rooms, this.featuredCount), _.first(groups, this.featuredCount));
+    this.cardsRoomsView.render({rooms: {list: _.rest(rooms, this.featuredCount)}});
+    this.cardsGroupsView.render({groups: {list: _.rest(groups, this.featuredCount)}});
     this.empty = false;
   },
   onClickFilterAction: function (event) {

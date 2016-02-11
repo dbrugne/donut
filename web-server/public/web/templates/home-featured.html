@@ -1,11 +1,11 @@
 <div class="featured-communities mt40 relative">
     <div class="flex-parent center">
-        <div class="flex-parent column">
+        <div class="flex-parent column ml15">
             <div class="subtitle"><%= t('chat.home.communities-title') %></div>
             <div class="subdisclaimer"><%= t('chat.home.communities-disclaimer') %></div>
         </div>
         <div class="filler"></div>
-        <div class="create curp open-group-create"><%= t('chat.home.communities-create') %></div>
+        <div class="create curp open-group-create mr15"><%= t('chat.home.communities-create') %></div>
     </div>
 
     <div class="flex-parent cards-container">
@@ -32,7 +32,7 @@
                 </div>
                 <div class="bottom flex-parent jc-center center">
                     <div class="infos flex-child">
-                        <i class="icon i-icon curp" data-toggle="tooltip" title="<%- card.description %>" data-placement="bottom"></i>
+                        <i class="icon i-icon curp" data-toggle="tooltip" title="<%= card.description %>" data-placement="bottom"></i>
                     </div>
                     <div class="button flex-child">
                         <a class="join" href="<%= card.join %>"><%= t('actions.join') %></a>
@@ -50,12 +50,12 @@
 </div>
 <div class="featured-discussions mt40 relative">
     <div class="flex-parent center">
-        <div class="flex-parent column">
+        <div class="flex-parent column ml15">
             <div class="subtitle"><%= t('chat.home.discussions-title') %></div>
             <div class="subdisclaimer"><%= t('chat.home.discussions-disclaimer') %></div>
         </div>
         <div class="filler"></div>
-        <div class="create curp open-create-room"><%= t('chat.home.discussions-create') %></div>
+        <div class="create curp open-create-room mr15"><%= t('chat.home.discussions-create') %></div>
     </div>
 
     <div class="flex-parent cards-container">
