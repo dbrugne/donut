@@ -1487,7 +1487,7 @@
       }
     },
     "roomjoin": {
-      "subject": "@__username__ joined __roomname__",
+      "subject": "Join __roomname__",
       "content": {
         "title": "@__username__ joined __roomname__"
       }

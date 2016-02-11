@@ -26,8 +26,8 @@ router.get('/!', function (req, res) {
 
   // client script to use
   var script = (process.env.NODE_ENV !== 'development')
-    ? '/build/' + req.locale + '.js'
-    : '/' + req.locale + '.js';
+    ? '/build/' + res.locals.locale + '.js'
+    : '/' + res.locals.locale + '.js';
 
   var helloMessage = (req.user.username)
     ? hello().replace('%u', '<strong>@' + req.user.username + '</strong>')
