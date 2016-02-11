@@ -405,7 +405,8 @@
       "communities-create": "CREATE YOUR COMMUNITY",
       "discussions-title": "Featured DISCUSSIONS",
       "discussions-disclaimer": "Join a discussion about anything you are interessed in",
-      "discussions-create": "CREATE YOUR DISCUSSION"
+      "discussions-create": "CREATE YOUR DISCUSSION",
+      "browse-more": "Browse more..."
     },
     "search": {
       "placeholder": "Search",

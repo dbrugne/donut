@@ -413,6 +413,7 @@
       }
     }
     #search { height: 100%; display: none; background-color: @cl-background2; overflow-y: auto; .scrollbar-grey;
+      .cards { .scrollbar-grey-thin; overflow: auto; .display-flex; .flex-flow(row wrap); margin: 15px 30px; .justify-content(center); }
       .search { position: relative; margin: 20px 20px 2px;
         .input-group { width: 100%;
           input { .border-radiuses(4px, 0, 0, 4px); }
@@ -436,6 +437,7 @@
       }
     }
     #home { height: 100%; display: none; background-color: @cl-background2; overflow-y: auto; .scrollbar-grey; z-index: 15;
+      @max-home-width: 990px;
       .nothing { .ft-opensans; color: @cl-subtext30; text-align: center; font-size: 1.2em; margin-top: 20px; }
       > .left { background-color: @cl-background2; height: 100%; overflow-x: auto; padding-left:0; padding-right:0;
         .disclaimer { text-align: center; margin: 20px 80px; font-size: 1.5rem;
@@ -447,12 +449,25 @@
           &.right { right: -55px; }
         }
         .featured { margin: 20px 80px;
-          .featured-communities, .featured-discussions { width: 930px; }
+          .featured-communities, .featured-discussions { width: @max-home-width; }
           .cards-container { overflow: hidden; }
           .filler { .flex(1); }
           .subtitle { .ft-opensans-semibold; font-size: 17px; color: #586473; letter-spacing: 1.3px; line-height: 35px; }
           .subdisclaimer { .ft-opensans; font-size: 13px; color: #AFBAC8; line-height: 14px; }
           .create { background: #AFBAC8; .border-radius(2px); .ft-opensans; font-size: 9px; color: #FFFFFF; letter-spacing: .5px; line-height: 17px; padding: 2px 5px; height: 21px; }
+        }
+        .cards-content {
+          .title1 { .ft-opensans-semibold; font-size: 17px; color: #586473; letter-spacing: 1.3px; line-height: 14px; margin: 20px 80px; width: @max-home-width; }
+          .filters { border-bottom: 1px solid #D0D9E6; width: 100%;
+            .filter-action { border-bottom: 3px solid transparent; width: 280px; .ft-opensans; font-size: 13px; color: #AFBAC8; letter-spacing: 2px; line-height: 21px; text-transform: uppercase; padding: 5px 10px; text-align: center;
+              &.active { border-bottom: 3px solid @cl-first; color: #1D252F; }
+            }
+          }
+          .cards { width: @max-home-width;
+            .content {
+              .groups, .rooms { .scrollbar-grey-thin; overflow: auto; .display-flex; .flex-flow(row wrap); margin: 15px 0; .justify-content(center); }
+            }
+          }
         }
       }
 

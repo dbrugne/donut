@@ -1,6 +1,6 @@
 @card-height: 300px;
 @card-width: 300px;
-.cards { .scrollbar-grey-thin; overflow: auto; .display-flex; .flex-flow(row wrap); margin: 15px 30px; .justify-content(center);
+.cards {
   .card { height: @card-height; width: @card-width; background: #FFFFFF; box-shadow: 0px 3px 4px 0px rgba(28,37,47,0.15); margin: 15px;
     &.user {
       @top-height:138px;
@@ -113,7 +113,7 @@
 
 @card-small-height: 184px;
 @card-small-width: 300px;
-.card-small { height: @card-small-height; width: @card-small-width; background: #FFFFFF; box-shadow: 0px 3px 4px 0px rgba(28,37,47,0.15); margin: 15px 15px 15px 0;
+.card-small { height: @card-small-height; width: @card-small-width; background: #FFFFFF; box-shadow: 0 3px 4px 0 rgba(28,37,47,0.15); margin: 15px;
   @top-small-height:127px;
   .top { overflow: hidden;
     .ctn { height:@top-small-height;

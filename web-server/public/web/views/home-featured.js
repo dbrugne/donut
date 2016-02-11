@@ -58,10 +58,10 @@ var HomeFeaturedView = Backbone.View.extend({
     var first = container.find('.card-small:first');
 
     first.animate({
-      marginLeft: '-=315px'
+      marginLeft: '-=330px'
     }, 300, function () {
       first.appendTo(container);
-      first.css('margin-left', 0);
+      first.css('margin-left', 15);
     });
   },
   // click left
@@ -70,9 +70,9 @@ var HomeFeaturedView = Backbone.View.extend({
     var container = elt.parents('.cards-container');
     var last = container.find('.card-small:last');
 
-    last.css('margin-left', -315);
+    last.css('margin-left', -330);
     last.prependTo(container);
-    last.animate({marginLeft: '0'}, 300);
+    last.animate({marginLeft: '15'}, 300);
   },
   _remove: function () {
     this.remove();
