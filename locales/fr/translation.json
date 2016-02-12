@@ -4,6 +4,13 @@
     "description": "Désolé, nous n'avons pas trouvé ce que vous cherchiez. Et si on repartait du bon pied ? Cliquez ici :"
   },
   "landing": {
+    "mobile": {
+      "ios": "L'appli DONUT is disponible pour iPhone",
+      "android": "L'appli DONUT is disponible pour Android",
+      "get-the-app": "télécharger",
+      "best-experience": "profitez au mieux de DONUT",
+      "also": "Discutez confortablement au clavier grâce à DONUT, disponible sur votre ordinateur"
+    },
     "toggle": "Afficher/masquer la navigation",
     "signup-self": "S'inscrire",
     "login-self": "Se connecter",

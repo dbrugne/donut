@@ -4,6 +4,13 @@
     "description": "Sorry we are not able to find this resource! You could just press this neat little button:"
   },
   "landing": {
+    "mobile": {
+      "ios": "DONUT chat is now available for Iphone",
+      "android": "DONUT chat is now available for Android",
+      "get-the-app": "get the app",
+      "best-experience": "get the best experience",
+      "also": "Chat confortably with your computer keybord on"
+    },
     "toggle": "Toggle navigation",
     "signup-self": "Sign up",
     "login-self": "Log in",

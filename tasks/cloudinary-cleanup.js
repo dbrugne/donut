@@ -7,7 +7,7 @@ var HistoryOneModel = require('../shared/models/historyone');
 var cloudinary = require('../shared/util/cloudinary').cloudinary;
 
 module.exports = function (grunt) {
-  grunt.registerTask('donut-cloudinary-list', 'List images cloudinary', function () {
+  grunt.registerTask('cloudinary-cleanup', 'List images cloudinary', function () {
     var done = this.async();
     grunt.log.ok('starting');
     grunt.log.ok('...');
@@ -66,16 +66,16 @@ module.exports = function (grunt) {
 
       count[ type ].found++;
 
-      if (!model.data.images) {
+      if (!model.data.files) {
         return fn(null);
       }
 
-      _.each(model.data.images, function (img) {
+      _.each(model.data.files, function (img) {
         if (img.public_id) {
           imagesIdDatabase.push(img.public_id);
         }
       });
-      count[ type ].imagefound += model.data.images.length;
+      count[ type ].imagefound += model.data.files.length;
       fn(null);
     };
 
@@ -100,7 +100,7 @@ module.exports = function (grunt) {
         });
       },
       function historyroomImages (callback) {
-        HistoryRoomModel.find({ 'data.images': { $exists: true } }, 'room data.images', function (err, models) {
+        HistoryRoomModel.find({ 'data.files': { $exists: true } }, 'room data.images', function (err, models) {
           if (err) {
             return callback(err);
           }
@@ -109,7 +109,7 @@ module.exports = function (grunt) {
         });
       },
       function historyoneImages (callback) {
-        HistoryOneModel.find({ 'data.images': { $exists: true } }, 'data.images', function (err, models) {
+        HistoryOneModel.find({ 'data.files': { $exists: true } }, 'data.images', function (err, models) {
           if (err) {
             return callback(err);
           }
