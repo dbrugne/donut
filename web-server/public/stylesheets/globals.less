@@ -79,6 +79,7 @@ h6 { font-size: 1.1rem; font-style: normal; font-weight: normal; line-height:1.1
 //.cl-silver                { color: @cl-silver !important ;}
 //.cl-concrete              { color: @cl-concrete !important ;}
 //.cl-asbestos              { color: @cl-asbestos !important ;}
+.cl-gray                    { color: @cl-gray !important ;}
 
 //.cl-back-background       { background-color: @cl-background !important ;}
 .cl-back-first            { background-color: @cl-first !important ;}
@@ -237,7 +238,7 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   &.btn-sm { font-size:1rem; padding: 3px 11px 3px; }
 
   &.loading { position:relative; .opacity(0.65); background-color: @cl-subtext15; cursor: not-allowed; color: #FFFFFF; padding-left: 35px;
-    &:after { .icon-spinner; .spin; position: absolute; left: 10px; font-size: inherit; margin-top: 1px; }
+    //&:after { .icon-spinner; .spin; position: absolute; left: 10px; font-size: inherit; margin-top: 1px; }
     &:hover { background-color:@cl-subtext15 !important; }
   }
 }
@@ -459,6 +460,7 @@ table tr:hover { outline: 1px solid @cl-subtext15; background-color: @cl-subtext
 
 // custom non-font icons
 .icon { text-align: center; vertical-align: middle; line-height: normal; width: 15px; height: 19px;
+  &.home-icon             { background-image: url('@{img-path}/home.png');                background-repeat: no-repeat; background-position: center center; background-size: 100%; width: 20px; height: 20px;}
   &.quote-icon            { background-image: url('@{img-path}/topic.png');               background-repeat: no-repeat; background-position: center center; background-size: 100%;}
   &.ban-icon              { background-image: url('@{img-path}/svg/ban.svg');             background-repeat: no-repeat; background-position: center center; background-size: 100%;}
   &.deban-icon            { background-image: url('@{img-path}/svg/ban.svg');             background-repeat: no-repeat; background-position: center center; background-size: 100%;}
@@ -480,6 +482,8 @@ table tr:hover { outline: 1px solid @cl-subtext15; background-color: @cl-subtext
   &.i-icon                { background-image: url('@{img-path}/svg/i.svg');               background-repeat: no-repeat; background-position: center center; background-size: 100%; width: 6px; height: 14px;}
   &.triangle-left         { background-image: url('@{img-path}/svg/triangle-left.svg');   background-repeat: no-repeat; background-position: center center; background-size: 100%; width: 20px; height: 52px;}
   &.triangle-right        { background-image: url('@{img-path}/svg/triangle-right.svg');  background-repeat: no-repeat; background-position: center center; background-size: 100%; width: 20px; height: 52px;}
+  &.private-icon          { background-image: url('@{img-path}/svg/private.svg');         background-repeat: no-repeat; background-position: center center; background-size: 100%; width: 14px; height: 20px;}
+  &.members-icon          { background-image: url('@{img-path}/svg/members.svg');         background-repeat: no-repeat; background-position: center center; background-size: 100%; width: 14px; height: 20px;}
 }
 
 .donut-button { border-radius: 4px; .ft-opensans-semibold; font-size: 11px; color: #FFFFFF; letter-spacing: 0.84px; line-height: 21px; text-transform: uppercase; padding: 7px 10px; .display-inline-flex; .align-items(center); .justify-content(center); cursor: pointer;
