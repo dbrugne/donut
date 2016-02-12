@@ -7,7 +7,6 @@ var Room = require('../../../../../shared/models/room');
 var Group = require('../../../../../shared/models/group');
 var roomDataHelper = require('../../../util/room-data');
 var oneDataHelper = require('../../../util/one-data');
-var featuredRooms = require('../../../../../shared/util/featured-rooms');
 var badge = require('../../../../../shared/util/badge');
 
 module.exports = function (app) {
@@ -163,7 +162,7 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, data, globalCall
               avatar: grp._avatar()
             };
             if (grp.bans.length > 0) {
-              var u = _.find(grp.bans, function (u) {
+              _.find(grp.bans, function (u) {
                 if (u.user.toString() === user.id) {
                   group.blocked = true;
                   group.blocked_reason = u.reason;
@@ -175,22 +174,6 @@ WelcomeRemote.prototype.getMessage = function (uid, frontendId, data, globalCall
           });
           return callback(null);
         });
-    },
-
-    function featured (callback) {
-      if (data.device === 'mobile' && !(user.preferences && user.preferences['browser:welcome'] === true)) {
-        return callback(null);
-      }
-
-      featuredRooms(that.app, function (err, featured) {
-        if (err) {
-          logger.error('Error while retrieving featured rooms: ' + err);
-        }
-
-        welcomeEvent.featured = _.first(featured, 4); // keep only n firsts
-
-        return callback(null);
-      });
     },
 
     function badgeState (callback) {

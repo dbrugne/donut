@@ -3,7 +3,6 @@ var schedule = require('pomelo-scheduler');
 var conf = require('../../../../config');
 
 // tasks
-var featuredRooms = require('./tasks/featuredRoomsTask');
 var notificationTask = require('./tasks/notificationsTask');
 
 module.exports = function (app, opts) {
@@ -21,14 +20,6 @@ DonutScheduler.prototype.start = function (cb) {
 };
 
 DonutScheduler.prototype.afterStart = function (cb) {
-  // featured rooms list
-  var featuredFrequency = 60000; // every 60s, start in 60s
-  this.featuredRoomsId = schedule.scheduleJob(
-    { start: Date.now() + featuredFrequency, period: featuredFrequency },
-    featuredRooms,
-    { app: this.app }
-  );
-
   // notifications by email/mobile
   var notificationFrequency = conf.notifications.scheduler * 1000;
   this.notificationSending = schedule.scheduleJob(
@@ -44,7 +35,6 @@ DonutScheduler.prototype.afterStart = function (cb) {
 };
 
 DonutScheduler.prototype.stop = function (force, cb) {
-  schedule.cancel(this.featuredRoomsId);
   schedule.cancel(this.notificationSending);
   schedule.cancel(this.notificationDone);
 
