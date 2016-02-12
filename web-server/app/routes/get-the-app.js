@@ -5,7 +5,7 @@ var i18next = require('../../../shared/util/i18next');
 var conf = require('../../../config/index');
 var isMobile = require('ismobilejs');
 
-router.get('/', [require('csurf')()], function (req, res) {
+router.get('/get-the-app', [require('csurf')()], function (req, res) {
   var baseUrl = req.protocol + '://' + conf.fqdn + '/';
   var meta = {
     url: baseUrl,
@@ -18,7 +18,7 @@ router.get('/', [require('csurf')()], function (req, res) {
     type: 'website'
   };
 
-  return res.render('landing', {
+  return res.render('get-the-app', {
     token: req.csrfToken(),
     meta: meta,
     isIphone: isMobile(req.headers['user-agent']).apple.phone,

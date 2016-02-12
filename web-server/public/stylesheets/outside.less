@@ -49,6 +49,10 @@
 #landing { background-color: #FFF; @height:500px;
   header { position: fixed; background-color: transparent; }
   &.clean header { background-color: #1d252f; }
+  .mobile { background-color: @cl-first; height: 52px; width: 100%; z-index: 100; position: fixed; top: 0; left: 0; .ft-opensans-semibold; font-size: 14px; color: #FFFFFF; line-height: 14px; padding: 5px;
+    .ios, .android { padding: 5px; .flex(1); }
+    .get-app { background-color: #FFF; color: @cl-first; padding: 5px 10px; text-transform: uppercase;}
+  }
   .authenticate { width: 100%;
     .login {
       .ft-courgette;
@@ -429,4 +433,11 @@
     margin-bottom: 30px;
     font-size: 1.7em;
   }
+}
+
+#get-the-app { height: 100vh; padding: 20px;
+  .title { .ft-opensans; font-size: 20px; color: #1D252F; line-height: 40px; text-transform: uppercase; text-align: center; }
+  img { width:100px; height:100px; .border-radius(5px); }
+  .get-app { background-color: @cl-first; color:#FFF; .ft-opensans; font-size: 18px; text-transform: uppercase; padding: 10px 30px; }
+  .also, a { .ft-opensans-light; font-size: 16px; color: #1D252F; }
 }
