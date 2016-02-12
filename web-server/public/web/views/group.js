@@ -63,6 +63,7 @@ var GroupView = Backbone.View.extend({
       }
       room.group_id = response.group_id;
       room.group_name = response.name;
+      room.group_avatar = common.cloudinary.prepare(response.avatar, 22);
       room.join = urls(room, 'room', 'uri');
       room.type = 'room';
       rooms.push(room);
