@@ -23,11 +23,11 @@ var GroupUsersView = Backbone.View.extend({
     _.each(this.response.members, function (u) {
       if (u.is_owner || u.is_op) {
         u.avatar = common.cloudinary.prepare(u.avatar, 60);
-        op.push(u);
+        op.push(u); // @todo limit the number of displayed op
       } else {
         if (isMember || isAdmin) {
           u.avatar = common.cloudinary.prepare(u.avatar, 34);
-          members.push(u);
+          members.push(u); // @todo limit the number of displayed members
         }
       }
     });
