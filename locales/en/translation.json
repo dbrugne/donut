@@ -396,6 +396,10 @@
     },
     "createadonut": "Create a discussion",
     "home": {
+      "messages-posted": "messages posted",
+      "onetoones": "one to one",
+      "rooms": "discussions",
+      "rooms-created": "discussions created",
       "title": "Welcome!",
       "disclaimer": "Find your way around Donut by joining or creating the communities and discussions you belong with",
       "userstitle": "Users",

@@ -9,6 +9,7 @@ var HomeFeaturedView = require('./home-featured');
 var HomeView = Backbone.View.extend({
   el: $('#home'),
   templateSpinner: require('../templates/spinner.html'),
+  templateStats: require('../templates/home-stats.html'),
 
   empty: true,
   featuredCount: 5, // number of featured to display in header
@@ -22,8 +23,9 @@ var HomeView = Backbone.View.extend({
 
     var spinner = this.templateSpinner({});
     this.$('.spinner-content').html(spinner);
-    //this.$stats = this.$('.stats');
-    this.whatsNew = new HomeNewsView({
+    this.$homeStats = this.$('.home-stats');
+
+    this.homeNews = new HomeNewsView({
       el: this.$('.whats-new')
     });
     this.homeFeatured = new HomeFeaturedView({
@@ -63,6 +65,17 @@ var HomeView = Backbone.View.extend({
       groups.push(item);
     });
 
+    // @todo get it from stats handler or home handler
+    this.$homeStats.html(this.templateStats({
+      messages_posted: 648,
+      onetoones: 15,
+      onetoones_unread: true,
+      rooms: 57,
+      rooms_unread: false,
+      rooms_created: 7
+    }));
+
+    //this.homeNews.render();
     this.homeFeatured.render(_.first(rooms, this.featuredCount), _.first(groups, this.featuredCount));
     this.cardsRoomsView.render({rooms: {list: _.rest(rooms, this.featuredCount)}});
     this.cardsGroupsView.render({groups: {list: _.rest(groups, this.featuredCount)}});

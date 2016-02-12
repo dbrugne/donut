@@ -396,6 +396,10 @@
     },
     "createadonut": "Nouveau",
     "home": {
+      "messages-posted": "messages postés",
+      "onetoones": "tête à tête",
+      "rooms": "discussions",
+      "rooms-created": "discussions créées",
       "title": "Bienvenue!",
       "disclaimer": "Trouvez votre chemin sur Donut en rejoignant ou en créant des communautés et des discussions qui vous ressemblent.",
       "userstitle": "Utilisateurs",

@@ -440,9 +440,15 @@
       @max-home-width: 990px;
       .nothing { .ft-opensans; color: @cl-subtext30; text-align: center; font-size: 1.2em; margin-top: 20px; }
       > .left { background-color: @cl-background2; height: 100%; overflow-x: auto; padding-left:0; padding-right:0;
+        .home-stats {
+          .stat { text-align: center;
+            .title { .ft-opensans-light; font-size: 50px; color: #586473; line-height: 68px; text-transform: uppercase; }
+            .count { .ft-opensans; font-size: 13px; color: #AFBAC8; letter-spacing: 1px; line-height: 14px; }
+          }
+        }
         .disclaimer { text-align: center; margin: 20px 80px; font-size: 1.5rem;
           .title { .ft-opensans; font-size: 20px; color: #FC2063; letter-spacing: 1.17px; line-height: 27px; }
-          .content { .ft-opensans; font-size: 15px; color: #AFBAC8; letter-spacing: 0.88px; line-height: 20px; max-width: 500px; margin-top: 10px; }
+          .count { .ft-opensans; font-size: 15px; color: #AFBAC8; letter-spacing: 0.88px; line-height: 20px; max-width: 500px; margin-top: 10px; }
         }
         .action { position:absolute; top: 130px;
           &.left { left: -55px; }

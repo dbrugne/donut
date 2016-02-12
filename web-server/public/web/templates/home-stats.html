@@ -1,0 +1,16 @@
+<div class="flex-child stat posted">
+    <div class="title"><%=messages_posted%></div>
+    <div class="count"><%= t('chat.home.messages-posted') %></div>
+</div>
+<div class="flex-child stat onetoones <%= onetoones_unread ? 'unread' : ''%>">
+    <div class="title"><%=onetoones%></div>
+    <div class="count"><%= t('chat.home.onetoones') %></div>
+</div>
+<div class="flex-child stat rooms">
+    <div class="title"><%=rooms%></div>
+    <div class="count"><%= t('chat.home.rooms') %></div>
+</div>
+<div class="flex-child stat rooms-created <%= rooms_unread ? 'unread' : ''%>">
+    <div class="title"><%=rooms_created%></div>
+    <div class="count"><%= t('chat.home.rooms-created') %></div>
+</div>
