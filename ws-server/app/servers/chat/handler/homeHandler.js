@@ -5,7 +5,6 @@ var _ = require('underscore');
 var User = require('../../../../../shared/models/user');
 var Room = require('../../../../../shared/models/room');
 var Group = require('../../../../../shared/models/group');
-var featuredRooms = require('../../../../../shared/util/featured-rooms');
 
 var Handler = function (app) {
   this.app = app;
@@ -266,35 +265,6 @@ handler.call = function (data, session, next) {
         homeEvent.rooms.list = _list;
 
         return callback(null);
-      },
-
-      function featured (callback) {
-        featuredRooms(that.app, function (err, featured) {
-          if (err) {
-            return callback('Error while retrieving featured rooms: ' + err);
-          }
-
-          // union lists
-          var alreadyInNames = _.map(featured, function (r) {
-            return r.identifier;
-          });
-          _.each(homeEvent.rooms.list, function (item) {
-            if (alreadyInNames.indexOf(item.identifier) === -1) {
-              featured.push(item);
-            }
-          });
-
-          if (featured.length > roomLimit) {
-            featured = featured.slice(0, (roomLimit));
-            homeEvent.rooms.more = true;
-          } else {
-            homeEvent.rooms.more = false;
-          }
-
-          homeEvent.rooms.list = featured;
-
-          return callback(null);
-        });
       }
     ],
     function (err) {

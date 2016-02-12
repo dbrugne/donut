@@ -21,7 +21,8 @@ var GroupView = Backbone.View.extend({
     'click .share .facebook': 'shareFacebook',
     'click .share .twitter': 'shareTwitter',
     'click .share .googleplus': 'shareGoogle',
-    'click .toggle-collapse': 'toggleCollapse'
+    'click .toggle-collapse': 'toggleCollapse',
+    'click .filter-action': 'onClickFilterAction'
   },
 
   initialize: function (options) {
@@ -90,7 +91,14 @@ var GroupView = Backbone.View.extend({
       op: [],
       members: []
     };
+    var userlist = [];
+    var isAllowed = response.is_member || response.is_op || response.is_owner || app.user.isAdmin();
     _.each(data.group.members, _.bind(function (u) {
+      if (u.is_owner || u.is_op || isAllowed) {
+        var u2 = _.clone(u);
+        u2.type = 'user';
+        userlist.push(u2);
+      }
       u.avatar = common.cloudinary.prepare(u.avatar, 30);
       if (u.is_owner) {
         users.owner = u;
@@ -113,13 +121,27 @@ var GroupView = Backbone.View.extend({
     var html = this.template(data);
     this.$el.html(html);
 
-    this.cardsView = new CardsView({
-      el: this.$('.cards')
+    this.roomsView = new CardsView({
+      el: this.$('.cards').find('.rooms')
     });
 
-    this.cardsView.render({
+    this.usersView = new CardsView({
+      el: this.$('.cards').find('.users')
+    });
+
+    this.roomsView.render({
       rooms: {
         list: rooms
+      },
+      title: false,
+      fill: true,
+      more: false,
+      search: false
+    });
+
+    this.usersView.render({
+      users: {
+        list: userlist
       },
       title: false,
       fill: true,
@@ -212,6 +234,23 @@ var GroupView = Backbone.View.extend({
   shareGoogle: function () {
     $.socialify.google({
       url: this.model.getUrl()
+    });
+  },
+
+  onClickFilterAction: function (event) {
+    var elt = $(event.currentTarget);
+
+    // only care when changing selection
+    if (elt.hasClass('active')) {
+      return;
+    }
+
+    this.$('.filter-action').each(function () {
+      $(this).toggleClass('active');
+    });
+
+    this.$('.cards-content').find('.toggle-cards').each(function () {
+      $(this).toggleClass('hidden');
     });
   }
 });

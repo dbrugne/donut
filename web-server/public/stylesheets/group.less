@@ -76,6 +76,14 @@
   }
 }
 
-.content { position: relative; margin: 0 20px; .display-flex; .flex-flow(column nowrap);
-  .cards { .scrollbar-grey-thin; overflow: auto; .display-flex; .flex-flow(row wrap); margin: 15px 30px; .justify-content(center); }
+.cards-content { position: relative; margin: 0 20px; .display-flex; .flex-flow(column nowrap);
+  .title1 { .ft-opensans-semibold; font-size: 17px; color: #586473; letter-spacing: 1.3px; line-height: 14px; margin: 20px 80px; width: 100%; }
+  .filters { border-bottom: 1px solid #D0D9E6; width: 100%;
+    .filter-action { border-bottom: 3px solid transparent; width: 280px; .ft-opensans; font-size: 13px; color: #AFBAC8; letter-spacing: 2px; line-height: 21px; text-transform: uppercase; padding: 5px 10px; text-align: center;
+      &.active { border-bottom: 3px solid @cl-first; color: #1D252F; }
+    }
+  }
+  .cards { .scrollbar-grey-thin; overflow: auto; .display-flex; .flex-flow(row wrap); margin: 15px 30px; .justify-content(center);
+    .rooms, .users { .display-flex; .flex-flow(row wrap); .justify-content(center); }
+  }
 }
