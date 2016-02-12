@@ -7,8 +7,8 @@ var urls = require('../../../../shared/util/url');
 var HomeFeaturedView = Backbone.View.extend({
   template: require('../templates/home-featured.html'),
   events: {
-    'click .action.left': 'onClickLeft',
-    'click .action.right': 'onClickRight'
+    'click .action.left': 'onClickRight',
+    'click .action.right': 'onClickLeft'
   },
   render: function (rooms, groups) {
     _.each(rooms, function (card) {

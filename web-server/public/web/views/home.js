@@ -66,14 +66,14 @@ var HomeView = Backbone.View.extend({
     });
 
     // @todo get it from stats handler or home handler
-    this.$homeStats.html(this.templateStats({
-      messages_posted: 648,
-      onetoones: 15,
-      onetoones_unread: true,
-      rooms: 57,
-      rooms_unread: false,
-      rooms_created: 7
-    }));
+    //this.$homeStats.html(this.templateStats({
+    //  messages_posted: 648,
+    //  onetoones: 15,
+    //  onetoones_unread: true,
+    //  rooms: 57,
+    //  rooms_unread: false,
+    //  rooms_created: 7
+    //}));
 
     //this.homeNews.render();
     this.homeFeatured.render(_.first(rooms, this.featuredCount), _.first(groups, this.featuredCount));
