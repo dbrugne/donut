@@ -25,7 +25,7 @@ handler.call = function (data, session, next) {
         return callback('params-group-id');
       }
 
-      if (!group) {
+      if (!group || group.deleted) {
         return callback('group-not-found');
       }
 

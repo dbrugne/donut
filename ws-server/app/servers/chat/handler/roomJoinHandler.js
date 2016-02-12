@@ -23,7 +23,7 @@ handler.call = function (data, session, next) {
   if (!data.room_id && !data.name) {
     return next(null, {code: 400, err: 'params-room-id-name'});
   }
-  if (!room) {
+  if (!room || room.deleted) {
     return next(null, {code: 404, err: 'room-not-found'});
   }
 
