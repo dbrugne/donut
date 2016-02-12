@@ -409,16 +409,16 @@
       "rooms": "discussions",
       "rooms-created": "discussions créées",
       "title": "Bienvenue!",
-      "disclaimer": "Trouvez votre chemin sur Donut en rejoignant ou en créant des communautés et des discussions qui vous ressemblent.",
+      "disclaimer": "Lancez-vous sur DONUT, rejoignez ou en créez des communautés et des discussions qui vous ressemblent.",
       "userstitle": "Utilisateurs",
       "whats-new-title": "NOUVEAU sur DONUT!",
-      "communities-title": "COMMUNAUTES sélectionnées",
+      "communities-title": "COMMUNAUTES suggérées",
       "communities-disclaimer": "Rejoignez une communauté pour accéder à toutes ses discussions associées et passer du temps avec ses membres",
       "communities-create": "CREEZ VOTRE COMMUNAUTE",
-      "discussions-title": "DISCUSSIONS sélectionnées",
+      "discussions-title": "DISCUSSIONS suggérées",
       "discussions-disclaimer": "Rejoignez une discussion à propos de tout ce qui vous intéresse",
       "discussions-create": "CREEZ VOTRE DISCUSSION",
-      "browse-more": "Parcourir..."
+      "browse-more": "Tout découvrir..."
     },
     "search": {
       "placeholder": "Rechercher",
