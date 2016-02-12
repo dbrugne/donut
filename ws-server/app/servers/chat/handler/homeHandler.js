@@ -28,6 +28,7 @@ handler.call = function (data, session, next) {
   var userLimit = 200;
 
   var rooms = [];
+  var roomsInGroups = [];
   var groups = [];
   var users = [];
 
@@ -78,6 +79,22 @@ handler.call = function (data, session, next) {
           }
 
           groups = dbgroups;
+          async.eachLimit(dbgroups, 10, function (group, fn) {
+            var criteria = {deleted: {$ne: true}, group: group._id};
+            var query = Room.find(criteria, 'avatar identifier name group');
+            query.populate('group', 'name');
+            query.sort('-last_event_at');
+            query.exec(function (err, rooms) {
+              if (err) {
+                return fn(err);
+              }
+
+              roomsInGroups[group.name] = rooms;
+              return fn(null);
+            });
+          }, function (err) {
+            return callback(err);
+          });
 
           return callback(null);
         });
@@ -187,6 +204,14 @@ handler.call = function (data, session, next) {
 
         _.each(groups, function (group) {
           var count = group.count();
+          var _roomsData = [];
+          _.each(roomsInGroups[group.name], function (r) {
+            _roomsData.push({
+              avatar: r._avatar(),
+              identifier: r.getIdentifier(),
+              room_id: r._id
+            });
+          });
 
           var _data = {
             type: 'group',
@@ -197,7 +222,8 @@ handler.call = function (data, session, next) {
             description: group.description,
             avatar: group._avatar(),
             users: count,
-            priority: group.priority || 0
+            priority: group.priority || 0,
+            rooms: _roomsData
           };
 
           if (group.owner !== undefined) {
