@@ -62,6 +62,7 @@
   }
   &.is-member,
   &.is-owner,
+  &.is-admin,
   &.is-op {
     .group-icon { background-image: url('@{img-path}/success.png'); width: 43px; height: 35px;  }
   }
@@ -75,4 +76,6 @@
   }
 }
 
-.content {position: relative; margin: 0 20px; .display-flex; .flex-flow(column nowrap); }
+.content { position: relative; margin: 0 20px; .display-flex; .flex-flow(column nowrap);
+  .cards { .scrollbar-grey-thin; overflow: auto; .display-flex; .flex-flow(row wrap); margin: 15px 30px; .justify-content(center); }
+}

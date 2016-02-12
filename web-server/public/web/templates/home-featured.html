@@ -1,0 +1,113 @@
+<div class="featured-communities mt40 relative">
+    <div class="flex-parent center">
+        <div class="flex-parent column ml15">
+            <div class="subtitle"><%= t('chat.home.communities-title') %></div>
+            <div class="subdisclaimer"><%= t('chat.home.communities-disclaimer') %></div>
+        </div>
+        <div class="filler"></div>
+        <div class="create curp open-group-create mr15"><%= t('chat.home.communities-create') %></div>
+    </div>
+
+    <div class="flex-parent cards-container">
+        <span class="action left curp" data-type="groups">
+            <span class="icon triangle-left"></span>
+        </span>
+        <% _.each(groups, function(card) { %>
+            <div class="card-small group">
+                <div class="top relative">
+                    <div class="ctn flex-parent column center jc-center">
+                        <a href="<%= card.join %>" class="open-group-profile flex-child flex-parent center jc-center" data-group-id="<%=card.group_id%>">
+                            <div class="avatar" style="background-image:url(<%= card.avatar %>)"></div>
+                        </a>
+                        <div class="name flex-parent center jc-center">
+                            <a href="<%= card.join %>" class="open-group-profile flex-child flex-parent center jc-center" data-group-id="<%=card.group_id%>">
+                                <%=card.identifier.replace('#','')%>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="background-ctn">
+                        <div class="overlay"></div>
+                        <div class="background" style="background-image:url(<%= card.avatar %>)"></div>
+                    </div>
+                </div>
+                <div class="bottom flex-parent jc-center center">
+                    <div class="infos flex-child">
+                        <i class="icon i-icon curp" data-toggle="tooltip" title="<%= card.description %>" data-placement="bottom"></i>
+                    </div>
+                    <div class="button flex-child">
+                        <a class="join" href="<%= card.join %>"><%= t('actions.join') %></a>
+                    </div>
+                    <div class="users flex-child flex-parent center jc-center">
+                        <div class="users pull-right"><i class="icon-users-custom mr5"></i> <%=card.users%></div>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+        <span class="action right curp" data-type="groups">
+            <span class="icon triangle-right"></span>
+        </span>
+    </div>
+</div>
+<div class="featured-discussions mt40 relative">
+    <div class="flex-parent center">
+        <div class="flex-parent column ml15">
+            <div class="subtitle"><%= t('chat.home.discussions-title') %></div>
+            <div class="subdisclaimer"><%= t('chat.home.discussions-disclaimer') %></div>
+        </div>
+        <div class="filler"></div>
+        <div class="create curp open-create-room mr15"><%= t('chat.home.discussions-create') %></div>
+    </div>
+
+    <div class="flex-parent cards-container">
+        <span class="action left curp" data-type="rooms">
+            <span class="icon triangle-left"></span>
+        </span>
+        <% _.each(rooms, function(card) { %>
+            <% var mode = (card.mode === 'public' ? 'public' : 'private' + (card.allow_user_request ? '-invites' : '') + (card.allow_group_member ? '-group' : '')) %>
+            <% var roomname = card.group_name ? '/' + card.name : '#' + card.name; %>
+
+            <div class="card-small group">
+                <div class="top relative">
+                    <div class="ctn flex-parent column center jc-center">
+                        <a href="<%= card.join %>" class="open-room-profile flex-child flex-parent center jc-center" data-room-id="<%=card.room_id%>">
+                            <div class="avatar img-circle" style="background-image:url(<%= card.avatar %>)"></div>
+                        </a>
+                        <div class="name flex-parent center jc-center">
+                            <a href="<%= card.join %>" class="open-room-profile flex-child flex-parent center jc-center" data-room-id="<%=card.room_id%>">
+                                <span class="value">
+                                    <%=roomname %>
+                                </span>
+                            </a>
+                        </div>
+                        <% if (card.group_name) { %>
+                            <a href="<%= card.join %>" class="open-group-profile" data-group-id="<%= card.group_id %>" data-toggle="tooltip" title="<%= card.group_name %>">
+                                <div class="avatar-group" style="background-image:url(<%= card.group_avatar %>)"></div>
+                            </a>
+                        <% } %>
+                    </div>
+                    <div class="background-ctn">
+                        <div class="overlay"></div>
+                        <div class="background" style="background-image:url(<%= card.avatar %>)"></div>
+                    </div>
+                    <% if(mode !== 'public') { %>
+                        <div class="mode" data-toggle="tooltip" title="<%= t('global.mode.title.' + mode) + ': ' + t('global.mode.description.' + mode) %>">
+                            <span class="<%= mode %>"></span>
+                        </div>
+                    <% } %>
+                </div>
+                <div class="bottom flex-parent jc-center center">
+                    <div class="infos flex-child">
+                        <i class="icon i-icon curp" data-toggle="tooltip" title="<%- card.description %>" data-placement="bottom"></i>
+                    </div>
+                    <div class="button flex-child">
+                        <a class="join" href="<%= card.join %>"><%= t('actions.join') %></a>
+                    </div>
+                    <div class="users flex-child flex-parent center jc-center"><i class="icon-users-custom mr5"></i> <%=card.users%></div>
+                </div>
+            </div>
+        <% }); %>
+        <span class="action right curp" data-type="rooms">
+            <span class="icon triangle-right"></span>
+        </span>
+    </div>
+</div>

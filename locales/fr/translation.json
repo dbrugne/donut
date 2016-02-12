@@ -4,6 +4,14 @@
     "description": "Désolé, nous n'avons pas trouvé ce que vous cherchiez. Et si on repartait du bon pied ? Cliquez ici :"
   },
   "landing": {
+    "mobile": {
+      "ios": "L'appli DONUT is disponible pour iPhone",
+      "android": "L'appli DONUT is disponible pour Android",
+      "get-the-app": "télécharger",
+      "get-the-app2": "télécharger l'appli",
+      "best-experience": "profitez au mieux de DONUT",
+      "also": "Discutez confortablement au clavier grâce à DONUT, disponible sur votre ordinateur"
+    },
     "toggle": "Afficher/masquer la navigation",
     "signup-self": "S'inscrire",
     "login-self": "Se connecter",
@@ -396,8 +404,21 @@
     },
     "createadonut": "Nouveau",
     "home": {
-      "roomstitle": "Bienvenue sur DONUT, voici quelques discussions actives. Si vous n'en trouvez pas à votre goût, <a href=\"#\" class='open-create-room'>créez-en un !</a>",
-      "userstitle": "Utilisateurs"
+      "messages-posted": "messages postés",
+      "onetoones": "tête à tête",
+      "rooms": "discussions",
+      "rooms-created": "discussions créées",
+      "title": "Bienvenue!",
+      "disclaimer": "Lancez-vous sur DONUT, rejoignez ou en créez des communautés et des discussions qui vous ressemblent.",
+      "userstitle": "Utilisateurs",
+      "whats-new-title": "NOUVEAU sur DONUT!",
+      "communities-title": "COMMUNAUTES suggérées",
+      "communities-disclaimer": "Rejoignez une communauté pour accéder à toutes ses discussions associées et passer du temps avec ses membres",
+      "communities-create": "CREEZ VOTRE COMMUNAUTE",
+      "discussions-title": "DISCUSSIONS suggérées",
+      "discussions-disclaimer": "Rejoignez une discussion à propos de tout ce qui vous intéresse",
+      "discussions-create": "CREEZ VOTRE DISCUSSION",
+      "browse-more": "Tout découvrir..."
     },
     "search": {
       "placeholder": "Rechercher",
