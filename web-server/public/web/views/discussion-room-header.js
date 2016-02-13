@@ -5,7 +5,7 @@ var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
 var TopicView = require('./room-topic');
 
-var RoomView = Backbone.View.extend({
+var RoomHeaderView = Backbone.View.extend({
   tagName: 'div',
 
   className: 'discussion-header-room',
@@ -100,4 +100,4 @@ var RoomView = Backbone.View.extend({
   }
 });
 
-module.exports = RoomView;
+module.exports = RoomHeaderView;
