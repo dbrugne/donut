@@ -665,7 +665,7 @@
       "onestart": "This conversation is private. Only you and your interlocutor can see it.",
       "edit": "edit profile",
       "users": "manage users",
-      "access": "manage invitations",
+      "access": "access rules",
       "invite": "invite users"
     },
     "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
