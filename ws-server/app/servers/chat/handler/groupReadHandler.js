@@ -102,6 +102,8 @@ handler.call = function (data, session, next) {
         var owner = {
           user_id: group.owner.id,
           username: group.owner.username,
+          realname: group.owner.realname,
+          bio: group.owner.bio,
           avatar: group.owner._avatar(),
           is_owner: true
         };
@@ -115,6 +117,8 @@ handler.call = function (data, session, next) {
           var el = {
             user_id: op.id,
             username: op.username,
+            realname: op.realname,
+            bio: op.bio,
             avatar: op._avatar(),
             is_op: true
           };
@@ -139,7 +143,9 @@ handler.call = function (data, session, next) {
           }
           var el = {
             user_id: u.id,
+            realname: u.realname,
             username: u.username,
+            bio: u.bio,
             avatar: u._avatar()
           };
           read.members.push(el);

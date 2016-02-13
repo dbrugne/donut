@@ -774,7 +774,7 @@
       "typing_plural": "sont en train de taper"
     },
     "blocked": {
-      "disallow": "Ce discussion est privé.",
+      "disallow": "Cette discussion est privée.",
       "message-display": "Message à afficher",
       "password_placeholder": "Mot de passe",
       "password_button": "Rejoindre",
