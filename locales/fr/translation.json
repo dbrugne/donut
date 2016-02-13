@@ -1057,7 +1057,7 @@
     "already-member": "<strong>@__username__</strong> est déjà membre de cette communauté",
     "banned": "<strong>@__username__</strong> est banni de cette communauté",
     "default-member": "Vous êtes membre de cette communauté",
-    "default-owner": "Vous êtes propriétaire de cette communauté",
+    "default-owner": "Vous êtes le créateur de cette communauté",
     "default-op": "Vous êtes administrateur de cette communauté",
     "default-admin": "Vous êtes administrateur",
     "default-disclaimer": "Vous n'êtes pas encore membre de cette communauté donc vous ne voyez que du contenu public.",

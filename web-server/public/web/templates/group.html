@@ -9,7 +9,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
     <img class="avatar group open-group-profile curp" data-group-id="<%= group.group_id %>" src="<%= group.avatarUrl %>" alt="<%= group.identifier %> avatar">
     <div class="info flex-child flex-shrink flex-parent column">
         <div class="flex-parent">
-            <div class="name open-group-profile curp" data-group-id="<%= group.group_id %>"><%= group.name %></div>
+            <div class="name open-group-profile curp" data-group-id="<%= group.group_id %>"><%= group.identifier %></div>
             <div class="flex-child"></div>
             <div class="dropdown flex-parent jc-center center">
                 <button class="dropdown-toggle flex-parent jc-center center" data-toggle="dropdown" aria-expanded="true">
@@ -93,7 +93,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
 
             <!--Display owner-->
             <div class="flex-parent column owner">
-                <span class="title">Owner</span>
+                <span class="title"><%= t('chat.owner.state') %></span>
                 <div class="flex-parent center">
                     <img class="avatar open-user-profile curp" data-user-id="<%= group_users.owner.user_id %>" src="<%= group_users.owner.avatar %>" title="<%= group_users.owner.username %>" data-toggle="tooltip" data-placement="top" />
                     <span class="username">@<%=group_users.owner.username%></span>
@@ -103,7 +103,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
             <!--Display op-->
             <% if(group_users.op.length > 0) { %>
                 <div class="flex-parent column">
-                    <span class="title">Op <span class="count"><%=group_users.op.length%></span></span>
+                    <span class="title"><%= t('chat.op.state') %> <span class="count"><%=group_users.op.length%></span></span>
                     <div class="flex-parent center">
                         <% var count = 0; %>
                         <%_.find(group_users.op, function (u) { %>
@@ -119,7 +119,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
             <% if ((isMember || isOwner) && !isBanned) { %>
                 <% if(group_users.members.length > 0) { %>
                     <div class="flex-parent column">
-                        <span class="title">Members <span class="count"><%=group_users.members.length%></span></span>
+                        <span class="title"><%= t('chat.users.type.members') %> <span class="count"><%=group_users.members.length%></span></span>
                         <div class="flex-parent center">
                             <% var count = 0; %>
                             <%_.find(group_users.members, function (u) { %>
@@ -151,7 +151,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
                         <span class="curp open-create-room donut-button black" data-group-id="<%=group.group_id%>" data-group-name="<%=group.name%>"><%= t('actions.create') %></span>
                     <% } else { %>
                         <!--Ask membership button for non members-->
-                        <span class="curp btn btn-primary group-join"><%= t('group.ask-membership') %></span>
+                        <span class="curp group-join donut-button black"><%= t('group.ask-membership') %></span>
                     <% } %>
                 <% } %>
             </div>

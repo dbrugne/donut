@@ -442,7 +442,7 @@
       "users": "User's list of this discussion"
     },
     "owner": {
-      "state": "owner",
+      "state": "creator",
       "is": "This user is the creator of this discussion.",
       "isgroup": "This user is the creator of this community"
     },
@@ -1058,7 +1058,7 @@
     "already-member": "<strong>@__username__</strong> is already member this community",
     "banned": "<strong>@__username__</strong> is already ban this community",
     "default-member": "You are a member of this community",
-    "default-owner": "You are owner of this community",
+    "default-owner": "You are the creator of this community",
     "default-op": "You are an admin of this community",
     "default-admin": "You are an admin",
     "default-disclaimer": "You are not yet a member of this community so you can only see public content.",
