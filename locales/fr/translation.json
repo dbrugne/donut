@@ -5,8 +5,10 @@
   },
   "landing": {
     "mobile": {
-      "ios": "L'appli DONUT is disponible pour iPhone",
+      "ios": "L'appli DONUT est disponible pour iPhone",
       "android": "L'appli DONUT est disponible pour Android",
+      "windows": "L'appli DONUT est disponible pour Windows phone",
+      "none": "DONUT dispose d'une application mobile pour iOS et Android. Nous vous invitons à utiliser DONUT sur votre ordinateur",
       "get-the-app": "télécharger",
       "get-the-app2": "téléchargez l'appli",
       "best-experience": "profitez au mieux de DONUT",

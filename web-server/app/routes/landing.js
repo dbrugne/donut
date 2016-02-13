@@ -18,12 +18,18 @@ router.get('/', [require('csurf')()], function (req, res) {
     type: 'website'
   };
 
+  console.log(isMobile(req.headers['user-agent']).apple.phone);
+  console.log(isMobile(req.headers['user-agent']).android.phone);
+  console.log(isMobile(req.headers['user-agent']).windows.phone);
+  console.log(isMobile(req.headers['user-agent']).any);
+
   return res.render('landing', {
     token: req.csrfToken(),
     meta: meta,
     isIphone: isMobile(req.headers['user-agent']).apple.phone,
     isAndroid: isMobile(req.headers['user-agent']).android.phone,
-    isWindows: isMobile(req.headers['user-agent']).windows.phone
+    isWindows: isMobile(req.headers['user-agent']).windows.phone,
+    isMobile: isMobile(req.headers['user-agent']).any
   });
 });
 

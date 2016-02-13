@@ -5,6 +5,7 @@ var passport = require('../../../shared/authentication/passport');
 var i18next = require('../../../shared/util/i18next');
 var bouncer = require('../middlewares/bouncer');
 var logger = require('pomelo-logger').getLogger('web', __filename);
+var isMobile = require('ismobilejs');
 
 var validateInput = function (req, res, next) {
   req.checkBody('email', i18next.t('login.emailerror')).isEmail();
@@ -14,7 +15,11 @@ var validateInput = function (req, res, next) {
       meta: {title: i18next.t('title.default')},
       userFields: {email: req.body.email},
       errors: req.validationErrors(),
-      token: req.csrfToken()
+      token: req.csrfToken(),
+      isIphone: isMobile(req.headers['user-agent']).apple.phone,
+      isAndroid: isMobile(req.headers['user-agent']).android.phone,
+      isWindows: isMobile(req.headers['user-agent']).windows.phone,
+      isMobile: isMobile(req.headers['user-agent']).any
     });
   }
 
@@ -26,7 +31,11 @@ router.route('/login')
     res.render('login', {
       meta: {title: i18next.t('title.default')},
       userFields: {email: req.flash('email')},
-      token: req.csrfToken()
+      token: req.csrfToken(),
+      isIphone: isMobile(req.headers['user-agent']).apple.phone,
+      isAndroid: isMobile(req.headers['user-agent']).android.phone,
+      isWindows: isMobile(req.headers['user-agent']).windows.phone,
+      isMobile: isMobile(req.headers['user-agent']).any
     });
   })
   .post([require('csurf')(), validateInput, function (req, res, next) {
@@ -44,11 +53,17 @@ router.route('/login')
           meta: {title: i18next.t('title.default')},
           userFields: {email: req.body.email},
           errors: [{msg: errorMessage}],
-          token: req.csrfToken()
+          token: req.csrfToken(),
+          isIphone: isMobile(req.headers['user-agent']).apple.phone,
+          isAndroid: isMobile(req.headers['user-agent']).android.phone,
+          isWindows: isMobile(req.headers['user-agent']).windows.phone,
+          isMobile: isMobile(req.headers['user-agent']).any
         });
       }
       req.logIn(user, function (err) {
-        if (err) { return next(err); }
+        if (err) {
+          return next(err);
+        }
         return bouncer.redirect(req, res);
       });
     })(req, res, next);
@@ -75,7 +90,12 @@ router.get('/unlink/facebook', function (req, res) {
     return res.redirect('/');
   }
 
-  user.update({$unset: {'facebook.token': true, 'facebook.id': true}}, function (err) {
+  user.update({
+    $unset: {
+      'facebook.token': true,
+      'facebook.id': true
+    }
+  }, function (err) {
     if (err) {
       logger.debug(err);
     }

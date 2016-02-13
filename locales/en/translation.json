@@ -7,6 +7,8 @@
     "mobile": {
       "ios": "DONUT chat is now available for Iphone",
       "android": "DONUT chat is now available for Android",
+      "windows": "DONUT chat is now available for Windows phone",
+      "none": "DONUT is available on iOS and Android app stores. You are invited to experience DONUT on your desktop.",
       "get-the-app": "get the app",
       "get-the-app2": "get the app",
       "best-experience": "get the best experience",

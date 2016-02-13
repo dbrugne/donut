@@ -4,6 +4,7 @@ var router = express.Router();
 var passport = require('../../../shared/authentication/passport');
 var i18next = require('../../../shared/util/i18next');
 var bouncer = require('../middlewares/bouncer');
+var isMobile = require('ismobilejs');
 
 var validateInput = function (req, res, next) {
   req.checkBody('email', i18next.t('account.email.error.format')).isEmail();
@@ -20,7 +21,11 @@ var validateInput = function (req, res, next) {
         username: req.body.username
       },
       errors: req.validationErrors(),
-      token: req.csrfToken()
+      token: req.csrfToken(),
+      isIphone: isMobile(req.headers['user-agent']).apple.phone,
+      isAndroid: isMobile(req.headers['user-agent']).android.phone,
+      isWindows: isMobile(req.headers['user-agent']).windows.phone,
+      isMobile: isMobile(req.headers['user-agent']).any
     });
   }
 
@@ -32,7 +37,11 @@ router.route('/signup')
     res.render('signup', {
       meta: {title: i18next.t('title.default')},
       userFields: {},
-      token: req.csrfToken()
+      token: req.csrfToken(),
+      isIphone: isMobile(req.headers['user-agent']).apple.phone,
+      isAndroid: isMobile(req.headers['user-agent']).android.phone,
+      isWindows: isMobile(req.headers['user-agent']).windows.phone,
+      isMobile: isMobile(req.headers['user-agent']).any
     });
   })
   .post([require('csurf')(), validateInput, function (req, res, next) {
@@ -59,11 +68,17 @@ router.route('/signup')
             username: req.body.username
           },
           errors: [{msg: errorMessage}],
-          token: req.csrfToken()
+          token: req.csrfToken(),
+          isIphone: isMobile(req.headers['user-agent']).apple.phone,
+          isAndroid: isMobile(req.headers['user-agent']).android.phone,
+          isWindows: isMobile(req.headers['user-agent']).windows.phone,
+          isMobile: isMobile(req.headers['user-agent']).any
         });
       }
       req.logIn(user, function (err) {
-        if (err) { return next(err); }
+        if (err) {
+          return next(err);
+        }
         return bouncer.redirect(req, res);
       });
     })(req, res, next);

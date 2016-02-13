@@ -7,6 +7,7 @@ var crypto = require('crypto');
 var User = require('../../../shared/models/user');
 var i18next = require('../../../shared/util/i18next');
 var logger = require('pomelo-logger').getLogger('web', __filename);
+var isMobile = require('ismobilejs');
 
 // @doc: http://sahatyalkabov.com/how-to-implement-password-reset-in-nodejs/
 
@@ -17,7 +18,11 @@ var validateInput = function (req, res, next) {
       meta: {title: i18next.t('title.default')},
       email: req.body.email,
       errors: req.validationErrors(),
-      token: req.csrfToken()
+      token: req.csrfToken(),
+      isIphone: isMobile(req.headers['user-agent']).apple.phone,
+      isAndroid: isMobile(req.headers['user-agent']).android.phone,
+      isWindows: isMobile(req.headers['user-agent']).windows.phone,
+      isMobile: isMobile(req.headers['user-agent']).any
     });
   }
   next();
@@ -38,7 +43,11 @@ var forgot = function (req, res) {
             meta: {title: i18next.t('title.default')},
             email: req.body.email,
             errors: [{msg: i18next.t('global.unknownerror')}],
-            token: req.csrfToken()
+            token: req.csrfToken(),
+            isIphone: isMobile(req.headers['user-agent']).apple.phone,
+            isAndroid: isMobile(req.headers['user-agent']).android.phone,
+            isWindows: isMobile(req.headers['user-agent']).windows.phone,
+            isMobile: isMobile(req.headers['user-agent']).any
           });
         }
         if (!user) {
@@ -46,7 +55,11 @@ var forgot = function (req, res) {
             meta: {title: i18next.t('title.default')},
             email: req.body.email,
             errors: [{msg: i18next.t('forgot.error.notexists')}],
-            token: req.csrfToken()
+            token: req.csrfToken(),
+            isIphone: isMobile(req.headers['user-agent']).apple.phone,
+            isAndroid: isMobile(req.headers['user-agent']).android.phone,
+            isWindows: isMobile(req.headers['user-agent']).windows.phone,
+            isMobile: isMobile(req.headers['user-agent']).any
           });
         }
 
@@ -68,7 +81,11 @@ var forgot = function (req, res) {
           meta: {title: i18next.t('title.default')},
           email: req.body.email,
           success: [{msg: i18next.t('forgot.sent', {email: user.local.email})}],
-          token: req.csrfToken()
+          token: req.csrfToken(),
+          isIphone: isMobile(req.headers['user-agent']).apple.phone,
+          isAndroid: isMobile(req.headers['user-agent']).android.phone,
+          isWindows: isMobile(req.headers['user-agent']).windows.phone,
+          isMobile: isMobile(req.headers['user-agent']).any
         });
       });
     }
@@ -138,7 +155,11 @@ router.route('/forgot')
     res.render('account_forgot', {
       email: '',
       meta: {title: i18next.t('title.default')},
-      token: req.csrfToken()
+      token: req.csrfToken(),
+      isIphone: isMobile(req.headers['user-agent']).apple.phone,
+      isAndroid: isMobile(req.headers['user-agent']).android.phone,
+      isWindows: isMobile(req.headers['user-agent']).windows.phone,
+      isMobile: isMobile(req.headers['user-agent']).any
     });
   })
   .post(require('csurf')(), validateInput, forgot);
@@ -160,7 +181,11 @@ router.route('/reset/:token')
         email: '',
         meta: {title: i18next.t('title.default')},
         user: req.user,
-        token: req.csrfToken()
+        token: req.csrfToken(),
+        isIphone: isMobile(req.headers['user-agent']).apple.phone,
+        isAndroid: isMobile(req.headers['user-agent']).android.phone,
+        isWindows: isMobile(req.headers['user-agent']).windows.phone,
+        isMobile: isMobile(req.headers['user-agent']).any
       });
     });
   })

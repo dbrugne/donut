@@ -4,19 +4,6 @@
 
     <%- partial('header-landing') %>
 
-    <% if (isIphone || isAndroid) { %>
-        <div class="mobile flex-parent">
-            <% if (isIphone) { %>
-                <div class="ios"><%= t('landing.mobile.ios') %></div>
-            <% } else { %>
-                <div class="android"><%= t('landing.mobile.android') %></div>
-            <% } %>
-            <a href="/get-the-app" class="get-app flex-parent column center jc-center">
-                <%= t('landing.mobile.get-the-app') %>
-            </a>
-        </div>
-    <% } %>
-
     <div class="first flex-parent column jc-center center">
         <div class="ctn flex-parent column jc-center center">
             <div class="disclaimer-top">
