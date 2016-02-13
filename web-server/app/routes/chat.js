@@ -4,8 +4,15 @@ var router = express.Router();
 var i18next = require('../../../shared/util/i18next');
 var bouncer = require('../middlewares/bouncer');
 var hello = require('../../../shared/util/hello-dolly');
+var isMobile = require('ismobilejs');
 
 router.get('/!', function (req, res) {
+  if (isMobile(req.headers['user-agent']).apple.phone ||
+      isMobile(req.headers['user-agent']).android.phone ||
+      isMobile(req.headers['user-agent']).windows.phone) {
+    return res.redirect('/get-the-app');
+  }
+
   // Is user authenticated
   if (!req.isAuthenticated()) {
     // set Flash message (display on profile page or landing page depending
