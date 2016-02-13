@@ -20,9 +20,9 @@
         <% if (group.description) { %><p class="description mt20 mb20 left"><%- group.description %></p><% }; %>
         <% if (group.website && group.website.href) { %><p class="website left"><i class="icon icon-fw icon-link dc-text"></i> <a class="colored dc-text" href="<%= group.website.href %>" target="_blank" title="<%= group.website.title %>"><%= group.website.title %></a></p><% }; %>
         <% if (group.created) { %><p class="created left"><i class="icon icon-fw icon-clock-o dc-text left"></i> <%= t('profile.group.createdat') %> <span class="ml5" data-time="<%= group.created %>"></span></p><% }; %>
-        <% if (group.isOwner || group.isAdmin) { %><p class="edit left"><i class="icon icon-fw icon-pencil dc-text"></i> <a class="colored open-group-edit dc-text" data-group-id="<%= group.group_id %>"> <%= t('global.edit') %></a><p><% }; %>
-        <% if (group.isOwner || group.isOp || group.isAdmin) { %><p class="left"><i class="icon icon-fw icon-users dc-text left"></i> <a class="colored open-group-users dc-text" data-group-id="<%= group.group_id %>"><%= t('group.members') %></a></p><% }; %>
-        <% if (group.isOwner || group.isOp || group.isAdmin) { %><p class="left"><i class="icon icon-fw icon-verified-user dc-text left"></i> <a class="colored open-group-users-allowed dc-text" data-group-id="<%= group.group_id %>"><%= t('profile.group.usersallowed') %></a></p><% }; %>
+        <% if (group.isOwner || group.isAdmin) { %><p class="edit left"><i class="icon icon-fw icon-pencil dc-text"></i> <a class="colored open-group-edit dc-text" data-group-id="<%= group.group_id %>"> <%= t('profile.common.editlink') %></a><p><% }; %>
+        <% if (group.isOwner || group.isOp || group.isAdmin) { %><p class="left"><i class="icon icon-fw icon-users dc-text left"></i> <a class="colored open-group-users dc-text" data-group-id="<%= group.group_id %>"><%= t('group.manage') %></a></p><% }; %>
+        <% if (group.isOwner || group.isOp || group.isAdmin) { %><p class="left"><i class="icon icon-fw icon-verified-user dc-text left"></i> <a class="colored open-group-users-allowed dc-text" data-group-id="<%= group.group_id %>"><%= t('group.invite') %></a></p><% }; %>
         <% if (group.isOwner || group.isOp || group.isAdmin ) { %><p class="left dc-text"><i class="icon icon-fw icon-public"></i> <a role="menuitem" tabindex="-1" class="colored open-group-access dc-text" data-group-id="<%= group.group_id %>"><%= t('chat.access.link') %></a></p><% }; %>
     </div>
 

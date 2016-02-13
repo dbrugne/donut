@@ -311,7 +311,7 @@
   },
   "profile": {
     "common": {
-      "editlink": "Editer"
+      "editlink": "Editer le profil"
     },
     "room": {
       "ownerops": "Les habitués",
@@ -322,15 +322,15 @@
         "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. <a href=\"/\">DONUT.me</a> vous permet de rejoindre ou créer un salon de discussion thématique (discussion) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
       },
       "permalink": "Permalien de ce profil",
-      "editusers": "Liste des utilisateurs",
+      "editusers": "Gérer les participants",
       "createdat": "créé le",
-      "usersallowed": "Gérer les invitations"
+      "usersallowed": "Invitations & demandes"
     },
     "group": {
       "ownerops": "Les habitués",
       "nouser": "Pas d'utilisateur dans cette communauté",
       "permalink": "Permalien de ce profil",
-      "editlink": "Editer",
+      "editlink": "Editer le profil",
       "profilelink": "Profil de ",
       "editusers": "Gérer les utilisateurs",
       "createdat": "créé le",
@@ -433,8 +433,8 @@
       "search_in_rooms": "chercher des discussions",
       "search_in_groups": "chercher des communautés"
     },
-    "userscount": "<strong>__count__</strong> utilisateur",
-    "userscount_plural": "<strong>__count__</strong> utilisateurs",
+    "userscount": "<strong>__count__</strong> participant",
+    "userscount_plural": "<strong>__count__</strong> participants",
     "topic": {
       "label": "En ce moment",
       "placeholder": "Entrez ici le sujet de la conversation, l'humeur, l'ambiance ...",
@@ -681,15 +681,15 @@
     "users": {
       "username": "Nom d'utilisateur",
       "usertype": "Type",
-      "users": "Utilisateur",
-      "users_plural": "Utilisateurs",
-      "link": "Liste des utilisateurs",
+      "users": "Participant",
+      "users_plural": "Participants",
+      "link": "Gérer les participants",
       "label": "Voir tous",
       "search": "rechercher des utilisateurs dans cette discussion",
       "search-group": "rechercher des utilisateurs dans cette community",
       "type": {
         "owner": "Créateur",
-        "users": "Utilisateurs",
+        "users": "Participants",
         "op": "Modérateurs",
         "allowed": "Utilisateurs autorisés",
         "regular": "Utilisateurs autorisés",
@@ -702,7 +702,7 @@
       "usernotexist": "Cette utilisateur n'existe pas."
     },
     "access": {
-      "link": "Accès",
+      "link": "Règles d'accès",
       "labelsearch": "Autoriser des utilisateurs",
       "add": "Autoriser un utilisateur",
       "labelpending": "Utilisateurs en attente d'autorisation",
@@ -1049,7 +1049,7 @@
     "administrator": "Modérateurs",
     "users": "Utilisateurs",
     "manage": "Gérer les membres",
-    "invite": "Inviter des membres",
+    "invite": "Invitations & demandes",
     "members": "Liste des membres",
     "ask-membership": "devenir membre",
     "blocked": "Saisissez le mot de passe d'accès direct à la communauté",

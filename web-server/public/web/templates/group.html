@@ -27,7 +27,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
                     <% if (isOwner || isAdmin ) { %>
                     <li role="presentation">
                         <a role="menuitem" tabindex="-1" class="open-group-edit" data-group-id="<%= group.group_id %>">
-                            <i class="icon icon-pencil"></i> <%= t('global.edit') %>
+                            <i class="icon icon-pencil"></i> <%= t('profile.common.editlink') %>
                         </a>
                     </li>
                     <% }; %>
@@ -39,12 +39,12 @@ var statusClass =   (isBanned)  ? 'is-banned' :
                     </li>
                     <li role="presentation">
                         <a role="menuitem" tabindex="-1" class="open-group-users" data-group-id="<%= group.group_id %>">
-                            <i class="icon icon-users"></i> <%= t('group.members') %>
+                            <i class="icon icon-users"></i> <%= t('group.manage') %>
                         </a>
                     </li>
                     <li role="presentation">
                         <a role="menuitem" tabindex="-1" class="open-group-users-allowed" data-group-id="<%= group.group_id %>">
-                            <i class="icon icon-verified-user"></i> <%= t('profile.group.usersallowed') %>
+                            <i class="icon icon-verified-user"></i> <%= t('group.invite') %>
                         </a>
                     </li>
                     <% }; %>
