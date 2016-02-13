@@ -4,13 +4,18 @@ var router = express.Router();
 var logger = require('pomelo-logger').getLogger('web', __filename);
 var i18next = require('../../../shared/util/i18next');
 var verifyEmail = require('../../../shared/util/verify-email');
+var isMobile = require('ismobilejs');
 
 var verified = function (req, res, next) {
   verifyEmail.validate(req.params.token, function (err) {
     var renderObject = {
       meta: {title: i18next.t('title.default')},
       token: req.csrfToken(),
-      user: req.user
+      user: req.user,
+      isIphone: isMobile(req.headers['user-agent']).apple.phone,
+      isAndroid: isMobile(req.headers['user-agent']).android.phone,
+      isWindows: isMobile(req.headers['user-agent']).windows.phone,
+      isMobile: isMobile(req.headers['user-agent']).any
     };
     if (err) {
       logger.debug(err);

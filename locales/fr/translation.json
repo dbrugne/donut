@@ -5,10 +5,12 @@
   },
   "landing": {
     "mobile": {
-      "ios": "L'appli DONUT is disponible pour iPhone",
-      "android": "L'appli DONUT is disponible pour Android",
+      "ios": "L'appli DONUT est disponible pour iPhone",
+      "android": "L'appli DONUT est disponible pour Android",
+      "windows": "L'appli DONUT est disponible pour Windows phone",
+      "none": "DONUT dispose d'une application mobile pour iOS et Android. Nous vous invitons à utiliser DONUT sur votre ordinateur",
       "get-the-app": "télécharger",
-      "get-the-app2": "télécharger l'appli",
+      "get-the-app2": "téléchargez l'appli",
       "best-experience": "profitez au mieux de DONUT",
       "also": "Discutez confortablement au clavier grâce à DONUT, disponible sur votre ordinateur"
     },
@@ -311,7 +313,7 @@
   },
   "profile": {
     "common": {
-      "editlink": "Editer"
+      "editlink": "Editer le profil"
     },
     "room": {
       "ownerops": "Les habitués",
@@ -322,15 +324,15 @@
         "after": "sur la plateforme de chat <a href=\"/\">DONUT.me</a>. <a href=\"/\">DONUT.me</a> vous permet de rejoindre ou créer un salon de discussion thématique (discussion) sur ce qui vous plait. Vous pouvez y discuter avec des gens qui partagent vos centres d'intérêt"
       },
       "permalink": "Permalien de ce profil",
-      "editusers": "Liste des utilisateurs",
+      "editusers": "Gérer les participants",
       "createdat": "créé le",
-      "usersallowed": "Gérer les invitations"
+      "usersallowed": "Invitations & demandes"
     },
     "group": {
       "ownerops": "Les habitués",
       "nouser": "Pas d'utilisateur dans cette communauté",
       "permalink": "Permalien de ce profil",
-      "editlink": "Editer",
+      "editlink": "Editer le profil",
       "profilelink": "Profil de ",
       "editusers": "Gérer les utilisateurs",
       "createdat": "créé le",
@@ -409,7 +411,7 @@
       "rooms": "discussions",
       "rooms-created": "discussions créées",
       "title": "Bienvenue!",
-      "disclaimer": "Lancez-vous sur DONUT, rejoignez ou en créez des communautés et des discussions qui vous ressemblent.",
+      "disclaimer": "Lancez-vous sur DONUT, rejoignez ou créez des communautés et des discussions qui vous ressemblent.",
       "userstitle": "Utilisateurs",
       "whats-new-title": "NOUVEAU sur DONUT!",
       "communities-title": "COMMUNAUTES suggérées",
@@ -433,8 +435,8 @@
       "search_in_rooms": "chercher des discussions",
       "search_in_groups": "chercher des communautés"
     },
-    "userscount": "<strong>__count__</strong> utilisateur",
-    "userscount_plural": "<strong>__count__</strong> utilisateurs",
+    "userscount": "<strong>__count__</strong> participant",
+    "userscount_plural": "<strong>__count__</strong> participants",
     "topic": {
       "label": "En ce moment",
       "placeholder": "Entrez ici le sujet de la conversation, l'humeur, l'ambiance ...",
@@ -681,15 +683,15 @@
     "users": {
       "username": "Nom d'utilisateur",
       "usertype": "Type",
-      "users": "Utilisateur",
-      "users_plural": "Utilisateurs",
-      "link": "Liste des utilisateurs",
+      "users": "Participant",
+      "users_plural": "Participants",
+      "link": "Gérer les participants",
       "label": "Voir tous",
       "search": "rechercher des utilisateurs dans cette discussion",
       "search-group": "rechercher des utilisateurs dans cette community",
       "type": {
         "owner": "Créateur",
-        "users": "Utilisateurs",
+        "users": "Participants",
         "op": "Modérateurs",
         "allowed": "Utilisateurs autorisés",
         "regular": "Utilisateurs autorisés",
@@ -702,7 +704,7 @@
       "usernotexist": "Cette utilisateur n'existe pas."
     },
     "access": {
-      "link": "Accès",
+      "link": "Règles d'accès",
       "labelsearch": "Autoriser des utilisateurs",
       "add": "Autoriser un utilisateur",
       "labelpending": "Utilisateurs en attente d'autorisation",
@@ -1049,7 +1051,7 @@
     "administrator": "Modérateurs",
     "users": "Utilisateurs",
     "manage": "Gérer les membres",
-    "invite": "Inviter des membres",
+    "invite": "Invitations & demandes",
     "members": "Liste des membres",
     "ask-membership": "devenir membre",
     "blocked": "Saisissez le mot de passe d'accès direct à la communauté",
@@ -1057,7 +1059,7 @@
     "already-member": "<strong>@__username__</strong> est déjà membre de cette communauté",
     "banned": "<strong>@__username__</strong> est banni de cette communauté",
     "default-member": "Vous êtes membre de cette communauté",
-    "default-owner": "Vous êtes propriétaire de cette communauté",
+    "default-owner": "Vous êtes le créateur de cette communauté",
     "default-op": "Vous êtes administrateur de cette communauté",
     "default-admin": "Vous êtes administrateur",
     "default-disclaimer": "Vous n'êtes pas encore membre de cette communauté donc vous ne voyez que du contenu public.",

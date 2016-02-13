@@ -1,3 +1,19 @@
+<% if (isMobile) { %>
+    <div class="mobile flex-parent">
+        <% if (isIphone) { %><div class="ios"><%= t('landing.mobile.ios') %></div>
+        <% } else if (isAndroid) { %><div class="android"><%= t('landing.mobile.android') %></div>
+        <% } else if (isWindows) { %><div class="android"><%= t('landing.mobile.windows') %></div>
+        <% } else { %>
+            <div class="none"><%= t('landing.mobile.none') %></div>
+        <% } %>
+
+        <% if(isIphone || isAndroid || isWindows) { %>
+            <a href="/get-the-app" class="get-app flex-parent column center jc-center">
+                <%= t('landing.mobile.get-the-app') %>
+            </a>
+        <% } %>
+    </div>
+<% } %>
 <header>
     <nav class="navbar">
         <div class="navbar-header">

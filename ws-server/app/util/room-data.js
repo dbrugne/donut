@@ -22,19 +22,20 @@ module.exports = function (user, room, fn) {
     data.group_owner = room.group.owner;
     data.group_default = room.group.default;
     data.group_avatar = room.group._avatar();
+    data.allow_group_member = !!(room.allow_group_member && room.group);
   }
   if (room.owner) {
     data.owner_id = room.owner.id;
     data.owner_username = room.owner.username;
   }
 
+  data.allow_user_request = room.allow_user_request;
+
   var isRoomBlocked = room.isUserBlocked(user.id);
   var isUserBlocked = user.isRoomBlocked(room.id);
   if (isRoomBlocked || isUserBlocked) {
     data.blocked = true;
-    data.allow_user_request = room.allow_user_request;
     data.hasPassword = !!room.password;
-    data.allow_group_member = !!(room.allow_group_member && room.group);
     if (isRoomBlocked === 'groupbanned' || user.isRoomGroupBanned(room.id)) {
       data.blocked_why = 'groupban';
     } else if (isRoomBlocked === 'banned') {

@@ -23,7 +23,8 @@ router.get('/get-the-app', [require('csurf')()], function (req, res) {
     meta: meta,
     isIphone: isMobile(req.headers['user-agent']).apple.phone,
     isAndroid: isMobile(req.headers['user-agent']).android.phone,
-    isWindows: isMobile(req.headers['user-agent']).windows.phone
+    isWindows: isMobile(req.headers['user-agent']).windows.phone,
+    isMobile: isMobile(req.headers['user-agent']).any
   });
 });
 

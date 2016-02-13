@@ -28,7 +28,8 @@
 }
 
 #signup, #landing, #forgot, #reset, .body-static  {
-  header { background-color: #1d252f; width: 100%; z-index: 100; .transition(background-color 300ms);
+  .mobile + header { top: 52px; }
+  header { background-color: #1d252f; width: 100%; z-index: 100; .transition(background-color 300ms); position: fixed; top: 0;
     .navbar-toggle { float:left;
       .icon-bar { background-color:#FFF; }
     }
@@ -44,15 +45,16 @@
     }
     .lang:last-child a:after { background-color: transparent; }
   }
-}
-
-#landing { background-color: #FFF; @height:500px;
-  header { position: fixed; background-color: transparent; }
-  &.clean header { background-color: #1d252f; }
   .mobile { background-color: @cl-first; height: 52px; width: 100%; z-index: 100; position: fixed; top: 0; left: 0; .ft-opensans-semibold; font-size: 14px; color: #FFFFFF; line-height: 14px; padding: 5px;
     .ios, .android { padding: 5px; .flex(1); }
     .get-app { background-color: #FFF; color: @cl-first; padding: 5px 10px; text-transform: uppercase;}
   }
+}
+
+#landing { background-color: #FFF; @height:500px;
+  header { background-color: transparent; }
+  .mobile + header { top: 52px; }
+  &.clean header { background-color: #1d252f; }
   .authenticate { width: 100%;
     .login {
       .ft-courgette;

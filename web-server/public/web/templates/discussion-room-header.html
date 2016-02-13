@@ -16,13 +16,11 @@
     </div>
 
     <div class="flex-parent jc-center center">
+        <% var mode = (data.mode === 'public' ? 'public' : 'private' + (data.allow_user_request ? '-invites' : '') + (data.allow_group_member ? '-group' : '')) %>
         <% if(data.mode !== 'public') { %>
-            <span class="room-profile" data-toggle="tooltip" data-placement="left" title="<%= t('global.mode.description.' + (data.mode === 'public' ? 'public' : 'private' + (data.allow_user_request ? '-invites' : '') + (data.allow_group_member ? '-group' : ''))) %>">
-                <% if(data.allow_group_member) { %>
-                    <i class="icon icon-members cl-gray"></i>
-                <% } else { %>
-                    <i class="icon icon-private cl-gray"></i>
-                <% } %>
+            <% var icon = data.allow_group_member ? 'members' : 'private'; %>
+            <span class="room-profile" data-toggle="tooltip" data-placement="left" title="<%= t('global.mode.title.' + mode) + ': ' + t('global.mode.description.' + mode) %>">
+                <span class="icon icon-<%= icon %> cl-gray"></span>
             </span>
             <div class="separator"></div>
         <% } %>
@@ -43,7 +41,7 @@
                 <% if (data.isOwner || data.isAdmin) { %>
                 <li role="presentation">
                     <a role="menuitem" tabindex="-1" class="open-room-edit" data-room-id="<%= data.room_id %>">
-                        <i class="icon icon-pencil"></i> <%= t('global.edit') %>
+                        <i class="icon icon-pencil"></i> <%= t('profile.common.editlink') %>
                     </a>
                 </li>
                 <% }; %>

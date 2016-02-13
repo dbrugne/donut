@@ -7,6 +7,8 @@
     "mobile": {
       "ios": "DONUT chat is now available for Iphone",
       "android": "DONUT chat is now available for Android",
+      "windows": "DONUT chat is now available for Windows phone",
+      "none": "DONUT is available on iOS and Android app stores. You are invited to experience DONUT on your desktop.",
       "get-the-app": "get the app",
       "get-the-app2": "get the app",
       "best-experience": "get the best experience",
@@ -311,7 +313,7 @@
   },
   "profile": {
     "common": {
-      "editlink": "Edit"
+      "editlink": "Edit profile"
     },
     "room": {
       "ownerops": "The regulars",
@@ -321,16 +323,16 @@
         "before": "This page is the profile of the discussion ",
         "after": "on the chat platform <a href=\"/\">DONUT.me</a>. On <a href=\"/\">DONUT.me</a> you can join or create a thematic chat room (a discussion) about whatever you like. You can chat with people who share your interests."
       },
-      "permalink": "permalink of this profile",
-      "editusers": "user list",
+      "permalink": "Permalink of this profile",
+      "editusers": "Manage participants",
       "createdat": "created on",
-      "usersallowed": "manage invitations"
+      "usersallowed": "Invites & requests"
     },
     "group": {
       "ownerops": "The regulars",
       "nouser": "No user in this community",
       "permalink": "permalink of this profile",
-      "editlink": "edit",
+      "editlink": "Edit profile",
       "profilelink": "profile of ",
       "editusers": "manage members",
       "createdat": "created on",
@@ -433,8 +435,8 @@
       "search_in_rooms": "search for rooms",
       "search_in_groups": "search for communities"
     },
-    "userscount": "<strong>__count__</strong> user",
-    "userscount_plural": "<strong>__count__</strong> users",
+    "userscount": "<strong>__count__</strong> participant",
+    "userscount_plural": "<strong>__count__</strong> participants",
     "topic": {
       "label": "Currently",
       "placeholder": "Enter the conversation topic, the mood,...",
@@ -442,7 +444,7 @@
       "users": "User's list of this discussion"
     },
     "owner": {
-      "state": "owner",
+      "state": "creator",
       "is": "This user is the creator of this discussion.",
       "isgroup": "This user is the creator of this community"
     },
@@ -663,7 +665,7 @@
       "onestart": "This conversation is private. Only you and your interlocutor can see it.",
       "edit": "edit profile",
       "users": "manage users",
-      "access": "manage invitations",
+      "access": "access rules",
       "invite": "invite users"
     },
     "shouldauthenticated": "You must be logged in to access chat (<a href='/signup'>signup</a> or <a href='/login'>login</a>)",
@@ -682,15 +684,15 @@
     "users": {
       "username": "Username",
       "usertype": "Type",
-      "users": "User",
-      "users_plural": "Users",
-      "link": "User list",
+      "users": "Participant",
+      "users_plural": "Participants",
+      "link": "Manage participants",
       "label": "See all",
       "search": "search a username in this discussion",
       "search-group": "search a username in this community",
       "type": {
         "owner": "Owner",
-        "users": "Users",
+        "users": "Participants",
         "op": "Moderators",
         "allowed": "Authorized users",
         "regular": "Authorized users",
@@ -703,7 +705,7 @@
       "usernotexist": "User not found"
     },
     "access": {
-      "link": "access",
+      "link": "Access rules",
       "labelsearch": "Allow users",
       "add": "Allow a user",
       "labelpending": "Pending users",
@@ -1050,7 +1052,7 @@
     "administrator": "Moderators",
     "users": "Users",
     "manage": "Manage members",
-    "invite": "Invite members",
+    "invite": "Invites & requests",
     "members": "Members list",
     "ask-membership": "request membership",
     "blocked": "This community is blocked by a password, to join we invite you to type it",
@@ -1058,7 +1060,7 @@
     "already-member": "<strong>@__username__</strong> is already member this community",
     "banned": "<strong>@__username__</strong> is already ban this community",
     "default-member": "You are a member of this community",
-    "default-owner": "You are owner of this community",
+    "default-owner": "You are the creator of this community",
     "default-op": "You are an admin of this community",
     "default-admin": "You are an admin",
     "default-disclaimer": "You are not yet a member of this community so you can only see public content.",
