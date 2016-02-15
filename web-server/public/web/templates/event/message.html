@@ -45,11 +45,13 @@
         <% } %>
     </div>
     <div class="date pull-right"><span class="moment" data-time="<%= data.time %>" title="<%= data.datefull %>"><%= data.dateshort %></span></div>
-    <% if(!data.is_admin && data.type === 'roommessage' && data.isOwnerAdminOrOp) { %> <!--Only display for non admin messages, room:message, and to user that have the proper rights-->
+    <% if(data.is_editable || (!data.is_admin && data.type === 'roommessage' && data.isOwnerAdminOrOp)) { %>
         <div class="actions">
             <div class="action spammed ml5"><%= t('chat.message.dropdown.spam.mark-spam') %></div>
             <div class="action unspam ml5"><%= t('chat.message.dropdown.spam.unmark-spam') %></div>
-            <div class="action edit ml5"><%= t('chat.message.dropdown.edit') %></div>
+            <% if(data.is_editable) { %>
+                <div class="action edit ml5"><%= t('chat.message.dropdown.edit') %></div>
+            <% } %>
         </div>
     <% } %>
 </div>
