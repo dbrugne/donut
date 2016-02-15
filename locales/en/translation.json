@@ -180,6 +180,8 @@
     "reason": "for the following reason: "
   },
   "global": {
+    "owner": "owner",
+    "op": "moderator",
     "welcome": "Welcome !",
     "ones": "One to one",
     "rooms": "Discussions",

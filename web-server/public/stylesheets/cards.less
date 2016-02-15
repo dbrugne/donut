@@ -7,12 +7,14 @@
       @top-height:138px;
       .top { overflow: hidden;
         .ctn { height:@top-height;
-            .avatar   { z-index: 2; width:60px; height:60px; left: 120px; box-shadow: 0px 5px 9px 0px rgba(28,37,47,0.50); background-size: contain; background-color: #FFFFFF; }
-            .username { z-index: 2; margin-top:8px; width:300px; text-align:center; padding: 0 20px; overflow:hidden; height: 22px;
-              a { .ft-opensans-semibold; font-size: 1.7rem; color: #FFFFFF; line-height: 1.4rem; height: 22px; }
-            }
-            .location { z-index: 2; margin-top:2px; width:300px; text-align:center; padding: 0 20px; overflow:hidden; height: 14px; .ft-opensans; font-size: 11px; color: #AFBAC8; letter-spacing: 0.84px; line-height: 14px; }
+          .avatar   { z-index: 2; width:60px; height:60px; left: 120px; box-shadow: 0px 5px 9px 0px rgba(28,37,47,0.50); background-size: contain; background-color: #FFFFFF; }
+          .username { z-index: 2; margin-top:8px; width:300px; text-align:center; padding: 0 20px; overflow:hidden; height: 22px;
+            a { .ft-opensans-semibold; font-size: 1.7rem; color: #FFFFFF; line-height: 1.4rem; height: 22px; }
           }
+          .location { z-index: 2; margin-top:2px; width:300px; text-align:center; padding: 0 20px; overflow:hidden; height: 14px; .ft-opensans; font-size: 11px; color: #AFBAC8; letter-spacing: 0.84px; line-height: 14px; }
+          .status { z-index: 3; position:absolute; top: 15px; right: 15px;  width: 22px; height:22px;
+          }
+        }
         .overlay { z-index: 1; position:absolute; top:0; left:0; width:@card-width; height:@top-height; opacity: 0.5; background-color: #000;}
         .background { z-index: 0; position:absolute; top:0; left:0; width:@card-width; height:@top-height; background-size: cover; background-position: center center; filter: blur(7px); -webkit-filter: blur(7px); }
       }

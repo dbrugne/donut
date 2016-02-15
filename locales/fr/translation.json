@@ -180,6 +180,8 @@
     "reason": "pour la raison suivante : "
   },
   "global": {
+    "owner": "créateur",
+    "op": "modérateur",
     "welcome": "Bienvenue !",
     "ones": "Tête à tête",
     "rooms": "Discussions",
