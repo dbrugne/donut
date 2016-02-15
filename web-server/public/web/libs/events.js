@@ -66,11 +66,11 @@ exports.prototype.insertTop = function (events) {
     if (!previous || !date.isSameDay(event.data.time, previous.data.time)) {
       var myDate = new Date(event.data.time);
       _html = require('../templates/event/block-date.html')({
-          time: event.data.time,
-          date: myDate.getFullYear() + '-' + (myDate.getMonth() + 1) + '-' + myDate.getDate(),
-          str: date.longDate(event.data.time),
-          dateClass: date.block(event.data.time)
-        }) + _html;
+        time: event.data.time,
+        date: myDate.getFullYear() + '-' + (myDate.getMonth() + 1) + '-' + myDate.getDate(),
+        str: date.longDate(event.data.time),
+        dateClass: date.block(event.data.time)
+      }) + _html;
     }
 
     html += _html;
@@ -220,8 +220,6 @@ exports.prototype._data = function (type, data) {
       : 'other';
   }
 
-  data.is_editable = this.isEditable(data, type);
-
   if (data.message || data.topic) {
     var subject = data.message || data.topic;
     subject = common.markup.toHtml(subject, {
@@ -281,27 +279,6 @@ exports.prototype._data = function (type, data) {
     type: type,
     data: data
   };
-};
-
-exports.prototype.isEditable = function (data, type) {
-  if (_.indexOf(['room:message', 'user:message'], type) === -1) {
-    return false;
-  }
-
-  if (data.special && data.special !== 'me') {
-    return false;
-  }
-
-  if (app.user.get('user_id') !== data.user_id) {
-    return false;
-  }
-
-  var time = data.time;
-  if (((Date.now() - new Date(time)) > window.message_maxedittime)) {
-    return false;
-  }
-
-  return !data.spammed;
 };
 
 exports.prototype.renderBlockUser = function (event) {
