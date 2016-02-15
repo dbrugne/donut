@@ -79,6 +79,15 @@
                 </label>
             </div>
         </div>
+
+        <div class="form-group">
+            <label><%= t('preferences.language.title') %></label>
+            <select name="" class="form-control language-switcher">
+                <option value="fr" data-language="fr" class="switch" <% language === 'fr' ? print('selected="selected"') : print('') %> ><%= t('preferences.language.fr') %></option>
+                <option value="en" data-language="en" class="switch" <% language === 'en' ? print('selected="selected"') : print('') %> ><%= t('preferences.language.en') %></option>
+            </select>
+        </div>
+
         <% if(bannedUsers.length > 0) { %>
             <h2><%= t('preferences.notif.banned-users') %></h2>
             <div class="form-group users">

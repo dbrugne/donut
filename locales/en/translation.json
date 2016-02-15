@@ -1731,6 +1731,11 @@
         }
       },
       "banned-users": "Users locked by you"
+    },
+    "language": {
+      "title": "Language",
+      "fr": "french",
+      "en": "english"
     }
   },
   "popins": {

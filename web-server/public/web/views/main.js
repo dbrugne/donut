@@ -71,7 +71,7 @@ var MainView = Backbone.View.extend({
     'click .close-group': 'onCloseGroup',
     'click .close-discussion': 'onCloseDiscussion',
     'click .open-room-access': 'openRoomAccess',
-    'click .switch[data-language]': 'switchLanguage',
+    'change .language-switcher': 'switchLanguage',
 
     'click .action-user-ban': 'userBan',
     'click .action-user-deban': 'userDeban',
@@ -613,7 +613,7 @@ var MainView = Backbone.View.extend({
   },
   switchLanguage: function (event) {
     event.preventDefault();
-    var language = $(event.currentTarget).data('language');
+    var language = $(event.currentTarget).find('option:selected').data('language');
     if (!language) {
       return;
     }

@@ -1731,6 +1731,11 @@
         }
       },
       "banned-users": "Utilisateurs que vous avez bloqué"
+    },
+    "language": {
+      "title": "Langue",
+      "fr": "français",
+      "en": "anglais"
     }
   },
   "popins": {
