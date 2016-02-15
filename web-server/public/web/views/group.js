@@ -164,7 +164,8 @@ var GroupView = Backbone.View.extend({
   },
   removeView: function () {
     this.groupUsersView._remove();
-    this.cardsView._remove();
+    this.roomsView._remove();
+    this.usersView._remove();
     this.remove();
   },
   onFocusChange: function () {
