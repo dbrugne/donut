@@ -31,7 +31,6 @@ var RoomUsersView = Backbone.View.extend({
     this.listenTo(this.collection, 'users-redraw', this.render);
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
 
-    this.$users = this.$('.users');
     this.$popinUsers = $('#popin-user');
 
     this.$popinUsers.mouseenter(_.bind(function () {
@@ -40,8 +39,6 @@ var RoomUsersView = Backbone.View.extend({
     this.$popinUsers.mouseleave(_.bind(function () {
       this.hidePopin();
     }, this));
-
-    this.$list = this.$users.find('.list');
 
     this.model.users.fetchUsers();
   },
@@ -68,13 +65,10 @@ var RoomUsersView = Backbone.View.extend({
       isOwner: this.model.currentUserIsOwner(),
       isOp: this.model.currentUserIsOp(),
       isAdmin: app.user.isAdmin(),
-      room_id: this.model.get('id')
+      room_id: this.model.get('id'),
+      count: this.collection.length
     });
-    this.$list.html(html);
-
-    this.$count = this.$users.find('.count');
-    var countHtml = i18next.t('chat.userscount', {count: this.collection.length});
-    this.$count.html(countHtml);
+    this.$el.html(html);
 
     this.$('[data-toggle="tooltip"]').tooltip({container: 'body'});
 
