@@ -284,7 +284,7 @@ groupSchema.methods.getIdsByType = function (type) {
   return ids;
 };
 
-groupSchema.methods.count = function () {
+groupSchema.methods.countMembers = function () {
   var count = 0;
   count += this.owner ? 1 : 0;
   count += this.members ? this.members.length : 0;
@@ -293,6 +293,24 @@ groupSchema.methods.count = function () {
 
 groupSchema.methods.getIdentifier = function () {
   return '#' + this.name;
+};
+
+groupSchema.methods.toClientJSON = function () {
+  var data = {
+    group_id: this.id,
+    identifier: this.getIdentifier(),
+    name: this.name,
+    avatar: this._avatar(),
+    description: this.description,
+    members: this.countMembers()
+  };
+
+  if (this.owner && this.owner._id) {
+    data.owner_id = this.owner.id;
+    data.owner_username = this.owner.username;
+  }
+
+  return data;
 };
 
 module.exports = mongoose.model('Group', groupSchema);

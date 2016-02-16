@@ -34,8 +34,8 @@ var roomSchema = mongoose.Schema({
     count: Number,
     created_at: {type: Date, default: Date.now}
   }],
-  allow_group_member: {type: Boolean, default: true},
-  allow_user_request: {type: Boolean, default: true},
+  allow_group_member: {type: Boolean},
+  allow_user_request: {type: Boolean},
   allowed: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
   allowed_pending: [{
     user: {type: mongoose.Schema.ObjectId, ref: 'User'},
@@ -448,6 +448,12 @@ roomSchema.methods.getIdsByType = function (type) {
   return ids;
 };
 
+roomSchema.methods.countUsers = function () {
+  var count = 0;
+  count += this.users ? this.users.length : 0;
+  return count;
+};
+
 roomSchema.methods.getIdentifier = function () {
   if (!this.group) {
     return '#' + this.name;
@@ -455,6 +461,44 @@ roomSchema.methods.getIdentifier = function () {
   if (this.group.name) {
     return '#' + this.group.name + '/' + this.name;
   }
+};
+
+roomSchema.methods.toClientJSON = function () {
+  var data = {
+    room_id: this.id,
+    identifier: this.getIdentifier(),
+    name: this.name,
+    avatar: this._avatar(),
+    mode: this.mode,
+    users: this.countUsers()
+  };
+
+  if (this.group && this.group._id) {
+    data.group_id = this.group.id;
+    data.group_name = this.group.name;
+    data.group_avatar = this.group._avatar();
+  }
+
+  if (this.owner && this.owner._id) {
+    data.owner_id = this.owner.id;
+    data.owner_username = this.owner.username;
+  }
+
+  if (this.mode === 'private') {
+    if (this.group) {
+      data.allow_group_member = (this.allow_group_member === true);
+    }
+    data.allow_user_request = (this.allow_user_request === true);
+  }
+
+  if (this.description) {
+    data.description = this.description;
+  }
+  if (this.topic) {
+    data.topic = this.topic;
+  }
+
+  return data;
 };
 
 module.exports = mongoose.model('Room', roomSchema);
