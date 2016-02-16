@@ -120,18 +120,7 @@ module.exports = Backbone.View.extend({
     }
 
     if (model.get('type') === 'group') {
-      this.$list.find('[data-type="group"][data-group-id="' + model.get('id') + '"]').addClass('active');
-      // @todo : group creation confirmation popin
-//      if (data.popin) {
-//        var $popin = $('#popin');
-//        $popin.find('.modal-title').html(i18next.t('popins.group-create.title'));
-//        $popin.find('.modal-body').html(i18next.t('popins.group-create.content', {
-//          groupname: data.group_name,
-//          groupid: data.group_id
-//        }));
-//        $popin.modal('show');
-//      }
-      return;
+      return this.$list.find('[data-type="group"][data-group-id="' + model.get('id') + '"]').addClass('active');
     }
 
     if (model.get('type') !== 'room' || !model.get('group_id')) {
