@@ -40,11 +40,12 @@ var RoomUsersView = Backbone.View.extend({
       this.hidePopin();
     }, this));
 
-    this.model.users.fetchUsers();
+    this.model.users.fetchUsers(); // will trigger a users-redraw
   },
   render: function () {
     debug.start('room-users' + this.model.get('name'));
 
+    var count = this.collection.length;
     var models = this.collection.first(this.maxDisplayedUsers);
 
     // redraw user list
@@ -66,7 +67,8 @@ var RoomUsersView = Backbone.View.extend({
       isOp: this.model.currentUserIsOp(),
       isAdmin: app.user.isAdmin(),
       room_id: this.model.get('id'),
-      count: this.collection.length
+      count: count,
+      maxDisplayed: this.maxDisplayedUsers
     });
     this.$el.html(html);
 

@@ -414,7 +414,10 @@
       "new-messages": "nouveaux messages",
       "count-since": "dernier message: __date__",
       "jumpto": "Aller à",
-      "mark-as-read": "Marquer comme lu"
+      "mark-as-read": "Marquer comme lu",
+      "userscount": "__count__ utilisateur",
+      "userscount_plural": "__count__ utilisateurs",
+      "see-all": "voir tout"
     },
     "createadonut": "Nouveau",
     "home": {
