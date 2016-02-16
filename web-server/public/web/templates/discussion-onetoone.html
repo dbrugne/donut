@@ -1,5 +1,28 @@
-<div class="side oneside dc-back <% if (typeof(poster) === 'undefined' || !poster) { %>poster-empty<% } %>" style="<% if (typeof(poster) !== 'undefined' && poster) { %>background-image: url(<%= poster %>);<% }; %>"></div>
-<div class="content" id="onetoone">
+<div class="side relative flex-parent <% if (!poster) { %>poster-empty<% } else { %> poster-full <% } %>" style="<% if (typeof poster !== 'undefined') { %>background-image: url(<%= poster %>);<% }; %>">
+    <div class="handle">
+        <div class="handle-left"></div>
+        <div class="handle-right"></div>
+    </div>
+
+    <div class="blur" style="<% if (typeof posterblured !== 'undefined') { %>background-image: url(<%= posterblured %>);<% }; %>"></div>
+
+    <ul class="nav nav-tabs flex-parent column" role="tablist">
+        <!--<li role="presentation"><a href="#tab-content-room-search"   aria-controls="tab-content-room-search" role="tab" data-toggle="tab"><i class="icon icon-search"></i></a></li>-->
+        <!--<li role="presentation"><a href="#tab-content-room-starred"  aria-controls="tab-content-room-starred" role="tab" data-toggle="tab"><i class="icon icon-star"></i></a></li>-->
+        <!--<li role="presentation"><a href="#tab-content-room-pictures" aria-controls="tab-content-room-pictures" role="tab" data-toggle="tab"><i class="icon icon-camera"></i></a></li>-->
+        <!--<li role="presentation"><a href="#tab-content-room-files"    aria-controls="tab-content-room-files" role="tab" data-toggle="tab"><i class="icon icon-file"></i></a></li>-->
+    </ul>
+
+    <div class="tab-content flex-child">
+        <!--<div role="tabpanel" class="tab-pane room-search"    id="tab-content-room-search">&lt;!&ndash;dynamic content&ndash;&gt;</div>-->
+        <!--<div role="tabpanel" class="tab-pane room-starred"   id="tab-content-room-starred">&lt;!&ndash;dynamic content&ndash;&gt;</div>-->
+        <!--<div role="tabpanel" class="tab-pane room-pictures"  id="tab-content-room-pictures">&lt;!&ndash;dynamic content&ndash;&gt;</div>-->
+        <!--<div role="tabpanel" class="tab-pane room-files"     id="tab-content-room-files">&lt;!&ndash;dynamic content&ndash;&gt;</div>-->
+    </div>
+
+</div><!-- /.side -->
+
+<div class="content">
     <div class="header user"><!-- header view --></div>
     <div class="date-ctn">
         <div class="ctn"></div>
