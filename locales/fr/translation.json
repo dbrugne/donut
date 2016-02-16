@@ -169,7 +169,19 @@
     "muted": "son désactivé",
     "verify": "Verification de votre email"
   },
+  "buttons": {
+    "create-discussion": "Créer une discussion",
+    "manage-members": "Gérer les participants",
+    "invites": "Invitations & demandes"
+  },
+  "messages": {
+    "groupban": "Vous avez été banni de cette communauté.",
+    "groupban-at": "Vous avez été banni de cette communauté le __at__",
+    "reason": "pour la raison suivante : "
+  },
   "global": {
+    "owner": "créateur",
+    "op": "modérateur",
     "welcome": "Bienvenue !",
     "ones": "Tête à tête",
     "rooms": "Discussions",
@@ -420,7 +432,7 @@
       "discussions-title": "DISCUSSIONS suggérées",
       "discussions-disclaimer": "Rejoignez une discussion à propos de tout ce qui vous intéresse",
       "discussions-create": "CREEZ VOTRE DISCUSSION",
-      "browse-more": "Tout découvrir..."
+      "browse-more": "Tout découvrir ..."
     },
     "search": {
       "placeholder": "Rechercher",
@@ -1049,6 +1061,8 @@
   },
   "group": {
     "administrator": "Modérateurs",
+    "creator": "Créateur",
+    "moderators": "Modérateurs",
     "users": "Utilisateurs",
     "manage": "Gérer les membres",
     "invite": "Invitations & demandes",
@@ -1063,10 +1077,19 @@
     "default-op": "Vous êtes administrateur de cette communauté",
     "default-admin": "Vous êtes administrateur",
     "default-disclaimer": "Vous n'êtes pas encore membre de cette communauté donc vous ne voyez que du contenu public.",
-    "disclaimer-start": "Vous n'êtes pas encore membre de cette communauté. Vous pouvez pouvez y rejoindre les discussions publiques et éventuellement demander l'accès à des discussions privées. Les membres d'une communauté ont des privilèges tels que l'accès direct à certaines discussions privées et aux autres membres de la communauté.",
-    "disclaimer-end": " Avant de demander à devenir membre, jetez un oeil aux conditions d'accès de cette communauté :",
+    "disclaimer": "Message de <strong>@__username__</strong> :<br><i class=\"icon icon-quote\"></i>__disclaimer__",
+    "disclaimer-start": "Vous n'êtes pas encore membre de cette communauté donc vous ne voyez que du contenu public.",
     "close": "quitter la communauté",
-    "exit": "fermer le groupe"
+    "exit": "fermer le groupe",
+    "created-at": "créée le",
+    "members": "Membres",
+    "dropdown": {
+      "view-profile": "Voir le profil",
+      "edit-profile": "Editer le profil",
+      "access-rules": "Règles d'accès",
+      "manage-members": "Gérer les participants",
+      "invites": "Invitations & demandes"
+    }
   },
   "account": {
     "error": {
@@ -1708,6 +1731,11 @@
         }
       },
       "banned-users": "Utilisateurs que vous avez bloqué"
+    },
+    "language": {
+      "title": "Langue",
+      "fr": "français",
+      "en": "anglais"
     }
   },
   "popins": {

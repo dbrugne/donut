@@ -44,7 +44,8 @@ var DrawerUserPreferencesView = Backbone.View.extend({
       username: currentUser.get('username'),
       preferences: data.preferences,
       bannedUsers: data.bannedUsers,
-      desktopNeedsPermission: desktop.needsPermission()
+      desktopNeedsPermission: desktop.needsPermission(),
+      language: i18next.lng()
     });
     this.$el.html(html);
 

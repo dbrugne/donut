@@ -169,7 +169,19 @@
     "muted": "sound off",
     "verify": "Verification of your email"
   },
+  "buttons": {
+    "create-discussion": "create a discussion",
+    "manage-members": "Manage members",
+    "invites": "Invites & requests"
+  },
+  "messages": {
+    "groupban": "You were banned from this community.",
+    "groupban-at": "You were banned from this community on __at__",
+    "reason": "for the following reason: "
+  },
   "global": {
+    "owner": "owner",
+    "op": "moderator",
     "welcome": "Welcome !",
     "ones": "One to one",
     "rooms": "Discussions",
@@ -420,7 +432,7 @@
       "discussions-title": "Featured DISCUSSIONS",
       "discussions-disclaimer": "Join a discussion about anything you are interessed in",
       "discussions-create": "CREATE YOUR DISCUSSION",
-      "browse-more": "Browse more..."
+      "browse-more": "Browse more ..."
     },
     "search": {
       "placeholder": "Search",
@@ -664,7 +676,6 @@
       "hasPassword": "Your discussion is private. Configure access conditions so that other users can join.",
       "onestart": "This conversation is private. Only you and your interlocutor can see it.",
       "edit": "edit profile",
-      "users": "manage users",
       "access": "access rules",
       "invite": "invite users"
     },
@@ -1050,6 +1061,8 @@
   },
   "group": {
     "administrator": "Moderators",
+    "creator": "Creator",
+    "moderators": "Moderators",
     "users": "Users",
     "manage": "Manage members",
     "invite": "Invites & requests",
@@ -1064,10 +1077,19 @@
     "default-op": "You are an admin of this community",
     "default-admin": "You are an admin",
     "default-disclaimer": "You are not yet a member of this community so you can only see public content.",
-    "disclaimer-start": "You are not yet a member of this community You can join public discussions or request access to a private discussion. Members have special priviledges such as direct access to certain private discussions and to other members of this community.",
-    "disclaimer-end": "Before you request membership have a glance at this community access conditions :",
+    "disclaimer": "Message from <strong>@__username__</strong> :<br><i class=\"icon icon-quote\"></i>__disclaimer__",
+    "disclaimer-start": "You are not yet a member of this community so you can only see public content.",
     "close": "leave this community",
-    "exit": "close this community page"
+    "exit": "close this community page",
+    "created-at": "created on",
+    "members": "Members",
+    "dropdown": {
+      "view-profile": "View profile",
+      "edit-profile": "Edit profile",
+      "access-rules": "Access rules",
+      "manage-members": "Manage members",
+      "invites": "Invites & requests"
+    }
   },
   "account": {
     "error": {
@@ -1709,6 +1731,11 @@
         }
       },
       "banned-users": "Users locked by you"
+    },
+    "language": {
+      "title": "Language",
+      "fr": "french",
+      "en": "english"
     }
   },
   "popins": {
