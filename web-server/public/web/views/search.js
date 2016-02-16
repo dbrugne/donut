@@ -14,7 +14,6 @@ var SearchPageView = Backbone.View.extend({
   limit: 25,
 
   events: {
-    'click .load-more': 'onLoadMore',
     'click .search-options li': 'onKeyup'
   },
 
@@ -35,7 +34,7 @@ var SearchPageView = Backbone.View.extend({
     this.$el.html(this.template({data: data}));
     this.$options = this.$el.find('.search-options');
     this.cardsView = new CardsView({
-      el: this.$('.cards')
+      el: this.$('.cards-view')
     });
     this.$searchMore = this.$('.load-more');
 
@@ -67,12 +66,12 @@ var SearchPageView = Backbone.View.extend({
   },
   onLoadMore: function () {
     this.cardsView.cleanupEmpty();
-    var count = this.cardsView.count();
-    this.search(this.$search.val(), count, this.getTypes());
+    var skip = 0; // @todo : skip done in cards.js
+    this.search(this.$search.val(), skip, this.getTypes());
   },
   onKeyup: function (event) {
     event.preventDefault();
-    this.cardsView.pending();
+    this.cardsView.renderSpinner();
 
     var what = $(event.currentTarget).data('type');
     if (!what) {

@@ -10,19 +10,21 @@ var HomeFeaturedView = Backbone.View.extend({
     'click .action.left': 'onClickRight',
     'click .action.right': 'onClickLeft'
   },
-  render: function (rooms, groups) {
+  render: function (groups, rooms) {
+    if (!groups.length && !rooms.length) {
+      return this.$el.html('');
+    }
+
+    _.each(groups, function (card) {
+      card.avatar = common.cloudinary.prepare(card.avatar, 300);
+      card.join = urls(card, 'group', 'uri');
+    });
     _.each(rooms, function (card) {
       card.avatar = common.cloudinary.prepare(card.avatar, 300);
       card.join = urls(card, 'room', 'uri');
       if (card.group_id) {
         card.group_avatar = common.cloudinary.prepare(card.group_avatar, 22);
       }
-    });
-
-    _.each(groups, function (card) {
-      card.avatar = common.cloudinary.prepare(card.avatar, 300);
-      card.join = urls(card, 'group', 'uri');
-      card.url = urls(card, 'group', 'url');
     });
 
     var html = this.template({
@@ -32,7 +34,6 @@ var HomeFeaturedView = Backbone.View.extend({
 
     this.$el.html(html);
     this.initializeTooltips();
-
     return this;
   },
   initializeTooltips: function () {

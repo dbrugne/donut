@@ -6,23 +6,24 @@ var CardsView = require('./cards');
 var HomeNewsView = require('./home-news');
 var HomeFeaturedView = require('./home-featured');
 
+var FETCH_EVERY = 5 * 60 * 1000;
+
 var HomeView = Backbone.View.extend({
   el: $('#home'),
   templateSpinner: require('../templates/spinner.html'),
   templateStats: require('../templates/home-stats.html'),
 
-  empty: true,
-  featuredCount: 5, // number of featured to display in header
+  focusedTab: null,
+  fetchedAt: null,
 
   events: {
-    'click .filter-action': 'onClickFilterAction'
+    'click .filter-action[data-type="groups"]': 'onFocusTabGroups',
+    'click .filter-action[data-type="rooms"]': 'onFocusTabRooms'
   },
 
   initialize: function (options) {
-    this.render();
+    this.$('.spinner-content').html(this.templateSpinner());
 
-    var spinner = this.templateSpinner({});
-    this.$('.spinner-content').html(spinner);
     this.$homeStats = this.$('.home-stats');
 
     this.homeNews = new HomeNewsView({
@@ -31,71 +32,103 @@ var HomeView = Backbone.View.extend({
     this.homeFeatured = new HomeFeaturedView({
       el: this.$('.featured')
     });
+
+    this.$groupsTab = this.$('.filter-action[data-type="groups"]');
     this.cardsGroupsView = new CardsView({
-      el: this.$('.cards .content .groups')
+      el: this.$('.cards-view .content .groups'),
+      type: 'groups',
+      loadData: function (skip, fn) {
+        app.client.search({type: 'groups', limit: 9, skip: skip, full: true}, fn);
+      }
     });
+
+    this.$roomsTab = this.$('.filter-action[data-type="rooms"]');
     this.cardsRoomsView = new CardsView({
-      el: this.$('.cards .content .rooms')
+      el: this.$('.cards-view .content .rooms'),
+      type: 'rooms',
+      loadData: function (skip, fn) {
+        app.client.search({type: 'rooms', limit: 9, skip: skip, full: true}, fn);
+      }
     });
   },
   render: function () {
     return this;
   },
-  request: function () {
-    app.client.home(_.bind(this.onHome, this));
-  },
   focus: function () {
-    if (this.empty) {
-      this.request();
+    if (!this.fetchedAt || this.fetchedAt < (Date.now() - FETCH_EVERY)) {
+      this.fetchedAt = Date.now();
+      app.client.home(6, _.bind(this.onHome, this));
     }
+
     this.$el.show();
     app.trigger('setTitle');
   },
   onHome: function (data) {
-    data.fill = true;
     this.$el.removeClass('loading');
 
-    // prepare cards @todo unneeded when client.home updated
-    var rooms = [];
-    var groups = [];
-    _.each(data.rooms.list, function (item) {
-      if (item.type === 'room') {
-        return rooms.push(item);
-      }
-      groups.push(item);
-    });
+    // @todo get it from home handler
+    // this.$homeStats.html(this.templateStats({
+    //   messages_posted: 648,
+    //   onetoones: 15,
+    //   onetoones_unread: true,
+    //   rooms: 57,
+    //   rooms_unread: false,
+    //   rooms_created: 7
+    // }));
+    // this.homeNews.render();
 
-    // @todo get it from stats handler or home handler
-    //this.$homeStats.html(this.templateStats({
-    //  messages_posted: 648,
-    //  onetoones: 15,
-    //  onetoones_unread: true,
-    //  rooms: 57,
-    //  rooms_unread: false,
-    //  rooms_created: 7
-    //}));
+    var groups = (data.groups && data.groups.list && data.groups.list.length)
+      ? data.groups.list
+      : [];
+    var rooms = (data.rooms && data.rooms.list && data.rooms.list.length)
+      ? data.rooms.list
+      : [];
+    this.homeFeatured.render(groups, rooms);
 
-    //this.homeNews.render();
-    this.homeFeatured.render(_.first(rooms, this.featuredCount), _.first(groups, this.featuredCount));
-    this.cardsRoomsView.render({rooms: {list: _.rest(rooms, this.featuredCount)}});
-    this.cardsGroupsView.render({groups: {list: _.rest(groups, this.featuredCount)}});
-    this.empty = false;
+    // first load / reload
+    if (this.cardsGroupsView.loaded) {
+      this.cardsGroupsView.reset();
+      this.cardsRoomsView.reset();
+    }
+    if (!this.focusedTab) {
+      this.focusTabGroups();
+    }
   },
-  onClickFilterAction: function (event) {
-    var elt = $(event.currentTarget);
-
-    // only care when changing selection
-    if (elt.hasClass('active')) {
-      return;
+  onFocusTabGroups: function (event) {
+    event.preventDefault();
+    this.focusTabGroups();
+  },
+  focusTabGroups: function () {
+    this._unfocusTabs();
+    if (!this.cardsGroupsView.loaded) {
+      this.cardsGroupsView.load();
     }
 
-    this.$('.filter-action').each(function () {
-      $(this).toggleClass('active');
-    });
+    this.$groupsTab.addClass('active');
+    this.cardsGroupsView.show();
+  },
+  onFocusTabRooms: function (event) {
+    event.preventDefault();
+    this.focusTabRooms();
+  },
+  focusTabRooms: function () {
+    this._unfocusTabs();
+    if (!this.cardsRoomsView.loaded) {
+      this.cardsRoomsView.load();
+    }
 
-    this.$('.cards-content').find('.toggle-cards').each(function () {
-      $(this).toggleClass('hidden');
-    });
+    this.$roomsTab.addClass('active');
+    this.cardsRoomsView.show();
+  },
+  _unfocusTabs: function (which) {
+    this.$groupsTab.removeClass('active');
+    if (this.cardsGroupsView) {
+      this.cardsGroupsView.hide();
+    }
+    this.$roomsTab.removeClass('active');
+    if (this.cardsRoomsView) {
+      this.cardsRoomsView.hide();
+    }
   }
 });
 
