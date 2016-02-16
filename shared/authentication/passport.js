@@ -333,4 +333,24 @@ function decorateUserWithFacebookProfile (user, profile) {
   }
 }
 
+// bearer token
+var JwtStrategy = require('passport-jwt').Strategy;
+var ExtractJwt = require('passport-jwt').ExtractJwt;
+var options = {
+  jwtFromRequest: ExtractJwt.fromAuthHeader(), // Authorization: JWT issued_jwt_token
+  secretOrKey: conf.oauth.secret
+};
+passport.use(new JwtStrategy(options, function (payload, done) {
+  User.findOne({_id: payload.id}, function (err, user) {
+    if (err) {
+      return done(err, false);
+    }
+    if (user) {
+      done(null, user);
+    } else {
+      done(null, false);
+    }
+  });
+}));
+
 module.exports = passport;
