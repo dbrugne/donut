@@ -12,6 +12,7 @@
   }
 }
 .mail-not-confirmed { margin: 1rem; }
+
 #popin-user { width: 300px; bottom: initial; overflow: visible; z-index: 2;
   .modal-dialog { margin:0 !important; .transition(none);  }
   .modal-content { overflow: hidden; border-radius: 0;
@@ -52,24 +53,6 @@
 
   &.bottom { position: fixed; bottom: 10px; top: initial !important; }
 }
-
-//#welcome {
-//  .modal-dialog {
-//    z-index: 1041; // fix .modal-dialog behind .modal-backdrop for unknown reason
-//  }
-//  .modal-body {
-//    font-size: 1.1em;
-//    .room {
-//      font-size: 0.9em;
-//    }
-//  }
-//  .modal-footer {
-//    span.checkbox {
-//      .pull-left;
-//      margin: 0;
-//    }
-//  }
-//}
 
 #connection {
   .modal-backdrop {
@@ -156,38 +139,21 @@
     }
   }
 }
+
 #confirmation {
-  .modal-backdrop {
-    background-color: @cl-background;
-  }
-  .modal-dialog {
-    margin-top: 10em;
-    width: 400px;
-    .modal-content {
-      .modal-body {
-        text-align: center;
-        .question {
-          margin-bottom: 15px;
-        }
-        .input, .big-input {
-          margin-bottom: 15px;
-          label {
-            font-weight: normal;
-          }
-        }
-        textarea {
-          max-width: 368px;
-          max-height: 450px;
-        }
+  .modal-backdrop { .cl-backdrop; }
+  .modal-dialog { margin-top: 10em; width: 400px;
+    .modal-content { .border-radius(0);
+      .modal-header { background: @cl-first; .ft-opensans-semibold; text-transform: uppercase; font-size: 12px; color: #FFFFFF; letter-spacing: 1.6px; line-height: 14px; text-align: center; min-height: 50px; padding: 15px 30px 15px 15px;
+        .close-modal { position: absolute; right: 10px; top: 10px; }
+      }
+      .modal-body { padding: 25px; text-align: center;
+        .question, .message { margin-bottom: 15px; .ft-opensans; font-size: 13px; color: #8491A1; line-height: 14px; }
+        .input, .big-input { .border-radius(0); margin-bottom: 15px; label { font-weight: normal; } }
+        textarea { max-width: 368px; max-height: 450px; }
         .buttons {
-          .cancel {
-            .btn;
-            .btn-danger;
-          }
-          .confirm {
-            .btn;
-            .btn-success;
-          }
+          .cancel { .ft-opensans-semibold; font-size: 11px; color: #AFBAC8; line-height: 35px; width: 200px; }
+          .confirm { background: #E7ECF3; .border-radius(4px); .ft-opensans-semibold; font-size: 11px; color: #586473; letter-spacing: 0.84px; line-height: 35px; text-transform: uppercase; width: 200px; }
         }
       }
     }
