@@ -825,7 +825,7 @@
           },
           "poster": {
             "label": "Poster",
-            "help": "The poster is the large vertical image on the right-hand side of the chat thread. Recommended dimensions: 430px width, 975px height."
+            "help": "The poster is the large vertical image on the right-hand side of the chat thread. Recommended dimensions: 315px width, 806px height."
           },
           "upload": {
             "nopicture": "No picture",

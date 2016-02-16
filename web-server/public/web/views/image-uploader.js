@@ -112,8 +112,8 @@ var ImageUploaderView = Backbone.View.extend({
       url = 'https://res.cloudinary.com/roomly/image/upload/b_rgb:ffffff,c_fill,f_jpg,g_face,h_30,w_30/' +
         'v' + version + '/' + identifier + '.jpg';
     } else {
-      if (identifier.indexOf('h_1100,w_430') !== -1) {
-        url = identifier.replace('h_1100,w_430', 'h_30,w_30');
+      if (identifier.indexOf('h_806,w_315') !== -1) {
+        url = identifier.replace('h_806,w_315', 'h_30,w_30');
       } else {
         url = common.cloudinary.prepare(identifier, 30);
       }
