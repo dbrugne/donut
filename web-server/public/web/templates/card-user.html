@@ -17,6 +17,15 @@
                 </a>
             </div>
             <div class="location"><% if (card.location) { %><%=card.location%><% } %></div>
+            <% if(card.is_owner || card.is_op) { %>
+             <div class="status flex-parent center jc-center" data-toggle="tooltip" title="<%= card.is_owner ? t('global.owner') : t('global.op') %>">
+                 <% if(card.is_owner) { %>
+                     <i class="icon icon-owner"></i>
+                 <% } else { %>
+                     <i class="icon deop-icon"></i>
+                 <% } %>
+             </div>
+            <% } %>
         </div>
         <div class="overlay"></div>
         <div class="background" style="background-image:url(<%= card.avatar %>)"></div>
