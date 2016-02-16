@@ -124,7 +124,10 @@ var RoomUsersView = Backbone.View.extend({
         return;
       }
       if (user.location) {
-        this.$popinUsers.find('.location').removeClass('hidden').find('.ctn').html(user.location);
+        this.$popinUsers.find('.location').find('.ctn').html(user.location);
+      }
+      if (user.bio) {
+        this.$popinUsers.find('.bio').find('.ctn').html(user.bio);
       }
     }, this));
   },
