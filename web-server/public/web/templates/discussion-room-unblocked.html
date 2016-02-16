@@ -1,4 +1,9 @@
 <div class="side relative flex-parent <% if (!data.poster) { %>poster-empty<% } else { %> poster-full <% } %>" style="<% if (typeof data.poster !== 'undefined') { %>background-image: url(<%= data.poster %>);<% }; %>">
+    <div class="handle">
+        <div class="handle-left"></div>
+        <div class="handle-right"></div>
+    </div>
+
     <div class="blur" style="<% if (typeof data.posterblured !== 'undefined') { %>background-image: url(<%= data.posterblured %>);<% }; %>"></div>
 
     <ul class="nav nav-tabs flex-parent column" role="tablist">

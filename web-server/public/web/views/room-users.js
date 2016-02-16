@@ -2,7 +2,6 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var app = require('../libs/app');
-var i18next = require('i18next-client');
 var common = require('@dbrugne/donut-common/browser');
 var donutDebug = require('../libs/donut-debug');
 var urls = require('../../../../shared/util/url');
@@ -22,7 +21,6 @@ var RoomUsersView = Backbone.View.extend({
   timeoutHide: 0,
 
   events: {
-    'click .compact-mode': 'compact',
     'click li.li-user': 'fillPopin',
     'mouseleave li.li-user': 'hidePopin'
   },
@@ -86,9 +84,6 @@ var RoomUsersView = Backbone.View.extend({
       this.collection.fetchUsers();
     }
   },
-  compact: function () {
-    this.$el.toggleClass('compact');
-  },
   fillPopin: function (event) {
     clearTimeout(this.timeoutHide);
 
@@ -98,7 +93,7 @@ var RoomUsersView = Backbone.View.extend({
     }
 
     var offset = elt.offset();
-    var user = this.collection.get(elt.data('user-id')).toJSON()
+    var user = this.collection.get(elt.data('user-id')).toJSON();
     user.avatar = common.cloudinary.prepare(user.avatar, 100);
     user.uri = urls(user, 'user', 'uri');
 

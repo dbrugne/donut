@@ -13,6 +13,10 @@ var UsersView = require('./room-users');
 var RoomView = Backbone.View.extend({
   template: require('../templates/discussion-room-unblocked.html'),
 
+  events: {
+    'click .handle>div': 'onCollapse'
+  },
+
   initialize: function () {
     this.listenTo(this.model, 'change:avatar', this.onAvatar);
     this.listenTo(this.model, 'change:poster', this.onPoster);
@@ -111,6 +115,9 @@ var RoomView = Backbone.View.extend({
     this.$el.find('[data-toggle="tooltip"]').tooltip({
       container: 'body'
     });
+  },
+  onCollapse: function () {
+    this.$('.side').toggleClass('collapsed');
   }
 });
 
