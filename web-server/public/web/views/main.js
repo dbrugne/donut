@@ -39,7 +39,7 @@ var NavOnesView = require('./nav-ones');
 var NavRoomsView = require('./nav-rooms');
 var NavGroupsView = require('./nav-groups');
 var ConfirmationView = require('./modal-confirmation');
-var SearchView = require('./home-search');
+var SearchView = require('./nav-search');
 
 var MainView = Backbone.View.extend({
   el: $('body'),
