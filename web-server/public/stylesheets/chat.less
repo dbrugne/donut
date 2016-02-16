@@ -413,7 +413,7 @@
       }
     }
     #search { height: 100%; display: none; background-color: @cl-background2; overflow-y: auto; .scrollbar-grey;
-      .cards { .scrollbar-grey-thin; overflow: auto; .display-flex; .flex-flow(row wrap); margin: 15px 30px; .justify-content(center); }
+      .cards-view { .scrollbar-grey-thin; overflow: auto; .display-flex; .flex-flow(row wrap); margin: 15px 30px; .justify-content(center); }
       .search { position: relative; margin: 20px 20px 2px;
         .input-group { width: 100%;
           input { .border-radiuses(4px, 0, 0, 4px); }
@@ -469,9 +469,9 @@
               &.active { border-bottom: 3px solid @cl-first; color: #1D252F; }
             }
           }
-          .cards { width: @max-home-width;
+          .cards-view { width: @max-home-width;
             .content {
-              .groups, .rooms { .scrollbar-grey-thin; overflow: auto; .display-flex; .flex-flow(row wrap); margin: 15px 0; .justify-content(center); }
+              .groups .list, .rooms .list { .scrollbar-grey-thin; overflow: auto; .display-flex; .flex-flow(row wrap); margin: 15px 0; .justify-content(center); }
             }
           }
         }

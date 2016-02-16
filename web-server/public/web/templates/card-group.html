@@ -1,0 +1,52 @@
+<div class="card group">
+    <div class="top relative">
+        <div class="ctn flex-parent column center jc-center">
+            <a class="open-group-profile avatar-ctn" data-group-id="<%=card.group_id%>">
+                <div class="avatar" style="background-image:url(<%= card.avatar %>)"></div>
+            </a>
+            <div class="name">
+                <a class="open-group-profile flex-child flex-parent center jc-center" data-group-id="<%=card.group_id%>">
+                    <span class="value">
+                        <%=card.identifier%>
+                    </span>
+                </a>
+            </div>
+            <div class="owner">
+                <% if (card.owner_id) { %>
+                <span class="by"><%= t('global.by') %> </span><a class="open-user-profile" data-user-id="<%= card.owner_id %>">@<%= card.owner_username %></a>
+                <% } %>
+            </div>
+        </div>
+        <div class="background-ctn">
+            <div class="overlay"></div>
+            <div class="background" style="background-image:url(<%= card.avatar %>)"></div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="description">
+            <%= card.description %>
+        </div>
+        <div class="discussions flex-parent column">
+            <div class="flex-parent center flex-child">
+                <div class="title">Discussions:</div>
+                <div class="avatars flex-parent jc-center center ml5">
+                    <% _.each(card.rooms, function(c) { %>
+                    <div class="discussion-avatar img-circle ml5 open-room-profile" data-room-id="<%= c.room_id %>" data-toggle="tooltip" title="<%= c.identifier %>" style="background-image:url(<%= c.avatar %>)"></div>
+                    <% }) %>
+                    <% if(card.roomsCount > 3) { %>
+                    <div class="img-circle more ml5">
+                        <%= '+' + (card.roomsCount - card.rooms.length) %>
+                    </div>
+                    <% } %>
+                </div>
+                <span class="filler"></span>
+                <div class="users"><i class="icon-users-custom"></i> <%=card.members%></div>
+            </div>
+        </div>
+        <div class="button">
+            <a class="join" href="<%= card.join %>">
+                <%= t('global.view-group') %>
+            </a>
+        </div>
+    </div>
+</div>

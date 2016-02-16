@@ -4,118 +4,115 @@ var common = require('@dbrugne/donut-common/browser');
 var urls = require('../../../../shared/util/url');
 
 var CardsView = Backbone.View.extend({
-  template: require('../templates/cards.html'),
-  templateSpinner: require('../templates/spinner.html'),
-
+  templateGroup: require('../templates/card-group.html'),
+  templateRoom: require('../templates/card-room.html'),
+  templateUser: require('../templates/card-user.html'),
   events: {
-    'click a.join, .open-room-profile, .open-user-profile': 'onClose'
+    'click .load-more .btn': 'onLoadMore'
   },
-
+  loaded: 0,
   initialize: function (options) {
-
+    this.type = options.type;
+    this.loadData = options.loadData || _.noop;
+    this.render();
   },
   render: function (data) {
-    var cards = [];
-    var list = data.all
-      ? data.all.list // if cards have been mixed
-      : _.union( // cards have not been mixed
-      data.rooms
-        ? data.rooms.list
-        : [],
-      data.groups
-        ? data.groups.list
-        : [],
-      data.users
-        ? data.users.list
-        : []
-    );
-
-    _.each(list, function (card) {
-      switch (card.type) {
-        case 'user':
-          card.avatar = common.cloudinary.prepare(card.avatar, 300);
-          card.join = urls(card, 'user', 'uri');
-          card.chat = urls(card, 'user', 'chat');
-          card.owner_url = urls(card, 'user', 'chat');
-          break;
-        case 'room':
-          card.avatar = common.cloudinary.prepare(card.avatar, 300);
-          card.join = urls(card, 'room', 'uri');
-          card.url = urls(card, 'room', 'url');
-          if (card.group_id) {
-            card.group_url = urls({name: card.group_name}, 'group', 'chat');
-            card.group_avatar = common.cloudinary.prepare(card.group_avatar, 22);
-          }
-          break;
-        case 'group':
-          card.avatar = common.cloudinary.prepare(card.avatar, 300);
-          card.join = urls(card, 'group', 'uri');
-          card.url = urls(card, 'group', 'url');
-
-          if (card.rooms) {
-            // Prepare the 2/3 first rooms avatars
-            card.roomsCount = card.rooms.length;
-            card.rooms = _.first(card.rooms, 3);
-            if (card.roomsCount > 3) { // if more than 3, display only 2 first avatars & room Count
-              card.rooms.pop();
-            }
-            _.each(card.rooms, function (c) {
-              c.avatar = common.cloudinary.prepare(c.avatar, 23);
-            });
-          }
-          break;
-      }
-      cards.push(card);
-    });
-
-    var html = this.template({
-      cards: cards,
-      title: true,
-      fill: data.fill || false,
-      search: data.search
-    });
-
-    if (data.append) {
-      this.$el.append(html);
-    } else {
-      this.$el.html(html);
-    }
-
-    this.initializeTooltips();
-
+    this.$el.html(require('../templates/cards.html')({
+      type: this.type,
+      spinner: require('../templates/spinner.html')()
+    }));
+    this.$noResult = this.$('.no-result');
+    this.$spinner = this.$('.spinner');
+    this.$list = this.$('.list');
+    this.$loadMore = this.$('.load-more');
     return this;
   },
+  load: function () {
+    this.loadData(this.loaded, _.bind(function (response) {
+      this.add(response);
+    }, this));
+  },
+  add: function (data) {
+    this.show();
+    this.$spinner.hide();
+    if (!data.list || !data.list.length) {
+      this.$noResult.show();
+      this.$loadMore.hide();
+      return;
+    } else {
+      this.$noResult.hide();
+    }
 
-  initializeTooltips: function () {
+    var html = '';
+    _.each(data.list, _.bind(function (item, index, list) {
+      item.avatar = common.cloudinary.prepare(item.avatar, 300);
+      if (this.type === 'groups') {
+        item.join = urls(item, 'group', 'uri');
+        _.each(item.rooms, function (i) {
+          i.avatar = common.cloudinary.prepare(i.avatar, 23);
+        });
+        html += this.templateGroup({card: item});
+      } else if (this.type === 'rooms') {
+        item.join = urls(item, 'room', 'uri');
+        if (item.group_id) {
+          item.group_avatar = common.cloudinary.prepare(item.group_avatar, 22);
+        }
+        if (item.mode === 'private') {
+          item.private = 'private';
+          if (item.allow_user_request) {
+            item.private += '-invites';
+          }
+          if (item.allow_group_member) {
+            item.private += '-group';
+          }
+        }
+        html += this.templateRoom({card: item});
+      } else if (this.type === 'users') {
+        item.join = urls(item, 'user', 'uri');
+        html += this.templateUser({card: item});
+      }
+    }, this));
+
+    if (data.more === true) {
+      this.$loadMore.show();
+    } else {
+      this.$loadMore.hide();
+    }
+
+    if (!this.loaded) {
+      this.$list.html(html);
+    } else {
+      this.$list.append(html);
+    }
+
+    this._tooltips();
+    this.loaded = this.loaded + data.list.length;
+  },
+  _remove: function () {
+    this.remove();
+  },
+  _tooltips: function () {
     this.$('[data-toggle="tooltip"]').tooltip({
       container: 'body'
     });
   },
-
-  cleanupEmpty: function () {
-    this.$('.card.empty').remove();
+  show: function () {
+    this.$el.show();
   },
-
-  count: function () {
-    return {
-      rooms: this.$('.card.card-room').length,
-      groups: this.$('.card.card-group').length,
-      users: this.$('.card.card-user').length
-    };
+  hide: function () {
+    this.$el.hide();
   },
-
-  onClose: function (event) {
-    this.trigger('onClose', event);
+  reset: function () {
+    this.$spinner.show();
+    this.$noResult.hide();
+    this.$loadMore.hide();
+    this.$list.html('');
+    this.loaded = 0;
   },
-
-  _remove: function () {
-    this.remove();
-  },
-
-  pending: function () {
-    this.$el.html(this.templateSpinner);
+  onLoadMore: function (event) {
+    event.preventDefault();
+    this.load();
   }
-
 });
 
 module.exports = CardsView;
