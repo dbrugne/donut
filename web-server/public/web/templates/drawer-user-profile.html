@@ -30,65 +30,62 @@
 <div class="scrollable">
     <div class="arrow-top mt20"></div>
     <div class="ctn">
-        <div class="user">
+        <div class="flex-parent jc-center center block">
+            <i class="userstatus status <%=user.status%> mr5"></i>
+            <p><%= t('global.'+user.status) %></p>
+        </div>
 
-            <div class="flex-parent jc-center center block">
-                <i class="userstatus status <%=user.status%> mr5"></i>
-                <p><%= t('global.'+user.status) %></p>
-            </div>
+        <% if (user.bio) { %><p class="block mt0"><%= user.bio %></p><% }; %>
 
-            <% if (user.bio) { %><p class="block mt0"><%= user.bio %></p><% }; %>
-
-            <div class="block <%= !user.bio ? 'mt0' : '' %>">
-                <% if (user.location) { %>                      <p class="left"><i class="icon icon-fw icon-map-marker "></i>    <%= user.location %></p><% }; %>
-                <% if (user.website && user.website.href) { %>  <p class="left"><i class="icon icon-fw icon-link "></i>          <a class="colored" href="<%= user.website.href %>" target="_blank" title="<%= user.website.title %>"><%= user.website.title %></a></p><% }; %>
-                <% if (user.registered) { %>                    <p class="left"><i class="icon icon-fw icon-clock-o "></i>       <%= t('profile.user.signuped') %> <span class="ml5" data-time="<%= user.registered %>"></span></p><% }; %>
-                <% if (user.isCurrent) { %>                     <p class="left"><i class="icon icon-fw icon-private "></i>       <a class="colored open-user-account " data-user-id="<%= user.user_id %>"><%= t('chat.actions.account') %></a></p><% }; %>
-                <% if (user.isCurrent) { %>                     <p class="left"><i class="icon icon-fw icon-pencil "></i>        <a class="colored open-user-edit " data-user-id="<%= user.user_id %>"><%= t('profile.common.editlink') %></a></p><% }; %>
-                <% if (user.isCurrent) { %>                     <p class="left"><i class="icon icon-fw icon-bell"></i>          <a class="colored open-user-preferences " data-user-id="<%= user.user_id %>"><%= t('chat.actions.preferences') %></a></p><% }; %>
-            </div>
+        <div class="block <%= !user.bio ? 'mt0' : '' %>">
+            <% if (user.location) { %>                      <p class="left"><i class="icon icon-fw icon-map-marker "></i>    <%= user.location %></p><% }; %>
+            <% if (user.website && user.website.href) { %>  <p class="left"><i class="icon icon-fw icon-link "></i>          <a class="colored" href="<%= user.website.href %>" target="_blank" title="<%= user.website.title %>"><%= user.website.title %></a></p><% }; %>
+            <% if (user.registered) { %>                    <p class="left"><i class="icon icon-fw icon-clock-o "></i>       <%= t('profile.user.signuped') %> <span class="ml5" data-time="<%= user.registered %>"></span></p><% }; %>
+            <% if (user.isCurrent) { %>                     <p class="left"><i class="icon icon-fw icon-private "></i>       <a class="colored open-user-account " data-user-id="<%= user.user_id %>"><%= t('chat.actions.account') %></a></p><% }; %>
+            <% if (user.isCurrent) { %>                     <p class="left"><i class="icon icon-fw icon-pencil "></i>        <a class="colored open-user-edit " data-user-id="<%= user.user_id %>"><%= t('profile.common.editlink') %></a></p><% }; %>
+            <% if (user.isCurrent) { %>                     <p class="left"><i class="icon icon-fw icon-bell"></i>          <a class="colored open-user-preferences " data-user-id="<%= user.user_id %>"><%= t('chat.actions.preferences') %></a></p><% }; %>
+        </div>
 
 
-            <% if (!user.isCurrent) { %>
-                <!--Check if I banned this user-->
-                <% if (user.banned) { %>
-                    <p class="action-user-deban left" data-user-id="<%= user.user_id %>">
-                        <i class="icon icon-fw icon-ban "></i> <a href="" class="colored "><%= t('chat.debanuser.infobox') %></a>
-                    </p>
-                <% } else { %>
-                    <p class="action-user-ban left" data-user-id="<%= user.user_id %>">
-                        <i class="icon icon-fw icon-ban cl-error"></i> <a href="" class="colored "><%= t('chat.banuser.infobox') %></a>
-                    </p>
-                <% }; %>
-
-                <!--Check if this user banned me-->
-                <% if (user.i_am_banned) { %>
-                <p class="cl-error left">
-                    <i class="icon icon-fw icon-ban cl-error"></i>
-                    <%= t('chat.banuser.banned-too') %>
+        <% if (!user.isCurrent) { %>
+            <!--Check if I banned this user-->
+            <% if (user.banned) { %>
+                <p class="action-user-deban left" data-user-id="<%= user.user_id %>">
+                    <i class="icon icon-fw icon-ban "></i> <a href="" class="colored "><%= t('chat.debanuser.infobox') %></a>
                 </p>
-                <% }; %>
+            <% } else { %>
+                <p class="action-user-ban left" data-user-id="<%= user.user_id %>">
+                    <i class="icon icon-fw icon-ban cl-error"></i> <a href="" class="colored "><%= t('chat.banuser.infobox') %></a>
+                </p>
             <% }; %>
 
-            <div class="block flex-parent jc-center center">
-                <p class="discuss"><a href="<%= user.uri %>" class="btn btn-default btn-big"><%= t('actions.discuss') %></a></p>
-            </div>
+            <!--Check if this user banned me-->
+            <% if (user.i_am_banned) { %>
+            <p class="cl-error left">
+                <i class="icon icon-fw icon-ban cl-error"></i>
+                <%= t('chat.banuser.banned-too') %>
+            </p>
+            <% }; %>
+        <% }; %>
 
-            <% if (user.rooms_list.length > 0) { %>
-            <div class="block">
-                <h2><%= t('profile.user.hisrooms') %></h2>
-            </div>
-
-            <div class="user-list block">
-                <div class="list">
-                    <% _.each(user.rooms_list, function(room) { %>
-                    <div class="item open-room-profile <% if (room.oped) { %>op<% } %> <% if (room.owned) { %>owner<% } %>" data-room-id="<%= room.id %>" title="<%= room.identifier %>" data-toggle="tooltip" data-placement="right">
-                        <div class="avatar" style="background-image:url(<%= room.avatar %>)"></div>
-                    </div>
-                    <% }); %>
-                </div>
-            </div>
-            <% } %>
+        <div class="block flex-parent jc-center center">
+            <p class="discuss"><a href="<%= user.uri %>" class="btn btn-default btn-big"><%= t('actions.discuss') %></a></p>
         </div>
+
+        <% if (user.rooms_list.length > 0) { %>
+        <div class="block">
+            <h2><%= t('profile.user.hisrooms') %></h2>
+        </div>
+
+        <div class="user-list block">
+            <div class="list">
+                <% _.each(user.rooms_list, function(room) { %>
+                <div class="item open-room-profile <% if (room.oped) { %>op<% } %> <% if (room.owned) { %>owner<% } %>" data-room-id="<%= room.id %>" title="<%= room.identifier %>" data-toggle="tooltip" data-placement="right">
+                    <div class="avatar" style="background-image:url(<%= room.avatar %>)"></div>
+                </div>
+                <% }); %>
+            </div>
+        </div>
+        <% } %>
     </div>
 </div>
