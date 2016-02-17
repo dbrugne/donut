@@ -1162,7 +1162,7 @@
       "email": "E-mail",
       "unlink": "Unlink from this Facebook account",
       "linkhelp": "You can link your account to Facebook to log in more easily and enjoy a more social experience:",
-      "connectwith": "Link this account to",
+      "connectwith": "Link this account to Facebook",
       "error": {
         "needemailpassword": "You cannot unlink this account from Facebook. First you need to set <a href='/connect/local'>an e-mail and a password for your account</a>",
         "alreadylinked": "This Facebook account is already linked to another account"

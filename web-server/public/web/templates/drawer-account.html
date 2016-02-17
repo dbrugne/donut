@@ -9,7 +9,7 @@
     <div class="block">
         <h2><%= t('account.emailandpassword.label') %></h2>
         <div class="email-container"></div>
-        <div class="password-container"></div>
+        <div class="password-container block"></div>
     </div>
 
     <div class="block">
@@ -45,7 +45,7 @@
         <% } else { %>
             <p class="values"><%= t('account.facebook.linkhelp') %></p>
             <div class="flex-parent jc-center center">
-                <a href="/login/facebook" target="_blank" class="btn-facebook colored"><i class="icon icon-facebook"></i> | <%= t('account.facebook.connectwith') %> <strong><%= t('account.facebook.label') %></strong></a>
+                <a href="/login/facebook" target="_blank" class="btn btn-facebook"><i class="icon icon-facebook"></i><%= t('account.facebook.connectwith') %></a>
             </div>
         <% } %>
     </div>

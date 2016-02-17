@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var app = require('../libs/app');
@@ -18,16 +19,17 @@ var DrawerAccountEmailView = Backbone.View.extend({
 
     this.$link = this.$('#email-modal-link');
     this.$form = this.$('.form-mail');
-    this.$spinner = this.$('.spinner');
-    this.$spinner.html(require('../templates/spinner.html'));
     this.$errorLabel = this.$('.error-label');
     this.$success = this.$('.success');
+    this.$error = this.$('.error');
     this.$input = this.$('.email-sub');
     this.$mailUserLabel = this.$('.email-user');
+    this.$submit = this.$('.submit-email');
 
+    this.$submit.removeClass('loading');
     this.$form.hide();
-    this.$spinner.hide();
     this.$success.hide();
+    this.$error.hide();
 
     if (this.user.account && this.user.account.email) {
       this.$link.text(i18next.t('global.change'));
@@ -47,6 +49,7 @@ var DrawerAccountEmailView = Backbone.View.extend({
     this.$form.show();
     this.$link.hide();
     this.$success.hide();
+    this.$error.hide();
   },
 
   onCancel: function (event) {
@@ -64,28 +67,28 @@ var DrawerAccountEmailView = Backbone.View.extend({
   onSubmit: function (event) {
     event.preventDefault();
 
-    var that = this;
-
     if (this.$input.val().length < 1) {
       this.putError('empty');
       return;
     }
 
     this.$errorLabel.text('');
-    this.$spinner.show();
+    this.$submit.addClass('loading');
     this.$form.removeClass('has-error');
 
-    app.client.accountEmail(this.$input.val(), 'main', function (data) {
-      that.$spinner.hide();
+    app.client.accountEmail(this.$input.val(), 'main', _.bind(function (data) {
+      this.$submit.removeClass('loading');
       if (data.err) {
-        return that.putError(data.err);
+        return this.putError(data.err);
       }
 
-      that.$mailUserLabel.text(that.$input.val());
-      that.$form.hide();
-      that.$success.show();
-      that.$link.text(i18next.t('global.change'));
-    });
+      this.$mailUserLabel.text(this.$input.val());
+      this.$form.hide();
+      this.$success.show();
+      this.$error.hide();
+      this.$link.text(i18next.t('global.change'));
+      this.$link.show();
+    }, this));
   },
 
   putError: function (error) {
@@ -100,6 +103,7 @@ var DrawerAccountEmailView = Backbone.View.extend({
     } else {
       this.$errorLabel.text(i18next.t('global.unknownerror'));
     }
+    this.$error.show();
   }
 
 });

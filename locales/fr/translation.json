@@ -1162,7 +1162,7 @@
       "email": "Email",
       "unlink": "Délier de ce compte Facebook",
       "linkhelp": "Vous pouvez lier votre compte à un compte Facebook pour vous connecter plus facilement et profiter d'une expérience plus sociale :",
-      "connectwith": "Lier ce compte à ",
+      "connectwith": "Lier ce compte à Facebook",
       "error": {
         "needemailpassword": "Il n'est possible de délier votre compte Facebook de ce compte. Vous devez d'abord définir <a href='/connect/local'>un email et un mot de passe associés à votre compte</a>",
         "alreadylinked": "Ce compte Facebook est déjà lié à un autre compte"
