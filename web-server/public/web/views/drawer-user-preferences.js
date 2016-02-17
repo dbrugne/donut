@@ -49,6 +49,8 @@ var DrawerUserPreferencesView = Backbone.View.extend({
     });
     this.$el.html(html);
 
+    this.$error = this.$('.error');
+
     // Contact form
     this.$('[data-toggle="contactform"]').contactform({});
     this.initializeTooltips();
@@ -76,10 +78,10 @@ var DrawerUserPreferencesView = Backbone.View.extend({
     update[key] = value;
 
     var that = this;
+    this.$error.hide();
     app.client.userPreferencesUpdate(update, function (data) {
-      that.$('.errors').hide();
       if (data.err) {
-        that.$('.errors').html(i18next.t('global.unknownerror')).show();
+        that.$error.html(i18next.t('global.unknownerror')).show();
       }
     });
   },
