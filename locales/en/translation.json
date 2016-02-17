@@ -1177,6 +1177,7 @@
       "success": "Account successfully deleted, see you soon!"
     },
     "manageemail": {
+      "choose-main": "Select below your main email to receive your notifications",
       "label": "Manage your mails",
       "info": "Some communities require e-mail authentication (e.g: me@university.edu). Link your emails to this account to be automatically cleared.",
       "facebook": "Address link to facebook account",
@@ -1185,7 +1186,6 @@
       "send": "Re-send validation email",
       "delete": "Delete",
       "noresult": "No mails found",
-      "main": "Main",
       "add": "add email",
       "mail-notconfirmed": "Verify your account ! Check your mailbox. You can re-send a verification e-mail <strong class=\"open-user-account link\">here</strong>.",
       "errors": {

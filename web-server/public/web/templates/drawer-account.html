@@ -13,15 +13,15 @@
     </div>
 
     <div class="block">
-        <span class="email-info"><%= t('account.manageemail.info') %></span>
-        <h2><%= t('account.manageemail.label') %></h2>
+        <p><%= t('account.manageemail.info') %></p>
+        <h2 class="block"><%= t('account.manageemail.label') %></h2>
         <div class="manage-email-container"></div>
     </div>
 
     <div class="block">
         <h2><%= t('account.facebook.label') %></h2>
         <% if (user.account.facebook && user.account.facebook.token) { %>
-            <p class="values"><%= t('account.facebook.help') %></p>
+            <p><%= t('account.facebook.help') %></p>
             <div class="facebook">
                 <div class="infos flex-parent" style="overflow: hidden;">
                     <img class="avatar" src="https://graph.facebook.com/<%= user.account.facebook.id %>/picture"/>
@@ -44,7 +44,7 @@
             </div>
         <% } else { %>
             <p class="values"><%= t('account.facebook.linkhelp') %></p>
-            <div class="flex-parent jc-center center">
+            <div class="center block">
                 <a href="/login/facebook" target="_blank" class="btn btn-facebook"><i class="icon icon-facebook"></i><%= t('account.facebook.connectwith') %></a>
             </div>
         <% } %>
@@ -52,17 +52,17 @@
 
     <div class="group block">
         <h2><%= t('account.profile.label') %></h2>
-        <p class="values"><%= t('account.profile.help') %> <a class="open-user-edit"><%= t('account.profile.link') %></a>.</p>
+        <p><%= t('account.profile.help') %> <a class="open-user-edit label"><%= t('account.profile.link') %></a>.</p>
     </div>
 
     <div class="group block">
         <h2><%= t('global.links') %></h2>
         <ul class="link-ctn">
-            <li><a href="/!#help"><%= t('chat.help') %></a></li>
-            <li><a href="/faq" target="_blank"><%= t('page.faq.title') %></a></li>
-            <li><a data-toggle="contactform"><%= t('page.contact.title') %></a></li>
-            <li><a href="/eutc" target="_blank"><%= t('page.eutc.title') %></a></li>
-            <li><a href="/legals" target="_blank"><%=t('landing.legals')%></a></li>
+            <li><a class="label" href="/!#help"><%= t('chat.help') %></a></li>
+            <li><a class="label" href="/faq" target="_blank"><%= t('page.faq.title') %></a></li>
+            <li><a class="label" data-toggle="contactform"><%= t('page.contact.title') %></a></li>
+            <li><a class="label" href="/eutc" target="_blank"><%= t('page.eutc.title') %></a></li>
+            <li><a class="label" href="/legals" target="_blank"><%=t('landing.legals')%></a></li>
         </ul>
     </div>
 </div>

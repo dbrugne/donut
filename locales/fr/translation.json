@@ -1177,6 +1177,7 @@
       "success": "Compte supprimé avec succés, à bientôt !"
     },
     "manageemail": {
+      "choose-main": "Sélectionnez ci-dessous votre e-mail principal sur lequel seront envoyées vos notifications",
       "label": "Gérer vos emails",
       "info": "Certaines communautés requièrent une authentification par e-mail. (ex : moi@universite.edu). Liez vos e-mails à votre compte pour être authentifié automatiquement.",
       "facebook": "Adresse lié au compte facebook",
@@ -1185,7 +1186,6 @@
       "send": "Renvoyer un email de validation",
       "delete": "Supprimer",
       "noresult": "Aucune adresse mail trouvée",
-      "main": "Principal",
       "add": "ajouter e-mail",
       "mail-notconfirmed": "Validez votre compte à l'aide de l'e-mail de confirmation que nous vous avons envoyé. Pour en renvoyer un allez <strong class=\"open-user-account link\">ici</strong>.",
       "errors": {

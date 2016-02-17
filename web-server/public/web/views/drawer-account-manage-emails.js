@@ -25,19 +25,32 @@ var DrawerAccountManageEmailsView = Backbone.View.extend({
     this.$el.html(this.template({emails: this.user.account.emails}));
 
     this.$errorLabel = this.$('.error-label');
-    this.$success = this.$('.alert-success');
-    this.$error = this.$('.alert-danger');
+    this.$success = this.$('.success');
+    this.$error = this.$('.error');
+    this.$submit = this.$('.add-email');
 
-    this.$error.hide();
-    this.$success.hide();
+    this.reset();
 
     this.initializeTooltips();
     return this;
   },
 
+  reset: function () {
+    this.$error.hide();
+    this.$success.hide();
+    this.$submit.removeClass('loading');
+  },
+
   putError: function (err) {
     this.$errorLabel.text(i18next.t('account.manageemail.errors.' + err, {defaultValue: i18next.t('global.unknownerror')}));
     this.$error.show();
+  },
+
+  showSuccess: function () {
+    this.$success.show();
+    setTimeout(_.bind(function () {
+      this.$success.fadeOut();
+    }, this), 2000);
   },
 
   onChangeMainEmail: function (event) {
@@ -50,6 +63,7 @@ var DrawerAccountManageEmailsView = Backbone.View.extend({
       email: email
     }, _.bind(function () {
       app.client.accountEmail(email, 'main', _.bind(function (d) {
+        this.reset();
         if (d.err) {
           return this.putError(d.err);
         }
@@ -64,22 +78,21 @@ var DrawerAccountManageEmailsView = Backbone.View.extend({
     }, this));
   },
 
-  onAddEmail: function (event) {
+  onAddEmail: function () {
     confirmationView.open({
       message: 'add-email',
       input: true
     }, _.bind(function (email) {
+      this.$submit.addClass('loading');
       app.client.accountEmail(email, 'add', _.bind(function (response) {
+        this.reset();
         if (response.err) {
           return this.putError(response.err);
         }
 
         this.user.account.emails.push({email: email, confirmed: false});
         this.render();
-        this.$success.show();
-        setTimeout(_.bind(function () {
-          this.$success.fadeOut();
-        }, this), 2000);
+        this.showSuccess();
       }, this));
     }, this));
   },
@@ -92,6 +105,7 @@ var DrawerAccountManageEmailsView = Backbone.View.extend({
       email: email
     }, _.bind(function () {
       app.client.accountEmail(email, 'delete', _.bind(function (response) {
+        this.reset();
         if (response.err) {
           return this.putError(response.err);
         }
@@ -116,6 +130,7 @@ var DrawerAccountManageEmailsView = Backbone.View.extend({
       email: email
     }, _.bind(function () {
       app.client.accountEmail(email, 'validate', _.bind(function (response) {
+        this.reset();
         if (response.err) {
           return this.putError(response.err);
         }
@@ -128,7 +143,6 @@ var DrawerAccountManageEmailsView = Backbone.View.extend({
       container: 'body'
     });
   }
-
 });
 
 module.exports = DrawerAccountManageEmailsView;
