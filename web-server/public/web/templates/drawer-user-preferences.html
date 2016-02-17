@@ -24,7 +24,7 @@
             </div>
         </div>
         <label><%= t('preferences.notif.title') %></label>
-        <p class="help-block"><%= t('preferences.notif.help.user') %>
+        <p class="help"><%= t('preferences.notif.help.user') %>
         <div class="form-group">
             <div class="notification">
                 <label class="level-2"><%= t('preferences.notif.channels.title') %></label>
@@ -48,10 +48,10 @@
                         <input class="savable" type="checkbox" value="notif:channels:mobile" <% if (preferences['notif:channels:mobile']) { print('checked'); } %>> <%= t('preferences.notif.channels.mobile') %>
                     </label>
                 </div>
-                <p class="help-block"><%= t('preferences.notif.channels.help') %></p>
+                <p class="help"><%= t('preferences.notif.channels.help') %></p>
             </div>
         </div>
-        <p class="help-block"><%= t('preferences.notif.events.title') %></p>
+        <p class="help"><%= t('preferences.notif.events.title') %></p>
         <div class="form-group">
             <div class="notification">
                 <% var notifications = ['notif:usermessage', 'notif:invite']; %>

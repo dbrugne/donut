@@ -29,7 +29,7 @@
     </div>
 
     <div class="block">
-        <p class="help-block"><%= t('chat.form.room-form.create.help') %></p>
+        <p class="help"><%= t('chat.form.room-form.create.help') %></p>
     </div>
 
     <% if (!group_id) { %>
@@ -45,14 +45,14 @@
                 <input type="radio" class="savable public" name="mode" value="public" checked>
                 <%= t('chat.form.room-form.common.mode.public') %> (<%= t('global.default') %>)
             </label>
-            <p class="help-block ml20"><%= t('chat.form.room-form.mode.disclaimer.public') %></p>
+            <p class="help ml20"><%= t('chat.form.room-form.mode.disclaimer.public') %></p>
         </div>
         <div class="radio">
             <label>
                 <input type="radio" class="savable private" name="mode" value="private">
                 <%= t('chat.form.room-form.common.mode.private') %>
             </label>
-            <p class="help-block ml20"><%= t('chat.form.room-form.mode.disclaimer.private') %></p>
+            <p class="help ml20"><%= t('chat.form.room-form.mode.disclaimer.private') %></p>
         </div>
     </div>
 
@@ -61,7 +61,7 @@
     </div>
     <% if (!group_id) { %>
     <div class="block">
-        <p class="help-block"><%= t('chat.form.room-form.create.group') %></p>
+        <p class="help"><%= t('chat.form.room-form.create.group') %></p>
     </div>
     <% } %>
 </div>

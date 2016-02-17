@@ -42,6 +42,7 @@ var DrawerUserEditView = Backbone.View.extend({
 
     var html = this.template({user: user});
     this.$el.html(html);
+    this.$submit = this.$('.save-user');
 
     // bio
     if (user.bio) {
@@ -100,7 +101,9 @@ var DrawerUserEditView = Backbone.View.extend({
     }
 
     var that = this;
+    this.$submit.addClass('loading');
     app.client.userUpdate(updateData, function (data) {
+      that.$submit.removeClass('loading');
       that.$('.errors').hide();
       if (data.err) {
         return that.editError(data.err);
@@ -113,7 +116,9 @@ var DrawerUserEditView = Backbone.View.extend({
       avatar: data
     };
     var that = this;
+    this.$submit.addClass('loading');
     app.client.userUpdate(updateData, function (d) {
+      that.$submit.removeClass('loading');
       that.$('.errors').hide();
       if (d.err) {
         that.editError(d.err);
@@ -125,7 +130,9 @@ var DrawerUserEditView = Backbone.View.extend({
       poster: data
     };
     var that = this;
+    this.$submit.addClass('loading');
     app.client.userUpdate(updateData, function (d) {
+      that.$submit.removeClass('loading');
       that.$('.errors').hide();
       if (d.err) {
         that.editError(d.err);

@@ -12,12 +12,12 @@
         <div class="form-group">
             <label for="groupDescription"><%= t('chat.form.group-form.edit.description.label') %></label>
             <textarea name="description" class="form-control" id="groupDescription" placeholder="<%= t('chat.form.group-form.edit.description.placeholder') %>" maxlength="200"><%= group.description %></textarea>
-            <p class="help-block"><%= t('chat.form.group-form.edit.description.help') %> <span class="counter-description"></span></p>
+            <p class="help"><%= t('chat.form.group-form.edit.description.help') %> <span class="pull-right counter-description"></span></p>
         </div>
         <div class="block">
             <label for="groupWebsite"><%= t('chat.form.common.edit.website.label') %></label>
             <input name="website" type="text" class="form-control" id="groupWebsite" placeholder="<%= t('chat.form.common.edit.website.placeholder') %>" value="<% if (group.website) { %><%= group.website.title %><% } %>">
-            <p class="help-block"><%= t('chat.form.common.edit.website.help') %></p>
+            <p class="help"><%= t('chat.form.common.edit.website.help') %></p>
         </div>
         <div class="block">
             <label><%= t('chat.form.common.edit.avatar.label') %></label>
@@ -42,7 +42,7 @@
         <div class="block admin">
             <label for="groupPriority"><%= t('chat.form.group-form.edit.priority.label') %></label>
             <input type="number" name="priority" class="form-control" id="groupPriority" placeholder="<%= t('chat.form.group-form.edit.priority.placeholder') %>" value="<%= group.priority %>">
-            <p class="help-block"><%= t('chat.form.group-form.edit.priority.help') %></p>
+            <p class="help"><%= t('chat.form.group-form.edit.priority.help') %></p>
         </div>
         <% } %>
         <div class="block buttons flex-parent jc-end">
