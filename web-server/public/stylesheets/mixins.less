@@ -598,7 +598,7 @@
 
 *******************************************************************************/
 
-.margin-loop (@index) when (@index > 0){
+.margin-loop (@index) when (@index >= 0){
   .ml@{index} { margin-left: ~'@{index}px' !important; }
   .mr@{index} { margin-right: ~'@{index}px' !important; }
   .mt@{index} { margin-top: ~'@{index}px' !important; }

@@ -193,7 +193,7 @@
     "members_plural": "<strong>__count__</strong> members",
     "discover": "discover",
     "group": "group",
-    "view-profile": "view profile",
+    "view-profile": "View profile",
     "view-group": "view community",
     "view-room": "join discussion",
     "onetoones": "one to ones",
@@ -325,7 +325,8 @@
   },
   "profile": {
     "common": {
-      "editlink": "Edit profile"
+      "editlink": "Edit profile",
+      "title": "Profile of "
     },
     "room": {
       "ownerops": "The regulars",
@@ -337,7 +338,7 @@
       },
       "permalink": "Permalink of this profile",
       "editusers": "Manage participants",
-      "createdat": "created on",
+      "createdat": "Created on",
       "usersallowed": "Invites & requests"
     },
     "group": {
@@ -346,14 +347,14 @@
       "permalink": "permalink of this profile",
       "editlink": "Edit profile",
       "profilelink": "profile of ",
-      "editusers": "manage members",
-      "createdat": "created on",
-      "usersallowed": "manage invitations"
+      "editusers": "Manage members",
+      "createdat": "Created on",
+      "usersallowed": "Manage invitations"
     },
     "user": {
       "hisrooms": "Active in these discussions",
       "signuped": "Signed up on",
-      "onlined": "online __time__ ago"
+      "onlined": "Online __time__ ago"
     }
   },
   "chat": {
@@ -390,11 +391,11 @@
       "banuser": "Ban a user",
       "create": "create",
       "adonut": "a discussion",
-      "account": "my account",
-      "edit": "my profile",
-      "notifications": "notifications",
-      "close": "quit the discussion",
-      "preferences": "settings & notifications",
+      "account": "My account",
+      "edit": "My profile",
+      "notifications": "Notifications",
+      "close": "Quit the discussion",
+      "preferences": "Settings & notifications",
       "bannedusers": "locked users",
       "update": "Edit",
       "see": "See",

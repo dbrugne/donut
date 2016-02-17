@@ -273,11 +273,11 @@ var MainView = Backbone.View.extend({
       return;
     }
     var view = new DrawerUserProfileView({user_id: userId});
-    this.drawerView.setSize('380px').setView(view).open();
+    this.drawerView.setSize('300px').setView(view).open();
   },
   openUserProfile: function (userId) {
     var view = new DrawerUserProfileView({user_id: userId});
-    this.drawerView.setSize('380px').setView(view).open();
+    this.drawerView.setSize('300px').setView(view).open();
   },
   onOpenCurrentUserProfile: function (event) {
     event.preventDefault();
@@ -288,7 +288,7 @@ var MainView = Backbone.View.extend({
     }
 
     var view = new DrawerUserProfileView({user_id: userId});
-    this.drawerView.setSize('380px').setView(view).open();
+    this.drawerView.setSize('300px').setView(view).open();
   },
   onOpenGroupProfile: function (event) {
     this.$el.find('.tooltip').tooltip('hide');
@@ -299,7 +299,7 @@ var MainView = Backbone.View.extend({
       return;
     }
     var view = new DrawerGroupProfileView({group_id: groupId});
-    this.drawerView.setSize('380px').setView(view).open();
+    this.drawerView.setSize('300px').setView(view).open();
   },
   onOpenGroupAccess: function (event) {
     this.$el.find('.tooltip').tooltip('hide');
@@ -320,7 +320,7 @@ var MainView = Backbone.View.extend({
   },
   openGroupProfile: function (data) {
     var view = new DrawerGroupProfileView({data: data});
-    this.drawerView.setSize('380px').setView(view).open();
+    this.drawerView.setSize('300px').setView(view).open();
   },
   onOpenRoomProfile: function (event) {
     this.$el.find('.tooltip').tooltip('hide');
@@ -331,11 +331,11 @@ var MainView = Backbone.View.extend({
       return;
     }
     var view = new DrawerRoomProfileView({room_id: roomId});
-    this.drawerView.setSize('380px').setView(view).open();
+    this.drawerView.setSize('300px').setView(view).open();
   },
   openRoomProfile: function (roomId) {
     var view = new DrawerRoomProfileView({room_id: roomId});
-    this.drawerView.setSize('380px').setView(view).open();
+    this.drawerView.setSize('300px').setView(view).open();
   },
   openRoomEdit: function (event) {
     event.preventDefault();
