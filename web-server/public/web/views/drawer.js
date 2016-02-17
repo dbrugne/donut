@@ -88,7 +88,7 @@ var DrawerView = Backbone.View.extend({
   },
   onKeyUp: function (event) {
     if (event.which === 27) {
-      app.trigger('removeTooltips');
+      this.$('[data-toggle="tooltip"]').tooltip('hide');
       this.close();
     }
   },
