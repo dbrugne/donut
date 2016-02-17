@@ -217,37 +217,31 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   }
 }
 
-.btn {
+.btn { .display-flex; .align-items(center); .justify-content(center);
   &.btn-success {
-    .don-button-variant(@cl-emerald, @cl-green_sea, #FFF, @cl-green_sea );
+    .don-button-variant(@cl-emerald, #FFF);
   }
   &.btn-danger {
-    .don-button-variant(@cl-alizarin, @cl-pomegranate, #FFF, @cl-pomegranate );
+    .don-button-variant(@cl-alizarin, #FFF);
   }
   &.btn-pink {
-    .don-button-variant(@cl-first, @cl-first-dark-10, #FFF, @cl-first-dark-10 );
+    .don-button-variant(@cl-first, #FFF);
   }
   &.btn-primary {
-    .don-button-variant(@cl-nav-left-back, @cl-nav-left-back-darker, @cl-clouds, @cl-nav-left-back-darker );
+    .don-button-variant(#E7ECF3, #586473);
   }
   &.btn-default {
-    .don-button-variant(#FFF, rgb(245, 248, 250), rgb(41, 47, 51), @cl-border );
+    .don-button-variant(#E7ECF3, #586473);
   }
   &.btn-facebook {
-    .don-button-variant(#4a649d, #4a649d, #FFF, #4a649d );
+    .don-button-variant(#4a649d, #FFF);
   }
-  &.btn-big { font-size:1.8rem; padding: 10px 18px; }
-  &.btn-sm { font-size:1rem; padding: 3px 11px 3px; }
-
-  &.loading { position:relative; .opacity(0.65); background-color: @cl-subtext15; cursor: not-allowed; color: #FFFFFF; padding-left: 35px;
-    //&:after { .icon-spinner; .spin; position: absolute; left: 10px; font-size: inherit; margin-top: 1px; }
-    &:hover { background-color:@cl-subtext15 !important; }
-  }
+  //&.btn-big { font-size:1.8rem; padding: 10px 18px; }
+  //&.btn-sm { font-size:1rem; padding: 3px 11px 3px; }
 }
 .offline .btn {
-  .don-button-variant(@cl-subtext20, @cl-subtext20, #FFF, @cl-subtext30 );
+  .don-button-variant(@cl-subtext20, #FFF);
 }
-
 
 .input-picto { z-index: 2; color: @cl-first; font-size: 22px; top: 0; left: 10px; position: absolute; display: block; width: 34px; height: 34px; line-height: 34px; text-align: center; }
 

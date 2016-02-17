@@ -1,94 +1,47 @@
-#drawer {
-  display: none;
-  position: absolute;
-  width: 100%;
-  z-index: 11;
-  font-size: 1.4rem; // #chat #drawer
-  .opacity { // #chat #drawer .opacity
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.8);
-    .wrap { // #chat #drawer .opacity .wrap
-      position: relative;
-      left: -10000px;
-      width: 280px;
-      height: 100%;
-      .content { // #chat #drawer .opacity .wrap .content
-        width: 100%;
-        height: 100%;
-        padding: 0;
-        margin-left: 0;
-        background-color: @cl-background;
+#drawer { display: none; position: absolute; width: 100%; z-index: 11; font-size: 1.4rem; // #chat #drawer
+  .opacity { width: 100%; height: 100%; .cl-backdrop;
+    .wrap { position: relative; left: -10000px; width: 280px; height: 100%;
+      .content { width: 100%; height: 100%; padding: 0; margin-left: 0; background-color: @cl-background;
         .border-radiuses(3px, 0, 0, 0);
-        > div {
-          .scrollbar-grey-thin;
-          overflow-y: auto;
-          overflow-x: hidden;
-          height: 100%;
-          .title {
-            background-color: @cl-subtext5;
-            color: @cl-title;
-            padding: 15px 10px 15px 20px;
-            font-size: 2rem;
-            font-weight: 600;
-            border-bottom: 1px solid @cl-subtext10;
-            border-top-right-radius: 3px;
-            text-shadow: 1px 1px 1px @cl-subtext15;
+        > div { height: 100%; .display-flex; .flex-flow(column nowrap);
+          .header {  z-index: 1;
+            .title { .ft-opensans-semibold; font-size: 12px; color: #FFFFFF; letter-spacing: 1.6px; line-height: 14px; background-color: @cl-first; text-align: center; padding: 15px 10px 15px 20px; text-transform: uppercase; }
           }
-          .ctn-drawer {
-            padding: 20px 15px 20px;
-          }
-          .roomname {
-            .ft-opensans-extra-bold;
-            font-size: 2.4rem;
-          }
-          .owner { font-size: 1.6rem; .ft-opensans;
-            a { font-size: 1.6rem; }
-          }
+          .scrollable { .scrollbar-grey-thin; overflow-y: auto; overflow-x: hidden; height: 100%; }
+
+
+
+
+
+          .roomname { .ft-opensans-extra-bold; font-size: 2.4rem; }
+          .owner { font-size: 1.6rem; .ft-opensans; a { font-size: 1.6rem; } }
         }
-        .spinner {
-          width: 100%;
-          height: 100%;
-          text-align: center;
-          color: @cl-subtext10;
-        }
-        .dropdown-menu .spinner i {
-          position: relative;
-          top: 0;
-          right: initial;
-        }
+        .spinner { width: 100%; height: 100%; text-align: center; color: @cl-subtext10; }
+        .dropdown-menu .spinner i { position: relative; top: 0; right: initial; }
       }
-      .close {
-        position: absolute;
-        top: 17px;
-        right: 18px;
-        font-size: 2.2rem;
-        color: @cl-subtext50;
-        .opacity(1);
-      }
-      .close:hover, .close:focus {
-        color: @cl-subtext20;
-        .opacity(1);
-      }
+      .close-drawer { position: absolute; top: 10px; right: 20px; font-size: 2rem; color: #FFF; }
     }
   }
 
+  h2 { .ft-opensans-semibold; font-size: 15px; color: #1D252F; line-height: 14px; margin: 0 0 20px 0; }
+  .help { .ft-opensans; font-size: 12px; color: #AFBAC8; line-height: 14px; }
+  .center { .display-flex; .flex-flow(column nowrap); .align-items(center); }
+
+
   .link-ctn { padding-left:10px; list-style: none; }
 
-  .block {
-    margin-top: 20px;
-    border:0;
+  .block { margin: 25px;
     &.inline {
       .display-flex;
       .flex-flow(row nowrap);
       position: relative;
       .align-items(center);
-      label {
-        margin-right: 5px;
-      }
+      label { margin-right: 5px; }
       input, select { min-width: 280px; }
     }
   }
+  .block + .block { margin-top: 0; }
+
 
   .block {
     &.admin {
@@ -161,21 +114,7 @@
     padding-top: 5px;
   }
 
-  .help {
-    .ft-opensans-light;
-    margin-top: 10px;
-    text-align: left;
-    color: @cl-subtext20;
-    font-style: italic;
-  }
 
-  h2 {
-    color: @cl-subtext40;
-    max-width: 100%;
-    font-weight: bold;
-    font-size: 1.8rem;
-    padding: 10px 0 0 0;
-  }
 
   .search {
     input {

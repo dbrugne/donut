@@ -11,7 +11,7 @@ var DrawerView = Backbone.View.extend({
   shown: false,
 
   events: {
-    'click .close': 'close',
+    'click .close-drawer': 'close',
     'click .cancel': 'close',
     'mouseup .opacity': 'detectOutsideClick'
   },
