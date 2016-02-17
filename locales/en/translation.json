@@ -962,7 +962,7 @@
           "visibility": {
             "label": "Visibility (admin only)",
             "true": "This discussion is displayed on homepage",
-            "false": "This discussion <strong>is not</strong> displayed on homepage"
+            "false": "This discussion is not displayed on homepage"
           },
           "priority": {
             "label": "Priority (admin only)",

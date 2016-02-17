@@ -962,7 +962,7 @@
           "visibility": {
             "label": "Visibilité (administrateur)",
             "true": "La discussion est visible sur la homepage",
-            "false": "La discussion <strong>n'est pas</strong> visible sur la homepage"
+            "false": "La discussion n'est pas visible sur la homepage"
           },
           "priority": {
             "label": "Priorité (administrateur)",
