@@ -187,9 +187,9 @@
                         <label for="input-password"><%= t('group.blocked') %></label>
                         <input id="input-password" class="form-control" type="password" placeholder="<%= t('chat.blocked.password_placeholder') %>">
                     </div>
-                    <div class="mt50 buttons flex-parent column center jc-center">
-                        <div class="confirm curp"><%= t('chat.confirmation.confirm') %></div>
-                        <a href="#" class="cancel curp" data-dismiss="modal"><%= t('chat.confirmation.cancel') %></a>
+                    <div class="mt50 buttons flex-parent row center jc-center">
+                        <a href="#" class="cancel curpflex-child  cancel curp ml15" data-dismiss="modal"><%= t('chat.confirmation.cancel') %></a>
+                        <div class="flex-child confirm curp mr15"><%= t('chat.confirmation.confirm') %></div>
                     </div>
                 </div><!-- /.modal-body -->
             </div><!-- /.modal-content -->
