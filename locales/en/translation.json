@@ -903,7 +903,6 @@
           },
           "group": {
             "delete": {
-              "link": "To delete this community <a class='open-group-delete' data-group-id=\"__id__\"> click here</a>.",
               "title": "Delete",
               "info": [
                 "You are about to delete this community. This action is immediate and cannot be undone.<br><br>",
@@ -968,7 +967,6 @@
           },
           "room": {
             "delete": {
-              "link": "To delete this discussion <a class='open-room-delete' data-room-id=\"__id__\"> click here</a>.",
               "title": "Delete",
               "info": [
                 "You are about to delete this discussion. This action is immediate and cannot be undone.<br><br>",
@@ -1799,6 +1797,14 @@
       "username": "Name",
       "type": "Type",
       "search": "search a member in this community"
+    },
+    "room-edit": {
+      "link": "To delete this discussion ",
+      "click-here": "click here"
+    },
+    "group-edit": {
+      "link": "To delete this community",
+      "click-here": "click here"
     }
   }
 }

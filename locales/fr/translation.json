@@ -903,7 +903,6 @@
           },
           "group": {
             "delete": {
-              "link": "Vous pouvez également supprimer cette communauté <a class='open-group-delete' data-group-id=\"__id__\">en cliquant ici</a>.",
               "title": "Supprimer",
               "info": [
                 "Vous êtes sur le point de supprimer cette communauté, cette opération est immédiate et irréversible.<br><br>",
@@ -968,7 +967,6 @@
           },
           "room": {
             "delete": {
-              "link": "Vous pouvez également supprimer cette discussion <a class='open-room-delete' data-room-id=\"__id__\">en cliquant ici</a>.",
               "title": "Supprimer",
               "info": [
                 "Vous êtes sur le point de supprimer cette discussion, cette opération est immédiate et irréversible.<br><br>",
@@ -1799,6 +1797,14 @@
       "username": "Nom",
       "type": "Type",
       "search": "Rechercher des membres dans cette communauté"
+    },
+    "room-edit": {
+      "link": "Vous pouvez également supprimer cette discussion ",
+      "click-here": "en cliquant ici"
+    },
+    "group-edit": {
+      "link": "Vous pouvez également supprimer cette communauté",
+      "click-here": "en cliquant ici"
     }
   }
 }
