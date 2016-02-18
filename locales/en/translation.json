@@ -1793,6 +1793,12 @@
       "username": "Name",
       "type": "Type",
       "search": "search a username in this discussion"
+    },
+    "group-users": {
+      "title": "Manage members",
+      "username": "Name",
+      "type": "Type",
+      "search": "search a member in this community"
     }
   }
 }
