@@ -128,7 +128,6 @@ var MainView = Backbone.View.extend({
   },
   onReady: function () {
     this.connectionView.hide();
-    return this.openModalChooseUsername();
   },
   onAdminMessage: function (data) {
     app.trigger('alert', 'info', data.message);
