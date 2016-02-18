@@ -948,7 +948,8 @@
           "help": "Entre 2 et 15 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement",
           "placeholder": "Nom de la discussion",
           "submit": "Créer la discussion",
-          "group": "Vous animez déjà une communauté ? Vous voulez créer un espace dédié à vos utilisateurs ? <a href=\"#\" class=\"open-group-create\">Créer une communauté DONUT</a>.",
+          "group": "Vous animez déjà une communauté ? Vous voulez créer un espace dédié à vos utilisateurs ?",
+          "link": "Créer une communauté DONUT.",
           "description": "Votre discussion est indépendante. Pour la lier à une communauté, allez dans votre communauté et cliquez sur le bouton \"Créer une discussion\""
         },
         "edit": {

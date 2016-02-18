@@ -948,7 +948,8 @@
           "help": "Between 2 and 15 characters, only letters, numbers,  dashes (-) and underscores (_)",
           "placeholder": "discussion name",
           "submit": "Create",
-          "group": "Already lead a community ? Want your users to feel home ? <a href=\"#\" class=\"open-group-create\">Create a DONUT community</a>.",
+          "group": "Already lead a community ? Want your users to feel home ? ",
+          "link": "Create a DONUT community.",
           "description": "Your discussion is independent. To link it to a community, go to this community and click the \"create a discussion\" button."
         },
         "edit": {

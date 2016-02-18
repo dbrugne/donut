@@ -22,7 +22,9 @@ var DrawerGroupCreateView = Backbone.View.extend({
   render: function (name) {
     this.$el.html(this.template);
     this.$input = this.$el.find('input[name=input-create]');
-    this.$errors = this.$el.find('.errors');
+    this.$errorLabel = this.$('.error-label');
+    this.$error = this.$('.error');
+    this.$error.hide();
     this.$submit = this.$el.find('.submit');
     return this;
   },
@@ -30,14 +32,16 @@ var DrawerGroupCreateView = Backbone.View.extend({
     this.$input.focus();
   },
   reset: function () {
-    this.$errors.html('').hide();
+    this.$errorLabel.html('');
+    this.$error.hide();
     this.$el.removeClass('has-error').removeClass('has-success').val('');
   },
   setError: function (err) {
     if (err === 'unknown') {
       err = i18next.t('global.unknownerror');
     }
-    this.$errors.html(err).show();
+    this.$errorLabel.html(err);
+    this.$error.show();
   },
   removeView: function () {
     this.drawerGroupCreateModeView.remove();
@@ -71,7 +75,7 @@ var DrawerGroupCreateView = Backbone.View.extend({
     this.reset();
     // name
     if (!this._valid()) {
-      return this.setError(i18next.t('chat.form.errors.name-wrong-format'));
+      return this.setError(i18next.t('chat.form.errors.group-name-wrong-format'));
     }
     var name = this.$input.val();
 

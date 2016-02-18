@@ -205,7 +205,7 @@ var MainView = Backbone.View.extend({
 
     if (!groupId) {
       view = new DrawerRoomCreateView({name: name});
-      this.drawerView.setSize('450px').setView(view).open();
+      this.drawerView.setSize('380px').setView(view).open();
       return view.focusField();
     }
 
@@ -214,12 +214,12 @@ var MainView = Backbone.View.extend({
       group_id: groupId,
       group_name: groupName
     });
-    this.drawerView.setSize('450px').setView(view).open();
+    this.drawerView.setSize('380px').setView(view).open();
     return view.focusField();
   },
   openGroupCreate: function () {
     var view = new DrawerGroupCreateView();
-    this.drawerView.setSize('450px').setView(view).open();
+    this.drawerView.setSize('380px').setView(view).open();
     view.focusField();
   },
   openGroupUsers: function (event) {
