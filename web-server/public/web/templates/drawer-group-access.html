@@ -1,11 +1,12 @@
-<div class="relative"><span class="close icon icon-times"></span></div>
-
-<div class="title">
-    <%= t('chat.history.access') %>
-    <%= '#' + group.name %>
+<div class="header">
+    <div class="title">
+        <%= t('chat.history.access') %>
+        #<%= group.name %>
+    </div>
+    <span class="close-drawer icon icon-times curp"></span>
 </div>
 
-<div class="ctn-drawer">
+<div class="scrollable">
     <div class="errors block"></div>
 
     <div class="block">
@@ -22,36 +23,46 @@
     <% } %>
 
     <% if (group.isOwner || group.isAdmin) { %>
-        <h2 class="block"><%= t('chat.form.room-form.mode.disclaimer.memberscondition') %></h2>
-        <div class="membership-conditions block">
-            <textarea class="form-control" id="conditions-area" maxlength="200" cols="46" rows="4" placeholder="<%= t('chat.form.room-form.edit.description.conditions') %>"></textarea>
-            <p class="help"><%= t('chat.form.room-form.edit.description.help') %> <span class="counter pull-right"><%= t('chat.form.common.edit.left', {count: 200}) %></span></p>
-            <div class="flex-parent jc-end mt10">
-                <input class="btn btn-success save-access save-conditions pull-right" type="submit" value="<%= t('global.save')%>" />
+
+        <div class="block">
+            <label><%= t('chat.form.room-form.mode.disclaimer.memberscondition') %></label>
+            <div class="membership-conditions">
+                <textarea class="form-control" id="conditions-area" maxlength="200" cols="46" rows="4" placeholder="<%= t('chat.form.room-form.edit.description.conditions') %>"></textarea>
+                <p class="help"><%= t('chat.form.room-form.edit.description.help') %> <span class="counter pull-right"><%= t('chat.form.common.edit.left', {count: 200}) %></span></p>
+                <div class="block column flex-parent jc-center center">
+                    <button class="btn btn-default save-access save-conditions" type="submit"><%= t('global.save')%></button>
+                </div>
             </div>
         </div>
-        <h2 class="block"><%= t('chat.form.group-form.mode.domain') %></h2>
-        <div class="mb70 domain-allowed block">
-            <p><%= t('chat.form.group-form.mode.disclaimer.domain') %></p>
-            <div class="error"><span class="alert-danger error-label"></span></div>
-            <div class="ctn"></div>
-            <input class="btn btn-success add-domain pull-right" type="submit" value="<%= t('global.add')%>" />
+
+        <div class="block">
+            <label><%= t('chat.form.group-form.mode.domain') %></label>
+            <div class="mb70 domain-allowed">
+                <p><%= t('chat.form.group-form.mode.disclaimer.domain') %></p>
+                <div class="error"><span class="alert-danger error-label"></span></div>
+                <div class="ctn"></div>
+                <div class="block column flex-parent jc-center center">
+                    <button class="btn btn-default add-domain pull-right" type="submit"><%= t('global.add')%></button>
+                </div>
+            </div>
         </div>
 
-        <h2 class="block"><%= t('chat.blocked.password_placeholder') %></h2>
-        <div class="field-password radio block">
-            <p><%= t('chat.form.group-form.mode.disclaimer.group-password') %></p>
-            <div class="password-block form-inline mt10 flex-parent baseline space-between">
-                <input type="checkbox" id="input-password-checkbox" name="input-password-checkbox" <% if (password) { %> checked <% } %> />
-                <input type="text"
-                       class="input-password form-control ml10 mr10 flex-child <% if (!password) { %> disabled <% } %>"
-                       placeholder="<%= (password ? t('chat.form.room-form.common.mode.password-keep') : t('chat.form.room-form.common.mode.password-field') ) %>"
-                       maxlength="255"
-                       value="<%= password %>"
-                <% if (!password) { %> disabled <% } %>
-                />
-                <a href="#" class="mr10 icon icon-refresh random-password dc-text <% if (!password) { %> disabled <% } %>"></a>
-                <input class="btn btn-success save-access" type="submit" value="<%= t('global.save')%>" />
+        <div class="block">
+            <label><%= t('chat.blocked.password_placeholder') %></label>
+            <div class="field-password radio">
+                <p><%= t('chat.form.group-form.mode.disclaimer.group-password') %></p>
+                <div class="password-block form-inline mt10 flex-parent baseline space-between">
+                    <input type="checkbox" id="input-password-checkbox" name="input-password-checkbox" <% if (password) { %> checked <% } %> />
+                    <input type="text"
+                           class="input-password form-control ml10 mr10 flex-child <% if (!password) { %> disabled <% } %>"
+                           placeholder="<%= (password ? t('chat.form.room-form.common.mode.password-keep') : t('chat.form.room-form.common.mode.password-field') ) %>"
+                           maxlength="255"
+                           value="<%= password %>"
+                    <% if (!password) { %> disabled <% } %>
+                    />
+                    <a href="#" class="mr10 icon icon-refresh random-password dc-text <% if (!password) { %> disabled <% } %>"></a>
+                    <input class="btn btn-success save-access" type="submit" value="<%= t('global.save')%>" />
+                </div>
             </div>
         </div>
     <% } %>
