@@ -128,6 +128,7 @@ var MainView = Backbone.View.extend({
   },
   onReady: function () {
     this.connectionView.hide();
+    return this.openModalChooseUsername();
   },
   onAdminMessage: function (data) {
     app.trigger('alert', 'info', data.message);
@@ -451,6 +452,7 @@ var MainView = Backbone.View.extend({
   },
   openModalChooseUsername: function () {
     var view = new ModalChooseUsernameView();
+    this.modalView.setIdentifier('popin-choose-username');
     this.modalView.setView(view).open({'show': true, keyboard: false, backdrop: 'static'});
   },
 
