@@ -54,6 +54,26 @@
   &.bottom { position: fixed; bottom: 10px; top: initial !important; }
 }
 
+#popin-choose-username {
+  .modal-backdrop { .cl-backdrop; }
+  .modal-dialog { margin-top: 10em;
+    .modal-content { .border-radius(0);
+      .modal-header { background: @cl-first; .ft-opensans-semibold; text-transform: uppercase; font-size: 12px; color: #FFFFFF; letter-spacing: 1.6px; line-height: 14px; text-align: center; min-height: 50px; padding: 15px 30px 15px 15px;
+        .close-modal { position: absolute; right: 10px; top: 10px; }
+      }
+      .modal-body { padding: 25px;
+        .question { margin-bottom: 15px; .ft-opensans; font-size: 13px; color: #8491A1; line-height: 14px; }
+        .input { .border-radius(0); margin-bottom: 15px;
+          label { font-weight: normal; }
+        }
+        .help { .ft-opensans; font-size: 12px; color: #AFBAC8; line-height: 14px; margin-top: 10px; margin-left: 10px; }
+        .submit { background: #E7ECF3; .border-radius(4px); .ft-opensans-semibold; font-size: 11px; color: #586473; letter-spacing: 0.84px; line-height: 35px; text-transform: uppercase; width: 200px; }
+      }
+    }
+  }
+}
+
+
 #connection {
   .modal-backdrop {
     background-color: @cl-background;

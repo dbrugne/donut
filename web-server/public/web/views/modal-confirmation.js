@@ -147,13 +147,6 @@ var ConfirmationModalView = Backbone.View.extend({
           username: this.options.username,
           name: this.options.room_name
         }));
-      } else if (this.options.message === 'request-allowance') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.requestallowance'));
-        this.$message.html(i18next.t('chat.confirmation.message.requestallowance'));
-        this.$bigInputLabel.text(i18next.t('chat.confirmation.label-requestallowance'));
-      } else if (this.options.message === 'request-allowance-password') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.password-blocked'));
-        this.$message.text(i18next.t('chat.confirmation.message.password-blocked'));
       } else if (this.options.message === 'op-group-user') {
         this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.op-group-user'));
         this.$message.text(i18next.t('chat.confirmation.message.op-group-user', {username: this.options.username}));

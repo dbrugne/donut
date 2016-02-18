@@ -538,7 +538,6 @@
       "cancel": "Annuler",
       "confirm": "OK",
       "title": {
-        "password-blocked": "Accès restreint",
         "modechange": "ATTENTION.",
         "banuser": "Bloquer un utilisateur.",
         "debanuser": "Débloquer un utilisateur.",
@@ -557,7 +556,6 @@
         "op-group-user": "Promouvoir un utilisateur de cette communauté",
         "deop-group-user": "Retirer un utilisateur des modérateurs de cette communauté",
         "invite": "Autoriser l'accès",
-        "requestallowance": "Demander à devenir membre",
         "add-email": "Ajouter un email",
         "send-email": "Envoyer un email de validation",
         "delete-email": "Supprimer un email",
@@ -566,7 +564,6 @@
         "delete-domain": "Supprimer un domaine d'e-mail de confiance"
       },
       "message": {
-        "password-blocked": "Saisissez le mot de passe d'accès direct à la communauté",
         "modechange": "Cette action est irréversible.",
         "banuser": "Vous allez bloquer cet utilisateur.",
         "debanuser": "Vous allez débloquer cet utilisateur.",
@@ -585,7 +582,6 @@
         "op-group-user": "Vous allez promouvoir @__username__ modérateur de cette communauté. Les modérateurs peuvent gérer les demandes d'adhésion, inviter et bannir des membres.",
         "deop-group-user": "@__username__ ne sera plus modérateur de cette communauté.",
         "invite": "Vous allez autoriser l'accès à @__username__. Une notification va lui être adressée pour l'inviter à rejoindre #__name__.",
-        "requestallowance": "Le créateur de la communauté va avoir accès à votre vrai nom et votre e-mail.",
         "add-email": "Nouvel e-mail :",
         "send-email": "Un email de validation va être envoyé à __email__",
         "delete-email": "__email__ va être supprimé de vos adresses mails",
