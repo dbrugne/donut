@@ -69,7 +69,7 @@ var GroupAccessView = Backbone.View.extend({
     });
     this.$el.html(html);
 
-    this.$errors = this.$('.errors');
+    this.$errors = this.$('.error');
 
     this.$toggleCheckbox = this.$('#input-password-checkbox');
     this.$checkboxUserRequest = this.$('#input-userrequest-checkbox');

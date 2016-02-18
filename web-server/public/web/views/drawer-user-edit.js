@@ -104,7 +104,7 @@ var DrawerUserEditView = Backbone.View.extend({
     this.$submit.addClass('loading');
     app.client.userUpdate(updateData, function (data) {
       that.$submit.removeClass('loading');
-      that.$('.errors').hide();
+      that.$('.error').hide();
       if (data.err) {
         return that.editError(data.err);
       }
@@ -119,7 +119,7 @@ var DrawerUserEditView = Backbone.View.extend({
     this.$submit.addClass('loading');
     app.client.userUpdate(updateData, function (d) {
       that.$submit.removeClass('loading');
-      that.$('.errors').hide();
+      that.$('.error').hide();
       if (d.err) {
         that.editError(d.err);
       }
@@ -133,7 +133,7 @@ var DrawerUserEditView = Backbone.View.extend({
     this.$submit.addClass('loading');
     app.client.userUpdate(updateData, function (d) {
       that.$submit.removeClass('loading');
-      that.$('.errors').hide();
+      that.$('.error').hide();
       if (d.err) {
         that.editError(d.err);
       }
@@ -144,11 +144,11 @@ var DrawerUserEditView = Backbone.View.extend({
     var website = this.$website.val();
 
     if (website && website.length < 5 || website.length > 255) {
-      return this.$('.errors').html(i18next.t('chat.form.errors.website-size')).show();
+      return this.$('.error').html(i18next.t('chat.form.errors.website-size')).show();
     }
 
     if (website && !/^[^\s]+\.[^\s]+$/.test(website)) {
-      return this.$('.errors').html(i18next.t('chat.form.errors.website-url')).show();
+      return this.$('.error').html(i18next.t('chat.form.errors.website-url')).show();
     }
 
     return true;
@@ -163,7 +163,7 @@ var DrawerUserEditView = Backbone.View.extend({
     _.each(err, function (e) {
       errors += i18next.t('chat.form.errors.' + e, {defaultValue: i18next.t('global.unknownerror')}) + '<br>';
     });
-    this.$('.errors').html(errors).show();
+    this.$('.error').html(errors).show();
   }
 });
 

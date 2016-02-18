@@ -33,7 +33,7 @@ var DrawerUserRoomPreferencesView = Backbone.View.extend({
       preferences: data.preferences
     });
 
-    this.$errors = this.$el.find('.errors');
+    this.$errors = this.$el.find('.error');
     this.$el.html(html);
     this.initializeTooltips();
   },
