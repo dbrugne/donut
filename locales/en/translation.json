@@ -1714,6 +1714,7 @@
       },
       "nothing": {
         "label": "Never receive notifications about this discussion",
+        "label2": "Receive notifications about this discussion",
         "help": ""
       },
       "channels": {

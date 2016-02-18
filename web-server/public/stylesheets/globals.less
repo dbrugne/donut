@@ -500,3 +500,17 @@ table tr:hover { outline: 1px solid @cl-subtext15; background-color: @cl-subtext
   &.gray:hover { background: lighten(#8491A1, 10%); }
   &.transparent { background: transparent; }
 }
+
+// display a checkbox as a toggle button
+// use the syntax :
+// <div class="toggle-checkbox">
+//  <input id="bla" type="checkbox" ... >
+//  <label for="bla"></label>
+// </div>
+.toggle-checkbox { background: #D0D9E6; .border-radius(11px); height: 16px; width: 33px; position: relative;
+  input[type=checkbox] { visibility: hidden; }
+  input[type=checkbox]:checked + label { left: 19px; }
+  label { background: #FFFFFF; .border-radius(11px); height: 12px; width: 12px; min-height: initial; min-width: initial; padding: 0; cursor: pointer; position: absolute; top: 2px; left: 2px; display: block; .transition(all .4s ease); }
+}
+
+

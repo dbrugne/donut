@@ -1,20 +1,30 @@
-<div class="relative">     <span class="close icon icon-times"></span> </div>
-
-<div class="title">
-    <%= t('preferences.title') %>
-    <%= room.identifier %>
+<div class="header">
+    <div class="title">
+        <%= t('preferences.title') %>
+        <%= room.identifier %>
+    </div>
+    <span class="close-drawer icon icon-times curp"></span>
 </div>
 
-<div class="ctn-drawer">
+<div class="scrollable">
     <div class="error block"></div>
 
     <form class="user-form" role="form">
-        <div class="block">
+        <div class="block mt25">
             <div class="form-group">
                 <div class="checkbox">
-                    <label>
-                        <input type="checkbox" class="savable disable-others" name="room:notif:nothing:__what__" value="room:notif:nothing:__what__" <% if (preferences['room:notif:nothing:'+room.id]) { print('checked'); } %> >
-                        <%= t('preferences.notif.nothing.label') %>
+                    <label for="disable-others-notifications" class="setting" style="padding: 0;">
+                        <span class="show-nothing">
+                            <%= t('preferences.notif.nothing.label') %>
+                        </span>
+                        <span class="hide-nothing">
+                            <%= t('preferences.notif.nothing.label2') %>
+                        </span>
+                        <span class="flex-child"></span>
+                        <div class="toggle-checkbox">
+                            <input id="disable-others-notifications" type="checkbox" class="savable disable-others" name="room:notif:nothing:__what__" value="room:notif:nothing:__what__" <% if (preferences['room:notif:nothing:'+room.id]) { print('checked'); } %> >
+                            <label for="disable-others-notifications"></label>
+                        </div>
                     </label>
                     <p class="help"><%= t('preferences.notif.nothing.help') %></p>
                 </div>
@@ -33,11 +43,10 @@
                 <% _.each(notifications, function(key) { %>
                 <div class="notification">
                     <div class="checkbox">
-                        <label>
+                        <label class="setting">
                             <input class="savable disableable" type="checkbox" value="<%= key %>" <% if (preferences[key.replace('__what__', room.id)]) { print('checked'); } %> <% if (preferences['room:notif:nothing:'+room.id]) { print('disabled'); } %>> <%= t('preferences.notif.events.'+key.replace('room:notif:', '').replace(':__what__', '').replace(':', '.')+'.label') %>
                         </label>
                     </div>
-                    <p class="help"><%= t('preferences.notif.events.'+key.replace('room:notif:', '').replace(':__what__', '').replace(':', '.')+'.help') %></p>
                 </div>
                 <% }); %>
             </div>
