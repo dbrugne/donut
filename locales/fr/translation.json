@@ -1787,6 +1787,12 @@
     },
     "users-group": {
       "disclaimer" : "Vous avez la possibilité d'inviter un utilisateur à rejoindre cette communauté. Pour ce faire, <a href=\"#\" class=\"open-group-users-allowed\" data-group-id=\"__group_id__\">cliquez ici</a>"
+    },
+    "room-users": {
+      "title": "Gérer les participants",
+      "username": "Nom",
+      "type": "Type",
+      "search": "Rechercher des utilisateurs dans cette discussion"
     }
   }
 }

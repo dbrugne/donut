@@ -1787,6 +1787,12 @@
     },
     "users-group": {
       "disclaimer" : "You can invite a user to join this community. To do so, <a href=\"#\" class=\"open-group-users-allowed\" data-group-id=\"__group_id__\">click here</a>"
+    },
+    "room-users": {
+      "title": "Manage participants",
+      "username": "Name",
+      "type": "Type",
+      "search": "search a username in this discussion"
     }
   }
 }
