@@ -16,7 +16,7 @@
         <% if (room.group_name) { %>
             <span class="groupname">#<%- room.group_name %></span>
         <% } %>
-        <div class="groupname">
+        <div class="roomname">
             <span class="hash"><%= room.group_name ? '/' : '#' %></span>
             <input type="text" name="input-delete" class="big-input dc-border flex-child colorize-border" placeholder="<%= t('chat.form.room-form.edit.room.delete.placeholder') %>" maxlength="15" value="">
         </div>
