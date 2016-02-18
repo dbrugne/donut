@@ -537,7 +537,6 @@
       "cancel": "Cancel",
       "confirm": "OK",
       "title": {
-        "password-blocked": "Blocked access",
         "modechange": "WARNING",
         "banuser": "Block a user",
         "debanuser": "Unblock a user",
@@ -556,7 +555,6 @@
         "op-group-user": "Promote a user of a community",
         "deop-group-user": "Remove from moderators of a community",
         "invite": "Authorize a user",
-        "requestallowance": "Membership request",
         "add-email": "Add an email",
         "send-email": "Send a validation email",
         "delete-email": "Delete an email",
@@ -565,7 +563,6 @@
         "delete-domain": "Delete an email domain from trusted"
       },
       "message": {
-        "password-blocked": "This community is blocked by a password, to join we invite you to type it",
         "modechange": "This action is irreversible.",
         "banuser": "You are about to block this user.",
         "debanuser": "You are about to unblock this user.",
@@ -584,7 +581,6 @@
         "op-group-user": "Your are about to promote @__username__ to moderator of this community. Moderators can manage membership requests, invite and ban members.",
         "deop-group-user": " @__username__ will not longer be a moderator of this community.",
         "invite": "You are about to authorize @__username__. A notification will be sent to invite @__username__ to join #__name__.",
-        "requestallowance": "The community creator will have access to your real name and email.",
         "add-email": "New email:",
         "send-email": "A verification e-mail will be sent to __email__",
         "delete-email": "__email__ will be deleted of your address",
