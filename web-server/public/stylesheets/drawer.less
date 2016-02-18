@@ -151,14 +151,19 @@
   }
   #room-create {
     .scrollable { padding: 0;
+      .ctn { padding: 25px; background-color: #F5F8FA; }
+    }
+  }
+  #room-create, #room-delete {
+    .scrollable {
       .identifier {
         .groupname { margin: 0; .ft-opensans-semibold; font-weight: 400; font-size: 23px; color: @cl-first; line-height: 23px; padding: 0; }
         .roomname  {
           .hash { .ft-opensans-light; font-size: 25px; color: @cl-first; line-height: 14px; }
-          input { .ft-opensans; font-size: 18px; color: #1D252F; line-height: 14px; border-width: 0 0 1px 0; border-style: solid; border-color: @cl-first; outline: none; height: 50px; text-align: center; padding: 10px 20px; }
+          input { width: 80%; .ft-opensans; font-size: 18px; color: #1D252F; line-height: 14px; border-width: 0 0 1px 0; border-style: solid; border-color: @cl-first; outline: none; height: 50px; text-align: center; padding: 10px 20px; }
         }
       }
-      .ctn { padding: 25px; background-color: #F5F8FA;
+      .ctn {
         p { .ft-opensans; font-size: 13px; color: #8491A1; line-height: 18px; }
         .open-group-create { .ft-opensans-bold; color: @cl-first; font-size: 13px; line-height: 14px; text-decoration:underline;
           &:hover { text-decoration: none; }
@@ -166,12 +171,12 @@
       }
     }
   }
-  #group-create {
+  #group-create, #group-delete {
     .scrollable {
       .identifier {
         .groupname  {
           .hash { .ft-opensans-light; font-size: 25px; color: @cl-first; line-height: 14px; }
-          input { .ft-opensans; font-size: 18px; color: #1D252F; line-height: 14px; border-width: 0 0 1px 0; border-style: solid; border-color: @cl-first; outline: none; height: 50px; text-align: center; padding: 10px 20px; }
+          input { width: 80%; .ft-opensans; font-size: 18px; color: #1D252F; line-height: 14px; border-width: 0 0 1px 0; border-style: solid; border-color: @cl-first; outline: none; height: 50px; text-align: center; padding: 10px 20px; }
         }
       }
     }
