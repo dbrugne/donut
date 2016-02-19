@@ -23,7 +23,8 @@ var DrawerUserNotificationsView = Backbone.View.extend({
     'click .actions .read-more': 'onReadMore',
     'click .action-tag-as-read': 'onTagAsRead',
     'click .action-tag-as-done': 'onTagAsDone',
-    'click a.message': 'onMessageClick'
+    'click a.message': 'onMessageClick',
+    'change .browser-sounds': 'onChangeBrowserSounds'
   },
 
   more: false,
@@ -40,35 +41,53 @@ var DrawerUserNotificationsView = Backbone.View.extend({
     this.render(); // show spinner as temp content
 
     app.client.notificationRead(null, null, 10, _.bind(function (data) {
-      this.isThereMoreNotifications = data.more;
-      var spinner = this.templateSpinner({});
-      this.$el.html(this.template({user_id: this.userId, spinner: spinner}));
+      app.client.userPreferencesRead(null, _.bind(function (response) { // @todo fetch preferences into notificationRead, avoid two calls
+        this.isThereMoreNotifications = data.more;
+        var spinner = this.templateSpinner({});
+        this.$el.html(this.template({user_id: this.userId, spinner: spinner, preferences: response.preferences}));
+        if (!response.preferences['browser:sounds']) {
+          this.$el.addClass('nothing');
+        }
 
-      this.$unreadCount = this.$('.unread-count');
-      this.$count = this.$unreadCount.find('.nb');
-      this.$menu = this.$('#main-navbar-messages');
-      this.$scrollable = this.$('.messages-list-ctn');
-      this.$actions = this.$scrollable.find('.actions');
-      this.$readMore = this.$actions.find('.read-more');
-      this.$loader = this.$actions.find('.loading');
+        this.$unreadCount = this.$('.unread-count');
+        this.$count = this.$unreadCount.find('.nb');
+        this.$menu = this.$('#main-navbar-messages');
+        this.$scrollable = this.$('.messages-list-ctn');
+        this.$actions = this.$scrollable.find('.actions');
+        this.$readMore = this.$actions.find('.read-more');
+        this.$loader = this.$actions.find('.loading');
+        this.$errors = this.$el.find('.error');
 
-      var html = '';
-      _.each(data.notifications, _.bind(function (element) {
-        html += this.renderNotification(element);
+        var html = '';
+        _.each(data.notifications, _.bind(function (element) {
+          html += this.renderNotification(element);
+        }, this));
+
+        this.$menu.html(this.$menu.html() + html);
+
+        this.markHasRead = setTimeout(_.bind(function () {
+          this.clearNotifications();
+        }, this), this.timeToMarkAsRead);
+
+        this.toggleReadMore();
       }, this));
-
-      this.$menu.html(this.$menu.html() + html);
-
-      this.markHasRead = setTimeout(_.bind(function () {
-        this.clearNotifications();
-      }, this), this.timeToMarkAsRead);
-
-      this.toggleReadMore();
     }, this));
   },
   render: function () {
     this.$el.html(require('../templates/spinner.html'));
     return this;
+  },
+  onChangeBrowserSounds: function(event) {
+    var $target = $(event.currentTarget);
+    var value = $target.is(':checked');
+    this.$el.toggleClass('nothing');
+    var update = { 'browser:sounds': value };
+    app.client.userPreferencesUpdate(update, _.bind(function (data) {
+      this.$errors.hide();
+      if (data.err) {
+        this.$errors.html(i18next.t('global.unknownerror')).show();
+      }
+    }, this));
   },
   setUnreadCount: function (count) {
     var unviewed = app.user.get('unviewedNotification');
