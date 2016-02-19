@@ -427,19 +427,10 @@
           input { .border-radiuses(4px, 0, 0, 4px); }
         }
         .search-options { border-bottom: 1px solid @cl-border; }
-        .nav.nav-pills {
-          li { border-bottom: 5px solid transparent; padding:10px; transition: border-color 0.5s ease; background-color: #FFF;
-            a { .border-radius(0); padding:0;
-              &:after { content:' '; border:1px solid #ccd6dd; position:absolute; right: -11px; width: 1px; height: 18px; display:inline-block; }
-            }
-            a:last-child:after { border-color:transparent; }
-            &.active>a, &:hover>a, &:focus>a {
-              background-color: transparent;
-              color: initial;
-            }
-            &.active, &:hover, &:focus {
-              border-bottom: 5px solid @cl-first;
-            }
+        .nav.nav-pills { border-bottom: 1px solid #D0D9E6; width: 100%;
+          li { border-bottom: 3px solid transparent; width: 280px; .ft-opensans; font-size: 13px; color: #AFBAC8; letter-spacing: 2px; line-height: 21px; text-transform: uppercase; padding: 5px 10px; text-align: center;
+            &.active { border-bottom: 3px solid @cl-first; color: #1D252F; }
+            &.active a, a { padding: 0; margin: 0; background-color: transparent; .ft-opensans; font-size: 13px; color: #AFBAC8; letter-spacing: 2px; line-height: 21px; text-transform: uppercase;}
           }
         }
       }
