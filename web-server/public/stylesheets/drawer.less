@@ -235,10 +235,12 @@
       left: 0;
       top: 27px;
       width: 100%;
-      .dropdown-menu {
+      .dropdown-menu { margin-top: 7px;
+        &:before, &:after { display:none; }
         .border-radiuses(0, 4px, 4px, 0);
         border-top: 0;
         width: 100%;
+        &>.active>a { color:#FFF; }
         a {
           text-decoration: none;
           img { width:20px; height:20px; }

@@ -15,45 +15,45 @@ var statusClass =   (isBanned)  ? 'is-banned' :
                 <button class="dropdown-toggle flex-parent jc-center center" data-toggle="dropdown" aria-expanded="true">
                     <i class="icon icon-cog icon-fw"></i>
                 </button>
-                <ul class="dropdown-menu" role="menu">
+                <ul class="dropdown-menu dropdown-menu-right" role="menu">
                     <li role="presentation">
                         <a role="menuitem" tabindex="-1" class="open-group-profile" data-group-id="<%= group.group_id %>">
-                            <i class="icon icon-eye"></i> <%= t('group.dropdown.view-profile') %>
+                            <img class="img-avatar" src="<%= group.avatarUrl %>" /><%= t('group.dropdown.view-profile') %>
                         </a>
                     </li>
                     <% if (isOp || isOwner || isAdmin) { %>
                         <li role="presentation" class="divider"></li>
                     <% } %>
                     <% if (isOwner || isAdmin ) { %>
-                    <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="open-group-edit" data-group-id="<%= group.group_id %>">
-                            <i class="icon icon-pencil"></i> <%= t('group.dropdown.edit-profile') %>
-                        </a>
-                    </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" class="open-group-edit" data-group-id="<%= group.group_id %>">
+                                <i class="icon icon-pencil"></i> <%= t('group.dropdown.edit-profile') %>
+                            </a>
+                        </li>
                     <% }; %>
                     <% if (isOp || isOwner || isAdmin) { %>
-                    <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="open-group-access" data-group-id="<%= group.group_id %>">
-                            <i class="icon icon-public"></i> <%= t('group.dropdown.access-rules') %>
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="open-group-users" data-group-id="<%= group.group_id %>">
-                            <i class="icon icon-users"></i> <%= t('group.dropdown.manage-members') %>
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="open-group-users-allowed" data-group-id="<%= group.group_id %>">
-                            <i class="icon icon-verified-user"></i> <%= t('group.dropdown.invites') %>
-                        </a>
-                    </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" class="open-group-access" data-group-id="<%= group.group_id %>">
+                                <i class="icon icon-public"></i> <%= t('group.dropdown.access-rules') %>
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" class="open-group-users" data-group-id="<%= group.group_id %>">
+                                <i class="icon icon-users"></i> <%= t('group.dropdown.manage-members') %>
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" class="open-group-users-allowed" data-group-id="<%= group.group_id %>">
+                                <i class="icon icon-verified-user"></i> <%= t('group.dropdown.invites') %>
+                            </a>
+                        </li>
                     <% }; %>
                     <% if (!isOwner && isMember) { %>
-                    <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="quit-group" data-group-id="<%= group.group_id %>">
-                            <i class="icon icon-times"></i> <%= t('group.close') %>
-                        </a>
-                    </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" class="quit-group" data-group-id="<%= group.group_id %>">
+                                <i class="icon icon-times"></i> <%= t('group.close') %>
+                            </a>
+                        </li>
                     <% } %>
                 </ul>
             </div>

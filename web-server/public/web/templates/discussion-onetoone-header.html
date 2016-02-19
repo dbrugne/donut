@@ -34,10 +34,10 @@
                 <button class="dropdown-toggle flex-parent jc-center center" data-toggle="dropdown" aria-expanded="true">
                     <i class="icon icon-cog icon-fw"></i>
                 </button>
-                <ul class="dropdown-menu" role="menu">
+                <ul class="dropdown-menu dropdown-menu-right" role="menu">
                     <li role="presentation">
                         <a role="menuitem" tabindex="-1" class="open-user-profile" data-user-id="<%= user_id %>">
-                            <i class="icon icon-eye"></i> <%= t('global.viewprofile') %>
+                            <img class="img-avatar" src="<%= avatar %>" /> <%= t('global.viewprofile') %>
                         </a>
                     </li>
                     <li role="presentation" class="divider"></li>

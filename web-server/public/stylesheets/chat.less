@@ -608,12 +608,7 @@
             .avatar { position: absolute; width: 50px; height: 50px; }
           }
           .info { padding-left: 64px; .justify-content(space-between); padding-top: 6px;
-            .dropdown { display: inline-block; position: relative;
-              .dropdown-menu>li>a { color: @cl-subtext40; }
-              button { font-size: 14px; border: none; background-color: transparent; margin:0; padding:0; color: @cl-gray;
-                &:hover { color: darken(@cl-gray, 10%); }
-              }
-            }
+            .dropdown { display: inline-block; position: relative; }
           }
           .name { .display-inline-flex; word-break: break-all; .ft-opensans-light; font-size: 25px; color: #1D252F; line-height: 14px;
             .username { color: @cl-subtext20; font-size: 1.8rem; }
@@ -1008,4 +1003,59 @@
   }
 
   @import './drawer';
+
+  .dropdown {
+    .dropdown-toggle { font-size: 14px; border: none; background-color: transparent; margin:0; padding:0; color: @cl-gray;
+      &:hover { color: darken(@cl-gray, 10%); }
+    }
+    .dropdown-menu {
+      border-radius: 0;
+      background: #FFFFFF;
+      border: 1px solid #D0D9E6;
+      box-shadow: 0 0 8px 0 rgba(28,37,47,0.30);
+      margin: 10px 0 0 0;
+      padding: 0;
+      >li>a {
+        padding: 4px 13px;
+        .ft-opensans;
+        font-size: 14px;
+        color: #434E5B;
+        line-height: 32px;
+        .img-avatar { width:20px; height:20px; margin-right:10px; }
+        i { font-size: 1.5rem; color: #D0D9E6; margin-right: 10px; }
+      }
+      .divider {
+        height: 1px;
+        margin: 5px 0;
+        overflow: hidden;
+        background-color: #D0D9E6;
+      }
+      &.dropdown-menu-right { right:-20px; }
+      &:after {
+        content:"";
+        position:absolute;
+        top: -8px;
+        right: 15px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 13px 8px 13px;
+        border-color: transparent transparent #FFF transparent;
+      }
+      &:before {
+        content:"";
+        position:absolute;
+        top: -10px;
+        right: 14px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 14px 9px 14px;
+        border-color: transparent transparent #D0D9E6 transparent;
+      }
+    }
+    &.open {
+      .dropdown-toggle { color: #FC2063; }
+    }
+  }
 }

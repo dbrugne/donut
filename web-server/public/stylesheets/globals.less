@@ -271,7 +271,6 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
     font-style: italic;
   }
 }
-.border-shadow { border: 5px solid rgba(167, 167, 167, 0.1); }
 
 .upon {
   a {
@@ -279,83 +278,70 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   }
 }
 
-.txt-bubble {
-  position: relative;
-  background-color: @cl-subtext0;
-  padding: 1.2em 1.3em;
-  .border-radius(25px);
-  &:before {
-    content: url(/images/svg/tail.svg);
-    position: absolute;
-    bottom: -5px;
-    left: -10px;
-    width: 20px;
-  }
-}
 /* Room profiles common style */
-.room {
-  p { margin-bottom: 0; }
-  .avatar {
-    .img-circle;
-  }
-  .name {
-    .ft-opensans-extra-bold;
-    font-size: 2.0em;
-    line-height: 1.2;
-    word-break: break-all;
-    a {
-      &:hover {
-        text-decoration: none;
-      }
-    }
-  }
-  .owner {
-    .ft-opensans;
-    font-size: 1.1em;
-  }
-  .description {
-    .ft-opensans;
-    font-size: 1em;
-  }
-  .topic {
-    .ft-opensans-italic;
-    font-size: 1em;
-    label {
-      color: @cl-subtext20;
-      font-size: 0.9em;
-      margin-right: 10px;
-      font-weight: normal;
-    }
-  }
-  .website {}
-  .join {
-    a {
-      position: relative;
-      .ft-opensans-bold;
-      .border-radius(100px);
-      text-transform: uppercase;
-      padding: 15px 20px;
-      font-size: 17px;
-      i { color: @cl-warning; }
-    }
-    &:hover {
-      a {
-        text-decoration: none;
-      }
-    }
-  }
-}
-
-.user {
-  p { margin-bottom: 0; }
-  .username {
-    .ft-opensans-extra-bold;
-    font-size: 2.0em;
-    line-height: 1.2;
-  }
-  .othername { color: @cl-subtext20; font-weight: normal; }
-  .bio { .ft-opensans; font-size: 1em; margin-bottom: 20px; }
-}
+//.room {
+//  p { margin-bottom: 0; }
+//  .avatar {
+//    .img-circle;
+//  }
+//  .name {
+//    .ft-opensans-extra-bold;
+//    font-size: 2.0em;
+//    line-height: 1.2;
+//    word-break: break-all;
+//    a {
+//      &:hover {
+//        text-decoration: none;
+//      }
+//    }
+//  }
+//  .owner {
+//    .ft-opensans;
+//    font-size: 1.1em;
+//  }
+//  .description {
+//    .ft-opensans;
+//    font-size: 1em;
+//  }
+//  .topic {
+//    .ft-opensans-italic;
+//    font-size: 1em;
+//    label {
+//      color: @cl-subtext20;
+//      font-size: 0.9em;
+//      margin-right: 10px;
+//      font-weight: normal;
+//    }
+//  }
+//  .website {}
+//  .join {
+//    a {
+//      position: relative;
+//      .ft-opensans-bold;
+//      .border-radius(100px);
+//      text-transform: uppercase;
+//      padding: 15px 20px;
+//      font-size: 17px;
+//      i { color: @cl-warning; }
+//    }
+//    &:hover {
+//      a {
+//        text-decoration: none;
+//      }
+//    }
+//  }
+//}
+//
+//.user {
+//  p { margin-bottom: 0; }
+//  .username {
+//    .ft-opensans-extra-bold;
+//    font-size: 2.0em;
+//    line-height: 1.2;
+//  }
+//  .othername { color: @cl-subtext20; font-weight: normal; }
+//  .bio { .ft-opensans; font-size: 1em; margin-bottom: 20px; }
+//}
 
 .method-facebook {   background-color: rgb(70, 107, 166); color: #FFF; .border-radius(5px);
   .fb-left .icon {  background-color: rgb(45, 77, 129); color: #FFF; padding: 15px; font-size: 20px; border-radius: 5px 0 0 5px; border-right: 1px solid #FFF;}
