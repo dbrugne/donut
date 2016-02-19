@@ -55,7 +55,6 @@ var DrawerUserNotificationsView = Backbone.View.extend({
         this.$scrollable = this.$('.messages-list-ctn');
         this.$actions = this.$scrollable.find('.actions');
         this.$readMore = this.$actions.find('.read-more');
-        this.$loader = this.$actions.find('.loading');
         this.$errors = this.$el.find('.error');
 
         var html = '';
@@ -205,10 +204,9 @@ var DrawerUserNotificationsView = Backbone.View.extend({
   // When user clicks on the read more link in the notification dropdown
   onReadMore: function (event) {
     event.stopPropagation(); // Cancel dropdown close behaviour
-    this.$readMore.addClass('hidden');
-    this.$loader.removeClass('hidden');
-
+    this.$readMore.addClass('loading');
     app.client.notificationRead(null, this.lastNotifDisplayedTime(), 10, _.bind(function (data) {
+      this.$readMore.removeClass('loading');
       this.isThereMoreNotifications = data.more;
       var previousContent = this.$menu.html();
       var html = '';
@@ -217,8 +215,6 @@ var DrawerUserNotificationsView = Backbone.View.extend({
       }, this));
 
       this.$menu.html(previousContent + html);
-      this.$readMore.removeClass('hidden');
-      this.$loader.addClass('hidden');
 
       var that = this;
       this.markHasRead = setTimeout(function () {
