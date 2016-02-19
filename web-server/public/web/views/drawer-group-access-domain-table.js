@@ -16,7 +16,7 @@ var DrawerGroupAccessDomainTableView = Backbone.View.extend({
   initialize: function (options) {
     this.model = options.model;
 
-    this.$ctn = this.$('.ctn');
+    this.$ctn = this.$('.domain-allowed').find('.ctn');
   },
   render: function (data) {
     var domains = (data && data.allowed_domains)
@@ -25,8 +25,7 @@ var DrawerGroupAccessDomainTableView = Backbone.View.extend({
     this.$ctn.html(this.template({domains: domains}));
 
     this.data = data;
-    this.$error = $('.error-label');
-
+    this.$error = this.$('.error');
     this.$error.hide();
 
     this.initializeTooltips();
@@ -67,7 +66,6 @@ var DrawerGroupAccessDomainTableView = Backbone.View.extend({
     err = i18next.t('chat.form.errors.' + err, {defaultValue: i18next.t('global.unknownerror')});
     this.$error.html(err).show();
   },
-
   initializeTooltips: function () {
     this.$el.find('[data-toggle="tooltip"]').tooltip({
       container: 'body'
