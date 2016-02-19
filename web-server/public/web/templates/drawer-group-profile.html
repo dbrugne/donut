@@ -31,9 +31,9 @@
         
         <div class="block <%= !group.description ? 'mt0' : '' %>">
             <% if (group.website && group.website.href) { %><p class="website left"><i class="icon icon-fw icon-link "></i> <a class=" " href="<%= group.website.href %>" target="_blank" title="<%= group.website.title %>"><%= group.website.title %></a></p><% }; %>
-            <% if (group.created) { %><p class="created left"><i class="icon icon-fw icon-clock-o  left"></i> <%= t('profile.group.createdat') %> <span class="ml5" data-time="<%= group.created %>"></span></p><% }; %>
+            <% if (group.created) { %><p class="created left"><i class="icon icon-fw icon-clock-o  left"></i><%= t('profile.group.created-at', {created_at: created_at}) %></p><% }; %>
             <% if (group.isOwner || group.isAdmin) { %><p class="edit left"><i class="icon icon-fw icon-pencil "></i> <a class=" open-group-edit " data-group-id="<%= group.group_id %>"> <%= t('profile.common.editlink') %></a><p><% }; %>
-            <% if (group.isOwner || group.isOp || group.isAdmin) { %><p class="left"><i class="icon icon-fw icon-users  left"></i> <a class=" open-group-users " data-group-id="<%= group.group_id %>"><%= t('group.manage') %></a></p><% }; %>
+            <% if (group.isOwner || group.isOp || group.isAdmin) { %><p class="left"><i class="icon icon-fw icon-users left"></i> <a class=" open-group-users " data-group-id="<%= group.group_id %>"><%= t('group.manage') %></a></p><% }; %>
             <% if (group.isOwner || group.isOp || group.isAdmin) { %><p class="left"><i class="icon icon-fw icon-verified-user  left"></i> <a class=" open-group-users-allowed " data-group-id="<%= group.group_id %>"><%= t('group.invite') %></a></p><% }; %>
             <% if (group.isOwner || group.isOp || group.isAdmin ) { %><p class="left "><i class="icon icon-fw icon-public"></i> <a role="menuitem" tabindex="-1" class=" open-group-access " data-group-id="<%= group.group_id %>"><%= t('chat.access.link') %></a></p><% }; %>
         </div>
@@ -41,14 +41,14 @@
         <div class="block flex-parent jc-center center">
             <a href="<%= group.uri %>" class="btn btn-default btn-big">
                 <%= t('actions.join') %>
-                <% if (group.members && group.members.length > 0) { /*print(group.members_count);*/ } %>
-                <i class="icon icon-fw icon-users cl-warning"></i>
+                <% if (group.members && group.members.length > 0) { print(group.members_count); } %>
+                <i class="icon icon-fw icon-users"></i>
             </a>
         </div>
     
         <% if (group.members.length > 0) { %>
             <div class="block">
-                <h2><%= t('profile.group.ownerops') %> ( <%= group.members_count + 1 %> )</h2>
+                <h2><%= t('profile.group.ownerops') %></h2>
             </div>
     
             <div class="user-list block">

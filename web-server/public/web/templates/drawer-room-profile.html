@@ -61,7 +61,7 @@
 
         <div class="block <%= !room.description ? 'mt0' : '' %>">
             <% if (room.website && room.website.href) { %><p class="website left"><i class="icon icon-fw icon-link "></i> <a class=" " href="<%= room.website.href %>" target="_blank" title="<%= room.website.title %>"><%= room.website.title %></a></p><% }; %>
-            <% if (room.created) { %><p class="created left"><i class="icon icon-fw icon-clock-o  left"></i> <%= t('profile.room.createdat') %> <span class="ml5" data-time="<%= room.created %>"></span></p><% }; %>
+            <% if (room.created) { %><p class="created left"><i class="icon icon-fw icon-clock-o  left"></i><%= t('profile.room.created-at', {created_at: created_at})%></p><% }; %>
             <% if (room.isOwner || room.isAdmin) { %><p class="edit left"><i class="icon icon-fw icon-pencil "></i> <a class=" open-room-edit " data-room-id="<%= room.room_id %>"> <%= t('profile.common.editlink') %></a><p><% }; %>
             <% if (room.isOwner || room.isOp || room.isAdmin) { %><p class="left"><i class="icon icon-fw icon-users  left"></i> <a class=" open-room-users " data-room-id="<%= room.room_id %>"><%= t('profile.room.editusers') %></a></p><% }; %>
             <% if ((room.isOwner || room.isAdmin || room.isOp) && room.mode !== 'public') { %><p class="left"><i class="icon icon-fw icon-verified-user  left"></i> <a class=" open-room-users-allowed " data-room-id="<%= room.room_id %>"><%= t('profile.room.usersallowed') %></a></p><% }; %>
@@ -74,7 +74,7 @@
                 <a href="<%= room.uri %>" class="btn btn-default btn-big">
                     <%= t('actions.join') %>
                     <% if (room.users && room.users.length > 0) { print(room.users_count); } %>
-                    <i class="icon icon-fw icon-users cl-warning"></i>
+                    <i class="icon icon-fw icon-users"></i>
                 </a>
             </div>
 

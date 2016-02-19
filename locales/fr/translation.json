@@ -339,6 +339,7 @@
       "permalink": "Permalien de ce profil",
       "editusers": "Gérer les participants",
       "createdat": "Créée le",
+      "created-at": "Créée le __created_at__",
       "usersallowed": "Invitations & demandes"
     },
     "group": {
@@ -348,7 +349,8 @@
       "editlink": "Editer le profil",
       "profilelink": "Profil de ",
       "editusers": "Gérer les utilisateurs",
-      "createdat": "Créé le",
+      "createdat": "Créée le",
+      "created-at": "Créée le __created_at__",
       "usersallowed": "Gérer les invitations"
     },
     "user": {

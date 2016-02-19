@@ -81,7 +81,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
             <% } %>
 
             <span class="link"><%= t('group.created-at') %> <%= created %></span>
-            <span class="link flex-parent center"><i class="icon users-icon mr5"></i> <%=group.members.length%></span>
+            <span class="link flex-parent center"><i class="icon users-icon mr5"></i> <%= group.members_count %></span>
 
         </div>
 
@@ -121,7 +121,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
             <% if ((isMember || isOwner) && !isBanned) { %>
                 <% if(group_users.members.length > 0) { %>
                     <div class="flex-parent column">
-                        <span class="title"><%= t('group.members') %> <span class="count"><%=group_users.members.length%></span></span>
+                        <span class="title"><%= t('group.members') %> <span class="count"><%= (group.members_count - group_users.op.length - 1)%></span></span>
                         <div class="flex-parent center">
                             <% var count = 0; %>
                             <%_.find(group_users.members, function (u) { %>

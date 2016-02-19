@@ -339,6 +339,7 @@
       "permalink": "Permalink of this profile",
       "editusers": "Manage participants",
       "createdat": "Created on",
+      "created-at": "Created on __created_at__",
       "usersallowed": "Invites & requests"
     },
     "group": {
@@ -349,6 +350,7 @@
       "profilelink": "profile of ",
       "editusers": "Manage members",
       "createdat": "Created on",
+      "created-at": "Created on __created_at__",
       "usersallowed": "Manage invitations"
     },
     "user": {
