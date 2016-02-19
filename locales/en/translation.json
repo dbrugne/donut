@@ -532,7 +532,7 @@
       "error": "An error has occurred"
     },
     "confirmation": {
-      "placeholder": "Explain why, visible in the discussion (optional)",
+      "placeholder": "Explain why (public, optional)",
       "placeholderarea": "200 characters maximum",
       "placeholder-domain": "@example.com",
       "label": "Explain why (optional)",

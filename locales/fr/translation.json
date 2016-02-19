@@ -532,7 +532,7 @@
       "error": "Une erreur est survenue"
     },
     "confirmation": {
-      "placeholder": "Expliquez pourquoi, visible dans la discussion (optionnel)",
+      "placeholder": "Expliquez pourquoi (public, facultatif)",
       "label-requestallowance": "Expliquez lui pourquoi vous voulez devenir membre. (facultatif)",
       "placeholderarea": "200 caractères maximum",
       "placeholder-domain": "@exemple.com",
