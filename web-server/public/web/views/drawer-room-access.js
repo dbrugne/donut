@@ -14,8 +14,8 @@ var RoomAccessView = Backbone.View.extend({
   id: 'room-access',
 
   events: {
-    'click input.save-password': 'onSubmit',
-    'click input.save-conditions': 'onSubmitConditions',
+    'click .save-password': 'onSubmit',
+    'click .save-conditions': 'onSubmitConditions',
     'change [type="checkbox"]': 'onChoosePassword',
     'click .random-password': 'onRandomPassword',
     'click .change-mode': 'onChangeMode',

@@ -316,7 +316,7 @@ var MainView = Backbone.View.extend({
     }
 
     var view = new DrawerGroupAccessView({model: model});
-    this.drawerView.setSize('380px').setView(view).open();
+    this.drawerView.setSize('450px').setView(view).open();
   },
   openGroupProfile: function (data) {
     var view = new DrawerGroupProfileView({data: data});
@@ -443,6 +443,7 @@ var MainView = Backbone.View.extend({
       return;
     }
     var view = new ModalJoinGroupView({model: model, options: options});
+    this.modalView.setIdentifier('popin-join-group');
     this.modalView.setView(view).open();
   },
   openRoomJoin: function (data) {

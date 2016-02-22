@@ -19,8 +19,8 @@ var GroupAccessView = Backbone.View.extend({
   timeout: 0,
 
   events: {
-    'click input.save-access': 'onSubmit',
-    'click input.save-conditions': 'onSubmitConditions',
+    'click .save-access': 'onSubmit',
+    'click .save-conditions': 'onSubmitConditions',
     'change [type="checkbox"]': 'onChoosePassword',
     'click .random-password': 'onRandomPassword',
     'keyup #conditions-area': 'onTypeConditions',
