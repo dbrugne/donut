@@ -1046,7 +1046,7 @@
     "joingroup": {
       "title": "Join community <strong>__identifier__</strong>",
       "message": "Members have special priviledges such as direct access to certain private discussions and to other members of this community.",
-      "disclaimer": "Message from <strong>@__username__</strong> :<br><i class=\"icon icon-quote\"></i>__disclaimer__",
+      "disclaimer": "Message from @__username__:",
       "allowedpending": "Access to this community is by invitation, and you already have a request in progress.",
       "options": {
         "request": {

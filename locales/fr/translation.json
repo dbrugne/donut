@@ -1046,7 +1046,7 @@
     "joingroup": {
       "title": "Rejoindre la communauté <strong>__identifier__</strong>",
       "message": "Les membres ont des privilèges tels que l'accès direct à certaines discussions privées et aux autres membres de la communauté.",
-      "disclaimer": "Message de <strong>@__username__</strong> :<br><i class=\"icon icon-quote\"></i>__disclaimer__",
+      "disclaimer": "Message de @__username__",
       "allowedpending": "L'accès à cette communauté est sur invitation, et vous avez déjà une demande en cours.",
       "options": {
         "request": {
