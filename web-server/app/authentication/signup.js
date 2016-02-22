@@ -25,7 +25,7 @@ var validateInput = function (req, res, next) {
       isIphone: isMobile(req.headers['user-agent'] || 'unknown').apple.phone,
       isAndroid: isMobile(req.headers['user-agent'] || 'unknown').android.phone,
       isWindows: isMobile(req.headers['user-agent'] || 'unknown').windows.phone,
-      isMobile: isMobile(req.headers['user-agent'] || 'unknown').any
+      isMobile: isMobile(req.headers['user-agent'] || 'unknown').phone
     });
   }
 
@@ -41,7 +41,7 @@ router.route('/signup')
       isIphone: isMobile(req.headers['user-agent'] || 'unknown').apple.phone,
       isAndroid: isMobile(req.headers['user-agent'] || 'unknown').android.phone,
       isWindows: isMobile(req.headers['user-agent'] || 'unknown').windows.phone,
-      isMobile: isMobile(req.headers['user-agent'] || 'unknown').any
+      isMobile: isMobile(req.headers['user-agent'] || 'unknown').phone
     });
   })
   .post([require('csurf')(), validateInput, function (req, res, next) {
@@ -72,7 +72,7 @@ router.route('/signup')
           isIphone: isMobile(req.headers['user-agent'] || 'unknown').apple.phone,
           isAndroid: isMobile(req.headers['user-agent'] || 'unknown').android.phone,
           isWindows: isMobile(req.headers['user-agent'] || 'unknown').windows.phone,
-          isMobile: isMobile(req.headers['user-agent'] || 'unknown').any
+          isMobile: isMobile(req.headers['user-agent'] || 'unknown').phone
         });
       }
       req.logIn(user, function (err) {

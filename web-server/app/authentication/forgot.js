@@ -22,7 +22,7 @@ var validateInput = function (req, res, next) {
       isIphone: isMobile(req.headers['user-agent'] || 'unknown').apple.phone,
       isAndroid: isMobile(req.headers['user-agent'] || 'unknown').android.phone,
       isWindows: isMobile(req.headers['user-agent'] || 'unknown').windows.phone,
-      isMobile: isMobile(req.headers['user-agent'] || 'unknown').any
+      isMobile: isMobile(req.headers['user-agent'] || 'unknown').phone
     });
   }
   next();
@@ -47,7 +47,7 @@ var forgot = function (req, res) {
             isIphone: isMobile(req.headers['user-agent'] || 'unknown').apple.phone,
             isAndroid: isMobile(req.headers['user-agent'] || 'unknown').android.phone,
             isWindows: isMobile(req.headers['user-agent'] || 'unknown').windows.phone,
-            isMobile: isMobile(req.headers['user-agent'] || 'unknown').any
+            isMobile: isMobile(req.headers['user-agent'] || 'unknown').phone
           });
         }
         if (!user) {
@@ -59,7 +59,7 @@ var forgot = function (req, res) {
             isIphone: isMobile(req.headers['user-agent'] || 'unknown').apple.phone,
             isAndroid: isMobile(req.headers['user-agent'] || 'unknown').android.phone,
             isWindows: isMobile(req.headers['user-agent'] || 'unknown').windows.phone,
-            isMobile: isMobile(req.headers['user-agent'] || 'unknown').any
+            isMobile: isMobile(req.headers['user-agent'] || 'unknown').phone
           });
         }
 
@@ -85,7 +85,7 @@ var forgot = function (req, res) {
           isIphone: isMobile(req.headers['user-agent'] || 'unknown').apple.phone,
           isAndroid: isMobile(req.headers['user-agent'] || 'unknown').android.phone,
           isWindows: isMobile(req.headers['user-agent'] || 'unknown').windows.phone,
-          isMobile: isMobile(req.headers['user-agent'] || 'unknown').any
+          isMobile: isMobile(req.headers['user-agent'] || 'unknown').phone
         });
       });
     }
@@ -159,7 +159,7 @@ router.route('/forgot')
       isIphone: isMobile(req.headers['user-agent'] || 'unknown').apple.phone,
       isAndroid: isMobile(req.headers['user-agent'] || 'unknown').android.phone,
       isWindows: isMobile(req.headers['user-agent'] || 'unknown').windows.phone,
-      isMobile: isMobile(req.headers['user-agent'] || 'unknown').any
+      isMobile: isMobile(req.headers['user-agent'] || 'unknown').phone
     });
   })
   .post(require('csurf')(), validateInput, forgot);
@@ -185,7 +185,7 @@ router.route('/reset/:token')
         isIphone: isMobile(req.headers['user-agent'] || 'unknown').apple.phone,
         isAndroid: isMobile(req.headers['user-agent'] || 'unknown').android.phone,
         isWindows: isMobile(req.headers['user-agent'] || 'unknown').windows.phone,
-        isMobile: isMobile(req.headers['user-agent'] || 'unknown').any
+        isMobile: isMobile(req.headers['user-agent'] || 'unknown').phone
       });
     });
   })

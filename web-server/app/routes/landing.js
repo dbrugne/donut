@@ -24,7 +24,7 @@ router.get('/', [require('csurf')()], function (req, res) {
     isIphone: isMobile(req.headers['user-agent'] || 'unknown').apple.phone,
     isAndroid: isMobile(req.headers['user-agent'] || 'unknown').android.phone,
     isWindows: isMobile(req.headers['user-agent'] || 'unknown').windows.phone,
-    isMobile: isMobile(req.headers['user-agent'] || 'unknown').any
+    isMobile: isMobile(req.headers['user-agent'] || 'unknown').phone
   });
 });
 
