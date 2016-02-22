@@ -13,17 +13,22 @@
                                 <a href="<%= card.join %>" class="open-user-profile flex-child flex-parent center jc-center" data-user-id="<%=card.user_id%>">
                                     <span class="value">
                                         <% if (card.realname) { %>
-                                        <%= card.realname %>
+                                            <%= card.realname %>
                                         <% } else { %>
-                                        @<%= card.username %>
+                                            @<%= card.username %>
                                         <% } %>
-                                        <!--<i class="ml5 fs15 icon icon-dot-circle-o status <%=card.status%>" title="<%= t('global.' + card.status) %>"></i>-->
                                     </span>
                                     <span class="value">
                                     </span>
                                 </a>
                             </div>
-                            <div class="location"><% if (card.location) { %><%=card.location%><% } %></div>
+                            <div class="location">
+                                <% if (card.realname) { %>
+                                    @<%= card.username %>
+                                <% } else { %>
+                                    <% if (card.location) { %><%=card.location%><% } %>
+                                <% } %>
+                            </div>
                             <% if(card.is_owner || card.is_op) { %>
                                 <div class="status flex-parent center jc-center" data-toggle="tooltip" title="<%= card.is_owner ? t('global.owner') : t('global.op') %>">
                                     <% if(card.is_owner) { %>
