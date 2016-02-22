@@ -562,7 +562,7 @@
         "delete-email": "Confirmation",
         "change-email": "Confirmation",
         "add-domain": "Ajouter un domaine d'e-mail de confiance",
-        "delete-domain": "Confirmation",
+        "delete-domain": "Confirmation"
       },
       "message": {
         "modechange": "Cette action est irréversible.",
