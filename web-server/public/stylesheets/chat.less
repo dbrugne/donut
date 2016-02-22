@@ -617,8 +617,19 @@
 
     .discussion { background-color: @cl-background; height: 100%;
       > div { height: 100%;}
+      .group-content { background-color: #F5F8FA; overflow-y: auto; .scrollbar-grey-thin;
+        .header { .group-header; }
+        .header-below {
+          .block-ctn { background-color: #E7ECF3; min-height:100px; padding-right: 100px;
+            .group-icon-ctn { min-width: 170px;
+              .group-icon { background-repeat: no-repeat; background-position: center center; background-size: 100%; background-image: url('@{img-path}/warning.png'); width: 29px; height: 59px; }
+            }
+            .text { .ft-opensans; font-size: 13px; color: #394350; line-height: 21px; padding: 20px 0; }
+          }
+        }
+      }
       .content { height: 100%; position: relative; .display-flex; .flex-flow(column nowrap);
-        &.blocked { .align-items(center);  .justify-content(center); position:relative;
+        &.blocked { .align-items(center); .justify-content(center); position:relative;
           .header .info { padding:0; }
           .password-form { max-width: 555px; margin-left: auto; margin-right: auto;}
           .close-room { position: absolute; top: 20px; right: 20px; font-size: 1.4rem; }
@@ -966,6 +977,7 @@
           .popover-content { padding: 9px 10px; }
         }
       } // #chat #center .discussion .content
+      .group-content + .content.blocked { display:block; }
     }
   } // #chat #center
 

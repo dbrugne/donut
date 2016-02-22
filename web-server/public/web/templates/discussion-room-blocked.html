@@ -1,7 +1,53 @@
+<% if(group) { %>
+    <div class="group-content">
+        <div class="header flex-parent">
+            <img class="avatar group open-group-profile curp" data-group-id="<%= group.group_id %>" src="<%= group.avatarUrl %>" alt="<%= group.identifier %> avatar">
+            <div class="info flex-child flex-shrink flex-parent column">
+                <div class="flex-parent">
+                    <div class="name open-group-profile curp" data-group-id="<%= group.group_id %>"><%= group.identifier %></div>
+                </div>
+
+                <div class="links flex-parent center">
+                    <% if(group.website) { %>
+                    <a class="link" href="<%= group.website.href %>" target="_blank"><%= group.website.title %></a>
+                    <% } %>
+
+                    <span class="link"><%= t('group.created-at') %> <%= group.created %></span>
+                    <span class="link flex-parent center"><i class="icon users-icon mr5"></i> <%= group.members_count %></span>
+
+                </div>
+
+                <% if(group.description) { %>
+                <div class="description"><%= group.description %></div>
+                <% } %>
+
+                <div class="users flex-parent center">
+                    <div class="flex-child"></div>
+                    <div class="action-ctn flex-parent">
+                        <a class="group-join donut-button black" href="<%= group.join %>"><%= t('global.view-group') %></a>
+                    </div>
+                </div>
+
+                <div class="flex-child"></div>
+            </div>
+        </div>
+        <div class="header-below relative">
+            <div class="block-ctn flex-parent center">
+                <div class="group-icon-ctn flex-parent jc-center center">
+                    <div class="group-icon"></div>
+                </div>
+                <div class="text">
+                    <%=t('chat.blocked.grouproom-disclaimer', {identifier: data.identifier, groupname: group.name})%>
+                </div>
+                <div class="flex-child"></div>
+            </div>
+        </div>
+    </div>
+<% } %>
 <div class="content blocked flex-parent">
     <div class="cover room">
         <div class="header room">
-            <div class="margin-top: auto">
+            <div>
                 <div class="error alert alert-danger" style="display: none;"></div>
                 <img class="avatar border-shadow open-room-profile mb20" data-room-id="<%= data.room_id %>" src="<%= data.avatar %>" alt="<%= data.identifier %> avatar">
                 <div class="flex-parent center jc-center">
@@ -21,6 +67,7 @@
                         <%= t('chat.blocked.' + data.blocked_why) %>
                     </div>
                     <div class="mt15 fs15">
+                        <%= t('chat.blocked.this-discussion-is') %>
                         <%= t('global.mode.description.' + (data.mode === 'public' ? 'public' : 'private' + (data.allow_user_request ? '-invites' : '') + (data.allow_group_member ? '-group' : ''))) %>
                     </div>
                     <% if (data.blocked_why !== 'ban' && data.blocked_why !== 'groupban') { %>

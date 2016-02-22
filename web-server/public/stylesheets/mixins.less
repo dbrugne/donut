@@ -675,3 +675,48 @@
   &.today .moment.current,
   &.yesterday .moment.current{ display:none; }
 }
+
+.group-header() {  background-color: #FFF; padding: 15px 100px 15px 170px; position: relative;
+  > .avatar { width:100px; height:100px; position:absolute; top:15px; left:40px; }
+  .info { .justify-content(space-between); padding-top: 6px;
+    .name { .ft-opensans-light; font-size: 25px; color: #1D252F; line-height: 14px; }
+    .dropdown { display: inline-block; position: relative;
+      .dropdown-menu>li>a { color: @cl-subtext40; }
+      button { font-size: 14px; border: none; background-color: transparent; margin:0; padding:0;
+        i {  color: #D0D9E6;
+          &:hover { color: darken(#D0D9E6, 10%); }
+        }
+      }
+    }
+    .separator { border-right: 1px solid #d0d9e6; padding: 0 20px 0 0; margin: 0 20px 0 0; height: 12px; }
+    .share { width:18px; height:18px;
+      i { font-size: 14px; vertical-align: middle; cursor: pointer; color: #D0D9E6;
+        &:hover { color: darken(#D0D9E6, 10%); }
+      }
+    }
+    .links { margin-top:10px;
+      .link { .ft-opensans; font-size: 11px; color: #AFBAC8; letter-spacing: 0.8px; line-height: 14px; margin-right:20px; }
+    }
+    .description { margin-top:10px; .ft-opensans; font-size: 16px; color: #394350; max-height: 42px; line-height: 21px; overflow: hidden; }
+    .users { margin-top:20px;
+      > div { margin-right:25px;
+        .title { .ft-opensans; font-size: 11px; color: #394350; letter-spacing: 0.84px; line-height: 14px; text-transform: uppercase; margin-bottom: 6px;
+          .count { color: #FC2063; }
+        }
+        .avatar { height:19px; width: 19px; margin-right: 5px; }
+        .username { .ft-opensans; font-size: 13px; color: #AFBAC8; letter-spacing: 1px; line-height: 14px; }
+      }
+      .action-ctn { margin-right: 0;
+        .banned-message { color: #FC2026; }
+        .open-create-room, .group-join { width: 250px; }
+        .toggle-collapse > i { display:none; }
+        &.is-member .toggle-collapse .show-is-member          { .display-inline-flex; }
+        &.is-not-member .toggle-collapse .show-is-not-member  { .display-inline-flex; }
+        &.is-owner .toggle-collapse .show-is-owner            { .display-inline-flex; }
+        &.is-op .toggle-collapse .show-is-op                  { .display-inline-flex; }
+        &.is-admin .toggle-collapse .show-is-admin            { .display-inline-flex; }
+      }
+    }
+  }
+  .actions .btn { white-space: nowrap; }
+}

@@ -816,6 +816,7 @@
       "typing_plural": "are typing"
     },
     "blocked": {
+      "this-discussion-is": "This discussion is ",
       "disallow": "This discussion is private.",
       "message-display": "Display a message",
       "password_placeholder": "Password",
@@ -837,7 +838,11 @@
       "close": "Close this discussion",
       "allowgroupmember": "Allow community members to join this discussion",
       "not-confirmed": "Action authorized to verified accounts only. Verifiy your e-mail.",
-      "cant-answer": "@__username__ cannot answer because his/her account has not been verified yet."
+      "cant-answer": "@__username__ cannot answer because his/her account has not been verified yet.",
+      "grouproom-disclaimer": [
+        "<p>Discussion __identifier__ belongs to community #__groupname__.</p>",
+        "<p>You can request membership to community #__groupname__ (button above) or simply join discussion __identifier__ (button below).</p>"
+      ]
     },
     "form": {
       "common": {

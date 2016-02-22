@@ -816,6 +816,7 @@
       "typing_plural": "sont en train de taper"
     },
     "blocked": {
+      "this-discussion-is": "Cette discussion est ",
       "disallow": "Cette discussion est privée.",
       "message-display": "Message à afficher",
       "password_placeholder": "Mot de passe",
@@ -837,7 +838,11 @@
       "close": "Fermer cette discussion",
       "allowgroupmember": "Autoriser les membres de cette communauté à rejoindre cette discussion",
       "not-confirmed": "Action autorisée seulement pour les comptes validés. Validez votre e-mail.",
-      "cant-answer": "@__username__ ne peut pas répondre car son compte n'est pas encore validé."
+      "cant-answer": "@__username__ ne peut pas répondre car son compte n'est pas encore validé.",
+      "grouproom-disclaimer": [
+        "<p>La discussion __identifier__ appartient à la communauté #__groupname__.</p>",
+        "<p>Vous pouvez demander à devenir membre de la communauté #__groupname__ (ci-dessus) ou rejoindre uniquement de la discussion __identifier__ (ci-dessous).</p>"
+      ]
     },
     "form": {
       "common": {
