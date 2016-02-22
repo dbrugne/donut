@@ -97,7 +97,11 @@
           .status { z-index: 3; position:absolute; top: 15px; right: 15px;  width: 22px; height:22px;}
         }
         .overlay { z-index: 1; position:absolute; top:0; left:0; width:@card-width; height:@top-height; opacity: 0.5; background-color: #000;}
-        .background { z-index: 0; position:absolute; top:0; left:0; width:@card-width; height:@top-height; background-size: cover; background-position: center center; filter: blur(7px); -webkit-filter: blur(7px); }
+        .background { z-index: 0; position:absolute; background-size: cover; background-position: center center; filter: blur(7px); -webkit-filter: blur(7px);
+          //top:0; left:0; width:@card-@card-width-width; height:@@top-height-small-height;
+          // ajustements safari, corrigé quand le blur sera fait via cloudinary
+          width:@card-width - 10; height:@top-height - 10; top:5px; left:5px;
+        }
       }
     }
   }
@@ -128,7 +132,11 @@
         @subtop-height:50px;
         .background-ctn { overflow: hidden; position:absolute; top:0; left:0; width:@card-width; height:@subtop-height;
           .overlay { z-index: 1; position:absolute; top:0; left:0; width:@card-width; height:@subtop-height; opacity: 0.5; background-color: #000;}
-          .background { z-index: 0; position:absolute; top:0; left:0; width:@card-width; height:@subtop-height; background-size: cover; background-position: center center; filter: blur(7px); -webkit-filter: blur(7px); }
+          .background { z-index: 0; position:absolute; background-size: cover; background-position: center center; filter: blur(7px); -webkit-filter: blur(7px);
+            //top:0; left:0; width:@card-@card-width-width; height:@@top-height-small-height;
+            // ajustements safari, corrigé quand le blur sera fait via cloudinary
+            width:@card-width - 10; height:@top-height - 10; top:5px; left:5px;
+          }
         }
       }
     }
@@ -151,7 +159,11 @@
         @subtop-height:71px;
         .background-ctn { overflow: hidden; position:absolute; top:0; left:0; width:@card-width; height:@subtop-height;
           .overlay { z-index: 1; position:absolute; top:0; left:0; width:@card-width; height:@subtop-height; opacity: 0.5; background-color: #000;}
-          .background { z-index: 0; position:absolute; top:0; left:0; width:@card-width; height:@subtop-height; background-size: cover; background-position: center center; filter: blur(7px); -webkit-filter: blur(7px); }
+          .background { z-index: 0; position:absolute; background-size: cover; background-position: center center; filter: blur(7px); -webkit-filter: blur(7px);
+            //top:0; left:0; width:@card-@card-width-width; height:@@top-height-small-height;
+            // ajustements safari, corrigé quand le blur sera fait via cloudinary
+            width:@card-width - 10; height:@top-height - 10; top:5px; left:5px;
+          }
         }
       }
     }
