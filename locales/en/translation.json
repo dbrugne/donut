@@ -442,9 +442,8 @@
     },
     "search": {
       "placeholder": "Search",
+      "results": "Search results for",
       "noresults": "No match found",
-      "roomstitle": "Here are the discussions matching your request, you can also <a class='open-create-room'>create one</a> :",
-      "userstitle": "Matching users",
       "see_all_results": "See all results",
       "groups_results": "<strong>__length__</strong> found communities",
       "rooms_results": "<strong>__length__</strong> found discussions",

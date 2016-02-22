@@ -1,5 +1,5 @@
 <% if(cards.length === 0) { %>
-    <%= t('chat.search.noresults') %>
+    <p class="noresults mt20"><%= t('chat.search.noresults') %></p>
 <% } else { %>
     <% _.each(cards, function(card) { %>
             <% if(card.type === 'user') { %>

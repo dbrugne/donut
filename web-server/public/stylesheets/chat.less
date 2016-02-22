@@ -421,8 +421,13 @@
       }
     }
     #search { height: 100%; display: none; background-color: @cl-background2; overflow-y: auto; .scrollbar-grey;
-      .cards { .scrollbar-grey-thin; overflow: auto; .display-flex; .flex-flow(row wrap); margin: 15px 30px; .justify-content(center); }
-      .search { position: relative; margin: 20px 20px 2px;
+      .search-results { .ft-opensans; font-size: 17px; color: #AFBAC8; line-height: 21px; text-align: center;
+        .what { color: @cl-first; font-size: 22px; line-height: 36px; }
+      }
+      .cards { .scrollbar-grey-thin; overflow: auto; .display-flex; .flex-flow(row wrap); margin: 15px 30px; .justify-content(center);
+        .noresults { .ft-opensans; font-size: 15px; color: #AFBAC8; line-height: 21px; text-align: center; }
+      }
+      .search { position: relative; margin: 35px 0 2px;
         .input-group { width: 100%;
           input { .border-radiuses(4px, 0, 0, 4px); }
         }

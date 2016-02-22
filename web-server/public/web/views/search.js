@@ -33,7 +33,7 @@ var SearchPageView = Backbone.View.extend({
     }
 
     this.$el.html(this.template({data: data}));
-    this.$options = this.$el.find('.search-options');
+    this.$options = this.$('.search-options');
     this.cardsView = new CardsView({
       el: this.$('.cards')
     });
