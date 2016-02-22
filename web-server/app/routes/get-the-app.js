@@ -21,10 +21,10 @@ router.get('/get-the-app', [require('csurf')()], function (req, res) {
   return res.render('get-the-app', {
     token: req.csrfToken(),
     meta: meta,
-    isIphone: isMobile(req.headers['user-agent']).apple.phone,
-    isAndroid: isMobile(req.headers['user-agent']).android.phone,
-    isWindows: isMobile(req.headers['user-agent']).windows.phone,
-    isMobile: isMobile(req.headers['user-agent']).any
+    isIphone: isMobile(req.headers['user-agent'] || 'unknown').apple.phone,
+    isAndroid: isMobile(req.headers['user-agent'] || 'unknown').android.phone,
+    isWindows: isMobile(req.headers['user-agent'] || 'unknown').windows.phone,
+    isMobile: isMobile(req.headers['user-agent'] || 'unknown').any
   });
 });
 

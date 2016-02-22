@@ -12,10 +12,10 @@ var verified = function (req, res, next) {
       meta: {title: i18next.t('title.default')},
       token: req.csrfToken(),
       user: req.user,
-      isIphone: isMobile(req.headers['user-agent']).apple.phone,
-      isAndroid: isMobile(req.headers['user-agent']).android.phone,
-      isWindows: isMobile(req.headers['user-agent']).windows.phone,
-      isMobile: isMobile(req.headers['user-agent']).any
+      isIphone: isMobile(req.headers['user-agent'] || 'unknown').apple.phone,
+      isAndroid: isMobile(req.headers['user-agent'] || 'unknown').android.phone,
+      isWindows: isMobile(req.headers['user-agent'] || 'unknown').windows.phone,
+      isMobile: isMobile(req.headers['user-agent'] || 'unknown').any
     };
     if (err) {
       logger.debug(err);
