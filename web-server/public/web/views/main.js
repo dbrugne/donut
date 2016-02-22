@@ -70,6 +70,7 @@ var MainView = Backbone.View.extend({
     'click .quit-group': 'onQuitGroup',
     'click .close-group': 'onCloseGroup',
     'click .close-discussion': 'onCloseDiscussion',
+    'click .leave-blocked': 'onLeaveBlockedDiscussion',
     'click .open-room-access': 'openRoomAccess',
     'change .language-switcher': 'switchLanguage',
 
@@ -484,6 +485,24 @@ var MainView = Backbone.View.extend({
                    // from interface
 
     return false; // stop propagation
+  },
+  onLeaveBlockedDiscussion: function(event) {
+    var $target = $(event.currentTarget);
+    if (!$target) {
+      return;
+    }
+
+    var roomId = $(event.currentTarget).data('room-id');
+    if (!roomId) {
+      return;
+    }
+
+    var room = app.rooms.get(roomId);
+    if (!room) {
+      return;
+    }
+
+    room.leaveBlocked();
   },
   onCloseGroup: function (event) {
     var $target = $(event.currentTarget);
