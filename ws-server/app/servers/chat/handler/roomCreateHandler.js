@@ -99,7 +99,10 @@ handler.call = function (data, session, next) {
         room.group = group.id;
       }
       if (data.mode === 'private') {
-        room.allow_user_request = true; // always set this option to true on private room creation
+        room.allow_user_request = false; // always set this option to false on private room creation
+        if (data.group_id) {
+          room.allow_user_request = true; // except for rooms outside a group ==> #1326
+        }
       }
 
       room.save(function (err) {
