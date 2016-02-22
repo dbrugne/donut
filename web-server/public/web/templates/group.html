@@ -149,7 +149,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
                         <i class="icon icon-star cl-warning show-is-admin"></i>
                     </span>
 
-                    <% if (isOwner || isOp || isAdmin || isMember) { %>
+                    <% if (isOwner || isOp || isMember) { %>
                         <!--Create a donut-->
                         <span class="curp open-create-room donut-button black" data-group-id="<%=group.group_id%>" data-group-name="<%=group.name%>"><%= t('buttons.create-discussion') %></span>
                     <% } else { %>
