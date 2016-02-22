@@ -10,79 +10,78 @@
 <div class="modal-dialog modal-sm <%=classes%>">
     <div class="modal-content">
         <div class="modal-body">
-            <div class="flex-parent column">
-                <div class="flex-parent">
-                    <div class="flex-parent column">
-                        <div class="avatar open-user-profile curp" data-user-id="<%=user.user_id%>" style="background-image: url(<%=user.avatar %>)"></div>
-                        <div class="status text-center">
-                            <i class="icon icon-fw icon-dot-circle-o status contrast <%=user.status%>"></i>
-                            <em><%= t('global.'+user.status) %></em>
-                        </div>
+            <div class="top relative">
+                <div class="ctn flex-parent column center jc-center">
+                    <a href="<%= user.join %>" class="open-user-profile avatar-ctn relative" data-user-id="<%=user.user_id%>">
+                        <div class="avatar" style="background-image:url(<%= user.avatar %>)"></div>
+                        <span class="circle user-status <%=user.status%>"></span>
+                    </a>
+                    <div class="username">
+                        <a href="<%= user.join %>" class="open-user-profile flex-child flex-parent center jc-center" data-user-id="<%=user.user_id%>">
+                            <span class="value">
+                                <% if (user.realname) { %>
+                                    <%= user.realname %>
+                                <% } else { %>
+                                    @<%= user.username %>
+                                <% } %>
+                            </span>
+                            <span class="value"></span>
+                        </a>
                     </div>
-                    <div class="names-ctn ml10 mt5 flex-child">
-                        <% if(user.realname) { %>
-                            <div class="username fs20 open-user-profile curp" data-user-id="<%=user.user_id%>"><%=user.realname%></div>
+                    <div class="location"><span class="ctn"></span></div>
+                    <% if(user.is_owner || user.is_op) { %>
+                    <div class="status flex-parent center jc-center" data-toggle="tooltip" title="<%= user.is_owner ? t('global.owner') : t('global.op') %>">
+                        <% if(user.is_owner) { %>
+                            <i class="icon icon-owner"></i>
+                        <% } else { %>
+                            <i class="icon deop-icon"></i>
                         <% } %>
-                        <div class="othername fs20 open-user-profile curp" data-user-id="<%=user.user_id%>">@<%=user.username%></div>
-                        <div class="location mt5 hidden">
-                            <i class="icon icon-fw icon-map-marker"></i> <span class="ctn"></span>
-                        </div>
-                        <div class="mt5 states">
-                            <% if(user.is_owner) { %>
-                                <i class="icon icon-fw icon-owner"></i><p><%= t('chat.owner.state') %></p>
-                            <% } %>
-                            <% if(user.is_op) { %>
-                                <i class="icon icon-fw icon-op"></i><p><%= t('chat.op.state') %></p>
-                            <% } %>
-                            <% if(user.is_devoice) { %>
-                                <i class="icon icon-fw icon-microphone-slash cl-error"></i><p><%= t('chat.devoice.state') %></p>
-                            <% } %>
-                        </div>
                     </div>
-                </div>
-                <div class="flex-parent row mt10">
-                    <div class="col-md-6">
-                        <span class="btn btn-block btn-default btn-sm open-user-profile" data-user-id="<%=user.user_id%>"><%= t('global.view-profile') %></span>
-                    </div>
-                    <% if (!isCurrentUser) { %>
-                        <div class="col-md-6">
-                            <a href="<%=user.uri%>" class="btn btn-block btn-default btn-sm"><%= t('actions.discuss') %></a>
-                        </div>
                     <% } %>
                 </div>
+                <div class="overlay"></div>
+                <div class="background" style="background-image:url(<%= user.avatar %>)"></div>
+            </div>
+
+            <div class="middle flex-parent column">
+                <div class="bio"><span class="ctn"></span></div>
+                <% if (!isCurrentUser) { %>
+                    <a href="<%=user.uri%>"><%= t('actions.discuss') %></a>
+                <% } %>
+                <div class="link open-user-profile" data-user-id="<%=user.user_id%>"><%= t('global.view-profile') %></div>
             </div>
         </div>
 
         <% if (isAdmin === true || isOwner === true || isOp === true) { %>
-            <div class="modal-footer">
+            <div class="modal-footer flex-parent column">
                 <% if (!user.is_owner) { %>
                     <% if (user.is_op === true) { %>
-                        <a role="menuitem" tabindex="-1" class="deop deop-user" data-dismiss="modal" data-user-id="<%=user.user_id %>" data-room-id="<%=room_id%>">
-                            <i class="icon icon-fw icon-op cl-neutral"></i><p><%= t('chat.deop.infobox') %></p>
+                        <a role="menuitem" tabindex="-1" class="curp clean deop deop-user" data-dismiss="modal" data-user-id="<%=user.user_id %>" data-room-id="<%=room_id%>">
+                            <i class="icon icon-fw icon-op"></i><span><%= t('chat.deop.infobox') %></span>
                         </a>
                     <% } else { %>
-                        <a role="menuitem" tabindex="-1" class="op op-user" data-dismiss="modal" data-user-id="<%=user.user_id %>" data-room-id="<%=room_id%>">
-                            <i class="icon icon-fw icon-op"></i><p><%= t('chat.op.infobox') %></p>
+                        <a role="menuitem" tabindex="-1" class="curp clean op op-user" data-dismiss="modal" data-user-id="<%=user.user_id %>" data-room-id="<%=room_id%>">
+                            <i class="icon icon-fw icon-op"></i><span><%= t('chat.op.infobox') %></span>
                         </a>
                     <% }; %>
                 <% }; %>
 
                 <% if (!user.is_owner) { %>
                     <% if (!user.is_devoice) { %>
-                        <a role="menuitem" tabindex="-1" class="devoice devoice-user" data-dismiss="modal" data-user-id="<%=user.user_id %>" data-room-id="<%=room_id%>">
-                            <i class="icon icon-fw icon-microphone-slash"></i><p><%= t('chat.devoice.infobox') %></p>
+                        <a role="menuitem" tabindex="-1" class="curp clean devoice devoice-user" data-dismiss="modal" data-user-id="<%=user.user_id %>" data-room-id="<%=room_id%>">
+                            <i class="icon icon-fw icon-microphone-slash"></i><span><%= t('chat.devoice.infobox') %></span>
                         </a>
                     <% } else { %>
-                        <a role="menuitem" tabindex="-1" class="voice voice-user" data-dismiss="modal" data-user-id="<%=user.user_id %>" data-room-id="<%=room_id%>">
-                            <i class="icon icon-fw icon-microphone"></i><p><%= t('chat.voice.infobox') %></p>
+                        <a role="menuitem" tabindex="-1" class="curp clean voice voice-user" data-dismiss="modal" data-user-id="<%=user.user_id %>" data-room-id="<%=room_id%>">
+                            <i class="icon icon-fw icon-microphone"></i><span><%= t('chat.voice.infobox') %></span>
                         </a>
                     <% } %>
 
-                    <a role="menuitem" tabindex="-1" class="kick kick-user" data-dismiss="modal" data-user-id="<%=user.user_id %>" data-room-id="<%=room_id%>">
-                        <i class="icon icon-fw icon-kick"></i><p><%= t('chat.kick.infobox') %></p>
+                    <a role="menuitem" tabindex="-1" class="curp clean kick kick-user" data-dismiss="modal" data-user-id="<%=user.user_id %>" data-room-id="<%=room_id%>">
+                        <i class="icon icon-fw icon-kick"></i><span><%= t('chat.kick.infobox') %></span>
                     </a>
-                    <a role="menuitem" tabindex="-1" class="ban ban-user" data-dismiss="modal" data-user-id="<%=user.user_id %>" data-room-id="<%=room_id%>">
-                        <i class="icon icon-fw icon-ban"></i><p><%= t('chat.ban.infobox') %></p>
+                    <a role="menuitem" tabindex="-1" class="curp clean ban ban-user" data-dismiss="modal" data-user-id="<%=user.user_id %>" data-room-id="<%=room_id%>">
+                        <i class="icon icon-fw icon-ban"></i><span><%= t('chat.ban.infobox') %></span>
                     </a>
                 <% }; %>
 

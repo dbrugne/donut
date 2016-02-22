@@ -19,10 +19,10 @@ var validateInput = function (req, res, next) {
       email: req.body.email,
       errors: req.validationErrors(),
       token: req.csrfToken(),
-      isIphone: isMobile(req.headers['user-agent']).apple.phone,
-      isAndroid: isMobile(req.headers['user-agent']).android.phone,
-      isWindows: isMobile(req.headers['user-agent']).windows.phone,
-      isMobile: isMobile(req.headers['user-agent']).any
+      isIphone: isMobile(req.headers['user-agent'] || 'unknown').apple.phone,
+      isAndroid: isMobile(req.headers['user-agent'] || 'unknown').android.phone,
+      isWindows: isMobile(req.headers['user-agent'] || 'unknown').windows.phone,
+      isMobile: isMobile(req.headers['user-agent'] || 'unknown').any
     });
   }
   next();
@@ -44,10 +44,10 @@ var forgot = function (req, res) {
             email: req.body.email,
             errors: [{msg: i18next.t('global.unknownerror')}],
             token: req.csrfToken(),
-            isIphone: isMobile(req.headers['user-agent']).apple.phone,
-            isAndroid: isMobile(req.headers['user-agent']).android.phone,
-            isWindows: isMobile(req.headers['user-agent']).windows.phone,
-            isMobile: isMobile(req.headers['user-agent']).any
+            isIphone: isMobile(req.headers['user-agent'] || 'unknown').apple.phone,
+            isAndroid: isMobile(req.headers['user-agent'] || 'unknown').android.phone,
+            isWindows: isMobile(req.headers['user-agent'] || 'unknown').windows.phone,
+            isMobile: isMobile(req.headers['user-agent'] || 'unknown').any
           });
         }
         if (!user) {
@@ -56,10 +56,10 @@ var forgot = function (req, res) {
             email: req.body.email,
             errors: [{msg: i18next.t('forgot.error.notexists')}],
             token: req.csrfToken(),
-            isIphone: isMobile(req.headers['user-agent']).apple.phone,
-            isAndroid: isMobile(req.headers['user-agent']).android.phone,
-            isWindows: isMobile(req.headers['user-agent']).windows.phone,
-            isMobile: isMobile(req.headers['user-agent']).any
+            isIphone: isMobile(req.headers['user-agent'] || 'unknown').apple.phone,
+            isAndroid: isMobile(req.headers['user-agent'] || 'unknown').android.phone,
+            isWindows: isMobile(req.headers['user-agent'] || 'unknown').windows.phone,
+            isMobile: isMobile(req.headers['user-agent'] || 'unknown').any
           });
         }
 
@@ -82,16 +82,16 @@ var forgot = function (req, res) {
           email: req.body.email,
           success: [{msg: i18next.t('forgot.sent', {email: user.local.email})}],
           token: req.csrfToken(),
-          isIphone: isMobile(req.headers['user-agent']).apple.phone,
-          isAndroid: isMobile(req.headers['user-agent']).android.phone,
-          isWindows: isMobile(req.headers['user-agent']).windows.phone,
-          isMobile: isMobile(req.headers['user-agent']).any
+          isIphone: isMobile(req.headers['user-agent'] || 'unknown').apple.phone,
+          isAndroid: isMobile(req.headers['user-agent'] || 'unknown').android.phone,
+          isWindows: isMobile(req.headers['user-agent'] || 'unknown').windows.phone,
+          isMobile: isMobile(req.headers['user-agent'] || 'unknown').any
         });
       });
     }
   ], function (err) {
     if (err) {
-      console.log(err);
+      logger.debug(err);
     }
 
     res.redirect('/forgot');
@@ -156,10 +156,10 @@ router.route('/forgot')
       email: '',
       meta: {title: i18next.t('title.default')},
       token: req.csrfToken(),
-      isIphone: isMobile(req.headers['user-agent']).apple.phone,
-      isAndroid: isMobile(req.headers['user-agent']).android.phone,
-      isWindows: isMobile(req.headers['user-agent']).windows.phone,
-      isMobile: isMobile(req.headers['user-agent']).any
+      isIphone: isMobile(req.headers['user-agent'] || 'unknown').apple.phone,
+      isAndroid: isMobile(req.headers['user-agent'] || 'unknown').android.phone,
+      isWindows: isMobile(req.headers['user-agent'] || 'unknown').windows.phone,
+      isMobile: isMobile(req.headers['user-agent'] || 'unknown').any
     });
   })
   .post(require('csurf')(), validateInput, forgot);
@@ -182,10 +182,10 @@ router.route('/reset/:token')
         meta: {title: i18next.t('title.default')},
         user: req.user,
         token: req.csrfToken(),
-        isIphone: isMobile(req.headers['user-agent']).apple.phone,
-        isAndroid: isMobile(req.headers['user-agent']).android.phone,
-        isWindows: isMobile(req.headers['user-agent']).windows.phone,
-        isMobile: isMobile(req.headers['user-agent']).any
+        isIphone: isMobile(req.headers['user-agent'] || 'unknown').apple.phone,
+        isAndroid: isMobile(req.headers['user-agent'] || 'unknown').android.phone,
+        isWindows: isMobile(req.headers['user-agent'] || 'unknown').windows.phone,
+        isMobile: isMobile(req.headers['user-agent'] || 'unknown').any
       });
     });
   })

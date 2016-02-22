@@ -1,28 +1,32 @@
-<div class="relative">     <span class="close icon icon-times"></span> </div>
-
-<div class="title">
-    <%= t('chat.form.group-form.create.label') %>
+<div class="header">
+    <div class="title">
+        <%= t('chat.form.group-form.create.label') %>
+    </div>
+    <span class="close-drawer icon icon-times curp"></span>
 </div>
 
-<div class="ctn-drawer">
-    <div class="errors block"></div>
-
-    <div class="block">
-        <p class="help-block"><%= t('chat.form.group-form.create.help') %></p>
+<div class="scrollable">
+    <div class="error block">
+        <span class="alert-danger" aria-hidden="true"></span>
+        <span class="alert-danger error-label"></span>
     </div>
 
-    <div class="block">
+    <div class="block mt25">
+        <p><%= t('chat.form.group-form.create.help') %></p>
+    </div>
+
+    <div class="block identifier flex-parent jc-center column text-center mt25">
         <div class="field flex-parent jc-center">
-            <span class="hash dc-text colorize">#</span>
-            <input type="text" name="input-create" class="big-input dc-border flex-child colorize-border" placeholder="<%= t('chat.form.group-form.create.placeholder') %>" maxlength="15" />
+            <div class="groupname">
+                <span class="hash">#</span>
+                <input type="text" name="input-create" class="big-input dc-border flex-child colorize-border" placeholder="<%= t('chat.form.group-form.create.placeholder') %>" maxlength="15" />
+            </div>
         </div>
     </div>
 
-    <div class="block">
-        <p class="help-block"><%= t('chat.form.group-form.create.help-name') %></p>
-    </div>
+    <p class="mt0 ml0 help block"><%= t('chat.form.group-form.create.help-name') %></p>
 
-    <div class="block flex-parent jc-center center">
-        <button class="submit btn btn-success" type="button"><%= t('chat.form.group-form.create.submit') %></button>
+    <div class="block flex-parent column jc-center center mt50">
+        <button class="submit btn btn-default" type="button"><%= t('chat.form.group-form.create.submit') %></button>
     </div>
 </div>

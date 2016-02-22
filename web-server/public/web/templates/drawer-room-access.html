@@ -1,34 +1,34 @@
-<div class="relative"><span class="close icon icon-times"></span></div>
-
-<div class="title">
-    <%= t('chat.history.access') %>
-    <%= room.identifier %>
+<div class="header">
+    <div class="title">
+        <%= t('chat.history.access') %>
+        <%= room.identifier %>
+    </div>
+    <span class="close-drawer icon icon-times curp"></span>
 </div>
 
-<div class="ctn-drawer">
-    <div class="errors block"></div>
-    <div class="success block"></div>
+<div class="scrollable">
+
+    <div class="error block"></div>
+    <div class="success block mt25"></div>
 
     <% if(mode === 'public') { %>
-        <div class="mode block">
-            <p><%= t('chat.blocked.disclaimer-public') %></p>
-            <p><%= t('chat.blocked.disclaimer-changing') %></p>
-            <div class="form-group pull-right mt10">
-                <input class="btn btn-success change-mode" type="submit" value="<%= t('chat.blocked.changemode')%>" />
+        <div class="mode">
+            <p class="block"><%= t('chat.blocked.disclaimer-public') %></p>
+            <p class="block"><%= t('chat.blocked.disclaimer-changing') %></p>
+            <div class="block column flex-parent jc-center center">
+                <input class="btn btn-default change-mode" type="submit" value="<%= t('chat.blocked.changemode')%>" />
             </div>
         </div>
     <% } else { %>
-        <div class="block">
-            <p><%= t('chat.blocked.disclaimer-private') %></p>
-        </div>
+        <p class="block mt25"><%= t('chat.blocked.disclaimer-private') %></p>
 
         <% if (group !== false) { %>
-        <div class="field-password radio block">
-            <div class="password-block form-inline mt10 flex-parent baseline space-between">
-                <input type="checkbox" id="input-allowgroupmember-checkbox" name="input-allowgroupmember-checkbox" <% if (allow_group_member !== false) { %> checked <% } %> />
-                <label for="input-allowgroupmember-checkbox"><%= t('chat.blocked.allowgroupmember') %></label>
+            <div class="field-password radio block">
+                <div class="password-block form-inline mt10 flex-parent baseline space-between">
+                    <input type="checkbox" id="input-allowgroupmember-checkbox" name="input-allowgroupmember-checkbox" <% if (allow_group_member !== false) { %> checked <% } %> />
+                    <label for="input-allowgroupmember-checkbox"><%= t('chat.blocked.allowgroupmember') %></label>
+                </div>
             </div>
-        </div>
         <% } %>
 
         <div class="field-password radio block">
@@ -38,19 +38,18 @@
             </div>
         </div>
 
-    <h2 class="block"><%= t('chat.blocked.message-display') %></h2>
-
-        <div class="membership-conditions block">
+        <label><%= t('chat.blocked.message-display') %></label>
+        <div class="membership-conditions">
             <textarea class="form-control" id="conditions-area" maxlength="200" cols="55" rows="4" placeholder="<%= t('chat.form.room-form.edit.description.conditions') %>"></textarea>
-            <p class="help-block"><%= t('chat.form.room-form.edit.description.help') %> <span class="counter"><%= t('chat.form.common.edit.left', {count: 200}) %></span></p>
-            <div class="flex-parent jc-end mt10">
-                <input class="btn btn-success save-access save-conditions pull-right" type="submit" value="<%= t('global.save')%>" />
+            <p class="help"><%= t('chat.form.room-form.edit.description.help') %> <span class="counter pull-right"><%= t('chat.form.common.edit.left', {count: 200}) %></span></p>
+            <div class="flex-parent jc-center center block">
+                <input class="btn btn-default save-access save-conditions" type="submit" value="<%= t('global.save')%>" />
             </div>
         </div>
 
-        <h2 class="block"><%= t('chat.blocked.password_placeholder') %></h2>
 
-        <div class="field-password radio block">
+        <div class="field-password block mt50">
+            <label><%= t('chat.blocked.password_placeholder') %></label>
             <p><%= t('chat.form.room-form.mode.disclaimer.password') %></p>
             <div class="password-block form-inline mt10 flex-parent baseline space-between">
                 <input type="checkbox" id="input-password-checkbox" name="input-password-checkbox" <% if (password) { %> checked <% } %> />

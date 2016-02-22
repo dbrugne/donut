@@ -5,9 +5,17 @@ var EventsView = require('./discussion-events');
 var InputView = require('./discussion-input');
 var RoomHeaderView = require('./discussion-room-header');
 var UsersView = require('./room-users');
+// @todo implement room-search
+// @todo implement room-stars
+// @todo implement room-pictures
+// @todo implement room-files
 
 var RoomView = Backbone.View.extend({
   template: require('../templates/discussion-room-unblocked.html'),
+
+  events: {
+    'click .handle>div': 'onCollapse'
+  },
 
   initialize: function () {
     this.listenTo(this.model, 'change:avatar', this.onAvatar);
@@ -29,7 +37,7 @@ var RoomView = Backbone.View.extend({
       model: this.model
     });
     this.usersView = new UsersView({
-      el: this.$('.side'),
+      el: this.$('.room-users'),
       model: this.model,
       collection: this.model.users
     });
@@ -107,6 +115,9 @@ var RoomView = Backbone.View.extend({
     this.$el.find('[data-toggle="tooltip"]').tooltip({
       container: 'body'
     });
+  },
+  onCollapse: function () {
+    this.$('.side').toggleClass('collapsed');
   }
 });
 

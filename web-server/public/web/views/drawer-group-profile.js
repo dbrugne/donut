@@ -62,9 +62,8 @@ var DrawerGroupProfileView = Backbone.View.extend({
       element.avatar = common.cloudinary.prepare(element.avatar, 34);
     });
 
-    var html = this.template({group: group});
+    var html = this.template({group: group, created_at: date.shortDate(group.created)});
     this.$el.html(html);
-    date.from('date', this.$('.created span'));
 
     this.initializeTooltips();
   },

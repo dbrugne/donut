@@ -48,6 +48,10 @@ var DrawerRoomEditView = Backbone.View.extend({
     var html = this.template({room: room});
     this.$el.html(html);
 
+    this.$errorLabel = this.$('.error-label');
+    this.$error = this.$('.error');
+    this.$submit = this.$('.btn-save');
+
     // description
     if (room.description) {
       this.$('.counter').html(i18next.t('chat.form.common.edit.left', {count: 200 - room.description.length}));
@@ -109,8 +113,10 @@ var DrawerRoomEditView = Backbone.View.extend({
       updateData.poster = this.posterUploader.data;
     }
 
+    this.$submit.addClass('loading');
     app.client.roomUpdate(this.roomId, updateData, _.bind(function (data) {
-      this.$('.errors').hide();
+      this.$submit.removeClass('loading');
+      this.$error.hide();
       if (data.err) {
         return this.editError(data.err);
       }
@@ -123,8 +129,10 @@ var DrawerRoomEditView = Backbone.View.extend({
       avatar: data
     };
     var that = this;
+    this.$submit.addClass('loading');
     app.client.roomUpdate(this.roomId, updateData, function (d) {
-      that.$('.errors').hide();
+      that.$submit.removeClass('loading');
+      that.$error.hide();
       if (d.err) {
         that.editError(d.err);
       }
@@ -136,8 +144,10 @@ var DrawerRoomEditView = Backbone.View.extend({
       poster: data
     };
     var that = this;
+    this.$submit.addClass('loading');
     app.client.roomUpdate(this.roomId, updateData, function (d) {
-      that.$('.errors').hide();
+      that.$submit.removeClass('loading');
+      that.$error.hide();
       if (d.err) {
         that.editError(d.err);
       }
@@ -148,11 +158,15 @@ var DrawerRoomEditView = Backbone.View.extend({
     var website = this.$website.val();
 
     if (website && (website.length < 5 || website.length > 255)) {
-      return this.$('.errors').html(i18next.t('chat.form.errors.website-size')).show();
+      this.$errorLabel.html(i18next.t('chat.form.errors.website-size'));
+      this.$error.show();
+      return;
     }
 
     if (website && !/^[^\s]+\.[^\s]+$/.test(website)) {
-      return this.$('.errors').html(i18next.t('chat.form.errors.website-url')).show();
+      this.$errorLabel.html(i18next.t('chat.form.errors.website-url'));
+      this.$error.show();
+      return;
     }
 
     return true;
@@ -163,7 +177,8 @@ var DrawerRoomEditView = Backbone.View.extend({
     _.each(err, function (e) {
       errors += i18next.t('chat.form.errors.' + e, {defaultValue: i18next.t('global.unknownerror')}) + '<br>';
     });
-    this.$('.errors').html(errors).show();
+    this.$errorLabel.html(errors);
+    this.$error.show();
   },
 
   onTypingDescription: function (event) {

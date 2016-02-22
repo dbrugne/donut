@@ -63,9 +63,9 @@ var DrawerRoomProfileView = Backbone.View.extend({
       element.avatar = common.cloudinary.prepare(element.avatar, 34);
     });
 
-    var html = this.template({room: room});
+    var html = this.template({room: room, created_at: date.shortDate(room.created)});
     this.$el.html(html);
-    date.from('date', this.$('.created span'));
+
     this.initializeTooltips();
   },
   initializeTooltips: function () {

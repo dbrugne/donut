@@ -128,32 +128,35 @@ handler.call = function (data, session, next) {
       }
 
       var max = 60;
-      read.members_count = group.members.length;
+      read.members_count = group.members.length + 1; // + 1 to add owner
       read.members_more = false;
 
-      // pad list to 'max' users
-      if (group.members && group.members.length > 0) {
-        _.find(group.members, function (u) {
-          if (alreadyIn.indexOf(u.id) !== -1) {
-            return;
-          }
-          if (read.members.length === max) {
-            read.members_more = true;
-            return true; // stop iteration
-          }
-          var el = {
-            user_id: u.id,
-            realname: u.realname,
-            username: u.username,
-            bio: u.bio,
-            avatar: u._avatar()
-          };
-          read.members.push(el);
+      // only display members to allowed users
+      if (group.isMember(user.id) || group.isOwner(user.id) || group.isMember(user.id) || session.settings.admin === true) {
+        // pad list to 'max' users
+        if (group.members && group.members.length > 0) {
+          _.find(group.members, function (u) {
+            if (alreadyIn.indexOf(u.id) !== -1) {
+              return;
+            }
+            if (read.members.length === max) {
+              read.members_more = true;
+              return true; // stop iteration
+            }
+            var el = {
+              user_id: u.id,
+              realname: u.realname,
+              username: u.username,
+              bio: u.bio,
+              avatar: u._avatar()
+            };
+            read.members.push(el);
 
-          if (read.members.length > max) {
-            return true; // stop iteration
-          }
-        });
+            if (read.members.length > max) {
+              return true; // stop iteration
+            }
+          });
+        }
       }
 
       var ids = _.map(read.members, 'user_id');

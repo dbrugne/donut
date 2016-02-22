@@ -26,22 +26,24 @@
         <% } %>
         <div class="dropdown flex-parent jc-center center">
             <button class="dropdown-toggle flex-parent jc-center column center icon icon-cog icon-fw" data-toggle="dropdown" aria-expanded="true"></button>
-            <ul class="dropdown-menu" role="menu">
+            <ul class="dropdown-menu dropdown-menu-right" role="menu">
                 <li role="presentation">
                     <a role="menuitem" tabindex="-1" class="open-room-profile" data-room-id="<%= data.room_id %>">
-                        <i class="icon icon-eye"></i> <%= t('global.viewprofile') %>
+                        <img class="img-avatar img-circle" src="<%= data.avatar %>"> <%= t('global.viewprofile') %>
                     </a>
                 </li>
                 <li role="presentation" class="divider"></li>
-                <li role="presentation">
-                    <a role="menuitem" tabindex="-1" class="open-room-preferences" data-room-id="<%= data.room_id %>">
-                        <i class="icon icon-bell"></i> <%= t('chat.actions.notifications') %>
-                    </a>
-                </li>
                 <% if (data.isOwner || data.isAdmin) { %>
+                    <li role="presentation">
+                        <a role="menuitem" tabindex="-1" class="open-room-edit" data-room-id="<%= data.room_id %>">
+                            <i class="icon icon-pencil"></i> <%= t('profile.common.editlink') %>
+                        </a>
+                    </li>
+                <% }; %>
+                <% if ((data.isOwner || data.isAdmin || data.isOp) && !data.default) { %>
                 <li role="presentation">
-                    <a role="menuitem" tabindex="-1" class="open-room-edit" data-room-id="<%= data.room_id %>">
-                        <i class="icon icon-pencil"></i> <%= t('profile.common.editlink') %>
+                    <a role="menuitem" tabindex="-1" class="open-room-access" data-room-id="<%= data.room_id %>">
+                        <i class="icon icon-public"></i> <%= t('chat.access.link') %>
                     </a>
                 </li>
                 <% }; %>
@@ -57,13 +59,11 @@
                     </a>
                 </li>
                 <% } %>
-                <% if ((data.isOwner || data.isAdmin || data.isOp) && !data.default) { %>
                 <li role="presentation">
-                    <a role="menuitem" tabindex="-1" class="open-room-access" data-room-id="<%= data.room_id %>">
-                        <i class="icon icon-public"></i> <%= t('chat.access.link') %>
+                    <a role="menuitem" tabindex="-1" class="open-room-preferences" data-room-id="<%= data.room_id %>">
+                        <i class="icon icon-bell"></i> <%= t('chat.actions.notifications') %>
                     </a>
                 </li>
-                <% }; %>
                 <li role="presentation" class="divider"></li>
                 <li role="presentation">
                     <a role="menuitem" tabindex="-1" class="close-discussion" data-identifier="<%= data.room_id %>" data-type="room">

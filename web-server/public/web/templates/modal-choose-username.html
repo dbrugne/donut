@@ -1,17 +1,17 @@
-<div class="modal-header">
-    <h4 class="modal-title"><%= t('choose-username.title') %></h4>
+<div class="modal-header flex-parent cikumn jc-center center">
+    <div class="ctn"><%= t('choose-username.title') %></div>
 </div>
 <div class="modal-body">
-    <div class="alert alert-success success mt10" style="display: none"></div>
-    <div class="alert alert-danger error mt10" style="display: none"></div>
+    <div class="alert alert-success success" style="display: none"></div>
+    <div class="alert alert-danger error" style="display: none"></div>
 
-    <div class="form-horizontal input">
-        <div class="info-option"><%= t('choose-username.description') %></div>
+    <div class="form-horizontal input mb20">
+        <div class="question"><%= t('choose-username.description') %></div>
 
         <input type="text" class="form-control input-username" placeholder="<%= t('login.username-placeholder') %>">
         <div class="help mt10"><%= t('choose-username.help') %></div>
     </div>
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-primary submit"><%= t('global.validate') %></button>
+    <div class="mt20 flex-parent column jc-center center">
+        <button type="button" class="btn btn-default submit"><%= t('global.validate') %></button>
+    </div>
 </div>

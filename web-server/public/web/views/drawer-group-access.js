@@ -10,8 +10,6 @@ var GroupAccessView = Backbone.View.extend({
 
   template: require('../templates/drawer-group-access.html'),
 
-  dropdownTemplate: require('../templates/drawer-room-access-dropdown.html'),
-
   passwordPattern: /(.{4,255})$/i,
 
   id: 'group-access',
@@ -69,7 +67,7 @@ var GroupAccessView = Backbone.View.extend({
     });
     this.$el.html(html);
 
-    this.$errors = this.$('.errors');
+    this.$errors = this.$('.error');
 
     this.$toggleCheckbox = this.$('#input-password-checkbox');
     this.$checkboxUserRequest = this.$('#input-userrequest-checkbox');
@@ -85,7 +83,7 @@ var GroupAccessView = Backbone.View.extend({
 
     if (data.isAdmin || data.isOp || data.isOwner) {
       this.tableDomain = new TableDomainView({
-        el: this.$('.domain-allowed'),
+        el: this.$el,
         model: this.model
       });
     }

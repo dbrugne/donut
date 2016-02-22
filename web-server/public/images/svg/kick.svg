@@ -1,25 +1,41 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-    <!-- Generator: Sketch 3.4.4 (17249) - http://www.bohemiancoding.com/sketch -->
-    <title>Oval 5 + Oval 5 + Triangle 1 + Rectangle 61</title>
-    <desc>Created with Sketch.</desc>
-    <defs>
-        <path id="path-1" d="M6.26086957,-1.23634436e-12 L9.39130435,3.25 L6.26086957,6.5 L6.26086957,6.5"></path>
-    </defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-        <g id="discussion-copy" sketch:type="MSArtboardGroup" transform="translate(-16.000000, -2444.000000)">
-            <g id="Oval-5-+-Oval-5-+-Triangle-1-+-Rectangle-61" sketch:type="MSLayerGroup" transform="translate(17.000000, 2444.000000)">
-                <circle id="Oval-5" stroke="#F15261" stroke-width="2" sketch:type="MSShapeGroup" cx="7" cy="12" r="7"></circle>
-                <circle id="Oval-5" stroke="#F15261" stroke-width="2" sketch:type="MSShapeGroup" cx="7" cy="12" r="3"></circle>
-                <g id="Triangle-1-+-Rectangle-61" transform="translate(13.010408, 6.010408) rotate(-45.000000) translate(-13.010408, -6.010408) translate(8.010408, 2.510408)">
-                    <g id="Triangle-1" stroke-linecap="round" stroke-linejoin="round">
-                        <use stroke="#FFFFFF" stroke-width="4.80000007" sketch:type="MSShapeGroup" xlink:href="#path-1"></use>
-                        <use stroke="#F15261" stroke-width="1.60000002" xlink:href="#path-1"></use>
-                    </g>
-                    <rect id="Rectangle-61" fill="#FFFFFF" sketch:type="MSShapeGroup" x="4.40536496e-13" y="0.8125" width="6.26086957" height="4.875" rx="0.800000012"></rect>
-                    <rect id="Rectangle-61" fill="#F15261" sketch:type="MSShapeGroup" x="-8.44657677e-13" y="2.4375" width="9.39130435" height="1.625" rx="0.800000012"></rect>
-                </g>
-            </g>
-        </g>
-    </g>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="20px" height="20px"
+	 viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
+<title>Oval 5 + Oval 5 + Triangle 1 + Rectangle 61</title>
+<desc>Created with Sketch.</desc>
+<g id="Page-1" sketch:type="MSPage">
+	<g id="discussion-copy" transform="translate(-16.000000, -2444.000000)" sketch:type="MSArtboardGroup">
+		
+			<g id="Oval-5-_x2B_-Oval-5-_x2B_-Triangle-1-_x2B_-Rectangle-61" transform="translate(17.000000, 2444.000000)" sketch:type="MSLayerGroup">
+			<g>
+				<path fill="#F15261" d="M12.502,9.613C12.82,10.345,13,11.151,13,12c0,3.309-2.691,6-6,6s-6-2.691-6-6s2.691-6,6-6
+					c0.667,0,1.306,0.114,1.905,0.315l1.53-1.53C9.392,4.287,8.23,4,7,4c-4.411,0-8,3.589-8,8s3.589,8,8,8s8-3.589,8-8
+					c0-1.406-0.368-2.728-1.008-3.877L12.502,9.613z"/>
+			</g>
+			<g id="Oval-5_1_">
+				<path fill="#F15261" d="M7,16c-2.206,0-4-1.794-4-4c0-2.206,1.794-4,4-4s4,1.794,4,4C11,14.206,9.206,16,7,16z M7,10
+					c-1.103,0-2,0.897-2,2s0.897,2,2,2s2-0.897,2-2S8.103,10,7,10z"/>
+			</g>
+			
+				<g id="Triangle-1-_x2B_-Rectangle-61" transform="translate(13.010408, 6.010408) rotate(-45.000000) translate(-13.010408, -6.010408) translate(8.010408, 2.510408)">
+				<g id="Triangle-1">
+					<g>
+						<g id="path-1_1_">
+							<path fill="#F15261" d="M5.695,7.066c-0.308-0.308-0.314-0.806-0.01-1.121l2.596-2.694L5.685,0.556
+								C5.378,0.237,5.388-0.27,5.706-0.576c0.318-0.307,0.831-0.311,1.131,0.021l3.131,3.25c0.299,0.31,0.299,0.801,0,1.11
+								l-3.131,3.25C6.53,7.373,6.024,7.383,5.706,7.076C5.702,7.073,5.699,7.069,5.695,7.066z"/>
+						</g>
+					</g>
+				</g>
+				<g id="Rectangle-61_1_">
+					<path sketch:type="MSShapeGroup" fill="#F15261" d="M0.8,2.437l7.792,0c0.442,0,0.8,0.358,0.8,0.8l0,0.025
+						c0,0.442-0.358,0.8-0.8,0.8l-7.791,0c-0.442,0-0.8-0.358-0.8-0.8l0-0.025C0,2.796,0.358,2.438,0.8,2.437z"/>
+				</g>
+			</g>
+		</g>
+	</g>
+</g>
 </svg>

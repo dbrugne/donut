@@ -7,9 +7,9 @@ var hello = require('../../../shared/util/hello-dolly');
 var isMobile = require('ismobilejs');
 
 router.get('/!', function (req, res) {
-  if (isMobile(req.headers['user-agent']).apple.phone ||
-      isMobile(req.headers['user-agent']).android.phone ||
-      isMobile(req.headers['user-agent']).windows.phone) {
+  if (isMobile(req.headers['user-agent'] || 'unknown').apple.phone ||
+      isMobile(req.headers['user-agent'] || 'unknown').android.phone ||
+      isMobile(req.headers['user-agent'] || 'unknown').windows.phone) {
     return res.redirect('/get-the-app');
   }
 

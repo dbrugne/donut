@@ -60,8 +60,9 @@ var RoomAccessView = Backbone.View.extend({
     });
     this.$el.html(html);
 
-    this.$errors = this.$('.errors');
+    this.$errors = this.$('.error');
     this.$success = this.$('.success');
+
     this.$search = this.$('input[type=text]');
     this.$toggleCheckbox = this.$('#input-password-checkbox');
     this.$checkboxGroupAllow = this.$('#input-allowgroupmember-checkbox');

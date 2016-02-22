@@ -1,36 +1,29 @@
-<div class="relative">     <span class="close icon icon-times"></span> </div>
-
-<div class="title">
-    <%= t('chat.form.room-form.edit.room.delete.title') %>
-    #<% if (room.group_name) { %><%- room.group_name %>/<% } %><%= room.name %>
+<div class="header">
+    <div class="title">
+        <%= t('chat.form.room-form.edit.room.delete.title') %>
+        #<% if (room.group_name) { %><%- room.group_name %>/<% } %><%= room.name %>
+    </div>
 </div>
 
-<div class="ctn-drawer">
-    <div class="errors block"></div>
+<div class="scrollable">
+    <div class="error block"></div>
 
-    <div class="block">
-        <p class="help-block"><%= t('chat.form.room-form.edit.room.delete.info', {name: room.name}) %></p>
+    <div class="block mt25">
+        <p><%= t('chat.form.room-form.edit.room.delete.info', {name: room.name}) %></p>
     </div>
 
-    <div class="block">
-        <div class="field flex-parent jc-center column text-center">
-                <span class="hash dc-text colorize">
-                    <% if (room.group_name) { %>
-                        #<%- room.group_name %>
-                    <% } %>
-                </span>
-                <span class="hash dc-text colorize">
-                    <% if (room.group_name) { %>
-                        /
-                    <% } else { %>
-                        #
-                    <% } %>
-                    <input type="text" name="input-delete" class="big-input dc-border flex-child colorize-border" placeholder="<%= t('chat.form.room-form.edit.room.delete.placeholder') %>" maxlength="15" value="">
-                </span>
+    <div class="block identifier flex-parent jc-center column text-center mt25">
+        <% if (room.group_name) { %>
+            <span class="groupname">#<%- room.group_name %></span>
+        <% } %>
+        <div class="roomname">
+            <span class="hash"><%= room.group_name ? '/' : '#' %></span>
+            <input type="text" name="input-delete" class="big-input dc-border flex-child colorize-border" placeholder="<%= t('chat.form.room-form.edit.room.delete.placeholder') %>" maxlength="15" value="">
         </div>
     </div>
-    <div class="field buttons mt15 flex-parent center jc-center block">
-        <a class="cancel-lnk btn btn-default mr10"><%= t('global.cancel') %></a>
-        <button class="submit btn btn-success" type="button"><%= t('global.delete') %></button>
+
+    <div class="block flex-parent column jc-center center mt50">
+        <button class="submit btn btn-default" type="button"><%= t('global.delete') %></button>
+        <button class="cancel-lnk btn btn-link"><%= t('global.cancel') %></button>
     </div>
 </div>

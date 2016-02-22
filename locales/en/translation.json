@@ -193,7 +193,7 @@
     "members_plural": "<strong>__count__</strong> members",
     "discover": "discover",
     "group": "group",
-    "view-profile": "view profile",
+    "view-profile": "View profile",
     "view-group": "view community",
     "view-room": "join discussion",
     "onetoones": "one to ones",
@@ -215,7 +215,7 @@
     "view": "view",
     "accept": "accept",
     "refuse": "refuse",
-    "viewprofile": "view profile",
+    "viewprofile": "View profile",
     "online": "online",
     "offline": "offline",
     "connecting": "connection ...",
@@ -325,7 +325,8 @@
   },
   "profile": {
     "common": {
-      "editlink": "Edit profile"
+      "editlink": "Edit profile",
+      "title": "Profile of "
     },
     "room": {
       "ownerops": "The regulars",
@@ -337,7 +338,8 @@
       },
       "permalink": "Permalink of this profile",
       "editusers": "Manage participants",
-      "createdat": "created on",
+      "createdat": "Created on",
+      "created-at": "Created on __created_at__",
       "usersallowed": "Invites & requests"
     },
     "group": {
@@ -346,14 +348,15 @@
       "permalink": "permalink of this profile",
       "editlink": "Edit profile",
       "profilelink": "profile of ",
-      "editusers": "manage members",
-      "createdat": "created on",
-      "usersallowed": "manage invitations"
+      "editusers": "Manage members",
+      "createdat": "Created on",
+      "created-at": "Created on __created_at__",
+      "usersallowed": "Manage invitations"
     },
     "user": {
       "hisrooms": "Active in these discussions",
       "signuped": "Signed up on",
-      "onlined": "online __time__ ago"
+      "onlined": "Online __time__ ago"
     }
   },
   "chat": {
@@ -390,11 +393,11 @@
       "banuser": "Ban a user",
       "create": "create",
       "adonut": "a discussion",
-      "account": "my account",
-      "edit": "my profile",
-      "notifications": "notifications",
-      "close": "quit the discussion",
-      "preferences": "settings & notifications",
+      "account": "My account",
+      "edit": "My profile",
+      "notifications": "Notifications",
+      "close": "Quit the discussion",
+      "preferences": "Settings & notifications",
       "bannedusers": "locked users",
       "update": "Edit",
       "see": "See",
@@ -414,7 +417,10 @@
       "new-messages": "new messages",
       "count-since": "last message: __date__",
       "jumpto": "Jump to",
-      "mark-as-read": "Mark as read"
+      "mark-as-read": "Mark as read",
+      "userscount": "__count__ user",
+      "userscount_plural": "__count__ users",
+      "see-all": "see all"
     },
     "createadonut": "Create a discussion",
     "home": {
@@ -526,15 +532,41 @@
       "error": "An error has occurred"
     },
     "confirmation": {
-      "placeholder": "Explain why, visible in the discussion (optional)",
+      "placeholder": "Explain why (public, optional)",
       "placeholderarea": "200 characters maximum",
       "placeholder-domain": "@example.com",
       "label": "Explain why (optional)",
       "label-requestallowance": "Explain why you request membership. (optional) ",
       "cancel": "Cancel",
       "confirm": "OK",
+      "title": {
+        "modechange": "WARNING",
+        "banuser": "Block a user",
+        "debanuser": "Unblock a user",
+        "refuseuser": "Refuse a user",
+        "acceptuser": "Authorize a user",
+        "disallowuser": "Disallow a user",
+        "quit-group": "Leave a community",
+        "op-room-user": "Promote a user",
+        "deop-room-user": "Remove from moderators",
+        "ban-room-user": "Ban a user",
+        "deban-room-user": "Deban a user",
+        "kick-room-user": "Kick a user",
+        "devoice-room-user": "Mute a user",
+        "ban-group-user": "Ban a user from a community",
+        "deban-group-user": "Deban a user from a community",
+        "op-group-user": "Promote a user of a community",
+        "deop-group-user": "Remove from moderators of a community",
+        "invite": "Authorize a user",
+        "add-email": "Add an email",
+        "send-email": "Send a validation email",
+        "delete-email": "Delete an email",
+        "change-email": "Change main email",
+        "add-domain": "Add a trusted email domain",
+        "delete-domain": "Delete an email domain from trusted"
+      },
       "message": {
-        "modechange": "WARNING this action is irreversible.",
+        "modechange": "This action is irreversible.",
         "banuser": "You are about to block this user.",
         "debanuser": "You are about to unblock this user.",
         "refuseuser": "You are about to refuse @__username__",
@@ -552,7 +584,6 @@
         "op-group-user": "Your are about to promote @__username__ to moderator of this community. Moderators can manage membership requests, invite and ban members.",
         "deop-group-user": " @__username__ will not longer be a moderator of this community.",
         "invite": "You are about to authorize @__username__. A notification will be sent to invite @__username__ to join #__name__.",
-        "requestallowance": "<strong>Membership request.</strong><br>The community creator will have access to your real name and email.",
         "add-email": "New email:",
         "send-email": "A verification e-mail will be sent to __email__",
         "delete-email": "__email__ will be deleted of your address",
@@ -822,7 +853,7 @@
           },
           "poster": {
             "label": "Poster",
-            "help": "The poster is the large vertical image on the right-hand side of the chat thread. Recommended dimensions: 430px width, 975px height."
+            "help": "The poster is the large vertical image on the right-hand side of the chat thread. Recommended dimensions: 315px width, 806px height."
           },
           "upload": {
             "nopicture": "No picture",
@@ -874,7 +905,6 @@
           },
           "group": {
             "delete": {
-              "link": "To delete this community <a class='open-group-delete' data-group-id=\"__id__\"> click here</a>.",
               "title": "Delete",
               "info": [
                 "You are about to delete this community. This action is immediate and cannot be undone.<br><br>",
@@ -915,7 +945,8 @@
           "help": "Between 2 and 15 characters, only letters, numbers,  dashes (-) and underscores (_)",
           "placeholder": "discussion name",
           "submit": "Create",
-          "group": "Already lead a community ? Want your users to feel home ? <a href=\"#\" class=\"open-group-create\">Create a DONUT community</a>.",
+          "group": "Already lead a community ? Want your users to feel home ? ",
+          "link": "Create a DONUT community.",
           "description": "Your discussion is independent. To link it to a community, go to this community and click the \"create a discussion\" button."
         },
         "edit": {
@@ -929,7 +960,7 @@
           "visibility": {
             "label": "Visibility (admin only)",
             "true": "This discussion is displayed on homepage",
-            "false": "This discussion <strong>is not</strong> displayed on homepage"
+            "false": "This discussion is not displayed on homepage"
           },
           "priority": {
             "label": "Priority (admin only)",
@@ -938,7 +969,6 @@
           },
           "room": {
             "delete": {
-              "link": "To delete this discussion <a class='open-room-delete' data-room-id=\"__id__\"> click here</a>.",
               "title": "Delete",
               "info": [
                 "You are about to delete this discussion. This action is immediate and cannot be undone.<br><br>",
@@ -1130,7 +1160,7 @@
       "email": "E-mail",
       "unlink": "Unlink from this Facebook account",
       "linkhelp": "You can link your account to Facebook to log in more easily and enjoy a more social experience:",
-      "connectwith": "Link this account to",
+      "connectwith": "Link this account to Facebook",
       "error": {
         "needemailpassword": "You cannot unlink this account from Facebook. First you need to set <a href='/connect/local'>an e-mail and a password for your account</a>",
         "alreadylinked": "This Facebook account is already linked to another account"
@@ -1145,6 +1175,7 @@
       "success": "Account successfully deleted, see you soon!"
     },
     "manageemail": {
+      "choose-main": "Select below your main email to receive your notifications",
       "label": "Manage your mails",
       "info": "Some communities require e-mail authentication (e.g: me@university.edu). Link your emails to this account to be automatically cleared.",
       "facebook": "Address link to facebook account",
@@ -1153,7 +1184,6 @@
       "send": "Re-send validation email",
       "delete": "Delete",
       "noresult": "No mails found",
-      "main": "Main",
       "add": "add email",
       "mail-notconfirmed": "Verify your account ! Check your mailbox. You can re-send a verification e-mail <strong class=\"open-user-account link\">here</strong>.",
       "errors": {
@@ -1686,6 +1716,7 @@
       },
       "nothing": {
         "label": "Never receive notifications about this discussion",
+        "label2": "Receive notifications about this discussion",
         "help": ""
       },
       "channels": {
@@ -1757,6 +1788,26 @@
     },
     "users-group": {
       "disclaimer" : "You can invite a user to join this community. To do so, <a href=\"#\" class=\"open-group-users-allowed\" data-group-id=\"__group_id__\">click here</a>"
+    },
+    "room-users": {
+      "title": "Manage participants",
+      "username": "Name",
+      "type": "Type",
+      "search": "search a username in this discussion"
+    },
+    "group-users": {
+      "title": "Manage members",
+      "username": "Name",
+      "type": "Type",
+      "search": "search a member in this community"
+    },
+    "room-edit": {
+      "link": "To delete this discussion ",
+      "click-here": "click here"
+    },
+    "group-edit": {
+      "link": "To delete this community",
+      "click-here": "click here"
     }
   }
 }

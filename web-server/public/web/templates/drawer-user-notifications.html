@@ -1,32 +1,47 @@
-<div class="relative">
-    <span class="close icon icon-times"></span>
-</div>
-
-<div class="title">
-    <%= t('chat.actions.notifications') %>
-</div>
-
-<div class="ctn-drawer">
-    <div class="ctn" role="menu">
-        <div class="mb10 block unread-count empty">
-            <span class="show-empty text-center">
-                <i class="icon fs14 icon-cog curp open-user-preferences" data-user-id="<%= user_id %>"></i>
-                <span><%= t('chat.notifications.empty') %></span>
-            </span>
-            <span class="hide-empty">
-                <i class="icon fs14 icon-cog curp open-user-preferences" data-user-id="<%= user_id %>"></i>
-                <span><%= t('chat.notifications.count') %></span>
-                <span class="pull-right action-tag-as-read"><%= t('chat.notifications.tag-as-read') %></span>
-            </span>
-        </div>
-        <div class="messages-list-ctn">
-            <div class="messages-list" id="main-navbar-messages"><!-- Loaded dynamically --></div>
-            <div class="actions flex-parent mt5 jc-center">
-                <div class="read-more btn btn-default"><%= t('chat.notifications.read-more') %></div>
-                <div class="loading hidden">
-                    <%=spinner%>
-                </div>
-            </div>
-        </div>
+<div class="header">
+    <div class="title">
+        <%= t('chat.actions.notifications') %>
     </div>
+    <span class="close-drawer icon icon-times curp"></span>
+</div>
+
+<div class="scrollable">
+
+    <div class="error block"></div>
+
+    <div class="checkbox block mt25">
+        <label for="browser-sounds" class="setting" style="padding: 0;">
+            <span class="show-nothing">
+                <%= t('preferences.browser.sounds.label-false') %>
+            </span>
+            <span class="hide-nothing">
+                <%= t('preferences.browser.sounds.label-true') %>
+            </span>
+            <span class="flex-child"></span>
+            <div class="toggle-checkbox">
+                <input id="browser-sounds" class="browser-sounds" type="checkbox" name="browser:sounds" value="<%= preferences['browser:sounds'] %>" <% if (preferences['browser:sounds']) { print('checked'); } %> >
+                <label for="browser-sounds"></label>
+            </div>
+        </label>
+        <p class="help"><%= t('preferences.notif.nothing.help') %></p>
+    </div>
+
+    <div class="mt25 unread-count empty">
+        <span class="show-empty text-center">
+            <!--<i class="icon fs14 icon-cog curp open-user-preferences" data-user-id="<%= user_id %>"></i>-->
+            <span><%= t('chat.notifications.empty') %></span>
+        </span>
+        <span class="hide-empty">
+            <!--<i class="icon fs14 icon-cog curp open-user-preferences" data-user-id="<%= user_id %>"></i>-->
+            <span><%= t('chat.notifications.count') %></span>
+            <span class="pull-right action-tag-as-read"><%= t('chat.notifications.tag-as-read') %></span>
+        </span>
+    </div>
+
+    <div class="messages-list-ctn">
+        <div class="messages-list" id="main-navbar-messages"><!-- Loaded dynamically --></div>
+        <div class="actions flex-parent jc-center">
+            <button class="read-more btn btn-default"><%= t('chat.notifications.read-more') %></button>
+        </div>
+   </div>
 </div>

@@ -193,7 +193,7 @@
     "members_plural": "<strong>__count__</strong> membres",
     "discover": "découvrir",
     "group": "groupe",
-    "view-profile": "voir le profil",
+    "view-profile": "Voir le profil",
     "view-group": "voir communauté",
     "view-room": "rejoindre la discussion",
     "onetoones": "tête-à-tête",
@@ -215,7 +215,7 @@
     "view": "voir",
     "accept": "accepter",
     "refuse": "refuser",
-    "viewprofile": "voir le profil",
+    "viewprofile": "Voir le profil",
     "online": "online",
     "offline": "offline",
     "connecting": "connecting",
@@ -325,7 +325,8 @@
   },
   "profile": {
     "common": {
-      "editlink": "Editer le profil"
+      "editlink": "Editer le profil",
+      "title": "Profil de "
     },
     "room": {
       "ownerops": "Les habitués",
@@ -337,7 +338,8 @@
       },
       "permalink": "Permalien de ce profil",
       "editusers": "Gérer les participants",
-      "createdat": "créé le",
+      "createdat": "Créée le",
+      "created-at": "Créée le __created_at__",
       "usersallowed": "Invitations & demandes"
     },
     "group": {
@@ -347,13 +349,14 @@
       "editlink": "Editer le profil",
       "profilelink": "Profil de ",
       "editusers": "Gérer les utilisateurs",
-      "createdat": "créé le",
+      "createdat": "Créée le",
+      "created-at": "Créée le __created_at__",
       "usersallowed": "Gérer les invitations"
     },
     "user": {
       "hisrooms": "Ses discussions",
-      "signuped": "inscrit le",
-      "onlined": "connecté il y a __time__"
+      "signuped": "Inscrit le",
+      "onlined": "Connecté il y a __time__"
     }
   },
   "chat": {
@@ -390,11 +393,11 @@
       "banuser": "Bannir un utilisateur",
       "create": "créer",
       "adonut": "une discussion",
-      "account": "mon compte",
-      "edit": "mon profil",
-      "notifications": "notifications",
-      "close": "quitter la discussion",
-      "preferences": "préférences & notifications",
+      "account": "Mon compte",
+      "edit": "Mon profil",
+      "notifications": "Notifications",
+      "close": "Quitter la discussion",
+      "preferences": "Préférences & notifications",
       "bannedusers": "utilisateurs bloqués",
       "update": "Editer",
       "see": "Voir",
@@ -414,7 +417,10 @@
       "new-messages": "nouveaux messages",
       "count-since": "dernier message: __date__",
       "jumpto": "Aller à",
-      "mark-as-read": "Marquer comme lu"
+      "mark-as-read": "Marquer comme lu",
+      "userscount": "__count__ utilisateur",
+      "userscount_plural": "__count__ utilisateurs",
+      "see-all": "voir tout"
     },
     "createadonut": "Nouveau",
     "home": {
@@ -526,15 +532,41 @@
       "error": "Une erreur est survenue"
     },
     "confirmation": {
-      "placeholder": "Expliquez pourquoi, visible dans la discussion (optionnel)",
+      "placeholder": "Expliquez pourquoi (public, facultatif)",
       "label-requestallowance": "Expliquez lui pourquoi vous voulez devenir membre. (facultatif)",
       "placeholderarea": "200 caractères maximum",
       "placeholder-domain": "@exemple.com",
       "label": "Expliquez pourquoi (optionnel)",
       "cancel": "Annuler",
       "confirm": "OK",
+      "title": {
+        "modechange": "ATTENTION.",
+        "banuser": "Bloquer un utilisateur.",
+        "debanuser": "Débloquer un utilisateur.",
+        "refuseuser": "Refuser l'accès",
+        "acceptuser": "Autoriser l'accès",
+        "disallowuser": "Supprimer l'accès",
+        "op-room-user": "Promouvoir un utilisateur",
+        "deop-room-user": "Retirer un utilisateur des modérateurs",
+        "ban-room-user": "Bannir un utilisateur",
+        "deban-room-user": "Débannir un utilisateur",
+        "kick-room-user": "Expulser un utilisateur",
+        "devoice-room-user": "Rendre muet un utilisateur.",
+        "quit-group": "Quitter une communauté",
+        "ban-group-user": "Bannir un utilisateur de cette communauté",
+        "deban-group-user": "Débannir un utilisateur de cette communauté",
+        "op-group-user": "Promouvoir un utilisateur de cette communauté",
+        "deop-group-user": "Retirer un utilisateur des modérateurs de cette communauté",
+        "invite": "Autoriser l'accès",
+        "add-email": "Ajouter un email",
+        "send-email": "Envoyer un email de validation",
+        "delete-email": "Supprimer un email",
+        "change-email": "Changer votre e-mail principal",
+        "add-domain": "Ajouter un domaine d'e-mail de confiance",
+        "delete-domain": "Supprimer un domaine d'e-mail de confiance"
+      },
       "message": {
-        "modechange": " ATTENTION cette action est irréversible.",
+        "modechange": "Cette action est irréversible.",
         "banuser": "Vous allez bloquer cet utilisateur.",
         "debanuser": "Vous allez débloquer cet utilisateur.",
         "refuseuser": "Vous allez refuser l'accès à @__username__",
@@ -552,7 +584,6 @@
         "op-group-user": "Vous allez promouvoir @__username__ modérateur de cette communauté. Les modérateurs peuvent gérer les demandes d'adhésion, inviter et bannir des membres.",
         "deop-group-user": "@__username__ ne sera plus modérateur de cette communauté.",
         "invite": "Vous allez autoriser l'accès à @__username__. Une notification va lui être adressée pour l'inviter à rejoindre #__name__.",
-        "requestallowance": "<strong>Demander à devenir membre.</strong><br>Le créateur de la communauté va avoir accès à votre vrai nom et votre e-mail.",
         "add-email": "Nouvel e-mail :",
         "send-email": "Un email de validation va être envoyé à __email__",
         "delete-email": "__email__ va être supprimé de vos adresses mails",
@@ -822,7 +853,7 @@
           },
           "poster": {
             "label": "Poster",
-            "help": "Le poster est la grande image en pleine hauteur que vos interlocuteurs voient à droite de la conversation. Dimensions recommandées : largeur 430px, hauteur 1100px mini."
+            "help": "Le poster est la grande image en pleine hauteur que vos interlocuteurs voient à droite de la conversation. Dimensions recommandées : largeur 315px, hauteur 806px mini."
           },
           "upload": {
             "nopicture": "Pas de photo",
@@ -874,7 +905,6 @@
           },
           "group": {
             "delete": {
-              "link": "Vous pouvez également supprimer cette communauté <a class='open-group-delete' data-group-id=\"__id__\">en cliquant ici</a>.",
               "title": "Supprimer",
               "info": [
                 "Vous êtes sur le point de supprimer cette communauté, cette opération est immédiate et irréversible.<br><br>",
@@ -915,7 +945,8 @@
           "help": "Entre 2 et 15 caractères, chiffres, lettres, tirets (-) et tirets bas (_) uniquement",
           "placeholder": "Nom de la discussion",
           "submit": "Créer la discussion",
-          "group": "Vous animez déjà une communauté ? Vous voulez créer un espace dédié à vos utilisateurs ? <a href=\"#\" class=\"open-group-create\">Créer une communauté DONUT</a>.",
+          "group": "Vous animez déjà une communauté ? Vous voulez créer un espace dédié à vos utilisateurs ?",
+          "link": "Créer une communauté DONUT.",
           "description": "Votre discussion est indépendante. Pour la lier à une communauté, allez dans votre communauté et cliquez sur le bouton \"Créer une discussion\""
         },
         "edit": {
@@ -929,7 +960,7 @@
           "visibility": {
             "label": "Visibilité (administrateur)",
             "true": "La discussion est visible sur la homepage",
-            "false": "La discussion <strong>n'est pas</strong> visible sur la homepage"
+            "false": "La discussion n'est pas visible sur la homepage"
           },
           "priority": {
             "label": "Priorité (administrateur)",
@@ -938,7 +969,6 @@
           },
           "room": {
             "delete": {
-              "link": "Vous pouvez également supprimer cette discussion <a class='open-room-delete' data-room-id=\"__id__\">en cliquant ici</a>.",
               "title": "Supprimer",
               "info": [
                 "Vous êtes sur le point de supprimer cette discussion, cette opération est immédiate et irréversible.<br><br>",
@@ -1130,7 +1160,7 @@
       "email": "Email",
       "unlink": "Délier de ce compte Facebook",
       "linkhelp": "Vous pouvez lier votre compte à un compte Facebook pour vous connecter plus facilement et profiter d'une expérience plus sociale :",
-      "connectwith": "Lier ce compte à ",
+      "connectwith": "Lier ce compte à Facebook",
       "error": {
         "needemailpassword": "Il n'est possible de délier votre compte Facebook de ce compte. Vous devez d'abord définir <a href='/connect/local'>un email et un mot de passe associés à votre compte</a>",
         "alreadylinked": "Ce compte Facebook est déjà lié à un autre compte"
@@ -1145,6 +1175,7 @@
       "success": "Compte supprimé avec succés, à bientôt !"
     },
     "manageemail": {
+      "choose-main": "Sélectionnez ci-dessous votre e-mail principal sur lequel seront envoyées vos notifications",
       "label": "Gérer vos emails",
       "info": "Certaines communautés requièrent une authentification par e-mail. (ex : moi@universite.edu). Liez vos e-mails à votre compte pour être authentifié automatiquement.",
       "facebook": "Adresse lié au compte facebook",
@@ -1153,7 +1184,6 @@
       "send": "Renvoyer un email de validation",
       "delete": "Supprimer",
       "noresult": "Aucune adresse mail trouvée",
-      "main": "Principal",
       "add": "ajouter e-mail",
       "mail-notconfirmed": "Validez votre compte à l'aide de l'e-mail de confirmation que nous vous avons envoyé. Pour en renvoyer un allez <strong class=\"open-user-account link\">ici</strong>.",
       "errors": {
@@ -1686,6 +1716,7 @@
       },
       "nothing": {
         "label": "Ne recevoir aucune notification pour cette discussion",
+        "label2": "Recevoir des notifications pour cette discussion",
         "help": ""
       },
       "channels": {
@@ -1757,6 +1788,26 @@
     },
     "users-group": {
       "disclaimer" : "Vous avez la possibilité d'inviter un utilisateur à rejoindre cette communauté. Pour ce faire, <a href=\"#\" class=\"open-group-users-allowed\" data-group-id=\"__group_id__\">cliquez ici</a>"
+    },
+    "room-users": {
+      "title": "Gérer les participants",
+      "username": "Nom",
+      "type": "Type",
+      "search": "Rechercher des utilisateurs dans cette discussion"
+    },
+    "group-users": {
+      "title": "Gérer les membres",
+      "username": "Nom",
+      "type": "Type",
+      "search": "Rechercher des membres dans cette communauté"
+    },
+    "room-edit": {
+      "link": "Vous pouvez également supprimer cette discussion ",
+      "click-here": "en cliquant ici"
+    },
+    "group-edit": {
+      "link": "Vous pouvez également supprimer cette communauté",
+      "click-here": "en cliquant ici"
     }
   }
 }

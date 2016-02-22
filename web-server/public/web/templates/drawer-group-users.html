@@ -1,44 +1,40 @@
-<div class="relative">     <span class="close icon icon-times"></span> </div>
-
-<div class="title">
-    <%= t('group.members') %>
-    <%= '#' + group.name %>
+<div class="header">
+    <div class="title">
+        <%= t('drawers.group-users.title') %>
+    </div>
+    <span class="close-drawer icon icon-times curp"></span>
 </div>
 
-<div class="ctn-drawer">
-    <div class="errors block"></div>
+<div class="block flex-parent column jc-center center">
+    <h2 class="mb0">#<%= group.name %></h2>
+</div>
 
-    <div class="block">
-        <p class="description"><%= t('drawers.users-group.disclaimer', { group_id: group.id }) %></p>
-    </div>
+<div class="error block"></div>
 
-    <div class="search block inline">
-        <label for="input-search"><%= t('chat.users.username') %></label>
-        <div class="blank flex-child"></div>
-        <div>
-            <input type="text" id="input-search" placeholder="<%= t('chat.users.search-group') %>" class="form-control flex-child" />
-            <i class="icon icon-search"></i>
-            <div class="dropdown">
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1"></ul>
+<div class="scrollable grayed">
+
+    <div class="search">
+        <div class="block flex-parent center mb0">
+            <label for="input-search"><%= t('drawers.group-users.username') %></label>
+            <div class="relative flex-child flex-parent center">
+                <input type="text" id="input-search" placeholder="<%= t('drawers.group-users.search') %>" class="flex-child" />
+                <i class="icon icon-search"></i>
+                <div class="dropdown">
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1"></ul>
+                </div>
             </div>
         </div>
-    </div>
-
-    <div class="block inline mt5">
-        <label for="type-select"><%= t('chat.users.usertype') %></label>
-        <div class="blank flex-child"></div>
-        <div>
-            <select name="type" id="type-select" class="form-control">
-                <% _.each(type, function(type) { %>
-                <option value="<%= type %>"><%= t('chat.users.type.' + type) %></option>
-                <% }); %>
-            </select>
+        <div class="relative block flex-parent center">
+            <label for="type-select"><%= t('drawers.group-users.type') %></label>
+            <div class="relative flex-parent center flex-child select-dropdown">
+                <select name="type" id="type-select" class="form-control">
+                    <% _.each(type, function(type) { %>
+                    <option value="<%= type %>"><%= t('chat.users.type.' + type) %></option>
+                    <% }); %>
+                </select>
+                <div class="user-number"><span class="number"></span></div>
+            </div>
         </div>
-    </div>
-
-    <div class="user-number block">
-        <span><strong class="number"></strong></span>
-        <span class="user-label"></span>
     </div>
 
     <div class="table-users block"></div>

@@ -52,7 +52,7 @@ var DrawerRoomDeleteView = Backbone.View.extend({
     var html = this.template({room: room});
     this.$el.html(html);
     this.$input = this.$el.find('input[name=input-delete]');
-    this.$errors = this.$el.find('.errors');
+    this.$errors = this.$el.find('.error');
     this.groupId = room.group_id;
   },
   onSubmit: function (event) {

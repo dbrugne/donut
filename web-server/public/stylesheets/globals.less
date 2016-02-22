@@ -122,6 +122,8 @@ h6 { font-size: 1.1rem; font-style: normal; font-weight: normal; line-height:1.1
 //.cl-back-concrete         { background-color: @cl-concrete !important ;}
 //.cl-back-asbestos         { background-color: @cl-asbestos !important ;}
 
+.cl-backdrop { background: @cl-backdrop; }
+
 .tooltip-inner { max-width: 300px; }
 
 .overlay-ctn { position:relative;
@@ -215,37 +217,37 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   }
 }
 
-.btn {
+.btn { .display-flex; .align-items(center); .justify-content(center);
   &.btn-success {
-    .don-button-variant(@cl-emerald, @cl-green_sea, #FFF, @cl-green_sea );
+    .don-button-variant(@cl-emerald, #FFF);
   }
   &.btn-danger {
-    .don-button-variant(@cl-alizarin, @cl-pomegranate, #FFF, @cl-pomegranate );
+    .don-button-variant(@cl-alizarin, #FFF);
   }
   &.btn-pink {
-    .don-button-variant(@cl-first, @cl-first-dark-10, #FFF, @cl-first-dark-10 );
+    .don-button-variant(@cl-first, #FFF);
   }
   &.btn-primary {
-    .don-button-variant(@cl-nav-left-back, @cl-nav-left-back-darker, @cl-clouds, @cl-nav-left-back-darker );
+    .don-button-variant(#E7ECF3, #586473);
   }
   &.btn-default {
-    .don-button-variant(#FFF, rgb(245, 248, 250), rgb(41, 47, 51), @cl-border );
+    .don-button-variant(#E7ECF3, #586473);
+  }
+  &.btn-link {
+    .don-button-variant(transparent, #586473);
+    text-transform: capitalize;
   }
   &.btn-facebook {
-    .don-button-variant(#4a649d, #4a649d, #FFF, #4a649d );
+    margin-top: 0;
+    .don-button-variant(#4a649d, #FFF);
+    i { display: flex; flex-flow: column nowrap; justify-content: center; align-items: center; border-right: 1px solid #FFF; margin-right: 10px; padding-right: 10px; font-size: 2rem; }
   }
-  &.btn-big { font-size:1.8rem; padding: 10px 18px; }
-  &.btn-sm { font-size:1rem; padding: 3px 11px 3px; }
-
-  &.loading { position:relative; .opacity(0.65); background-color: @cl-subtext15; cursor: not-allowed; color: #FFFFFF; padding-left: 35px;
-    //&:after { .icon-spinner; .spin; position: absolute; left: 10px; font-size: inherit; margin-top: 1px; }
-    &:hover { background-color:@cl-subtext15 !important; }
-  }
+  //&.btn-big { font-size:1.8rem; padding: 10px 18px; }
+  //&.btn-sm { font-size:1rem; padding: 3px 11px 3px; }
 }
 .offline .btn {
-  .don-button-variant(@cl-subtext20, @cl-subtext20, #FFF, @cl-subtext30 );
+  .don-button-variant(@cl-subtext20, #FFF);
 }
-
 
 .input-picto { z-index: 2; color: @cl-first; font-size: 22px; top: 0; left: 10px; position: absolute; display: block; width: 34px; height: 34px; line-height: 34px; text-align: center; }
 
@@ -269,7 +271,6 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
     font-style: italic;
   }
 }
-.border-shadow { border: 5px solid rgba(167, 167, 167, 0.1); }
 
 .upon {
   a {
@@ -277,83 +278,70 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   }
 }
 
-.txt-bubble {
-  position: relative;
-  background-color: @cl-subtext0;
-  padding: 1.2em 1.3em;
-  .border-radius(25px);
-  &:before {
-    content: url(/images/svg/tail.svg);
-    position: absolute;
-    bottom: -5px;
-    left: -10px;
-    width: 20px;
-  }
-}
 /* Room profiles common style */
-.room {
-  p { margin-bottom: 0; }
-  .avatar {
-    .img-circle;
-  }
-  .name {
-    .ft-opensans-extra-bold;
-    font-size: 2.0em;
-    line-height: 1.2;
-    word-break: break-all;
-    a {
-      &:hover {
-        text-decoration: none;
-      }
-    }
-  }
-  .owner {
-    .ft-opensans;
-    font-size: 1.1em;
-  }
-  .description {
-    .ft-opensans;
-    font-size: 1em;
-  }
-  .topic {
-    .ft-opensans-italic;
-    font-size: 1em;
-    label {
-      color: @cl-subtext20;
-      font-size: 0.9em;
-      margin-right: 10px;
-      font-weight: normal;
-    }
-  }
-  .website {}
-  .join {
-    a {
-      position: relative;
-      .ft-opensans-bold;
-      .border-radius(100px);
-      text-transform: uppercase;
-      padding: 15px 20px;
-      font-size: 17px;
-      i { color: @cl-warning; }
-    }
-    &:hover {
-      a {
-        text-decoration: none;
-      }
-    }
-  }
-}
-
-.user {
-  p { margin-bottom: 0; }
-  .username {
-    .ft-opensans-extra-bold;
-    font-size: 2.0em;
-    line-height: 1.2;
-  }
-  .othername { color: @cl-subtext20; font-weight: normal; }
-  .bio { .ft-opensans; font-size: 1em; margin-bottom: 20px; }
-}
+//.room {
+//  p { margin-bottom: 0; }
+//  .avatar {
+//    .img-circle;
+//  }
+//  .name {
+//    .ft-opensans-extra-bold;
+//    font-size: 2.0em;
+//    line-height: 1.2;
+//    word-break: break-all;
+//    a {
+//      &:hover {
+//        text-decoration: none;
+//      }
+//    }
+//  }
+//  .owner {
+//    .ft-opensans;
+//    font-size: 1.1em;
+//  }
+//  .description {
+//    .ft-opensans;
+//    font-size: 1em;
+//  }
+//  .topic {
+//    .ft-opensans-italic;
+//    font-size: 1em;
+//    label {
+//      color: @cl-subtext20;
+//      font-size: 0.9em;
+//      margin-right: 10px;
+//      font-weight: normal;
+//    }
+//  }
+//  .website {}
+//  .join {
+//    a {
+//      position: relative;
+//      .ft-opensans-bold;
+//      .border-radius(100px);
+//      text-transform: uppercase;
+//      padding: 15px 20px;
+//      font-size: 17px;
+//      i { color: @cl-warning; }
+//    }
+//    &:hover {
+//      a {
+//        text-decoration: none;
+//      }
+//    }
+//  }
+//}
+//
+//.user {
+//  p { margin-bottom: 0; }
+//  .username {
+//    .ft-opensans-extra-bold;
+//    font-size: 2.0em;
+//    line-height: 1.2;
+//  }
+//  .othername { color: @cl-subtext20; font-weight: normal; }
+//  .bio { .ft-opensans; font-size: 1em; margin-bottom: 20px; }
+//}
 
 .method-facebook {   background-color: rgb(70, 107, 166); color: #FFF; .border-radius(5px);
   .fb-left .icon {  background-color: rgb(45, 77, 129); color: #FFF; padding: 15px; font-size: 20px; border-radius: 5px 0 0 5px; border-right: 1px solid #FFF;}
@@ -441,6 +429,10 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   &.offline { background-color: #e74c3c; }
   &.connecting { background-color: #e67e22; }
   &.online { background-color: #18C095; }
+  &.circle { width: 12px; height: 12px; background-color: #fff; .border-radius(50%); display: inline-block; border: 2px solid #FFF;
+    &.online { background-color: #18C095; margin: 2px; border: 0; }
+    &.offline { background: rgba(255,255,255,0.20); border: 2px solid rgba(0,0,0,0.80); width: 16px; height: 16px; }
+  }
 }
 
 .show-loading { display:none; }
@@ -493,4 +485,16 @@ table tr:hover { outline: 1px solid @cl-subtext15; background-color: @cl-subtext
   &.gray { background: #8491A1; }
   &.gray:hover { background: lighten(#8491A1, 10%); }
   &.transparent { background: transparent; }
+}
+
+// display a checkbox as a toggle button
+// use the syntax :
+// <div class="toggle-checkbox">
+//  <input id="bla" type="checkbox" ... >
+//  <label for="bla"></label>
+// </div>
+.toggle-checkbox { background: #D0D9E6; .border-radius(11px); height: 16px; width: 33px; position: relative;
+  input[type=checkbox] { visibility: hidden; }
+  input[type=checkbox]:checked + label { left: 19px; }
+  label { background: #FFFFFF; .border-radius(11px); height: 12px; width: 12px; min-height: initial; min-width: initial; padding: 0; cursor: pointer; position: absolute; top: 2px; left: 2px; display: block; .transition(all .4s ease); }
 }

@@ -55,10 +55,10 @@ describe('shared/util/cloudinary', function () {
       cloudinary.poster('').should.equal('');
     });
     it('without blur', function () {
-      cloudinary.poster('v1415790619/xdj4tzf7r7dm18f2vuem.png').should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,d_poster-default.png,g_center,h_1100,w_430/v1415790619/xdj4tzf7r7dm18f2vuem.png');
+      cloudinary.poster('v1415790619/xdj4tzf7r7dm18f2vuem.png').should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,d_poster-default.png,g_center,h_806,w_315/v1415790619/xdj4tzf7r7dm18f2vuem.png');
     });
     it('with blur', function () {
-      cloudinary.poster('v1415790619/xdj4tzf7r7dm18f2vuem.png', true).should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,d_poster-default.png,e_blur:800,g_center,h_1100,w_430/v1415790619/xdj4tzf7r7dm18f2vuem.png');
+      cloudinary.poster('v1415790619/xdj4tzf7r7dm18f2vuem.png', true).should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,d_poster-default.png,e_blur:800,g_center,h_806,w_315/v1415790619/xdj4tzf7r7dm18f2vuem.png');
     });
   });
 
@@ -105,8 +105,8 @@ describe('shared/models/room', function () {
 
   it('._poster()', function () {
     model._poster.should.be.a('function');
-    model._poster().should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,d_poster-default.png,g_center,h_1100,w_430/v1415790619/xdj4tzf7r7dm18f2vuem.png');
-    model._poster(true).should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,d_poster-default.png,e_blur:800,g_center,h_1100,w_430/v1415790619/xdj4tzf7r7dm18f2vuem.png');
+    model._poster().should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,d_poster-default.png,g_center,h_806,w_315/v1415790619/xdj4tzf7r7dm18f2vuem.png');
+    model._poster(true).should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,d_poster-default.png,e_blur:800,g_center,h_806,w_315/v1415790619/xdj4tzf7r7dm18f2vuem.png');
 
     model.poster = null;
     model._poster().should.equal('');
@@ -154,8 +154,8 @@ describe('shared/models/user', function () {
 
   it('._poster()', function () {
     model._poster.should.be.a('function');
-    model._poster().should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,d_poster-default.png,g_center,h_1100,w_430/v1415790619/xdj4tzf7r7dm18f2vuem.png');
-    model._poster(true).should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,d_poster-default.png,e_blur:800,g_center,h_1100,w_430/v1415790619/xdj4tzf7r7dm18f2vuem.png');
+    model._poster().should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,d_poster-default.png,g_center,h_806,w_315/v1415790619/xdj4tzf7r7dm18f2vuem.png');
+    model._poster(true).should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,d_poster-default.png,e_blur:800,g_center,h_806,w_315/v1415790619/xdj4tzf7r7dm18f2vuem.png');
 
     model.poster = null;
     model._poster().should.equal('');

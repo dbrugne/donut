@@ -90,29 +90,42 @@
   filter: blur(5px);
 }
 
-.don-button-variant(@cl-start, @cl-end, @cl-text, @cl-border) {
+.don-button-variant(@cl-back, @cl-text) {
+  position: relative;
   .transition(padding 400ms ease);
-  border: 1px solid @cl-border;
-  .border-radius(4px);
-  .align-items(flex-start);
-  background-color: @cl-end;
-  background-image: linear-gradient(@cl-start, @cl-end);
-  background-origin: padding-box;
-  background-repeat: no-repeat;
+  background: @cl-back;
+  border-radius: 4px;
+  .ft-opensans-semibold;
+  font-size: 11px;
   color: @cl-text;
-  cursor: pointer;
-  display: inline-block;
-  font-size: 1.3rem;
-  font-weight: bold;
-  padding: 5px 10px 5px;
+  letter-spacing: 0.84px;
+  line-height: 21px;
   text-align: center;
-  font-style: initial;
-  white-space: normal;
-  &:hover {
-    background-color: @cl-border;
-    background-image: linear-gradient(@cl-end,@cl-start);
-    border-color: @cl-border;
-    color: @cl-text;
+  text-transform: uppercase;
+  border: 0;
+  padding: 7px 15px;
+  width: 255px;
+  &:active, &:focus, &:hover { background: @cl-back; color: @cl-text; }
+  &.loading { padding-left: 40px; cursor: not-allowed; .opacity(0.65);
+    &::before {
+      @fadeColor: fade(@cl-text, 20%);
+      content: ' ';
+      position: absolute;
+      left: 10px;
+      display: inline-block;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      border-top: 3px solid @fadeColor;
+      border-right: 3px solid @fadeColor;
+      border-bottom: 3px solid @fadeColor;
+      border-left: 3px solid @cl-text;
+      -webkit-transform: translateZ(0);
+      -ms-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-animation: load8 1.1s infinite linear;
+      animation: load8 1.1s infinite linear;
+    }
   }
 }
 
@@ -515,15 +528,15 @@
 @-webkit-keyframes sk-circleFadeDelay { 0%, 39%, 100% { opacity: 0; } 40% { opacity: 1; } }
 @keyframes sk-circleFadeDelay { 0%, 39%, 100% { opacity: 0; } 40% { opacity: 1; } }
 
-/**
-usage
-
-<div class="container-unread-pulse">
-  <div class="unread-dot"></div>
-  <div class="unread-pulse"></div>
-</div>
-
-**/
+// Another spinner icon for buttons states
+@-webkit-keyframes load8 {
+  0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@keyframes load8 {
+  0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+}
 
 
 
@@ -585,7 +598,7 @@ usage
 
 *******************************************************************************/
 
-.margin-loop (@index) when (@index > 0){
+.margin-loop (@index) when (@index >= 0){
   .ml@{index} { margin-left: ~'@{index}px' !important; }
   .mr@{index} { margin-right: ~'@{index}px' !important; }
   .mt@{index} { margin-top: ~'@{index}px' !important; }
@@ -651,36 +664,6 @@ usage
                               REUSABLE CODE
 
 *******************************************************************************/
-
-.compact-sidebar () { width:70px !important;
-  .blur { width:70px;
-    .users { position: relative; padding: 10px 0 30px; height: 100%; background-color: rgba(0, 0, 0, 0.2);
-      .list { list-style: none; padding: 5px; background-repeat: no-repeat; background-position: left top; position: relative; .scrollbar-white; .justify-content(space-around); margin: 0 6px;
-        overflow: visible;
-        height: 100%;
-        > li { margin: 5px 0; float:left; }
-        .clearfix { width:100%; height:5px; clear: both; float: none; }
-        .li-title { margin: 0;
-          .col-md-6 { width:100%; padding: 0; margin-top:5px; }
-        }
-        .item { position: relative; font-size: 0.9em; font-weight: bold; display: block; height: 34px; padding-left: 0;
-          .avatar { display: inline-block; width: 34px; height: 34px;
-            .background { background-position: center center; background-size: 34px 34px; .border-radius(4px); width: 34px; height: 34px; display: inline-block; }
-            &:hover {
-              .dropdown>.dropdown-toggle {
-                display: block;
-              }
-            }
-          }
-          .userstatus { position: absolute; top: 10px; z-index: 1; }
-          .username { display:none; }
-        }
-      }
-    }
-  }
-  .hidden-compact { display:none; }
-  .visible-compact { display:inline; }
-}
 
 .date-discussion() { margin-top: 25px; margin-bottom: 25px; clear: both; border-top: 0; height: 1px; background-color: #D0D9E6; text-align: center; margin-left: -20px;
   .moment { position: relative; top: -0.7em; background-color: @cl-background; text-align: center; font-size: 15px; color: #AFBAC8; line-height: 14px; padding: 0 20px; font-weight: normal;
