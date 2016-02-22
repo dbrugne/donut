@@ -18,11 +18,6 @@ router.get('/', [require('csurf')()], function (req, res) {
     type: 'website'
   };
 
-  console.log(isMobile(req.headers['user-agent']).apple.phone);
-  console.log(isMobile(req.headers['user-agent']).android.phone);
-  console.log(isMobile(req.headers['user-agent']).windows.phone);
-  console.log(isMobile(req.headers['user-agent']).any);
-
   return res.render('landing', {
     token: req.csrfToken(),
     meta: meta,

@@ -91,7 +91,7 @@ var forgot = function (req, res) {
     }
   ], function (err) {
     if (err) {
-      console.log(err);
+      logger.debug(err);
     }
 
     res.redirect('/forgot');
