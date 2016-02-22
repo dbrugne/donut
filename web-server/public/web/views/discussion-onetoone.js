@@ -62,7 +62,7 @@ var OneToOnePanelView = Backbone.View.extend({
       this.$el.hide();
     }
   },
-  onPoster: function (model, url, options) {
+  onPoster: function (model, url, options) { // @todo fetched poster url is not cloudinary computed
     this.$('div.side').css('background-image', 'url(' + url + ')');
     this.$('div.side').removeClass('poster-empty');
     if (url === '') {

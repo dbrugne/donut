@@ -7,7 +7,7 @@
         <div class="flex-parent baseline">
             <div class="name open-user-profile" data-user-id="<%= user_id %>">
                 <% if (typeof realname !== "undefined" && realname !== '') { %>
-                    <%= realname %>
+                    <%= realname %> <small>@<%= username %></small>
                 <% } else { %>
                     @<%= username %>
                 <% } %>
