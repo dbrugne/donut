@@ -41,7 +41,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
     this.render(); // show spinner as temp content
 
     app.client.notificationRead(null, null, 10, _.bind(function (data) {
-      app.client.userPreferencesRead(null, _.bind(function (response) { // @todo fetch preferences into notificationRead, avoid two calls
+      app.client.userPreferencesRead(null, _.bind(function (response) { // @todo fetch preferences into notificationRead, avoid two calls. required to display notification sound toggle
         this.isThereMoreNotifications = data.more;
         var spinner = this.templateSpinner({});
         this.$el.html(this.template({user_id: this.userId, spinner: spinner, preferences: response.preferences}));
@@ -56,6 +56,8 @@ var DrawerUserNotificationsView = Backbone.View.extend({
         this.$actions = this.$scrollable.find('.actions');
         this.$readMore = this.$actions.find('.read-more');
         this.$errors = this.$el.find('.error');
+
+        this.setUnreadCount();
 
         var html = '';
         _.each(data.notifications, _.bind(function (element) {
@@ -88,7 +90,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
       }
     }, this));
   },
-  setUnreadCount: function (count) {
+  setUnreadCount: function () {
     var unviewed = app.user.get('unviewedNotification');
     if (unviewed) {
       this.$count.html(unviewed);
