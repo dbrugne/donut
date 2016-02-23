@@ -22,7 +22,7 @@
         <h2><%= t('account.facebook.label') %></h2>
         <% if (user.account.facebook && user.account.facebook.token) { %>
             <p><%= t('account.facebook.help') %></p>
-            <div class="facebook">
+            <div class="facebook block">
                 <div class="infos flex-parent" style="overflow: hidden;">
                     <img class="avatar" src="https://graph.facebook.com/<%= user.account.facebook.id %>/picture"/>
                     <div class="flex-child ml10 flex-parent jc-center column">
@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <% if (user.account.email) { %>
-                    <p class="unlink">
+                    <p class="unlink block">
                         <a href="/unlink/facebook" target="_blank" class="unlink"><%= t('account.facebook.unlink') %></a>
                     </p>
                 <% } %>
