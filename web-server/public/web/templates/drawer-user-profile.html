@@ -6,17 +6,21 @@
                     <div class="avatar <% if (user.isCurrent) { %>open-user-edit <% } %> <% if (user.banned) { %>is-banned <% } %>" style="background-image:url(<%= user.avatar %>)"></div>
                     <div class="username">
                         <span class="<% if (user.isCurrent) { %>open-user-edit <% } %> flex-child flex-parent center jc-center">
-                            <span class="value">
+                            <a>
                                 <% if (user.realname) { %>
                                     <%= user.realname %>
                                 <% } else { %>
                                     @<%= user.username %>
                                 <% } %>
-                            </span>
+                            </a>
                             <span class="value"> </span>
                         </span>
                     </div>
-                    <div class="location"><% if (user.location) { %><%=user.location%><% } %></div>
+                    <div class="location">
+                        <% if (user.realname) { %>
+                            @<%= user.username %>
+                        <% } %>
+                    </div>
                 </div>
                 <div class="overlay"></div>
                 <div class="background" style="background-image:url(<%= user.avatar %>)"></div>
