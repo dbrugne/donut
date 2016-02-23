@@ -7,8 +7,8 @@
 </div>
 <div id="join-group" class="modal-body">
 
-    <div class="alert alert-success success mt10" style="display: none"></div>
-    <div class="alert alert-danger error mt10" style="display: none"></div>
+    <div class="alert alert-success success ml20 mr20" style="display: none"></div>
+    <div class="alert alert-danger error ml20 mr20" style="display: none"></div>
 
     <p class="message mb20"><%= t('chat.joingroup.message') %></p>
     <% if (data.owner_username && data.disclaimer) { %>
@@ -83,7 +83,7 @@
         <% } %>
 
         <% if(data.allowed_domains) { %>
-        <% var active = ( nbOptions === 1 ? 'active' : '' ) %>
+            <% var active = ( nbOptions === 1 ? 'active' : '' ) %>
             <div role="tabpanel" class="tab-pane <%= active %>" id="groupjoin-email">
 
                 <div class="join-email form-horizontal">

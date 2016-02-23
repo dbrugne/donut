@@ -418,8 +418,8 @@
       "count-since": "last message: __date__",
       "jumpto": "Jump to",
       "mark-as-read": "Mark as read",
-      "userscount": "__count__ user",
-      "userscount_plural": "__count__ users",
+      "userscount": "__count__ participant",
+      "userscount_plural": "__count__ participants",
       "see-all": "see all"
     },
     "createadonut": "Create a discussion",
@@ -1074,7 +1074,8 @@
           "placeholder": "e-mail",
           "domain": "domain",
           "confirm": "Add",
-          "success": "The email __email__ has been successfully added to your account. You will receive a verification e-mail. Once verified you will automatically become a member of this community.<br>You can manage your emails <a class=\"inverse open-user-account\" data-dismiss=\"modal\">here</a>",
+          "success": "Success ! Last step: check your inbox and verify your email.<br>To re-send a verification email, click on the envelope <a class=\"inverse open-user-account\" data-dismiss=\"modal\">here</a>",
+          "not-confirmed": "OK ! Last step: verify your email with the link you received in your inbox when you first linked __email__ to your account.<br>To re-send a verification email, click on the envelope <a class=\"inverse open-user-account\" data-dismiss=\"modal\">here</a>",
           "error": "This e-mail is already linked to another account"
         },
         "other": "You can join this community only if invited by its moderators."

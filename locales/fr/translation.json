@@ -418,8 +418,8 @@
       "count-since": "dernier message: __date__",
       "jumpto": "Aller à",
       "mark-as-read": "Marquer comme lu",
-      "userscount": "__count__ utilisateur",
-      "userscount_plural": "__count__ utilisateurs",
+      "userscount": "__count__ participant",
+      "userscount_plural": "__count__ participants",
       "see-all": "voir tout"
     },
     "createadonut": "Nouveau",
@@ -1074,7 +1074,8 @@
           "confirm": "Ajouter",
           "placeholder": "e-mail",
           "domain": "domaine",
-          "success": "L'e-mail __email__ a bien été ajoutée à votre compte. Vous allez recevoir un email pour valider que vous en êtes bien le propriétaire. Une fois validé, vous deviendrez automatiquement membre de cette communauté.<br>Vous pouvez gérer vos e-mails <a class=\"inverse open-user-account\" data-dismiss=\"modal\">ici</a>",
+          "success": "Succès ! Dernière étape : vous allez recevoir un email pour valider que cette boîte e-mail est à vous.<br>Pour renvoyer un e-mail de validation, cliquez sur l'enveloppe <a class=\"inverse open-user-account\" data-dismiss=\"modal\">ici</a>",
+          "not-confirmed": "OK ! Dernière étape : validez votre e-mail grâce à l'e-mail de validation reçu lors du premier rattachement de __email__ à votre compte.<br/>Pour renvoyer un e-mail de validation, cliquez sur l'enveloppe <a class=\"inverse open-user-account\" data-dismiss=\"modal\">ici</a>",
           "error": "Cet e-mail est déjà lié à un autre compte"
         },
         "other": "Cette communauté est uniquement accessible sur invitation des modérateurs."

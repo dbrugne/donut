@@ -363,12 +363,40 @@ userSchema.methods.preferencesValue = function (key) {
   return preferencesConfig[_key]['default'];
 };
 
+/**
+ * A user can have multiple emails, validated or not
+ * a community can have set multiple domains
+ *
+ * So:
+ * 1) check if at least one of user's email has the same domain and is confirmed => return true
+ * 2) if no one is validated, check if at least one was entered bu not validated => return 'not-confirmed'
+ * 3) else (no email of the same domain)                                         => return false
+ *
+ * @param domains
+ * @returns {boolean}
+ */
 userSchema.methods.hasAllowedEmail = function (domains) {
-  var found = _.find(this.emails, _.bind(function (e) {
+  var found = false;
+  var grantedEmail = _.find(this.emails, _.bind(function (e) {
     var domain = '@' + e.email.split('@')[1].toLowerCase();
-    return (domains.indexOf(domain) !== -1 && e.confirmed);
+    if (domains.indexOf(domain) === -1) {
+      return false;
+    }
+    found = true;
+    return (e.confirmed);
   }, this));
-  return (typeof found !== 'undefined');
+
+  // one email has the matching domain and is confirmed
+  if (typeof(grantedEmail) !== 'undefined') {
+    return true;
+  }
+
+  // one email has the matching domain but is not confirmed
+  if (found) {
+    return 'not-confirmed';
+  }
+
+  return false;
 };
 
 /** *******************************************************************************
