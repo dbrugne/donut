@@ -25,100 +25,100 @@
         <!--Display has tab panes if more than one option-->
         <% if (nbOptions > 1) { %>
 
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs nav-pills flex-parent center jc-space-around mb20" role="tablist">
-            <% if(data.request) { %>
-                <li role="presentation" class="active"><a href="#groupjoin-request" aria-controls="groupjoin-request" role="tab" data-toggle="tab"><%= t('chat.joingroup.options.request.button') %></a></li>
-            <% } %>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs nav-pills flex-parent center jc-space-around mb20" role="tablist">
+                <% if(data.request) { %>
+                    <li role="presentation" class="active"><a href="#groupjoin-request" aria-controls="groupjoin-request" role="tab" data-toggle="tab"><%= t('chat.joingroup.options.request.button') %></a></li>
+                <% } %>
 
-            <% if(data.password) { %>
-                <li role="presentation"><a href="#groupjoin-password" aria-controls="groupjoin-password" role="tab" data-toggle="tab"><%= t('chat.joingroup.options.password.button') %></a></li>
-            <% } %>
+                <% if(data.password) { %>
+                    <li role="presentation"><a href="#groupjoin-password" aria-controls="groupjoin-password" role="tab" data-toggle="tab"><%= t('chat.joingroup.options.password.button') %></a></li>
+                <% } %>
 
-            <% if(data.allowed_domains) { %>
-                <li role="presentation"><a href="#groupjoin-email" aria-controls="groupjoin-email" role="tab" data-toggle="tab"><%= t('chat.joingroup.options.email.button') %></a></li>
-            <% } %>
-        </ul>
+                <% if(data.allowed_domains) { %>
+                    <li role="presentation"><a href="#groupjoin-email" aria-controls="groupjoin-email" role="tab" data-toggle="tab"><%= t('chat.joingroup.options.email.button') %></a></li>
+                <% } %>
+            </ul>
 
-        <!-- Tab panes -->
-        <div class="tab-content">
+            <!-- Tab panes -->
+            <div class="tab-content">
 
         <% } %>
 
-            <% var active = ''  %>
-            <% if(data.request) { %>
-                <% var active = ( nbOptions >= 1 ? 'active' : '' ) %>
-                <div role="tabpanel" class="tab-pane <%= active %>" id="groupjoin-request">
-                    <div class="join-request">
-                        <% if (!data.isAllowedPending) { %>
-                            <p><%= t('chat.joingroup.options.request.info') %></p>
-                            <div class="mr20 ml20">
-                                <textarea class="form-control input-request mt20"  rows="5" maxlength="200" placeholder="<%= t('chat.joingroup.options.request.placeholder') %>"></textarea>
-                            </div>
-                            <div class="flex-parent mt20 mr20 ml20 jc-center center">
-                                <button type="button" class="confirm-request btn btn-primary"><%= t('chat.joingroup.options.request.confirm') %></button>
-                            </div>
-                        <% } else { %>
-                            <p><%= t('chat.joingroup.allowedpending') %></p>
-                        <% } %>
-                    </div>
-                </div>
-            <% } %>
-
-            <% if(data.password) { %>
-            <% var active = ( (nbOptions === 1 || !data.request) ? 'active' : '' ) %>
-                <div role="tabpanel" class="tab-pane <%= active %>" id="groupjoin-password">
-
-                    <div class="join-password">
-                        <p><%= t('chat.joingroup.options.password.info') %></p>
-                        <div class="mr20 ml20 mt20">
-                            <input class="form-control input-password" type="password" placeholder="<%= t('chat.joingroup.options.password.placeholder') %>">
+        <% var active = ''  %>
+        <% if(data.request) { %>
+            <% var active = ( nbOptions >= 1 ? 'active' : '' ) %>
+            <div role="tabpanel" class="tab-pane <%= active %>" id="groupjoin-request">
+                <div class="join-request">
+                    <% if (!data.isAllowedPending) { %>
+                        <p><%= t('chat.joingroup.options.request.info') %></p>
+                        <div class="mr20 ml20">
+                            <textarea class="form-control input-request mt20"  rows="5" maxlength="200" placeholder="<%= t('chat.joingroup.options.request.placeholder') %>"></textarea>
                         </div>
                         <div class="flex-parent mt20 mr20 ml20 jc-center center">
-                            <button type="button" class="confirm-password btn btn-primary"><%= t('chat.joingroup.options.password.confirm') %></button>
+                            <button type="button" class="confirm-request btn btn-default"><%= t('chat.joingroup.options.request.confirm') %></button>
+                        </div>
+                    <% } else { %>
+                        <p><%= t('chat.joingroup.allowedpending') %></p>
+                    <% } %>
+                </div>
+            </div>
+        <% } %>
+
+        <% if(data.password) { %>
+        <% var active = ( (nbOptions === 1 || !data.request) ? 'active' : '' ) %>
+            <div role="tabpanel" class="tab-pane <%= active %>" id="groupjoin-password">
+
+                <div class="join-password">
+                    <p><%= t('chat.joingroup.options.password.info') %></p>
+                    <div class="mr20 ml20 mt20">
+                        <input class="form-control input-password" type="password" placeholder="<%= t('chat.joingroup.options.password.placeholder') %>">
+                    </div>
+                    <div class="flex-parent mt20 mr20 ml20 jc-center center">
+                        <button type="button" class="confirm-password btn btn-primary"><%= t('chat.joingroup.options.password.confirm') %></button>
+                    </div>
+                </div>
+
+            </div>
+        <% } %>
+
+        <% if(data.allowed_domains) { %>
+        <% var active = ( nbOptions === 1 ? 'active' : '' ) %>
+            <div role="tabpanel" class="tab-pane <%= active %>" id="groupjoin-email">
+
+                <div class="join-email form-horizontal">
+                    <p><%= t('chat.joingroup.options.email.info') %></p>
+
+                    <div class="form-group form-inline mt20 mr20 ml20">
+                        <div class="flex-parent">
+                            <input type="text" class="form-control input-email flex-child mr5" placeholder="<%= t('chat.joingroup.options.email.placeholder') %>">
+                            <% if (data.allowed_domains && data.allowed_domains.length) { %>
+                            <select class="select-domain form-control">
+                                <% _.each(data.allowed_domains, function(domain) { %>
+                                <option value="<%= domain %>"><%= domain %></option>
+                                <% }); %>
+                            </select>
+                            <% } %>
                         </div>
                     </div>
-
-                </div>
-            <% } %>
-
-            <% if(data.allowed_domains) { %>
-            <% var active = ( nbOptions === 1 ? 'active' : '' ) %>
-                <div role="tabpanel" class="tab-pane <%= active %>" id="groupjoin-email">
-
-                    <div class="join-email form-horizontal">
-                        <p><%= t('chat.joingroup.options.email.info') %></p>
-
-                        <div class="form-group form-inline mt20 mr20 ml20">
-                            <div class="flex-parent">
-                                <input type="text" class="form-control input-email flex-child mr5" placeholder="<%= t('chat.joingroup.options.email.placeholder') %>">
-                                <% if (data.allowed_domains && data.allowed_domains.length) { %>
-                                <select class="select-domain form-control">
-                                    <% _.each(data.allowed_domains, function(domain) { %>
-                                    <option value="<%= domain %>"><%= domain %></option>
-                                    <% }); %>
-                                </select>
-                                <% } %>
-                            </div>
-                        </div>
-                        <div class="flex-parent mt20 mr20 ml20 jc-center center">
-                            <button type="button" class="confirm-email btn btn-primary"><%= t('chat.joingroup.options.email.confirm') %></button>
-                        </div>
+                    <div class="flex-parent mt20 mr20 ml20 jc-center center">
+                        <button type="button" class="confirm-email btn btn-primary"><%= t('chat.joingroup.options.email.confirm') %></button>
                     </div>
-
                 </div>
-            <% } %>
+
+            </div>
+        <% } %>
 
         <% if (nbOptions > 1) { %>
-        </div><!--/.tab-content-->
+            </div><!--/.tab-content-->
         <% } %>
 
         <% if(nbOptions === 0) { %>
             <div class="join-other">
                 <% if (!data.isAllowedPending) { %>
-                    <%= t('chat.joingroup.options.other') %>
+                    <p><%= t('chat.joingroup.options.other') %></p>
                 <% } else { %>
-                    <%= t('chat.joingroup.allowedpending') %>
+                    <p><%= t('chat.joingroup.allowedpending') %></p>
                 <% } %>
             </div>
         <% } %>

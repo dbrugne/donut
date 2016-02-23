@@ -449,6 +449,7 @@ var MainView = Backbone.View.extend({
   },
   openRoomJoin: function (data) {
     var view = new ModalJoinRoomView({data: data});
+    this.modalView.setIdentifier('popin-join-room');
     this.modalView.setView(view).open();
   },
   openModalChooseUsername: function () {

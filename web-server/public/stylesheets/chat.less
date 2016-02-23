@@ -73,7 +73,7 @@
   }
 }
 
-#popin-join-group {
+#popin-join-group, #popin-join-room {
   .modal-backdrop { .cl-backdrop; }
   .modal-dialog { margin-top: 10em;
     .modal-content { .border-radius(0);
@@ -84,6 +84,14 @@
       .modal-body { padding: 20px 0; text-align: center;
         p { .ft-opensans; font-size: 13px; color: #8491A1; line-height: 14px; text-align: left; margin: 0 20px; }
         .disclaimer { text-align: left; background: #E7ECF3; .ft-opensans; font-size: 13px; color: #394350; line-height: 21px; padding: 10px 20px;   }
+        textarea { border-width: 0 0 0 1px; box-shadow: none; border-color: @cl-first; border-radius: 0; resize: none; height:70px; overflow: hidden;
+          &::-webkit-input-placeholder  { height:70px; .ft-opensans-italic; font-size: 14px; color: #AFBAC8; line-height: 14px; } /* Safari, Chrome and Opera */
+          &:-moz-placeholder            { height:70px; .ft-opensans-italic; font-size: 14px; color: #AFBAC8; line-height: 14px; } /* Firefox 18- */
+          &::-moz-placeholder           { height:70px; .ft-opensans-italic; font-size: 14px; color: #AFBAC8; line-height: 14px; } /* Firefox 19+ */
+          &:-ms-input-placeholder       { height:70px; .ft-opensans-italic; font-size: 14px; color: #AFBAC8; line-height: 14px; } /* IE 10+ */
+          &::-ms-input-placeholder      { height:70px; .ft-opensans-italic; font-size: 14px; color: #AFBAC8; line-height: 14px; } /* Edge */
+          &:placeholder-shown           { height:70px; .ft-opensans-italic; font-size: 14px; color: #AFBAC8; line-height: 14px; } /* Standard one last! */
+        }
         .nav.nav-pills { border-bottom: 1px solid #D0D9E6; width: 100%;
           li { border-bottom: 3px solid transparent; text-align: center;
             &.active { border-bottom: 3px solid @cl-first; color: #1D252F; }

@@ -1083,7 +1083,7 @@
     "joinroom": {
       "title": "Join discussion <strong>__identifier__</strong>",
       "message": "Users can participate in the discussions and receive notifications about it.",
-      "disclaimer": "Message from <strong>@__username__</strong> :<br><i class=\"icon icon-quote\"></i>__disclaimer__",
+      "disclaimer": "Message from @__username__:",
       "allowedpending": "Access to this discussion is by invitation, and you already have a request in progress.",
       "options": {
         "request": {
