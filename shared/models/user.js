@@ -66,7 +66,8 @@ var userSchema = mongoose.Schema({
   lastlogin_at: {type: Date},
   online: Boolean,
   lastonline_at: {type: Date},
-  lastoffline_at: {type: Date}
+  lastoffline_at: {type: Date},
+  last_news: {type: Date, default: null}
 });
 
 /**

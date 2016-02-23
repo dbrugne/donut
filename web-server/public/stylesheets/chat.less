@@ -477,6 +477,15 @@
       @max-home-width: 990px;
       .nothing { .ft-opensans; color: @cl-subtext30; text-align: center; font-size: 1.2em; margin-top: 20px; }
       > .left { background-color: @cl-background2; height: 100%; overflow-x: auto; padding-left:0; padding-right:0;
+        .whats-new { background-color: @cl-first; position:relative; margin: 0 80px; overflow: hidden;
+          .background { z-index:0; content:""; background: transparent url('@{img-path}/svg/news.svg') no-repeat top right; background-size: 100%; position:absolute; top:0; right:0; .opacity(0.4); width: 420px; height: 143px; }
+          .ctn { padding: 20px;
+            .title { .ft-opensans; font-size: 17px; color: #FFFFFF; letter-spacing: 1px; line-height: 23px; text-align: center; }
+            .close-news { position: absolute; top: 5px; right: 15px; font-size: 2rem; color: #FFF; }
+            p {  .ft-opensans; font-size: 13px; color: #FFFFFF; letter-spacing: 0.76px; line-height: 23px; text-align: center; }
+            a { z-index:1;  }
+          }
+        }
         .home-stats {
           .stat { text-align: center;
             .title { .ft-opensans-light; font-size: 50px; color: #586473; line-height: 68px; text-transform: uppercase; }
