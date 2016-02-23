@@ -34,10 +34,11 @@
     a { text-decoration: underline; .ft-opensans; font-size: 13px; color: #434E5B; line-height: 32px; }
     a:hover { text-decoration: none; }
   }
-  label { .ft-opensans-semibold; font-size: 13px; color: #1D252F; margin-bottom: 5px; display: inline-block; }
-  label.setting { .ft-opensans; font-size: 13px; color: #8491A1; line-height: 14px; .display-flex; .flex-flow(row nowrap); .align-items(center); .justify-content(flex-start); margin: 0;
-
+  label { .ft-opensans-semibold; font-size: 13px; color: #1D252F; margin-bottom: 5px;
+    &.setting { .ft-opensans; font-size: 13px; color: #8491A1; line-height: 14px; .display-flex; .flex-flow(row nowrap); .align-items(center); .justify-content(flex-start); margin: 0; }
   }
+  .radio label { margin-bottom: 0; }
+
   .value { margin: 0; .ft-opensans-semibold; font-size: 13px; color: #434E5B; line-height: 14px; }
   .error { .alert; .alert-danger; display: none; font-size: 1.4rem; margin: 20px 0; }
   .success { .alert; .alert-success; display: none; font-size: 1.4rem; margin: 20px 0; }

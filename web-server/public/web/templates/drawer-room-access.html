@@ -24,9 +24,9 @@
 
         <% if (group !== false) { %>
             <div class="field-password radio block">
-                <div class="password-block form-inline mt10 flex-parent baseline space-between">
-                    <input type="checkbox" id="input-allowgroupmember-checkbox" name="input-allowgroupmember-checkbox" <% if (allow_group_member !== false) { %> checked <% } %> />
-                    <label for="input-allowgroupmember-checkbox"><%= t('chat.blocked.allowgroupmember') %></label>
+                <div class="password-block form-inline mt10">
+                    <input type="checkbox" id="input-allowgroupmember-checkbox" class="inline" name="input-allowgroupmember-checkbox" <% if (allow_group_member !== false) { %> checked <% } %> />
+                    <label for="input-allowgroupmember-checkbox" class="inline"><%= t('chat.blocked.allowgroupmember') %></label>
                 </div>
             </div>
         <% } %>
