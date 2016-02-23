@@ -5,7 +5,6 @@ var cloudinary = require('../util/cloudinary');
 
 var groupSchema = mongoose.Schema({
   name: String,
-  default: {type: mongoose.Schema.ObjectId, ref: 'Room'},
   deleted: {type: Boolean, default: false},
   visibility: {type: Boolean, default: false},
   priority: Number,
