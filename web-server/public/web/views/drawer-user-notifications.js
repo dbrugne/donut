@@ -111,19 +111,19 @@ var DrawerUserNotificationsView = Backbone.View.extend({
     n.html = '';
     n.avatarCircle = false;
     if (n.data.room) {
-      n.avatar = common.cloudinary.prepare(n.data.room.avatar, 90);
+      n.avatar = common.cloudinary.prepare(n.data.room.avatar, 150);
       n.avatarCircle = true;
       n.title = n.data.room.name;
       n.name = n.data.room.name;
       n.href = n.name;
     } else if (n.data.group) {
-      n.avatar = common.cloudinary.prepare(n.data.group.avatar, 90);
+      n.avatar = common.cloudinary.prepare(n.data.group.avatar, 150);
       n.avatarCircle = true;
       n.title = n.data.group.name;
       n.name = n.data.group.name;
       n.href = '#g/' + n.name;
     } else if (n.data.by_user) {
-      n.avatar = common.cloudinary.prepare(n.data.by_user.avatar, 90);
+      n.avatar = common.cloudinary.prepare(n.data.by_user.avatar, 150);
       n.title = n.data.by_user.username;
     }
 
@@ -148,7 +148,7 @@ var DrawerUserNotificationsView = Backbone.View.extend({
       var avatar = (n.data.by_user)
         ? n.data.by_user.avatar
         : n.data.user.avatar;
-      n.avatar = common.cloudinary.prepare(avatar, 90);
+      n.avatar = common.cloudinary.prepare(avatar, 150);
       n.avatarCircle = false;
     }
     if (n.type === 'roomjoinrequest') {

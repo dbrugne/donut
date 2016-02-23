@@ -53,18 +53,18 @@ var GroupView = Backbone.View.extend({
   },
   onResponse: function (response) {
     // prepare avatar for group
-    response.avatarUrl = common.cloudinary.prepare(response.avatar, 100);
+    response.avatarUrl = common.cloudinary.prepare(response.avatar, 150);
     // prepare room avatar & uri
     var rooms = [];
     _.each(response.rooms, function (room) {
-      room.avatar = common.cloudinary.prepare(room.avatar, 60);
+      room.avatar = common.cloudinary.prepare(room.avatar, 150);
       if (room.owner) {
         room.owner_id = room.owner.user_id;
         room.owner_username = room.owner.username;
       }
       room.group_id = response.group_id;
       room.group_name = response.name;
-      room.group_avatar = common.cloudinary.prepare(response.avatar, 22);
+      room.group_avatar = common.cloudinary.prepare(response.avatar, 50);
       room.join = urls(room, 'room', 'uri');
       room.type = 'room';
       rooms.push(room);
@@ -99,7 +99,7 @@ var GroupView = Backbone.View.extend({
         u2.type = 'user';
         userlist.push(u2);
       }
-      u.avatar = common.cloudinary.prepare(u.avatar, 30);
+      u.avatar = common.cloudinary.prepare(u.avatar, 50);
       if (u.is_owner) {
         users.owner = u;
       } else if (u.is_op) {
@@ -194,7 +194,7 @@ var GroupView = Backbone.View.extend({
    */
 
   onAvatar: function (model, value) {
-    var url = common.cloudinary.prepare(value, 100);
+    var url = common.cloudinary.prepare(value, 150);
     this.$('.header img.avatar.group').attr('src', url);
   },
   initializeTooltips: function () {

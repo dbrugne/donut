@@ -38,7 +38,7 @@ var RoomHeaderView = Backbone.View.extend({
     data.isAdmin = app.user.isAdmin();
 
     data.room_id = this.model.get('id');
-    data.avatar = common.cloudinary.prepare(data.avatar, 100);
+    data.avatar = common.cloudinary.prepare(data.avatar, 150);
     data.poster = data.poster || '';
     data.url = this.model.getUrl();
     data.mode = this.model.get('mode');

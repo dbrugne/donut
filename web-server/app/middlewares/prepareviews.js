@@ -10,7 +10,7 @@ module.exports = function () {
     // pass current session user to all views
     if (req.user) {
       res.locals.user = req.user.toObject(); // .toObject() avoid modification on original req.user object (like avatar)
-      res.locals.user.avatar = cloudinary.prepare(req.user._avatar(), 80);
+      res.locals.user.avatar = cloudinary.prepare(req.user._avatar(), 150);
     } else {
       res.locals.user = false;
     }

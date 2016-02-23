@@ -135,7 +135,7 @@ var SearchView = Backbone.View.extend({
           ? data.users.list
           : []
       ), function (card) {
-        card.avatar = common.cloudinary.prepare(card.avatar, 90);
+        card.avatar = common.cloudinary.prepare(card.avatar, 150);
       });
       this.$dropdownResults.html(this.resultsTemplate({
         search: this.getValue(),

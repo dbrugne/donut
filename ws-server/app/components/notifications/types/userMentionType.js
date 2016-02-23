@@ -189,7 +189,7 @@ Notification.prototype.sendEmail = function (model, done) {
         }
         messages.push({
           current: isCurrentMessage,
-          user_avatar: common.cloudinary.prepare(event.data.avatar, 90),
+          user_avatar: common.cloudinary.prepare(event.data.avatar, 150),
           username: event.data.username,
           message: event.data.message,
           time_full: utils.longDateTime(event.data.time)

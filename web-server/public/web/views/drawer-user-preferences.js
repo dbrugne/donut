@@ -37,7 +37,7 @@ var DrawerUserPreferencesView = Backbone.View.extend({
   },
   onResponse: function (data) {
     _.each(data.bannedUsers, function (element, index, list) {
-      list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 30);
+      list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 50);
     });
 
     var html = this.template({

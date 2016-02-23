@@ -204,13 +204,13 @@ exports.prototype._data = function (type, data) {
 
   // avatar
   if (data.avatar) {
-    data.avatar = common.cloudinary.prepare(data.avatar, 40);
+    data.avatar = common.cloudinary.prepare(data.avatar, 50);
   }
   if (data.by_avatar) {
-    data.by_avatar = common.cloudinary.prepare(data.by_avatar, 40);
+    data.by_avatar = common.cloudinary.prepare(data.by_avatar, 50);
   }
   if (data.to_avatar) {
-    data.to_avatar = common.cloudinary.prepare(data.to_avatar, 40);
+    data.to_avatar = common.cloudinary.prepare(data.to_avatar, 50);
   }
 
   // user:promote

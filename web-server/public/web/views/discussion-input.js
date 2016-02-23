@@ -57,7 +57,7 @@ var DiscussionInputView = Backbone.View.extend({
   },
   render: function () {
     this.$el.html(this.template({
-      avatar: common.cloudinary.prepare(currentUser.get('avatar'), 35),
+      avatar: common.cloudinary.prepare(currentUser.get('avatar'), 50),
       bannedMessage: i18next.t('chat.actions.bannedMessage.__type__'.replace('__type__', this.model.get('type'))),
       confirmed: currentUser.isConfirmed()
     }));
@@ -91,7 +91,7 @@ var DiscussionInputView = Backbone.View.extend({
   },
 
   onAvatar: function (model, value, options) {
-    this.$('.avatar').prop('src', common.cloudinary.prepare(value, 35));
+    this.$('.avatar').prop('src', common.cloudinary.prepare(value, 50));
   },
 
   onSubmitMessage: function (event) {

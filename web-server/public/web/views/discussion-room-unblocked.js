@@ -51,7 +51,7 @@ var RoomView = Backbone.View.extend({
     data.isAdmin = app.user.isAdmin();
 
     // avatar
-    data.avatar = common.cloudinary.prepare(data.avatar, 100);
+    data.avatar = common.cloudinary.prepare(data.avatar, 150);
 
     // poster
     data.poster = data.poster || '';
@@ -94,7 +94,7 @@ var RoomView = Backbone.View.extend({
    */
 
   onAvatar: function (model, value) {
-    var url = common.cloudinary.prepare(value, 100);
+    var url = common.cloudinary.prepare(value, 150);
     this.$('.header img.avatar').attr('src', url);
   },
   onPoster: function (model, url, options) {

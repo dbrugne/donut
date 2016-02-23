@@ -33,7 +33,7 @@ var DrawerRoomUsersTableView = Backbone.View.extend({
     this.users = users;
 
     _.each(users, function (element, index, list) {
-      list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 20);
+      list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 50);
     });
 
     this.$el.html(this.template({users: users, op: this.op}));

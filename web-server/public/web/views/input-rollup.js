@@ -176,7 +176,7 @@ module.exports = Backbone.View.extend({
         list = _.union(data.groups.list, list);
       }
       _.each(list, function (i) {
-        i.avatarUrl = common.cloudinary.prepare(i.avatar);
+        i.avatarUrl = common.cloudinary.prepare(i.avatar, 50);
       });
 
       this.$rollup.html(this.template({
@@ -209,7 +209,7 @@ module.exports = Backbone.View.extend({
     // @todo : filter by room (or group ?)
     app.client.search(subject, options, _.bind(function (data) {
       _.each(data.users.list, function (d) {
-        d.avatarUrl = common.cloudinary.prepare(d.avatar);
+        d.avatarUrl = common.cloudinary.prepare(d.avatar, 50);
       });
       this.$rollup.html(this.template({
         type: 'users',

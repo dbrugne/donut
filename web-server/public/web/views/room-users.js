@@ -53,7 +53,7 @@ var RoomUsersView = Backbone.View.extend({
       var u = o.toJSON();
 
       // avatar
-      u.avatar = common.cloudinary.prepare(u.avatar, 34);
+      u.avatar = common.cloudinary.prepare(u.avatar, 50);
       u.uri = urls(u, 'user', 'uri');
 
       listJSON.push(u);
@@ -94,7 +94,7 @@ var RoomUsersView = Backbone.View.extend({
 
     var offset = elt.offset();
     var user = this.collection.get(elt.data('user-id')).toJSON();
-    user.avatar = common.cloudinary.prepare(user.avatar, 100);
+    user.avatar = common.cloudinary.prepare(user.avatar, 150);
     user.uri = urls(user, 'user', 'uri');
 
     var data = {

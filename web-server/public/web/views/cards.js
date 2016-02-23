@@ -33,22 +33,22 @@ var CardsView = Backbone.View.extend({
     _.each(list, function (card) {
       switch (card.type) {
         case 'user':
-          card.avatar = common.cloudinary.prepare(card.avatar, 300);
+          card.avatar = common.cloudinary.prepare(card.avatar, 350);
           card.join = urls(card, 'user', 'uri');
           card.chat = urls(card, 'user', 'chat');
           card.owner_url = urls(card, 'user', 'chat');
           break;
         case 'room':
-          card.avatar = common.cloudinary.prepare(card.avatar, 300);
+          card.avatar = common.cloudinary.prepare(card.avatar, 350);
           card.join = urls(card, 'room', 'uri');
           card.url = urls(card, 'room', 'url');
           if (card.group_id) {
             card.group_url = urls({name: card.group_name}, 'group', 'chat');
-            card.group_avatar = common.cloudinary.prepare(card.group_avatar, 22);
+            card.group_avatar = common.cloudinary.prepare(card.group_avatar, 50);
           }
           break;
         case 'group':
-          card.avatar = common.cloudinary.prepare(card.avatar, 300);
+          card.avatar = common.cloudinary.prepare(card.avatar, 350);
           card.join = urls(card, 'group', 'uri');
           card.url = urls(card, 'group', 'url');
 
@@ -60,7 +60,7 @@ var CardsView = Backbone.View.extend({
               card.rooms.pop();
             }
             _.each(card.rooms, function (c) {
-              c.avatar = common.cloudinary.prepare(c.avatar, 23);
+              c.avatar = common.cloudinary.prepare(c.avatar, 50);
             });
           }
           break;

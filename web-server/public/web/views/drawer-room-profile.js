@@ -52,13 +52,13 @@ var DrawerRoomProfileView = Backbone.View.extend({
     room.isGroupOwner = (room.group_id && room.group_owner === currentUser.get('user_id'));
 
     room.isAdmin = app.user.isAdmin();
-    room.avatar = common.cloudinary.prepare(room.avatar, 90);
+    room.avatar = common.cloudinary.prepare(room.avatar, 150);
 
     room.uri = room.identifier;
     room.url = urls(room, 'room', 'url');
 
     _.each(room.users, function (element, key, list) {
-      element.avatar = common.cloudinary.prepare(element.avatar, 34);
+      element.avatar = common.cloudinary.prepare(element.avatar, 50);
     });
 
     var html = this.template({room: room, created_at: date.shortDate(room.created)});

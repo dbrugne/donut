@@ -86,7 +86,7 @@ var RoomAccessView = Backbone.View.extend({
     };
     app.client.search(val, options, _.bind(function (data) {
       _.each(data.users.list, function (element, index, list) {
-        list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 20);
+        list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 50);
       });
 
       this.dropdownUsersView.onResults(data.users.list);

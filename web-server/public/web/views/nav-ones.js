@@ -36,7 +36,7 @@ module.exports = Backbone.View.extend({
     var data = [];
     _.each(app.ones.models, function (o) {
       var json = o.toJSON();
-      json.avatar = common.cloudinary.prepare(json.avatar, 40);
+      json.avatar = common.cloudinary.prepare(json.avatar, 50);
       data.push(json);
     });
 

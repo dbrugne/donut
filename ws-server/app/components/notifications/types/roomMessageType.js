@@ -163,7 +163,7 @@ Notification.prototype.sendEmail = function (model, done) {
         var isCurrentMessage = (model.data.event.toString() === event.data.id);
         messages.push({
           current: isCurrentMessage,
-          user_avatar: common.cloudinary.prepare(event.data.avatar, 90),
+          user_avatar: common.cloudinary.prepare(event.data.avatar, 150),
           username: event.data.username,
           message: event.data.message,
           time_full: utils.longDateTime(event.data.time)
@@ -171,7 +171,7 @@ Notification.prototype.sendEmail = function (model, done) {
       });
 
       if (model.user.getEmail()) {
-        emailer.roomMessage(model.user.getEmail(), messages, model.data.room.getIdentifier(), common.cloudinary.prepare(events[0]['data']['room_avatar'], 90), callback);
+        emailer.roomMessage(model.user.getEmail(), messages, model.data.room.getIdentifier(), common.cloudinary.prepare(events[0]['data']['room_avatar'], 150), callback);
       } else {
         callback(null);
       }

@@ -70,7 +70,7 @@ function sendToMobile (toUid, data, img, cb) {
     function setData (user, callback) {
       // Image display on the notification
       if (img != null) {
-        data.img = common.cloudinary.prepare(img, 48);
+        data.img = common.cloudinary.prepare(img, 50);
       }
 
       return callback(null, user);

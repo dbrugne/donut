@@ -16,7 +16,7 @@ describe('shared/util/cloudinary', function () {
       cloudinary.groupAvatar('v1409643461/rciev5ubaituvx5bclnz.jpg').should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,g_face,h___height__,w___width__/v1409643461/rciev5ubaituvx5bclnz.jpg');
     });
     it('with size', function () {
-      cloudinary.groupAvatar('v1409643461/rciev5ubaituvx5bclnz.jpg', 120).should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,g_face,h_120,w_120/v1409643461/rciev5ubaituvx5bclnz.jpg');
+      cloudinary.groupAvatar('v1409643461/rciev5ubaituvx5bclnz.jpg', 150).should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,g_face,h_150,w_150/v1409643461/rciev5ubaituvx5bclnz.jpg');
     });
   });
 
@@ -28,7 +28,7 @@ describe('shared/util/cloudinary', function () {
       cloudinary.roomAvatar('v1409643461/rciev5ubaituvx5bclnz.jpg').should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,g_face,h___height__,w___width__/v1409643461/rciev5ubaituvx5bclnz.jpg');
     });
     it('with size', function () {
-      cloudinary.roomAvatar('v1409643461/rciev5ubaituvx5bclnz.jpg', 120).should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,g_face,h_120,w_120/v1409643461/rciev5ubaituvx5bclnz.jpg');
+      cloudinary.roomAvatar('v1409643461/rciev5ubaituvx5bclnz.jpg', 150).should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,g_face,h_150,w_150/v1409643461/rciev5ubaituvx5bclnz.jpg');
     });
   });
 
@@ -40,10 +40,10 @@ describe('shared/util/cloudinary', function () {
       cloudinary.userAvatar('v1409643461/rciev5ubaituvx5bclnz.jpg').should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,g_face,h___height__,w___width__/v1409643461/rciev5ubaituvx5bclnz.jpg');
     });
     it('with size', function () {
-      cloudinary.userAvatar('v1409643461/rciev5ubaituvx5bclnz.jpg', null, 120).should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,g_face,h_120,w_120/v1409643461/rciev5ubaituvx5bclnz.jpg');
+      cloudinary.userAvatar('v1409643461/rciev5ubaituvx5bclnz.jpg', null, 150).should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,g_face,h_150,w_150/v1409643461/rciev5ubaituvx5bclnz.jpg');
     });
     it('facebook', function () {
-      cloudinary.userAvatar('', '10202931824149737', 120).should.equal('https://graph.facebook.com/10202931824149737/picture?height=120&width=120');
+      cloudinary.userAvatar('', '10202931824149737', 150).should.equal('https://graph.facebook.com/10202931824149737/picture?height=150&width=150');
     });
   });
 
@@ -78,7 +78,7 @@ describe('shared/util/cloudinary', function () {
       cloudinary.messageFile({path: path}, 120).should.have.property('url').and.equal('https://res.cloudinary.com/roomly/image/upload/v1440415743/discussion/eolog13xgtatjhfqixbr.png');
     });
     it('default as image', function () {
-      cloudinary.messageFile({path: path, type: 'image'}, 120).should.have.property('url').and.equal('https://res.cloudinary.com/roomly/image/upload/c___crop__,g_center,h_120,w_120/v1440415743/discussion/eolog13xgtatjhfqixbr.png');
+      cloudinary.messageFile({path: path, type: 'image'}, 150).should.have.property('url').and.equal('https://res.cloudinary.com/roomly/image/upload/c___crop__,g_center,h_150,w_150/v1440415743/discussion/eolog13xgtatjhfqixbr.png');
     });
     it('raw', function () {
       cloudinary.messageFile({path: 'v1440415743/discussion/eolog13xgtatjhfqixxx.docx', type: 'raw'}).should.have.property('url').and.equal('https://res.cloudinary.com/roomly/raw/upload/v1440415743/discussion/eolog13xgtatjhfqixxx.docx');
@@ -97,7 +97,7 @@ describe('shared/models/room', function () {
   it('._avatar()', function () {
     model._avatar.should.be.a('function');
     model._avatar().should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,g_face,h___height__,w___width__/v1409643461/rciev5ubaituvx5bclnz.jpg');
-    model._avatar(120).should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,g_face,h_120,w_120/v1409643461/rciev5ubaituvx5bclnz.jpg');
+    model._avatar(150).should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,g_face,h_150,w_150/v1409643461/rciev5ubaituvx5bclnz.jpg');
 
     model.avatar = null;
     model._avatar().should.equal('room-56a8a678604c5321feb76968');
@@ -124,7 +124,7 @@ describe('shared/models/group', function () {
   it('._avatar()', function () {
     model._avatar.should.be.a('function');
     model._avatar().should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,g_face,h___height__,w___width__/v1409643461/rciev5ubaituvx5bclnz.jpg');
-    model._avatar(120).should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,g_face,h_120,w_120/v1409643461/rciev5ubaituvx5bclnz.jpg');
+    model._avatar(150).should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,g_face,h_150,w_150/v1409643461/rciev5ubaituvx5bclnz.jpg');
 
     model.avatar = null;
     model._avatar().should.equal('group-56a8a678604c5321feb76968');
@@ -142,7 +142,7 @@ describe('shared/models/user', function () {
   it('._avatar()', function () {
     model._avatar.should.be.a('function');
     model._avatar().should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,g_face,h___height__,w___width__/v1409643461/rciev5ubaituvx5bclnz.jpg');
-    model._avatar(120).should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,g_face,h_120,w_120/v1409643461/rciev5ubaituvx5bclnz.jpg');
+    model._avatar(150).should.equal('https://res.cloudinary.com/roomly/image/upload/c_fill,g_face,h_150,w_150/v1409643461/rciev5ubaituvx5bclnz.jpg');
 
     model.avatar = null;
     model._avatar().should.equal('user-56a8a678604c5321feb76968');

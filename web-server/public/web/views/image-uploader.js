@@ -109,13 +109,13 @@ var ImageUploaderView = Backbone.View.extend({
 
     var url;
     if (version) {
-      url = 'https://res.cloudinary.com/roomly/image/upload/b_rgb:ffffff,c_fill,f_jpg,g_face,h_30,w_30/' +
+      url = 'https://res.cloudinary.com/roomly/image/upload/b_rgb:ffffff,c_fill,f_jpg,g_face,h_50,w_50/' +
         'v' + version + '/' + identifier + '.jpg';
     } else {
       if (identifier.indexOf('h_806,w_315') !== -1) {
-        url = identifier.replace('h_806,w_315', 'h_30,w_30');
+        url = identifier.replace('h_806,w_315', 'h_50,w_50');
       } else {
-        url = common.cloudinary.prepare(identifier, 30);
+        url = common.cloudinary.prepare(identifier, 50);
       }
     }
 

@@ -157,7 +157,7 @@ Notification.prototype.sendEmail = function (model, done) {
         var isCurrentMessage = (history.id === event.data.id);
         messages.push({
           current: isCurrentMessage,
-          avatar: common.cloudinary.prepare(event.data.avatar, 90),
+          avatar: common.cloudinary.prepare(event.data.avatar, 150),
           username: event.data.username,
           message: event.data.message,
           time_full: utils.longDateTime(event.data.time)

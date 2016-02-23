@@ -28,7 +28,7 @@ var DrawerGroupUsersTableView = Backbone.View.extend({
     this.op = (currentUserInfos.is_owner || currentUserInfos.is_op || app.user.isAdmin());
 
     _.each(users, function (element, index, list) {
-      list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 20);
+      list[index].avatarUrl = common.cloudinary.prepare(element.avatar, 50);
     });
 
     this.$el.html(this.template({

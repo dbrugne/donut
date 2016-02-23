@@ -24,7 +24,7 @@ var RoomBlockedView = Backbone.View.extend({
       app.client.groupRead(this.model.get('group_id'), null, _.bind(function (data) {
         if (!data.err) {
           data.created = date.longDate(data.created);
-          data.avatarUrl = common.cloudinary.prepare(data.avatar, 100);
+          data.avatarUrl = common.cloudinary.prepare(data.avatar, 150);
           data.join = urls(data, 'group', 'uri');
           groupData = data;
         }

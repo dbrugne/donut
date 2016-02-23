@@ -23,7 +23,7 @@ module.exports = Backbone.View.extend({
     } // nothing to render if welcome wasn't received
     var data = currentUser.toJSON();
 
-    data.avatar = common.cloudinary.prepare(currentUser.get('avatar'), 35);
+    data.avatar = common.cloudinary.prepare(currentUser.get('avatar'), 50);
     data.realname = currentUser.get('realname');
     data.status = this.model.get('status');
 

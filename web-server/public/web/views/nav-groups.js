@@ -70,7 +70,7 @@ module.exports = Backbone.View.extend({
         type: 'group',
         identifier: '#' + json.group_name,
         name: json.group_name,
-        avatar: common.cloudinary.prepare(json.group_avatar, 40),
+        avatar: common.cloudinary.prepare(json.group_avatar, 50),
         unviewed: json.unviewed,
         highlighted: json.focused,
         last_event_at: json.last,
@@ -90,7 +90,7 @@ module.exports = Backbone.View.extend({
       if (found) {
         return;
       }
-      json.avatar = common.cloudinary.prepare(json.avatar, 40);
+      json.avatar = common.cloudinary.prepare(json.avatar, 50);
       json.rooms = [];
       json.unviewed = false; // default nothing to read on an empty group
       groups.push(json);

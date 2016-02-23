@@ -12,15 +12,15 @@ var HomeFeaturedView = Backbone.View.extend({
   },
   render: function (rooms, groups) {
     _.each(rooms, function (card) {
-      card.avatar = common.cloudinary.prepare(card.avatar, 300);
+      card.avatar = common.cloudinary.prepare(card.avatar, 350);
       card.join = urls(card, 'room', 'uri');
       if (card.group_id) {
-        card.group_avatar = common.cloudinary.prepare(card.group_avatar, 22);
+        card.group_avatar = common.cloudinary.prepare(card.group_avatar, 50);
       }
     });
 
     _.each(groups, function (card) {
-      card.avatar = common.cloudinary.prepare(card.avatar, 300);
+      card.avatar = common.cloudinary.prepare(card.avatar, 350);
       card.join = urls(card, 'group', 'uri');
       card.url = urls(card, 'group', 'url');
     });
