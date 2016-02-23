@@ -28,7 +28,7 @@ var HomeNewsView = Backbone.View.extend({
   },
 
   onClose: function (event) {
-    this.$el.addClass('hidden'); // @todo add slideup effect
+    this.$el.slideUp(); // @todo add slideup effect
     var updateData = { last_news: Date.now() };
     app.client.userUpdate(updateData, function (data) {
       if (data.err) {
