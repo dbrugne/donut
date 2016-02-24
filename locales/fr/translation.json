@@ -1793,6 +1793,12 @@
     "user-notifications": {
       "title": "Centre de notifications"
     },
+    "user-notifications": {
+      "title": "Paramètres de connexion"
+    },
+    "user-edit": {
+      "title": "Modifier mon profil"
+    },
     "users-allowed-room": {
       "disclaimer": "Vous avez la possibilité d'inviter un utilisateur à rejoindre cette discussion.",
       "pending-disclaimer" : "Utilisateurs en attente de votre autorisation.",

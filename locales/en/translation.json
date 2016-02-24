@@ -1793,6 +1793,12 @@
     "user-notifications": {
       "title": "Notification center"
     },
+    "user-notifications": {
+      "title": "Credentials"
+    },
+    "user-edit": {
+      "title": "Edit my profile"
+    },
     "users-allowed-room": {
       "disclaimer": "You can invite a user to join this discussion.",
       "pending-disclaimer" : "Users pending for your approval.",
