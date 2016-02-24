@@ -193,7 +193,7 @@
     "members_plural": "<strong>__count__</strong> membres",
     "discover": "découvrir",
     "group": "groupe",
-    "view-profile": "Voir le profil",
+    "vie,w-profile": "Voir le profil",
     "view-group": "voir communauté",
     "view-room": "rejoindre la discussion",
     "onetoones": "tête-à-tête",
@@ -806,10 +806,10 @@
       },
       "dropdown": {
         "spam": {
-          "mark-spam": "Marquer comme message indésirable",
-          "unmark-spam": "Ce message n'est pas indésirable"
+          "mark-spam": "C'est un spam",
+          "unmark-spam": "Ce n'est pas un spam"
         },
-        "edit": "Editer mon message"
+        "edit": "Modifier"
       }
     },
     "input": {
@@ -817,7 +817,7 @@
       "typing_plural": "sont en train de taper"
     },
     "blocked": {
-      "this-discussion-is": "Cette discussion est ",
+      "this-discussion-is": "Elle est ",
       "disallow": "Cette discussion est privée.",
       "message-display": "Message à afficher",
       "password_placeholder": "Mot de passe",
@@ -1121,9 +1121,9 @@
     "members": "Membres",
     "dropdown": {
       "view-profile": "Voir le profil",
-      "edit-profile": "Editer le profil",
+      "edit-profile": "Modifier le profil",
       "access-rules": "Règles d'accès",
-      "manage-members": "Gérer les participants",
+      "manage-members": "Gérer les membres",
       "invites": "Invitations & demandes"
     }
   },
@@ -1182,7 +1182,7 @@
     },
     "manageemail": {
       "choose-main": "Sélectionnez ci-dessous votre e-mail principal sur lequel seront envoyées vos notifications",
-      "label": "Gérer vos emails",
+      "label": "Mes adresses emails",
       "info": "Certaines communautés requièrent une authentification par e-mail. (ex : moi@universite.edu). Liez vos e-mails à votre compte pour être authentifié automatiquement.",
       "facebook": "Adresse lié au compte facebook",
       "verified": "Adresse mail vérifié",
@@ -1693,7 +1693,6 @@
     "fail": "Impossible d'envoyer le message, veuillez réessayer plus tard."
   },
   "preferences": {
-    "title": "Mes préférences",
     "appearance": "affichage",
     "sounds": {
       "title": "Sons",
@@ -1775,6 +1774,12 @@
       "en": "anglais"
     }
   },
+  "nav-left": {
+    "view-profile": "Voir profil",
+    "my-account": "Paramètres de connexion",
+    "my-profile": "Modifier mon profil",
+    "notifications": "Paramètres & notifications"
+  },
   "popins": {
     "group-create": {
       "title": "Création de communauté",
@@ -1782,15 +1787,16 @@
     }
   },
   "drawers": {
+    "user-preferences": {
+      "title": "Préférences & notifications"
+    },
+    "user-notifications": {
+      "title": "Centre de notifications"
+    },
     "users-allowed-room": {
       "disclaimer": "Vous avez la possibilité d'inviter un utilisateur à rejoindre cette discussion.",
       "pending-disclaimer" : "Utilisateurs en attente de votre autorisation.",
       "allowed-disclaimer" : "Utilisateurs invités à rejoindre cette discussion."
-    },
-    "users-allowed-group": {
-      "disclaimer": "Vous avez la possibilité d'inviter un utilisateur à rejoindre cette communauté.",
-      "pending-disclaimer" : "Utilisateurs en attente de votre autorisation.",
-      "allowed-disclaimer" : "Utilisateurs invités à rejoindre cette communauté."
     },
     "users-group": {
       "disclaimer" : "Vous avez la possibilité d'inviter un utilisateur à rejoindre cette communauté. Pour ce faire, <a href=\"#\" class=\"open-group-users-allowed\" data-group-id=\"__group_id__\">cliquez ici</a>"
@@ -1801,19 +1807,36 @@
       "type": "Type",
       "search": "Rechercher des utilisateurs dans cette discussion"
     },
+    "room-access": {
+      "title": "Règles d'accès"
+    },
+    "room-edit": {
+      "title": "Modifier le profil",
+      "link": "Vous pouvez également supprimer cette discussion ",
+      "click-here": "en cliquant ici"
+    },
+    "room-preferences": {
+      "title": "Notifications"
+    },
+    "group-access": {
+      "title": "Règles d'accès"
+    },
+    "group-edit": {
+      "title": "Modifier le profil",
+      "link": "Vous pouvez également supprimer cette communauté",
+      "click-here": "en cliquant ici"
+    },
     "group-users": {
       "title": "Gérer les membres",
       "username": "Nom",
       "type": "Type",
       "search": "Rechercher des membres dans cette communauté"
     },
-    "room-edit": {
-      "link": "Vous pouvez également supprimer cette discussion ",
-      "click-here": "en cliquant ici"
-    },
-    "group-edit": {
-      "link": "Vous pouvez également supprimer cette communauté",
-      "click-here": "en cliquant ici"
+    "group-users-allowed": {
+      "title" : "Invitations & demandes",
+      "disclaimer": "Vous avez la possibilité d'inviter un utilisateur à rejoindre cette communauté.",
+      "pending-disclaimer" : "Utilisateurs en attente de votre autorisation.",
+      "allowed-disclaimer" : "Utilisateurs invités à rejoindre cette communauté."
     }
   }
 }

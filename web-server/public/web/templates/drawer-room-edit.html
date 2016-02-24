@@ -1,7 +1,6 @@
 <div class="header">
     <div class="title">
-        <%= t('profile.common.editlink') %>
-        <%= room.identifier %>
+        <%= t('drawers.room-edit.title') %>
     </div>
     <span class="close-drawer icon icon-times curp"></span>
 </div>
@@ -62,7 +61,7 @@
     <% if (room.can_delete) { %>
         <div class="footer block">
             <p class="delete">
-                <i class="icon icon-trash"></i><%= t('drawers.room-edit.link') %>
+                <i class="icon icon-trash"></i><%= t('drawers.room-edit.title') %>
                 <a class="open-room-delete cl-first" data-room-id="<%=room.room_id%>"><%= t('drawers.room-edit.click-here') %></a>
             </p>
         </div>

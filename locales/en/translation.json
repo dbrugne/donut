@@ -429,7 +429,7 @@
       "rooms": "discussions",
       "rooms-created": "discussions created",
       "title": "Welcome!",
-      "disclaimer": "Find your way around Donut by joining or creating the communities and discussions you belong with",
+      "disclaimer": "Find your way around DONUT by joining or creating the communities and discussions you belong with",
       "userstitle": "Users",
       "whats-new-title": "New on DONUT!",
       "whats-new-content": "Never miss a message, get the app !",
@@ -809,7 +809,7 @@
           "mark-spam": "Mark as spam",
           "unmark-spam": "Unmark as spam"
         },
-        "edit": "Edit my message"
+        "edit": "Edit"
       }
     },
     "input": {
@@ -817,7 +817,7 @@
       "typing_plural": "are typing"
     },
     "blocked": {
-      "this-discussion-is": "This discussion is ",
+      "this-discussion-is": "It is ",
       "disallow": "This discussion is private.",
       "message-display": "Display a message",
       "password_placeholder": "Password",
@@ -1182,7 +1182,7 @@
     },
     "manageemail": {
       "choose-main": "Select below your main email to receive your notifications",
-      "label": "Manage your mails",
+      "label": "My email addresses",
       "info": "Some communities require e-mail authentication (e.g: me@university.edu). Link your emails to this account to be automatically cleared.",
       "facebook": "Address link to facebook account",
       "verified": "Address verified",
@@ -1693,7 +1693,6 @@
     "fail": "Unable to send email, retry later."
   },
   "preferences": {
-    "title": "Settings",
     "appearance": "appearance",
     "sounds": {
       "title": "Sounds",
@@ -1775,6 +1774,12 @@
       "en": "english"
     }
   },
+  "nav-left": {
+    "view-profile": "See profile",
+    "my-account": "Credentials",
+    "my-profile": "Edit my profile",
+    "notifications": "Settings & notifications"
+  },
   "popins": {
     "group-create": {
       "title": "Community's creation",
@@ -1782,15 +1787,16 @@
     }
   },
   "drawers": {
+    "user-preferences": {
+      "title": "Settings & notifications"
+    },
+    "user-notifications": {
+      "title": "Notification center"
+    },
     "users-allowed-room": {
       "disclaimer": "You can invite a user to join this discussion.",
       "pending-disclaimer" : "Users pending for your approval.",
       "allowed-disclaimer" : "Users invited to join this discussion."
-    },
-    "users-allowed-group": {
-      "disclaimer": "You can invite a user to join this community.",
-      "pending-disclaimer" : "Users pending for your approval.",
-      "allowed-disclaimer" : "Users invited to join this community."
     },
     "users-group": {
       "disclaimer" : "You can invite a user to join this community. To do so, <a href=\"#\" class=\"open-group-users-allowed\" data-group-id=\"__group_id__\">click here</a>"
@@ -1801,19 +1807,34 @@
       "type": "Type",
       "search": "search a username in this discussion"
     },
+    "room-access": {
+      "title": "Access rules"
+    },
+    "room-edit": {
+      "link": "To delete this discussion ",
+      "click-here": "click here"
+    },
+    "room-preferences": {
+      "title": "Notifications"
+    },
+    "group-access": {
+      "title": "Access rules"
+    },
+    "group-edit": {
+      "link": "To delete this community",
+      "click-here": "click here"
+    },
     "group-users": {
       "title": "Manage members",
       "username": "Name",
       "type": "Type",
       "search": "search a member in this community"
     },
-    "room-edit": {
-      "link": "To delete this discussion ",
-      "click-here": "click here"
-    },
-    "group-edit": {
-      "link": "To delete this community",
-      "click-here": "click here"
+    "group-users-allowed": {
+      "title" : "Invitations & demandes",
+      "disclaimer": "You can invite a user to join this community.",
+      "pending-disclaimer" : "Users pending for your approval.",
+      "allowed-disclaimer" : "Users invited to join this community."
     }
   }
 }
