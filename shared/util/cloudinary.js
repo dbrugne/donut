@@ -94,9 +94,7 @@ module.exports = {
       default: posterDefault,
       identifier: identifier,
       gravity: 'center',
-      effect: (blur === true)
-        ? 'blur:800'
-        : null
+      effect: 'blur:800'
     }, 315, 806);
   },
 
