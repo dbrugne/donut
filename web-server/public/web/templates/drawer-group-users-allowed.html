@@ -1,6 +1,6 @@
 <div class="header">
     <div class="title">
-        <%= t('profile.group.usersallowed') %>
+        <%= t('drawers.group-users-allowed.title') %>
     </div>
     <span class="close-drawer icon icon-times curp"></span>
 </div>
@@ -9,26 +9,26 @@
     <h2 class="mb0">#<%= identifier %></h2>
 </div>
 
-<div class="error block"></div>
+<div class="error block mr20 ml20"></div>
 
 <div class="scrollable grayed">
 
     <div class="block">
         <h2><%= t('chat.actions.searchuser') %></h2>
-        <p><%= t('drawers.users-allowed-group.disclaimer') %></p>
+        <p><%= t('drawers.group-users-allowed.disclaimer') %></p>
         <div class="search-ctn mt10"><!-- rendered in another view --></div>
     </div>
 
     <div class="allow-pending block">
         <h2><%= t('chat.access.labelpending') %></h2>
-        <p><%= t('drawers.users-allowed-group.pending-disclaimer') %></p>
+        <p><%= t('drawers.group-users-allowed.pending-disclaimer') %></p>
         <div class="ctn mt10"></div>
         <div class="paginate flex-parent block"></div>
     </div>
 
     <div class="allowed block">
         <h2><%= t('chat.users.type.allowed') %></h2>
-        <p><%= t('drawers.users-allowed-group.allowed-disclaimer') %></p>
+        <p><%= t('drawers.group-users-allowed.allowed-disclaimer') %></p>
         <div class="ctn mt10"></div>
         <div class="paginate flex-parent block"></div>
     </div>
