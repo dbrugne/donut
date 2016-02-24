@@ -4,7 +4,6 @@ var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
 var i18next = require('i18next-client');
 var app = require('../libs/app');
-var urls = require('../../../../shared/util/url');
 var date = require('../libs/date');
 var GroupUsersView = require('./group-users');
 var CardsView = require('./cards');
@@ -21,8 +20,7 @@ var GroupView = Backbone.View.extend({
     'click .share .facebook': 'shareFacebook',
     'click .share .twitter': 'shareTwitter',
     'click .share .googleplus': 'shareGoogle',
-    'click .toggle-collapse': 'toggleCollapse',
-    //'click .filter-action': 'onClickFilterAction'
+    'click .toggle-collapse': 'toggleCollapse'
   },
 
   initialize: function (options) {
@@ -240,23 +238,6 @@ var GroupView = Backbone.View.extend({
   shareGoogle: function () {
     $.socialify.google({
       url: this.model.getUrl()
-    });
-  },
-
-  onClickFilterAction: function (event) {
-    var elt = $(event.currentTarget);
-
-    // only care when changing selection
-    if (elt.hasClass('active')) {
-      return;
-    }
-
-    this.$('.filter-action').each(function () {
-      $(this).toggleClass('active');
-    });
-
-    this.$('.cards-content').find('.toggle-cards').each(function () {
-      $(this).toggleClass('hidden');
     });
   }
 });
