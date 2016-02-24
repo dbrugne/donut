@@ -66,7 +66,6 @@ var SearchPageView = Backbone.View.extend({
     }
   },
   onLoadMore: function () {
-    this.cardsView.cleanupEmpty();
     var count = this.cardsView.count();
     this.search(this.$search.val(), count, this.getTypes());
   },

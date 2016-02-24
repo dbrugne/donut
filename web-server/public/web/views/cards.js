@@ -92,15 +92,11 @@ var CardsView = Backbone.View.extend({
     });
   },
 
-  cleanupEmpty: function () {
-    this.$('.card.empty').remove();
-  },
-
   count: function () {
     return {
-      rooms: this.$('.card.card-room').length,
-      groups: this.$('.card.card-group').length,
-      users: this.$('.card.card-user').length
+      rooms: this.$('.card.room').length,
+      groups: this.$('.card.group').length,
+      users: this.$('.card.user').length
     };
   },
 
