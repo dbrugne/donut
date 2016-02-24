@@ -45,21 +45,6 @@ handler.call = function (data, session, next) {
       return callback(null);
     },
 
-    function checkRoomDefault (callback) {
-      if (!room.group) {
-        return callback(null);
-      }
-      GroupModel.findById(room.group).exec(function (err, group) {
-        if (err) {
-          return callback(err);
-        }
-        if (group.default.toString() === data.room_id) {
-          return callback("params-room-id");
-        }
-        return callback(null);
-      });
-    },
-
     function persist (callback) {
       room.mode = 'private';
       room.allowed = _.without(room.getIdsByType('users'), room.owner.toString());

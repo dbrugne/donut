@@ -50,6 +50,11 @@
                                     <!--<div class="unread-pulse"></div>-->
                                 <!--</div>-->
                             <% } %>
+                            <% if(room.blocked) { %>
+                                <a href="#" class="ml5 mr5 leave-blocked" data-room-id="<%- room.id %>">
+                                    <i class="icon hover icon-times" title="<%= t('global.close') %>"></i>
+                                </a>
+                            <% } %>
                         </span>
                     </li>
                 <% }) %>

@@ -1,7 +1,6 @@
 <div class="header">
     <div class="title">
-        <%= t('profile.common.editlink') %>
-        @<%= user.username %>
+        <%= t('drawers.user-edit.title') %>
     </div>
     <span class="close-drawer icon icon-times curp"></span>
 </div>
@@ -45,9 +44,9 @@
             <div class="user-poster"></div>
             <p class="help"><%= t('chat.form.common.edit.poster.help') %></p>
         </div>
-        <div class="flex-parent column center jc-center block">
-            <button class="btn btn-default save-user" type="submit"><%= t('global.save') %></button>
+        <div class="flex-parent center jc-center block">
             <button class="btn btn-link cancel"><%= t('global.cancel') %></button>
+            <button class="btn btn-default save-user" type="submit"><%= t('global.save') %></button>
         </div>
     </form>
 </div>

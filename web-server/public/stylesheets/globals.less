@@ -240,7 +240,7 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   &.btn-facebook {
     margin-top: 0;
     .don-button-variant(#4a649d, #FFF);
-    i { display: flex; flex-flow: column nowrap; justify-content: center; align-items: center; border-right: 1px solid #FFF; margin-right: 10px; padding-right: 10px; font-size: 2rem; }
+    i { display: inline; flex-flow: column nowrap; justify-content: center; align-items: center; border-right: 1px solid #FFF; margin-right: 10px; padding-right: 10px; font-size: 2rem; }
   }
   //&.btn-big { font-size:1.8rem; padding: 10px 18px; }
   //&.btn-sm { font-size:1rem; padding: 3px 11px 3px; }
@@ -355,6 +355,8 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   }
 }
 .relative { position:relative; }
+.inline { display:inline; }
+
 .flex-parent { .display-flex;
   &.flex-row { .flex-flow(row nowrap); } // Default value
   &.flex-row-wrap { .flex-flow(row wrap); } // Default value
@@ -364,6 +366,7 @@ body { .ft-opensans; font-size: 14px; overflow-x: hidden;
   &.flex-end { .align-items(flex-end); }
 
   &.jc-center { .justify-content(center); }
+  &.jc-space-around { .justify-content(space-around); }
   &.jc-end { .justify-content(flex-end); }
 
   .centered { margin: auto; }
@@ -481,7 +484,7 @@ table tr:hover { outline: 1px solid @cl-subtext15; background-color: @cl-subtext
 .donut-button { border-radius: 4px; .ft-opensans-semibold; font-size: 11px; color: #FFFFFF; letter-spacing: 0.84px; line-height: 21px; text-transform: uppercase; padding: 7px 10px; .display-inline-flex; .align-items(center); .justify-content(center); cursor: pointer;
   > i { .display-inline-flex; .align-items(center); .justify-content(center); }
   &.black { background: #394350; }
-  &.black:hover { background: lighten(#394350, 10%); }
+  &.black:hover { background: lighten(#394350, 10%); color: #FFF; text-decoration: none; }
   &.gray { background: #8491A1; }
   &.gray:hover { background: lighten(#8491A1, 10%); }
   &.transparent { background: transparent; }

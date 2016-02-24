@@ -115,81 +115,81 @@ var ConfirmationModalView = Backbone.View.extend({
     // set message
     if (this.options.message) {
       if (this.options.message === 'mode-change') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.modechange'));
-        this.$message.text(i18next.t('chat.confirmation.message.modechange'));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.modechange'));
+        this.$message.html(i18next.t('chat.confirmation.message.modechange'));
       } else if (this.options.message === 'ban-user') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.banuser'));
-        this.$message.text(i18next.t('chat.confirmation.message.banuser'));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.banuser'));
+        this.$message.html(i18next.t('chat.confirmation.message.banuser'));
       } else if (this.options.message === 'deban-user') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.debanuser'));
-        this.$message.text(i18next.t('chat.confirmation.message.debanuser'));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.debanuser'));
+        this.$message.html(i18next.t('chat.confirmation.message.debanuser'));
       } else if (this.options.message === 'refuse-user') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.refuseuser'));
-        this.$message.text(i18next.t('chat.confirmation.message.refuseuser', {username: this.options.username}));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.refuseuser'));
+        this.$message.html(i18next.t('chat.confirmation.message.refuseuser', {username: this.options.username}));
       } else if (this.options.message === 'accept-user') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.acceptuser'));
-        this.$message.text(i18next.t('chat.confirmation.message.acceptuser', {username: this.options.username}));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.acceptuser'));
+        this.$message.html(i18next.t('chat.confirmation.message.acceptuser', {username: this.options.username}));
       } else if (this.options.message === 'disallow-user') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.disallowuser'));
-        this.$message.text(i18next.t('chat.confirmation.message.disallowuser', {username: this.options.username}));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.disallowuser'));
+        this.$message.html(i18next.t('chat.confirmation.message.disallowuser', {username: this.options.username}));
       } else if (this.options.message === 'quit-group') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.quit-group'));
-        this.$message.text(i18next.t('chat.confirmation.message.quit-group'));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.quit-group'));
+        this.$message.html(i18next.t('chat.confirmation.message.quit-group'));
       } else if (this.options.message === 'ban-group-user') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.ban-group-user'));
-        this.$message.text(i18next.t('chat.confirmation.message.ban-group-user', {username: this.options.username}));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.ban-group-user'));
+        this.$message.html(i18next.t('chat.confirmation.message.ban-group-user', {username: this.options.username}));
       } else if (this.options.message === 'deban-group-user') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.deban-group-user'));
-        this.$message.text(i18next.t('chat.confirmation.message.deban-group-user', {username: this.options.username}));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.deban-group-user'));
+        this.$message.html(i18next.t('chat.confirmation.message.deban-group-user', {username: this.options.username}));
       } else if (this.options.message === 'invite') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.invite'));
-        this.$message.text(i18next.t('chat.confirmation.message.invite', {
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.invite'));
+        this.$message.html(i18next.t('chat.confirmation.message.invite', {
           username: this.options.username,
           name: this.options.room_name
         }));
       } else if (this.options.message === 'op-group-user') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.op-group-user'));
-        this.$message.text(i18next.t('chat.confirmation.message.op-group-user', {username: this.options.username}));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.op-group-user'));
+        this.$message.html(i18next.t('chat.confirmation.message.op-group-user', {username: this.options.username}));
       } else if (this.options.message === 'deop-group-user') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.deop-group-user'));
-        this.$message.text(i18next.t('chat.confirmation.message.deop-group-user', {username: this.options.username}));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.deop-group-user'));
+        this.$message.html(i18next.t('chat.confirmation.message.deop-group-user', {username: this.options.username}));
       } else if (this.options.message === 'add-email') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.add-email'));
-        this.$message.text(i18next.t('chat.confirmation.message.add-email'));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.add-email'));
+        this.$message.html(i18next.t('chat.confirmation.message.add-email'));
         this.$input.attr('placeholder', '');
       } else if (this.options.message === 'send-email') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.send-email'));
-        this.$message.text(i18next.t('chat.confirmation.message.send-email', {email: this.options.email}));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.send-email'));
+        this.$message.html(i18next.t('chat.confirmation.message.send-email', {email: this.options.email}));
       } else if (this.options.message === 'delete-email') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.delete-email'));
-        this.$message.text(i18next.t('chat.confirmation.message.delete-email', {email: this.options.email}));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.delete-email'));
+        this.$message.html(i18next.t('chat.confirmation.message.delete-email', {email: this.options.email}));
       } else if (this.options.message === 'change-email') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.change-email'));
-        this.$message.text(i18next.t('chat.confirmation.message.change-email', {email: this.options.email}));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.change-email'));
+        this.$message.html(i18next.t('chat.confirmation.message.change-email', {email: this.options.email}));
       } else if (this.options.message === 'op-room-user') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.op-room-user'));
-        this.$message.text(i18next.t('chat.confirmation.message.op-room-user'));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.op-room-user'));
+        this.$message.html(i18next.t('chat.confirmation.message.op-room-user'));
       } else if (this.options.message === 'deop-room-user') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.deop-room-user'));
-        this.$message.text(i18next.t('chat.confirmation.message.deop-room-user'));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.deop-room-user'));
+        this.$message.html(i18next.t('chat.confirmation.message.deop-room-user'));
       } else if (this.options.message === 'ban-room-user') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.ban-room-user'));
-        this.$message.text(i18next.t('chat.confirmation.message.ban-room-user'));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.ban-room-user'));
+        this.$message.html(i18next.t('chat.confirmation.message.ban-room-user'));
       } else if (this.options.message === 'deban-room-user') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.deban-room-user'));
-        this.$message.text(i18next.t('chat.confirmation.message.deban-room-user'));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.deban-room-user'));
+        this.$message.html(i18next.t('chat.confirmation.message.deban-room-user'));
       } else if (this.options.message === 'kick-room-user') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.kick-room-user'));
-        this.$message.text(i18next.t('chat.confirmation.message.kick-room-user'));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.kick-room-user'));
+        this.$message.html(i18next.t('chat.confirmation.message.kick-room-user'));
       } else if (this.options.message === 'devoice-room-user') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.devoice-room-user'));
-        this.$message.text(i18next.t('chat.confirmation.message.devoice-room-user'));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.devoice-room-user'));
+        this.$message.html(i18next.t('chat.confirmation.message.devoice-room-user'));
       } else if (this.options.message === 'add-domain') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.add-domain'));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.add-domain'));
         this.$message.html(i18next.t('chat.confirmation.message.add-domain'));
         this.$input.attr('placeholder', i18next.t('chat.confirmation.placeholder-domain'));
       } else if (this.options.message === 'delete-domain') {
-        this.$modalHeader.removeClass('hidden').find('.ctn').text(i18next.t('chat.confirmation.title.delete-domain'));
+        this.$modalHeader.removeClass('hidden').find('.ctn').html(i18next.t('chat.confirmation.title.delete-domain'));
         this.$message.html(i18next.t('chat.confirmation.message.delete-domain', {domain: this.options.domain}));
       }
     }

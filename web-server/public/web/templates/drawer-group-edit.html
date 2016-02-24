@@ -1,7 +1,6 @@
 <div class="header">
     <div class="title">
-        <%= t('profile.common.editlink') %>
-        <%= group.identifier %>
+        <%= t('drawers.group-edit.title') %>
     </div>
     <span class="close-drawer icon icon-times curp"></span>
 </div>
@@ -46,14 +45,14 @@
             <p class="help"><%= t('chat.form.group-form.edit.priority.help') %></p>
         </div>
         <% } %>
-        <div class="block column flex-parent jc-center center">
-            <button class="btn btn-default" type="submit"><%= t('global.save') %></button>
+        <div class="block flex-parent jc-center center">
             <button class="btn btn-link cancel mr10"><%= t('global.cancel') %></button>
+            <button class="btn btn-default" type="submit"><%= t('global.save') %></button>
         </div>
     </form>
     <div class="footer block">
         <p class="delete">
-            <i class="icon icon-trash"></i><%= t('drawers.group-edit.link') %>
+            <i class="icon icon-trash"></i><%= t('drawers.group-edit.title') %>
             <a class="open-group-delete cl-first" data-group-id="<%=group.group_id%>"><%= t('drawers.group-edit.click-here') %></a>
         </p>
     </div>

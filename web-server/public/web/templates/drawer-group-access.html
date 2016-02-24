@@ -1,7 +1,6 @@
 <div class="header">
     <div class="title">
-        <%= t('chat.history.access') %>
-        #<%= group.name %>
+        <%= t('drawers.group-access.title') %>
     </div>
     <span class="close-drawer icon icon-times curp"></span>
 </div>
@@ -60,7 +59,7 @@
                     <% if (!password) { %> disabled <% } %>
                     />
                     <a href="#" class="mr10 icon icon-refresh random-password dc-text <% if (!password) { %> disabled <% } %>"></a>
-                    <input class="btn btn-success save-access" type="submit" value="<%= t('global.save')%>" />
+                    <input class="btn btn-primary save-access" type="submit" value="<%= t('global.save')%>" />
                 </div>
             </div>
         </div>

@@ -65,7 +65,12 @@ handler.call = function (data, session, next) {
       if (!user.emails || !group.allowed_domains || group.allowed_domains.length < 1) {
         return callback(null);
       }
-      if (!user.hasAllowedEmail(group.allowed_domains)) {
+
+      var isEmailGranted = user.hasAllowedEmail(group.allowed_domains);
+      if (!isEmailGranted) {
+        return callback(null);
+      } else if (isEmailGranted === 'not-confirmed') {
+        options.email_not_confirmed = true;
         return callback(null);
       } else {
         addMember = true;

@@ -1,7 +1,6 @@
 <div class="header">
     <div class="title">
-        <%= t('chat.history.access') %>
-        <%= room.identifier %>
+        <%= t('drawers.room-access.title') %>
     </div>
     <span class="close-drawer icon icon-times curp"></span>
 </div>
@@ -24,9 +23,9 @@
 
         <% if (group !== false) { %>
             <div class="field-password radio block">
-                <div class="password-block form-inline mt10 flex-parent baseline space-between">
-                    <input type="checkbox" id="input-allowgroupmember-checkbox" name="input-allowgroupmember-checkbox" <% if (allow_group_member !== false) { %> checked <% } %> />
-                    <label for="input-allowgroupmember-checkbox"><%= t('chat.blocked.allowgroupmember') %></label>
+                <div class="password-block form-inline mt10">
+                    <input type="checkbox" id="input-allowgroupmember-checkbox" class="inline" name="input-allowgroupmember-checkbox" <% if (allow_group_member !== false) { %> checked <% } %> />
+                    <label for="input-allowgroupmember-checkbox" class="inline"><%= t('chat.blocked.allowgroupmember') %></label>
                 </div>
             </div>
         <% } %>
@@ -61,7 +60,7 @@
                        <% if (!password) { %> disabled <% } %>
                     />
                 <a href="#" class="mr10 icon icon-refresh random-password dc-text <% if (!password) { %> disabled <% } %>"></a>
-                <input class="btn btn-success save-access save-password" type="submit" value="<%= t('global.save')%>" />
+                <input class="btn btn-primary save-access save-password" type="submit" value="<%= t('global.save')%>" />
             </div>
         </div>
 

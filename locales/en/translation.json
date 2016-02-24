@@ -152,7 +152,7 @@
     "clickhere": "click here",
     "login": "log in",
     "tologin": "log in",
-    "logout": "log out",
+    "logout": "Log out",
     "tologout": "log out",
     "home": "go back to homepage",
     "menu": "menu",
@@ -418,8 +418,8 @@
       "count-since": "last message: __date__",
       "jumpto": "Jump to",
       "mark-as-read": "Mark as read",
-      "userscount": "__count__ user",
-      "userscount_plural": "__count__ users",
+      "userscount": "__count__ participant",
+      "userscount_plural": "__count__ participants",
       "see-all": "see all"
     },
     "createadonut": "Create a discussion",
@@ -429,9 +429,10 @@
       "rooms": "discussions",
       "rooms-created": "discussions created",
       "title": "Welcome!",
-      "disclaimer": "Find your way around Donut by joining or creating the communities and discussions you belong with",
+      "disclaimer": "Find your way around DONUT by joining or creating the communities and discussions you belong with",
       "userstitle": "Users",
-      "whats-new-title": "NEW on DONUT!",
+      "whats-new-title": "New on DONUT!",
+      "whats-new-content": "Never miss a message, get the app !",
       "communities-title": "Featured COMMUNITIES",
       "communities-disclaimer": "Join a community to access all its related discussions and hang out with its members",
       "communities-create": "CREATE YOUR COMMUNITY",
@@ -442,9 +443,8 @@
     },
     "search": {
       "placeholder": "Search",
+      "results": "Search results for",
       "noresults": "No match found",
-      "roomstitle": "Here are the discussions matching your request, you can also <a class='open-create-room'>create one</a> :",
-      "userstitle": "Matching users",
       "see_all_results": "See all results",
       "groups_results": "<strong>__length__</strong> found communities",
       "rooms_results": "<strong>__length__</strong> found discussions",
@@ -540,55 +540,55 @@
       "cancel": "Cancel",
       "confirm": "OK",
       "title": {
-        "modechange": "WARNING",
-        "banuser": "Block a user",
-        "debanuser": "Unblock a user",
-        "refuseuser": "Refuse a user",
-        "acceptuser": "Authorize a user",
-        "disallowuser": "Disallow a user",
-        "quit-group": "Leave a community",
-        "op-room-user": "Promote a user",
-        "deop-room-user": "Remove from moderators",
-        "ban-room-user": "Ban a user",
-        "deban-room-user": "Deban a user",
-        "kick-room-user": "Kick a user",
-        "devoice-room-user": "Mute a user",
-        "ban-group-user": "Ban a user from a community",
-        "deban-group-user": "Deban a user from a community",
-        "op-group-user": "Promote a user of a community",
-        "deop-group-user": "Remove from moderators of a community",
-        "invite": "Authorize a user",
+        "modechange": "Confirmation",
+        "banuser": "Confirmation",
+        "debanuser": "Confirmation",
+        "refuseuser": "Confirmation",
+        "acceptuser": "Confirmation",
+        "disallowuser": "Confirmation",
+        "quit-group": "Confirmation",
+        "op-room-user": "Confirmation",
+        "deop-room-user": "Confirmation",
+        "ban-room-user": "Confirmation",
+        "deban-room-user": "Confirmation",
+        "kick-room-user": "Confirmation",
+        "devoice-room-user": "Confirmation",
+        "ban-group-user": "Confirmation",
+        "deban-group-user": "Confirmation",
+        "op-group-user": "Confirmation",
+        "deop-group-user": "Confirmation",
+        "invite": "Confirmation",
         "add-email": "Add an email",
-        "send-email": "Send a validation email",
-        "delete-email": "Delete an email",
-        "change-email": "Change main email",
+        "send-email": "Confirmation",
+        "delete-email": "Confirmation",
+        "change-email": "Confirmation",
         "add-domain": "Add a trusted email domain",
-        "delete-domain": "Delete an email domain from trusted"
+        "delete-domain": "Confirmation"
       },
       "message": {
         "modechange": "This action is irreversible.",
-        "banuser": "You are about to block this user.",
-        "debanuser": "You are about to unblock this user.",
+        "banuser": "This user will be blocked from sending one-to-one messages to you.",
+        "debanuser": "This user will be able to send you one-to-one messages.",
         "refuseuser": "You are about to refuse @__username__",
         "acceptuser": "You are about to authorize @__username__",
         "disallowuser": "You are about to disallow @__username__",
         "quit-group": "You will leave this community",
-        "op-room-user": "Your are about to promote this user to moderator of this discussion. Moderators can manage mute/unmute, kick and ban other users.",
-        "deop-room-user": "You are about to remove as moderateur this user from this discussion.",
-        "ban-room-user": "You are about to ban this user from this discussion.",
-        "deban-room-user": "You are about to deban this user from this discussion.",
-        "kick-room-user": "You are about to kick this user from this discussion.",
-        "devoice-room-user": "You mute this user.",
-        "ban-group-user": "You are about to ban user @__username__ from this community",
-        "deban-group-user": "You are about to deban user @__username__ from this community",
-        "op-group-user": "Your are about to promote @__username__ to moderator of this community. Moderators can manage membership requests, invite and ban members.",
-        "deop-group-user": " @__username__ will not longer be a moderator of this community.",
+        "op-room-user": "This participant will be a moderator of this discussion. <br> Moderators can manage mute/unmute, kick and ban other users. Moderators can appoint other moderators as well.",
+        "deop-room-user": "This participant will no longer be a moderateur  of this discussion.",
+        "ban-room-user": "This participant will be banned from this discussion.",
+        "deban-room-user": "This participant will no longer be banned from this discussion.",
+        "kick-room-user": "This participant will be kicked from this discussion.",
+        "devoice-room-user": "This participant will no longer be able to post messages in this discussion.",
+        "ban-group-user": "@__username__ will be banned from this community",
+        "deban-group-user": "@__username__ will no longer be banned from this community",
+        "op-group-user": "@__username__ will be a moderator of this community. <br> Moderators can manage membership requests, invite and ban members.",
+        "deop-group-user": " @__username__ will no longer be a moderator of this community.",
         "invite": "You are about to authorize @__username__. A notification will be sent to invite @__username__ to join #__name__.",
         "add-email": "New email:",
         "send-email": "A verification e-mail will be sent to __email__",
-        "delete-email": "__email__ will be deleted of your address",
-        "change-email": "You are about to make __email__ your main email. It will be your log-in e-mail and the only one we use to send you notifications.",
-        "add-domain": "Enter the trusted e-mail domain to add.<br>Reminder: Any user with such an e-mail can join the community directly. No membership request, invitation, or password required.",
+        "delete-email": "__email__ will be deleted from your addresses.",
+        "change-email": "__email__ will become your main email: you will log in with it and receive notifications on it.",
+        "add-domain": "Any user with such an e-mail can join the community directly. <br> No membership request, invitation, or password required.",
         "delete-domain": [
           "<p>Users having a __domain__ email will no longer auto-join the community.</p>",
           "<p>However members who have joined thanks to a __domain__ email will remain members.</p>"
@@ -809,7 +809,7 @@
           "mark-spam": "Mark as spam",
           "unmark-spam": "Unmark as spam"
         },
-        "edit": "Edit my message"
+        "edit": "Edit"
       }
     },
     "input": {
@@ -817,6 +817,7 @@
       "typing_plural": "are typing"
     },
     "blocked": {
+      "this-discussion-is": "It is ",
       "disallow": "This discussion is private.",
       "message-display": "Display a message",
       "password_placeholder": "Password",
@@ -838,7 +839,11 @@
       "close": "Close this discussion",
       "allowgroupmember": "Allow community members to join this discussion",
       "not-confirmed": "Action authorized to verified accounts only. Verifiy your e-mail.",
-      "cant-answer": "@__username__ cannot answer because his/her account has not been verified yet."
+      "cant-answer": "@__username__ cannot answer because his/her account has not been verified yet.",
+      "grouproom-disclaimer": [
+        "<p>Discussion __identifier__ belongs to community #__groupname__.</p>",
+        "<p>You can request membership to community #__groupname__ (button above) or simply join discussion __identifier__ (button below).</p>"
+      ]
     },
     "form": {
       "common": {
@@ -1047,7 +1052,7 @@
     "joingroup": {
       "title": "Join community <strong>__identifier__</strong>",
       "message": "Members have special priviledges such as direct access to certain private discussions and to other members of this community.",
-      "disclaimer": "Message from <strong>@__username__</strong> :<br><i class=\"icon icon-quote\"></i>__disclaimer__",
+      "disclaimer": "Message from @__username__:",
       "allowedpending": "Access to this community is by invitation, and you already have a request in progress.",
       "options": {
         "request": {
@@ -1070,7 +1075,8 @@
           "placeholder": "e-mail",
           "domain": "domain",
           "confirm": "Add",
-          "success": "The email __email__ has been successfully added to your account. You will receive a verification e-mail. Once verified you will automatically become a member of this community.<br>You can manage your emails <a class=\"inverse open-user-account\" data-dismiss=\"modal\">here</a>",
+          "success": "Success ! Last step: check your inbox and verify your email.<br>To re-send a verification email, click on the envelope <a class=\"inverse open-user-account\" data-dismiss=\"modal\">here</a>",
+          "not-confirmed": "OK ! Last step: verify your email with the link you received in your inbox when you first linked __email__ to your account.<br>To re-send a verification email, click on the envelope <a class=\"inverse open-user-account\" data-dismiss=\"modal\">here</a>",
           "error": "This e-mail is already linked to another account"
         },
         "other": "You can join this community only if invited by its moderators."
@@ -1079,7 +1085,7 @@
     "joinroom": {
       "title": "Join discussion <strong>__identifier__</strong>",
       "message": "Users can participate in the discussions and receive notifications about it.",
-      "disclaimer": "Message from <strong>@__username__</strong> :<br><i class=\"icon icon-quote\"></i>__disclaimer__",
+      "disclaimer": "Message from @__username__:",
       "allowedpending": "Access to this discussion is by invitation, and you already have a request in progress.",
       "options": {
         "request": {
@@ -1176,7 +1182,7 @@
     },
     "manageemail": {
       "choose-main": "Select below your main email to receive your notifications",
-      "label": "Manage your mails",
+      "label": "My email addresses",
       "info": "Some communities require e-mail authentication (e.g: me@university.edu). Link your emails to this account to be automatically cleared.",
       "facebook": "Address link to facebook account",
       "verified": "Address verified",
@@ -1687,7 +1693,6 @@
     "fail": "Unable to send email, retry later."
   },
   "preferences": {
-    "title": "Settings",
     "appearance": "appearance",
     "sounds": {
       "title": "Sounds",
@@ -1769,6 +1774,12 @@
       "en": "english"
     }
   },
+  "nav-left": {
+    "view-profile": "See profile",
+    "my-account": "Credentials",
+    "my-profile": "Edit my profile",
+    "notifications": "Settings & notifications"
+  },
   "popins": {
     "group-create": {
       "title": "Community's creation",
@@ -1776,15 +1787,22 @@
     }
   },
   "drawers": {
+    "user-preferences": {
+      "title": "Settings & notifications"
+    },
+    "user-notifications": {
+      "title": "Notification center"
+    },
+    "user-notifications": {
+      "title": "Credentials"
+    },
+    "user-edit": {
+      "title": "Edit my profile"
+    },
     "users-allowed-room": {
       "disclaimer": "You can invite a user to join this discussion.",
       "pending-disclaimer" : "Users pending for your approval.",
       "allowed-disclaimer" : "Users invited to join this discussion."
-    },
-    "users-allowed-group": {
-      "disclaimer": "You can invite a user to join this community.",
-      "pending-disclaimer" : "Users pending for your approval.",
-      "allowed-disclaimer" : "Users invited to join this community."
     },
     "users-group": {
       "disclaimer" : "You can invite a user to join this community. To do so, <a href=\"#\" class=\"open-group-users-allowed\" data-group-id=\"__group_id__\">click here</a>"
@@ -1795,19 +1813,34 @@
       "type": "Type",
       "search": "search a username in this discussion"
     },
+    "room-access": {
+      "title": "Access rules"
+    },
+    "room-edit": {
+      "link": "To delete this discussion ",
+      "click-here": "click here"
+    },
+    "room-preferences": {
+      "title": "Notifications"
+    },
+    "group-access": {
+      "title": "Access rules"
+    },
+    "group-edit": {
+      "link": "To delete this community",
+      "click-here": "click here"
+    },
     "group-users": {
       "title": "Manage members",
       "username": "Name",
       "type": "Type",
       "search": "search a member in this community"
     },
-    "room-edit": {
-      "link": "To delete this discussion ",
-      "click-here": "click here"
-    },
-    "group-edit": {
-      "link": "To delete this community",
-      "click-here": "click here"
+    "group-users-allowed": {
+      "title" : "Invitations & demandes",
+      "disclaimer": "You can invite a user to join this community.",
+      "pending-disclaimer" : "Users pending for your approval.",
+      "allowed-disclaimer" : "Users invited to join this community."
     }
   }
 }

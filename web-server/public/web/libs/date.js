@@ -101,6 +101,18 @@ window.d = module.exports = {
     var diff = currentTimestamp - myTimestamp;
     return Math.floor(diff / ONE_DAY);
   },
+  diff: function (date1, date2) {
+    var myDate1 = new Date(date1);
+    if (isNaN(myDate1)) {
+      return;
+    }
+    var myDate2 = new Date(date2);
+    if (isNaN(myDate2)) {
+      return;
+    }
+
+    return myDate1.getTime() - myDate2.getTime();
+  },
   isSameDay: function (newDate, previousDate) {
     var sameNewDate = new Date(newDate);
     var samePreviousDate = new Date(previousDate);

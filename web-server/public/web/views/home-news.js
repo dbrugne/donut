@@ -1,20 +1,25 @@
 var Backbone = require('backbone');
+var app = require('../libs/app');
+var debug = require('../libs/donut-debug')('donut:home-news');
+var date = require('../libs/date');
 
 var HomeNewsView = Backbone.View.extend({
   template: require('../templates/home-news.html'),
 
   events: {
-    'click .close': 'onClose'
+    'click .close-news': 'onClose'
   },
 
   initialize: function (options) {
 
   },
-  render: function (list) {
-    // @todo check from settings if not already read
-    var html = this.template({
-      list: list
-    });
+  render: function () {
+    var lastNewsDate = new Date('2016-02-23 00:00:00'); // fetch this from news
+    var diff = date.diff(lastNewsDate, app.user.get('last_news'));
+    var html = '';
+    if (diff > 0) {
+      html = this.template();
+    }
 
     this.$el.html(html);
     this.$el.removeClass('hidden');
@@ -23,8 +28,14 @@ var HomeNewsView = Backbone.View.extend({
   },
 
   onClose: function (event) {
-    this.$el.addClass('hidden'); // @todo add slideup effect
-    // @todo save state on currentUser
+    this.$el.slideUp(); // @todo add slideup effect
+    var updateData = { last_news: Date.now() };
+    app.client.userUpdate(updateData, function (data) {
+      if (data.err) {
+        debug('error while saving user ', data.err);
+        console.log(data.err);
+      }
+    });
   },
 
   _remove: function () {

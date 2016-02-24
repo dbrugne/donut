@@ -75,7 +75,7 @@ var HomeView = Backbone.View.extend({
     //   rooms_unread: false,
     //   rooms_created: 7
     // }));
-    // this.homeNews.render();
+    this.homeNews.render();
 
     var groups = (data.groups && data.groups.list && data.groups.list.length)
       ? data.groups.list

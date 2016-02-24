@@ -17,6 +17,11 @@
             <% if (item.unviewed === true) { %>
                 <span class="icon icon-circle unread cl-first fs10 mr5"></span>
             <% } %>
+            <% if(item.blocked) { %>
+                <a href="#" class="ml5 mr5 leave-blocked" data-room-id="<%- item.id %>">
+                    <i class="icon hover icon-times" title="<%= t('global.close') %>"></i>
+                </a>
+            <% } %>
         </span>
     </li>
 

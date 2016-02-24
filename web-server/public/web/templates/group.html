@@ -149,7 +149,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
                         <i class="icon icon-star cl-warning show-is-admin"></i>
                     </span>
 
-                    <% if (isOwner || isOp || isAdmin || isMember) { %>
+                    <% if (isOwner || isOp || isMember) { %>
                         <!--Create a donut-->
                         <span class="curp open-create-room donut-button black" data-group-id="<%=group.group_id%>" data-group-name="<%=group.name%>"><%= t('buttons.create-discussion') %></span>
                     <% } else { %>
@@ -197,7 +197,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
             </div>
             <div class="flex-child"></div>
             <div class="actions">
-                <span type="button" class="curp donut-button gray open-group-users mr15" data-group-id="<%= group.group_id %>" ><%= t('buttons.manage-members') %></span>
+                <span type="button" class="curp donut-button gray open-group-users mr15" data-group-id="<%= group.group_id %>" ><%= t('group.manage') %></span>
                 <span type="button" class="curp donut-button gray open-group-users-allowed" data-group-id="<%= group.group_id %>"><%= t('buttons.invites')%></span>
                 <span class="donut-button transparent toggle-collapse curp"><i class="icon icon-times"></i></span>
             </div>
