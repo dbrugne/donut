@@ -1,6 +1,7 @@
 @card-height: 300px;
 @card-width: 300px;
 .cards {
+  > .list { .flex-wrap(wrap); }
   .card { height: @card-height; width: @card-width; background: #FFFFFF; box-shadow: 0px 3px 4px 0px rgba(28,37,47,0.15); margin: 15px;
     a.avatar-ctn { z-index: 2; }
     &.user {
