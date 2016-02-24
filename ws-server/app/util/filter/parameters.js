@@ -58,10 +58,10 @@ Filter.prototype.before = function (data, session, next) {
 
       // @todo yls : need all this population for each route??
       GroupModel.findOne({ _id: data.group_id })
-        .populate('owner', 'username avatar facebook online bio realname')
-        .populate('op', 'username avatar facebook bio realname')
+        .populate('owner', 'username avatar facebook online bio realname location')
+        .populate('op', 'username avatar facebook bio realname location')
         .populate('bans.user', 'username avatar facebook')
-        .populate('members', 'username avatar facebook bio realname')
+        .populate('members', 'username avatar facebook bio realname location')
         .exec(callback);
     },
 
