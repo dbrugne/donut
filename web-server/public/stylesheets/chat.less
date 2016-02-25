@@ -453,7 +453,7 @@
         }
       }
     }
-    #search { height: 100%; display: none; background-color: @cl-background2; overflow-y: auto; .scrollbar-grey;
+    #search { height: 100%; background-color: @cl-background2; overflow-y: auto; .scrollbar-grey;
       .search-results { .ft-opensans; font-size: 17px; color: #AFBAC8; line-height: 21px; text-align: center;
         .what { color: @cl-first; font-size: 22px; line-height: 36px; }
       }
@@ -466,9 +466,10 @@
         }
         .search-options { border-bottom: 1px solid @cl-border; }
         .nav.nav-pills { border-bottom: 1px solid #D0D9E6; width: 100%;
-          li { border-bottom: 3px solid transparent; width: 280px; .ft-opensans; font-size: 13px; color: #AFBAC8; letter-spacing: 2px; line-height: 21px; text-transform: uppercase; padding: 5px 10px; text-align: center;
+          li { border-bottom: 3px solid transparent; width: 280px; .ft-opensans; font-size: 13px; color: #AFBAC8; letter-spacing: 2px; line-height: 21px; text-transform: uppercase; text-align: center;
             &.active { border-bottom: 3px solid @cl-first; color: #1D252F; }
-            &.active a, a { padding: 0; margin: 0; background-color: transparent; .ft-opensans; font-size: 13px; color: #AFBAC8; letter-spacing: 2px; line-height: 21px; text-transform: uppercase;}
+            &.active a, a { margin: 0; background-color: transparent; .ft-opensans; font-size: 13px; color: #AFBAC8; letter-spacing: 2px; line-height: 21px; text-transform: uppercase;}
+            a { padding: 5px 10px; }
           }
         }
       }
