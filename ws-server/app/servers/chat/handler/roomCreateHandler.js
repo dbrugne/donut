@@ -112,7 +112,6 @@ handler.call = function (data, session, next) {
 
     function setPreferencesOnOwner (room, callback) {
       user.set('preferences.room:notif:roomjoin:' + room.id, true);
-      user.set('preferences.room:notif:roomtopic:' + room.id, true);
       user.save(function (err) {
         return callback(err, room);
       });
