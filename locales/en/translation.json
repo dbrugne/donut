@@ -1568,6 +1568,7 @@
       }
     },
     "roomjoin": {
+      "title": "@__username__ joined __roomname__",
       "subject": "Join __roomname__",
       "content": {
         "title": "@__username__ joined __roomname__"
@@ -1817,6 +1818,7 @@
       "title": "Access rules"
     },
     "room-edit": {
+      "title": "Edit profile",
       "link": "To delete this discussion ",
       "click-here": "click here"
     },
@@ -1827,6 +1829,7 @@
       "title": "Access rules"
     },
     "group-edit": {
+      "title": "Edit profile",
       "link": "To delete this community",
       "click-here": "click here"
     },
