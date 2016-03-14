@@ -42,11 +42,11 @@
         <% if (user.bio) { %><p class="block mt0"><%= user.bio %></p><% }; %>
 
         <div class="block <%= !user.bio ? 'mt0' : '' %>">
-            <% if (user.location) { %>                      <p class="left"><i class="icon icon-fw icon-map-marker "></i>    <%= user.location %></p><% }; %>
-            <% if (user.website && user.website.href) { %>  <p class="left"><i class="icon icon-fw icon-link "></i>          <a class="colored" href="<%= user.website.href %>" target="_blank" title="<%= user.website.title %>"><%= user.website.title %></a></p><% }; %>
-            <% if (user.registered) { %>                    <p class="left"><i class="icon icon-fw icon-clock-o "></i>       <%= t('profile.user.signuped') %> <span class="ml5" data-time="<%= user.registered %>"></span></p><% }; %>
-            <% if (user.isCurrent) { %>                     <p class="left"><i class="icon icon-fw icon-private "></i>       <a class="colored open-user-account " data-user-id="<%= user.user_id %>"><%= t('chat.actions.account') %></a></p><% }; %>
-            <% if (user.isCurrent) { %>                     <p class="left"><i class="icon icon-fw icon-pencil "></i>        <a class="colored open-user-edit " data-user-id="<%= user.user_id %>"><%= t('profile.common.editlink') %></a></p><% }; %>
+            <% if (user.location) { %>                      <p class="left"><i class="icon icon-fw icon-map-marker "></i>   <%= user.location %></p><% }; %>
+            <% if (user.website && user.website.href) { %>  <p class="left"><i class="icon icon-fw icon-link "></i>         <a class="colored" href="<%= user.website.href %>" target="_blank" title="<%= user.website.title %>"><%= user.website.title %></a></p><% }; %>
+            <% if (registered_at) { %>                      <p class="left"><i class="icon icon-fw icon-clock-o "></i>      <%= t('profile.user.signuped', {registered_at: registered_at}) %> <span class="ml5" data-time="<%= registered_at %>"></span></p><% }; %>
+            <% if (user.isCurrent) { %>                     <p class="left"><i class="icon icon-fw icon-private "></i>      <a class="colored open-user-account " data-user-id="<%= user.user_id %>"><%= t('chat.actions.account') %></a></p><% }; %>
+            <% if (user.isCurrent) { %>                     <p class="left"><i class="icon icon-fw icon-pencil "></i>       <a class="colored open-user-edit " data-user-id="<%= user.user_id %>"><%= t('profile.common.editlink') %></a></p><% }; %>
             <% if (user.isCurrent) { %>                     <p class="left"><i class="icon icon-fw icon-bell"></i>          <a class="colored open-user-preferences " data-user-id="<%= user.user_id %>"><%= t('chat.actions.preferences') %></a></p><% }; %>
         </div>
 

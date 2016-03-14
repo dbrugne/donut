@@ -53,7 +53,7 @@ var DrawerUserProfileView = Backbone.View.extend({
 
     this._rooms(user); // decorate user object with rooms_list
 
-    var html = this.template({user: user});
+    var html = this.template({user: user, registered_at: date.shortDate(user.registered)});
     this.$el.html(html);
     date.from('date', this.$('.created span'));
     date.from('fromnow', this.$('.onlined span'));
