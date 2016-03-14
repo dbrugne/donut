@@ -3,7 +3,7 @@ var common = require('@dbrugne/donut-common/browser');
 var app = require('../libs/app');
 var date = require('../libs/date');
 
-var OneToOnePanelView = Backbone.View.extend({
+var OneToOnePanelHeaderView = Backbone.View.extend({
   tagName: 'div',
 
   className: 'discussion-header-onetoone',
@@ -58,4 +58,4 @@ var OneToOnePanelView = Backbone.View.extend({
   }
 });
 
-module.exports = OneToOnePanelView;
+module.exports = OneToOnePanelHeaderView;
