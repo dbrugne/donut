@@ -97,7 +97,7 @@ module.exports = {
       effect: (blur === true)
         ? 'blur:800'
         : null
-    }, 430, 1100);
+    }, 315, 806);
   },
 
   messageFile: function (element, size) {

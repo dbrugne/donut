@@ -14,8 +14,8 @@ var RoomAccessView = Backbone.View.extend({
   id: 'room-access',
 
   events: {
-    'click input.save-password': 'onSubmit',
-    'click input.save-conditions': 'onSubmitConditions',
+    'click .save-password': 'onSubmit',
+    'click .save-conditions': 'onSubmitConditions',
     'change [type="checkbox"]': 'onChoosePassword',
     'click .random-password': 'onRandomPassword',
     'click .change-mode': 'onChangeMode',
@@ -60,8 +60,9 @@ var RoomAccessView = Backbone.View.extend({
     });
     this.$el.html(html);
 
-    this.$errors = this.$('.errors');
+    this.$errors = this.$('.error');
     this.$success = this.$('.success');
+
     this.$search = this.$('input[type=text]');
     this.$toggleCheckbox = this.$('#input-password-checkbox');
     this.$checkboxGroupAllow = this.$('#input-allowgroupmember-checkbox');

@@ -75,7 +75,7 @@ var HomeView = Backbone.View.extend({
     //  rooms_created: 7
     //}));
 
-    //this.homeNews.render();
+    this.homeNews.render();
     this.homeFeatured.render(_.first(rooms, this.featuredCount), _.first(groups, this.featuredCount));
     this.cardsRoomsView.render({rooms: {list: _.rest(rooms, this.featuredCount)}});
     this.cardsGroupsView.render({groups: {list: _.rest(groups, this.featuredCount)}});

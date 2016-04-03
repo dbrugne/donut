@@ -57,15 +57,13 @@ var DrawerRoomProfileView = Backbone.View.extend({
     room.uri = room.identifier;
     room.url = urls(room, 'room', 'url');
 
-    room.isDefault = (room.group_id) ? (room.group_default === room.room_id) : false;
-
     _.each(room.users, function (element, key, list) {
       element.avatar = common.cloudinary.prepare(element.avatar, 34);
     });
 
-    var html = this.template({room: room});
+    var html = this.template({room: room, created_at: date.shortDate(room.created)});
     this.$el.html(html);
-    date.from('date', this.$('.created span'));
+
     this.initializeTooltips();
   },
   initializeTooltips: function () {

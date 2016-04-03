@@ -17,10 +17,10 @@
                             <% } %>
                         </div>
                         <% if(isOwner && model.mode !== 'public') { %>
-                            <div class="actions flex-parent center jc-center">
-                                <a href="#" class="open-room-edit" data-room-id="<%= model.room_id %>"><span class="menu-action"><%= t('chat.history.edit') %></span></a>
-                                <a href="#" class="open-room-users-allowed" data-room-id="<%= model.room_id %>"><span class="menu-action"><%= t('chat.history.invite') %></span></a>
-                                <a href="#" class="open-room-access" data-room-id="<%= model.room_id %>"><span class="menu-action"><%= t('chat.history.access') %></span></a>
+                            <div class="actions mt25 row-fluid flex-parent jc-center">
+                                <a href="#" class="col-sm-4 mr5 mb5 btn btn-default open-room-edit" data-room-id="<%= model.room_id %>"><span class="menu-action"><%= t('chat.history.edit') %></span></a>
+                                <a href="#" class="col-sm-4 mr5 mb5 btn btn-default open-room-users-allowed" data-room-id="<%= model.room_id %>"><span class="menu-action"><%= t('chat.history.invite') %></span></a>
+                                <a href="#" class="col-sm-4 mr5 mb5 btn btn-default open-room-access" data-room-id="<%= model.room_id %>"><span class="menu-action"><%= t('chat.history.access') %></span></a>
                             </div>
                         <% } %>
                     </div>

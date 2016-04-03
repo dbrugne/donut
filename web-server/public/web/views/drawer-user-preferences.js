@@ -44,9 +44,12 @@ var DrawerUserPreferencesView = Backbone.View.extend({
       username: currentUser.get('username'),
       preferences: data.preferences,
       bannedUsers: data.bannedUsers,
-      desktopNeedsPermission: desktop.needsPermission()
+      desktopNeedsPermission: desktop.needsPermission(),
+      language: i18next.lng()
     });
     this.$el.html(html);
+
+    this.$error = this.$('.error');
 
     // Contact form
     this.$('[data-toggle="contactform"]').contactform({});
@@ -75,10 +78,10 @@ var DrawerUserPreferencesView = Backbone.View.extend({
     update[key] = value;
 
     var that = this;
+    this.$error.hide();
     app.client.userPreferencesUpdate(update, function (data) {
-      that.$('.errors').hide();
       if (data.err) {
-        that.$('.errors').html(i18next.t('global.unknownerror')).show();
+        that.$error.html(i18next.t('global.unknownerror')).show();
       }
     });
   },

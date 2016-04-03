@@ -15,7 +15,7 @@
         <% if(item.rooms.length !== 0) { %>
             <i class="icon icon-fw toggle-icon curp <%=iconGroupClass%>" data-toggle="collapse" data-target="#collapseRoomlist-<%= item.id %>" aria-expanded="true" aria-controls="collapseRoomlist-<%= item.id %>"></i>
         <% } %>
-        <span class="item flex-parent center">
+        <span class="item flex-parent center  <% if (item.blocked) { %> blocked <% } %>">
             <a class="clean avatar-ctn item center flex-parent jc-center" href="<%= item.uri %>" data-type="<%= item.type %>" data-identifier="<%= item.identifier %>">
                 <img src="<%= item.avatar %>" class="avatar" alt="<%= item.identifier %> avatar">
             </a>
@@ -49,6 +49,11 @@
                                     <!--<div class="unread-dot"></div>-->
                                     <!--<div class="unread-pulse"></div>-->
                                 <!--</div>-->
+                            <% } %>
+                            <% if(room.blocked) { %>
+                                <a href="#" class="ml5 mr5 leave-blocked" data-room-id="<%- room.id %>">
+                                    <i class="icon hover icon-times" title="<%= t('global.close') %>"></i>
+                                </a>
                             <% } %>
                         </span>
                     </li>

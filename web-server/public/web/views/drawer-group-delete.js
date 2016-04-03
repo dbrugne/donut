@@ -53,7 +53,7 @@ var DrawerGroupDeleteView = Backbone.View.extend({
     var html = this.template({group: group});
     this.$el.html(html);
     this.$input = this.$el.find('input[name=input-delete]');
-    this.$errors = this.$el.find('.errors');
+    this.$errors = this.$el.find('.error');
   },
   onSubmit: function (event) {
     event.preventDefault();
@@ -76,14 +76,14 @@ var DrawerGroupDeleteView = Backbone.View.extend({
       return;
     }
 
-    this.$el.find('.errors').hide();
+    this.$el.find('.error').hide();
 
     if (!data.success) {
       var message = '';
       _.each(data.errors, function (error) {
         message += error + '<br>';
       });
-      this.$el.find('.errors').html(message).show();
+      this.$el.find('.error').html(message).show();
       return;
     }
 

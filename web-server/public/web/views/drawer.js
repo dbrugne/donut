@@ -11,7 +11,7 @@ var DrawerView = Backbone.View.extend({
   shown: false,
 
   events: {
-    'click .close': 'close',
+    'click .close-drawer': 'close',
     'click .cancel': 'close',
     'mouseup .opacity': 'detectOutsideClick'
   },
@@ -88,7 +88,7 @@ var DrawerView = Backbone.View.extend({
   },
   onKeyUp: function (event) {
     if (event.which === 27) {
-      app.trigger('removeTooltips');
+      this.$('[data-toggle="tooltip"]').tooltip('hide');
       this.close();
     }
   },

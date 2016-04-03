@@ -1,5 +1,5 @@
 <% if(cards.length === 0) { %>
-    <%= t('chat.search.noresults') %>
+    <p class="noresults mt20"><%= t('chat.search.noresults') %></p>
 <% } else { %>
     <% _.each(cards, function(card) { %>
             <% if(card.type === 'user') { %>
@@ -13,17 +13,31 @@
                                 <a href="<%= card.join %>" class="open-user-profile flex-child flex-parent center jc-center" data-user-id="<%=card.user_id%>">
                                     <span class="value">
                                         <% if (card.realname) { %>
-                                        <%= card.realname %>
+                                            <%= card.realname %>
                                         <% } else { %>
-                                        @<%= card.username %>
+                                            @<%= card.username %>
                                         <% } %>
-                                        <!--<i class="ml5 fs15 icon icon-dot-circle-o status <%=card.status%>" title="<%= t('global.' + card.status) %>"></i>-->
                                     </span>
                                     <span class="value">
                                     </span>
                                 </a>
                             </div>
-                            <div class="location"><% if (card.location) { %><%=card.location%><% } %></div>
+                            <div class="location">
+                                <% if (card.realname) { %>
+                                    @<%= card.username %>
+                                <% } else { %>
+                                    <% if (card.location) { %><%=card.location%><% } %>
+                                <% } %>
+                            </div>
+                            <% if(card.is_owner || card.is_op) { %>
+                                <div class="status flex-parent center jc-center" data-toggle="tooltip" title="<%= card.is_owner ? t('global.owner') : t('global.op') %>">
+                                    <% if(card.is_owner) { %>
+                                        <i class="icon icon-owner"></i>
+                                    <% } else { %>
+                                        <i class="icon deop-icon"></i>
+                                    <% } %>
+                                </div>
+                            <% } %>
                         </div>
                         <div class="overlay"></div>
                         <div class="background" style="background-image:url(<%= card.avatar %>)"></div>
@@ -90,7 +104,7 @@
                                     <% } %>
                                 </div>
                                 <span class="filler"></span>
-                                <div class="users"><i class="icon-users-custom"></i> <%=card.users%></div>
+                                <div class="users"><i class="icon-users-custom mr5"></i> <%=card.users%></div>
                             </div>
                         </div>
                         <div class="button">
@@ -164,7 +178,7 @@
                         </div>
                         <div class="discussions flex-parent column">
                             <div class="flex-parent center flex-child">
-                                <div class="users"><i class="icon-users-custom"></i> <%=card.users%></div>
+                                <div class="users"><i class="icon-users-custom mr5"></i> <%=card.users%></div>
                             </div>
                         </div>
                         <div class="button">

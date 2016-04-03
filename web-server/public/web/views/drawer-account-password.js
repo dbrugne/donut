@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var Backbone = require('backbone');
 var i18next = require('i18next-client');
 var app = require('../libs/app');
@@ -18,18 +19,19 @@ var DrawerAccountPasswordView = Backbone.View.extend({
 
     this.$link = this.$('#password-modal-link');
     this.$form = this.$('.form-password');
-    this.$spinner = this.$('.spinner');
-    this.$spinner.html(require('../templates/spinner.html'));
     this.$errorLabel = this.$('.error-label');
     this.$success = this.$('.success');
+    this.$error = this.$('.error');
     this.$labelCurrentPassword = this.$('.label-current-password');
     this.$inputCurrentPassword = this.$('.input-current-password');
     this.$inputNewPassword = this.$('.input-new-password');
     this.$inputConfirmPassword = this.$('.input-password-confirm');
+    this.$submit = this.$('.submit-password');
 
     this.$form.hide();
-    this.$spinner.hide();
+    this.$submit.removeClass('loading');
     this.$success.hide();
+    this.$error.hide();
 
     if (this.user.account && this.user.account.has_password) {
       this.$link.text(i18next.t('global.change'));
@@ -54,6 +56,7 @@ var DrawerAccountPasswordView = Backbone.View.extend({
     this.$form.show();
     this.$link.hide();
     this.$success.hide();
+    this.$error.hide();
   },
 
   onCancel: function (event) {
@@ -66,12 +69,13 @@ var DrawerAccountPasswordView = Backbone.View.extend({
     this.$inputCurrentPassword.val('');
     this.$inputConfirmPassword.val('');
     this.$inputNewPassword.val('');
+    this.$success.hide();
+    this.$error.hide();
   },
 
   onSubmit: function (event) {
+    this.$error.hide();
     event.preventDefault();
-
-    var that = this;
 
     if (this.$inputNewPassword.val().length < 6 || this.$inputNewPassword.val().length > 50) {
       this.putError('wrong-format');
@@ -84,24 +88,26 @@ var DrawerAccountPasswordView = Backbone.View.extend({
     }
 
     this.$errorLabel.text('');
-    this.$spinner.show();
+    this.$submit.addClass('loading');
     this.$form.removeClass('has-error');
 
-    app.client.accountPassword(this.$inputNewPassword.val(), this.$inputCurrentPassword.val(), function (data) {
-      that.$spinner.hide();
+    app.client.accountPassword(this.$inputNewPassword.val(), this.$inputCurrentPassword.val(), _.bind(function (data) {
+      this.$submit.removeClass('loading');
       if (data.err) {
-        return that.putError(data.err);
+        return this.putError(data.err);
       }
 
-      that.$inputCurrentPassword.val('');
-      that.$inputConfirmPassword.val('');
-      that.$inputNewPassword.val('');
-      that.$form.hide();
-      that.$success.show();
-      that.$link.show();
-      that.$link.text(i18next.t('global.change'));
-      that.$inputCurrentPassword.show();
-    });
+      this.$inputCurrentPassword.val('');
+      this.$inputConfirmPassword.val('');
+      this.$inputNewPassword.val('');
+      this.$form.hide();
+      this.$success.show();
+      this.$error.hide();
+      this.$link.show();
+      this.$link.text(i18next.t('global.change'));
+      this.$link.show();
+      this.$inputCurrentPassword.show();
+    }, this));
   },
 
   putError: function (err) {
@@ -116,6 +122,7 @@ var DrawerAccountPasswordView = Backbone.View.extend({
     } else {
       this.$errorLabel.text(i18next.t('global.unknownerror'));
     }
+    this.$error.show();
   }
 
 });

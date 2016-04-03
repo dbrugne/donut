@@ -122,6 +122,11 @@ handler.call = function (data, session, next) {
         }
       }
 
+      // last news readen
+      if (_.has(data.data, 'last_news')) {
+        sanitized.last_news = data.data.last_news;
+      }
+
       var errNum = Object.keys(errors).length;
       if (errNum > 0) {
         return callback(errors);

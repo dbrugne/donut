@@ -1,60 +1,73 @@
-<div class="relative">
-    <span class="close icon icon-times"></span>
-</div>
-
-<div class="block">
-    <div class="overlay-ctn relative">
-        <span class="avatar relative" style="background-image:url(<%= group.avatar %>)"></span>
-    </div>
-
-    <div class="roomname text-center block flex-parent column center">
-        <%= group.name %>
-    </div>
-    <div class="owner text-center">
-        <%= t('global.by') %> <a class="colored open-user-profile dc-text" data-user-id="<%= group.owner_id %>">@<%= group.owner_username %></a>
-    </div>
-</div>
-
-<div class="ctn-drawer">
-    <div class="room block">
-        <% if (group.description) { %><p class="description mt20 mb20 left"><%- group.description %></p><% }; %>
-        <% if (group.website && group.website.href) { %><p class="website left"><i class="icon icon-fw icon-link dc-text"></i> <a class="colored dc-text" href="<%= group.website.href %>" target="_blank" title="<%= group.website.title %>"><%= group.website.title %></a></p><% }; %>
-        <% if (group.created) { %><p class="created left"><i class="icon icon-fw icon-clock-o dc-text left"></i> <%= t('profile.group.createdat') %> <span class="ml5" data-time="<%= group.created %>"></span></p><% }; %>
-        <% if (group.isOwner || group.isAdmin) { %><p class="edit left"><i class="icon icon-fw icon-pencil dc-text"></i> <a class="colored open-group-edit dc-text" data-group-id="<%= group.group_id %>"> <%= t('profile.common.editlink') %></a><p><% }; %>
-        <% if (group.isOwner || group.isOp || group.isAdmin) { %><p class="left"><i class="icon icon-fw icon-users dc-text left"></i> <a class="colored open-group-users dc-text" data-group-id="<%= group.group_id %>"><%= t('group.manage') %></a></p><% }; %>
-        <% if (group.isOwner || group.isOp || group.isAdmin) { %><p class="left"><i class="icon icon-fw icon-verified-user dc-text left"></i> <a class="colored open-group-users-allowed dc-text" data-group-id="<%= group.group_id %>"><%= t('group.invite') %></a></p><% }; %>
-        <% if (group.isOwner || group.isOp || group.isAdmin ) { %><p class="left dc-text"><i class="icon icon-fw icon-public"></i> <a role="menuitem" tabindex="-1" class="colored open-group-access dc-text" data-group-id="<%= group.group_id %>"><%= t('chat.access.link') %></a></p><% }; %>
-    </div>
-
-    <div class="block flex-parent jc-center center">
-        <a href="<%= group.uri %>" class="btn btn-default btn-big">
-            <%= t('actions.join') %>
-            <% if (group.members && group.members.length > 0) { /*print(group.members_count);*/ } %>
-            <i class="icon icon-fw icon-user-custom cl-warning"></i>
-        </a>
-    </div>
-
-    <% if (group.members.length > 0) { %>
-        <div class="block">
-            <h2><%= t('profile.group.ownerops') %> ( <%= group.members_count + 1 %> )</h2>
-        </div>
-
-        <div class="user-list block">
-            <div class="list">
-                <% _.each(group.members, function(user) { %>
-                <div class="item open-user-profile <% if (user.is_owner) { %>owner<% }; %> <% if (user.is_op) { %>op<% }; %>" title="@<%=user.username%>" data-user-id="<%= user.user_id %>" data-username="<%= user.username %>" data-toggle="tooltip" data-placement="right">
-                    <div class="avatar" style="background-image:url(<%= user.avatar %>)"></div>
+<div class="header">
+    <div class="flex-parent jc-center center">
+        <div class="card group">
+            <div class="top relative">
+                <div class="ctn flex-parent column center jc-center">
+                    <div class="avatar" style="background-image:url(<%= group.avatar %>)"></div>
+                    <div class="name">
+                        <span class="value"><%=group.identifier%></span>
+                    </div>
+                    <div class="owner">
+                        <% if (group.owner_id) { %>
+                        <span class="by"><%= t('global.by') %> </span><a class="open-user-profile" href="<%= group.owner_url %>" data-user-id="<%= group.owner_id %>">@<%= group.owner_username %></a>
+                        <% } %>
+                    </div>
                 </div>
-                <% }); %>
+                <div class="background-ctn">
+                    <div class="overlay"></div>
+                    <div class="background" style="background-image:url(<%= group.avatar %>)"></div>
+                </div>
             </div>
         </div>
+    </div>
+    <span class="close-drawer icon icon-times curp"></span>
+</div>
 
-        <% if( group.members_more ) { %>
-            <div class="flex-parent center jc-center mt30">
-                <i class="icon icon-circle cl-neutral fs10 ml5"></i>
-                <i class="icon icon-circle cl-neutral fs10 ml5"></i>
-                <i class="icon icon-circle cl-neutral fs10 ml5"></i>
+<div class="scrollable">
+    <div class="arrow-top mt20"></div>
+    <div class="ctn">
+        
+        <% if (group.description) { %><p class="block mt0"><%- group.description %></p><% }; %>
+        
+        <div class="block <%= !group.description ? 'mt0' : '' %>">
+            <% if (group.website && group.website.href) { %><p class="website left"><i class="icon icon-fw icon-link "></i> <a class=" " href="<%= group.website.href %>" target="_blank" title="<%= group.website.title %>"><%= group.website.title %></a></p><% }; %>
+            <% if (group.created) { %><p class="created left"><i class="icon icon-fw icon-clock-o  left"></i><%= t('profile.group.created-at', {created_at: created_at}) %></p><% }; %>
+            <% if (group.isOwner || group.isAdmin) { %><p class="edit left"><i class="icon icon-fw icon-pencil "></i> <a class=" open-group-edit " data-group-id="<%= group.group_id %>"> <%= t('profile.common.editlink') %></a><p><% }; %>
+            <% if (group.isOwner || group.isOp || group.isAdmin) { %><p class="left"><i class="icon icon-fw icon-users left"></i> <a class=" open-group-users " data-group-id="<%= group.group_id %>"><%= t('group.manage') %></a></p><% }; %>
+            <% if (group.isOwner || group.isOp || group.isAdmin) { %><p class="left"><i class="icon icon-fw icon-verified-user  left"></i> <a class=" open-group-users-allowed " data-group-id="<%= group.group_id %>"><%= t('group.invite') %></a></p><% }; %>
+            <% if (group.isOwner || group.isOp || group.isAdmin ) { %><p class="left "><i class="icon icon-fw icon-public"></i> <a role="menuitem" tabindex="-1" class=" open-group-access " data-group-id="<%= group.group_id %>"><%= t('chat.access.link') %></a></p><% }; %>
+        </div>
+    
+        <div class="block flex-parent jc-center center">
+            <a href="<%= group.uri %>" class="btn btn-default btn-big">
+                <%= t('actions.join') %>
+                <% if (group.members && group.members.length > 0) { print(group.members_count); } %>
+                <i class="icon icon-fw icon-users"></i>
+            </a>
+        </div>
+    
+        <% if (group.members.length > 0) { %>
+            <div class="block mt50">
+                <h2><%= t('profile.group.ownerops') %></h2>
             </div>
+    
+            <div class="user-list block">
+                <div class="list">
+                    <% _.each(group.members, function(user) { %>
+                    <div class="item open-user-profile <% if (user.is_owner) { %>owner<% }; %> <% if (user.is_op) { %>op<% }; %>" title="@<%=user.username%>" data-user-id="<%= user.user_id %>" data-username="<%= user.username %>" data-toggle="tooltip" data-placement="right">
+                        <div class="avatar" style="background-image:url(<%= user.avatar %>)"></div>
+                    </div>
+                    <% }); %>
+                </div>
+            </div>
+    
+            <% if( group.members_more ) { %>
+                <div class="flex-parent center jc-center mt30">
+                    <i class="icon icon-circle cl-neutral fs10 ml5"></i>
+                    <i class="icon icon-circle cl-neutral fs10 ml5"></i>
+                    <i class="icon icon-circle cl-neutral fs10 ml5"></i>
+                </div>
+            <% } %>
         <% } %>
-    <% } %>
+    </div>
 </div>

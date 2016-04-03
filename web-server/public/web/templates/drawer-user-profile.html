@@ -1,62 +1,71 @@
-<div class="relative">
-    <span class="close icon icon-times"></span>
-</div>
-
-<div class="block">
-    <div class="overlay-ctn">
-        <span class="avatar-ctn <% if (user.isCurrent) { %>open-user-edit <% } %> <% if (user.banned) { %>is-banned <% } %>">
-            <img class="avatar" src="<%= user.avatar %>" alt="<%= user.username %> avatar">
-            <% if (user.isCurrent) { %>
-            <span class="overlay"></span>
-            <span class="overlay-text"><%= t('profile.common.editlink') %></span>
-            <% } %>
-        </span>
+<div class="header">
+    <div class="flex-parent jc-center center">
+        <div class="card user">
+            <div class="top relative">
+                <div class="ctn flex-parent column center jc-center">
+                    <div class="avatar <% if (user.isCurrent) { %>open-user-edit <% } %> <% if (user.banned) { %>is-banned <% } %>" style="background-image:url(<%= user.avatar %>)"></div>
+                    <div class="username">
+                        <span class="<% if (user.isCurrent) { %>open-user-edit <% } %> flex-child flex-parent center jc-center">
+                            <a>
+                                <% if (user.realname) { %>
+                                    <%= user.realname %>
+                                <% } else { %>
+                                    @<%= user.username %>
+                                <% } %>
+                            </a>
+                            <span class="value"> </span>
+                        </span>
+                    </div>
+                    <div class="location">
+                        <% if (user.realname) { %>
+                            @<%= user.username %>
+                        <% } %>
+                    </div>
+                </div>
+                <div class="overlay"></div>
+                <div class="background" style="background-image:url(<%= user.avatar %>)"></div>
+            </div>
+        </div>
     </div>
+    <span class="close-drawer icon icon-times curp"></span>
 </div>
 
-<div class="ctn-drawer">
-    <div class="user">
-        <p class="username text-center">
-            <% if (user.realname) { %>
-                <%= user.realname %>
-                <br>
-                <span class="othername text-center">@<%= user.username %></span>
-            <% } else { %>
-                @<%= user.username %>
-            <% } %>
-        </p>
 
-        <div class="status-block text-center">
-            <i class="icon icon-dot-circle-o status contrast <%=user.status%>"></i>
-            <em><%= t('global.'+user.status) %></em>
+<div class="scrollable">
+    <div class="arrow-top mt20"></div>
+    <div class="ctn">
+        <div class="flex-parent jc-center center block">
+            <i class="userstatus status <%=user.status%> mr5"></i>
+            <p><%= t('global.'+user.status) %></p>
         </div>
 
+        <% if (user.bio) { %><p class="block mt0"><%= user.bio %></p><% }; %>
 
-        <% if (user.bio) { %><p class="bio mt20 mb20 left"><%= user.bio %></p><% }; %>
-        <% if (user.location) { %><p class="action location left"><i class="icon icon-fw icon-map-marker dc-text"></i> <%= user.location %></p><% }; %>
-        <% if (user.website && user.website.href) { %><p class="action website left"><i class="icon icon-fw icon-link dc-text"></i> <a class="colored" href="<%= user.website.href %>" target="_blank" title="<%= user.website.title %>"><%= user.website.title %></a></p><% }; %>
-        <% if (user.registered) { %><p class="action created left"><i class="icon icon-fw icon-clock-o dc-text"></i> <%= t('profile.user.signuped') %> <span class="ml5" data-time="<%= user.registered %>"></span></p><% }; %>
-
-        <% if (user.isCurrent) { %><p class="action edit left"><i class="icon icon-private dc-text"></i> <a class="colored open-user-account dc-text" data-user-id="<%= user.user_id %>"><%= t('chat.actions.account') %></a></p><% }; %>
-        <% if (user.isCurrent) { %><p class="action edit left"><i class="icon icon-fw icon-pencil dc-text"></i> <a class="colored open-user-edit dc-text" data-user-id="<%= user.user_id %>"><%= t('profile.common.editlink') %></a></p><% }; %>
-        <% if (user.isCurrent) { %><p class="action edit left"><i class="icon icon-fw icon-bell dc-text"></i> <a class="colored open-user-preferences dc-text" data-user-id="<%= user.user_id %>"><%= t('chat.actions.preferences') %></a></p><% }; %>
+        <div class="block <%= !user.bio ? 'mt0' : '' %>">
+            <% if (user.location) { %>                      <p class="left"><i class="icon icon-fw icon-map-marker "></i>    <%= user.location %></p><% }; %>
+            <% if (user.website && user.website.href) { %>  <p class="left"><i class="icon icon-fw icon-link "></i>          <a class="colored" href="<%= user.website.href %>" target="_blank" title="<%= user.website.title %>"><%= user.website.title %></a></p><% }; %>
+            <% if (user.registered) { %>                    <p class="left"><i class="icon icon-fw icon-clock-o "></i>       <%= t('profile.user.signuped') %> <span class="ml5" data-time="<%= user.registered %>"></span></p><% }; %>
+            <% if (user.isCurrent) { %>                     <p class="left"><i class="icon icon-fw icon-private "></i>       <a class="colored open-user-account " data-user-id="<%= user.user_id %>"><%= t('chat.actions.account') %></a></p><% }; %>
+            <% if (user.isCurrent) { %>                     <p class="left"><i class="icon icon-fw icon-pencil "></i>        <a class="colored open-user-edit " data-user-id="<%= user.user_id %>"><%= t('profile.common.editlink') %></a></p><% }; %>
+            <% if (user.isCurrent) { %>                     <p class="left"><i class="icon icon-fw icon-bell"></i>          <a class="colored open-user-preferences " data-user-id="<%= user.user_id %>"><%= t('chat.actions.preferences') %></a></p><% }; %>
+        </div>
 
 
         <% if (!user.isCurrent) { %>
             <!--Check if I banned this user-->
             <% if (user.banned) { %>
-                <p class="action action-user-deban left" data-user-id="<%= user.user_id %>">
-                    <i class="icon icon-fw icon-ban dc-text"></i> <a href="" class="colored dc-text"><%= t('chat.debanuser.infobox') %></a>
+                <p class="action-user-deban left" data-user-id="<%= user.user_id %>">
+                    <i class="icon icon-fw icon-ban "></i> <a href="" class="colored "><%= t('chat.debanuser.infobox') %></a>
                 </p>
             <% } else { %>
-                <p class="action action-user-ban left" data-user-id="<%= user.user_id %>">
-                    <i class="icon icon-fw icon-ban cl-error"></i> <a href="" class="colored dc-text"><%= t('chat.banuser.infobox') %></a>
+                <p class="action-user-ban left" data-user-id="<%= user.user_id %>">
+                    <i class="icon icon-fw icon-ban cl-error"></i> <a href="" class="colored "><%= t('chat.banuser.infobox') %></a>
                 </p>
             <% }; %>
 
             <!--Check if this user banned me-->
             <% if (user.i_am_banned) { %>
-            <p class="action cl-error left">
+            <p class="cl-error left">
                 <i class="icon icon-fw icon-ban cl-error"></i>
                 <%= t('chat.banuser.banned-too') %>
             </p>
@@ -75,7 +84,7 @@
         <div class="user-list block">
             <div class="list">
                 <% _.each(user.rooms_list, function(room) { %>
-                <div class="item open-room-profile <% if (room.oped) { %>op<% } %> <% if (room.owned) { %>owner<% } %>" data-room-id="<%= room.id %>" data-type="rooms" data-username="<%= room.identifier %>" data-toggle="tooltip" data-placement="right">
+                <div class="item open-room-profile <% if (room.oped) { %>op<% } %> <% if (room.owned) { %>owner<% } %>" data-room-id="<%= room.id %>" title="<%= room.identifier %>" data-toggle="tooltip" data-placement="right">
                     <div class="avatar" style="background-image:url(<%= room.avatar %>)"></div>
                 </div>
                 <% }); %>

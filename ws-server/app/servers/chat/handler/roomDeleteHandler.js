@@ -66,8 +66,6 @@ handler.call = function (data, session, next) {
           return callback(err);
         } else if (!model) {
           return callback('group-not-found');
-        } else if (model.default && model.default.toString() === room.id) { // Room is the group default room
-          return callback('not-allowed');
         }
 
         if (!model.isOwner(user.id) && !room.isOwner(user.id) && session.settings.admin !== true) {

@@ -33,6 +33,9 @@ var ModalJoinGroupView = Backbone.View.extend({
     // error and success
     this.$error = this.$('.error');
     this.$success = this.$('.success');
+    this.$confirmEmail = this.$('.confirm-email');
+    this.$confirmPassword = this.$('.confirm-password');
+    this.$confirmRequest = this.$('.confirm-request');
 
     return this;
   },
@@ -44,7 +47,9 @@ var ModalJoinGroupView = Backbone.View.extend({
     }
     var message = this.$('.input-request').val();
 
+    this.$confirmRequest.addClass('loading');
     app.client.groupRequest(this.data.group_id, message, _.bind(function (response) {
+      this.$confirmRequest.removeClass('loading');
       if (response.err) {
         if (response.err === 'already-member' || response.err === 'already-allowed') {
           app.trigger('askMembership');
@@ -69,7 +74,9 @@ var ModalJoinGroupView = Backbone.View.extend({
     if (!password || !this.data.password) {
       return this.$error.text(i18next.t('chat.joingroup.options.password.error')).show();
     }
+    this.$confirmPassword.addClass('loading');
     app.client.groupBecomeMember(this.data.group_id, password, _.bind(function (response) {
+      this.$confirmPassword.removeClass('loading');
       if (response.err) {
         if (response.err === 'wrong-password' || response.err === 'params-password') {
           this.$error.text(i18next.t('chat.joingroup.options.password.error')).show();
@@ -105,11 +112,15 @@ var ModalJoinGroupView = Backbone.View.extend({
       return this.$error.text(i18next.t('global.unknownerror')).show();
     }
 
+    this.$confirmEmail.addClass('loading');
     app.client.groupRequestEmail(this.data.group_id, email, _.bind(function (response) {
+      this.$confirmEmail.removeClass('loading');
       if (response.success) {
-        this.$success.html(i18next.t('chat.joingroup.options.email.success', { email: email })).show();
+        this.$success.html(i18next.t('chat.joingroup.options.email.success')).show();
       } else {
-        if (response.err === 'mail-already-exist') {
+        if (response.err === 'not-confirmed') {
+          this.$success.html(i18next.t('chat.joingroup.options.email.not-confirmed', { email: email })).show();
+        } else if (response.err === 'mail-already-exist') {
           this.$error.text(i18next.t('chat.joingroup.options.email.error')).show();
         } else if (response.err === 'wrong-format') {
           this.$error.text(i18next.t('account.email.error.format')).show();

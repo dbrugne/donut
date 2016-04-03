@@ -1,4 +1,5 @@
 'use strict';
+var logger = require('pomelo-logger').getLogger('donut', __filename.replace(__dirname + '/', ''));
 var errors = require('../../../util/errors');
 var async = require('async');
 
@@ -13,6 +14,8 @@ module.exports = function (app) {
 var handler = Handler.prototype;
 
 handler.call = function (data, session, next) {
+  logger.info('enter in getUserEventHandler', data);
+
   var user = session.__currentUser__;
   var withUser = session.__user__;
   var event = session.__event__;
@@ -37,6 +40,8 @@ handler.call = function (data, session, next) {
       return callback(null);
     }
   ], function (err) {
+    logger.info('leave getUserEventHandler', err);
+
     if (err) {
       return errors.getHandler('history', next)(err);
     }

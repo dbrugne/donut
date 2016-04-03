@@ -23,10 +23,10 @@ var DiscussionInputView = Backbone.View.extend({
   },
 
   initialize: function (options) {
-    this.listenTo(this.model, 'change:focused', this.onFocusChange);
+    //this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(currentUser, 'change:avatar', this.onAvatar);
     this.listenTo(currentUser, 'change:confirmed', this.render);
-    this.listenTo(this.model, 'inputFocus', this.onFocus);
+    //this.listenTo(this.model, 'inputFocus', this.onFocus);
     this.listenTo(this.model, 'inputActive', this.onInputActiveChange);
 
     this.render();
@@ -71,11 +71,11 @@ var DiscussionInputView = Backbone.View.extend({
       this.$el.removeClass('inactive');
     }
   },
-  onFocusChange: function () {
-    if (this.model.get('focused')) {
-      this.onFocus();
-    }
-  },
+  //onFocusChange: function () {
+  //  if (this.model.get('focused')) {
+  //    this.onFocus();
+  //  }
+  //},
   onInputActiveChange: function () {
     if (!this.model.isInputActive()) {
       this.$el.addClass('inactive');
@@ -84,11 +84,11 @@ var DiscussionInputView = Backbone.View.extend({
     }
   },
 
-  onFocus: function () {
-    if (this.$editable && this.model.isInputActive()) {
-      this.$editable.focus();
-    }
-  },
+  //onFocus: function () {
+  //  if (this.$editable && this.model.isInputActive()) {
+  //    this.$editable.focus(); // here comes the bug
+  //  }
+  //},
 
   onAvatar: function (model, value, options) {
     this.$('.avatar').prop('src', common.cloudinary.prepare(value, 35));

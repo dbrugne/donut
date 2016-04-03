@@ -3,6 +3,13 @@ var i18next = require('i18next-client');
 var ONE_DAY = 60 * 60 * 24; // in seconds
 
 window.d = module.exports = {
+  shortDate: function (date) { // Do MMMM YYYY
+    var myDate = new Date(date);
+    if (isNaN(myDate)) {
+      return;
+    }
+    return myDate.getDate() + ' ' + i18next.t('date.months.' + myDate.getMonth()) + ' ' + myDate.getFullYear();
+  },
   longDate: function (date) { // dddd Do MMMM YYYY
     var myDate = new Date(date);
     if (isNaN(myDate)) {
@@ -93,6 +100,18 @@ window.d = module.exports = {
     var currentTimestamp = Math.floor(currentDate.getTime() / 1000);
     var diff = currentTimestamp - myTimestamp;
     return Math.floor(diff / ONE_DAY);
+  },
+  diff: function (date1, date2) {
+    var myDate1 = new Date(date1);
+    if (isNaN(myDate1)) {
+      return;
+    }
+    var myDate2 = new Date(date2);
+    if (isNaN(myDate2)) {
+      return;
+    }
+
+    return myDate1.getTime() - myDate2.getTime();
   },
   isSameDay: function (newDate, previousDate) {
     var sameNewDate = new Date(newDate);

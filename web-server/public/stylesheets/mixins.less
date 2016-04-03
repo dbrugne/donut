@@ -90,29 +90,43 @@
   filter: blur(5px);
 }
 
-.don-button-variant(@cl-start, @cl-end, @cl-text, @cl-border) {
-  .transition(padding 400ms ease);
-  border: 1px solid @cl-border;
-  .border-radius(4px);
-  .align-items(flex-start);
-  background-color: @cl-end;
-  background-image: linear-gradient(@cl-start, @cl-end);
-  background-origin: padding-box;
-  background-repeat: no-repeat;
-  color: @cl-text;
-  cursor: pointer;
+.don-button-variant(@cl-back, @cl-text) {
   display: inline-block;
-  font-size: 1.3rem;
-  font-weight: bold;
-  padding: 5px 10px 5px;
+  position: relative;
+  .transition(padding 400ms ease);
+  background: @cl-back;
+  border-radius: 4px;
+  .ft-opensans-semibold;
+  font-size: 11px;
+  color: @cl-text;
+  letter-spacing: 0.84px;
+  line-height: 21px;
   text-align: center;
-  font-style: initial;
-  white-space: normal;
-  &:hover {
-    background-color: @cl-border;
-    background-image: linear-gradient(@cl-end,@cl-start);
-    border-color: @cl-border;
-    color: @cl-text;
+  text-transform: uppercase;
+  border: 0;
+  padding: 7px 15px;
+  width: 255px;
+  &:active, &:focus, &:hover { background: @cl-back; color: @cl-text; }
+  &.loading { padding-left: 40px; cursor: not-allowed; .opacity(0.65);
+    &::before {
+      @fadeColor: fade(@cl-text, 20%);
+      content: ' ';
+      position: absolute;
+      left: 10px;
+      display: inline-block;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      border-top: 3px solid @fadeColor;
+      border-right: 3px solid @fadeColor;
+      border-bottom: 3px solid @fadeColor;
+      border-left: 3px solid @cl-text;
+      -webkit-transform: translateZ(0);
+      -ms-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-animation: load8 1.1s infinite linear;
+      animation: load8 1.1s infinite linear;
+    }
   }
 }
 
@@ -515,15 +529,15 @@
 @-webkit-keyframes sk-circleFadeDelay { 0%, 39%, 100% { opacity: 0; } 40% { opacity: 1; } }
 @keyframes sk-circleFadeDelay { 0%, 39%, 100% { opacity: 0; } 40% { opacity: 1; } }
 
-/**
-usage
-
-<div class="container-unread-pulse">
-  <div class="unread-dot"></div>
-  <div class="unread-pulse"></div>
-</div>
-
-**/
+// Another spinner icon for buttons states
+@-webkit-keyframes load8 {
+  0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@keyframes load8 {
+  0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+}
 
 
 
@@ -585,7 +599,7 @@ usage
 
 *******************************************************************************/
 
-.margin-loop (@index) when (@index > 0){
+.margin-loop (@index) when (@index >= 0){
   .ml@{index} { margin-left: ~'@{index}px' !important; }
   .mr@{index} { margin-right: ~'@{index}px' !important; }
   .mt@{index} { margin-top: ~'@{index}px' !important; }
@@ -652,36 +666,6 @@ usage
 
 *******************************************************************************/
 
-.compact-sidebar () { width:70px !important;
-  .blur { width:70px;
-    .users { position: relative; padding: 10px 0 30px; height: 100%; background-color: rgba(0, 0, 0, 0.2);
-      .list { list-style: none; padding: 5px; background-repeat: no-repeat; background-position: left top; position: relative; .scrollbar-white; .justify-content(space-around); margin: 0 6px;
-        overflow: visible;
-        height: 100%;
-        > li { margin: 5px 0; float:left; }
-        .clearfix { width:100%; height:5px; clear: both; float: none; }
-        .li-title { margin: 0;
-          .col-md-6 { width:100%; padding: 0; margin-top:5px; }
-        }
-        .item { position: relative; font-size: 0.9em; font-weight: bold; display: block; height: 34px; padding-left: 0;
-          .avatar { display: inline-block; width: 34px; height: 34px;
-            .background { background-position: center center; background-size: 34px 34px; .border-radius(4px); width: 34px; height: 34px; display: inline-block; }
-            &:hover {
-              .dropdown>.dropdown-toggle {
-                display: block;
-              }
-            }
-          }
-          .userstatus { position: absolute; top: 10px; z-index: 1; }
-          .username { display:none; }
-        }
-      }
-    }
-  }
-  .hidden-compact { display:none; }
-  .visible-compact { display:inline; }
-}
-
 .date-discussion() { margin-top: 25px; margin-bottom: 25px; clear: both; border-top: 0; height: 1px; background-color: #D0D9E6; text-align: center; margin-left: -20px;
   .moment { position: relative; top: -0.7em; background-color: @cl-background; text-align: center; font-size: 15px; color: #AFBAC8; line-height: 14px; padding: 0 20px; font-weight: normal;
     &.today, &.yesterday { display:none; }
@@ -690,4 +674,49 @@ usage
   &.yesterday .moment.yesterday{ display:inline; }
   &.today .moment.current,
   &.yesterday .moment.current{ display:none; }
+}
+
+.group-header() {  background-color: #FFF; padding: 15px 100px 15px 170px; position: relative;
+  > .avatar { width:100px; height:100px; position:absolute; top:15px; left:40px; }
+  .info { .justify-content(space-between); padding-top: 6px;
+    .name { .ft-opensans-light; font-size: 25px; color: #1D252F; line-height: 14px; }
+    .dropdown { display: inline-block; position: relative;
+      .dropdown-menu>li>a { color: @cl-subtext40; }
+      button { font-size: 14px; border: none; background-color: transparent; margin:0; padding:0;
+        i {  color: #D0D9E6;
+          &:hover { color: darken(#D0D9E6, 10%); }
+        }
+      }
+    }
+    .separator { border-right: 1px solid #d0d9e6; padding: 0 20px 0 0; margin: 0 20px 0 0; height: 12px; }
+    .share { width:18px; height:18px;
+      i { font-size: 14px; vertical-align: middle; cursor: pointer; color: #D0D9E6;
+        &:hover { color: darken(#D0D9E6, 10%); }
+      }
+    }
+    .links { margin-top:10px;
+      .link { .ft-opensans; font-size: 11px; color: #AFBAC8; letter-spacing: 0.8px; line-height: 14px; margin-right:20px; }
+    }
+    .description { margin-top:10px; .ft-opensans; font-size: 16px; color: #394350; max-height: 42px; line-height: 21px; overflow: hidden; }
+    .users { margin-top:20px;
+      > div { margin-right:25px;
+        .title { .ft-opensans; font-size: 11px; color: #394350; letter-spacing: 0.84px; line-height: 14px; text-transform: uppercase; margin-bottom: 6px;
+          .count { color: #FC2063; }
+        }
+        .avatar { height:19px; width: 19px; margin-right: 5px; }
+        .username { .ft-opensans; font-size: 13px; color: #AFBAC8; letter-spacing: 1px; line-height: 14px; }
+      }
+      .action-ctn { margin-right: 0;
+        .banned-message { color: #FC2026; }
+        .open-create-room, .group-join { width: 250px; }
+        .toggle-collapse > i { display:none; }
+        &.is-member .toggle-collapse .show-is-member          { .display-inline-flex; }
+        &.is-not-member .toggle-collapse .show-is-not-member  { .display-inline-flex; }
+        &.is-owner .toggle-collapse .show-is-owner            { .display-inline-flex; }
+        &.is-op .toggle-collapse .show-is-op                  { .display-inline-flex; }
+        &.is-admin .toggle-collapse .show-is-admin            { .display-inline-flex; }
+      }
+    }
+  }
+  .actions .btn { white-space: nowrap; }
 }

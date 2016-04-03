@@ -15,45 +15,45 @@ var statusClass =   (isBanned)  ? 'is-banned' :
                 <button class="dropdown-toggle flex-parent jc-center center" data-toggle="dropdown" aria-expanded="true">
                     <i class="icon icon-cog icon-fw"></i>
                 </button>
-                <ul class="dropdown-menu" role="menu">
+                <ul class="dropdown-menu dropdown-menu-right" role="menu">
                     <li role="presentation">
                         <a role="menuitem" tabindex="-1" class="open-group-profile" data-group-id="<%= group.group_id %>">
-                            <i class="icon icon-eye"></i> <%= t('global.viewprofile') %>
+                            <img class="img-avatar" src="<%= group.avatarUrl %>" /><%= t('group.dropdown.view-profile') %>
                         </a>
                     </li>
                     <% if (isOp || isOwner || isAdmin) { %>
                         <li role="presentation" class="divider"></li>
                     <% } %>
                     <% if (isOwner || isAdmin ) { %>
-                    <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="open-group-edit" data-group-id="<%= group.group_id %>">
-                            <i class="icon icon-pencil"></i> <%= t('profile.common.editlink') %>
-                        </a>
-                    </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" class="open-group-edit" data-group-id="<%= group.group_id %>">
+                                <i class="icon icon-pencil"></i> <%= t('group.dropdown.edit-profile') %>
+                            </a>
+                        </li>
                     <% }; %>
                     <% if (isOp || isOwner || isAdmin) { %>
-                    <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="open-group-access" data-group-id="<%= group.group_id %>">
-                            <i class="icon icon-public"></i> <%= t('chat.access.link') %>
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="open-group-users" data-group-id="<%= group.group_id %>">
-                            <i class="icon icon-users"></i> <%= t('group.manage') %>
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="open-group-users-allowed" data-group-id="<%= group.group_id %>">
-                            <i class="icon icon-verified-user"></i> <%= t('group.invite') %>
-                        </a>
-                    </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" class="open-group-access" data-group-id="<%= group.group_id %>">
+                                <i class="icon icon-public"></i> <%= t('group.dropdown.access-rules') %>
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" class="open-group-users" data-group-id="<%= group.group_id %>">
+                                <i class="icon icon-users"></i> <%= t('group.dropdown.manage-members') %>
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" class="open-group-users-allowed" data-group-id="<%= group.group_id %>">
+                                <i class="icon icon-verified-user"></i> <%= t('group.dropdown.invites') %>
+                            </a>
+                        </li>
                     <% }; %>
                     <% if (!isOwner && isMember) { %>
-                    <li role="presentation">
-                        <a role="menuitem" tabindex="-1" class="quit-group" data-group-id="<%= group.group_id %>">
-                            <i class="icon icon-times"></i> <%= t('group.close') %>
-                        </a>
-                    </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" class="quit-group" data-group-id="<%= group.group_id %>">
+                                <i class="icon icon-times"></i> <%= t('group.close') %>
+                            </a>
+                        </li>
                     <% } %>
                 </ul>
             </div>
@@ -80,8 +80,8 @@ var statusClass =   (isBanned)  ? 'is-banned' :
                 <a class="link" href="<%= group.website.href %>" target="_blank"><%= group.website.title %></a>
             <% } %>
 
-            <span class="link"><%= t('profile.group.createdat') %> <%= created %></span>
-            <span class="link flex-parent center"><i class="icon users-icon mr5"></i> <%=group.members.length%></span>
+            <span class="link"><%= t('group.created-at') %> <%= created %></span>
+            <span class="link flex-parent center"><i class="icon users-icon mr5"></i> <%= group.members_count %></span>
 
         </div>
 
@@ -93,9 +93,10 @@ var statusClass =   (isBanned)  ? 'is-banned' :
 
             <!--Display owner-->
             <div class="flex-parent column owner">
-                <span class="title"><%= t('chat.owner.state') %></span>
+                <span class="title"><%= t('group.creator') %></span>
                 <div class="flex-parent center">
-                    <img class="avatar open-user-profile curp" data-user-id="<%= group_users.owner.user_id %>" src="<%= group_users.owner.avatar %>" title="<%= group_users.owner.username %>" data-toggle="tooltip" data-placement="top" />
+                    <% var identifier = '@' + group_users.owner.username + (group_users.owner.realname ? ' ('+ group_users.owner.realname +')' : '')  %>
+                    <img class="avatar open-user-profile curp" data-user-id="<%= group_users.owner.user_id %>" src="<%= group_users.owner.avatar %>" title="<%= identifier %>" data-toggle="tooltip" data-placement="top" />
                     <span class="username">@<%=group_users.owner.username%></span>
                 </div>
             </div>
@@ -103,11 +104,12 @@ var statusClass =   (isBanned)  ? 'is-banned' :
             <!--Display op-->
             <% if(group_users.op.length > 0) { %>
                 <div class="flex-parent column">
-                    <span class="title"><%= t('chat.op.state') %> <span class="count"><%=group_users.op.length%></span></span>
+                    <span class="title"><%= t('group.moderators') %> <span class="count"><%=group_users.op.length%></span></span>
                     <div class="flex-parent center">
                         <% var count = 0; %>
                         <%_.find(group_users.op, function (u) { %>
-                        <img class="avatar open-user-profile curp" data-user-id="<%= u.user_id %>" src="<%= u.avatar %>" title="<%= u.username %>" data-toggle="tooltip" data-placement="top" />
+                        <% var identifier = '@' + u.username + (u.realname ? ' ('+ u.realname +')' : '')  %>
+                        <img class="avatar open-user-profile curp" data-user-id="<%= u.user_id %>" src="<%= u.avatar %>" title="<%= identifier %>" data-toggle="tooltip" data-placement="top" />
                         <% count ++; %>
                         <% if (count === 6) { %><i class="icon ellipsis-icon"></i><% return true; } %>
                         <% }); %>
@@ -119,11 +121,12 @@ var statusClass =   (isBanned)  ? 'is-banned' :
             <% if ((isMember || isOwner) && !isBanned) { %>
                 <% if(group_users.members.length > 0) { %>
                     <div class="flex-parent column">
-                        <span class="title"><%= t('chat.users.type.members') %> <span class="count"><%=group_users.members.length%></span></span>
+                        <span class="title"><%= t('group.members') %> <span class="count"><%= (group.members_count - group_users.op.length - 1)%></span></span>
                         <div class="flex-parent center">
                             <% var count = 0; %>
                             <%_.find(group_users.members, function (u) { %>
-                                <img class="avatar open-user-profile curp" data-user-id="<%= u.user_id %>" src="<%= u.avatar %>" title="<%= u.username %>" data-toggle="tooltip" data-placement="top" />
+                                <% var identifier = '@' + u.username + (u.realname ? ' ('+ u.realname +')' : '')  %>
+                                <img class="avatar open-user-profile curp" data-user-id="<%= u.user_id %>" src="<%= u.avatar %>" title="<%= identifier %>" data-toggle="tooltip" data-placement="top" />
                                 <% count ++; %>
                                 <% if (count === 6) { %><i class="icon ellipsis-icon"></i><% return true; } %>
                             <% }); %>
@@ -137,7 +140,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
             <div class="action-ctn flex-parent <%=statusClass%>">
                 <!--Banned message-->
                 <% if (isBanned) { %>
-                    <span class="banned-message"><%= t('chat.blocked.groupban') %></span>
+                    <span class="banned-message"><%= t('messages.groupban') %></span>
                 <% } else { %>
                     <span class="donut-button transparent toggle-collapse">
                         <i class="icon i-icon show-is-member show-is-not-member"></i>
@@ -146,9 +149,9 @@ var statusClass =   (isBanned)  ? 'is-banned' :
                         <i class="icon icon-star cl-warning show-is-admin"></i>
                     </span>
 
-                    <% if (isOwner || isOp || isAdmin || isMember) { %>
+                    <% if (isOwner || isOp || isMember) { %>
                         <!--Create a donut-->
-                        <span class="curp open-create-room donut-button black" data-group-id="<%=group.group_id%>" data-group-name="<%=group.name%>"><%= t('actions.create') %></span>
+                        <span class="curp open-create-room donut-button black" data-group-id="<%=group.group_id%>" data-group-name="<%=group.name%>"><%= t('buttons.create-discussion') %></span>
                     <% } else { %>
                         <!--Ask membership button for non members-->
                         <span class="curp group-join donut-button black"><%= t('group.ask-membership') %></span>
@@ -170,9 +173,9 @@ var statusClass =   (isBanned)  ? 'is-banned' :
 
         <% if (isBanned) { %>
             <div class="text">
-                <%= t('chat.blocked.groupbanned', {at: banned_at}) %>
+                <%= t('messages.groupban-at', {at: banned_at}) %>
                 <% if (reason) { %>
-                    <%= t('chat.blocked.reason') %>
+                    <%= t('messages.reason') %>
                     <br/>
                     <span class="reason"><em><%- reason %></em></span>
                 <% } %>
@@ -195,7 +198,7 @@ var statusClass =   (isBanned)  ? 'is-banned' :
             <div class="flex-child"></div>
             <div class="actions">
                 <span type="button" class="curp donut-button gray open-group-users mr15" data-group-id="<%= group.group_id %>" ><%= t('group.manage') %></span>
-                <span type="button" class="curp donut-button gray open-group-users-allowed" data-group-id="<%= group.group_id %>"><%= t('group.invite')%></span>
+                <span type="button" class="curp donut-button gray open-group-users-allowed" data-group-id="<%= group.group_id %>"><%= t('buttons.invites')%></span>
                 <span class="donut-button transparent toggle-collapse curp"><i class="icon icon-times"></i></span>
             </div>
 
@@ -209,8 +212,8 @@ var statusClass =   (isBanned)  ? 'is-banned' :
         <% } else { %>
             <div class="text">
                 <% if (group.disclaimer) { %>
-                    <p><%= t('group.disclaimer-start') %><strong><span class="open-user-profile fs15 dc-text" data-user-id="<%=group.owner_id %>"></span></strong><%= t('group.disclaimer-end') %></p>
-                    <p class="mt10"><em><%= t('chat.joingroup.disclaimer', {username: group.owner_username ,disclaimer: group.disclaimer}) %></em></p>
+                    <p><%= t('group.disclaimer-start') %><strong><span class="open-user-profile fs15 dc-text" data-user-id="<%=group.owner_id %>"></span></strong></p>
+                    <p class="mt10"><em><%= t('group.disclaimer', {username: group.owner_username ,disclaimer: group.disclaimer}) %></em></p>
                 <% } else { %>
                     <p><%= t('group.default-disclaimer') %></p>
                 <% } %>
@@ -224,10 +227,9 @@ var statusClass =   (isBanned)  ? 'is-banned' :
 </div>
 
 <div class="cards-content flex-parent column jc-center center mt30 mb30">
-    <div class="title1"><%= t('chat.home.browse-more') %></div>
     <div class="filters flex-parent center jc-center">
         <span data-type="rooms" class="curp filter-action active"><%= t('global.rooms') %></span>
-        <span data-type="users" class="curp filter-action"><%= t('chat.users.type.members') %></span>
+        <span data-type="users" class="curp filter-action"><%= t('group.members') %></span>
     </div>
     <div class="cards">
         <div class="toggle-cards rooms"><!--Cards list--></div>

@@ -16,10 +16,10 @@ var validateInput = function (req, res, next) {
       userFields: {email: req.body.email},
       errors: req.validationErrors(),
       token: req.csrfToken(),
-      isIphone: isMobile(req.headers['user-agent']).apple.phone,
-      isAndroid: isMobile(req.headers['user-agent']).android.phone,
-      isWindows: isMobile(req.headers['user-agent']).windows.phone,
-      isMobile: isMobile(req.headers['user-agent']).any
+      isIphone: isMobile(req.headers['user-agent'] || 'unknown').apple.phone,
+      isAndroid: isMobile(req.headers['user-agent'] || 'unknown').android.phone,
+      isWindows: isMobile(req.headers['user-agent'] || 'unknown').windows.phone,
+      isMobile: isMobile(req.headers['user-agent'] || 'unknown').phone
     });
   }
 
@@ -32,10 +32,10 @@ router.route('/login')
       meta: {title: i18next.t('title.default')},
       userFields: {email: req.flash('email')},
       token: req.csrfToken(),
-      isIphone: isMobile(req.headers['user-agent']).apple.phone,
-      isAndroid: isMobile(req.headers['user-agent']).android.phone,
-      isWindows: isMobile(req.headers['user-agent']).windows.phone,
-      isMobile: isMobile(req.headers['user-agent']).any
+      isIphone: isMobile(req.headers['user-agent'] || 'unknown').apple.phone,
+      isAndroid: isMobile(req.headers['user-agent'] || 'unknown').android.phone,
+      isWindows: isMobile(req.headers['user-agent'] || 'unknown').windows.phone,
+      isMobile: isMobile(req.headers['user-agent'] || 'unknown').phone
     });
   })
   .post([require('csurf')(), validateInput, function (req, res, next) {
@@ -54,10 +54,10 @@ router.route('/login')
           userFields: {email: req.body.email},
           errors: [{msg: errorMessage}],
           token: req.csrfToken(),
-          isIphone: isMobile(req.headers['user-agent']).apple.phone,
-          isAndroid: isMobile(req.headers['user-agent']).android.phone,
-          isWindows: isMobile(req.headers['user-agent']).windows.phone,
-          isMobile: isMobile(req.headers['user-agent']).any
+          isIphone: isMobile(req.headers['user-agent'] || 'unknown').apple.phone,
+          isAndroid: isMobile(req.headers['user-agent'] || 'unknown').android.phone,
+          isWindows: isMobile(req.headers['user-agent'] || 'unknown').windows.phone,
+          isMobile: isMobile(req.headers['user-agent'] || 'unknown').phone
         });
       }
       req.logIn(user, function (err) {

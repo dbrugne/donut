@@ -1,14 +1,29 @@
-<div class="side roomside dc-back <% if (!data.poster) { %>poster-empty<% } else { %> poster-full <% } %>" style="<% if (typeof data.poster !== 'undefined') { %>background-image: url(<%= data.poster %>);<% }; %>">
-    <div class="blur dc-back" style="<% if (typeof data.posterblured !== 'undefined') { %>background-image: url(<%= data.posterblured %>);<% }; %>">
-        <div class="users">
-            <div class="scrollable">
-                <ul class="list">
-                    <li class="pad loading"><%= spinner %></li>
-                </ul>
-            </div>
-        </div>
+<div class="side relative flex-parent <% if (!data.poster) { %>poster-empty<% } else { %> poster-full <% } %>">
+    <div class="handle">
+        <div class="handle-left"></div>
+        <div class="handle-right"></div>
     </div>
+
+    <div class="blur" style="<% if (typeof data.posterblured !== 'undefined') { %>background-image: url(<%= data.posterblured %>);<% }; %>"></div>
+
+    <ul class="nav nav-tabs flex-parent column" role="tablist">
+        <li role="presentation" class="active"><a href="#tab-content-room-users"    aria-controls="tab-content-room-users" role="tab" data-toggle="tab"><i class="icon icon-users"></i></a></li>
+        <!--<li role="presentation"><a href="#tab-content-room-search"   aria-controls="tab-content-room-search" role="tab" data-toggle="tab"><i class="icon icon-search"></i></a></li>-->
+        <!--<li role="presentation"><a href="#tab-content-room-starred"  aria-controls="tab-content-room-starred" role="tab" data-toggle="tab"><i class="icon icon-star"></i></a></li>-->
+        <!--<li role="presentation"><a href="#tab-content-room-pictures" aria-controls="tab-content-room-pictures" role="tab" data-toggle="tab"><i class="icon icon-camera"></i></a></li>-->
+        <!--<li role="presentation"><a href="#tab-content-room-files"    aria-controls="tab-content-room-files" role="tab" data-toggle="tab"><i class="icon icon-file"></i></a></li>-->
+    </ul>
+
+    <div class="tab-content flex-child">
+        <div role="tabpanel" class="tab-pane active room-users"     id="tab-content-room-users"><!--dynamic content--></div>
+        <!--<div role="tabpanel" class="tab-pane room-search"    id="tab-content-room-search">&lt;!&ndash;dynamic content&ndash;&gt;</div>-->
+        <!--<div role="tabpanel" class="tab-pane room-starred"   id="tab-content-room-starred">&lt;!&ndash;dynamic content&ndash;&gt;</div>-->
+        <!--<div role="tabpanel" class="tab-pane room-pictures"  id="tab-content-room-pictures">&lt;!&ndash;dynamic content&ndash;&gt;</div>-->
+        <!--<div role="tabpanel" class="tab-pane room-files"     id="tab-content-room-files">&lt;!&ndash;dynamic content&ndash;&gt;</div>-->
+    </div>
+
 </div><!-- /.side -->
+
 <div class="content">
     <div class="header room"><!-- header view --></div>
     <div class="date-ctn">

@@ -209,7 +209,17 @@ module.exports = function (search, options, callback) {
 
       var criteria = {deleted: {$ne: true}};
       if (_regexp) {
-        criteria.username = _regexp;
+        criteria = {
+          $and: [
+            {deleted: {$ne: true}},
+            {
+              $or: [
+                {username: _regexp},
+                {realname: _regexp}
+              ]
+            }
+          ]
+        };
       }
 
       var q = UserModel.find(criteria, 'username realname avatar facebook bio ones location');

@@ -124,14 +124,8 @@ var DrawerUserProfileView = Backbone.View.extend({
     }, this));
   },
   initializeTooltips: function () {
-    this.$el.find('[data-toggle="tooltip"][data-type="rooms"]').tooltip({
-      html: true,
-      animation: false,
-      container: 'body',
-      template: '<div class="tooltip tooltip-home-users" role="tooltip"><div class="tooltip-inner right"></div></div>',
-      title: function () {
-        return '<div class="username">' + this.dataset.username + '</div>';
-      }
+    this.$el.find('[data-toggle="tooltip"]').tooltip({
+      container: 'body'
     });
   }
 });

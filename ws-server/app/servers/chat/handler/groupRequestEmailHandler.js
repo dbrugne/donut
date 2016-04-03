@@ -55,7 +55,7 @@ handler.call = function (data, session, next) {
         return callback('domain-not-allowed-for-this-group');
       }
       if (group.isEmailPending(email)) {
-        return callback('mail-already-exist');
+        return callback('not-confirmed');
       }
 
       // user

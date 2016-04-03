@@ -1,11 +1,16 @@
-<div class="mt10 alert alert-danger">
-    <span class="error-label"></span>
+<div class="error">
+    <span class="alert-danger" aria-hidden="true"></span>
+    <span class="alert-danger error-label"></span>
 </div>
-<div class="mt10 alert alert-success">
-    <span class="success-label"><%= t('account.email.success') %></span>
+
+<div class="success">
+    <span class="alert-success" aria-hidden="true"></span>
+    <span class="alert-success success-label"><%= t('account.email.success') %></span>
 </div>
+
+<p class="block"><%= t('account.manageemail.choose-main') %></p>
+
 <table class="table table-striped table-emails" style="width:100%;">
-    <thead><%= t('account.manageemail.main') %></thead>
     <% _.each(emails, function(e, index) { %>
     <tr>
         <td class="main-mail text-center" style="width:1px;">
@@ -50,6 +55,7 @@
         <% } %>
     </tr>
 </table>
-<div class="container-fluid">
-    <input type="submit" class="btn btn-success add-email pull-right" value="<%= t('account.manageemail.add') %>">
+
+<div class="flex-parent column center jc-center block">
+    <button type="submit" class="btn btn-primary add-email"><%= t('account.manageemail.add') %></button>
 </div>

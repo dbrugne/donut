@@ -1,11 +1,13 @@
-<% if(list.length > 0) { %>
-    <div class="ctn">
-        <div class="title"><%= t('chat.home.whats-new-title') %></div>
-        <div class="close curp"><i class="icon icon-times"></i></div>
-        <ul>
-            <% _.each(list, function(item) { %>
-                <li class="item"><%= item %></li>
-            <% }); %>
-        </ul>
+<div class="ctn">
+    <div class="background"></div>
+    <div class="title mb20"><%= t('chat.home.whats-new-title') %></div>
+    <div class="close-news curp"><i class="icon icon-times"></i></div>
+    <div class="results">
+        <p><%= t('chat.home.whats-new-content') %></p>
+        <div class="flex-parent jc-center center">
+            <a href="https://itunes.apple.com/fr/app/donut-chat/id1067579321?mt=8" class="mr10 ml10"><img src="/images/svg/app-store.svg" /></a>
+            <a href="https://play.google.com/store/apps/details?id=me.donut.mobile&hl=fr" class="mr10 ml10"><img src="/images/svg/google-play.svg" /></a>
+            <a href="https://play.google.com/store/apps/details?id=me.donut.mobile&hl=fr" class="mr10 ml10"><img src="/images/svg/windows-phone.svg" /></a>
+        </div>
     </div>
-<% } %>
+</div>

@@ -49,7 +49,7 @@ var GroupAccessView = Backbone.View.extend({
     this.listenTo(this.dropdownUsersView, 'onSearch', this.onSearch);
     this.listenTo(this.dropdownUsersView, 'onClickLi', this.onAllowUser);
 
-    this.$errors = this.$('.errors');
+    this.$errors = this.$('.error');
 
     this.tablePending = new TableView({
       el: this.$('.allow-pending'),

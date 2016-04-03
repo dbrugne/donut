@@ -1,37 +1,39 @@
-<div class="relative">     <span class="close icon icon-times"></span> </div>
-
-<div class="title">
-    <%= t('profile.common.editlink') %>
-    @<%= user.username %>
+<div class="header">
+    <div class="title">
+        <%= t('drawers.user-edit.title') %>
+    </div>
+    <span class="close-drawer icon icon-times curp"></span>
 </div>
 
-<div class="ctn-drawer">
-    <div class="errors block mb20"></div>
+<div class="scrollable">
+    <div class="error block"></div>
 
-    <form class="user-form" role="form">
+    <form class="user-form block" role="form">
         <div class="block">
-            <label><%= t('chat.form.user-form.edit.username.label') %> </label>
-            <span class="user-username">@<%= user.username %></span>&nbsp;<span class="help"><%= t('chat.form.user-form.edit.username.info') %></span>
+            <span class="label"><%= t('chat.form.user-form.edit.username.label') %></span>
+            <span class="value email-user">@<%= user.username %></span>
+            <span class="label" id="email-modal-link"><%= t('chat.form.user-form.edit.username.info') %></span>
         </div>
+
         <div class="block">
             <label for="userRealName"><%= t('chat.form.user-form.edit.real-name.label') %></label>
             <input name="realname" class="form-control" id="userRealName" placeholder="<%= t('chat.form.user-form.edit.real-name.placeholder') %>" value="<%= user.realname %>" maxlength="20">
-            <p class="help-block"><%= t('chat.form.user-form.edit.real-name.help') %></p>
+            <p class="help"><%= t('chat.form.user-form.edit.real-name.help') %></p>
         </div>
         <div class="block">
             <label for="userBio"><%= t('chat.form.user-form.edit.bio.label') %></label>
             <textarea name="bio" class="form-control" id="userBio" placeholder="<%= t('chat.form.user-form.edit.bio.placeholder') %>" maxlength="200"><%= user.bio %></textarea>
-            <p class="help-block"><%= t('chat.form.user-form.edit.bio.help') %><span class="counter"></span></p>
+            <p class="help"><%= t('chat.form.user-form.edit.bio.help') %><span class="counter pull-right"></span></p>
         </div>
         <div class="block">
             <label for="userLocation"><%= t('chat.form.user-form.edit.location.label') %></label>
             <input name="location" type="text" class="form-control" id="userLocation" placeholder="<%= t('chat.form.user-form.edit.location.placeholder') %>" value="<%= user.location %>">
-            <p class="help-block"><%= t('chat.form.user-form.edit.location.help') %></p>
+            <p class="help"><%= t('chat.form.user-form.edit.location.help') %></p>
         </div>
         <div class="block">
             <label for="userWebsite"><%= t('chat.form.common.edit.website.label') %></label>
             <input name="website" type="text" class="form-control" id="userWebsite" placeholder="<%= t('chat.form.common.edit.website.placeholder') %>" value="<% if (user.website) { %><%= user.website.title %><% } %>">
-            <p class="help-block"><%= t('chat.form.common.edit.website.help') %></p>
+            <p class="help"><%= t('chat.form.common.edit.website.help') %></p>
         </div>
         <div class="block">
             <label><%= t('chat.form.common.edit.avatar.label') %></label>
@@ -40,11 +42,11 @@
         <div class="block">
             <label><%= t('chat.form.common.edit.poster.label') %></label>
             <div class="user-poster"></div>
-            <p class="help-block"><%= t('chat.form.common.edit.poster.help') %></p>
+            <p class="help"><%= t('chat.form.common.edit.poster.help') %></p>
         </div>
-        <div class="block buttons flex-parent jc-end">
-            <a class="btn btn-default cancel mr10"><%= t('global.cancel') %></a>
-            <input class="btn btn-success" type="submit" value="<%= t('global.save') %>">
+        <div class="flex-parent center jc-center block">
+            <button class="btn btn-link cancel"><%= t('global.cancel') %></button>
+            <button class="btn btn-default save-user" type="submit"><%= t('global.save') %></button>
         </div>
     </form>
 </div>

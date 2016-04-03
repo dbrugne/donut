@@ -26,22 +26,26 @@ var DrawerRoomCreateView = Backbone.View.extend({
     var html = this.template({name: name, group_id: this.group_id, group_name: this.group_name, confirmed: currentUser.isConfirmed()});
     this.$el.html(html);
     this.$input = this.$el.find('input[name=input-create]');
-    this.$errors = this.$el.find('.errors');
+    this.$errorLabel = this.$('.error-label');
+    this.$error = this.$('.error');
     this.$submit = this.$el.find('.submit');
+    this.$error.hide();
     return this;
   },
   focusField: function () {
     this.$input.focus();
   },
   reset: function () {
-    this.$errors.html('').hide();
+    this.$error.hide();
+    this.$errorLabel.html('');
     this.$el.removeClass('has-error').removeClass('has-success').val('');
   },
   setError: function (err) {
     if (err === 'unknown') {
       err = i18next.t('global.unknownerror');
     }
-    this.$errors.html(err).show();
+    this.$error.show();
+    this.$errorLabel.html(err);
   },
   removeView: function () {
     this.drawerRoomCreateModeView.remove();

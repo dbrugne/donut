@@ -3,17 +3,26 @@ var EventsView = require('./discussion-events');
 var InputView = require('./discussion-input');
 var OneHeaderView = require('./discussion-onetoone-header');
 var date = require('../libs/date');
+// @todo implement onetoone-search
+// @todo implement onetoone-stars
+// @todo implement onetoone-pictures
+// @todo implement onetoone-files
 
 var OneToOnePanelView = Backbone.View.extend({
   tagName: 'div',
 
   className: 'discussion',
 
+  events: {
+    'click .handle>div': 'onCollapse'
+  },
+
   template: require('../templates/discussion-onetoone.html'),
 
   initialize: function () {
     this.listenTo(this.model, 'change:focused', this.onFocusChange);
     this.listenTo(this.model, 'change:poster', this.onPoster);
+    this.listenTo(this.model, 'change:posterblured', this.onPosterBlured);
 
     this.render();
 
@@ -53,12 +62,18 @@ var OneToOnePanelView = Backbone.View.extend({
       this.$el.hide();
     }
   },
-  onPoster: function (model, url, options) {
+  onPoster: function (model, url, options) { // @todo fetched poster url is not cloudinary computed
     this.$('div.side').css('background-image', 'url(' + url + ')');
     this.$('div.side').removeClass('poster-empty');
     if (url === '') {
       this.$('div.side').addClass('poster-empty');
     }
+  },
+  onPosterBlured: function (model, url) {
+    this.$('div.blur').css('background-image', 'url(' + url + ')');
+  },
+  onCollapse: function () {
+    this.$('.side').toggleClass('collapsed');
   }
 });
 
