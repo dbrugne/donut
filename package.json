@@ -18,7 +18,7 @@
   },
   "repository": "https://github.com/dbrugne/donut",
   "dependencies": {
-    "@dbrugne/donut-client": "^1.0.0",
+    "@dbrugne/donut-client": "1.0.41",
     "@dbrugne/donut-common": "^1.0.0",
     "async": "1.x",
     "backbone": "^1.2.1",
