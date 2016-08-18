@@ -4,7 +4,6 @@ var Backbone = require('backbone');
 var common = require('@dbrugne/donut-common/browser');
 var i18next = require('i18next-client');
 var app = require('../libs/app');
-var urls = require('../../../../shared/util/url');
 var date = require('../libs/date');
 var GroupUsersView = require('./group-users');
 var CardsView = require('./cards');
@@ -21,8 +20,7 @@ var GroupView = Backbone.View.extend({
     'click .share .facebook': 'shareFacebook',
     'click .share .twitter': 'shareTwitter',
     'click .share .googleplus': 'shareGoogle',
-    'click .toggle-collapse': 'toggleCollapse',
-    'click .filter-action': 'onClickFilterAction'
+    'click .toggle-collapse': 'toggleCollapse'
   },
 
   initialize: function (options) {
@@ -54,24 +52,11 @@ var GroupView = Backbone.View.extend({
   onResponse: function (response) {
     // prepare avatar for group
     response.avatarUrl = common.cloudinary.prepare(response.avatar, 100);
-    // prepare room avatar & uri
-    var rooms = [];
-    _.each(response.rooms, function (room) {
-      room.avatar = common.cloudinary.prepare(room.avatar, 60);
-      if (room.owner) {
-        room.owner_id = room.owner.user_id;
-        room.owner_username = room.owner.username;
-      }
-      room.group_id = response.group_id;
-      room.group_name = response.name;
-      room.group_avatar = common.cloudinary.prepare(response.avatar, 22);
-      room.join = urls(room, 'room', 'uri');
-      room.type = 'room';
-      rooms.push(room);
-    });
+
     if (response.disclaimer) {
       response.disclaimer = _.escape(response.disclaimer);
     }
+
     var data = {
       isMember: response.is_member,
       isOp: response.is_op,
@@ -85,19 +70,19 @@ var GroupView = Backbone.View.extend({
       data.banned_at = date.longDate(response.banned_at);
       data.reason = response.reason;
     }
+
     // populate owner / op / users avatars
     var users = {
       owner: {},
       op: [],
       members: []
     };
-    var userlist = [];
+
     var isAllowed = response.is_member || response.is_op || response.is_owner || app.user.isAdmin();
     _.each(data.group.members, _.bind(function (u) {
       if (u.is_owner || u.is_op || isAllowed) {
         var u2 = _.clone(u);
         u2.type = 'user';
-        userlist.push(u2);
       }
       u.avatar = common.cloudinary.prepare(u.avatar, 30);
       if (u.is_owner) {
@@ -121,33 +106,48 @@ var GroupView = Backbone.View.extend({
     var html = this.template(data);
     this.$el.html(html);
 
+    var groupId = this.model.get('group_id');
+
     this.roomsView = new CardsView({
-      el: this.$('.cards').find('.rooms')
+      el: this.$('.cards').find('.rooms'),
+      type: 'rooms',
+      loadData: function (skip, fn) {
+        app.client.search({
+          type: 'rooms',
+          limit: 9,
+          skip: skip,
+          full: true,
+          filter_on_group_id: groupId
+        }, fn);
+      }
     });
 
     this.usersView = new CardsView({
-      el: this.$('.cards').find('.users')
+      el: this.$('.cards').find('.users'),
+      type: 'users',
+      loadData: function (skip, fn) {
+        app.client.search({
+          type: 'users',
+          limit: 9,
+          skip: skip,
+          full: true,
+          filter_on_group_id: groupId
+        }, fn);
+      }
     });
 
-    this.roomsView.render({
-      rooms: {
-        list: rooms
-      },
-      title: false,
-      fill: true,
-      more: false,
-      search: false
-    });
+    if (!this.roomsView.loaded) {
+      this.roomsView.load();
+    }
 
-    this.usersView.render({
-      users: {
-        list: userlist
-      },
-      title: false,
-      fill: true,
-      more: false,
-      search: false
-    });
+    // detect click on tab to load group user at least one when needed (rooms are loaded by default just above)
+    this.$('a[data-toggle="tab"]').on('show.bs.tab', _.bind(function (e) {
+      if ($(e.target).data('type') === 'users') {
+        if (!this.usersView.loaded) {
+          this.usersView.load();
+        }
+      }
+    }, this));
 
     this.groupUsersView = new GroupUsersView({
       el: this.$('.users.user-list'),
@@ -161,6 +161,9 @@ var GroupView = Backbone.View.extend({
     this.initializeTooltips();
 
     return this;
+  },
+  onShowTab: function (event) {
+    console.log('onShowTab');
   },
   removeView: function () {
     this.groupUsersView._remove();
@@ -235,23 +238,6 @@ var GroupView = Backbone.View.extend({
   shareGoogle: function () {
     $.socialify.google({
       url: this.model.getUrl()
-    });
-  },
-
-  onClickFilterAction: function (event) {
-    var elt = $(event.currentTarget);
-
-    // only care when changing selection
-    if (elt.hasClass('active')) {
-      return;
-    }
-
-    this.$('.filter-action').each(function () {
-      $(this).toggleClass('active');
-    });
-
-    this.$('.cards-content').find('.toggle-cards').each(function () {
-      $(this).toggleClass('hidden');
     });
   }
 });

@@ -1,0 +1,43 @@
+<div class="card user">
+    <div class="top relative">
+        <div class="ctn flex-parent column center jc-center">
+            <a class="open-user-profile avatar-ctn" data-user-id="<%=card.user_id%>">
+                <div class="avatar" style="background-image:url(<%= card.avatar %>)"></div>
+            </a>
+            <div class="username">
+                <a class="open-user-profile flex-child flex-parent center jc-center" data-user-id="<%=card.user_id%>">
+                    <span class="value">
+                        <% if (card.realname) { %>
+                        <%= card.realname %>
+                        <% } else { %>
+                        @<%= card.username %>
+                        <% } %>
+                    </span>
+                    <span class="value"></span>
+                </a>
+            </div>
+            <div class="location"><% if (card.location) { %><%=card.location%><% } %></div>
+            <% if(card.is_owner || card.is_op) { %>
+             <div class="status flex-parent center jc-center" data-toggle="tooltip" title="<%= card.is_owner ? t('global.owner') : t('global.op') %>">
+                 <% if(card.is_owner) { %>
+                     <i class="icon icon-owner"></i>
+                 <% } else { %>
+                     <i class="icon deop-icon"></i>
+                 <% } %>
+             </div>
+            <% } %>
+        </div>
+        <div class="overlay"></div>
+        <div class="background" style="background-image:url(<%= card.avatar %>)"></div>
+    </div>
+    <div class="bottom">
+        <div class="bio">
+            <%= card.bio %>
+        </div>
+        <div class="button">
+            <a class="join" href="<%= card.join %>">
+                <%= t('actions.discuss') %>
+            </a>
+        </div>
+    </div>
+</div>

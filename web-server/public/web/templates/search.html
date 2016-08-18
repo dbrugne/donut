@@ -1,3 +1,8 @@
+<% var activeUsers  = data && data.what && data.what.users %>
+<% var activeGroups = data && data.what && data.what.groups %>
+<% var activeRooms  = !activeUsers && !activeGroups %>
+
+
 <div class="search">
     <div class="search-results mb15">
         <div class="title flex-child">
@@ -7,12 +12,21 @@
     </div>
 
     <div class="center-block">
-        <ul class="nav nav-pills search-options flex-parent center jc-center">
-            <li role="presentation" class="curp <% if ( data && data.what && data.what.users  ) { print('active') } %>" data-type="users"  ><a href="#" data-type="users"  ><%= t('chat.search.search_in_users') %></a></li>
-            <li role="presentation" class="curp <% if ( data && data.what && data.what.rooms  ) { print('active') } %>" data-type="rooms"  ><a href="#" data-type="rooms"  ><%= t('chat.search.search_in_rooms') %></a></li>
-            <li role="presentation" class="curp <% if ( data && data.what && data.what.groups ) { print('active') } %>" data-type="groups" ><a href="#" data-type="groups" ><%= t('chat.search.search_in_groups') %></a></li>
+        <ul class="nav nav-pills search-options flex-parent center jc-center" role="tablist">
+            <li role="presentation" class="curp <%= activeUsers ? 'active' : ''  %>"><a href="#search-users"  aria-controls="search-users"  data-toggle="tab" data-type="users"  ><%= t('chat.search.search_in_users') %></a></li>
+            <li role="presentation" class="curp <%= activeRooms ? 'active' : ''  %>"><a href="#search-rooms"  aria-controls="search-rooms"  data-toggle="tab" data-type="rooms"  ><%= t('chat.search.search_in_rooms') %></a></li>
+            <li role="presentation" class="curp <%= activeGroups ? 'active' : '' %>"><a href="#search-groups" aria-controls="search-groups" data-toggle="tab" data-type="groups" ><%= t('chat.search.search_in_groups') %></a></li>
         </ul>
     </div>
 </div>
-<div class="cards"><!--cards list--></div>
-<button class="load-more btn btn-pink btn-big center-block mt20 mb20 hidden" style="display: block"><%= t('landing.loadmore') %></button>
+<div class="cards-view tab-content">
+    <div role="tabpanel" class="tab-pane <%= activeUsers ? 'active' : ''  %>" id="search-users">
+        <div class="toggle-cards users"><!--Cards list--></div>
+    </div>
+    <div role="tabpanel" class="tab-pane <%= activeRooms ? 'active' : ''  %>" id="search-rooms">
+        <div class="toggle-cards rooms"><!--Cards list--></div>
+    </div>
+    <div role="tabpanel" class="tab-pane <%= activeGroups ? 'active' : '' %>" id="search-groups">
+        <div class="toggle-cards groups"><!--Cards list--></div>
+    </div>
+</div>

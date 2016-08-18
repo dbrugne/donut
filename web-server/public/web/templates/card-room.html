@@ -1,0 +1,65 @@
+<div class="card room">
+    <div class="top relative">
+        <div class="ctn flex-parent column center jc-center">
+            <a class="open-room-profile avatar-ctn" data-room-id="<%=card.room_id%>">
+                <div class="avatar open-room-profile curp" data-room-id="<%=card.room_id%>" style="background-image:url(<%= card.avatar %>)"></div>
+            </a>
+            <div class="name">
+                <div class="groupname">
+                    <% if (card.group_name) { %>
+                    <a class="open-group-profile flex-child flex-parent center jc-center" data-group-id="<%= card.group_id %>">
+                        <span class="value">
+                            <%= '#' + card.group_name %>
+                        </span>
+                    </a>
+                    <% } %>
+                </div>
+                <div class="roomname">
+                    <a class="open-room-profile flex-child flex-parent center jc-center" data-room-id="<%=card.room_id%>">
+                        <span class="value">
+                            <% if (card.group_name) { %>
+                                <%= '/' + card.name %>
+                            <% } else { %>
+                                <%= '#' + card.name %>
+                            <% } %>
+                        </span>
+                    </a>
+                </div>
+            </div>
+            <div class="owner">
+                <% if (card.owner_id) { %>
+                <span class="by"><%= t('global.by') %> </span><a class="open-user-profile" data-user-id="<%= card.owner_id %>">@<%= card.owner_username %></a>
+                <% } %>
+            </div>
+            <% if (card.group_avatar) { %>
+            <div class="avatar-group open-group-profile" data-toggle="tooltip" title="<%= card.group_name %>" data-group-id="<%= card.group_id %>" style="background-image:url(<%= card.group_avatar %>)"></div>
+            <% } %>
+            <% if (card.mode === 'private') { %>
+            <div class="mode" data-toggle="tooltip" title="<%= t('global.mode.title.' + card.private) + ': ' + t('global.mode.description.' + card.private) %>">
+                <span class="<%=card.private%>"></span>
+            </div>
+            <% } %>
+        </div>
+        <div class="background-ctn">
+            <div class="overlay"></div>
+            <div class="background" style="background-image:url(<%= card.avatar %>)"></div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="description">
+            <%= card.description %>
+        </div>
+        <div class="discussions flex-parent column">
+            <div class="flex-parent center flex-child">
+                <div class="users"><i class="icon-users-custom mr5"></i>
+                    <%=card.users%>
+                </div>
+            </div>
+        </div>
+        <div class="button">
+            <a class="join" href="<%= card.join %>">
+                <%= t('global.view-room') %>
+            </a>
+        </div>
+    </div>
+</div>

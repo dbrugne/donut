@@ -44,7 +44,7 @@ module.exports = function (app, user, users, fn) {
           realname: u.realname,
           username: u.username,
           avatar: u._avatar(),
-          poster: u._poster(),
+          poster: u._poster(true), // poster is always blured for user
           location: u.location,
           website: u.website,
           banned: user.isBanned(u.id), // for ban/deban menu

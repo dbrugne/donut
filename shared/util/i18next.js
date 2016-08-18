@@ -8,7 +8,7 @@ i18next.init({
   cookieName: conf.i18n.cookie,
   saveMissing: false,
   detectLngQS: 'force_locale', // set by facebooklocale.js middleware,
-  fallbackLng: ['fr'],
+  fallbackLng: ['en'],
   detectLngFromHeaders: false // Chrome set header to prefer english disregarding OS/user language
 });
 

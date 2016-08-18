@@ -768,4 +768,28 @@ userSchema.methods.isRoomGroupBanned = function (roomId) {
   });
 };
 
+userSchema.methods.toClientJSON = function () {
+  var data = {
+    user_id: this.id,
+    username: this.username,
+    realname: this.realname,
+    avatar: this._avatar()
+  };
+
+  if (typeof this.__status !== 'undefined') {
+    data.status = (this.__status === true)
+      ? 'online'
+      : 'offline';
+  }
+
+  if (this.location) {
+    data.location = this.location;
+  }
+  if (this.bio) {
+    data.bio = this.bio;
+  }
+
+  return data;
+};
+
 module.exports = mongoose.model('User', userSchema);

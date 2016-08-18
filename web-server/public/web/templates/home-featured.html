@@ -1,3 +1,4 @@
+<% if (groups && groups.length) { %>
 <div class="featured-communities mt40 relative">
     <div class="flex-parent center">
         <div class="flex-parent column ml15">
@@ -32,13 +33,17 @@
                 </div>
                 <div class="bottom flex-parent jc-center center">
                     <div class="infos flex-child">
+                        <% if (card.description) { %>
                         <i class="icon i-icon curp" data-toggle="tooltip" title="<%= card.description %>" data-placement="bottom"></i>
+                        <% } else { %>
+                        <i></i>
+                        <% } %>
                     </div>
                     <div class="button flex-child">
                         <a class="join" href="<%= card.join %>"><%= t('actions.join') %></a>
                     </div>
                     <div class="users flex-child flex-parent center jc-center">
-                        <i class="icon-users-custom mr5"></i> <%=card.users%>
+                        <i class="icon-users-custom mr5"></i> <%=card.members%>
                     </div>
                 </div>
             </div>
@@ -48,6 +53,8 @@
         </span>
     </div>
 </div>
+<% } %>
+<% if (rooms && rooms.length) { %>
 <div class="featured-discussions mt40 relative">
     <div class="flex-parent center">
         <div class="flex-parent column ml15">
@@ -97,7 +104,11 @@
                 </div>
                 <div class="bottom flex-parent jc-center center">
                     <div class="infos flex-child">
+                        <% if (card.description) { %>
                         <i class="icon i-icon curp" data-toggle="tooltip" title="<%- card.description %>" data-placement="bottom"></i>
+                        <% } else { %>
+                        <i></i>
+                        <% } %>
                     </div>
                     <div class="button flex-child">
                         <a class="join" href="<%= card.join %>"><%= t('actions.join') %></a>
@@ -111,3 +122,4 @@
         </span>
     </div>
 </div>
+<% } %>

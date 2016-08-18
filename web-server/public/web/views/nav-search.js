@@ -102,16 +102,11 @@ var SearchView = Backbone.View.extend({
     this.$el.addClass('open');
 
     var options = {
-      users: true,
-      rooms: true, // by default, search on rooms
-      groups: true,
-      limit: {
-        users: 4,
-        groups: 4,
-        rooms: 4
-      }
+      search: s,
+      type: 'all',
+      limit: 4
     };
-    app.client.search(s, options, _.bind(function (data) {
+    app.client.search(options, _.bind(function (data) {
       var total = (data.groups && data.groups.list
           ? data.groups.list.length
           : 0) +

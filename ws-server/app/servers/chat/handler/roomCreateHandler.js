@@ -99,9 +99,11 @@ handler.call = function (data, session, next) {
         room.group = group.id;
       }
       if (data.mode === 'private') {
-        room.allow_user_request = true; // always set this option to true on private room creation
         if (data.group_id) {
-          room.allow_user_request = false; // except for rooms inside a group ==> #1326
+          room.allow_user_request = false;
+          room.allow_group_member = true;
+        } else {
+          room.allow_user_request = true;
         }
       }
 

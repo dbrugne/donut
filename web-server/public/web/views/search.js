@@ -13,123 +13,81 @@ var SearchPageView = Backbone.View.extend({
   lastSearch: '',
   limit: 25,
 
-  events: {
-    'click .load-more': 'onLoadMore',
-    'click .search-options li': 'onKeyup'
-  },
-
   initialize: function () {
     this.$search = $('#navbar').find('.search').find('input[type=text]').first();
   },
 
   render: function (data) {
-    if (data.what && data.what.users === false && data.what.rooms === false && data.what.groups === false) {
-      var types = this.getTypes();
-      if (types === null) {
-        data.what.rooms = true;
-      } else {
-        data.what = types;
-      }
-    }
+    // display search query and set a tab as active if any choosen
+    this.$el.html(this.template({data: data})).show();
+    var val = this.$search.val();
+    var limit = this.limit;
 
-    this.$el.html(this.template({data: data}));
-    this.$options = this.$('.search-options');
-    this.cardsView = new CardsView({
-      el: this.$('.cards')
+    this.searchRoomsView = new CardsView({
+      el: this.$('.cards-view').find('.rooms'),
+      type: 'rooms',
+      loadData: function (skip, fn) {
+        app.client.search({
+          search: val,
+          type: 'rooms',
+          limit: limit,
+          skip: skip,
+          full: true
+        }, fn);
+      }
     });
-    this.$searchMore = this.$('.load-more');
+
+    this.searchUsersView = new CardsView({
+      el: this.$('.cards-view').find('.users'),
+      type: 'users',
+      loadData: function (skip, fn) {
+        app.client.search({
+          search: val,
+          type: 'users',
+          limit: limit,
+          skip: skip,
+          full: true
+        }, fn);
+      }
+    });
+
+    this.searchGroupsView = new CardsView({
+      el: this.$('.cards-view').find('.groups'),
+      type: 'groups',
+      loadData: function (skip, fn) {
+        app.client.search({
+          search: val,
+          type: 'groups',
+          limit: limit,
+          skip: skip,
+          full: true
+        }, fn);
+      }
+    });
 
     app.trigger('setTitle');
 
-    if (data && data.search && data.what) {
-      return this.search(data.search, data.skip, data.what);
-    }
-
-    data.search = this.$search.val();
-    this.search(data.search, null, data.what);
-  },
-  onHome: function (data) {
-    data.fill = true;
-    this.cardsView.render(data);
-    this.$el.show();
-  },
-  onSearchResults: function (data) {
-    data.search = true;
-    this.onHome(data);
-    this.toggleMore(data);
-  },
-  toggleMore: function (data) {
-    if ((data.rooms && data.rooms.more) || (data.groups && data.groups.more) || (data.users && data.users.more)) {
-      this.$searchMore.removeClass('hidden');
+    // nothing selected, or rooms selected, load it !
+    if ((!data.what || data.what.rooms || (!data.what.users && !data.what.groups)) && !this.searchRoomsView.loaded) {
+      this.searchRoomsView.load();
+    } else if (data.what.users && !this.searchUsersView.loaded) {
+      this.searchUsersView.load();
     } else {
-      this.$searchMore.addClass('hidden');
-    }
-  },
-  onLoadMore: function () {
-    var count = this.cardsView.count();
-    this.search(this.$search.val(), count, this.getTypes());
-  },
-  onKeyup: function (event) {
-    event.preventDefault();
-    this.cardsView.pending();
-
-    var what = $(event.currentTarget).data('type');
-    if (!what) {
-      return;
+      this.searchGroupsView.load();
     }
 
-    this.$options.find('li').removeClass('active');
-    $(event.currentTarget).addClass('active');
-
-    clearTimeout(this.timeout);
-    this.timeout = setTimeout(_.bind(function () {
-      this.search(this.$search.val(), null, {
-        users: what === 'users',
-        rooms: what === 'rooms',
-        groups: what === 'groups'
-      });
-    }, this), this.timeBufferBeforeSearch);
-  },
-  search: function (s, skip, opt) {
-    skip = skip || null;
-    opt = opt || this.getTypes();
-
-    if (!s || s.length < 1) {
-      return;
-    }
-
-    this.lastSearch = s;
-    var options = {
-      users: opt.users,
-      rooms: opt.rooms || (!opt.users && !opt.rooms && !opt.groups), // default search on rooms when all are null
-      groups: opt.groups,
-      limit: {
-        users: this.limit,
-        rooms: this.limit,
-        groups: this.limit
-      },
-      skip: skip
-    };
-    app.client.search(s, options, _.bind(function (data) {
-      if (skip !== null) {
-        data.append = true;
+    // detect click on tab to load group user at least one when needed (rooms are loaded by default just above)
+    this.$('a[data-toggle="tab"]').on('show.bs.tab', _.bind(function (e) {
+      if ($(e.target).data('type') === 'users' && !this.searchUsersView.loaded) {
+        this.searchUsersView.load();
       }
-      this.onSearchResults(data);
+      if ($(e.target).data('type') === 'groups' && !this.searchGroupsView.loaded) {
+        this.searchGroupsView.load();
+      }
+      if ($(e.target).data('type') === 'rooms' && !this.searchRoomsView.loaded) {
+        this.searchRoomsView.load();
+      }
     }, this));
-  },
-  getTypes: function () {
-    if (!this.$options) {
-      return null;
-    }
-
-    return {
-      users: this.$options.find('li[data-type="users"]').hasClass('active'),
-      rooms: this.$options.find('li[data-type="rooms"]').hasClass('active'),
-      groups: this.$options.find('li[data-type="groups"]').hasClass('active')
-    };
-  },
-  focusSearch: function () {
-    this.$search.focus();
   }
 });
 

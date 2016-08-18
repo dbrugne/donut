@@ -315,7 +315,7 @@ module.exports = function (search, options, callback) {
             group_id: group.id,
             description: group.description,
             avatar: group._avatar(),
-            users: group.count(),
+            users: group.countMembers(),
             rooms: _roomsData
           };
 

@@ -36,7 +36,10 @@
 .cards-content { position: relative; margin: 0 20px; .display-flex; .flex-flow(column nowrap);
   .title1 { .ft-opensans-semibold; font-size: 17px; color: #586473; letter-spacing: 1.3px; line-height: 14px; margin: 20px 80px; width: 100%; }
   .filters { border-bottom: 1px solid #D0D9E6; width: 100%;
-    .filter-action { border-bottom: 3px solid transparent; width: 280px; .ft-opensans; font-size: 13px; color: #AFBAC8; letter-spacing: 2px; line-height: 21px; text-transform: uppercase; padding: 5px 10px; text-align: center;
+    li { border-bottom: 3px solid transparent; width: 280px; .ft-opensans; font-size: 13px; color: #AFBAC8; letter-spacing: 2px; line-height: 21px; text-transform: uppercase; padding: 5px 10px; text-align: center; list-style: none;
+      a { display: inline-block; text-decoration:none;
+        &:hover { text-decoration:none; }
+      }
       &.active { border-bottom: 3px solid @cl-first; color: #1D252F; }
     }
   }

@@ -355,7 +355,7 @@
     },
     "user": {
       "hisrooms": "Ses discussions",
-      "signuped": "Inscrit le",
+      "signuped": "Inscrit le __registered_at__",
       "onlined": "Connecté il y a __time__"
     }
   },

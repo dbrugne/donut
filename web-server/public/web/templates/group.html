@@ -227,13 +227,17 @@ var statusClass =   (isBanned)  ? 'is-banned' :
 </div>
 
 <div class="cards-content flex-parent column jc-center center mt30 mb30">
-    <div class="filters flex-parent center jc-center">
-        <span data-type="rooms" class="curp filter-action active"><%= t('global.rooms') %></span>
-        <span data-type="users" class="curp filter-action"><%= t('group.members') %></span>
-    </div>
-    <div class="cards">
-        <div class="toggle-cards rooms"><!--Cards list--></div>
-        <div class="toggle-cards users hidden"><!--Cards list--></div>
+    <ul class="filters flex-parent center jc-center"  role="tablist">
+        <li role="presentation" class="active"><a href="#group-rooms" data-type="rooms" class="curp filter-action" aria-controls="group-rooms" role="tab" data-toggle="tab"><%= t('global.rooms') %></a></li>
+        <li role="presentation"><a href="#group-members" data-type="users" class="curp filter-action" aria-controls="group-members" role="tab" data-toggle="tab"><%= t('group.members') %></a></li>
+    </ul>
+    <div class="cards tab-content">
+        <div role="tabpanel" class="tab-pane active" id="group-rooms">
+            <div class="toggle-cards rooms"><!--Cards list--></div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="group-members">
+            <div class="toggle-cards users"><!--Cards list--></div>
+        </div>
     </div>
     <!--<button class="load-more btn btn-pink btn-big center-block mt20 mb20 hidden"><%= t('landing.loadmore') %></button>-->
 </div>

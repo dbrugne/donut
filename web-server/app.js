@@ -89,7 +89,9 @@ app.use(require('./app/routes/contact-form'));
 app.use(require('./app/routes/static'));
 
 // api
-app.use(require('./app/api/history'));
+app.use(require('./api/routes/home'));
+app.use(require('./api/routes/search'));
+app.use(require('./api/routes/history'));
 
 // error handling
 app.use(function (req, res, next) {
